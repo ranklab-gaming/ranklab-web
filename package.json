@@ -17,6 +17,12 @@
     "@types/react": "17.0.15",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",
-    "typescript": "4.3.5"
+    "typescript": "4.3.5",
+    "@material-ui/core": "latest"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": false
   }
 }
