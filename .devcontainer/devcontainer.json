@@ -1,0 +1,11 @@
+{
+  "name": "RanklabWeb",
+  "remoteUser": "node",
+  "postCreateCommand": "yarn install",
+  "postStartCommand": "yarn dev",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "extensions": ["esbenp.prettier-vscode"],
+  "forwardPorts": [3000]
+}
