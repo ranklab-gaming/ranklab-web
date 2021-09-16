@@ -61,12 +61,12 @@ const UNREADS = [true, true, false, false, false];
 
 const MOCK_NOTIFICATIONS = [...Array(5)].map((_, index) => ({
   id: mockData.id(index),
-  title: TITLES[index],
-  description: DESCRIPTIONS[index],
-  avatar: AVATARS[index],
-  type: TYPES[index],
+  title: TITLES[index]!,
+  description: DESCRIPTIONS[index]!,
+  avatar: AVATARS[index]!,
+  type: TYPES[index]!,
   createdAt: mockData.time(index),
-  isUnRead: UNREADS[index],
+  isUnRead: UNREADS[index]!,
 }));
 
 // ----------------------------------------------------------------------
