@@ -1,71 +1,98 @@
-import React from "react"
-import NextDocument, { Html, Head, Main, NextScript } from "next/document"
-import { ServerStyleSheets } from "@material-ui/core/styles"
-import theme from "../src/theme"
+import * as React from 'react';
+// next
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+// emotion
+import createEmotionServer from '@emotion/server/create-instance';
+// utils
+import createEmotionCache from 'src/utils/createEmotionCache';
+// theme
+import palette from 'src/theme/palette';
 
-export default class Document extends NextDocument {
+// // ----------------------------------------------------------------------
+
+export default class MyDocument extends Document {
   render() {
     return (
-      <Html lang="en">
+      <Html lang='en'>
         <Head>
-          {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta charSet='utf-8' />
           <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel='apple-touch-icon'
+            sizes='180x180'
+            href='/favicon/apple-touch-icon.png'
           />
+          <link
+            rel='icon'
+            type='image/png'
+            sizes='32x32'
+            href='/favicon/favicon-32x32.png'
+          />
+          <link
+            rel='icon'
+            type='image/png'
+            sizes='16x16'
+            href='/favicon/favicon-16x16.png'
+          />
+
+          <meta name='theme-color' content={palette.light.primary.main} />
+          <link rel='manifest' href='/manifest.json' />
+
+          <link rel='preconnect' href='https://fonts.gstatic.com' />
+          <link
+            href='https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap'
+            rel='stylesheet'
+          />
+
+          <meta
+            name='description'
+            content='The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style'
+          />
+          <meta
+            name='keywords'
+            content='react,material,kit,application,dashboard,admin,template'
+          />
+          <meta name='author' content='Minimal UI Kit' />
         </Head>
+
         <body>
           <Main />
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-// `getInitialProps` belongs to `_document` (instead of `_app`),
-// it's compatible with server-side generation (SSG).
-Document.getInitialProps = async (ctx) => {
-  // Resolution order
-  //
-  // On the server:
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. document.getInitialProps
-  // 4. app.render
-  // 5. page.render
-  // 6. document.render
-  //
-  // On the server with error:
-  // 1. document.getInitialProps
-  // 2. app.render
-  // 3. page.render
-  // 4. document.render
-  //
-  // On the client
-  // 1. app.getInitialProps
-  // 2. page.getInitialProps
-  // 3. app.render
-  // 4. page.render
+MyDocument.getInitialProps = async (ctx) => {
+  const originalRenderPage = ctx.renderPage;
 
-  // Render app and page and get the context of the page with collected side effects.
-  const sheets = new ServerStyleSheets()
-  const originalRenderPage = ctx.renderPage
+  const cache = createEmotionCache();
+
+  const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-    })
+      enhanceApp: (App: any) => (props) =>
+        <App emotionCache={cache} {...props} />,
+    });
 
-  const initialProps = await Document.getInitialProps(ctx)
+  const initialProps = await Document.getInitialProps(ctx);
+
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
+  const emotionStyleTags = emotionStyles.styles.map((style) => (
+    <style
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      key={style.key}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: style.css }}
+    />
+  ));
 
   return {
     ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
     styles: [
       ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement(),
+      ...emotionStyleTags,
     ],
-  }
-}
+  };
+};

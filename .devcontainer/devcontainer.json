@@ -1,11 +1,47 @@
 {
-  "name": "RanklabWeb",
+  "name": "Ranklab Web",
   "remoteUser": "node",
   "postCreateCommand": "yarn install",
   "postStartCommand": "yarn dev",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "extensions": ["esbenp.prettier-vscode"],
-  "forwardPorts": [3000]
+  "image": "node:latest",
+  "extensions": ["esbenp.prettier-vscode", "naumovs.color-highlight"],
+  "forwardPorts": [3000],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on",
+    "editor.detectIndentation": false,
+    "files.trimTrailingWhitespace": true,
+    "files.watcherExclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/.git/objects/**": true,
+      "**/node_modules/**": true,
+      "**/tmp/**": true
+    },
+    "search.exclude": {
+      "**/.git/objects/**": true,
+      "**/.next/**": true,
+      "**/node_modules/**": true,
+      "**/tmp/**": true
+    },
+    "files.autoSave": "onFocusChange",
+    "editor.rulers": [100],
+    "editor.codeLens": false,
+    "editor.minimap.enabled": false,
+    "workbench.editor.closeEmptyGroups": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.codeActionsOnSave": ["source.addMissingImports"],
+    "extensions.ignoreRecommendations": false,
+    "workbench.settings.useSplitJSON": true,
+    "search.followSymlinks": false,
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.inlineSuggest.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "prettier.requireConfig": true,
+    "git.autofetch": true
+  }
 }
