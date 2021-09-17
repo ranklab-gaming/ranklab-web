@@ -1,15 +1,4 @@
-import { ReactNode, createContext } from 'react';
-// hooks
-import useLocalStorage from '../hooks/useLocalStorage';
-// theme
-import palette from '../theme/palette';
-// @type
-import {
-  ThemeMode,
-  ThemeDirection,
-  ThemeColor,
-  SettingsContextProps,
-} from '../@types/settings';
+import { createContext } from 'react';
 
 // ----------------------------------------------------------------------
 
