@@ -2,7 +2,6 @@
   "name": "Ranklab Web",
   "remoteUser": "node",
   "postCreateCommand": "yarn install",
-  "postStartCommand": "yarn dev",
   "image": "node:latest",
   "extensions": ["esbenp.prettier-vscode", "naumovs.color-highlight"],
   "forwardPorts": [3000],
