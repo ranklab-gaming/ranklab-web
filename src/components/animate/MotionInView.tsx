@@ -28,9 +28,9 @@ export default function MotionInView({
   useEffect(() => {
     if (!variants) return;
     if (inView) {
-      controls.start(Object.keys(variants)[1]);
+      controls.start(Object.keys(variants)[1]!);
     } else {
-      controls.start(Object.keys(variants)[0]);
+      controls.start(Object.keys(variants)[0]!);
     }
   }, [controls, inView, variants]);
 

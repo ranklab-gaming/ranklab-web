@@ -2,7 +2,7 @@ import { Theme } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-export default function SvgIcon(theme: Theme) {
+export default function SvgIcon(_theme: Theme) {
   return {
     MuiSvgIcon: {
       styleOverrides: {

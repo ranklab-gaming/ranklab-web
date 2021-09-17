@@ -5,7 +5,7 @@ import { Box, BoxProps } from '@material-ui/core';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled('div')(({ theme }) => ({
+const RootStyle = styled('div')(() => ({
   flexGrow: 1,
   height: '100%',
   overflow: 'hidden',

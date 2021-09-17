@@ -2,7 +2,7 @@ import { Theme } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-export default function LoadingButton(theme: Theme) {
+export default function LoadingButton(_theme: Theme) {
   return {
     MuiLoadingButton: {
       styleOverrides: {

@@ -1,3 +1,4 @@
+import { Direction } from '@material-ui/core';
 import { createContext } from 'react';
 
 // ----------------------------------------------------------------------
@@ -15,7 +16,7 @@ const PRIMARY_COLOR =
 
 const SettingsContext = createContext({
   themeMode: 'dark',
-  themeDirection: 'ltr',
+  themeDirection: 'ltr' as Direction,
   themeColor: 'purple',
   themeStretch: false,
   setColor: PRIMARY_COLOR,

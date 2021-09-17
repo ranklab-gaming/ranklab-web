@@ -3,7 +3,7 @@
   "remoteUser": "node",
   "postCreateCommand": "yarn install",
   "image": "node:latest",
-  "extensions": ["esbenp.prettier-vscode", "naumovs.color-highlight"],
+  "extensions": ["esbenp.prettier-vscode", "naumovs.color-highlight", "ms-vsliveshare.vsliveshare"],
   "forwardPorts": [3000],
   "settings": {
     "editor.tabSize": 2,

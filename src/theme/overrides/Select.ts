@@ -3,7 +3,7 @@ import { Theme } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-export default function Select(theme: Theme) {
+export default function Select(_theme: Theme) {
   return {
     MuiSelect: {
       defaultProps: {

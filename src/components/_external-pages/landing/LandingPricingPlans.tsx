@@ -27,7 +27,7 @@ import {
 const LICENSES = ['Standard', 'Standard Plus', 'Extended'];
 
 const PLANS = [...Array(3)].map((_, index) => ({
-  license: LICENSES[index],
+  license: LICENSES[index]!,
   commons: ['One end products', '12 months updates', '6 months of support'],
   options: [
     'JavaScript version',

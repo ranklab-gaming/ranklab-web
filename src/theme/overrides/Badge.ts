@@ -2,7 +2,7 @@ import { Theme } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-export default function Badge(theme: Theme) {
+export default function Badge(_theme: Theme) {
   return {
     MuiBadge: {
       styleOverrides: {

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import draftToHtml from 'draftjs-to-html';
 import { EditorState, convertToRaw } from 'draft-js';
 import {
-  Box,
   Grid,
   Card,
   Stack,

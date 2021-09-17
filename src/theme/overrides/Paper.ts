@@ -2,7 +2,7 @@ import { Theme } from '@material-ui/core/styles';
 
 // ----------------------------------------------------------------------
 
-export default function Paper(theme: Theme) {
+export default function Paper(_theme: Theme) {
   return {
     MuiPaper: {
       defaultProps: {

@@ -4,8 +4,6 @@ import { motion } from 'framer-motion';
 // material
 import { alpha, styled } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
-//
-import Logo from '../components/Logo';
 
 // ----------------------------------------------------------------------
 
