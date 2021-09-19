@@ -17,6 +17,7 @@ import RtlLayout from 'src/components/RtlLayout';
 import LoadingScreen from 'src/components/LoadingScreen';
 import TopProgressBar from 'src/components/TopProgressBar';
 import ThemePrimaryColor from 'src/components/ThemePrimaryColor';
+import { UserProvider } from '@auth0/nextjs-auth0';
 
 // // ----------------------------------------------------------------------
 
@@ -30,25 +31,27 @@ export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   return (
-    <CollapseDrawerProvider>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <meta
-            name='viewport'
-            content='initial-scale=1, width=device-width'
-          />
-        </Head>
+    <UserProvider>
+      <CollapseDrawerProvider>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <meta
+              name='viewport'
+              content='initial-scale=1, width=device-width'
+            />
+          </Head>
 
-        <ThemeConfig>
-          <ThemePrimaryColor>
-            <RtlLayout>
-              <LoadingScreen />
-              <TopProgressBar />
-              <Component {...pageProps} />
-            </RtlLayout>
-          </ThemePrimaryColor>
-        </ThemeConfig>
-      </CacheProvider>
-    </CollapseDrawerProvider>
+          <ThemeConfig>
+            <ThemePrimaryColor>
+              <RtlLayout>
+                <LoadingScreen />
+                <TopProgressBar />
+                <Component {...pageProps} />
+              </RtlLayout>
+            </ThemePrimaryColor>
+          </ThemeConfig>
+        </CacheProvider>
+      </CollapseDrawerProvider>
+    </UserProvider>
   );
 }
