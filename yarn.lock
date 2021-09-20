@@ -274,6 +274,11 @@
   resolved "https://registry.npmjs.org/@iconify/icons-ic/-/icons-ic-1.1.9.tgz"
   integrity sha512-nuFTK+nqHpEyzICkNiqqCrDjunVqbO7ptgqznXRwi+i1H8FsxIyVGJUkLjL+/f4pKQHY5Zpvzq4PH1cLUctyJQ==
 
+"@iconify/icons-mdi@^1.1.29":
+  version "1.1.29"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.1.29.tgz#b6df1ecb1c1a0255fb5b98250cf39b5524f47ac7"
+  integrity sha512-6RbopSNsPJ61X5VK0UGoJ78Jw07Txm+Vb6hFRH54Dtei5IAbFmtbo/rMb7i82JcCUeG8/noCFW9irRSlw/ZN5w==
+
 "@iconify/react@^3.0.1":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@iconify/react/-/react-3.0.1.tgz"

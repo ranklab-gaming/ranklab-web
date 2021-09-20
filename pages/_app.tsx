@@ -13,7 +13,6 @@ import ThemeConfig from 'src/theme';
 // utils
 import createEmotionCache from 'src/utils/createEmotionCache';
 // components
-import RtlLayout from 'src/components/RtlLayout';
 import LoadingScreen from 'src/components/LoadingScreen';
 import TopProgressBar from 'src/components/TopProgressBar';
 import ThemePrimaryColor from 'src/components/ThemePrimaryColor';
@@ -43,11 +42,9 @@ export default function MyApp(props: MyAppProps) {
 
           <ThemeConfig>
             <ThemePrimaryColor>
-              <RtlLayout>
-                <LoadingScreen />
-                <TopProgressBar />
-                <Component {...pageProps} />
-              </RtlLayout>
+              <LoadingScreen />
+              <TopProgressBar />
+              <Component {...pageProps} />
             </ThemePrimaryColor>
           </ThemeConfig>
         </CacheProvider>

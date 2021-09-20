@@ -13,8 +13,6 @@ import {
   Container,
   Typography,
 } from '@material-ui/core';
-// routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
 //
 import {
   varFadeIn,
@@ -143,18 +141,6 @@ export default function LandingHero() {
                 Preview in Sketch Cloud
               </Link>
             </Stack>
-
-            <motion.div variants={varFadeInRight}>
-              <NextLink href={PATH_DASHBOARD.root}>
-                <Button
-                  size='large'
-                  variant='contained'
-                  startIcon={<Icon icon={flashFill} width={20} height={20} />}
-                >
-                  Live Preview
-                </Button>
-              </NextLink>
-            </motion.div>
 
             <Stack
               direction='row'

@@ -10,10 +10,6 @@ import useOffSetTop from '../../hooks/useOffSetTop';
 import Logo from '../../components/Logo';
 import Label from '../../components/Label';
 import { MHidden } from '../../components/@material-extend';
-//
-import MenuDesktop from './MenuDesktop';
-import MenuMobile from './MenuMobile';
-import navConfig from './MenuConfig';
 
 // ----------------------------------------------------------------------
 
@@ -93,17 +89,9 @@ export default function MainNavbar() {
             <Logo />
           </NextLink>
           <Label color='info' sx={{ ml: 1 }}>
-            Next Ts v2.5.0
+            Ranklab
           </Label>
           <Box sx={{ flexGrow: 1 }} />
-
-          <MHidden width='mdDown'>
-            <MenuDesktop
-              isOffset={isOffset}
-              isHome={isHome}
-              navConfig={navConfig}
-            />
-          </MHidden>
 
           <Button
             variant='contained'
@@ -112,14 +100,6 @@ export default function MainNavbar() {
           >
             Purchase Now
           </Button>
-
-          <MHidden width='mdUp'>
-            <MenuMobile
-              isOffset={isOffset}
-              isHome={isHome}
-              navConfig={navConfig}
-            />
-          </MHidden>
         </Container>
       </ToolbarStyle>
 
