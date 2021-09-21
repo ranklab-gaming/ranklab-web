@@ -13,7 +13,7 @@ const Logo = React.forwardRef<any, BoxProps>(({ sx }, ref) => {
 
   return (
     <Box ref={ref} sx={{ width: 40, height: 40, cursor: 'pointer', ...sx }}>
-      <Icon icon={flaskOutlineIcon} color={PRIMARY_MAIN} />
+      <Icon icon={flaskOutlineIcon} color={PRIMARY_MAIN} fontSize="40px" />
     </Box>
   );
 });

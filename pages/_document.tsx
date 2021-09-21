@@ -36,22 +36,12 @@ export default class MyDocument extends Document {
 
           <meta name='theme-color' content={palette.light.primary.main} />
           <link rel='manifest' href='/manifest.json' />
-
           <link rel='preconnect' href='https://fonts.gstatic.com' />
+
           <link
             href='https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap'
             rel='stylesheet'
           />
-
-          <meta
-            name='description'
-            content='The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style'
-          />
-          <meta
-            name='keywords'
-            content='react,material,kit,application,dashboard,admin,template'
-          />
-          <meta name='author' content='Minimal UI Kit' />
         </Head>
 
         <body>

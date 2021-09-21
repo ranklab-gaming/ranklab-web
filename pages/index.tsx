@@ -29,7 +29,7 @@ export default function LandingPage() {
   return (
     <MainLayout>
       <RootStyle
-        title='The starting point for your next project | Minimal-UI'
+        title='Be the better gamer | Ranklab'
         id='move_top'
       >
         <LandingHero />
