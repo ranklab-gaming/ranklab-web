@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
@@ -9,14 +9,14 @@ export default function SvgIcon(_theme: Theme) {
         fontSizeSmall: {
           width: 20,
           height: 20,
-          fontSize: 'inherit'
+          fontSize: "inherit",
         },
         fontSizeLarge: {
           width: 32,
           height: 32,
-          fontSize: 'inherit'
-        }
-      }
-    }
-  };
+          fontSize: "inherit",
+        },
+      },
+    },
+  }
 }

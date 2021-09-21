@@ -1,9 +1,9 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
 export default function ToggleButton(theme: Theme) {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === "light"
 
   return {
     MuiToggleButton: {
@@ -11,15 +11,15 @@ export default function ToggleButton(theme: Theme) {
         root: {
           color: theme.palette.grey[500],
           border: `solid 1px ${theme.palette.grey[500_32]}`,
-          '&.Mui-selected': {
+          "&.Mui-selected": {
             color: theme.palette.grey[isLight ? 600 : 0],
-            backgroundColor: theme.palette.action.selected
+            backgroundColor: theme.palette.action.selected,
           },
-          '&.Mui-disabled': {
-            color: theme.palette.grey[500_48]
-          }
-        }
-      }
-    }
-  };
+          "&.Mui-disabled": {
+            color: theme.palette.grey[500_48],
+          },
+        },
+      },
+    },
+  }
 }

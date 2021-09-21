@@ -1,16 +1,16 @@
 // ----------------------------------------------------------------------
 
-declare module '@material-ui/system' {
+declare module "@mui/system" {
   interface Shape {
-    borderRadiusSm: number | string;
-    borderRadiusMd: number | string;
+    borderRadiusSm: number | string
+    borderRadiusMd: number | string
   }
 }
 
 const shape = {
   borderRadius: 8,
   borderRadiusSm: 12,
-  borderRadiusMd: 16
-};
+  borderRadiusMd: 16,
+}
 
-export default shape;
+export default shape

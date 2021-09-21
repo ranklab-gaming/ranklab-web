@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
@@ -10,12 +10,12 @@ export default function Radio(theme: Theme) {
           padding: theme.spacing(1),
           svg: {
             fontSize: 24,
-            '&[font-size=small]': {
+            "&[font-size=small]": {
               fontSize: 20,
             },
           },
         },
       },
     },
-  };
+  }
 }

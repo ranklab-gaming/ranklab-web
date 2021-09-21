@@ -1,11 +1,11 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
 export default function Grid(_theme: Theme) {
   return {
     MuiGrid: {
-      styleOverrides: {}
-    }
-  };
+      styleOverrides: {},
+    },
+  }
 }

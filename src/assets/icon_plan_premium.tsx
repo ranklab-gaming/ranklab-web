@@ -1,14 +1,14 @@
 // material
-import { useTheme } from '@material-ui/core/styles';
-import { Box, BoxProps } from '@material-ui/core';
+import { useTheme } from "@mui/material/styles"
+import { Box, BoxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
 export default function PlanPremiumIcon({ ...other }: BoxProps) {
-  const theme = useTheme();
-  const PRIMARY_MAIN = theme.palette.primary.main;
-  const PRIMARY_DARK = theme.palette.primary.dark;
-  const PRIMARY_DARKER = theme.palette.primary.darker;
+  const theme = useTheme()
+  const PRIMARY_MAIN = theme.palette.primary.main
+  const PRIMARY_DARK = theme.palette.primary.dark
+  const PRIMARY_DARKER = theme.palette.primary.darker
 
   return (
     <Box {...other}>
@@ -114,5 +114,5 @@ export default function PlanPremiumIcon({ ...other }: BoxProps) {
         </g>
       </svg>
     </Box>
-  );
+  )
 }

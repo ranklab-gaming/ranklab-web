@@ -1,15 +1,15 @@
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
 interface SvgIconStyleProps extends BoxProps {
-  src: string;
+  src: string
 }
 
 export default function SvgIconStyle({
   src,
-  color = 'inherit',
-  sx
+  color = "inherit",
+  sx,
 }: SvgIconStyleProps) {
   return (
     <Box
@@ -20,12 +20,12 @@ export default function SvgIconStyle({
         mask: `url(${src}) no-repeat center / contain`,
         WebkitMask: `url(${src}) no-repeat center / contain`,
         bgcolor: `${color}.main`,
-        ...(color === 'inherit' && { bgcolor: 'currentColor' }),
-        ...(color === 'action' && { bgcolor: 'action.active' }),
-        ...(color === 'disabled' && { bgcolor: 'action.disabled' }),
-        ...(color === 'paper' && { bgcolor: 'background.paper' }),
-        ...sx
+        ...(color === "inherit" && { bgcolor: "currentColor" }),
+        ...(color === "action" && { bgcolor: "action.active" }),
+        ...(color === "disabled" && { bgcolor: "action.disabled" }),
+        ...(color === "paper" && { bgcolor: "background.paper" }),
+        ...sx,
       }}
     />
-  );
+  )
 }

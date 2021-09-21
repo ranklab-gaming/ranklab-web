@@ -1,18 +1,18 @@
-import { ReactNode, createContext, useState, useEffect } from 'react';
+import { ReactNode, createContext, useState, useEffect } from "react"
 // material
-import { useMediaQuery } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
+import { useMediaQuery } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
 export type CollapseDrawerContextProps = {
-  isCollapse?: boolean;
-  collapseClick: boolean;
-  collapseHover: boolean;
-  onToggleCollapse: VoidFunction;
-  onHoverEnter: VoidFunction;
-  onHoverLeave: VoidFunction;
-};
+  isCollapse?: boolean
+  collapseClick: boolean
+  collapseHover: boolean
+  onToggleCollapse: VoidFunction
+  onHoverEnter: VoidFunction
+  onHoverLeave: VoidFunction
+}
 
 const initialState: CollapseDrawerContextProps = {
   collapseClick: false,
@@ -20,44 +20,44 @@ const initialState: CollapseDrawerContextProps = {
   onToggleCollapse: () => {},
   onHoverEnter: () => {},
   onHoverLeave: () => {},
-};
+}
 
-const CollapseDrawerContext = createContext(initialState);
+const CollapseDrawerContext = createContext(initialState)
 
 type CollapseDrawerProviderProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 function CollapseDrawerProvider({ children }: CollapseDrawerProviderProps) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg"))
   const [collapse, setCollapse] = useState({
     click: false,
     hover: false,
-  });
+  })
 
   useEffect(() => {
     if (isMobile) {
       setCollapse({
         click: false,
         hover: false,
-      });
+      })
     }
-  }, [isMobile]);
+  }, [isMobile])
 
   const handleToggleCollapse = () => {
-    setCollapse({ ...collapse, click: !collapse.click });
-  };
+    setCollapse({ ...collapse, click: !collapse.click })
+  }
 
   const handleHoverEnter = () => {
     if (collapse.click) {
-      setCollapse({ ...collapse, hover: true });
+      setCollapse({ ...collapse, hover: true })
     }
-  };
+  }
 
   const handleHoverLeave = () => {
-    setCollapse({ ...collapse, hover: false });
-  };
+    setCollapse({ ...collapse, hover: false })
+  }
 
   return (
     <CollapseDrawerContext.Provider
@@ -72,7 +72,7 @@ function CollapseDrawerProvider({ children }: CollapseDrawerProviderProps) {
     >
       {children}
     </CollapseDrawerContext.Provider>
-  );
+  )
 }
 
-export { CollapseDrawerProvider, CollapseDrawerContext };
+export { CollapseDrawerProvider, CollapseDrawerContext }

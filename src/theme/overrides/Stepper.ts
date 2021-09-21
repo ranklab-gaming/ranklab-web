@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
@@ -7,9 +7,9 @@ export default function Stepper(theme: Theme) {
     MuiStepConnector: {
       styleOverrides: {
         line: {
-          borderColor: theme.palette.divider
-        }
-      }
-    }
-  };
+          borderColor: theme.palette.divider,
+        },
+      },
+    },
+  }
 }

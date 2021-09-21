@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
@@ -7,61 +7,61 @@ export default function Input(theme: Theme) {
     MuiInputBase: {
       styleOverrides: {
         root: {
-          '&.Mui-disabled': {
-            '& svg': { color: theme.palette.text.disabled }
-          }
+          "&.Mui-disabled": {
+            "& svg": { color: theme.palette.text.disabled },
+          },
         },
         input: {
-          '&::placeholder': {
+          "&::placeholder": {
             opacity: 1,
-            color: theme.palette.text.disabled
-          }
-        }
-      }
+            color: theme.palette.text.disabled,
+          },
+        },
+      },
     },
     MuiInput: {
       styleOverrides: {
         underline: {
-          '&:before': {
-            borderBottomColor: theme.palette.grey[500_56]
-          }
-        }
-      }
+          "&:before": {
+            borderBottomColor: theme.palette.grey[500_56],
+          },
+        },
+      },
     },
     MuiFilledInput: {
       styleOverrides: {
         root: {
           backgroundColor: theme.palette.grey[500_12],
-          '&:hover': {
-            backgroundColor: theme.palette.grey[500_16]
+          "&:hover": {
+            backgroundColor: theme.palette.grey[500_16],
           },
-          '&.Mui-focused': {
-            backgroundColor: theme.palette.action.focus
+          "&.Mui-focused": {
+            backgroundColor: theme.palette.action.focus,
           },
-          '&.Mui-disabled': {
-            backgroundColor: theme.palette.action.disabledBackground
-          }
+          "&.Mui-disabled": {
+            backgroundColor: theme.palette.action.disabledBackground,
+          },
         },
         underline: {
-          '&:before': {
-            borderBottomColor: theme.palette.grey[500_56]
-          }
-        }
-      }
+          "&:before": {
+            borderBottomColor: theme.palette.grey[500_56],
+          },
+        },
+      },
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[500_32]
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.grey[500_32],
           },
-          '&.Mui-disabled': {
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: theme.palette.action.disabledBackground
-            }
-          }
-        }
-      }
-    }
-  };
+          "&.Mui-disabled": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: theme.palette.action.disabledBackground,
+            },
+          },
+        },
+      },
+    },
+  }
 }

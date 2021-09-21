@@ -1,13 +1,13 @@
-import { Icon } from '@iconify/react';
-import plusSquareOutline from '@iconify/icons-eva/plus-square-outline';
-import minusSquareOutline from '@iconify/icons-eva/minus-square-outline';
-import closeSquareOutline from '@iconify/icons-eva/close-square-outline';
-import { Theme } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Icon } from "@iconify/react"
+import plusSquareOutline from "@iconify/icons-eva/plus-square-outline"
+import minusSquareOutline from "@iconify/icons-eva/minus-square-outline"
+import closeSquareOutline from "@iconify/icons-eva/close-square-outline"
+import { Theme } from "@mui/material/styles"
+import { Box } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
-const ICON_SIZE = { width: 20, height: 20 };
+const ICON_SIZE = { width: 20, height: 20 }
 
 export default function TreeView(theme: Theme) {
   return {
@@ -20,16 +20,16 @@ export default function TreeView(theme: Theme) {
             component={Icon}
             icon={closeSquareOutline}
             {...ICON_SIZE}
-            sx={{ color: 'text.secondary' }}
+            sx={{ color: "text.secondary" }}
           />
-        )
-      }
+        ),
+      },
     },
     MuiTreeItem: {
       styleOverrides: {
         label: { ...theme.typography.body2 },
-        iconContainer: { width: 'auto' }
-      }
-    }
-  };
+        iconContainer: { width: "auto" },
+      },
+    },
+  }
 }

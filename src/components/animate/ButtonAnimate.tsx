@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion"
 // material
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from "@mui/material"
 //
-import { varSmallClick, varMediumClick } from './variants';
+import { varSmallClick, varMediumClick } from "./variants"
 
 // ----------------------------------------------------------------------
 
 interface ButtonAnimateProps extends BoxProps {
-  mediumClick?: boolean;
+  mediumClick?: boolean
 }
 
 export default function ButtonAnimate({
@@ -22,10 +22,10 @@ export default function ButtonAnimate({
       whileTap="tap"
       whileHover="hover"
       variants={mediumClick ? varMediumClick : varSmallClick}
-      sx={{ display: 'inline-flex', ...sx }}
+      sx={{ display: "inline-flex", ...sx }}
       {...other}
     >
       {children}
     </Box>
-  );
+  )
 }

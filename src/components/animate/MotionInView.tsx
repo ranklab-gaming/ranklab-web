@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { motion, useAnimation, MotionProps } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { useEffect } from "react"
+import { motion, useAnimation, MotionProps } from "framer-motion"
+import { useInView } from "react-intersection-observer"
 // material
-import { Box, BoxProps } from '@material-ui/core';
+import { Box, BoxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
-type Props = BoxProps & MotionProps;
+type Props = BoxProps & MotionProps
 
 interface MotionInViewProps extends Props {
-  threshold?: number | number[];
+  threshold?: number | number[]
 }
 
 export default function MotionInView({
@@ -19,20 +19,20 @@ export default function MotionInView({
   threshold,
   ...other
 }: MotionInViewProps) {
-  const controls = useAnimation();
+  const controls = useAnimation()
   const [ref, inView] = useInView({
     threshold: threshold || 0,
-    triggerOnce: true
-  });
+    triggerOnce: true,
+  })
 
   useEffect(() => {
-    if (!variants) return;
+    if (!variants) return
     if (inView) {
-      controls.start(Object.keys(variants)[1]!);
+      controls.start(Object.keys(variants)[1]!)
     } else {
-      controls.start(Object.keys(variants)[0]!);
+      controls.start(Object.keys(variants)[0]!)
     }
-  }, [controls, inView, variants]);
+  }, [controls, inView, variants])
 
   return (
     <Box
@@ -46,5 +46,5 @@ export default function MotionInView({
     >
       {children}
     </Box>
-  );
+  )
 }

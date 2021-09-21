@@ -1,13 +1,13 @@
-import { last } from "lodash";
-import NextLink from "next/link";
+import { last } from "lodash"
+import NextLink from "next/link"
 import {
   Box,
   Link,
   Typography,
   Breadcrumbs,
   BreadcrumbsProps,
-} from "@material-ui/core";
-import { ReactElement } from "react";
+} from "@mui/material"
+import { ReactElement } from "react"
 
 // ----------------------------------------------------------------------
 
@@ -21,16 +21,16 @@ const Separator = (
       bgcolor: "text.disabled",
     }}
   />
-);
+)
 
 type TLink = {
-  href?: string;
-  name: string;
-  icon?: ReactElement;
-};
+  href?: string
+  name: string
+  icon?: ReactElement
+}
 
 function LinkItem({ link }: { link: TLink }) {
-  const { href, name, icon } = link;
+  const { href, name, icon } = link
   return (
     <NextLink key={name} href={href || "#"} passHref>
       <Link
@@ -56,12 +56,12 @@ function LinkItem({ link }: { link: TLink }) {
         {name}
       </Link>
     </NextLink>
-  );
+  )
 }
 
 export interface MBreadcrumbsProps extends BreadcrumbsProps {
-  links: TLink[];
-  activeLast?: boolean;
+  links: TLink[]
+  activeLast?: boolean
 }
 
 export default function MBreadcrumbs({
@@ -69,11 +69,11 @@ export default function MBreadcrumbs({
   activeLast = false,
   ...other
 }: MBreadcrumbsProps) {
-  const currentLink = last(links)?.name;
+  const currentLink = last(links)?.name
 
   const listDefault = links.map((link) => (
     <LinkItem key={link.name} link={link} />
-  ));
+  ))
   const listActiveLast = links.map((link) => (
     <div key={link.name}>
       {link.name !== currentLink ? (
@@ -93,11 +93,11 @@ export default function MBreadcrumbs({
         </Typography>
       )}
     </div>
-  ));
+  ))
 
   return (
     <Breadcrumbs separator={Separator} {...other}>
       {activeLast ? listDefault : listActiveLast}
     </Breadcrumbs>
-  );
+  )
 }

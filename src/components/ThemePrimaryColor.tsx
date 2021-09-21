@@ -1,27 +1,27 @@
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from "react"
 // material
 import {
   alpha,
   useTheme,
   createTheme,
   ThemeProvider,
-} from '@material-ui/core/styles';
+} from "@mui/material/styles"
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from "../hooks/useSettings"
 //
-import componentsOverride from '../theme/overrides';
+import componentsOverride from "../theme/overrides"
 
 // ----------------------------------------------------------------------
 
 type ThemePrimaryColorProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default function ThemePrimaryColor({
   children,
 }: ThemePrimaryColorProps) {
-  const defaultTheme = useTheme();
-  const { setColor } = useSettings();
+  const defaultTheme = useTheme()
+  const { setColor } = useSettings()
 
   const themeOptions = useMemo(
     () => ({
@@ -36,10 +36,10 @@ export default function ThemePrimaryColor({
       },
     }),
     [setColor, defaultTheme]
-  );
+  )
 
-  const theme = createTheme(themeOptions);
-  theme.components = componentsOverride(theme);
+  const theme = createTheme(themeOptions)
+  theme.components = componentsOverride(theme)
 
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }

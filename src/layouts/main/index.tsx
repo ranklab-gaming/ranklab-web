@@ -1,24 +1,24 @@
-import { ReactNode } from 'react';
-import { Link as ScrollLink } from 'react-scroll';
+import { ReactNode } from "react"
+import { Link as ScrollLink } from "react-scroll"
 // next
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router"
 // material
-import { Box, Link, Container, Typography } from '@material-ui/core';
+import { Box, Link, Container, Typography } from "@mui/material"
 // components
-import Logo from '../../components/Logo';
+import Logo from "../../components/Logo"
 //
-import MainFooter from './MainFooter';
-import MainNavbar from './MainNavbar';
+import MainFooter from "./MainFooter"
+import MainNavbar from "./MainNavbar"
 
 // ----------------------------------------------------------------------
 
 type MainLayoutProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default function MainLayout({ children }: MainLayoutProps) {
-  const { pathname } = useRouter();
-  const isHome = pathname === '/';
+  const { pathname } = useRouter()
+  const isHome = pathname === "/"
 
   return (
     <>
@@ -31,24 +31,24 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <Box
           sx={{
             py: 5,
-            textAlign: 'center',
-            position: 'relative',
-            bgcolor: 'background.default',
+            textAlign: "center",
+            position: "relative",
+            bgcolor: "background.default",
           }}
         >
-          <Container maxWidth='lg'>
-            <ScrollLink to='move_top' spy smooth>
-              <Logo sx={{ mb: 1, mx: 'auto', cursor: 'pointer' }} />
+          <Container maxWidth="lg">
+            <ScrollLink to="move_top" spy smooth>
+              <Logo sx={{ mb: 1, mx: "auto", cursor: "pointer" }} />
             </ScrollLink>
 
-            <Typography variant='caption' component='p'>
+            <Typography variant="caption" component="p">
               © All rights reserved
               <br /> made by &nbsp;
-              <Link href='https://minimals.cc/'>minimals.cc</Link>
+              <Link href="https://minimals.cc/">minimals.cc</Link>
             </Typography>
           </Container>
         </Box>
       )}
     </>
-  );
+  )
 }

@@ -1,33 +1,34 @@
 // scroll bar
-import 'simplebar/src/simplebar.css';
+import "simplebar/src/simplebar.css"
 // editor
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 
 // next
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import { CollapseDrawerProvider } from 'src/contexts/CollapseDrawerContext';
+import Head from "next/head"
+import { AppProps } from "next/app"
+import { CacheProvider, EmotionCache } from "@emotion/react"
+import { CollapseDrawerProvider } from "src/contexts/CollapseDrawerContext"
 // theme
-import ThemeConfig from 'src/theme';
+import ThemeConfig from "src/theme"
 // utils
-import createEmotionCache from 'src/utils/createEmotionCache';
+import createEmotionCache from "src/utils/createEmotionCache"
 // components
-import LoadingScreen from 'src/components/LoadingScreen';
-import TopProgressBar from 'src/components/TopProgressBar';
-import ThemePrimaryColor from 'src/components/ThemePrimaryColor';
-import { UserProvider } from '@auth0/nextjs-auth0';
+import LoadingScreen from "src/components/LoadingScreen"
+import ProgressBar from "src/components/ProgressBar"
+import ThemePrimaryColor from "src/components/ThemePrimaryColor"
+import { UserProvider } from "@auth0/nextjs-auth0"
+import React from "react"
 
 // // ----------------------------------------------------------------------
 
-const clientSideEmotionCache = createEmotionCache();
+const clientSideEmotionCache = createEmotionCache()
 
 interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache;
+  emotionCache?: EmotionCache
 }
 
 export default function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (
     <UserProvider>
@@ -35,20 +36,20 @@ export default function MyApp(props: MyAppProps) {
         <CacheProvider value={emotionCache}>
           <Head>
             <meta
-              name='viewport'
-              content='initial-scale=1, width=device-width'
+              name="viewport"
+              content="initial-scale=1, width=device-width"
             />
           </Head>
 
           <ThemeConfig>
             <ThemePrimaryColor>
               <LoadingScreen />
-              <TopProgressBar />
+              <ProgressBar />
               <Component {...pageProps} />
             </ThemePrimaryColor>
           </ThemeConfig>
         </CacheProvider>
       </CollapseDrawerProvider>
     </UserProvider>
-  );
+  )
 }

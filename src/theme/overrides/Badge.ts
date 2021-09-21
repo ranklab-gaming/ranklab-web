@@ -1,4 +1,4 @@
-import { Theme } from '@material-ui/core/styles';
+import { Theme } from "@mui/material/styles"
 
 // ----------------------------------------------------------------------
 
@@ -9,9 +9,9 @@ export default function Badge(_theme: Theme) {
         dot: {
           width: 10,
           height: 10,
-          borderRadius: '50%'
-        }
-      }
-    }
-  };
+          borderRadius: "50%",
+        },
+      },
+    },
+  }
 }

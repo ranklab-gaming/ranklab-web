@@ -1,38 +1,34 @@
-import { useMemo, ReactNode } from 'react';
+import { useMemo, ReactNode } from "react"
 
 // material
-import { CssBaseline } from '@material-ui/core';
-import {
-  createTheme,
-  ThemeProvider,
-  ThemeOptions,
-} from '@material-ui/core/styles';
+import { CssBaseline } from "@mui/material"
+import { createTheme, ThemeProvider, ThemeOptions } from "@mui/material/styles"
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from "../hooks/useSettings"
 //
-import shape from './shape';
-import palette from './palette';
-import typography from './typography';
-import breakpoints from './breakpoints';
-import GlobalStyles from './globalStyles';
-import componentsOverride from './overrides';
-import shadows, { customShadows } from './shadows';
+import shape from "./shape"
+import palette from "./palette"
+import typography from "./typography"
+import breakpoints from "./breakpoints"
+import GlobalStyles from "./globalStyles"
+import componentsOverride from "./overrides"
+import shadows, { customShadows } from "./shadows"
 
 // ----------------------------------------------------------------------
 
 type ThemeConfigProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default function ThemeConfig({ children }: ThemeConfigProps) {
-  const { themeMode, themeDirection } = useSettings();
-  const isLight = themeMode === 'light';
+  const { themeMode, themeDirection } = useSettings()
+  const isLight = themeMode === "light"
 
   const themeOptions: ThemeOptions = useMemo(
     () => ({
       palette: isLight
-        ? { ...palette.light, mode: 'light' }
-        : { ...palette.dark, mode: 'dark' },
+        ? { ...palette.light, mode: "light" }
+        : { ...palette.dark, mode: "dark" },
       shape,
       typography,
       breakpoints,
@@ -41,10 +37,10 @@ export default function ThemeConfig({ children }: ThemeConfigProps) {
       customShadows: isLight ? customShadows.light : customShadows.dark,
     }),
     [isLight, themeDirection]
-  );
+  )
 
-  const theme = createTheme(themeOptions);
-  theme.components = componentsOverride(theme);
+  const theme = createTheme(themeOptions)
+  theme.components = componentsOverride(theme)
 
   return (
     <ThemeProvider theme={theme}>
@@ -52,5 +48,5 @@ export default function ThemeConfig({ children }: ThemeConfigProps) {
       <GlobalStyles />
       {children}
     </ThemeProvider>
-  );
+  )
 }
