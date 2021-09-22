@@ -20,6 +20,7 @@ import Logo from "../../components/Logo"
 import Scrollbar from "../../components/Scrollbar"
 //
 import { MHidden } from "../../components/@material-extend"
+import { useUser } from "@auth0/nextjs-auth0"
 
 // ----------------------------------------------------------------------
 
@@ -108,6 +109,10 @@ export default function DashboardSidebar({
     onHoverLeave,
   } = useCollapseDrawer()
 
+  const { user } = useUser()
+
+  if (!user) return null
+
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar()
@@ -160,23 +165,27 @@ export default function DashboardSidebar({
 
         {isCollapse ? (
           <Avatar
-            alt="My Avatar"
-            src="/static/mock-images/avatars/avatar_default.jpg"
-            sx={{ mx: "auto", mb: 2 }}
+            alt={user.name!}
+            src={
+              user && user.picture
+                ? user.picture
+                : "/static/mock-images/avatars/avatar_default.jpg"
+            }
           />
         ) : (
           <NextLink href="#">
             <AccountStyle>
               <Avatar
-                alt="My Avatar"
-                src="/static/mock-images/avatars/avatar_default.jpg"
+                alt={user.name!}
+                src={
+                  user && user.picture
+                    ? user.picture
+                    : "/static/mock-images/avatars/avatar_default.jpg"
+                }
               />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                  displayName
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  role
+                  {user.name}
                 </Typography>
               </Box>
             </AccountStyle>

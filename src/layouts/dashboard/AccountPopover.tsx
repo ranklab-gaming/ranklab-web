@@ -18,6 +18,7 @@ import {
 // components
 import MenuPopover from "../../components/MenuPopover"
 import { MIconButton } from "../../components/@material-extend"
+import { useUser } from "@auth0/nextjs-auth0"
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +41,10 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const { user } = useUser()
+
+  if (!user) return null
 
   return (
     <>
@@ -64,8 +69,12 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          alt="My Avatar"
-          src="/static/mock-images/avatars/avatar_default.jpg"
+          alt={user.name!}
+          src={
+            user && user.picture
+              ? user.picture
+              : "/static/mock-images/avatars/avatar_default.jpg"
+          }
         />
       </MIconButton>
 
@@ -77,10 +86,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            displayName
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            email
+            {user.email}
           </Typography>
         </Box>
 
@@ -108,11 +117,16 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
-            Logout
-          </Button>
+          <NextLink href="/api/auth/logout">
+            <Button fullWidth color="inherit" variant="outlined">
+              Logout
+            </Button>
+          </NextLink>
         </Box>
       </MenuPopover>
     </>
   )
+}
+function userUser(): { user: any } {
+  throw new Error("Function not implemented.")
 }
