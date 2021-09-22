@@ -1,132 +1,132 @@
-import { styled } from "@mui/material/styles"
-import { Box } from "@mui/material"
+import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 const DraftEditorStyle = styled(Box)(({ theme }) => {
-  const isLight = theme.palette.mode === "light"
-  const isRTL = theme.direction === "rtl"
+  const isLight = theme.palette.mode === 'light';
+  const isRTL = theme.direction === 'rtl';
 
   return {
     borderRadius: theme.shape.borderRadius,
     border: `solid 1px ${theme.palette.grey[500_32]}`,
 
     // Toggle
-    "& .toggle": {
-      border: "none",
+    '& .toggle': {
+      border: 'none',
       borderRadius: 6,
-      background: "transparent",
-      "&.rdw-option-disabled": {
+      background: 'transparent',
+      '&.rdw-option-disabled': {
         opacity: theme.palette.action.disabledOpacity,
       },
-      "& img": {
+      '& img': {
         width: 16,
         height: 16,
-        filter: isLight ? "none" : "invert(100%)",
+        filter: isLight ? 'none' : 'invert(100%)',
       },
       '&[aria-selected="true"]': {
-        boxShadow: "none",
+        boxShadow: 'none',
         background: theme.palette.action.selected,
       },
-      "&:hover": {
-        boxShadow: "none",
+      '&:hover': {
+        boxShadow: 'none',
         background: theme.palette.action.hover,
       },
     },
 
     // Dropdown
-    "& .dropdown": {
+    '& .dropdown': {
       minWidth: 56,
       borderRadius: 6,
-      boxShadow: "none",
-      background: "transparent",
+      boxShadow: 'none',
+      background: 'transparent',
       border: `solid 1px ${theme.palette.grey[500_32]}`,
-      "&:hover": {
-        boxShadow: "none",
+      '&:hover': {
+        boxShadow: 'none',
         background: theme.palette.action.hover,
       },
-      "& .rdw-dropdown-selectedtext": {
+      '& .rdw-dropdown-selectedtext': {
         color: theme.palette.text.primary,
       },
-      "& .rdw-dropdown-carettoopen": {
+      '& .rdw-dropdown-carettoopen': {
         ...(isRTL && {
-          right: "10%",
-          left: "auto",
+          right: '10%',
+          left: 'auto',
         }),
         borderTopColor: theme.palette.text.primary,
       },
-      "& .rdw-dropdown-carettoclose": {
+      '& .rdw-dropdown-carettoclose': {
         ...(isRTL && {
-          right: "10%",
-          left: "auto",
+          right: '10%',
+          left: 'auto',
         }),
         borderBottomColor: theme.palette.text.primary,
       },
     },
-    "& .dropdown__option": {
-      width: "100%",
-      border: "none",
+    '& .dropdown__option': {
+      width: '100%',
+      border: 'none',
       marginTop: theme.spacing(1),
       padding: theme.spacing(1, 0),
       boxShadow: theme.customShadows.z20,
       borderRadius: theme.shape.borderRadius,
       background: theme.palette.background.paper,
-      "& .rdw-dropdownoption-default": {
+      '& .rdw-dropdownoption-default': {
         fontSize: 14,
-        minHeight: "auto",
+        minHeight: 'auto',
         padding: theme.spacing(0.5, 2),
       },
-      "& .rdw-dropdownoption-active": {
+      '& .rdw-dropdownoption-active': {
         background: theme.palette.action.selected,
       },
-      "& .rdw-dropdownoption-highlighted": {
+      '& .rdw-dropdownoption-highlighted': {
         background: theme.palette.action.hover,
       },
     },
     // Popup
-    "& .popup": {
+    '& .popup': {
       right: 0,
       padding: 0,
-      left: "auto",
-      border: "none",
-      overflow: "hidden",
+      left: 'auto',
+      border: 'none',
+      overflow: 'hidden',
       boxShadow: theme.customShadows.z20,
       borderRadius: theme.shape.borderRadius,
       background: theme.palette.background.paper,
 
       // Action
-      "& .rdw-link-modal-buttonsection, .rdw-embedded-modal-btn-section, .rdw-image-modal-btn-section":
+      '& .rdw-link-modal-buttonsection, .rdw-embedded-modal-btn-section, .rdw-image-modal-btn-section':
         {
           margin: 0,
-          display: "flex",
+          display: 'flex',
           marginTop: theme.spacing(2),
-          justifyContent: "space-between",
-          "& button": {
+          justifyContent: 'space-between',
+          '& button': {
             margin: 0,
             fontSize: 13,
-            border: "none",
-            fontWeight: "bold",
-            width: "calc(50% - 4px)",
+            border: 'none',
+            fontWeight: 'bold',
+            width: 'calc(50% - 4px)',
             color: theme.palette.common.white,
             background: theme.palette.primary.main,
             borderRadius: theme.shape.borderRadius,
-            "&:disabled": {
+            '&:disabled': {
               color: theme.palette.action.disabled,
               background: theme.palette.action.disabledBackground,
             },
-            "&:last-of-type": {
-              background: "transparent",
+            '&:last-of-type': {
+              background: 'transparent',
               color: theme.palette.text.primary,
             },
-            "&:hover": { boxShadow: "none" },
-            "&:active": { boxShadow: "none" },
+            '&:hover': { boxShadow: 'none' },
+            '&:active': { boxShadow: 'none' },
           },
         },
       // Input
-      "& input": {
+      '& input': {
         height: 26,
         fontSize: 14,
-        background: "transparent",
+        background: 'transparent',
         padding: theme.spacing(0, 1.5),
         color: theme.palette.text.primary,
         borderRadius: theme.shape.borderRadius,
@@ -135,92 +135,92 @@ const DraftEditorStyle = styled(Box)(({ theme }) => {
     },
 
     // Popup Color Picker
-    "& .popup__colorpicker": {
+    '& .popup__colorpicker': {
       padding: 0,
-      "& .rdw-colorpicker-modal-header": {
+      '& .rdw-colorpicker-modal-header': {
         padding: theme.spacing(1),
         background: theme.palette.grey[500_12],
-        "& .rdw-colorpicker-modal-style-label": {
+        '& .rdw-colorpicker-modal-style-label': {
           fontSize: 13,
           padding: theme.spacing(0.75, 0),
           color: theme.palette.text.secondary,
           borderRadius: theme.shape.borderRadius,
           fontWeight: theme.typography.fontWeightMedium,
         },
-        "& .rdw-colorpicker-modal-style-label-active": {
-          borderBottom: "none",
+        '& .rdw-colorpicker-modal-style-label-active': {
+          borderBottom: 'none',
           boxShadow: theme.customShadows.z8,
           color: theme.palette.text.primary,
           background: theme.palette.common.white,
         },
       },
-      "& .rdw-colorpicker-modal-options": {
+      '& .rdw-colorpicker-modal-options': {
         margin: 0,
         padding: theme.spacing(1.5),
       },
-      "& .rdw-colorpicker-option": {
+      '& .rdw-colorpicker-option': {
         margin: 4,
         width: 20,
         height: 20,
         minWidth: 20,
         borderRadius: 6,
-        overflow: "hidden",
-        position: "relative",
-        "&:hover": { boxShadow: "none" },
-        "&:before": {
+        overflow: 'hidden',
+        position: 'relative',
+        '&:hover': { boxShadow: 'none' },
+        '&:before': {
           zIndex: 9,
           fontSize: 0,
-          width: "100%",
-          height: "100%",
-          display: "flex",
+          width: '100%',
+          height: '100%',
+          display: 'flex',
           borderRadius: 6,
           content: '"\\2713"',
-          position: "absolute",
-          alignItems: "center",
-          justifyContent: "center",
+          position: 'absolute',
+          alignItems: 'center',
+          justifyContent: 'center',
           color: theme.palette.common.white,
           fontWeight: theme.typography.fontWeightBold,
-          boxShadow: "inset 0 0 3px 0 rgba(0,0,0,0.12)",
+          boxShadow: 'inset 0 0 3px 0 rgba(0,0,0,0.12)',
         },
         '&[aria-selected="true"]': {
-          boxShadow: "none",
-          borderRadius: "50%",
-          "&:before": { fontSize: 12 },
+          boxShadow: 'none',
+          borderRadius: '50%',
+          '&:before': { fontSize: 12 },
         },
       },
-      "& .rdw-colorpicker-cube": { border: "none" },
+      '& .rdw-colorpicker-cube': { border: 'none' },
     },
 
     // Popup Link
-    "& .popup__link": {
-      height: "auto",
+    '& .popup__link': {
+      height: 'auto',
       padding: theme.spacing(2),
-      "& .rdw-link-modal-label": {
+      '& .rdw-link-modal-label': {
         fontSize: 13,
         fontWeight: theme.typography.fontWeightMedium,
       },
-      "& .rdw-link-modal-input": { marginTop: 4, marginBottom: 12 },
-      "& .rdw-link-modal-target-option": {
-        display: "flex",
+      '& .rdw-link-modal-input': { marginTop: 4, marginBottom: 12 },
+      '& .rdw-link-modal-target-option': {
+        display: 'flex',
         marginBottom: 0,
-        alignItems: "center",
-        "& > span": {
+        alignItems: 'center',
+        '& > span': {
           fontSize: 14,
           marginLeft: theme.spacing(1),
         },
       },
     },
     // Popup Emoji
-    "& .popup__emoji": { overflow: "auto", padding: theme.spacing(1) },
+    '& .popup__emoji': { overflow: 'auto', padding: theme.spacing(1) },
 
     // Popup Embedded
-    "& .popup__embedded": {
-      height: "auto",
-      "& .rdw-embedded-modal-header": {
+    '& .popup__embedded': {
+      height: 'auto',
+      '& .rdw-embedded-modal-header': {
         padding: theme.spacing(1),
         background: theme.palette.grey[500_12],
-        "& .rdw-embedded-modal-header-label": { display: "none" },
-        "& .rdw-embedded-modal-header-option": {
+        '& .rdw-embedded-modal-header-label': { display: 'none' },
+        '& .rdw-embedded-modal-header-option': {
           fontSize: 13,
           padding: theme.spacing(0.75, 0),
           color: theme.palette.text.secondary,
@@ -228,78 +228,78 @@ const DraftEditorStyle = styled(Box)(({ theme }) => {
           fontWeight: theme.typography.fontWeightMedium,
         },
       },
-      "& .rdw-embedded-modal-link-section": {
+      '& .rdw-embedded-modal-link-section': {
         padding: theme.spacing(2, 2, 0),
       },
-      "& .rdw-embedded-modal-btn-section": { padding: theme.spacing(0, 2, 2) },
+      '& .rdw-embedded-modal-btn-section': { padding: theme.spacing(0, 2, 2) },
     },
 
     // Popup Image
-    "& .popup__image": {
+    '& .popup__image': {
       padding: 0,
 
-      "& .rdw-image-modal-header": {
+      '& .rdw-image-modal-header': {
         margin: 0,
         zIndex: 9,
         fontSize: 13,
         padding: theme.spacing(1),
         background: theme.palette.grey[500_12],
         fontWeight: theme.typography.fontWeightMedium,
-        "& .rdw-image-modal-header-option": {
-          position: "relative",
+        '& .rdw-image-modal-header-option': {
+          position: 'relative',
           padding: theme.spacing(0.75, 0),
         },
-        "& .rdw-image-modal-header-label": {
+        '& .rdw-image-modal-header-label': {
           margin: 0,
-          width: "100%",
-          height: "100%",
-          border: "none",
-          position: "absolute",
-          background: "transparent",
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          position: 'absolute',
+          background: 'transparent',
         },
-        "& .rdw-image-modal-header-label-highlighted": {
+        '& .rdw-image-modal-header-label-highlighted': {
           zIndex: -1,
           boxShadow: theme.customShadows.z8,
           background: theme.palette.common.white,
           borderRadius: theme.shape.borderRadius,
         },
       },
-      "& .rdw-image-modal-upload-option": {
+      '& .rdw-image-modal-upload-option': {
         margin: 0,
-        outline: "none",
-        background: "none",
+        outline: 'none',
+        background: 'none',
         padding: theme.spacing(2),
       },
-      "& .rdw-image-modal-upload-option-label": {
+      '& .rdw-image-modal-upload-option-label': {
         fontSize: 13,
-        textAlign: "center",
+        textAlign: 'center',
         color: theme.palette.text.disabled,
         borderRadius: theme.shape.borderRadius,
         border: `dashed 1px ${theme.palette.grey[500_32]}`,
       },
-      "& .rdw-image-modal-btn-section": { padding: theme.spacing(0, 2, 2) },
-      "& .rdw-image-modal-size, .rdw-image-modal-url-section": {
+      '& .rdw-image-modal-btn-section': { padding: theme.spacing(0, 2, 2) },
+      '& .rdw-image-modal-size, .rdw-image-modal-url-section': {
         padding: theme.spacing(0, 2),
       },
     },
 
     // Toolbar
-    "& .rdw-editor-toolbar": {
-      border: "none",
+    '& .rdw-editor-toolbar': {
+      border: 'none',
       marginBottom: 0,
-      background: "transparent",
+      background: 'transparent',
       borderBottom: `solid 1px ${theme.palette.grey[500_32]}`,
     },
 
     // Main
-    "& .rdw-editor-main": {
+    '& .rdw-editor-main': {
       minHeight: 200,
       padding: theme.spacing(0, 2),
-      "& .public-DraftEditorPlaceholder-root": {
+      '& .public-DraftEditorPlaceholder-root': {
         color: theme.palette.text.disabled,
       },
     },
-  }
-})
+  };
+});
 
-export default DraftEditorStyle
+export default DraftEditorStyle;

@@ -1,6 +1,5 @@
 // next
 import NextLink from "next/link"
-import { useRouter } from "next/router"
 // material
 import { styled } from "@mui/material/styles"
 import { Box, Button, AppBar, Toolbar, Container } from "@mui/material"
@@ -9,7 +8,6 @@ import useOffSetTop from "../../hooks/useOffSetTop"
 // components
 import Logo from "../../components/Logo"
 import Label from "../../components/Label"
-import { MHidden } from "../../components/@material-extend"
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +61,6 @@ export type MenuProps = {
 
 export default function MainNavbar() {
   const isOffset = useOffSetTop(100)
-  const { pathname } = useRouter()
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: "transparent" }}>

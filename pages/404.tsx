@@ -9,7 +9,6 @@ import LogoOnlyLayout from "src/layouts/LogoOnlyLayout"
 // components
 import { MotionContainer, varBounceIn } from "src/components/animate"
 import Page from "src/components/Page"
-import { PageNotFoundIllustration } from "src/assets"
 
 // ----------------------------------------------------------------------
 

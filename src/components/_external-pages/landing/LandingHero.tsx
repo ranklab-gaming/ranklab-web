@@ -1,11 +1,7 @@
-import { Icon } from "@iconify/react"
 import { motion } from "framer-motion"
-import flashFill from "@iconify/icons-eva/flash-fill"
-// next
-import NextLink from "next/link"
 // material
 import { styled } from "@mui/material/styles"
-import { Box, Link, Stack, Button, Container, Typography } from "@mui/material"
+import { Box, Stack, Container, Typography } from "@mui/material"
 //
 import {
   varFadeIn,

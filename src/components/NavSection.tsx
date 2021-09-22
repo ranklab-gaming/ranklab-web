@@ -1,22 +1,23 @@
-import { useState } from "react"
-import { Icon } from "@iconify/react"
-import arrowIosForwardFill from "@iconify/icons-eva/arrow-ios-forward-fill"
-import arrowIosDownwardFill from "@iconify/icons-eva/arrow-ios-downward-fill"
+import { useState, ReactNode } from 'react';
+import { Icon } from '@iconify/react';
+import arrowIosForwardFill from '@iconify/icons-eva/arrow-ios-forward-fill';
+import arrowIosDownwardFill from '@iconify/icons-eva/arrow-ios-downward-fill';
 // next
-import NextLink from "next/link"
-import { useRouter } from "next/router"
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 // material
-import { alpha, useTheme, styled } from "@mui/material/styles"
+import { alpha, useTheme, styled } from '@mui/material/styles';
 import {
   Box,
   List,
-  Collapse,
   BoxProps,
+  Collapse,
   ListItemText,
   ListItemIcon,
   ListSubheader,
   ListItemButton,
-} from "@mui/material"
+  ListItemButtonProps,
+} from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -28,88 +29,95 @@ const ListSubheaderStyle = styled((props) => (
   marginBottom: theme.spacing(2),
   paddingLeft: theme.spacing(5),
   color: theme.palette.text.primary,
-}))
+}));
 
-const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
-  ...theme.typography.body2,
-  height: 48,
-  position: "relative",
-  textTransform: "capitalize",
-  paddingLeft: theme.spacing(5),
-  paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
-  "&:before": {
-    top: 0,
-    right: 0,
-    width: 3,
-    bottom: 0,
-    content: "''",
-    display: "none",
-    position: "absolute",
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
-    backgroundColor: theme.palette.primary.main,
-  },
-}))
+interface ListItemStyleProps extends ListItemButtonProps {
+  component?: ReactNode;
+  to?: string;
+}
+
+const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(
+  ({ theme }) => ({
+    ...theme.typography.body2,
+    height: 48,
+    position: 'relative',
+    textTransform: 'capitalize',
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(2.5),
+    color: theme.palette.text.secondary,
+    '&:before': {
+      top: 0,
+      right: 0,
+      width: 3,
+      bottom: 0,
+      content: "''",
+      display: 'none',
+      position: 'absolute',
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4,
+      backgroundColor: theme.palette.primary.main,
+    },
+  })
+);
 
 const ListItemIconStyle = styled(ListItemIcon)({
   width: 22,
   height: 22,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-})
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 
 // ----------------------------------------------------------------------
 
 type NavItemProps = {
-  title: string
-  path: string
-  icon?: JSX.Element
-  info?: JSX.Element
+  title: string;
+  path: string;
+  icon?: JSX.Element;
+  info?: JSX.Element;
   children?: {
-    title: string
-    path: string
-  }[]
-}
+    title: string;
+    path: string;
+  }[];
+};
 
 function NavItem({
   item,
   isShow,
 }: {
-  item: NavItemProps
-  isShow?: boolean | undefined
+  item: NavItemProps;
+  isShow?: boolean | undefined;
 }) {
-  const theme = useTheme()
-  const { pathname } = useRouter()
-  const { title, path, icon, info, children } = item
-  const isActiveRoot = pathname.includes(path)
-  const [open, setOpen] = useState(isActiveRoot)
+  const theme = useTheme();
+  const { pathname } = useRouter();
+  const { title, path, icon, info, children } = item;
+  const isActiveRoot = pathname.includes(path);
+
+  const [open, setOpen] = useState(isActiveRoot);
 
   const handleOpen = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   const activeRootStyle = {
-    color: "primary.main",
-    fontWeight: "fontWeightMedium",
+    color: 'primary.main',
+    fontWeight: 'fontWeightMedium',
     bgcolor: alpha(
       theme.palette.primary.main,
       theme.palette.action.selectedOpacity
     ),
-    "&:before": { display: "block" },
-  }
+    '&:before': { display: 'block' },
+  };
 
   const activeSubStyle = {
-    color: "text.primary",
-    fontWeight: "fontWeightMedium",
-  }
+    color: 'text.primary',
+    fontWeight: 'fontWeightMedium',
+  };
 
   if (children) {
     return (
       <>
         <ListItemStyle
-          disableGutters
           onClick={handleOpen}
           sx={{
             ...(isActiveRoot && activeRootStyle),
@@ -131,36 +139,35 @@ function NavItem({
         </ListItemStyle>
 
         {isShow && (
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
+          <Collapse in={open} timeout='auto' unmountOnExit>
+            <List component='div' disablePadding>
               {children.map((item) => {
-                const { title, path } = item
-                const isActiveSub = pathname.includes(path)
+                const { title, path } = item;
+                const isActiveSub = pathname.includes(path);
 
                 return (
                   <NextLink key={title} href={path}>
                     <ListItemStyle
-                      disableGutters
                       sx={{
                         ...(isActiveSub && activeSubStyle),
                       }}
                     >
                       <ListItemIconStyle>
                         <Box
-                          component="span"
+                          component='span'
                           sx={{
                             width: 4,
                             height: 4,
-                            display: "flex",
-                            borderRadius: "50%",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            bgcolor: "text.disabled",
+                            display: 'flex',
+                            borderRadius: '50%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            bgcolor: 'text.disabled',
                             transition: (theme) =>
-                              theme.transitions.create("transform"),
+                              theme.transitions.create('transform'),
                             ...(isActiveSub && {
-                              transform: "scale(2)",
-                              bgcolor: "primary.main",
+                              transform: 'scale(2)',
+                              bgcolor: 'primary.main',
                             }),
                           }}
                         />
@@ -168,19 +175,18 @@ function NavItem({
                       <ListItemText disableTypography primary={title} />
                     </ListItemStyle>
                   </NextLink>
-                )
+                );
               })}
             </List>
           </Collapse>
         )}
       </>
-    )
+    );
   }
 
   return (
     <NextLink href={path}>
       <ListItemStyle
-        disableGutters
         sx={{
           ...(isActiveRoot && activeRootStyle),
         }}
@@ -188,21 +194,21 @@ function NavItem({
         <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
         {isShow && (
           <>
-            <ListItemText disableTypography primary={item.title} />
+            <ListItemText disableTypography primary={title} />
             {info && info}
           </>
         )}
       </ListItemStyle>
     </NextLink>
-  )
+  );
 }
 
 interface NavSectionProps extends BoxProps {
-  isShow?: boolean | undefined
+  isShow?: boolean | undefined;
   navConfig: {
-    subheader: string
-    items: NavItemProps[]
-  }[]
+    subheader: string;
+    items: NavItemProps[];
+  }[];
 }
 
 export default function NavSection({
@@ -213,7 +219,7 @@ export default function NavSection({
   return (
     <Box {...other}>
       {navConfig.map((list) => {
-        const { subheader, items } = list
+        const { subheader, items } = list;
         return (
           <List key={subheader} disablePadding>
             {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
@@ -221,8 +227,8 @@ export default function NavSection({
               <NavItem key={item.title} item={item} isShow={isShow} />
             ))}
           </List>
-        )
+        );
       })}
     </Box>
-  )
+  );
 }

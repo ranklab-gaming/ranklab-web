@@ -1,14 +1,14 @@
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion';
 // material
-import { Box, BoxProps } from "@mui/material"
+import { Box, BoxProps } from '@mui/material';
 //
-import { varWrapEnter } from "./variants"
+import { varWrapEnter } from './variants';
 
 // ----------------------------------------------------------------------
 
 interface MotionContainerProps extends BoxProps {
-  initial?: boolean | string
-  open?: boolean
+  initial?: boolean | string;
+  open?: boolean;
 }
 
 export default function MotionContainer({
@@ -20,11 +20,11 @@ export default function MotionContainer({
     <Box
       component={motion.div}
       initial={false}
-      animate={open ? "animate" : "exit"}
+      animate={open ? 'animate' : 'exit'}
       variants={varWrapEnter}
       {...other}
     >
       {children}
     </Box>
-  )
+  );
 }

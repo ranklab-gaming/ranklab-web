@@ -1,33 +1,33 @@
-import { forwardRef } from "react"
+import { forwardRef } from 'react';
 // material
-import { useTheme } from "@mui/material/styles"
-import { Fab, FabProps } from "@mui/material"
+import { useTheme } from '@mui/material/styles';
+import { Fab, FabProps } from '@mui/material';
 //
-import { ButtonAnimate } from "../animate"
+import { ButtonAnimate } from '../animate';
 
 // ----------------------------------------------------------------------
 
-interface MFabProps extends Omit<FabProps, "color"> {
+interface MFabProps extends Omit<FabProps, 'color'> {
   color?:
-    | "inherit"
-    | "default"
-    | "primary"
-    | "secondary"
-    | "info"
-    | "success"
-    | "warning"
-    | "error"
+    | 'inherit'
+    | 'default'
+    | 'primary'
+    | 'secondary'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error';
 }
 
 const MFab = forwardRef<HTMLButtonElement, MFabProps>(
-  ({ color = "primary", children, sx, ...other }, ref) => {
-    const theme = useTheme()
+  ({ color = 'primary', children, sx, ...other }, ref) => {
+    const theme = useTheme();
 
     if (
-      color === "default" ||
-      color === "inherit" ||
-      color === "primary" ||
-      color === "secondary"
+      color === 'default' ||
+      color === 'inherit' ||
+      color === 'primary' ||
+      color === 'secondary'
     ) {
       return (
         <ButtonAnimate>
@@ -35,7 +35,7 @@ const MFab = forwardRef<HTMLButtonElement, MFabProps>(
             {children}
           </Fab>
         </ButtonAnimate>
-      )
+      );
     }
 
     return (
@@ -46,7 +46,7 @@ const MFab = forwardRef<HTMLButtonElement, MFabProps>(
             boxShadow: theme.customShadows[color],
             color: theme.palette[color].contrastText,
             bgcolor: theme.palette[color].main,
-            "&:hover": {
+            '&:hover': {
               bgcolor: theme.palette[color].dark,
             },
             ...sx,
@@ -56,8 +56,8 @@ const MFab = forwardRef<HTMLButtonElement, MFabProps>(
           {children}
         </Fab>
       </ButtonAnimate>
-    )
+    );
   }
-)
+);
 
-export default MFab
+export default MFab;
