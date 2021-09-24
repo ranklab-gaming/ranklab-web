@@ -179,7 +179,7 @@
   resolved "https://registry.npmjs.org/@emotion/memoize/-/memoize-0.7.5.tgz"
   integrity sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==
 
-"@emotion/react@^11.4.1":
+"@emotion/react@^11.1.5", "@emotion/react@^11.4.1":
   version "11.4.1"
   resolved "https://registry.npmjs.org/@emotion/react/-/react-11.4.1.tgz"
   integrity sha512-pRegcsuGYj4FCdZN6j5vqCALkNytdrKw3TZMekTzNXixRg4wkLsU5QEaBG5LC6l01Vppxlp7FE3aTHpIG5phLg==
@@ -270,6 +270,18 @@
   integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@hookform/devtools@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@hookform/devtools/-/devtools-4.0.1.tgz#d9498550035530db7b7c2bed70a710e896874698"
+  integrity sha512-xVPIK8FGi3Fp7q9qxWrXLwiGxoZzn6g2ihIBQG0ddpiVSAAsH21Jh39tyyYWtkHZkTo9deiPs98SwXnN48hMjg==
+  dependencies:
+    "@emotion/react" "^11.1.5"
+    "@emotion/styled" "^11.3.0"
+    "@types/lodash" "^4.14.168"
+    little-state-machine "^4.1.0"
+    lodash "^4.17.21"
+    react-simple-animate "^3.3.12"
 
 "@hookform/resolvers@^2.8.1":
   version "2.8.1"
@@ -586,7 +598,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.165":
+"@types/lodash@^4.14.165", "@types/lodash@^4.14.168":
   version "4.14.173"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.173.tgz#9d3b674c67a26cf673756f6aca7b429f237f91ed"
   integrity sha512-vv0CAYoaEjCw/mLy96GBTnRoZrSxkGE0BKzKimdR8P3OzrNYNvBgtW7p055A+E8C31vXNUhWKoFCbhq7gbyhFg==
@@ -2028,6 +2040,11 @@ linkify-it@^2.2.0:
   dependencies:
     uc.micro "^1.0.1"
 
+little-state-machine@^4.1.0:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/little-state-machine/-/little-state-machine-4.1.2.tgz#0f3c7505f70097d4d3c75091e9196ee4295ac26e"
+  integrity sha512-plFK9JAuZgW+hzyNfwn8ONvKDWMnLjXfhqiMrZ7pAFLwYh2B2CnGxLSWwSmbin4EGQJLhLuAIfB7OUANNc9Q3A==
+
 loader-utils@1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/loader-utils/-/loader-utils-1.2.3.tgz"
@@ -2778,6 +2795,11 @@ react-scroll@^1.8.3:
   dependencies:
     lodash.throttle "^4.1.1"
     prop-types "^15.7.2"
+
+react-simple-animate@^3.3.12:
+  version "3.3.12"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-3.3.12.tgz#ddea0f230feb3c1f069fbdb0a26e735e0b233265"
+  integrity sha512-lFXjxD6ficcpOMsHfcDs1jqdkCve6jNlJnubOCzVOLswFDRANsaLN4KwpezDuliEFz8Q1zyj4J7Tmj3KMRnPcg==
 
 react-transition-group@^4.4.2:
   version "4.4.2"

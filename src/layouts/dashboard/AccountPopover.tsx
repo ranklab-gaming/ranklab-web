@@ -127,6 +127,3 @@ export default function AccountPopover() {
     </>
   )
 }
-function userUser(): { user: any } {
-  throw new Error("Function not implemented.")
-}

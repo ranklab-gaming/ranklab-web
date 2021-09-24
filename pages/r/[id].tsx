@@ -11,6 +11,10 @@ import {
   Stack,
   TextField,
   Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
@@ -26,28 +30,23 @@ const RootStyle = styled(Page)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export type FormValuesProps = {
-  fullName: string
-  email: string
-  draftEditor: any
+  title: string
+  game: string
+  description: any
 }
 
 export const defaultValues = {
-  fullName: "",
-  email: "",
-  draftEditor: "",
+  title: "",
+  game: "",
+  description: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
-  fullName: Yup.string()
-    .required("Full name is required")
-    .min(6, "Mininum 6 characters")
-    .max(15, "Maximum 15 characters"),
-  email: Yup.string()
-    .required("Email is required")
-    .email("That is not an email"),
-  draftEditor: Yup.mixed().test(
+  title: Yup.string().required("Title is required"),
+  game: Yup.string().required("Game is required"),
+  description: Yup.mixed().test(
     "max text",
-    "Draft editor Must Be At Least 200 Characters",
+    "Description must be at least 200 characters",
     (value) =>
       value && value.getCurrentContent().getPlainText("\u0001").length > 200
   ),
@@ -75,12 +74,12 @@ function Form() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           <Controller
-            name="fullName"
+            name="title"
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Full Name"
+                label="Title"
                 error={Boolean(error)}
                 helperText={error?.message}
               />
@@ -88,15 +87,27 @@ function Form() {
           />
 
           <Controller
-            name="email"
+            name="game"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Email address"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
+              <FormControl fullWidth>
+                <InputLabel>Game</InputLabel>
+                <Select
+                  label="Game"
+                  onChange={field.onChange}
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  error={Boolean(error)}
+                >
+                  <MenuItem value="">Select a Game</MenuItem>
+
+                  {["Overwatch", "Dota"].map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             )}
           />
 
@@ -106,22 +117,23 @@ function Form() {
               sx={{ color: "text.secondary" }}
               gutterBottom
             >
-              Draft Editor
+              Description
             </Typography>
             <Controller
-              name="draftEditor"
+              name="description"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <DraftEditor
                   editorState={field.value}
                   onEditorStateChange={field.onChange}
+                  onBlur={field.onBlur}
                   error={Boolean(error)}
                 />
               )}
             />
-            {Boolean(errors.draftEditor) && (
+            {Boolean(errors.description) && (
               <FormHelperText error sx={{ px: 2, textTransform: "capitalize" }}>
-                {errors.draftEditor?.message}
+                {errors.description?.message}
               </FormHelperText>
             )}
           </div>
