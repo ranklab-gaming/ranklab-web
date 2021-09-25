@@ -1,11 +1,9 @@
 import React from "react"
 import * as Yup from "yup"
 // material
-import { styled } from "@mui/material/styles"
 import {
   Card,
   Container,
-  CardHeader,
   CardContent,
   FormHelperText,
   Stack,
@@ -15,17 +13,15 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Grid,
 } from "@mui/material"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
 import Page from "src/components/Page"
 import { DraftEditor } from "src/components/editor"
 import { LoadingButton } from "@mui/lab"
-
-const RootStyle = styled(Page)(({ theme }) => ({
-  paddingTop: theme.spacing(11),
-  paddingBottom: theme.spacing(15),
-}))
+import DashboardLayout from "src/layouts/dashboard"
+import ReactPlayer from "react-player"
 
 // ----------------------------------------------------------------------
 
@@ -70,102 +66,124 @@ function Form() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={3}>
-          <Controller
-            name="title"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Title"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-
-          <Controller
-            name="game"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl fullWidth>
-                <InputLabel>Game</InputLabel>
-                <Select
-                  label="Game"
-                  onChange={field.onChange}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  error={Boolean(error)}
-                >
-                  <MenuItem value="">Select a Game</MenuItem>
-
-                  {["Overwatch", "Dota"].map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          />
-
-          <div>
-            <Typography
-              variant="subtitle2"
-              sx={{ color: "text.secondary" }}
-              gutterBottom
-            >
-              Description
-            </Typography>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Grid container direction="row" spacing={4}>
+        <Grid item xs={12} md={6}>
+          <Stack spacing={3}>
             <Controller
-              name="description"
+              name="title"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <DraftEditor
-                  editorState={field.value}
-                  onEditorStateChange={field.onChange}
-                  onBlur={field.onBlur}
+                <TextField
+                  {...field}
+                  label="Title"
                   error={Boolean(error)}
+                  helperText={error?.message}
                 />
               )}
             />
-            {Boolean(errors.description) && (
-              <FormHelperText error sx={{ px: 2, textTransform: "capitalize" }}>
-                {errors.description?.message}
-              </FormHelperText>
-            )}
-          </div>
 
-          <LoadingButton
-            fullWidth
-            color="info"
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            disabled={!isDirty}
-          >
-            Submit Form
-          </LoadingButton>
-        </Stack>
-      </form>
-    </>
+            <Controller
+              name="game"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth>
+                  <InputLabel>Game</InputLabel>
+                  <Select
+                    label="Game"
+                    onChange={field.onChange}
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    error={Boolean(error)}
+                  >
+                    <MenuItem value="">Select a Game</MenuItem>
+
+                    {["Overwatch", "Dota"].map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+
+            <div>
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "text.secondary" }}
+                gutterBottom
+              >
+                Description
+              </Typography>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <DraftEditor
+                    editorState={field.value}
+                    onEditorStateChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={Boolean(error)}
+                    simple={true}
+                  />
+                )}
+              />
+              {Boolean(errors.description) && (
+                <FormHelperText
+                  error
+                  sx={{ px: 2, textTransform: "capitalize" }}
+                >
+                  {errors.description?.message}
+                </FormHelperText>
+              )}
+            </div>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
+          <Grid container direction="column" spacing={2} sx={{ flex: "1" }}>
+            <Grid sx={{ flexGrow: 1 }} item>
+              <ReactPlayer
+                width="100%"
+                url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+              />
+            </Grid>
+            <Grid item>
+              <LoadingButton
+                fullWidth
+                color="info"
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+                disabled={!isDirty}
+              >
+                Submit Form
+              </LoadingButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 
 export default function NewReplayForm() {
   return (
-    <RootStyle title="New Replay">
-      <Container sx={{ mt: 10 }}>
-        <Card sx={{ position: "static" }}>
-          <CardHeader title="New Replay" />
-          <CardContent>
-            <Form />
-          </CardContent>
-        </Card>
-      </Container>
-    </RootStyle>
+    <DashboardLayout>
+      <Page title="Dashboard | Submit VOD for Review">
+        <Container maxWidth="xl">
+          <Typography variant="h3" component="h1" paragraph>
+            Submit VOD for Review
+          </Typography>
+
+          <Card sx={{ position: "static" }}>
+            <CardContent>
+              <Form />
+            </CardContent>
+          </Card>
+        </Container>
+      </Page>
+    </DashboardLayout>
   )
 }

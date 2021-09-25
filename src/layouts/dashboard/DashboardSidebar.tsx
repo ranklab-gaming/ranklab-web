@@ -109,16 +109,16 @@ export default function DashboardSidebar({
     onHoverLeave,
   } = useCollapseDrawer()
 
-  const { user } = useUser()
-
-  if (!user) return null
-
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
+
+  const { user } = useUser()
+
+  if (!user) return null
 
   const renderContent = (
     <Scrollbar
@@ -162,35 +162,6 @@ export default function DashboardSidebar({
             )}
           </MHidden>
         </Stack>
-
-        {isCollapse ? (
-          <Avatar
-            alt={user.name!}
-            src={
-              user && user.picture
-                ? user.picture
-                : "/static/mock-images/avatars/avatar_default.jpg"
-            }
-          />
-        ) : (
-          <NextLink href="#">
-            <AccountStyle>
-              <Avatar
-                alt={user.name!}
-                src={
-                  user && user.picture
-                    ? user.picture
-                    : "/static/mock-images/avatars/avatar_default.jpg"
-                }
-              />
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                  {user.name}
-                </Typography>
-              </Box>
-            </AccountStyle>
-          </NextLink>
-        )}
       </Stack>
     </Scrollbar>
   )
