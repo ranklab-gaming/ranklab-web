@@ -1,8 +1,8 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React from "react"
-import Page from "src/components/Page"
+import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
-import DashboardLayout from "src/layouts/dashboard"
+import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 
 export const getServerSideProps = withPageAuthRequired()
 

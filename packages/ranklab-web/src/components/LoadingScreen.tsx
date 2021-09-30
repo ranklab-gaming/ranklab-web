@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { alpha, styled } from "@mui/material/styles"
 import { Box } from "@mui/material"
 //
-import Logo from "../components/Logo"
+import Logo from "./Logo"
 
 // ----------------------------------------------------------------------
 

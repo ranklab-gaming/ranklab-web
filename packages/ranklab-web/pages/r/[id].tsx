@@ -17,11 +17,11 @@ import {
 } from "@mui/material"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
-import Page from "src/components/Page"
-import { DraftEditor } from "src/components/editor"
+import Page from "@ranklab/web/src/components/Page"
+import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
-import DashboardLayout from "src/layouts/dashboard"
 import ReactPlayer from "react-player"
+import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 
 // ----------------------------------------------------------------------
 

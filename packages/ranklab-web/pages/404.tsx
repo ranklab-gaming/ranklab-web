@@ -5,10 +5,13 @@ import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Button, Typography, Container } from "@mui/material"
 // layouts
-import LogoOnlyLayout from "src/layouts/LogoOnlyLayout"
+import LogoOnlyLayout from "@ranklab/web/src/layouts/LogoOnlyLayout"
 // components
-import { MotionContainer, varBounceIn } from "src/components/animate"
-import Page from "src/components/Page"
+import {
+  MotionContainer,
+  varBounceIn,
+} from "@ranklab/web/src/components/animate"
+import Page from "@ranklab/web/src/components/Page"
 
 // ----------------------------------------------------------------------
 

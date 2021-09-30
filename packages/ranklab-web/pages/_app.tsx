@@ -7,15 +7,15 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import Head from "next/head"
 import { AppProps } from "next/app"
 import { CacheProvider, EmotionCache } from "@emotion/react"
-import { CollapseDrawerProvider } from "src/contexts/CollapseDrawerContext"
+import { CollapseDrawerProvider } from "@ranklab/web/src/contexts/CollapseDrawerContext"
 // theme
-import ThemeConfig from "src/theme"
+import ThemeConfig from "@ranklab/web/src/theme"
 // utils
-import createEmotionCache from "src/utils/createEmotionCache"
+import createEmotionCache from "@ranklab/web/src/utils/createEmotionCache"
 // components
-import LoadingScreen from "src/components/LoadingScreen"
-import ProgressBar from "src/components/ProgressBar"
-import ThemePrimaryColor from "src/components/ThemePrimaryColor"
+import LoadingScreen from "@ranklab/web/src/components/LoadingScreen"
+import ProgressBar from "@ranklab/web/src/components/ProgressBar"
+import ThemePrimaryColor from "@ranklab/web/src/components/ThemePrimaryColor"
 import { UserProvider } from "@auth0/nextjs-auth0"
 import React from "react"
 

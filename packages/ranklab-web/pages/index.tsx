@@ -1,15 +1,15 @@
 // layouts
-import MainLayout from "src/layouts/main"
+import MainLayout from "@ranklab/web/src/layouts/main"
 // material
 import { styled } from "@mui/material/styles"
 // components
-import Page from "src/components/Page"
+import Page from "@ranklab/web/src/components/Page"
 import {
   LandingHero,
   LandingMinimal,
   LandingDarkMode,
   LandingHugePackElements,
-} from "src/components/_external-pages/landing"
+} from "@ranklab/web/src/components/_external-pages/landing"
 
 // ----------------------------------------------------------------------
 
