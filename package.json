@@ -1,12 +1,13 @@
 {
-  "name": "@minimal/material-kit-react",
-  "author": "minimals.cc",
+  "name": "@ranklab/web",
+  "author": "Ranklab LTD",
   "version": "2.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "codegen": "java -jar /usr/local/share/swagger-codegen-cli.jar generate -i http://localhost:8000/openapi.json -o ./src/api -l typescript-fetch -c ./swagger.config.json"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.5.0",
@@ -43,7 +44,8 @@
     "simplebar-react": "^2.3.5",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.0",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "@ranklab/api": "1.0.0"
   },
   "devDependencies": {
     "@types/draftjs-to-html": "^0.8.1",
@@ -54,5 +56,6 @@
     "@types/react-router-dom": "^5.1.8",
     "@types/react-scroll": "^1.8.3",
     "typescript": "^4.3.5"
-  }
+  },
+  "workspaces": ["@ranklab/web", "@ranklab/api"]
 }

@@ -1,19 +1,16 @@
 {
   "name": "Ranklab Web",
-  "postCreateCommand": "sudo chmod 777 /var/run/docker.sock && yarn install",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
-  "containerUser": "vscode",
+  "postCreateCommand": "sudo chown -R vscode . && yarn install",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "workspace",
+  "shutdownAction": "stopCompose",
+  "overrideCommand": true,
+  "remoteUser": "vscode",
   "extensions": [
     "esbenp.prettier-vscode",
     "naumovs.color-highlight",
     "ms-vsliveshare.vsliveshare"
   ],
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-  ],
-  "runArgs": ["--net=host"],
   "forwardPorts": [3000],
   "remoteEnv": {
     "AUTH0_SECRET": "${localEnv:AUTH0_SECRET}",
