@@ -2,8 +2,9 @@
   "name": "Ranklab Web",
   "postCreateCommand": "sudo chown -R vscode . && yarn install",
   "dockerComposeFile": "docker-compose.yml",
-  "service": "workspace",
+  "service": "ranklab-web",
   "shutdownAction": "stopCompose",
+  "workspaceFolder": "/workspaces/ranklab-web",
   "overrideCommand": true,
   "remoteUser": "vscode",
   "extensions": [

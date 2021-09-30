@@ -1,7 +1,11 @@
 version: "3"
 services:
-  workspace:
+  ranklab-web:
     build:
       context: ../
       dockerfile: .devcontainer/Dockerfile
-    network_mode: "host"
+    networks:
+      - ranklab
+networks:
+  ranklab:
+    name: ranklab
