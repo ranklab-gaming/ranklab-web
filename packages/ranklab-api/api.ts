@@ -241,19 +241,6 @@ export interface CreateReviewRequest {
 /**
  * 
  * @export
- * @interface CreateUserRequest
- */
-export interface CreateUserRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateUserRequest
-     */
-    auth0Id: string;
-}
-/**
- * 
- * @export
  * @enum {string}
  */
 export enum Game {
@@ -619,37 +606,6 @@ export const RanklabApiFetchParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {CreateUserRequest} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate(body: CreateUserRequest, options: any = {}): FetchArgs {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling usersCreate.');
-            }
-            const localVarPath = `/users`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"CreateUserRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(body || {}) : (body || "");
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -787,24 +743,6 @@ export const RanklabApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {CreateUserRequest} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate(body: CreateUserRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).usersCreate(body, options);
-            return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -880,15 +818,6 @@ export const RanklabApiFactory = function (configuration?: Configuration, fetch?
          */
         reviewsList(options?: any) {
             return RanklabApiFp(configuration).reviewsList(options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @param {CreateUserRequest} body 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate(body: CreateUserRequest, options?: any) {
-            return RanklabApiFp(configuration).usersCreate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -970,17 +899,6 @@ export class RanklabApi extends BaseAPI {
      */
     public reviewsList(options?: any) {
         return RanklabApiFp(this.configuration).reviewsList(options)(this.fetch, this.basePath);
-    }
-
-    /**
-     * 
-     * @param {CreateUserRequest} body 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RanklabApi
-     */
-    public usersCreate(body: CreateUserRequest, options?: any) {
-        return RanklabApiFp(this.configuration).usersCreate(body, options)(this.fetch, this.basePath);
     }
 
     /**

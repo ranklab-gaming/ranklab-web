@@ -23,8 +23,8 @@ import { LoadingButton } from "@mui/lab"
 import ReactPlayer from "react-player"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import api, { gameFromString } from "src/api"
-import { Game } from "../../../ranklab-api"
 import { useRouter } from "next/router"
+import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 
 // ----------------------------------------------------------------------
 
@@ -181,6 +181,8 @@ function Form() {
     </form>
   )
 }
+
+export const getServerSideProps = withPageAuthRequired()
 
 export default function NewReplayForm() {
   return (

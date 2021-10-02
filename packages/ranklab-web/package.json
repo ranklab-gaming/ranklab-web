@@ -23,11 +23,13 @@
     "@mui/icons-material": "^5.0.0",
     "@mui/lab": "^5.0.0-alpha.48",
     "@mui/material": "^5.0.0",
+    "@ranklab/api": "1.0.0",
     "change-case": "^4.1.2",
     "date-fns": "^2.23.0",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "framer-motion": "^4.1.17",
+    "humps": "^2.0.1",
     "lodash": "^4.17.21",
     "next": "^11.1.0",
     "nprogress": "^0.2.0",
@@ -43,11 +45,11 @@
     "simplebar-react": "^2.3.5",
     "stylis": "^4.0.10",
     "stylis-plugin-rtl": "^2.1.0",
-    "yup": "^0.32.9",
-    "@ranklab/api": "1.0.0"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/draftjs-to-html": "^0.8.1",
+    "@types/humps": "^2.0.1",
     "@types/lodash": "^4.14.172",
     "@types/nprogress": "^0.2.0",
     "@types/react": "^17.0.18",

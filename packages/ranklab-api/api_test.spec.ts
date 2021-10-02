@@ -54,10 +54,6 @@ describe("RanklabApi", () => {
   test("reviewsList", () => {
     return expect(instance.reviewsList({})).resolves.toBe(null)
   })
-  test("usersCreate", () => {
-    const body: api.CreateUserRequest = undefined
-    return expect(instance.usersCreate(body, {})).resolves.toBe(null)
-  })
   test("usersGetCurrent", () => {
     return expect(instance.usersGetCurrent({})).resolves.toBe(null)
   })
