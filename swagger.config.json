@@ -2,6 +2,7 @@
   "additionalProperties": {
     "npmVersion": "1.0.0",
     "npmName": "@ranklab/api",
-    "supportsES6": true
+    "moduleName": "RanklabApi",
+    "useES6": true
   }
 }

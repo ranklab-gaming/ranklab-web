@@ -22,6 +22,9 @@ import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import ReactPlayer from "react-player"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
+import api, { gameFromString } from "src/api"
+import { Game } from "../../../ranklab-api"
+import { useRouter } from "next/router"
 
 // ----------------------------------------------------------------------
 
@@ -60,8 +63,19 @@ function Form() {
     defaultValues,
   })
 
-  const onSubmit = async (_data: FormValuesProps) => {
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  const router = useRouter()
+
+  const onSubmit = async (data: FormValuesProps) => {
+    const recordingId = Array.isArray(router.query.id)
+      ? router.query.id.join(",")
+      : router.query.id
+
+    await api.reviewsCreate({
+      game: gameFromString(data.game.toLowerCase()),
+      recordingId: recordingId!,
+      title: data.title,
+    })
+
     reset()
   }
 

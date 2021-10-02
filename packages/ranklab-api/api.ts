@@ -362,6 +362,98 @@ export const DefaultApiFetchParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHealth(options: any = {}): FetchArgs {
+            const localVarPath = `/`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * DefaultApi - functional programming interface
+ * @export
+ */
+export const DefaultApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHealth(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Health> {
+            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).getHealth(options);
+            return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * DefaultApi - factory interface
+ * @export
+ */
+export const DefaultApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHealth(options?: any) {
+            return DefaultApiFp(configuration).getHealth(options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * DefaultApi - object-oriented interface
+ * @export
+ * @class DefaultApi
+ * @extends {BaseAPI}
+ */
+export class DefaultApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getHealth(options?: any) {
+        return DefaultApiFp(this.configuration).getHealth(options)(this.fetch, this.basePath);
+    }
+
+}
+/**
+ * RanklabApi - fetch parameter creator
+ * @export
+ */
+export const RanklabApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
          * @param {CreateCoachRequest} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -416,28 +508,6 @@ export const DefaultApiFetchParamCreator = function (configuration?: Configurati
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"CreateCommentRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body =  needsSerialization ? JSON.stringify(body || {}) : (body || "");
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getHealth(options: any = {}): FetchArgs {
-            const localVarPath = `/`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
 
             return {
                 url: url.format(localVarUrlObj),
@@ -604,10 +674,10 @@ export const DefaultApiFetchParamCreator = function (configuration?: Configurati
 };
 
 /**
- * DefaultApi - functional programming interface
+ * RanklabApi - functional programming interface
  * @export
  */
-export const DefaultApiFp = function(configuration?: Configuration) {
+export const RanklabApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
@@ -616,7 +686,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         coachesCreate(body: CreateCoachRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Coach> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).coachesCreate(body, options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).coachesCreate(body, options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -634,24 +704,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         commentsCreate(body: CreateCommentRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Comment> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).commentsCreate(body, options);
-            return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getHealth(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Health> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).getHealth(options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).commentsCreate(body, options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -668,7 +721,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         recordingsCreate(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Recording> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).recordingsCreate(options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).recordingsCreate(options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -686,7 +739,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         reviewsCreate(body: CreateReviewRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Review> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).reviewsCreate(body, options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).reviewsCreate(body, options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -704,7 +757,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         reviewsGet(id: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Review> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).reviewsGet(id, options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).reviewsGet(id, options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -721,7 +774,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         reviewsList(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Review>> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).reviewsList(options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).reviewsList(options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -739,7 +792,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         usersCreate(body: CreateUserRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).usersCreate(body, options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).usersCreate(body, options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -756,7 +809,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         usersGetCurrent(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
-            const localVarFetchArgs = DefaultApiFetchParamCreator(configuration).usersGetCurrent(options);
+            const localVarFetchArgs = RanklabApiFetchParamCreator(configuration).usersGetCurrent(options);
             return (fetch: FetchAPI = isomorphicFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -771,10 +824,10 @@ export const DefaultApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * DefaultApi - factory interface
+ * RanklabApi - factory interface
  * @export
  */
-export const DefaultApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+export const RanklabApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
     return {
         /**
          * 
@@ -783,7 +836,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         coachesCreate(body: CreateCoachRequest, options?: any) {
-            return DefaultApiFp(configuration).coachesCreate(body, options)(fetch, basePath);
+            return RanklabApiFp(configuration).coachesCreate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -792,15 +845,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         commentsCreate(body: CreateCommentRequest, options?: any) {
-            return DefaultApiFp(configuration).commentsCreate(body, options)(fetch, basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getHealth(options?: any) {
-            return DefaultApiFp(configuration).getHealth(options)(fetch, basePath);
+            return RanklabApiFp(configuration).commentsCreate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -808,7 +853,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         recordingsCreate(options?: any) {
-            return DefaultApiFp(configuration).recordingsCreate(options)(fetch, basePath);
+            return RanklabApiFp(configuration).recordingsCreate(options)(fetch, basePath);
         },
         /**
          * 
@@ -817,7 +862,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         reviewsCreate(body: CreateReviewRequest, options?: any) {
-            return DefaultApiFp(configuration).reviewsCreate(body, options)(fetch, basePath);
+            return RanklabApiFp(configuration).reviewsCreate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -826,7 +871,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         reviewsGet(id: string, options?: any) {
-            return DefaultApiFp(configuration).reviewsGet(id, options)(fetch, basePath);
+            return RanklabApiFp(configuration).reviewsGet(id, options)(fetch, basePath);
         },
         /**
          * 
@@ -834,7 +879,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         reviewsList(options?: any) {
-            return DefaultApiFp(configuration).reviewsList(options)(fetch, basePath);
+            return RanklabApiFp(configuration).reviewsList(options)(fetch, basePath);
         },
         /**
          * 
@@ -843,7 +888,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         usersCreate(body: CreateUserRequest, options?: any) {
-            return DefaultApiFp(configuration).usersCreate(body, options)(fetch, basePath);
+            return RanklabApiFp(configuration).usersCreate(body, options)(fetch, basePath);
         },
         /**
          * 
@@ -851,27 +896,27 @@ export const DefaultApiFactory = function (configuration?: Configuration, fetch?
          * @throws {RequiredError}
          */
         usersGetCurrent(options?: any) {
-            return DefaultApiFp(configuration).usersGetCurrent(options)(fetch, basePath);
+            return RanklabApiFp(configuration).usersGetCurrent(options)(fetch, basePath);
         },
     };
 };
 
 /**
- * DefaultApi - object-oriented interface
+ * RanklabApi - object-oriented interface
  * @export
- * @class DefaultApi
+ * @class RanklabApi
  * @extends {BaseAPI}
  */
-export class DefaultApi extends BaseAPI {
+export class RanklabApi extends BaseAPI {
     /**
      * 
      * @param {CreateCoachRequest} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public coachesCreate(body: CreateCoachRequest, options?: any) {
-        return DefaultApiFp(this.configuration).coachesCreate(body, options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).coachesCreate(body, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -879,30 +924,20 @@ export class DefaultApi extends BaseAPI {
      * @param {CreateCommentRequest} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public commentsCreate(body: CreateCommentRequest, options?: any) {
-        return DefaultApiFp(this.configuration).commentsCreate(body, options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).commentsCreate(body, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public getHealth(options?: any) {
-        return DefaultApiFp(this.configuration).getHealth(options)(this.fetch, this.basePath);
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public recordingsCreate(options?: any) {
-        return DefaultApiFp(this.configuration).recordingsCreate(options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).recordingsCreate(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -910,10 +945,10 @@ export class DefaultApi extends BaseAPI {
      * @param {CreateReviewRequest} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public reviewsCreate(body: CreateReviewRequest, options?: any) {
-        return DefaultApiFp(this.configuration).reviewsCreate(body, options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).reviewsCreate(body, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -921,20 +956,20 @@ export class DefaultApi extends BaseAPI {
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public reviewsGet(id: string, options?: any) {
-        return DefaultApiFp(this.configuration).reviewsGet(id, options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).reviewsGet(id, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public reviewsList(options?: any) {
-        return DefaultApiFp(this.configuration).reviewsList(options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).reviewsList(options)(this.fetch, this.basePath);
     }
 
     /**
@@ -942,20 +977,20 @@ export class DefaultApi extends BaseAPI {
      * @param {CreateUserRequest} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public usersCreate(body: CreateUserRequest, options?: any) {
-        return DefaultApiFp(this.configuration).usersCreate(body, options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).usersCreate(body, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof DefaultApi
+     * @memberof RanklabApi
      */
     public usersGetCurrent(options?: any) {
-        return DefaultApiFp(this.configuration).usersGetCurrent(options)(this.fetch, this.basePath);
+        return RanklabApiFp(this.configuration).usersGetCurrent(options)(this.fetch, this.basePath);
     }
 
 }

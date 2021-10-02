@@ -21,6 +21,17 @@ describe("DefaultApi", () => {
     instance = new api.DefaultApi(config)
   });
 
+  test("getHealth", () => {
+    return expect(instance.getHealth({})).resolves.toBe(null)
+  })
+})
+
+describe("RanklabApi", () => {
+  let instance: api.RanklabApi
+  beforeEach(function() {
+    instance = new api.RanklabApi(config)
+  });
+
   test("coachesCreate", () => {
     const body: api.CreateCoachRequest = undefined
     return expect(instance.coachesCreate(body, {})).resolves.toBe(null)
@@ -28,9 +39,6 @@ describe("DefaultApi", () => {
   test("commentsCreate", () => {
     const body: api.CreateCommentRequest = undefined
     return expect(instance.commentsCreate(body, {})).resolves.toBe(null)
-  })
-  test("getHealth", () => {
-    return expect(instance.getHealth({})).resolves.toBe(null)
   })
   test("recordingsCreate", () => {
     return expect(instance.recordingsCreate({})).resolves.toBe(null)
