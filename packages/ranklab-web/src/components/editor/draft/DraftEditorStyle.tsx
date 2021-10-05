@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 // ----------------------------------------------------------------------
 
 const DraftEditorStyle = styled(Box)(({ theme }) => {
-  const isLight = theme.palette.mode === 'light';
   const isRTL = theme.direction === 'rtl';
 
   return {
@@ -22,7 +21,7 @@ const DraftEditorStyle = styled(Box)(({ theme }) => {
       '& img': {
         width: 16,
         height: 16,
-        filter: isLight ? 'none' : 'invert(100%)',
+        filter: 'invert(100%)',
       },
       '&[aria-selected="true"]': {
         boxShadow: 'none',

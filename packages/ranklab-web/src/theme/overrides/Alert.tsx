@@ -11,13 +11,11 @@ import { ColorSchema } from "../../@types/theme"
 // ----------------------------------------------------------------------
 
 export default function Alert(theme: Theme) {
-  const isLight = theme.palette.mode === "light"
-
   const standardStyle = (color: ColorSchema) => ({
-    color: theme.palette[color][isLight ? "darker" : "lighter"],
-    backgroundColor: theme.palette[color][isLight ? "lighter" : "darker"],
+    color: theme.palette[color]["lighter"],
+    backgroundColor: theme.palette[color]["darker"],
     "& .MuiAlert-icon": {
-      color: theme.palette[color][isLight ? "main" : "light"],
+      color: theme.palette[color]["light"],
     },
   })
 
@@ -26,11 +24,11 @@ export default function Alert(theme: Theme) {
   })
 
   const outlinedStyle = (color: ColorSchema) => ({
-    color: theme.palette[color][isLight ? "darker" : "lighter"],
-    border: `solid 1px ${theme.palette[color][isLight ? "light" : "dark"]}`,
-    backgroundColor: theme.palette[color][isLight ? "lighter" : "darker"],
+    color: theme.palette[color]["lighter"],
+    border: `solid 1px ${theme.palette[color]["dark"]}`,
+    backgroundColor: theme.palette[color]["darker"],
     "& .MuiAlert-icon": {
-      color: theme.palette[color][isLight ? "main" : "light"],
+      color: theme.palette[color]["light"],
     },
   })
 

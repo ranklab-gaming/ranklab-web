@@ -21,7 +21,6 @@
     "AUTH0_ISSUER_BASE_URL": "https://ranklab-development.eu.auth0.com"
   },
   "settings": {
-    "editor.codeActionsOnSave": ["source.addMissingImports"],
     "editor.codeLens": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,

@@ -29,6 +29,9 @@ export default function DataGrid(theme: Theme) {
           "& .MuiDataGrid-columnSeparator": {
             color: theme.palette.divider,
           },
+          '& .MuiDataGrid-columnHeader[data-field="__check__"]': {
+            padding: 0,
+          },
         },
       },
     },

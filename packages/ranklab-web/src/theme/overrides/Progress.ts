@@ -3,8 +3,6 @@ import { Theme } from "@mui/material/styles"
 // ----------------------------------------------------------------------
 
 export default function Progress(theme: Theme) {
-  const isLight = theme.palette.mode === "light"
-
   return {
     MuiLinearProgress: {
       styleOverrides: {
@@ -16,8 +14,7 @@ export default function Progress(theme: Theme) {
           borderRadius: 4,
         },
         colorPrimary: {
-          backgroundColor:
-            theme.palette.primary[isLight ? "lighter" : "darker"],
+          backgroundColor: theme.palette.primary["darker"],
         },
         buffer: {
           backgroundColor: "transparent",

@@ -102,7 +102,6 @@ const CardIconStyle = styled("img")(({ theme }) => ({
 
 export default function LandingMinimalHelps() {
   const theme = useTheme()
-  const isLight = theme.palette.mode === "light"
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"))
 
   return (
@@ -151,9 +150,7 @@ export default function LandingMinimalHelps() {
                   <Typography variant="h5" paragraph>
                     {card.title}
                   </Typography>
-                  <Typography
-                    sx={{ color: isLight ? "text.secondary" : "common.white" }}
-                  >
+                  <Typography sx={{ color: "common.white" }}>
                     {card.description}
                   </Typography>
                 </CardStyle>
