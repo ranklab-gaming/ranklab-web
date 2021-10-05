@@ -1,10 +1,9 @@
-import { useMemo, ReactNode } from "react"
+import { ReactNode } from "react"
 
 // material
 import { CssBaseline } from "@mui/material"
 import { createTheme, ThemeProvider, ThemeOptions } from "@mui/material/styles"
 // hooks
-import useSettings from "../hooks/useSettings"
 //
 import shape from "./shape"
 import palette from "./palette"
@@ -21,20 +20,14 @@ type ThemeConfigProps = {
 }
 
 export default function ThemeConfig({ children }: ThemeConfigProps) {
-  const { themeDirection } = useSettings()
-
-  const themeOptions: ThemeOptions = useMemo(
-    () => ({
-      palette: { ...palette.dark, mode: "dark" },
-      shape,
-      typography,
-      breakpoints,
-      direction: themeDirection,
-      shadows: shadows.dark,
-      customShadows: customShadows.dark,
-    }),
-    [themeDirection]
-  )
+  const themeOptions: ThemeOptions = {
+    palette: { ...palette.dark, mode: "dark" },
+    shape,
+    typography,
+    breakpoints,
+    shadows: shadows.dark,
+    customShadows: customShadows.dark,
+  }
 
   const theme = createTheme(themeOptions)
   theme.components = componentsOverride(theme)

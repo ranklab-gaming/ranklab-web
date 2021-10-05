@@ -73,8 +73,6 @@ const variantScreenRight = {
 
 export default function LandingHugePackElements() {
   const theme = useTheme()
-  const isRTL = theme.direction === "rtl"
-
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter
   const screenRightAnimate = variantScreenRight
@@ -147,7 +145,7 @@ export default function LandingHugePackElements() {
                   }}
                   transition={{ duration: 0.72, ease: "easeOut" }}
                   sx={{
-                    boxShadow: `${isRTL ? -80 : 80}px -40px 80px ${alpha(
+                    boxShadow: `80px -40px 80px ${alpha(
                       theme.palette.common.black,
                       0.48
                     )}`,

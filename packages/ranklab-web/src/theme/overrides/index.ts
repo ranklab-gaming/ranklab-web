@@ -27,7 +27,6 @@ import Tooltip from "./Tooltip"
 import Popover from "./Popover"
 import Stepper from "./Stepper"
 import Pickers from "./Pickers"
-import DataGrid from "./DataGrid"
 import Skeleton from "./Skeleton"
 import Backdrop from "./Backdrop"
 import Snackbar from "./Snackbar"
@@ -79,7 +78,6 @@ export default function ComponentsOverrides(theme: Theme) {
     Popover(theme),
     SvgIcon(theme),
     Checkbox(theme),
-    DataGrid(theme),
     Skeleton(theme),
     Timeline(theme),
     TreeView(theme),
