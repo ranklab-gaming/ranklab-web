@@ -1,4 +1,4 @@
-import { withApiAuthRequired, getSession } from "@auth0/nextjs-auth0"
+import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0"
 import humps from "humps"
 
 export default withApiAuthRequired(async function proxy(req, res) {
@@ -18,11 +18,13 @@ export default withApiAuthRequired(async function proxy(req, res) {
       throw new Error("Expected session to be present")
     }
 
-    const response = await fetch(baseURL + req.query.path, {
+    const response = await fetch(`${baseURL}/${req.query.path}`, {
       method: req.method,
       body: JSON.stringify(humps.decamelizeKeys(req.body)),
       headers: {
         Authorization: `Bearer ${session.idToken}`,
+        Accept: req.headers.accept!,
+        "Content-Type": req.headers["content-type"]!,
       },
     })
 

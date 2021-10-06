@@ -62,7 +62,7 @@ export default function ReviewForm() {
       ? router.query.id.join(",")
       : router.query.id
 
-    await api.reviewsCreate({
+    await api.client.reviewsCreate({
       game: gameFromString(data.game.toLowerCase()),
       recordingId: recordingId!,
       title: data.title,

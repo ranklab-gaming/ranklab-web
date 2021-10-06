@@ -5378,10 +5378,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.3.5.tgz"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@^4.5.0-dev.20211006:
+  version "4.5.0-dev.20211006"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.0-dev.20211006.tgz#a83db37b5524357222f4307ace4dd2fb3004d109"
+  integrity sha512-UDWK5d6F/97aW2IqdsrietJa3zXPrtH72IUZaahDvF+zKdcPsbDtuxnzueKXnqEQbYx2P3LfQeSlzMDA7KhluA==
 
 ua-parser-js@^0.7.18:
   version "0.7.28"
