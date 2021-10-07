@@ -83,7 +83,7 @@ export interface Coach {
      * @type {string}
      * @memberof Coach
      */
-    game: string;
+    gameId: string;
     /**
      *
      * @type {string}
@@ -160,10 +160,10 @@ export interface CreateCoachRequest {
     email: string;
     /**
      *
-     * @type {Game}
+     * @type {string}
      * @memberof CreateCoachRequest
      */
-    game: Game;
+    gameId: string;
     /**
      *
      * @type {string}
@@ -204,10 +204,10 @@ export interface CreateCommentRequest {
 export interface CreateReviewRequest {
     /**
      *
-     * @type {Game}
+     * @type {string}
      * @memberof CreateReviewRequest
      */
-    game: Game;
+    gameId: string;
     /**
      *
      * @type {string}
@@ -224,24 +224,21 @@ export interface CreateReviewRequest {
 /**
  *
  * @export
- * @interface CreateUserRequest
+ * @interface Game
  */
-export interface CreateUserRequest {
+export interface Game {
     /**
      *
      * @type {string}
-     * @memberof CreateUserRequest
+     * @memberof Game
      */
-    auth0Id: string;
-}
-/**
- *
- * @export
- * @enum {string}
- */
-export declare enum Game {
-    Overwatch,
-    Chess
+    id: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Game
+     */
+    name: string;
 }
 /**
  *
@@ -292,7 +289,7 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
-    game: string;
+    gameId: string;
     /**
      *
      * @type {string}
@@ -412,6 +409,12 @@ export declare const RanklabApiFetchParamCreator: (configuration?: Configuration
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    gamesList(options?: any): FetchArgs;
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     recordingsCreate(options?: any): FetchArgs;
     /**
      *
@@ -433,13 +436,6 @@ export declare const RanklabApiFetchParamCreator: (configuration?: Configuration
      * @throws {RequiredError}
      */
     reviewsList(options?: any): FetchArgs;
-    /**
-     *
-     * @param {CreateUserRequest} body
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    usersCreate(body: CreateUserRequest, options?: any): FetchArgs;
     /**
      *
      * @param {*} [options] Override http request option.
@@ -471,6 +467,12 @@ export declare const RanklabApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    gamesList(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Game>>;
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     recordingsCreate(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Recording>;
     /**
      *
@@ -492,13 +494,6 @@ export declare const RanklabApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     reviewsList(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Review>>;
-    /**
-     *
-     * @param {CreateUserRequest} body
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    usersCreate(body: CreateUserRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User>;
     /**
      *
      * @param {*} [options] Override http request option.
@@ -530,6 +525,12 @@ export declare const RanklabApiFactory: (configuration?: Configuration, fetch?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
+    gamesList(options?: any): Promise<Game[]>;
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
     recordingsCreate(options?: any): Promise<Recording>;
     /**
      *
@@ -551,13 +552,6 @@ export declare const RanklabApiFactory: (configuration?: Configuration, fetch?: 
      * @throws {RequiredError}
      */
     reviewsList(options?: any): Promise<Review[]>;
-    /**
-     *
-     * @param {CreateUserRequest} body
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    usersCreate(body: CreateUserRequest, options?: any): Promise<User>;
     /**
      *
      * @param {*} [options] Override http request option.
@@ -594,6 +588,13 @@ export declare class RanklabApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RanklabApi
      */
+    gamesList(options?: any): Promise<Game[]>;
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RanklabApi
+     */
     recordingsCreate(options?: any): Promise<Recording>;
     /**
      *
@@ -618,14 +619,6 @@ export declare class RanklabApi extends BaseAPI {
      * @memberof RanklabApi
      */
     reviewsList(options?: any): Promise<Review[]>;
-    /**
-     *
-     * @param {CreateUserRequest} body
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RanklabApi
-     */
-    usersCreate(body: CreateUserRequest, options?: any): Promise<User>;
     /**
      *
      * @param {*} [options] Override http request option.

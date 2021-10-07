@@ -6,19 +6,22 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
 import { GetServerSideProps } from "next"
 import api from "src/api"
-import { Review } from "@ranklab/api"
+import { Review, Game } from "@ranklab/api"
 
 interface Props {
   reviews: Review[]
+  games: Game[]
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
   const reviews = await api.server(ctx).reviewsList()
+  const games = await api.server(ctx).gamesList()
 
   return {
     props: {
+      games,
       reviews,
     },
   }
@@ -28,7 +31,7 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getDashboardServerSideProps,
 })
 
-const DashboardPage: FunctionComponent<Props> = function ({ reviews }) {
+const DashboardPage: FunctionComponent<Props> = function ({ reviews, games }) {
   return (
     <DashboardLayout>
       <Page title="Dashboard | Ranklab">
@@ -36,7 +39,7 @@ const DashboardPage: FunctionComponent<Props> = function ({ reviews }) {
           <Typography variant="h3" component="h1" paragraph>
             Dashboard
           </Typography>
-          <ReviewList reviews={reviews} />
+          <ReviewList reviews={reviews} games={games} />
         </Container>
       </Page>
     </DashboardLayout>

@@ -7,7 +7,7 @@ import {
   TableRow,
   TableBody,
 } from "@mui/material"
-import { Review } from "@ranklab/api"
+import { Game, Review } from "@ranklab/api"
 import React, { FunctionComponent } from "react"
 import Label from "./Label"
 
@@ -29,9 +29,10 @@ const Status: FunctionComponent<{ underReview: boolean }> = function ({
 
 interface Props {
   reviews: Review[]
+  games: Game[]
 }
 
-const ReviewList: FunctionComponent<Props> = function ({ reviews }) {
+const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -51,7 +52,9 @@ const ReviewList: FunctionComponent<Props> = function ({ reviews }) {
               <TableCell component="th" scope="row">
                 {review.title}
               </TableCell>
-              <TableCell align="right">{review.game}</TableCell>
+              <TableCell align="right">
+                {games.find((game) => game.id === review.gameId)!.name}
+              </TableCell>
               <TableCell align="right">
                 <Status underReview={Boolean(review.coachId)} />
               </TableCell>

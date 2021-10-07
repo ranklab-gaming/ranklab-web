@@ -28,7 +28,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RanklabApi = exports.RanklabApiFactory = exports.RanklabApiFp = exports.RanklabApiFetchParamCreator = exports.DefaultApi = exports.DefaultApiFactory = exports.DefaultApiFp = exports.DefaultApiFetchParamCreator = exports.Game = exports.RequiredError = exports.BaseAPI = exports.COLLECTION_FORMATS = void 0;
+exports.RanklabApi = exports.RanklabApiFactory = exports.RanklabApiFp = exports.RanklabApiFetchParamCreator = exports.DefaultApi = exports.DefaultApiFactory = exports.DefaultApiFp = exports.DefaultApiFetchParamCreator = exports.RequiredError = exports.BaseAPI = exports.COLLECTION_FORMATS = void 0;
 var url = require("url");
 var isomorphicFetch = require("isomorphic-fetch");
 var BASE_PATH = "/".replace(/\/+$/, "");
@@ -78,16 +78,6 @@ var RequiredError = /** @class */ (function (_super) {
     return RequiredError;
 }(Error));
 exports.RequiredError = RequiredError;
-/**
- *
- * @export
- * @enum {string}
- */
-var Game;
-(function (Game) {
-    Game[Game["Overwatch"] = 'overwatch'] = "Overwatch";
-    Game[Game["Chess"] = 'chess'] = "Chess";
-})(Game = exports.Game || (exports.Game = {}));
 /**
  * DefaultApi - fetch parameter creator
  * @export
@@ -256,6 +246,27 @@ var RanklabApiFetchParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        gamesList: function (options) {
+            if (options === void 0) { options = {}; }
+            var localVarPath = "/games";
+            var localVarUrlObj = url.parse(localVarPath, true);
+            var localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            var localVarHeaderParameter = {};
+            var localVarQueryParameter = {};
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         recordingsCreate: function (options) {
             if (options === void 0) { options = {}; }
             var localVarPath = "/recordings";
@@ -351,35 +362,6 @@ var RanklabApiFetchParamCreator = function (configuration) {
         },
         /**
          *
-         * @param {CreateUserRequest} body
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate: function (body, options) {
-            if (options === void 0) { options = {}; }
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body', 'Required parameter body was null or undefined when calling usersCreate.');
-            }
-            var localVarPath = "/users";
-            var localVarUrlObj = url.parse(localVarPath, true);
-            var localVarRequestOptions = Object.assign({ method: 'POST' }, options);
-            var localVarHeaderParameter = {};
-            var localVarQueryParameter = {};
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            var needsSerialization = ("CreateUserRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body = needsSerialization ? JSON.stringify(body || {}) : (body || "");
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         *
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -437,6 +419,26 @@ var RanklabApiFp = function (configuration) {
          */
         commentsCreate: function (body, options) {
             var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).commentsCreate(body, options);
+            return function (fetch, basePath) {
+                if (fetch === void 0) { fetch = isomorphicFetch; }
+                if (basePath === void 0) { basePath = BASE_PATH; }
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(function (response) {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    }
+                    else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        gamesList: function (options) {
+            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).gamesList(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -534,27 +536,6 @@ var RanklabApiFp = function (configuration) {
         },
         /**
          *
-         * @param {CreateUserRequest} body
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate: function (body, options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).usersCreate(body, options);
-            return function (fetch, basePath) {
-                if (fetch === void 0) { fetch = isomorphicFetch; }
-                if (basePath === void 0) { basePath = BASE_PATH; }
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then(function (response) {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    }
-                    else {
-                        throw response;
-                    }
-                });
-            };
-        },
-        /**
-         *
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -605,6 +586,14 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        gamesList: function (options) {
+            return exports.RanklabApiFp(configuration).gamesList(options)(fetch, basePath);
+        },
+        /**
+         *
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         recordingsCreate: function (options) {
             return exports.RanklabApiFp(configuration).recordingsCreate(options)(fetch, basePath);
         },
@@ -633,15 +622,6 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          */
         reviewsList: function (options) {
             return exports.RanklabApiFp(configuration).reviewsList(options)(fetch, basePath);
-        },
-        /**
-         *
-         * @param {CreateUserRequest} body
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCreate: function (body, options) {
-            return exports.RanklabApiFp(configuration).usersCreate(body, options)(fetch, basePath);
         },
         /**
          *
@@ -691,6 +671,15 @@ var RanklabApi = /** @class */ (function (_super) {
      * @throws {RequiredError}
      * @memberof RanklabApi
      */
+    RanklabApi.prototype.gamesList = function (options) {
+        return exports.RanklabApiFp(this.configuration).gamesList(options)(this.fetch, this.basePath);
+    };
+    /**
+     *
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof RanklabApi
+     */
     RanklabApi.prototype.recordingsCreate = function (options) {
         return exports.RanklabApiFp(this.configuration).recordingsCreate(options)(this.fetch, this.basePath);
     };
@@ -722,16 +711,6 @@ var RanklabApi = /** @class */ (function (_super) {
      */
     RanklabApi.prototype.reviewsList = function (options) {
         return exports.RanklabApiFp(this.configuration).reviewsList(options)(this.fetch, this.basePath);
-    };
-    /**
-     *
-     * @param {CreateUserRequest} body
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RanklabApi
-     */
-    RanklabApi.prototype.usersCreate = function (body, options) {
-        return exports.RanklabApiFp(this.configuration).usersCreate(body, options)(this.fetch, this.basePath);
     };
     /**
      *

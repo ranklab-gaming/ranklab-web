@@ -40,6 +40,9 @@ describe("RanklabApi", () => {
     const body: api.CreateCommentRequest = undefined
     return expect(instance.commentsCreate(body, {})).resolves.toBe(null)
   })
+  test("gamesList", () => {
+    return expect(instance.gamesList({})).resolves.toBe(null)
+  })
   test("recordingsCreate", () => {
     return expect(instance.recordingsCreate({})).resolves.toBe(null)
   })

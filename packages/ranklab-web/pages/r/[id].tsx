@@ -1,16 +1,37 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 // material
 import { Card, Container, CardContent, Typography } from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import ReviewForm from "@ranklab/web/src/components/ReviewForm"
+import { GetServerSideProps } from "next"
+import api from "src/api"
+import { Game } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 
-export const getServerSideProps = withPageAuthRequired()
+interface Props {
+  games: Game[]
+}
 
-export default function NewReplayForm() {
+const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
+  ctx
+) {
+  const games = await api.server(ctx).gamesList()
+
+  return {
+    props: {
+      games,
+    },
+  }
+}
+
+export const getServerSideProps = withPageAuthRequired({
+  getServerSideProps: getDashboardServerSideProps,
+})
+
+const NewReplayForm: FunctionComponent<Props> = ({ games }) => {
   return (
     <DashboardLayout>
       <Page title="Dashboard | Submit VOD for Review">
@@ -21,7 +42,7 @@ export default function NewReplayForm() {
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <ReviewForm />
+              <ReviewForm games={games} />
             </CardContent>
           </Card>
         </Container>
@@ -29,3 +50,5 @@ export default function NewReplayForm() {
     </DashboardLayout>
   )
 }
+
+export default NewReplayForm

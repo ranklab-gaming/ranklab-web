@@ -16,25 +16,26 @@ import { Controller, useForm } from "react-hook-form"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import ReactPlayer from "react-player"
-import api, { gameFromString } from "src/api"
+import api from "src/api"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { FunctionComponent } from "react"
+import { Game } from "@ranklab/api"
 
 export type FormValuesProps = {
   title: string
-  game: string
+  gameId: string
   description: any
 }
 
 export const defaultValues = {
   title: "",
-  game: "",
+  gameId: "",
   description: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
-  game: Yup.string().required("Game is required"),
+  gameId: Yup.string().required("Game is required"),
   description: Yup.mixed().test(
     "max text",
     "Description must be at least 200 characters",
@@ -43,9 +44,12 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   ),
 })
 
-export default function ReviewForm() {
+interface Props {
+  games: Game[]
+}
+
+const ReviewForm: FunctionComponent<Props> = ({ games }) => {
   const {
-    reset,
     control,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
@@ -63,12 +67,12 @@ export default function ReviewForm() {
       : router.query.id
 
     await api.client.reviewsCreate({
-      game: gameFromString(data.game.toLowerCase()),
+      gameId: data.gameId,
       recordingId: recordingId!,
       title: data.title,
     })
 
-    reset()
+    router.push("/dashboard")
   }
 
   return (
@@ -90,7 +94,7 @@ export default function ReviewForm() {
             />
 
             <Controller
-              name="game"
+              name="gameId"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <FormControl fullWidth>
@@ -104,9 +108,9 @@ export default function ReviewForm() {
                   >
                     <MenuItem value="">Select a Game</MenuItem>
 
-                    {["Overwatch", "Dota"].map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
+                    {games.map((game) => (
+                      <MenuItem key={game.id} value={game.id}>
+                        {game.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -173,3 +177,5 @@ export default function ReviewForm() {
     </form>
   )
 }
+
+export default ReviewForm
