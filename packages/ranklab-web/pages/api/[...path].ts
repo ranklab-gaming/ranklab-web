@@ -29,7 +29,7 @@ export default withApiAuthRequired(async function proxy(req, res) {
     })
 
     const json = await response.json()
-    res.status(response.status || 200).json(json)
+    res.status(response.status || 200).json(humps.camelizeKeys(json))
   } catch (error: any) {
     console.error(error)
 

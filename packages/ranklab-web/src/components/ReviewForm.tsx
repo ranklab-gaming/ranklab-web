@@ -61,11 +61,11 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
 
   const router = useRouter()
 
-  const onSubmit = async (data: FormValuesProps) => {
-    const recordingId = Array.isArray(router.query.id)
-      ? router.query.id.join(",")
-      : router.query.id
+  const recordingId = Array.isArray(router.query.id)
+    ? router.query.id.join(",")
+    : router.query.id
 
+  const onSubmit = async (data: FormValuesProps) => {
     await api.client.reviewsCreate({
       gameId: data.gameId,
       recordingId: recordingId!,
@@ -155,7 +155,8 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
             <Grid sx={{ flexGrow: 1 }} item>
               <ReactPlayer
                 width="100%"
-                url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+                controls={true}
+                url={`https://ranklab-dev.s3.eu-west-2.amazonaws.com/${recordingId}`}
               />
             </Grid>
             <Grid item>

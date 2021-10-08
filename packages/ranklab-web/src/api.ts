@@ -1,5 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0"
 import { RanklabApi, RanklabApiFactory } from "@ranklab/api"
+import humps from "humps"
 import { GetServerSidePropsContext } from "next"
 
 export default {
@@ -9,14 +10,25 @@ export default {
 
     return RanklabApiFactory(
       {},
-      function (url, options = {}) {
+      async function (url, options = {}) {
         const headers = options.headers || {}
 
-        return fetch(url, {
+        const response = await fetch(url, {
           ...options,
+          body: options.body
+            ? JSON.stringify(humps.decamelizeKeys(JSON.parse(options.body)))
+            : undefined,
           headers: {
             Authorization: `Bearer ${session?.idToken}`,
             ...headers,
+          },
+        })
+
+        const json = await response.json()
+
+        return new Response(JSON.stringify(humps.camelizeKeys(json)), {
+          headers: {
+            "Content-Type": "application/json",
           },
         })
       },
