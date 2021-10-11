@@ -1,17 +1,12 @@
-FROM node:latest
+FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:latest
 
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash - \
+    && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-RUN apt-get update -qq \
-    && apt-get install -qq --no-install-recommends sudo default-jre -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN sudo apt-get update -qq \
+    && sudo apt-get install -qq --no-install-recommends default-jre nodejs yarn wget -y \
+    && sudo apt-get clean \
+    && sudo rm -rf /var/lib/apt/lists/*
 
-RUN wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.27/swagger-codegen-cli-3.0.27.jar -O /usr/local/share/swagger-codegen-cli.jar
-
-RUN userdel node
-RUN groupadd --gid $USER_GID vscode
-RUN useradd --uid $USER_UID --gid $USER_GID -m vscode -s /bin/bash
-RUN echo vscode ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/vscode
-RUN chmod 0440 /etc/sudoers.d/vscode
+RUN sudo wget https://repo1.maven.org/maven2/io/swagger/codegen/v3/swagger-codegen-cli/3.0.27/swagger-codegen-cli-3.0.27.jar -O /usr/local/share/swagger-codegen-cli.jar

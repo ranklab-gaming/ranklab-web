@@ -1,6 +1,6 @@
 {
   "name": "Ranklab Web",
-  "postCreateCommand": "sudo chown -R vscode . && yarn install",
+  "postCreateCommand": "bash -ic ./bin/setup",
   "dockerComposeFile": "docker-compose.yml",
   "service": "ranklab-web",
   "shutdownAction": "stopCompose",
@@ -13,13 +13,6 @@
     "ms-vsliveshare.vsliveshare"
   ],
   "forwardPorts": [3000],
-  "remoteEnv": {
-    "AUTH0_SECRET": "${localEnv:AUTH0_SECRET}",
-    "AUTH0_CLIENT_SECRET": "${localEnv:AUTH0_CLIENT_SECRET}",
-    "AUTH0_CLIENT_ID": "XLNoyT68ijnDoKRe6YA51gnhRY4Z9ag8",
-    "AUTH0_BASE_URL": "http://localhost:3000",
-    "AUTH0_ISSUER_BASE_URL": "https://ranklab-development.eu.auth0.com"
-  },
   "settings": {
     "editor.codeLens": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
