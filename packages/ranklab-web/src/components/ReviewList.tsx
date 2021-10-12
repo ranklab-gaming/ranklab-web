@@ -10,6 +10,7 @@ import {
 import { Game, Review } from "@ranklab/api"
 import React, { FunctionComponent } from "react"
 import Label from "./Label"
+import NextLink from "next/link"
 
 const Status: FunctionComponent<{ underReview: boolean }> = function ({
   underReview,
@@ -45,20 +46,21 @@ const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
         </TableHead>
         <TableBody>
           {reviews.map((review) => (
-            <TableRow
-              key={review.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {review.title}
-              </TableCell>
-              <TableCell align="right">
-                {games.find((game) => game.id === review.gameId)!.name}
-              </TableCell>
-              <TableCell align="right">
-                <Status underReview={Boolean(review.coachId)} />
-              </TableCell>
-            </TableRow>
+            <NextLink href={`/reviews/${review.id}`} key={review.id}>
+              <TableRow
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {review.title}
+                </TableCell>
+                <TableCell align="right">
+                  {games.find((game) => game.id === review.gameId)!.name}
+                </TableCell>
+                <TableCell align="right">
+                  <Status underReview={Boolean(review.coachId)} />
+                </TableCell>
+              </TableRow>
+            </NextLink>
           ))}
         </TableBody>
       </Table>
