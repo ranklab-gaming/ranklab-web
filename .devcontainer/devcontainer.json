@@ -12,7 +12,6 @@
     "naumovs.color-highlight",
     "ms-vsliveshare.vsliveshare"
   ],
-  "forwardPorts": [3000],
   "settings": {
     "editor.codeLens": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
