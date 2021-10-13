@@ -1,5 +1,5 @@
 #!/bin/sh
 
 sudo chown -R vscode .
-yarn install
 aws s3 cp s3://ranklab-development-secrets/.env.web ./packages/ranklab-web/.env.development.local
+yarn install
