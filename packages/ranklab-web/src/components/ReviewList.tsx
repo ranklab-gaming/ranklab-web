@@ -48,7 +48,15 @@ const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
           {reviews.map((review) => (
             <NextLink href={`/reviews/${review.id}`} key={review.id}>
               <TableRow
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                sx={{
+                  cursor: "pointer",
+                  "&:last-child td, &:last-child th": { border: 0 },
+                  transition: (theme) =>
+                    theme.transitions.create("background-color", {
+                      duration: theme.transitions.duration.standard,
+                    }),
+                  "&:hover": { backgroundColor: "primary.dark" },
+                }}
               >
                 <TableCell component="th" scope="row">
                   {review.title}

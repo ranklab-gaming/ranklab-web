@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from "react"
 import { Review } from "@ranklab/api"
 import ReactPlayer from "react-player"
 import { Typography, Paper, Grid, Stack } from "@mui/material"
-import { styled } from "@mui/material/styles"
 
 import {
   Timeline,
@@ -12,6 +11,7 @@ import {
   TimelineSeparator,
   TimelineConnector,
   TimelineOppositeContent,
+  LoadingButton,
 } from "@mui/lab"
 
 import HotelIcon from "@mui/icons-material/Hotel"
@@ -20,6 +20,7 @@ import FastfoodIcon from "@mui/icons-material/Fastfood"
 import LaptopMacIcon from "@mui/icons-material/LaptopMac"
 
 import { DraftEditor } from "@ranklab/web/src/components/editor"
+import { intervalToDuration } from "date-fns/esm"
 
 type TimelineType = {
   key: number
@@ -161,6 +162,12 @@ const Wrapper: FunctionComponent<{}> = ({ children }) => {
 
 const AnalyzeReviewForm: FunctionComponent<Props> = ({ review }) => {
   const [newComment, setNewComment] = useState("" as any)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [currentTimestamp, setCurrentTimestamp] = useState(0)
+  const currentDuration = intervalToDuration({
+    start: 0,
+    end: currentTimestamp * 1000,
+  })
 
   return (
     <div>
@@ -172,16 +179,34 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({ review }) => {
               controls={true}
               url={review.videoUrl}
               wrapper={Wrapper}
+              onProgress={({ played }) =>
+                setCurrentTimestamp(Math.floor(played * 10))
+              }
             />
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <DraftEditor
-              editorState={newComment}
-              onEditorStateChange={setNewComment}
-              error={newComment.length > 0}
-              simple={true}
-            />
+            <Stack spacing={2}>
+              <DraftEditor
+                editorState={newComment}
+                onEditorStateChange={setNewComment}
+                error={newComment.length > 0}
+                simple={true}
+              />
+              <LoadingButton
+                fullWidth
+                color="info"
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+                disabled={isSubmitting || newComment.length === 0}
+                onClick={() => setIsSubmitting(true)}
+              >
+                Add comment at {currentDuration.minutes}:
+                {String(currentDuration.seconds).padStart(2, "0")}
+              </LoadingButton>
+            </Stack>
           </Grid>
         </Grid>
 
