@@ -1,10 +1,14 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
-java -jar /usr/local/share/swagger-codegen-cli.jar generate -i http://ranklab-api:8000/openapi.json -o ./packages/ranklab-api -l typescript-fetch -c ./swagger.config.json
+rootdir=$(dirname "$(readlink -f "$0")")/..
+mkdir -p "$rootdir/tmp/ranklab-api"
 
-cp ./codegen/package.json ./packages/ranklab-api/
+swagger-codegen-cli generate \
+  -i http://ranklab-api:8000/openapi.json \
+  -o "$rootdir/tmp/ranklab-api" \
+  -l typescript-fetch \
+  -c "$rootdir/swagger.config.json"
 
-cd ./packages/ranklab-api
-yarn build
+cp "$rootdir/tmp/ranklab-api"/{api.ts,configuration.ts} "$rootdir/src/api"
