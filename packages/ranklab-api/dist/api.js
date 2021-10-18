@@ -120,7 +120,7 @@ var DefaultApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         getHealth: function (options) {
-            var localVarFetchArgs = exports.DefaultApiFetchParamCreator(configuration).getHealth(options);
+            var localVarFetchArgs = (0, exports.DefaultApiFetchParamCreator)(configuration).getHealth(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -149,7 +149,7 @@ var DefaultApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         getHealth: function (options) {
-            return exports.DefaultApiFp(configuration).getHealth(options)(fetch, basePath);
+            return (0, exports.DefaultApiFp)(configuration).getHealth(options)(fetch, basePath);
         },
     };
 };
@@ -172,7 +172,7 @@ var DefaultApi = /** @class */ (function (_super) {
      * @memberof DefaultApi
      */
     DefaultApi.prototype.getHealth = function (options) {
-        return exports.DefaultApiFp(this.configuration).getHealth(options)(this.fetch, this.basePath);
+        return (0, exports.DefaultApiFp)(this.configuration).getHealth(options)(this.fetch, this.basePath);
     };
     return DefaultApi;
 }(BaseAPI));
@@ -397,7 +397,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         coachesCreate: function (body, options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).coachesCreate(body, options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).coachesCreate(body, options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -418,7 +418,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         commentsCreate: function (body, options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).commentsCreate(body, options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).commentsCreate(body, options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -438,7 +438,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         gamesList: function (options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).gamesList(options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).gamesList(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -458,7 +458,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         recordingsCreate: function (options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).recordingsCreate(options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).recordingsCreate(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -479,7 +479,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         reviewsCreate: function (body, options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).reviewsCreate(body, options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).reviewsCreate(body, options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -500,7 +500,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         reviewsGet: function (id, options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).reviewsGet(id, options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).reviewsGet(id, options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -520,7 +520,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         reviewsList: function (options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).reviewsList(options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).reviewsList(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -540,7 +540,7 @@ var RanklabApiFp = function (configuration) {
          * @throws {RequiredError}
          */
         usersGetCurrent: function (options) {
-            var localVarFetchArgs = exports.RanklabApiFetchParamCreator(configuration).usersGetCurrent(options);
+            var localVarFetchArgs = (0, exports.RanklabApiFetchParamCreator)(configuration).usersGetCurrent(options);
             return function (fetch, basePath) {
                 if (fetch === void 0) { fetch = isomorphicFetch; }
                 if (basePath === void 0) { basePath = BASE_PATH; }
@@ -570,7 +570,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         coachesCreate: function (body, options) {
-            return exports.RanklabApiFp(configuration).coachesCreate(body, options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).coachesCreate(body, options)(fetch, basePath);
         },
         /**
          *
@@ -579,7 +579,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         commentsCreate: function (body, options) {
-            return exports.RanklabApiFp(configuration).commentsCreate(body, options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).commentsCreate(body, options)(fetch, basePath);
         },
         /**
          *
@@ -587,7 +587,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         gamesList: function (options) {
-            return exports.RanklabApiFp(configuration).gamesList(options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).gamesList(options)(fetch, basePath);
         },
         /**
          *
@@ -595,7 +595,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         recordingsCreate: function (options) {
-            return exports.RanklabApiFp(configuration).recordingsCreate(options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).recordingsCreate(options)(fetch, basePath);
         },
         /**
          *
@@ -604,7 +604,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         reviewsCreate: function (body, options) {
-            return exports.RanklabApiFp(configuration).reviewsCreate(body, options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).reviewsCreate(body, options)(fetch, basePath);
         },
         /**
          *
@@ -613,7 +613,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         reviewsGet: function (id, options) {
-            return exports.RanklabApiFp(configuration).reviewsGet(id, options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).reviewsGet(id, options)(fetch, basePath);
         },
         /**
          *
@@ -621,7 +621,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         reviewsList: function (options) {
-            return exports.RanklabApiFp(configuration).reviewsList(options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).reviewsList(options)(fetch, basePath);
         },
         /**
          *
@@ -629,7 +629,7 @@ var RanklabApiFactory = function (configuration, fetch, basePath) {
          * @throws {RequiredError}
          */
         usersGetCurrent: function (options) {
-            return exports.RanklabApiFp(configuration).usersGetCurrent(options)(fetch, basePath);
+            return (0, exports.RanklabApiFp)(configuration).usersGetCurrent(options)(fetch, basePath);
         },
     };
 };
@@ -653,7 +653,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.coachesCreate = function (body, options) {
-        return exports.RanklabApiFp(this.configuration).coachesCreate(body, options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).coachesCreate(body, options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -663,7 +663,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.commentsCreate = function (body, options) {
-        return exports.RanklabApiFp(this.configuration).commentsCreate(body, options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).commentsCreate(body, options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -672,7 +672,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.gamesList = function (options) {
-        return exports.RanklabApiFp(this.configuration).gamesList(options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).gamesList(options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -681,7 +681,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.recordingsCreate = function (options) {
-        return exports.RanklabApiFp(this.configuration).recordingsCreate(options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).recordingsCreate(options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -691,7 +691,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.reviewsCreate = function (body, options) {
-        return exports.RanklabApiFp(this.configuration).reviewsCreate(body, options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).reviewsCreate(body, options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -701,7 +701,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.reviewsGet = function (id, options) {
-        return exports.RanklabApiFp(this.configuration).reviewsGet(id, options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).reviewsGet(id, options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -710,7 +710,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.reviewsList = function (options) {
-        return exports.RanklabApiFp(this.configuration).reviewsList(options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).reviewsList(options)(this.fetch, this.basePath);
     };
     /**
      *
@@ -719,7 +719,7 @@ var RanklabApi = /** @class */ (function (_super) {
      * @memberof RanklabApi
      */
     RanklabApi.prototype.usersGetCurrent = function (options) {
-        return exports.RanklabApiFp(this.configuration).usersGetCurrent(options)(this.fetch, this.basePath);
+        return (0, exports.RanklabApiFp)(this.configuration).usersGetCurrent(options)(this.fetch, this.basePath);
     };
     return RanklabApi;
 }(BaseAPI));

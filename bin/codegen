@@ -3,12 +3,16 @@
 set -e
 
 rootdir=$(dirname "$(readlink -f "$0")")/..
-mkdir -p "$rootdir/tmp/ranklab-api"
 
-swagger-codegen-cli generate \
+cd $rootdir
+mkdir -p ./tmp/ranklab-api
+
+openapi-generator-cli generate \
   -i http://ranklab-api:8000/openapi.json \
-  -o "$rootdir/tmp/ranklab-api" \
-  -l typescript-fetch \
-  -c "$rootdir/swagger.config.json"
+  -o ./tmp/ranklab-api \
+  -g typescript-fetch \
+  -c ./openapi.config.json
 
-cp "$rootdir/tmp/ranklab-api"/{api.ts,configuration.ts} "$rootdir/src/api"
+mkdir -p ./packages/ranklab-api
+cp ./tmp/ranklab-api/{index.ts,api.ts,configuration.ts,custom.d.ts} ./packages/ranklab-api
+yarn workspace @ranklab/api build

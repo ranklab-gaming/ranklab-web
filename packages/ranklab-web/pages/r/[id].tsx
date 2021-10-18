@@ -6,7 +6,7 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
-import api from "src/api"
+import api from "@ranklab/web/src/api"
 import { Game } from "@ranklab/api"
 
 // ----------------------------------------------------------------------

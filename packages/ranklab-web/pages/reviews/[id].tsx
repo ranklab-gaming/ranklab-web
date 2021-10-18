@@ -5,9 +5,9 @@ import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { GetServerSideProps } from "next"
-import api from "src/api"
+import api from "@ranklab/web/src/api"
 import { Review } from "@ranklab/api"
-import AnalyzeReviewForm from "src/components/AnalyzeReviewForm"
+import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 
 // ----------------------------------------------------------------------
 

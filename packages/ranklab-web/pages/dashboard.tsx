@@ -5,7 +5,7 @@ import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
 import { GetServerSideProps } from "next"
-import api from "src/api"
+import api from "@ranklab/web/src/api"
 import { Review, Game } from "@ranklab/api"
 
 interface Props {

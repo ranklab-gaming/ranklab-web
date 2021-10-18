@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Ranklab Web",
+      "type": "node-terminal",
+      "request": "launch",
+      "sourceMapPathOverrides": {
+        "webpack://?:*/./*": "${workspaceFolder}/packages/ranklab-web/*"
+      },
+      "command": "yarn dev"
+    }
+  ]
+}
