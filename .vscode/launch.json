@@ -8,7 +8,8 @@
       "sourceMapPathOverrides": {
         "webpack://?:*/./*": "${workspaceFolder}/packages/ranklab-web/*"
       },
-      "command": "yarn dev"
+      "command": "yarn dev",
+      "resolveSourceMapLocations": ["**", "**/node_modules/**"]
     }
   ]
 }
