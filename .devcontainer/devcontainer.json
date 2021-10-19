@@ -10,7 +10,8 @@
   "extensions": [
     "esbenp.prettier-vscode",
     "naumovs.color-highlight",
-    "ms-vsliveshare.vsliveshare"
+    "ms-vsliveshare.vsliveshare",
+    "ms-vscode.js-debug-nightly"
   ],
   "settings": {
     "editor.codeLens": false,
