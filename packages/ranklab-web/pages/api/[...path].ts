@@ -22,7 +22,7 @@ export default withApiAuthRequired(async function proxy(req, res) {
       method: req.method,
       body: JSON.stringify(humps.decamelizeKeys(req.body)),
       headers: {
-        Authorization: `Bearer ${session.accessToken}`,
+        Authorization: `Bearer ${session.idToken}`,
         Accept: req.headers.accept!,
         "Content-Type": req.headers["content-type"]!,
       },

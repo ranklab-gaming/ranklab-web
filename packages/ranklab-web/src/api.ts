@@ -19,7 +19,7 @@ export default {
             ? JSON.stringify(humps.decamelizeKeys(JSON.parse(options.body)))
             : undefined,
           headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
+            Authorization: `Bearer ${session?.idToken}`,
             ...headers,
           },
         })
