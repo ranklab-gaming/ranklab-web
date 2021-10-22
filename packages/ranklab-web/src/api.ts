@@ -1,38 +1,21 @@
 import { getSession } from "@auth0/nextjs-auth0"
-import { RanklabApi, RanklabApiFactory } from "@ranklab/api"
-import humps from "humps"
+import { RanklabApi, Configuration } from "@ranklab/api"
 import { GetServerSidePropsContext } from "next"
+import "isomorphic-fetch"
 
 export default {
-  client: new RanklabApi({ basePath: "/api" }),
+  client: new RanklabApi(new Configuration({ basePath: "/api" })),
   server: (ctx: GetServerSidePropsContext) => {
     const session = getSession(ctx.req, ctx.res)
 
-    return RanklabApiFactory(
-      {},
-      async function (url, options = {}) {
-        const headers = options.headers || {}
-
-        const response = await fetch(url, {
-          ...options,
-          body: options.body
-            ? JSON.stringify(humps.decamelizeKeys(JSON.parse(options.body)))
-            : undefined,
-          headers: {
-            Authorization: `Bearer ${session?.accessToken}`,
-            ...headers,
-          },
-        })
-
-        const json = await response.json()
-
-        return new Response(JSON.stringify(humps.camelizeKeys(json)), {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
+    const configuration = new Configuration({
+      fetchApi: fetch,
+      basePath: process.env.API_HOST,
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
       },
-      process.env.API_HOST
-    )
+    })
+
+    return new RanklabApi(configuration)
   },
 }

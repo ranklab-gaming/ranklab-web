@@ -1,5 +1,4 @@
 import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0"
-import humps from "humps"
 
 export default withApiAuthRequired(async function proxy(req, res) {
   try {
@@ -20,7 +19,7 @@ export default withApiAuthRequired(async function proxy(req, res) {
 
     const response = await fetch(`${baseURL}/${req.query.path}`, {
       method: req.method,
-      body: JSON.stringify(humps.decamelizeKeys(req.body)),
+      body: req.body,
       headers: {
         Authorization: `Bearer ${session.accessToken}`,
         Accept: req.headers.accept!,
@@ -29,7 +28,7 @@ export default withApiAuthRequired(async function proxy(req, res) {
     })
 
     const json = await response.json()
-    res.status(response.status || 200).json(humps.camelizeKeys(json))
+    res.status(response.status || 200).json(json)
   } catch (error: any) {
     console.error(error)
 
