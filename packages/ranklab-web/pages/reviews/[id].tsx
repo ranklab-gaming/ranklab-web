@@ -36,7 +36,7 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getReviewShowServerSideProps,
 })
 
-const NewReplayForm: FunctionComponent<Props> = ({ review }) => {
+const AnalyzeReplayForm: FunctionComponent<Props> = ({ review }) => {
   return (
     <DashboardLayout>
       <Page title="Dashboard | Analyze VOD">
@@ -56,4 +56,4 @@ const NewReplayForm: FunctionComponent<Props> = ({ review }) => {
   )
 }
 
-export default NewReplayForm
+export default AnalyzeReplayForm
