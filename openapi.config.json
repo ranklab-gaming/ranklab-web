@@ -3,6 +3,7 @@
     "npmVersion": "1.0.0",
     "npmName": "@ranklab/api",
     "supportsES6": true,
-    "typescriptThreePlus": true
+    "typescriptThreePlus": true,
+    "withoutRuntimeChecks": true
   }
 }

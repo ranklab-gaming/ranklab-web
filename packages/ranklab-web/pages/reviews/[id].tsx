@@ -24,9 +24,11 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   }
 
   const id = Array.isArray(ctx.query.id) ? ctx.query.id.join(",") : ctx.query.id
-  // parallelize this
-  const review = await api.server(ctx).reviewsGet({ id })
-  const comments = await api.server(ctx).commentsList({ reviewId: id })
+
+  const [review, comments] = await Promise.all([
+    api.server(ctx).reviewsGet({ id }),
+    api.server(ctx).commentsList({ reviewId: id }),
+  ])
 
   return {
     props: {

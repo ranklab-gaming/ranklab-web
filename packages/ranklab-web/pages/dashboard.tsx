@@ -16,8 +16,10 @@ interface Props {
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
-  const reviews = await api.server(ctx).reviewsList()
-  const games = await api.server(ctx).gamesList()
+  const [reviews, games] = await Promise.all([
+    api.server(ctx).reviewsList(),
+    api.server(ctx).gamesList(),
+  ])
 
   return {
     props: {

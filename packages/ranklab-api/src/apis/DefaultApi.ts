@@ -16,8 +16,6 @@
 import * as runtime from '../runtime';
 import {
     Health,
-    HealthFromJSON,
-    HealthToJSON,
 } from '../models';
 
 /**
@@ -39,7 +37,7 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => HealthFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**

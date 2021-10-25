@@ -16,32 +16,14 @@
 import * as runtime from '../runtime';
 import {
     Coach,
-    CoachFromJSON,
-    CoachToJSON,
     Comment,
-    CommentFromJSON,
-    CommentToJSON,
     CreateCoachRequest,
-    CreateCoachRequestFromJSON,
-    CreateCoachRequestToJSON,
     CreateCommentRequest,
-    CreateCommentRequestFromJSON,
-    CreateCommentRequestToJSON,
     CreateReviewRequest,
-    CreateReviewRequestFromJSON,
-    CreateReviewRequestToJSON,
     Game,
-    GameFromJSON,
-    GameToJSON,
     Recording,
-    RecordingFromJSON,
-    RecordingToJSON,
     Review,
-    ReviewFromJSON,
-    ReviewToJSON,
     User,
-    UserFromJSON,
-    UserToJSON,
 } from '../models';
 
 export interface CoachesCreateRequest {
@@ -87,10 +69,10 @@ export class RanklabApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateCoachRequestToJSON(requestParameters.createCoachRequest),
+            body: requestParameters.createCoachRequest,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CoachFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -118,10 +100,10 @@ export class RanklabApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateCommentRequestToJSON(requestParameters.createCommentRequest),
+            body: requestParameters.createCommentRequest,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CommentFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -153,7 +135,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CommentFromJSON));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -177,7 +159,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GameFromJSON));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -201,7 +183,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RecordingFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -229,10 +211,10 @@ export class RanklabApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateReviewRequestToJSON(requestParameters.createReviewRequest),
+            body: requestParameters.createReviewRequest,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ReviewFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -260,7 +242,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ReviewFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -284,7 +266,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReviewFromJSON));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**
@@ -308,7 +290,7 @@ export class RanklabApi extends runtime.BaseAPI {
             query: queryParameters,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response);
     }
 
     /**

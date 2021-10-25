@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useState } from "react"
+import React, {
+  forwardRef,
+  ForwardRefExoticComponent,
+  FunctionComponent,
+  RefAttributes,
+  useState,
+} from "react"
 import ReactPlayer from "react-player"
 import { Typography, Paper, Grid, Stack } from "@mui/material"
 
@@ -16,19 +22,26 @@ import {
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
 import { Review, Comment } from "@ranklab/api"
+import api from "src/api"
+import { EditorState } from "draft-js"
 
 interface Props {
   review: Review
   comments: Comment[]
 }
 
-const Wrapper: FunctionComponent<{}> = ({ children }) => {
-  return <div>{children}</div>
-}
+const Wrapper: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
+  forwardRef<HTMLDivElement>(({ children }, ref) => {
+    return <div ref={ref}>{children}</div>
+  })
 
-const AnalyzeReviewForm: FunctionComponent<Props> = ({ review, comments }) => {
-  const [newComment, setNewComment] = useState("" as any)
+const AnalyzeReviewForm: FunctionComponent<Props> = ({
+  review,
+  comments: fetchedComments,
+}) => {
+  const [newComment, setNewComment] = useState(EditorState.createEmpty())
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [comments, setComments] = useState(fetchedComments)
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
   const currentDuration = intervalToDuration({
     start: 0,
@@ -56,7 +69,6 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({ review, comments }) => {
               <DraftEditor
                 editorState={newComment}
                 onEditorStateChange={setNewComment}
-                error={newComment.length > 0}
                 simple={true}
               />
               <LoadingButton
@@ -66,8 +78,24 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({ review, comments }) => {
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
-                disabled={isSubmitting || newComment.length === 0}
-                onClick={() => setIsSubmitting(true)}
+                disabled={isSubmitting}
+                onClick={async () => {
+                  setIsSubmitting(true)
+
+                  const createdComment = await api.client.commentsCreate({
+                    createCommentRequest: {
+                      body: newComment
+                        .getCurrentContent()
+                        .getPlainText("\u0001"),
+                      reviewId: review.id,
+                      videoTimestamp: currentTimestamp,
+                    },
+                  })
+
+                  setComments([...comments, createdComment])
+                  setIsSubmitting(false)
+                  setNewComment(EditorState.createEmpty())
+                }}
               >
                 Add comment at {currentDuration.minutes}:
                 {String(currentDuration.seconds).padStart(2, "0")}

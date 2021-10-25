@@ -67,9 +67,11 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
 
   const onSubmit = async (data: FormValuesProps) => {
     await api.client.reviewsCreate({
-      gameId: data.gameId,
-      recordingId: recordingId!,
-      title: data.title,
+      createReviewRequest: {
+        gameId: data.gameId,
+        recordingId: recordingId!,
+        title: data.title,
+      },
     })
 
     router.push("/dashboard")

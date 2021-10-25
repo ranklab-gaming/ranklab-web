@@ -4,7 +4,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "ranklab-web",
   "shutdownAction": "stopCompose",
-  "workspaceFolder": "/workspaces/ranklab-web",
+  "workspaceFolder": "/workspace",
   "overrideCommand": true,
   "remoteUser": "vscode",
   "extensions": [
@@ -20,7 +20,9 @@
     "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": true,
     "editor.minimap.enabled": false,
-    "editor.rulers": [100],
+    "editor.rulers": [
+      100
+    ],
     "editor.tabSize": 2,
     "editor.wordWrap": "on",
     "explorer.confirmDelete": false,
