@@ -156,6 +156,12 @@ export interface CreateReviewRequest {
      * @type {string}
      * @memberof CreateReviewRequest
      */
+    notes: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewRequest
+     */
     recordingId: string;
     /**
      * 
@@ -243,6 +249,12 @@ export interface Review {
      * @memberof Review
      */
     id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
+    notes: string;
     /**
      * 
      * @type {string}

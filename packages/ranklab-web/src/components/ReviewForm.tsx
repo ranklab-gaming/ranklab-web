@@ -20,28 +20,24 @@ import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
 import React, { FunctionComponent } from "react"
 import { Game } from "@ranklab/api"
+import { EditorState } from "draft-js"
 
 export type FormValuesProps = {
   title: string
   gameId: string
-  description: any
+  notes: any
 }
 
 export const defaultValues = {
   title: "",
   gameId: "",
-  description: "",
+  notes: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   gameId: Yup.string().required("Game is required"),
-  description: Yup.mixed().test(
-    "max text",
-    "Description must be at least 200 characters",
-    (value) =>
-      value && value.getCurrentContent().getPlainText("\u0001").length > 200
-  ),
+  notes: Yup.mixed(),
 })
 
 interface Props {
@@ -71,6 +67,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
         gameId: data.gameId,
         recordingId: recordingId!,
         title: data.title,
+        notes: data.notes.getCurrentContent().getPlainText("\u0001"),
       },
     })
 
@@ -126,10 +123,10 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
                 sx={{ color: "text.secondary" }}
                 gutterBottom
               >
-                Description
+                Notes
               </Typography>
               <Controller
-                name="description"
+                name="notes"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DraftEditor
@@ -141,12 +138,12 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
                   />
                 )}
               />
-              {Boolean(errors.description) && (
+              {Boolean(errors.notes) && (
                 <FormHelperText
                   error
                   sx={{ px: 2, textTransform: "capitalize" }}
                 >
-                  {errors.description?.message}
+                  {errors.notes?.message}
                 </FormHelperText>
               )}
             </div>

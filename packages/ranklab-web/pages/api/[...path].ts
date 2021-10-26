@@ -2,7 +2,7 @@ import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0"
 
 export default withApiAuthRequired(async function proxy(req, res) {
   try {
-    const session = await getSession(req, res)
+    const session = getSession(req, res)
     const baseURL = process.env.API_HOST
 
     if (!baseURL) {

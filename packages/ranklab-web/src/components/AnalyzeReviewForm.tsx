@@ -3,10 +3,12 @@ import React, {
   ForwardRefExoticComponent,
   FunctionComponent,
   RefAttributes,
+  useRef,
   useState,
 } from "react"
 import ReactPlayer from "react-player"
-import { Typography, Paper, Grid, Stack } from "@mui/material"
+import { Typography, Paper, Grid, Stack, Button } from "@mui/material"
+import NextLink from "next/link"
 
 import {
   Timeline,
@@ -30,6 +32,15 @@ interface Props {
   comments: Comment[]
 }
 
+function formatTimestamp(ms: number) {
+  const duration = intervalToDuration({
+    start: 0,
+    end: ms * 1000,
+  })
+
+  return `${duration.minutes}:${String(duration.seconds).padStart(2, "0")}`
+}
+
 const Wrapper: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
   forwardRef<HTMLDivElement>(({ children }, ref) => {
     return <div ref={ref}>{children}</div>
@@ -43,10 +54,15 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [comments, setComments] = useState(fetchedComments)
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
-  const currentDuration = intervalToDuration({
-    start: 0,
-    end: currentTimestamp * 1000,
-  })
+  const playerRef = useRef<ReactPlayer>(null)
+
+  const sortedComments = comments.sort(
+    (a, b) => a.videoTimestamp - b.videoTimestamp
+  )
+
+  const goToComment = (comment: Comment) => {
+    playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
+  }
 
   return (
     <div>
@@ -58,6 +74,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               controls={true}
               url={review.videoUrl}
               wrapper={Wrapper}
+              ref={playerRef}
               onProgress={({ played }) =>
                 setCurrentTimestamp(Math.floor(played * 10))
               }
@@ -97,19 +114,18 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   setNewComment(EditorState.createEmpty())
                 }}
               >
-                Add comment at {currentDuration.minutes}:
-                {String(currentDuration.seconds).padStart(2, "0")}
+                Add comment at {formatTimestamp(currentTimestamp)}
               </LoadingButton>
             </Stack>
           </Grid>
         </Grid>
 
         <Timeline position="alternate">
-          {comments.map((comment) => (
+          {sortedComments.map((comment) => (
             <TimelineItem key={comment.id}>
               <TimelineOppositeContent>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {comment.videoTimestamp}
+                  {formatTimestamp(comment.videoTimestamp)}
                 </Typography>
               </TimelineOppositeContent>
               <TimelineSeparator>
@@ -124,7 +140,12 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   }}
                 >
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    {comment.body}
+                    <div
+                      onClick={() => goToComment(comment)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {comment.body}
+                    </div>
                   </Typography>
                 </Paper>
               </TimelineContent>
