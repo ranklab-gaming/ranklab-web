@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
+    "test": "NODE_ENV=test start-server-and-test start http://localhost:3000 cypress:headless"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.5.0",
@@ -55,6 +58,8 @@
     "@types/react-draft-wysiwyg": "^1.13.3",
     "@types/react-router-dom": "^5.1.8",
     "@types/react-scroll": "^1.8.3",
+    "cypress": "^8.7.0",
+    "start-server-and-test": "^1.14.0",
     "typescript": "^4.5.0-dev.20211006"
   }
 }

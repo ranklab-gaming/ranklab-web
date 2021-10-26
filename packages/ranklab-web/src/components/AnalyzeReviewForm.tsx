@@ -7,8 +7,7 @@ import React, {
   useState,
 } from "react"
 import ReactPlayer from "react-player"
-import { Typography, Paper, Grid, Stack, Button } from "@mui/material"
-import NextLink from "next/link"
+import { Typography, Paper, Grid, Stack } from "@mui/material"
 
 import {
   Timeline,

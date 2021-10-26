@@ -1,5 +1,5 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
-import React, { FunctionComponent } from "react"
+import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0"
+import React, { FunctionComponent, useEffect } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Box, Button, Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
@@ -21,13 +21,17 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }))
 
 interface Props {
-  accessToken: string
+  accessToken?: string
 }
 
 const getServerSideProps: GetServerSideProps<Props> = async function (ctx) {
-  return { props: {
-    accessToken: getAccessToken(ctx.req, ctx.res)
-  } }
+  const accessToken = await getAccessToken(ctx.req, ctx.res)
+
+  return {
+    props: {
+      accessToken: accessToken.accessToken,
+    },
+  }
 }
 
 const getServerSidePropsWithAuth = withPageAuthRequired({
@@ -36,10 +40,8 @@ const getServerSidePropsWithAuth = withPageAuthRequired({
 
 export { getServerSidePropsWithAuth as getServerSideProps }
 
-const NativeAuthCallbackPage: FunctionComponent<Props> = function ({ accessToken }) {
-  useEffect(() => {
-
-  });
+const NativeAuthCallbackPage: FunctionComponent<Props> = function () {
+  useEffect(() => {})
   return (
     <LogoOnlyLayout>
       <RootStyle title="Login Successful | Ranklab">

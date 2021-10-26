@@ -20,7 +20,6 @@ import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
 import React, { FunctionComponent } from "react"
 import { Game } from "@ranklab/api"
-import { EditorState } from "draft-js"
 
 export type FormValuesProps = {
   title: string
@@ -79,6 +78,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
       <Grid container direction="row" spacing={4}>
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>
+            {/* @ts-ignore */}
             <Controller
               name="title"
               control={control}
@@ -92,6 +92,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
               )}
             />
 
+            {/* @ts-ignore */}
             <Controller
               name="gameId"
               control={control}
@@ -125,6 +126,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
               >
                 Notes
               </Typography>
+              {/* @ts-ignore */}
               <Controller
                 name="notes"
                 control={control}
