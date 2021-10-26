@@ -10,7 +10,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          start: yarn start
+          start: yarn dev
           working-directory: packages/ranklab-web
         env:
           NODE_ENV: test
