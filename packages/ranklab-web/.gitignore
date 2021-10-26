@@ -11,3 +11,5 @@
 /.vscode
 /coverage
 /nohup.*
+cypress/videos
+cypress/screenshots
