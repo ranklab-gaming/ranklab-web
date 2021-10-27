@@ -13,5 +13,9 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
       - ROCKET_ADDRESS=0.0.0.0
+      - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
+      - RANKLAB_S3_BUCKET=ranklab-dev
+      - RANKLAB_AWS_ACCESS_KEY_ID
+      - RANKLAB_AWS_SECRET_KEY
     ports:
       - "8000:8000"
