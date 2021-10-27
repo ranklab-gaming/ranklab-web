@@ -19,7 +19,7 @@ jobs:
         with:
           record: true
           build: yarn build
-          start: yarn start
+          start: docker-compose -f docker-compose.cypress.yml run cargo run, yarn start
           working-directory: packages/ranklab-web
         env:
           NODE_ENV: test
@@ -27,4 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
+          AWS_CONTAINER_REGISTRY_SERVER: ${{ secrets.AWS_CONTAINER_REGISTRY_SERVER }}
+          API_HOST: http://localhost:8000
+          AUTH0_BASE_URL: http://localhost:3000
           NODE_OPTIONS: "--max_old_space_size=4096"

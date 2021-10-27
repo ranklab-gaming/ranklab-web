@@ -1,0 +1,20 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:13.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - ranklab
+    ports:
+      - "5432:5432"
+  ranklab-api:
+    image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
+      - ROCKET_ADDRESS=0.0.0.0
+    ports:
+      - "8000:8000"
