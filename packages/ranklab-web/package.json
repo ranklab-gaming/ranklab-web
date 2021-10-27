@@ -9,8 +9,8 @@
     "start": "next start",
     "cypress": "cypress open",
     "cypress:headless": "cypress run",
-    "test": "export $(cat .env.test.local | xargs) && NODE_ENV=test start-server-and-test start http://ranklab.development:3000 cypress",
-    "test:headless": "export $(cat .env.test.local | xargs) && NODE_ENV=test start-server-and-test start http://ranklab.development:3000 cypress:headless"
+    "test": "export $(cat .env.test.local | xargs) && NODE_ENV=test start-server-and-test start http://ranklab-development:3000 cypress",
+    "test:headless": "export $(cat .env.test.local | xargs) && NODE_ENV=test start-server-and-test start http://ranklab-development:3000 cypress:headless"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.5.0",
