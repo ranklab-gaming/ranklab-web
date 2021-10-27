@@ -19,7 +19,7 @@ jobs:
         with:
           record: true
           build: yarn build
-          start: docker-compose -f docker-compose.cypress.yml run cargo run, yarn start
+          start: docker-compose -f docker-compose.cypress.yml up, yarn start
           working-directory: packages/ranklab-web
         env:
           NODE_ENV: test
