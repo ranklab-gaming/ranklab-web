@@ -5,10 +5,11 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app
     ports:
       - "5432:5432"
   ranklab-api:
-    image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+    image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
       - ROCKET_ADDRESS=0.0.0.0
