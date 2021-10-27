@@ -8,6 +8,9 @@ services:
       - ..:/workspace:cached
     networks:
       - ranklab
+    extra_hosts:
+      ranklab-api: 0.0.0.0
+      ranklab.development: 0.0.0.0
 networks:
   ranklab:
     name: ranklab
