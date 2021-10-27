@@ -35,6 +35,7 @@ jobs:
           start: docker-compose -f docker-compose.cypress.yml up, yarn start
           working-directory: packages/ranklab-web
           wait-on: "http://ranklab-api:8000"
+          wait-on-timeout: 120
         env:
           NODE_ENV: test
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
