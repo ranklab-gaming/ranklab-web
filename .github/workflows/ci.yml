@@ -30,6 +30,7 @@ jobs:
           build: yarn build
           start: docker-compose -f docker-compose.cypress.yml up, yarn start
           working-directory: packages/ranklab-web
+          wait-on: "http://localhost:8000"
         env:
           NODE_ENV: test
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
