@@ -5,10 +5,6 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    networks:
-      - ranklab
     ports:
       - "5432:5432"
   ranklab-api:
