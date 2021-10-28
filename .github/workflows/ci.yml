@@ -31,11 +31,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           record: true
-          build: yarn build
-          start: docker-compose -f docker-compose.cypress.yml up, yarn start
           working-directory: packages/ranklab-web
-          wait-on: "http://ranklab-api:8000"
-          wait-on-timeout: 120
+          command: yarn ci:run
         env:
           NODE_ENV: test
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
