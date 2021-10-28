@@ -1,3 +1,13 @@
 {
-  "projectId": "mw3765"
+  "projectId": "mw3765",
+  "baseUrl": "http://ranklab-development:3000",
+  "env": {
+    "auth0Audience": "http://ranklab-api:8000",
+    "auth0Domain": "ranklab-development.eu.auth0.com",
+    "auth0ClientId": "ku0qDC3xI5YIQyERNk4aQAt59SONOTg9",
+    "auth0Password": "password123*",
+    "auth0Scope": "openid profile email offline_access",
+    "auth0SessionCookieName": "appSession",
+    "auth0Username": "test@ranklab.gg"
+  }
 }
