@@ -8,7 +8,7 @@
     "build": "yarn workspace @ranklab/api build && next build",
     "start": "next start",
     "cypress": "cypress run",
-    "test": "export $(cat .env.test.local | xargs) && start-server-and-test start http://ranklab-development:3000 cypress",
+    "test": "export $(cat .env.test.local | xargs) && NODE_ENV=test start-server-and-test start http://ranklab-development:3000 cypress",
     "cypress:record": "yarn cypress --record",
     "ci:start": "docker-compose -f docker-compose.cypress.yml up & yarn start",
     "ci:run": "yarn build && start-server-and-test ci:start http://ranklab-development:3000 cypress:record"

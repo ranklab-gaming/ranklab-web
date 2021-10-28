@@ -5,9 +5,10 @@
     "build": "yarn workspace @ranklab/web build",
     "start": "yarn workspace @ranklab/web start",
     "codegen": "./bin/codegen",
-    "test": "yarn workspace @ranklab/web test:headless"
+    "test": "yarn workspace @ranklab/web test"
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {}
 }

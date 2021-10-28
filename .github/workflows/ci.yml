@@ -43,3 +43,9 @@ jobs:
           AUTH0_BASE_URL: http://ranklab-development:3000
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
           RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
+          CYPRESS_AUTH_URL: https://ranklab-development.eu.auth0.com/oauth/token
+          CYPRESS_AUTH_USERNAME: test@ranklab.gg
+          CYPRESS_AUTH_PASSWORD: password123*
+          CYPRESS_AUTH_AUDIENCE: https://ranklab-development.eu.auth0.com/api/v2/
+          CYPRESS_AUTH_CLIENT_ID: ku0qDC3xI5YIQyERNk4aQAt59SONOTg9
+          CYPRESS_AUTH_CLIENT_SECRET: ${{ secrets.CYPRESS_AUTH_CLIENT_SECRET }}
