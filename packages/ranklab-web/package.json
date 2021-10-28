@@ -9,8 +9,9 @@
     "start": "next start",
     "cypress": "cypress run",
     "test": "export $(cat .env.test.local | xargs) && start-server-and-test start http://ranklab-development:3000 cypress",
+    "cypress:record": "yarn cypress --record",
     "ci:start": "docker-compose -f docker-compose.cypress.yml up & yarn start",
-    "ci:run": "yarn build && start-server-and-test ci:start http://ranklab-development:3000 cypress"
+    "ci:run": "yarn build && start-server-and-test ci:start http://ranklab-development:3000 cypress:record"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.5.0",
