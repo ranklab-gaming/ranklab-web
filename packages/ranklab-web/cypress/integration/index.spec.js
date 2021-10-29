@@ -5,5 +5,3 @@ describe("Navigation", () => {
     cy.get("h1").contains("Be the better gamer with Ranklab")
   })
 })
-
-export {}

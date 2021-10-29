@@ -5,5 +5,3 @@ describe("login", () => {
     cy.contains("test@ranklab.gg")
   })
 })
-
-export {}
