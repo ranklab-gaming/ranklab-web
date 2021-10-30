@@ -9,6 +9,8 @@ services:
     ports:
       - "5432:5432"
     command: ./bin/test-prepare
+    build:
+      context: ../
   ranklab-api:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
