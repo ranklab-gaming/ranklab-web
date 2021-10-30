@@ -19,4 +19,7 @@ services:
       - RANKLAB_AWS_SECRET_KEY
     ports:
       - "8000:8000"
-    command: ./bin/test-prepare
+    volumes:
+      - ./bin:/root/bin
+    entrypoint:
+      ["bash", "-c", "/root/bin/test-prepare && /root/app/ranklab-api"]
