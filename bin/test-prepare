@@ -1,0 +1,5 @@
+#!/bin/sh
+
+DATABASE_URL=postgres://postgres:postgres@localhost:5432
+psql $DATABASE_URL -c 'CREATE DATABASE app_test_template WITH TEMPLATE app_test;'
+psql $DATABASE_URL -c 'ALTER DATABASE app_test_template WITH is_template TRUE;'

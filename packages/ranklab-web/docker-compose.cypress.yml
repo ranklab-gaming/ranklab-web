@@ -5,13 +5,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app
+      POSTGRES_DB: app_test
     ports:
       - "5432:5432"
+    command: ./bin/test-prepare
   ranklab-api:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app_test
       - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
       - RANKLAB_S3_BUCKET=ranklab-dev
@@ -19,3 +20,5 @@ services:
       - RANKLAB_AWS_SECRET_KEY
     ports:
       - "8000:8000"
+    depends_on:
+      - postgres

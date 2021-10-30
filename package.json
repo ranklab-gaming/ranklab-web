@@ -5,7 +5,8 @@
     "build": "yarn workspace @ranklab/web build",
     "start": "yarn workspace @ranklab/web start",
     "codegen": "./bin/codegen",
-    "test": "yarn workspace @ranklab/web test"
+    "test": "yarn workspace @ranklab/web test",
+    "ci:run": "yarn workspace @ranklab/web ci:run"
   },
   "workspaces": [
     "packages/*"
