@@ -8,9 +8,6 @@ services:
       POSTGRES_DB: app_test
     ports:
       - "5432:5432"
-  migration:
-    image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
-    command: ./bin/test-prepare
   ranklab-api:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
@@ -22,5 +19,4 @@ services:
       - RANKLAB_AWS_SECRET_KEY
     ports:
       - "8000:8000"
-    depends_on:
-      - migration
+    command: ./bin/test-prepare
