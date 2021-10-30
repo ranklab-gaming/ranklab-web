@@ -20,6 +20,8 @@ services:
       - "8000:8000"
     build:
       context: ../../../
-      dockerfile: Dockerfile
+      dockerfile: packages/ranklab-web/cypress/Dockerfile
       args:
         - AWS_CONTAINER_REGISTRY_SERVER
+    entrypoint:
+      ["bash", "-c", "/root/bin/test-prepare && /root/app/ranklab-api"]
