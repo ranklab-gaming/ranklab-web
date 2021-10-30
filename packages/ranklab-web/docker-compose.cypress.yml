@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app_test
+      POSTGRES_DB: app
     ports:
       - "5432:5432"
   ranklab-api:
