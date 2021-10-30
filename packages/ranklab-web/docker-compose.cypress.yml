@@ -15,7 +15,7 @@ services:
   ranklab-api:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app_test
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
       - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
       - RANKLAB_S3_BUCKET=ranklab-dev
