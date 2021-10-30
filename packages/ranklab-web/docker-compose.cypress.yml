@@ -10,8 +10,7 @@ services:
       - "5432:5432"
   migration:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
-    command:
-      - ./bin/test-prepare
+    command: ./bin/test-prepare
   ranklab-api:
     image: ${AWS_CONTAINER_REGISTRY_SERVER}/ranklab-api-production:latest
     environment:
