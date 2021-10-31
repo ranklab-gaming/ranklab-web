@@ -1,10 +1,9 @@
-import { getAccessToken, withPageAuthRequired } from "@auth0/nextjs-auth0"
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent, useEffect } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Box, Button, Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import { styled } from "@mui/material/styles"
-import NextLink from "next/link"
 import LogoOnlyLayout from "src/layouts/LogoOnlyLayout"
 import {
   MotionContainer,
@@ -21,15 +20,17 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }))
 
 interface Props {
-  accessToken?: string
+  accessToken: string
+  refreshToken: string
 }
 
 const getServerSideProps: GetServerSideProps<Props> = async function (ctx) {
-  const accessToken = await getAccessToken(ctx.req, ctx.res)
+  const session = getSession(ctx.req, ctx.res)
 
   return {
     props: {
-      accessToken: accessToken.accessToken,
+      accessToken: session!.accessToken!,
+      refreshToken: session!.refreshToken!,
     },
   }
 }
@@ -40,8 +41,21 @@ const getServerSidePropsWithAuth = withPageAuthRequired({
 
 export { getServerSidePropsWithAuth as getServerSideProps }
 
-const NativeAuthCallbackPage: FunctionComponent<Props> = function () {
-  useEffect(() => {})
+const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
+  accessToken,
+  refreshToken,
+}) {
+  useEffect(() => {
+    const callbackUrl = new URL("x-ranklab-desktop-auth:/callback")
+
+    callbackUrl.search = new URLSearchParams({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    }).toString()
+
+    window.location.href = callbackUrl.toString()
+  })
+
   return (
     <LogoOnlyLayout>
       <RootStyle title="Login Successful | Ranklab">
@@ -50,14 +64,16 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function () {
             <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
               <motion.div variants={varBounceIn}>
                 <Typography variant="h3" paragraph>
-                  Login was successful. You can now close this window.
+                  Login was successful. You can now close the browser.
                 </Typography>
               </motion.div>
-              <NextLink href="/dashboard">
-                <Button size="large" variant="contained">
-                  Go to Dashboard
-                </Button>
-              </NextLink>
+              <Button
+                size="large"
+                variant="contained"
+                onClick={() => window.close()}
+              >
+                Close This Window
+              </Button>
             </Box>
           </MotionContainer>
         </Container>
