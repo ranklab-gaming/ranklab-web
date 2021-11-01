@@ -27,7 +27,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-deps-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-deps-${{ hashFiles('yarn.lock') }}
       - run: yarn install --frozen-lockfile
       - name: Build docker container
         run: DOCKER_BUILDKIT=1 docker build -f ${{ github.workspace }}/packages/ranklab-web/cypress/Dockerfile -t ranklab-web . && docker save -o ${{ github.workspace }}/ranklab-web.tar ranklab-web
