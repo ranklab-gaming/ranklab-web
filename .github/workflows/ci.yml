@@ -28,7 +28,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           runTests: false
-      - run: docker build -f ${{ github.workspace }}/packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=${{ github.workspace }}/ranklab-web.tar -t ranklab-web .
+      - name: Build docker container
+      - run: DOCKER_BUILDKIT=1 docker build -f ${{ github.workspace }}/packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=${{ github.workspace }}/ranklab-web.tar -t ranklab-web .
       - name: Save docker container
         uses: actions/upload-artifact@v2
         with:
