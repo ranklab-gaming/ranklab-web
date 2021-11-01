@@ -37,7 +37,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar
+      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar .
       - name: Save docker container
         uses: actions/upload-artifact@v2
         with:
