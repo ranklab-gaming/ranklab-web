@@ -50,6 +50,12 @@ jobs:
           name: build
           if-no-files-found: error
           path: ${{ github.workspace }}/packages/ranklab-web/.next
+      - name: Save node_modules folder
+        uses: actions/upload-artifact@v2
+        with:
+          name: node_modules
+          if-no-files-found: error
+          path: ${{ github.workspace }}/node_modules
   ui-chrome-tests:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
@@ -62,6 +68,11 @@ jobs:
         with:
           name: build
           path: ${{ github.workspace }}/packages/ranklab-web/.next
+      - name: Download the node_modules folders
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+          path: ${{ github.workspace }}/node_modules
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -83,6 +94,11 @@ jobs:
         with:
           name: build
           path: ${{ github.workspace }}/packages/ranklab-web/.next
+      - name: Download the node_modules folders
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+          path: ${{ github.workspace }}/node_modules
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
         with:
