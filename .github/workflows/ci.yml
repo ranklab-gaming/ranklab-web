@@ -24,10 +24,11 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
+      - uses: actions/cache@v2
         with:
-          runTests: false
+          path: ${{ github.workspace }}/node_modules
+          key: ${{ runner.os }}-deps-${{ hashFiles('package-lock.json') }}
+      - run: yarn install --frozen-lockfile
       - name: Build docker container
         run: DOCKER_BUILDKIT=1 docker build -f ${{ github.workspace }}/packages/ranklab-web/cypress/Dockerfile -t ranklab-web . && docker save -o ${{ github.workspace }}/ranklab-web.tar ranklab-web
       - name: Save docker container
@@ -40,7 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
+    container: cypress/included:8.7.0
     steps:
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@master
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -52,8 +56,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
         run: |
-          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
-          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
+          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
+          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the docker container
@@ -75,7 +79,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
+    container: cypress/included:8.7.0
     steps:
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@master
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -87,8 +94,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
         run: |
-          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
-          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
+          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
+          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the docker container
