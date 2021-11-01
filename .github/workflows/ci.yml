@@ -81,7 +81,7 @@ jobs:
           sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
-       - name: Download the docker container
+      - name: Download the docker container
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web-docker
