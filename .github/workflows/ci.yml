@@ -61,6 +61,7 @@ jobs:
         with:
           name: ranklab-web.tar
       - run: docker import ranklab-web.tar
+      - run: yarn global add start-server-and-test
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -95,6 +96,7 @@ jobs:
         with:
           name: ranklab-web.tar
       - run: docker import ranklab-web.tar
+      - run: yarn global add start-server-and-test
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
         with:
