@@ -3,13 +3,11 @@ const { loadEnvConfig } = require("@next/env")
 const util = require("util")
 const exec = util.promisify(require("child_process").exec)
 
-const databaseUrl = "postgresql://postgres:postgres@postgres:5432"
-
 export default (on, config) => {
   on("task", {
     encrypt,
     "db:reset": async () => {
-      await exec(`psql ${databaseUrl} -c "SELECT reset_db();"`)
+      await exec(`psql ${process.env.DATABASE_URL} -c "SELECT reset_db();"`)
       return null
     },
   })
