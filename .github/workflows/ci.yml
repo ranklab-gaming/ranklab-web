@@ -37,13 +37,13 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - run: yarn build
-      - name: Save build folder
+      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar
+      - name: Save docker container
         uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: ranklab-web-docker
           if-no-files-found: error
-          path: ${{ github.workspace }}/packages/ranklab-web/.next
+          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
   ui-chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -55,11 +55,11 @@ jobs:
           sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Download the build folders
+      - name: Download the docker container
         uses: actions/download-artifact@v2
         with:
-          name: build
-          path: ${{ github.workspace }}/packages/ranklab-web/.next
+          name: ranklab-web-docker
+          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
       - run: npm install -g start-server-and-test next react react-dom
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
@@ -81,11 +81,11 @@ jobs:
           sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Download the build folders
+       - name: Download the docker container
         uses: actions/download-artifact@v2
         with:
-          name: build
-          path: ${{ github.workspace }}/packages/ranklab-web/.next
+          name: ranklab-web-docker
+          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
       - run: npm install -g start-server-and-test next react react-dom
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
