@@ -14,6 +14,8 @@ ENV NODE_OPTIONS --max_old_space_size=4096
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/ranklab-web/node_modules ./packages/ranklab-web/node_modules
+COPY --from=deps /app/packages/ranklab-api/node_modules ./packages/ranklab-api/node_modules
 RUN yarn build
 
 # Test image, copy all the files and run next
