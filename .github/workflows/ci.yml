@@ -16,7 +16,6 @@ env:
 jobs:
   install:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node14.17.0-chrome88-ff89
     steps:
       - name: Add hosts to /etc/hosts
         run: |
