@@ -62,7 +62,7 @@ jobs:
         with:
           name: build
           path: ${{ github.workspace }}/packages/ranklab-web/.next
-      - run: yarn global add start-server-and-test next
+      - run: yarn global add start-server-and-test next react react-dom
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -84,7 +84,7 @@ jobs:
         with:
           name: build
           path: ${{ github.workspace }}/packages/ranklab-web/.next
-      - run: yarn global add start-server-and-test next
+      - run: yarn global add start-server-and-test next react react-dom
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
         with:
