@@ -33,7 +33,7 @@ jobs:
       - name: Save docker container
         uses: actions/upload-artifact@v2
         with:
-          name: ranklab-web-docker
+          name: ranklab-web.tar
           if-no-files-found: error
           path: ${{ github.workspace }}/ranklab-web.tar
   ui-chrome-tests:
@@ -59,8 +59,7 @@ jobs:
       - name: Download the docker container
         uses: actions/download-artifact@v2
         with:
-          name: ranklab-web-docker
-          path: ${{ github.workspace }}/ranklab-web.tar
+          name: ranklab-web.tar
       - run: docker import ranklab-web.tar
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
@@ -94,8 +93,7 @@ jobs:
       - name: Download the docker container
         uses: actions/download-artifact@v2
         with:
-          name: ranklab-web-docker
-          path: ${{ github.workspace }}/ranklab-web.tar
+          name: ranklab-web.tar
       - run: docker import ranklab-web.tar
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
