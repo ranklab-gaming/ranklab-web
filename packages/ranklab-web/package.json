@@ -10,7 +10,7 @@
     "cypress": "cypress run",
     "test:build": "NODE_ENV=test yarn build",
     "test": "NODE_ENV=test start-server-and-test start \"http://ranklab-development:3000|http://ranklab-api:8000\" cypress",
-    "cypress:record": "yarn cypress --record --browser=$BROWSER --group=$GROUP",
+    "cypress:record": "yarn cypress --record",
     "ci:start": "docker-compose -f ./cypress/docker-compose.yml up & docker run -p 3000:3000 ranklab-web",
     "ci:run": "start-server-and-test ci:start \"http://ranklab-development:3000|http://ranklab-api:8000\" cypress:record"
   },
