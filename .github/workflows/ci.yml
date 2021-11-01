@@ -40,7 +40,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
-    container: cypress/browsers:node14.17.0-chrome88-ff89
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -53,8 +52,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
         run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the docker container
@@ -76,7 +75,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
-    container: cypress/browsers:node14.17.0-chrome88-ff89
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -89,8 +87,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
         run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the docker container
