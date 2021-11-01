@@ -24,13 +24,22 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar .
+      - name: Cypress install
+        uses: cypress-io/github-action@v2
+        with:
+          runTests: false
+      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=ranklab-web.tar -t ranklab-web .
       - name: Save docker container
         uses: actions/upload-artifact@v2
         with:
           name: ranklab-web-docker
           if-no-files-found: error
-          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
+          path: ${{ github.workspace }}/ranklab-web.tar
+  ui-chrome-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: install
+    steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -40,15 +49,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
-        with:
-          runTests: false
-  ui-chrome-tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: install
-    steps:
       - name: Add hosts to /etc/hosts
         run: |
           sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
@@ -59,8 +59,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web-docker
-          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
-      - run: npm install -g start-server-and-test next react react-dom
+          path: ${{ github.workspace }}/ranklab-web.tar
+      - run: docker import ranklab-web.tar
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -75,6 +75,15 @@ jobs:
     timeout-minutes: 10
     needs: install
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
         run: |
           sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
@@ -85,8 +94,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web-docker
-          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
-      - run: npm install -g start-server-and-test next react react-dom
+          path: ${{ github.workspace }}/ranklab-web.tar
+      - run: docker import ranklab-web.tar
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
         with:

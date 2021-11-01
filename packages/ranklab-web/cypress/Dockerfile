@@ -1,20 +1,9 @@
-# Install dependencies only when needed
-FROM node:14-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY . .
-RUN yarn install --frozen-lockfile
-
 # Rebuild the source code only when needed
 FROM node:14-alpine AS builder
 ENV NODE_ENV test
 ENV NODE_OPTIONS --max_old_space_size=4096
 WORKDIR /app
 COPY . .
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages/ranklab-web/node_modules ./packages/ranklab-web/node_modules
-COPY --from=deps /app/packages/ranklab-api/node_modules ./packages/ranklab-api/node_modules
 RUN yarn build
 
 # Test image, copy all the files and run next
