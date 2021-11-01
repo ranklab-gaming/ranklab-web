@@ -5,12 +5,14 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app
+      POSTGRES_DB: app_test
     ports:
       - "5432:5432"
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
   ranklab-api:
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app_test
       - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
       - RANKLAB_S3_BUCKET=ranklab-dev
@@ -18,10 +20,6 @@ services:
       - RANKLAB_AWS_SECRET_KEY
     ports:
       - "8000:8000"
-    build:
-      context: ../../../
-      dockerfile: packages/ranklab-web/cypress/Dockerfile
-      args:
-        - AWS_CONTAINER_REGISTRY_SERVER
-    entrypoint:
-      ["bash", "-c", "/root/bin/test-prepare && /root/app/ranklab-api"]
+    image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+    depends_on:
+      - postgres
