@@ -1,8 +1,6 @@
 name: End-to-end tests
 on: [push]
 env:
-  NODE_ENV: test
-  NODE_OPTIONS: --max_old_space_size=4096
   DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app_test
   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -23,3 +23,10 @@ services:
     image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
     depends_on:
       - postgres
+  ranklab-web:
+    environment:
+      - AUTH0_CLIENT_SECRET
+      - AUTH0_SECRET
+    build:
+      context: ../../../
+      dockerfile: ./Dockerfile
