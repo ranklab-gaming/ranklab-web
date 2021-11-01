@@ -1,4 +1,3 @@
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent, useEffect } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Box, Button, Container, Typography } from "@mui/material"
@@ -20,39 +19,38 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }))
 
 interface Props {
-  accessToken: string
-  refreshToken: string
+  code: string
+  state: string
 }
 
-const getServerSideProps: GetServerSideProps<Props> = async function (ctx) {
-  const session = getSession(ctx.req, ctx.res)
+export const getServerSideProps: GetServerSideProps = async function ({
+  query,
+}) {
+  if (
+    !query ||
+    !query.code ||
+    !query.state ||
+    Array.isArray(query.code) ||
+    Array.isArray(query.state)
+  ) {
+    throw new Error("Invalid query in auth callback")
+  }
 
   return {
     props: {
-      accessToken: session!.accessToken!,
-      refreshToken: session!.refreshToken!,
+      code: query.code,
+      state: query.state,
     },
   }
 }
 
-const getServerSidePropsWithAuth = withPageAuthRequired({
-  getServerSideProps,
-})
-
-export { getServerSidePropsWithAuth as getServerSideProps }
-
 const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
-  accessToken,
-  refreshToken,
+  code,
+  state,
 }) {
   useEffect(() => {
     const callbackUrl = new URL("x-ranklab-desktop-auth:/callback")
-
-    callbackUrl.search = new URLSearchParams({
-      access_token: accessToken,
-      refresh_token: refreshToken,
-    }).toString()
-
+    callbackUrl.search = new URLSearchParams({ code, state }).toString()
     window.location.href = callbackUrl.toString()
   })
 
