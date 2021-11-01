@@ -15,6 +15,20 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
+      - name: Cache builds
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
+          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-cache-
+      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar .
+      - name: Save docker container
+        uses: actions/upload-artifact@v2
+        with:
+          name: ranklab-web-docker
+          if-no-files-found: error
+          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -30,20 +44,6 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           runTests: false
-      - name: Cache builds
-        uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-cache-
-      - run: docker build -f ./packages/ranklab-web/cypress/Dockerfile --output type=tar,dest=./packages/ranklab-web/cypress/ranklab-web.tar .
-      - name: Save docker container
-        uses: actions/upload-artifact@v2
-        with:
-          name: ranklab-web-docker
-          if-no-files-found: error
-          path: ${{ github.workspace }}/packages/ranklab-web/cypress/ranklab-web.tar
   ui-chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
