@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web.tar
-      - run: docker import ranklab-web.tar
+      - run: docker load -i ranklab-web.tar
       - run: yarn global add start-server-and-test
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
@@ -95,7 +95,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web.tar
-      - run: docker import ranklab-web.tar
+      - run: docker load -i ranklab-web.tar
       - run: yarn global add start-server-and-test
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
