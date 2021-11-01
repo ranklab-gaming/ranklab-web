@@ -1,29 +1,16 @@
 # Rebuild the source code only when needed
-FROM node:14-alpine AS builder
-ENV NODE_ENV test
-ENV NODE_OPTIONS --max_old_space_size=4096
-WORKDIR /app
-COPY . .
-RUN yarn build
-
-# Test image, copy all the files and run next
-FROM node:14-alpine AS runner
+FROM node:14-alpine
 
 ARG AUTH0_CLIENT_SECRET
 ARG AUTH0_SECRET
 ENV NODE_ENV test
+ENV NODE_OPTIONS --max_old_space_size=4096
 
 WORKDIR /app
-
+COPY . .
+RUN yarn build
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
-
-# You only need to copy next.config.js if you are NOT using the default configuration
-COPY --from=builder /app/packages/ranklab-web/next.config.js ./
-COPY --from=builder /app/packages/ranklab-web/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/packages/ranklab-web/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/packages/ranklab-web/package.json ./package.json
 
 USER nextjs
 
