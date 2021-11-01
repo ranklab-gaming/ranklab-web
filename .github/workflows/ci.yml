@@ -53,7 +53,6 @@ jobs:
   ui-chrome-tests:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
-    container: cypress/browsers:node14.17.0-chrome88-ff89
     needs: install
     steps:
       - name: Checkout
@@ -66,14 +65,15 @@ jobs:
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
+          install: false
           working-directory: packages/ranklab-web
           command: yarn ci:run
         env:
           BROWSER: chrome
+          GROUP: UI - Chrome
   ui-firefox-tests:
     runs-on: ubuntu-20.04
     timeout-minutes: 10
-    container: cypress/browsers:node14.17.0-chrome88-ff89
     needs: install
     steps:
       - name: Checkout
@@ -86,7 +86,9 @@ jobs:
       - name: "UI Tests - Firefox"
         uses: cypress-io/github-action@v2
         with:
+          install: false
           working-directory: packages/ranklab-web
           command: yarn ci:run
         env:
           BROWSER: firefox
+          GROUP: UI - Firefox
