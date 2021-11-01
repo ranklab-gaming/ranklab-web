@@ -17,10 +17,6 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - name: Add hosts to /etc/hosts
-        run: |
-          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
-          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -51,10 +47,14 @@ jobs:
           if-no-files-found: error
           path: ${{ github.workspace }}/packages/ranklab-web/.next
   ui-chrome-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
     steps:
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the build folders
@@ -73,10 +73,14 @@ jobs:
           BROWSER: chrome
           GROUP: UI - Chrome
   ui-firefox-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
     steps:
+      - name: Add hosts to /etc/hosts
+        run: |
+          sudo echo "0.0.0.0 ranklab-api" | sudo tee -a /etc/hosts
+          sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Download the build folders
