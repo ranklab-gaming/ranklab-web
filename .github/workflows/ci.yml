@@ -12,8 +12,41 @@ env:
   CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
 
 jobs:
-  install:
+  get-ecr-password:
     runs-on: ubuntu-latest
+    outputs:
+      token: ${{ steps.ecr.outputs.token }}
+    steps:
+      - name: Get token to login to Amazon ECR
+        uses: PhutureCorp/ecr-login-token@v0.8.0
+        with:
+          registry: 74812739502.dkr.ecr.eu-west-2.amazonaws.com
+          username: ${{ secrets.ECR_ACCESS_KEY_ID }}
+          password: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+  ui-chrome-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    container: cypress/browsers:node14.17.0-chrome91-ff89
+    needs: get-ecr-password
+    services:
+      postgres:
+        image: postgres:13.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app_test
+      ranklab-api:
+        env:
+          - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app_test
+          - ROCKET_ADDRESS=0.0.0.0
+          - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
+          - RANKLAB_S3_BUCKET=ranklab-dev
+          - RANKLAB_AWS_ACCESS_KEY_ID
+          - RANKLAB_AWS_SECRET_KEY
+        image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+        credentials:
+          username: AWS
+          password: ${{ needs.get-ecr-password.outputs.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,92 +57,63 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/node_modules
-          key: ${{ runner.os }}-deps-${{ hashFiles('yarn.lock') }}
-      - run: yarn install --frozen-lockfile
-      - name: Build docker container
-        run: DOCKER_BUILDKIT=1 docker build -f ${{ github.workspace }}/packages/ranklab-web/cypress/Dockerfile -t ranklab-web . && docker save -o ${{ github.workspace }}/ranklab-web.tar ranklab-web
-      - name: Save docker container
-        uses: actions/upload-artifact@v2
-        with:
-          name: ranklab-web.tar
-          if-no-files-found: error
-          path: ${{ github.workspace }}/ranklab-web.tar
-  ui-chrome-tests:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: install
-    container: cypress/included:8.7.0
-    steps:
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@master
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
       - name: Add hosts to /etc/hosts
-        run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Download the docker container
-        uses: actions/download-artifact@v2
-        with:
-          name: ranklab-web.tar
-      - run: docker load -i ranklab-web.tar
-      - run: yarn global add start-server-and-test
+        run: echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
-          install: false
           working-directory: packages/ranklab-web
-          command: yarn ci:run
-        env:
-          CYPRESS_BROWSER: chrome
-          CYPRESS_GROUP: UI - Chrome
+          record: true
+          build: yarn test:build
+          start: yarn test:start
+          wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
+          browser: chrome
+          group: "UI - Chrome"
   ui-firefox-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: install
-    container: cypress/included:8.7.0
+    container:
+      image: cypress/browsers:node14.17.0-chrome91-ff89
+      options: --user 1001
+    needs: get-ecr-password
+    services:
+      postgres:
+        image: postgres:13.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: app_test
+      ranklab-api:
+        env:
+          - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/app_test
+          - ROCKET_ADDRESS=0.0.0.0
+          - RANKLAB_AUTH0_DOMAIN=https://ranklab-development.eu.auth0.com/
+          - RANKLAB_S3_BUCKET=ranklab-dev
+          - RANKLAB_AWS_ACCESS_KEY_ID
+          - RANKLAB_AWS_SECRET_KEY
+        image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+        credentials:
+          username: AWS
+          password: ${{ needs.get-ecr-password.outputs.token }}
     steps:
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@master
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: Add hosts to /etc/hosts
-        run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Download the docker container
-        uses: actions/download-artifact@v2
+      - name: Cache builds
+        uses: actions/cache@v2
         with:
-          name: ranklab-web.tar
-      - run: docker load -i ranklab-web.tar
-      - run: yarn global add start-server-and-test
-      - name: "UI Tests - Firefox"
+          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
+          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-cache-
+      - name: Add hosts to /etc/hosts
+        run: echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
+      - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
-          install: false
           working-directory: packages/ranklab-web
-          command: yarn ci:run
-        env:
-          CYPRESS_BROWSER: firefox
-          CYPRESS_GROUP: UI - Firefox
+          record: true
+          build: yarn build
+          start: yarn start
+          wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
+          browser: firefox
+          group: "UI - Firefox"
