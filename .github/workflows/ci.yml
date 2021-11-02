@@ -16,7 +16,9 @@ jobs:
   ui-chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    container: cypress/browsers:node14.17.0-chrome91-ff89
+    container:
+      image: cypress/browsers:node14.17.0-chrome91-ff89
+      options: --add-host=ranklab-development:0.0.0.0
     services:
       postgres:
         image: postgres:13.4
@@ -37,10 +39,6 @@ jobs:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
     steps:
-      - name: Add hosts to /etc/hosts
-        run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache builds
@@ -65,7 +63,9 @@ jobs:
     timeout-minutes: 10
     container:
       image: cypress/browsers:node14.17.0-chrome91-ff89
-      options: --user 1001
+      options: >-
+        --user 1001
+        --add-host=ranklab-development:0.0.0.0
     services:
       postgres:
         image: postgres:13.4
@@ -86,10 +86,6 @@ jobs:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
     steps:
-      - name: Add hosts to /etc/hosts
-        run: |
-          echo "0.0.0.0 ranklab-api" | tee -a /etc/hosts
-          echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
       - name: Checkout
         uses: actions/checkout@v2
       - name: Cache builds
