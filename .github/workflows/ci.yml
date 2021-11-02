@@ -1,6 +1,26 @@
 name: End-to-end tests
 on: [push]
 
+services: &services
+  postgres:
+    image: postgres:13.4
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app_test
+  ranklab-api:
+    env:
+      ROCKET_PROFILE: test
+      ROCKET_ADDRESS: 0.0.0.0
+      RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
+      RANKLAB_S3_BUCKET: ranklab-dev
+      RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
+      RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
+    image: ghcr.io/ranklab-gaming/ranklab-api:latest
+    credentials:
+      username: ${{ secrets.GHCR_USER }}
+      password: ${{ secrets.GHCR_PASSWORD }}
+
 env:
   NODE_ENV: test
   NODE_OPTIONS: --max_old_space_size=4096
@@ -20,24 +40,7 @@ jobs:
       image: cypress/browsers:node14.17.0-chrome91-ff89
       options: --add-host=ranklab-development:0.0.0.0
     services:
-      postgres:
-        image: postgres:13.4
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: app_test
-      ranklab-api:
-        env:
-          ROCKET_PROFILE: test
-          ROCKET_ADDRESS: 0.0.0.0
-          RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
-          RANKLAB_S3_BUCKET: ranklab-dev
-          RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
-          RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-        image: ghcr.io/ranklab-gaming/ranklab-api:latest
-        credentials:
-          username: ${{ secrets.GHCR_USER }}
-          password: ${{ secrets.GHCR_PASSWORD }}
+      <<: *services
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -67,24 +70,7 @@ jobs:
         --user 1001
         --add-host=ranklab-development:0.0.0.0
     services:
-      postgres:
-        image: postgres:13.4
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: app_test
-      ranklab-api:
-        env:
-          ROCKET_PROFILE: test
-          ROCKET_ADDRESS: 0.0.0.0
-          RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
-          RANKLAB_S3_BUCKET: ranklab-dev
-          RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
-          RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-        image: ghcr.io/ranklab-gaming/ranklab-api:latest
-        credentials:
-          username: ${{ secrets.GHCR_USER }}
-          password: ${{ secrets.GHCR_PASSWORD }}
+      <<: *services
     steps:
       - name: Checkout
         uses: actions/checkout@v2
