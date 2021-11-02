@@ -9,7 +9,6 @@
     "start": "next start",
     "test:start": "next start -H ranklab-development",
     "cypress": "cypress run",
-    "test:build": "NODE_ENV=test yarn build",
     "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-development:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
