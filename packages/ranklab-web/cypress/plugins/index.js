@@ -1,13 +1,16 @@
 const encrypt = require("cypress-nextjs-auth0/encrypt")
 const { loadEnvConfig } = require("@next/env")
-const util = require("util")
-const exec = util.promisify(require("child_process").exec)
+const { Client } = require("pg")
 
 export default async (on, config) => {
   on("task", {
     encrypt,
     "db:reset": async () => {
-      await exec(`psql ${process.env.DATABASE_URL} -c "SELECT reset_db();"`)
+      const client = new Client({ connectionString: process.env.DATABASE_URL })
+      await client.connect()
+      await client.query(`SELECT reset_db();`)
+      await client.end()
+
       return null
     },
   })
@@ -21,7 +24,9 @@ export default async (on, config) => {
   config.env.auth0ClientId = process.env.AUTH0_CLIENT_ID
   config.env.auth0Scope = process.env.AUTH0_SCOPE
 
-  await exec(`psql ${process.env.DATABASE_URL} -c "
+  const client = new Client({ connectionString: process.env.DATABASE_URL })
+  await client.connect()
+  await client.query(`
   CREATE OR REPLACE FUNCTION reset_db() RETURNS void AS $$
   DECLARE
       statements CURSOR FOR
@@ -33,7 +38,8 @@ export default async (on, config) => {
       END LOOP;
   END;
   $$ LANGUAGE plpgsql;
-  "`)
+  `)
+  await client.end()
 
   return config
 }
