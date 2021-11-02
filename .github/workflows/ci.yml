@@ -14,14 +14,15 @@ jobs:
   get-ecr-password:
     runs-on: ubuntu-latest
     outputs:
-      token: ${{ steps.ecr.outputs.token }}
+      password: ${{ steps.ecr.outputs.password }}
     steps:
-      - name: Get token to login to Amazon ECR
-        uses: PhutureCorp/ecr-login-token@v0.8.0
+      - name: Login to ECR
+        id: ecr
+        uses: elgohr/ecr-login-action@master
         with:
-          registry: 974812739502.dkr.ecr.eu-west-2.amazonaws.com
-          username: ${{ secrets.ECR_ACCESS_KEY_ID }}
-          password: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+          access_key: ${{ secrets.ECR_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+          region: eu-west-2
   ui-chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -44,7 +45,7 @@ jobs:
         image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
         credentials:
           username: AWS
-          password: ${{ needs.get-ecr-password.outputs.token }}
+          password: ${{ needs.get-ecr-password.outputs.password }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -91,7 +92,7 @@ jobs:
         image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
         credentials:
           username: AWS
-          password: ${{ needs.get-ecr-password.outputs.token }}
+          password: ${{ needs.get-ecr-password.outputs.password }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
