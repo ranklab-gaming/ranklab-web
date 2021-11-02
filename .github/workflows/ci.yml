@@ -43,8 +43,6 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - name: Add hosts to /etc/hosts
-        run: sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -52,9 +50,10 @@ jobs:
           record: true
           build: yarn build
           start: yarn start
-          wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
+          wait-on: "http://ranklab-api:8000,http://localhost:3000"
           browser: chrome
           group: "UI - Chrome"
+          config: baseUrl=http://localhost:3000
         env:
           NODE_ENV: test
   ui-firefox-tests:
@@ -91,8 +90,6 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - name: Add hosts to /etc/hosts
-        run: sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -100,8 +97,9 @@ jobs:
           record: true
           build: yarn build
           start: yarn start
-          wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
+          wait-on: "http://ranklab-api:8000,http://localhost:3000"
           browser: firefox
           group: "UI - Firefox"
+          config: baseUrl=http://localhost:3000
         env:
           NODE_ENV: test
