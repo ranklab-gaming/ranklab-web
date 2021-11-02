@@ -3,7 +3,7 @@ const { loadEnvConfig } = require("@next/env")
 const util = require("util")
 const exec = util.promisify(require("child_process").exec)
 
-export default (on, config) => {
+export default async (on, config) => {
   on("task", {
     encrypt,
     "db:reset": async () => {
