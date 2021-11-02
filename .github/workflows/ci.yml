@@ -11,23 +11,10 @@ env:
   CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
 
 jobs:
-  get-ecr-password:
-    runs-on: ubuntu-latest
-    outputs:
-      password: ${{ steps.ecr.outputs.password }}
-    steps:
-      - name: Login to ECR
-        id: ecr
-        uses: elgohr/ecr-login-action@master
-        with:
-          access_key: ${{ secrets.ECR_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
-          region: eu-west-2
   ui-chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     container: cypress/browsers:node14.17.0-chrome91-ff89
-    needs: get-ecr-password
     services:
       postgres:
         image: postgres:13.4
@@ -42,10 +29,10 @@ jobs:
           RANKLAB_S3_BUCKET: ranklab-dev
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
           RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-        image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+        image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
-          username: AWS
-          password: ${{ needs.get-ecr-password.outputs.password }}
+          username: ${{ secrets.GHCR_USER }}
+          password: ${{ secrets.GHCR_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -63,18 +50,19 @@ jobs:
         with:
           working-directory: packages/ranklab-web
           record: true
-          build: yarn test:build
-          start: yarn test:start
+          build: yarn build
+          start: yarn start
           wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
           browser: chrome
           group: "UI - Chrome"
+        env:
+          NODE_ENV: test
   ui-firefox-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     container:
       image: cypress/browsers:node14.17.0-chrome91-ff89
       options: --user 1001
-    needs: get-ecr-password
     services:
       postgres:
         image: postgres:13.4
@@ -89,10 +77,10 @@ jobs:
           RANKLAB_S3_BUCKET: ranklab-dev
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
           RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-        image: 974812739502.dkr.ecr.eu-west-2.amazonaws.com/ranklab-api-production:latest
+        image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
-          username: AWS
-          password: ${{ needs.get-ecr-password.outputs.password }}
+          username: ${{ secrets.GHCR_USER }}
+          password: ${{ secrets.GHCR_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -115,3 +103,5 @@ jobs:
           wait-on: "http://ranklab-api:8000,http://ranklab-web:3000"
           browser: firefox
           group: "UI - Firefox"
+        env:
+          NODE_ENV: test
