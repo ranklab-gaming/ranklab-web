@@ -48,11 +48,13 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
   code,
   state,
 }) {
-  useEffect(() => {
+  const openNativeApp = function () {
     const callbackUrl = new URL("x-ranklab-desktop-auth:/callback")
     callbackUrl.search = new URLSearchParams({ code, state }).toString()
     window.location.href = callbackUrl.toString()
-  })
+  }
+
+  useEffect(openNativeApp)
 
   return (
     <LogoOnlyLayout>
@@ -62,15 +64,11 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
             <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
               <motion.div variants={varBounceIn}>
                 <Typography variant="h3" paragraph>
-                  Login was successful. You can now close the browser.
+                  Login was successful. You can now close this window.
                 </Typography>
               </motion.div>
-              <Button
-                size="large"
-                variant="contained"
-                onClick={() => window.close()}
-              >
-                Close This Window
+              <Button size="large" variant="contained" onClick={openNativeApp}>
+                Open Ranklab
               </Button>
             </Box>
           </MotionContainer>
