@@ -26,6 +26,7 @@ jobs:
           POSTGRES_DB: app_test
       ranklab-api:
         env:
+          ROCKET_PROFILE: test
           ROCKET_ADDRESS: 0.0.0.0
           RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
           RANKLAB_S3_BUCKET: ranklab-dev
@@ -35,8 +36,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: >-
-          --net-alias ranklab-api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -73,6 +72,7 @@ jobs:
           POSTGRES_DB: app_test
       ranklab-api:
         env:
+          ROCKET_PROFILE: test
           ROCKET_ADDRESS: 0.0.0.0
           RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
           RANKLAB_S3_BUCKET: ranklab-dev
@@ -82,8 +82,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: >-
-          --net-alias ranklab-api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
