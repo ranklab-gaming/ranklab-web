@@ -1,4 +1,4 @@
-FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.2.9
+FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.2.10
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash - \
     && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
