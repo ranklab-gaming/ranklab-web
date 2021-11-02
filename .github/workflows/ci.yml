@@ -44,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
       - name: Add hosts to /etc/hosts
-        run: echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
+        run: sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
@@ -92,7 +92,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
       - name: Add hosts to /etc/hosts
-        run: echo "0.0.0.0 ranklab-development" | tee -a /etc/hosts
+        run: sudo echo "0.0.0.0 ranklab-development" | sudo tee -a /etc/hosts
       - name: "UI Tests - Chrome"
         uses: cypress-io/github-action@v2
         with:
