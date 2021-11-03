@@ -13,9 +13,37 @@ env:
   CYPRESS_auth0CookieSecret: ${{ secrets.CYPRESS_AUTH0COOKIESECRET }}
 
 jobs:
-  ui-chrome-tests:
+  install:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node14.17.0-chrome88-ff89
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache builds
+        uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
+          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-cache-
+      - name: Cypress install
+        uses: cypress-io/github-action@v2
+        with:
+          runTests: false
+          build: yarn build
+      - run: tar czf ranklab-web.tar.gz -C ${{ github.workspace }} .
+      - name: Save project folder
+        uses: actions/upload-artifact@v2
+        with:
+          name: ranklab-web
+          if-no-files-found: error
+          path: ranklab-web.tar.gz
+          retention-days: 1
+
+  chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: install
     container:
       image: cypress/browsers:node14.17.0-chrome91-ff89
       options: --add-host=ranklab-test.gg:0.0.0.0
@@ -39,28 +67,26 @@ jobs:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache builds
-        uses: actions/cache@v2
+      - name: Download the project folder
+        uses: actions/download-artifact@v2
         with:
-          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-cache-
-      - name: "UI Tests - Chrome"
+          name: ranklab-web.tar.gz
+          path: ranklab-web.tar.gz
+      - run: tar xzf ranklab-web.tar.gz
+      - name: Chrome tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: packages/ranklab-web
           record: true
-          build: yarn build
           start: yarn start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: chrome
-          group: "UI - Chrome"
-  ui-firefox-tests:
+          group: "Chrome"
+          install: false
+  firefox-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: install
     container:
       image: cypress/browsers:node14.17.0-chrome91-ff89
       options: >-
@@ -95,13 +121,13 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - name: "UI Tests - Chrome"
+      - name: Firefox tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: packages/ranklab-web
           record: true
-          build: yarn build
           start: yarn start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: firefox
-          group: "UI - Firefox"
+          group: "Firefox"
+          install: false
