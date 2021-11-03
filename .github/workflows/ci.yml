@@ -31,13 +31,13 @@ jobs:
         with:
           runTests: false
           build: yarn build
-      - run: tar czf ranklab-web.tar.gz -C ${{ github.workspace }} .
+      - run: tar -czf /tmp/ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
           name: ranklab-web.tar.gz
           if-no-files-found: error
-          path: ranklab-web.tar.gz
+          path: /tmp/ranklab-web.tar.gz
           retention-days: 1
 
   chrome-tests:
@@ -72,7 +72,7 @@ jobs:
         with:
           name: ranklab-web.tar.gz
           path: ranklab-web.tar.gz
-      - run: tar xzf ranklab-web.tar.gz
+      - run: tar -xzf ranklab-web.tar.gz
       - name: Chrome tests
         uses: cypress-io/github-action@v2
         with:
@@ -117,7 +117,7 @@ jobs:
         with:
           name: ranklab-web.tar.gz
           path: ranklab-web.tar.gz
-      - run: tar xzf ranklab-web.tar.gz
+      - run: tar -xzf ranklab-web.tar.gz
       - name: Firefox tests
         uses: cypress-io/github-action@v2
         with:
