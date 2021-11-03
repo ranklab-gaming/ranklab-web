@@ -18,13 +18,14 @@ import { LoadingButton } from "@mui/lab"
 import ReactPlayer from "react-player"
 import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 import { Game } from "@ranklab/api"
+import { EditorState } from "draft-js"
 
 export type FormValuesProps = {
   title: string
   gameId: string
-  notes: any
+  notes: string
 }
 
 export const defaultValues = {
@@ -36,7 +37,7 @@ export const defaultValues = {
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   gameId: Yup.string().required("Game is required"),
-  notes: Yup.mixed(),
+  notes: Yup.string().required(),
 })
 
 interface Props {
@@ -55,6 +56,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
   })
 
   const router = useRouter()
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
   const recordingId = Array.isArray(router.query.id)
     ? router.query.id.join(",")
@@ -66,7 +68,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
         gameId: data.gameId,
         recordingId: recordingId!,
         title: data.title,
-        notes: data.notes.getCurrentContent().getPlainText("\u0001"),
+        notes: data.notes,
       },
     })
 
@@ -132,8 +134,14 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <DraftEditor
-                    editorState={field.value}
-                    onEditorStateChange={field.onChange}
+                    editorState={editorState}
+                    onEditorStateChange={(editorState) => {
+                      field.onChange(
+                        editorState.getCurrentContent().getPlainText("\u0001")
+                      )
+
+                      setEditorState(editorState)
+                    }}
                     onBlur={field.onBlur}
                     error={Boolean(error)}
                     simple={true}

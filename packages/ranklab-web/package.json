@@ -7,9 +7,8 @@
     "dev": "next dev",
     "build": "yarn workspace @ranklab/api build && next build",
     "start": "next start",
-    "test:start": "next start",
     "cypress": "cypress run",
-    "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
+    "test": "NODE_ENV=test start-server-and-test start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.5.0",

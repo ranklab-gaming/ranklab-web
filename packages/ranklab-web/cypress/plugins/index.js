@@ -2,7 +2,7 @@ const encrypt = require("cypress-nextjs-auth0/encrypt")
 const { loadEnvConfig } = require("@next/env")
 const { Client } = require("pg")
 
-export default async (on, config) => {
+module.exports = async (on, config) => {
   on("task", {
     encrypt,
     "db:reset": async () => {
@@ -12,6 +12,14 @@ export default async (on, config) => {
       await client.end()
 
       return null
+    },
+    "db:query": async (query) => {
+      const client = new Client({ connectionString: process.env.DATABASE_URL })
+      await client.connect()
+      const result = await client.query(query)
+      await client.end()
+
+      return result.rows
     },
   })
 
@@ -31,7 +39,7 @@ export default async (on, config) => {
   DECLARE
       statements CURSOR FOR
           SELECT tablename FROM pg_tables
-          WHERE tableowner = 'postgres' AND schemaname = 'public';
+          WHERE tableowner = 'postgres' AND schemaname = 'public' AND tablename <> 'games';
   BEGIN
       FOR stmt IN statements LOOP
           EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;';
