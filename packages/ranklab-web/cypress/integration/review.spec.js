@@ -11,7 +11,7 @@ describe("review", () => {
       .get('[contenteditable="true"]')
       .type("This is a test description")
     cy.contains("Submit Form").click()
-    cy.wait("@createReview")
+    cy.wait("@createReview").its("response.statusCode").should("eq", 200)
     cy.sql("SELECT * FROM reviews;").then(([review]) => {
       cy.wrap(review.title).should("eq", "This is a test review")
     })
