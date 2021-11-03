@@ -35,7 +35,7 @@ jobs:
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
-          name: ranklab-web
+          name: ranklab-web.tar.gz
           if-no-files-found: error
           path: ranklab-web.tar.gz
           retention-days: 1
@@ -112,15 +112,12 @@ jobs:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache builds
-        uses: actions/cache@v2
+      - name: Download the project folder
+        uses: actions/download-artifact@v2
         with:
-          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-cache-
+          name: ranklab-web.tar.gz
+          path: ranklab-web.tar.gz
+      - run: tar xzf ranklab-web.tar.gz
       - name: Firefox tests
         uses: cypress-io/github-action@v2
         with:
