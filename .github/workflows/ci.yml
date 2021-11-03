@@ -26,11 +26,9 @@ jobs:
           key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-build-cache-
-      - name: Cypress install
-        uses: cypress-io/github-action@v2
-        with:
-          runTests: false
-          build: yarn build
+      - uses: c-hive/gha-yarn-cache@v2
+      - run: yarn install
+      - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
