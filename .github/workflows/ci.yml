@@ -71,6 +71,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web.tar.gz
+      - run: tar -xzf ranklab-web.tar.gz
       - name: Chrome tests
         uses: cypress-io/github-action@v2
         with:
@@ -114,6 +115,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ranklab-web.tar.gz
+      - run: tar -xzf ranklab-web.tar.gz
       - name: Firefox tests
         uses: cypress-io/github-action@v2
         with:
