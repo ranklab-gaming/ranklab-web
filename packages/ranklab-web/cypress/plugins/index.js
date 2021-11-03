@@ -2,25 +2,22 @@ const encrypt = require("cypress-nextjs-auth0/encrypt")
 const { loadEnvConfig } = require("@next/env")
 const { Client } = require("pg")
 
+async function queryDb(query) {
+  const client = new Client({ connectionString: process.env.DATABASE_URL })
+  await client.connect()
+  const result = await client.query(query)
+  await client.end()
+
+  return result.rows
+}
+
 module.exports = async (on, config) => {
   on("task", {
     encrypt,
     "db:reset": async () => {
-      const client = new Client({ connectionString: process.env.DATABASE_URL })
-      await client.connect()
-      await client.query(`SELECT reset_db();`)
-      await client.end()
-
-      return null
+      return await queryDb(`SELECT reset_db();`)
     },
-    "db:query": async (query) => {
-      const client = new Client({ connectionString: process.env.DATABASE_URL })
-      await client.connect()
-      const result = await client.query(query)
-      await client.end()
-
-      return result.rows
-    },
+    "db:query": queryDb,
   })
 
   const projectDir = process.cwd()
@@ -32,22 +29,19 @@ module.exports = async (on, config) => {
   config.env.auth0ClientId = process.env.AUTH0_CLIENT_ID
   config.env.auth0Scope = process.env.AUTH0_SCOPE
 
-  const client = new Client({ connectionString: process.env.DATABASE_URL })
-  await client.connect()
-  await client.query(`
-  CREATE OR REPLACE FUNCTION reset_db() RETURNS void AS $$
-  DECLARE
-      statements CURSOR FOR
-          SELECT tablename FROM pg_tables
-          WHERE tableowner = 'postgres' AND schemaname = 'public' AND tablename <> 'games';
-  BEGIN
-      FOR stmt IN statements LOOP
-          EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;';
-      END LOOP;
-  END;
-  $$ LANGUAGE plpgsql;
+  await queryDb(`
+    CREATE OR REPLACE FUNCTION reset_db() RETURNS void AS $$
+    DECLARE
+        statements CURSOR FOR
+            SELECT tablename FROM pg_tables
+            WHERE tableowner = 'postgres' AND schemaname = 'public' AND tablename <> 'games';
+    BEGIN
+        FOR stmt IN statements LOOP
+            EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;';
+        END LOOP;
+    END;
+    $$ LANGUAGE plpgsql;
   `)
-  await client.end()
 
   return config
 }
