@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/browsers:node14.17.0-chrome91-ff89
+      image: cypress/included:8.7.0
       options: --add-host=ranklab-test.gg:0.0.0.0
     services:
       postgres:
@@ -87,7 +87,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/browsers:node14.17.0-chrome91-ff89
+      image: cypress/included:8.7.0
       options: >-
         --user 1001
         --add-host=ranklab-test.gg:0.0.0.0
