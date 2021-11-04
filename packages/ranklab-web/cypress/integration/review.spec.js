@@ -11,12 +11,17 @@ describe("review", () => {
       .get('[contenteditable="true"]')
       .type("This is a test description")
     cy.contains("Submit Form").click()
+
     cy.wait("@createReview").then((xhr) => {
-      cy.log(JSON.stringify(xhr.request.body))
-      cy.log(JSON.stringify(xhr.response.body))
-    })
-    cy.sql("SELECT * FROM reviews;").then(([review]) => {
-      cy.wrap(review.title).should("eq", "This is a test review")
+      const review = cy.wrap(xhr.response.body)
+
+      cy.sql(`SELECT * FROM games WHERE name = 'Overwatch';`).then(
+        ([{ id: game_id }]) => {
+          review.its("title").should("eq", "This is a test review")
+          review.its("game_id").should("eq", game_id)
+          review.its("notes").should("eq", "This is a test description")
+        }
+      )
     })
   })
 })
