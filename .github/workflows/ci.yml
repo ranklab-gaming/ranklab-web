@@ -103,6 +103,9 @@ jobs:
           browser: chrome
           group: "Chrome"
           install: false
+      - name: Check app logs
+        if: ${{ failure() }}
+        run: docker logs "${{ job.services.ranklab-api.id }}"
   firefox-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -147,6 +150,9 @@ jobs:
           browser: firefox
           group: "Firefox"
           install: false
+      - name: Check app logs
+        if: ${{ failure() }}
+        run: docker logs "${{ job.services.ranklab-api.id }}"
   edge-tests:
     timeout-minutes: 40
     runs-on: windows-2019
@@ -191,3 +197,6 @@ jobs:
           browser: edge
           group: "Edge"
           install: false
+      - name: Check app logs
+        if: ${{ failure() }}
+        run: docker logs "${{ job.services.ranklab-api.id }}"
