@@ -84,6 +84,8 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
             "There was a problem submitting your recording. Please try again later."
           )
         }
+      } else {
+        setErrorMessage(e.toString())
       }
     }
   }
