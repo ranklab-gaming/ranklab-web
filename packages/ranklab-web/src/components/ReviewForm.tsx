@@ -13,7 +13,7 @@ import {
   Alert,
 } from "@mui/material"
 
-import { yupResolver } from "@hookform/resolvers/yup"
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
 import { Controller, useForm } from "react-hook-form"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
@@ -75,11 +75,17 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
           notes: data.notes,
         },
       })
-    } catch (e: any) {
-      setErrorMessage(e.message)
-    }
 
-    router.push("/dashboard")
+      router.push("/dashboard")
+    } catch (e: any) {
+      if (e instanceof Response) {
+        if (e.status !== 200) {
+          setErrorMessage(
+            "There was a problem submitting your recording. Please try again later."
+          )
+        }
+      }
+    }
   }
 
   return (
