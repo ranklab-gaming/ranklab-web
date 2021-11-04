@@ -102,17 +102,9 @@ jobs:
           browser: chrome
           group: "Chrome"
           install: false
-      - name: Save server logs
+      - name: Log server logs
         if: ${{ failure() }}
-        run: tar -czf /tmp/logs.tar.gz /containers/**/*.log
-      - name: Upload logs
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: logs.tar.gz
-          if-no-files-found: error
-          path: /tmp/logs.tar.gz
-          retention-days: 1
+        run: cat /containers/**/*.log
 
   firefox-tests:
     runs-on: ubuntu-latest
@@ -161,14 +153,9 @@ jobs:
       - name: Save server logs
         if: ${{ failure() }}
         run: tar -czf /tmp/logs.tar.gz /containers/**/*.log
-      - name: Upload logs
+      - name: Log server logs
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: logs.tar.gz
-          if-no-files-found: error
-          path: /tmp/logs.tar.gz
-          retention-days: 1
+        run: cat /containers/**/*.log
   edge-tests:
     timeout-minutes: 40
     runs-on: windows-2019
