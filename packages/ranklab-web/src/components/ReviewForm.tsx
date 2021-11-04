@@ -9,6 +9,8 @@ import {
   InputLabel,
   Grid,
   Typography,
+  Snackbar,
+  Alert,
 } from "@mui/material"
 
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -57,26 +59,45 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
 
   const router = useRouter()
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const [errorMessage, setErrorMessage] = useState("")
 
   const recordingId = Array.isArray(router.query.id)
     ? router.query.id.join(",")
     : router.query.id
 
   const onSubmit = async (data: FormValuesProps) => {
-    await api.client.reviewsCreate({
-      createReviewRequest: {
-        gameId: data.gameId,
-        recordingId: recordingId!,
-        title: data.title,
-        notes: data.notes,
-      },
-    })
+    try {
+      await api.client.reviewsCreate({
+        createReviewRequest: {
+          gameId: data.gameId,
+          recordingId: recordingId!,
+          title: data.title,
+          notes: data.notes,
+        },
+      })
+    } catch (e: any) {
+      setErrorMessage(e.message)
+    }
 
     router.push("/dashboard")
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={Boolean(errorMessage)}
+        onClose={() => setErrorMessage("")}
+        autoHideDuration={5000}
+      >
+        <Alert
+          onClose={() => setErrorMessage("")}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
       <Grid container direction="row" spacing={4}>
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>
