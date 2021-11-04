@@ -85,7 +85,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
           )
         }
       } else {
-        setErrorMessage(e.toString())
+        throw e
       }
     }
   }
