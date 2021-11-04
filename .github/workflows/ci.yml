@@ -47,6 +47,7 @@ jobs:
             ${{ github.workspace }}/packages/ranklab-web/.next/cache
             ${{ github.workspace }}/node_modules
           key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - run: yarn config set network-timeout 300000
       - run: yarn install
       - run: yarn build
       - run: mkdir %USERPROFILE\tmp && tar -czf %USERPROFILE%\tmp\ranklab-web.tar.gz .
