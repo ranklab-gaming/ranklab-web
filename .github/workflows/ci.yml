@@ -49,13 +49,13 @@ jobs:
           key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - run: yarn install
       - run: yarn build
-      - run: mkdir ./tmp && tar -czf ./tmp/ranklab-web.tar.gz .
+      - run: mkdir %USERPROFILE\tmp && tar -czf %USERPROFILE%\tmp\ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
           name: ranklab-web.tar.gz
           if-no-files-found: error
-          path: ./tmp/ranklab-web.tar.gz
+          path: ${{ env.USERPROFILE }}/tmp/ranklab-web.tar.gz
           retention-days: 1
 
   chrome-tests:
