@@ -20,14 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache builds
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-cache-
-      - uses: c-hive/gha-yarn-cache@v2
+          path: |
+            ${{ github.workspace }}/packages/ranklab-web/.next/cache
+            ${{ github.workspace }}/node_modules
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - run: yarn install
       - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
@@ -43,14 +41,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache builds
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-cache-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-cache-
-      - uses: c-hive/gha-yarn-cache@v2
+          path: |
+            ${{ github.workspace }}/packages/ranklab-web/.next/cache
+            ${{ github.workspace }}/node_modules
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - run: yarn install
       - run: yarn build
       - run: mkdir ./tmp && tar -czf ./tmp/ranklab-web.tar.gz .
