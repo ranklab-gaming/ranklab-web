@@ -29,13 +29,13 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
       - run: yarn install
       - run: yarn build
-      - run: tar -czf /tmp/ranklab-web.tar.gz .
+      - run: tar -czf ./tmp/ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
           name: ranklab-web.tar.gz
           if-no-files-found: error
-          path: /tmp/ranklab-web.tar.gz
+          path: ./tmp/ranklab-web.tar.gz
           retention-days: 1
   install-windows:
     runs-on: windows-2019
@@ -52,13 +52,13 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v2
       - run: yarn install
       - run: yarn build
-      - run: tar -czf /tmp/ranklab-web.tar.gz .
+      - run: tar -czf ./tmp/ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
           name: ranklab-web.tar.gz
           if-no-files-found: error
-          path: /tmp/ranklab-web.tar.gz
+          path: ./tmp/ranklab-web.tar.gz
           retention-days: 1
 
   chrome-tests:
