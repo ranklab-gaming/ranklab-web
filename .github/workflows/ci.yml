@@ -50,7 +50,7 @@ jobs:
       - run: yarn config set network-timeout 300000
       - run: yarn install
       - run: yarn build
-      - run: mkdir %USERPROFILE\tmp && tar -czf %USERPROFILE%\tmp\ranklab-web.tar.gz .
+      - run: mkdir %USERPROFILE%\tmp && tar -czf %USERPROFILE%\tmp\ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v2
         with:
@@ -152,9 +152,6 @@ jobs:
           browser: firefox
           group: "Firefox"
           install: false
-      - name: Save server logs
-        if: ${{ failure() }}
-        run: tar -czf /tmp/logs.tar.gz /containers/**/*.log
       - name: Log server logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log
@@ -202,6 +199,6 @@ jobs:
           browser: edge
           group: "Edge"
           install: false
-      - name: Check app logs
+      - name: Log server logs
         if: ${{ failure() }}
-        run: docker logs "${{ job.services.ranklab-api.id }}"
+        run: type /containers/**/*.log
