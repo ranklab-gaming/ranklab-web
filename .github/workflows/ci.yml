@@ -129,7 +129,7 @@ jobs:
           start: yarn start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: chrome
-          group: "Chrome"
+          group: "Chrome - Mobile"
           install: false
       - name: Log server logs
         if: ${{ failure() }}
@@ -226,7 +226,7 @@ jobs:
           start: yarn start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: firefox
-          group: "Firefox"
+          group: "Firefox - Mobile"
           install: false
       - name: Log server logs
         if: ${{ failure() }}
