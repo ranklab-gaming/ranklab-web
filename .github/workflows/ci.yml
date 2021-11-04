@@ -69,6 +69,8 @@ jobs:
     container:
       image: cypress/included:8.7.0
       options: --add-host=ranklab-test.gg:0.0.0.0
+      volumes:
+        - /var/lib/docker/containers:/containers
     services:
       postgres:
         image: postgres:13.4
@@ -104,9 +106,18 @@ jobs:
           browser: chrome
           group: "Chrome"
           install: false
-      - name: Check app logs
+      - name: Save server logs
         if: ${{ failure() }}
-        run: docker logs "${{ job.services.ranklab-api.id }}"
+        run: tar -czf /tmp/logs.tar.gz /containers/**/*.log
+      - name: Upload logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs.tar.gz
+          if-no-files-found: error
+          path: /tmp/logs.tar.gz
+          retention-days: 1
+
   firefox-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -151,9 +162,17 @@ jobs:
           browser: firefox
           group: "Firefox"
           install: false
-      - name: Check app logs
+      - name: Save server logs
         if: ${{ failure() }}
-        run: docker logs "${{ job.services.ranklab-api.id }}"
+        run: tar -czf /tmp/logs.tar.gz /containers/**/*.log
+      - name: Upload logs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs.tar.gz
+          if-no-files-found: error
+          path: /tmp/logs.tar.gz
+          retention-days: 1
   edge-tests:
     timeout-minutes: 40
     runs-on: windows-2019
