@@ -14,6 +14,7 @@ describe("review", () => {
 
     cy.wait("@createReview").then((xhr) => {
       const review = cy.wrap(xhr.response.body)
+      cy.log(JSON.stringify(xhr.response.body))
 
       cy.sql(`SELECT * FROM games WHERE name = 'Overwatch';`).then(
         ([{ id: game_id }]) => {
