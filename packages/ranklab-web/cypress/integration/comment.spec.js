@@ -18,6 +18,7 @@ describe("review", () => {
       videos[0].currentTime = 4
     })
     cy.contains("Add comment at 0:04").click()
+    cy.get("li").contains("0:04")
     cy.get("li").contains("This is a test comment")
   })
 })
