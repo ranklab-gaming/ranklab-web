@@ -5,9 +5,7 @@
 
 const { withSentryConfig } = require("@sentry/nextjs")
 
-const moduleExports = {
-  // swcMinify: true,
-}
+const moduleExports = {}
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
