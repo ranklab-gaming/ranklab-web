@@ -15,10 +15,14 @@ describe("review", () => {
     cy.wait("@createReview").then((xhr) => {
       cy.sql(`SELECT * FROM games WHERE name = 'Overwatch';`).then(
         ([{ id: game_id }]) => {
-          cy.wrap(xhr.response.body)
-            .its("title").should("eq", "This is a test review")
-            .its("game_id").should("eq", game_id)
-            .its("notes").should("eq", "This is a test description")
+          cy.log(JSON.stringify(xhr.response.body))
+          cy.wrap(xhr.response.body).should("include", {
+            title: "This is a test review",
+            game_id: game_id,
+            notes: "This is a test description",
+            video_url:
+              "https://ranklab-dev.s3.eu-west-2.amazonaws.com/700a3320-b88d-4a2c-91f8-834a5da62cdc",
+          })
         }
       )
     })
