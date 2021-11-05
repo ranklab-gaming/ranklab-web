@@ -11,7 +11,8 @@
     "esbenp.prettier-vscode",
     "naumovs.color-highlight",
     "ms-vsliveshare.vsliveshare",
-    "ms-vscode.js-debug-nightly"
+    "ms-vscode.js-debug-nightly",
+    "github.vscode-pull-request-github"
   ],
   "settings": {
     "editor.codeLens": false,
@@ -20,9 +21,7 @@
     "editor.formatOnSave": true,
     "editor.inlineSuggest.enabled": true,
     "editor.minimap.enabled": false,
-    "editor.rulers": [
-      100
-    ],
+    "editor.rulers": [100],
     "editor.tabSize": 2,
     "editor.wordWrap": "on",
     "explorer.confirmDelete": false,
