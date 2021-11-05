@@ -1,6 +1,7 @@
 {
   "projectId": "mw3765",
   "baseUrl": "http://ranklab-test.gg:3000",
+  "retries": 2,
   "env": {
     "auth0Domain": "ranklab-development.eu.auth0.com",
     "auth0Password": "password123*",

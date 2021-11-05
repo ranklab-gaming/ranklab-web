@@ -10,15 +10,9 @@ Cypress.Commands.add("sql", (query) => {
 
 Cypress.Commands.overwrite("login", (originalFn) => {
   const originalReturnValue = originalFn()
-  const credentials = {
-    username: Cypress.env("auth0Username"),
-    password: Cypress.env("auth0Password"),
-  }
 
-  cy.getUserTokens(credentials).then((response) => {
-    const { accessToken } = response
-
-    cy.getUserInfo(accessToken).then((user) => {
+  cy.getUserTokens().then((response) => {
+    cy.getUserInfo(response.accessToken).then((user) => {
       cy.sql(`INSERT INTO users (auth0_id) VALUES ('${user.sub}');`)
     })
   })
