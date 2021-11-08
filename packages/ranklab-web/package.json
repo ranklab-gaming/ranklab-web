@@ -11,7 +11,7 @@
     "test": "NODE_ENV=test start-server-and-test start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.5.0",
+    "@auth0/nextjs-auth0": "^1.6.1",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
     "@emotion/server": "^11.4.0",
@@ -40,21 +40,21 @@
     "react-dom": "17.0.2",
     "react-draft-wysiwyg": "^1.14.7",
     "react-hook-form": "^7.15.4",
-    "react-intersection-observer": "^8.32.0",
+    "react-intersection-observer": "^8.32.2",
     "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scroll": "^1.8.3",
     "simplebar": "^5.3.5",
     "simplebar-react": "^2.3.5",
     "stylis": "^4.0.10",
-    "stylis-plugin-rtl": "^2.1.0",
+    "stylis-plugin-rtl": "^2.1.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/draftjs-to-html": "^0.8.1",
     "@types/lodash": "^4.14.172",
     "@types/nprogress": "^0.2.0",
-    "@types/react": "^17.0.18",
+    "@types/react": "^17.0.34",
     "@types/react-draft-wysiwyg": "^1.13.3",
     "@types/react-router-dom": "^5.1.8",
     "@types/react-scroll": "^1.8.3",
