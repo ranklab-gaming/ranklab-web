@@ -44,7 +44,7 @@
     "react-intersection-observer": "^8.32.2",
     "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
-    "react-scroll": "^1.8.3",
+    "react-scroll": "^1.8.4",
     "simplebar": "^5.3.5",
     "simplebar-react": "^2.3.5",
     "stylis": "^4.0.10",
