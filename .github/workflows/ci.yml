@@ -156,7 +156,7 @@ jobs:
         env:
           ROCKET_PROFILE: test
           ROCKET_ADDRESS: 0.0.0.0
-          RANKLAB_AUTH0_DOMAIN: https://ranklab-development.eu.auth0.com/
+          RANKLAB_AUTH0_DOMAIN: http://ranklab-test.gg:3000/oidc/
           RANKLAB_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
           RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
