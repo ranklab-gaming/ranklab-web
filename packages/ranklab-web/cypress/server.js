@@ -1,13 +1,11 @@
-const { Provider, interactionPolicy } = require("oidc-provider")
+const { Provider } = require("oidc-provider")
 const express = require("express")
 const next = require("next")
 const port = process.env.PORT || 3000
 const app = next({ dev: true })
 const handle = app.getRequestHandler()
-const { base, Prompt, Check } = interactionPolicy
 const { loadEnvConfig } = require("@next/env")
 
-const policy = base()
 const projectDir = process.cwd()
 loadEnvConfig(projectDir)
 
@@ -28,8 +26,23 @@ const config = {
     end_session: "/v2/logout",
   },
   scopes: process.env.AUTH0_SCOPE.split(" "),
+  claims: {
+    openid: ["sub", "email", "name"],
+  },
   clientBasedCORS() {
     return true
+  },
+  async findAccount(ctx, id) {
+    return {
+      accountId: id,
+      async claims(use, scope) {
+        return {
+          sub: id,
+          name: "test@ranklab.gg",
+          email: "test@ranklab.gg",
+        }
+      },
+    }
   },
   features: {
     webMessageResponseMode: {
@@ -41,7 +54,6 @@ const config = {
       },
       enabled: true,
       getResourceServerInfo: (ctx, resourceIndicator, client) => {
-        console.log("resource indicator: ", resourceIndicator, client)
         return {
           scope: ctx.oidc.params.scope,
           audience: process.env.AUTH0_AUDIENCE,
@@ -55,9 +67,6 @@ const config = {
     },
   },
   rotateRefreshToken: true,
-  interactions: {
-    policy,
-  },
 }
 
 function oidc(opts) {

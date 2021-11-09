@@ -7,7 +7,3 @@ beforeEach(() => {
 Cypress.Commands.add("sql", (query) => {
   cy.task("db:query", query)
 })
-
-Cypress.Cookies.defaults({
-  preserve: () => true,
-})
