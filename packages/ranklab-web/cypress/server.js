@@ -38,7 +38,7 @@ const config = {
       async claims(use, scope) {
         return {
           sub: id,
-          name: "test@ranklab.gg",
+          name: "test",
           email: "test@ranklab.gg",
         }
       },
