@@ -8,7 +8,7 @@
     "build": "yarn workspace @ranklab/api build && next build",
     "start": "next start",
     "cypress": "cypress run",
-    "test:start": "node ./cypress/server.js",
+    "test:start": "NODE_ENV=test node ./cypress/server.js",
     "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
