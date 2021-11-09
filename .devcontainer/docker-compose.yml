@@ -9,7 +9,7 @@ services:
     networks:
       - ranklab
     extra_hosts:
-      ranklab-test.gg: 0.0.0.0
+      ranklab-test: 0.0.0.0
     environment:
       - NODE_OPTIONS=--max_old_space_size=4096
 networks:

@@ -14,8 +14,8 @@ const config = {
     {
       client_id: process.env.AUTH0_CLIENT_ID,
       client_secret: process.env.AUTH0_CLIENT_SECRET,
-      redirect_uris: ["http://ranklab-test.gg:3000/api/auth/callback"],
-      post_logout_redirect_uris: ["http://ranklab-test.gg:3000"],
+      redirect_uris: ["http://ranklab-test:3000/api/auth/callback"],
+      post_logout_redirect_uris: ["http://ranklab-test:3000"],
       token_endpoint_auth_method: "client_secret_post",
       grant_types: ["authorization_code", "refresh_token"],
     },
@@ -70,14 +70,14 @@ const config = {
 }
 
 function oidc(opts) {
-  const issuer = `http://ranklab-test.gg:${opts.port || 3000}/oidc/`
+  const issuer = `http://ranklab-test:${opts.port || 3000}/oidc/`
   const provider = new Provider(issuer, config)
 
   provider.use(async (ctx, next) => {
     await next()
 
     if (ctx.oidc.route === "end_session_success") {
-      ctx.redirect("http://ranklab-test.gg:3000")
+      ctx.redirect("http://ranklab-test:3000")
     }
   })
 
@@ -97,7 +97,7 @@ app
 
     server.listen(port, (err) => {
       if (err) throw err
-      console.log(`> Ready on http://ranklab-test.gg:${port}`)
+      console.log(`> Ready on http://ranklab-test:${port}`)
     })
   })
   .catch((err) => {

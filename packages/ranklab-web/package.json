@@ -9,7 +9,7 @@
     "start": "next start",
     "cypress": "cypress run",
     "test:start": "NODE_ENV=test node ./cypress/server.js",
-    "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
+    "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.6.1",
