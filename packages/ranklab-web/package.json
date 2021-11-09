@@ -8,7 +8,8 @@
     "build": "yarn workspace @ranklab/api build && next build",
     "start": "next start",
     "cypress": "cypress run",
-    "test": "NODE_ENV=test start-server-and-test start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
+    "test:start": "node ./cypress/server.js",
+    "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test.gg:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.6.1",
@@ -59,7 +60,11 @@
     "@types/react-router-dom": "^5.1.8",
     "@types/react-scroll": "^1.8.3",
     "cypress": "^8.7.0",
-    "cypress-nextjs-auth0": "^2.0.1",
+    "express": "^4.17.1",
+    "futoin-hkdf": "^1.4.2",
+    "jose": "^2.0.5",
+    "oidc-provider": "^7.10.0",
+    "openid-client": "^5.0.2",
     "pg": "^8.7.1",
     "start-server-and-test": "^1.14.0",
     "typescript": "^4.5.0-dev.20211006"

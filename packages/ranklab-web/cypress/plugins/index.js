@@ -1,5 +1,5 @@
-const encrypt = require("cypress-nextjs-auth0/encrypt")
 const { loadEnvConfig } = require("@next/env")
+const decrypt = require("./decrypt")
 const { Client } = require("pg")
 
 async function queryDb(query) {
@@ -13,11 +13,11 @@ async function queryDb(query) {
 
 module.exports = async (on, config) => {
   on("task", {
-    encrypt,
     "db:reset": async () => {
       return await queryDb(`SELECT reset_db();`)
     },
     "db:query": queryDb,
+    decrypt,
   })
 
   const projectDir = process.cwd()
