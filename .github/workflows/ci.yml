@@ -43,7 +43,9 @@ jobs:
     needs: install
     container:
       image: cypress/included:8.7.0
-      options: --add-host=ranklab-test:0.0.0.0
+      options: >-
+        --add-host=ranklab-test:0.0.0.0
+        --network-alias=ranklab-test
       volumes:
         - /var/lib/docker/containers:/containers
     services:
@@ -64,7 +66,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -91,7 +92,9 @@ jobs:
     needs: install
     container:
       image: cypress/included:8.7.0
-      options: --add-host=ranklab-test:0.0.0.0
+      options: >-
+        --add-host=ranklab-test:0.0.0.0
+        --network-alias=ranklab-test
       volumes:
         - /var/lib/docker/containers:/containers
     services:
@@ -112,7 +115,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -143,6 +145,7 @@ jobs:
       options: >-
         --user 1001
         --add-host=ranklab-test:0.0.0.0
+        --network-alias=ranklab-test
     services:
       postgres:
         image: postgres:13.4
@@ -161,7 +164,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -191,6 +193,7 @@ jobs:
       options: >-
         --user 1001
         --add-host=ranklab-test:0.0.0.0
+        --network-alias=ranklab-test
     services:
       postgres:
         image: postgres:13.4
@@ -209,7 +212,6 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
-        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
