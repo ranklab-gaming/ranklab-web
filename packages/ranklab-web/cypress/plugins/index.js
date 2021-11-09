@@ -24,7 +24,7 @@ module.exports = async (on, config) => {
   loadEnvConfig(projectDir)
 
   config.env.auth0ClientSecret = process.env.AUTH0_CLIENT_SECRET
-  config.env.auth0CookieSecret = process.env.AUTH0_SECRET
+  config.env.auth0Secret = process.env.AUTH0_SECRET
   config.env.auth0Audience = process.env.AUTH0_AUDIENCE
   config.env.auth0ClientId = process.env.AUTH0_CLIENT_ID
   config.env.auth0Scope = process.env.AUTH0_SCOPE

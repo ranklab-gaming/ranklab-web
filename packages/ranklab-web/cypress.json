@@ -3,9 +3,7 @@
   "baseUrl": "http://ranklab-test:3000",
   "retries": 2,
   "env": {
-    "auth0Domain": "ranklab-test:3000/oidc",
     "auth0Password": "password123*",
-    "auth0SessionCookieName": "appSession",
-    "auth0Username": "test@ranklab.gg"
+    "auth0Name": "test"
   }
 }
