@@ -2,7 +2,7 @@ const { Provider } = require("oidc-provider")
 const express = require("express")
 const next = require("next")
 const port = process.env.PORT || 3000
-const app = next({ dev: true })
+const app = next({ dev: false })
 const handle = app.getRequestHandler()
 const { loadEnvConfig } = require("@next/env")
 
