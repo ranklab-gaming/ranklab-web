@@ -77,7 +77,7 @@ jobs:
         with:
           working-directory: packages/ranklab-web
           record: true
-          start: yarn start
+          start: yarn test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: chrome
           group: "Chrome"
@@ -127,7 +127,7 @@ jobs:
           config: "viewportWidth=375,viewportHeight=667"
           working-directory: packages/ranklab-web
           record: true
-          start: yarn start
+          start: yarn test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: chrome
           group: "Chrome - Mobile"
@@ -175,7 +175,7 @@ jobs:
         with:
           working-directory: packages/ranklab-web
           record: true
-          start: yarn start
+          start: yarn test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: firefox
           group: "Firefox"
@@ -224,7 +224,7 @@ jobs:
           config: "viewportWidth=375,viewportHeight=667"
           working-directory: packages/ranklab-web
           record: true
-          start: yarn start
+          start: yarn test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test.gg:3000"
           browser: firefox
           group: "Firefox - Mobile"
