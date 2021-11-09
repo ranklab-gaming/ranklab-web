@@ -66,6 +66,7 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
+        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -115,6 +116,7 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
+        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -164,6 +166,7 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
+        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
@@ -212,6 +215,7 @@ jobs:
         credentials:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_PASSWORD }}
+        options: --add-host=ranklab-test:0.0.0.0
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v2
