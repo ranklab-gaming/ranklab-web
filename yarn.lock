@@ -5051,15 +5051,10 @@ type-is@^1.6.16, type-is@~1.6.17, type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typescript@^3.6:
-  version "3.9.10"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.10.tgz#70f3910ac7a51ed6bef79da7800690b19bf778b8"
-  integrity sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==
-
-typescript@^4.5.0-dev.20211006:
-  version "4.5.0-dev.20211006"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.0-dev.20211006.tgz#a83db37b5524357222f4307ace4dd2fb3004d109"
-  integrity sha512-UDWK5d6F/97aW2IqdsrietJa3zXPrtH72IUZaahDvF+zKdcPsbDtuxnzueKXnqEQbYx2P3LfQeSlzMDA7KhluA==
+typescript@^4.5.0-dev.20211101:
+  version "4.5.0-dev.20211101"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.0-dev.20211101.tgz#45a1f58183d64b776b95f84998484c333a8fb202"
+  integrity sha512-hghclbWgoJn85Ygh7JY2Sumh0BeJ3cermrmRdBaOorPdoufi4dr4XYwm8hjgNIFV6JROu6MWEpo5qjfJ0a/92w==
 
 ua-parser-js@^0.7.18:
   version "0.7.28"
