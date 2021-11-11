@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react"
 import ReactPlayer from "react-player"
-import { Typography, Paper, Grid, Stack } from "@mui/material"
+import { Typography, Paper, Grid, Stack, Box } from "@mui/material"
 
 import {
   Timeline,
@@ -25,6 +25,11 @@ import { intervalToDuration } from "date-fns"
 import { Review, Comment } from "@ranklab/api"
 import api from "src/api"
 import { EditorState } from "draft-js"
+import dynamic from "next/dynamic"
+
+const Drawing = dynamic(() => import("./Drawing"), {
+  ssr: false,
+}) as React.ElementType
 
 interface Props {
   review: Review
@@ -54,6 +59,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [comments, setComments] = useState(fetchedComments)
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
   const playerRef = useRef<ReactPlayer>(null)
+  const [drawing, setDrawing] = useState("")
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
@@ -68,16 +74,19 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
       <Stack spacing={2}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <ReactPlayer
-              width="100%"
-              controls={true}
-              url={review.videoUrl}
-              wrapper={Wrapper}
-              ref={playerRef}
-              onProgress={({ played }) =>
-                setCurrentTimestamp(Math.floor(played * 10))
-              }
-            />
+            <Box sx={{ position: "relative" }}>
+              <ReactPlayer
+                width="100%"
+                controls={true}
+                url={review.videoUrl}
+                wrapper={Wrapper}
+                ref={playerRef}
+                onProgress={({ played }) =>
+                  setCurrentTimestamp(Math.floor(played * 10))
+                }
+              />
+              <Drawing onChange={setDrawing} />
+            </Box>
           </Grid>
 
           <Grid item xs={12} md={4}>
@@ -105,6 +114,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                         .getPlainText("\u0001"),
                       reviewId: review.id,
                       videoTimestamp: currentTimestamp,
+                      drawing: drawing,
                     },
                   })
 

@@ -60,6 +60,12 @@ export interface Comment {
      * @type {string}
      * @memberof Comment
      */
+    drawing: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
     id: string;
     /**
      * 
@@ -125,6 +131,12 @@ export interface CreateCommentRequest {
      * @memberof CreateCommentRequest
      */
     body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCommentRequest
+     */
+    drawing: string;
     /**
      * 
      * @type {string}

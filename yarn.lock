@@ -709,6 +709,26 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
   integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
 
+"@svg-drawing/animation@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@svg-drawing/animation/-/animation-4.2.1.tgz#2f81ec6b262ba15a495c1fb78e09ef10dcd86612"
+  integrity sha512-BU/JN2DwtEJpH5v7HF5ZJaQr9PVr1J/KyDaqqO/V5DESU3cVEstxO+ONgm4bc43Q5C79nDGoxWrNVNTckkh09g==
+  optionalDependencies:
+    "@svg-drawing/core" "4.2.1"
+
+"@svg-drawing/core@4.2.1", "@svg-drawing/core@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@svg-drawing/core/-/core-4.2.1.tgz#6c0b51ecab273983ec3fa9656a22bbb76248252c"
+  integrity sha512-/BHo1VEmHQOLGii3qzeUZWfS5NG7bjdey1P/lYW4BwFi3BpObFOq4Hb7ny1QRVq3Q3+4lP54deNcWvbFhGB1fQ==
+
+"@svg-drawing/react@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@svg-drawing/react/-/react-4.2.1.tgz#0e2c8f69a5d8ebea81bf66bdf972530d2dbefb6b"
+  integrity sha512-aQNAFdtBTcnqn7PDjVQfDSeGRHcOJtvmMYFKR6tcCTh+9JSEZdZklxOi5xcpW/Zv+vriPSEUwbGEnTFXsbLK9g==
+  optionalDependencies:
+    "@svg-drawing/animation" "4.2.1"
+    "@svg-drawing/core" "4.2.1"
+
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.6.tgz#b4a914bb62e7c272d4e5989fe4440f812ab1d807"
