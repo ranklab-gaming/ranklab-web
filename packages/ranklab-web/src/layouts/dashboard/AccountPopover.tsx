@@ -75,6 +75,7 @@ export default function AccountPopover() {
               ? user.picture
               : "/static/mock-images/avatars/avatar_default.jpg"
           }
+          className="avatar"
         />
       </MIconButton>
 
