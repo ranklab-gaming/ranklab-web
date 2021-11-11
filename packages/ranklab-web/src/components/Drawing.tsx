@@ -1,4 +1,4 @@
-import { FunctionComponent, useCallback } from "react"
+import { FunctionComponent, useEffect } from "react"
 import { Box } from "@mui/material"
 import { useSvgDrawing } from "@svg-drawing/react"
 
@@ -13,9 +13,9 @@ const Drawing: FunctionComponent<Props> = ({ onChange }) => {
     delay: 100,
   })
 
-  useCallback(() => {
+  useEffect(() => {
     onChange(draw.getSvgXML() ?? "")
-  }, [draw.getSvgXML])
+  }, [draw.getSvgXML()])
 
   return (
     <Box
