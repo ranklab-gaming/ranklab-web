@@ -553,6 +553,26 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.9.2.tgz"
   integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
 
+"@ranklab-gaming/svg-drawing-animation@^4.2.6":
+  version "4.2.6"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-animation/4.2.6/2d38ddcf286082d05d50933e3ba970722ddb909d8e62d4dfd4ccdc9619a99705#8bbe12d45f2742ab53ad48d98fcbb93b5555aa47"
+  integrity sha512-EW3k1FMsGtBwsslDPHPtRbDftKxi9B/gflsHH3hGgMkjWX5su4zB31uW5/wmCGv+4CRqyd/mDZGPT9dv4Y4x3w==
+  optionalDependencies:
+    "@ranklab-gaming/svg-drawing-core" "^4.2.6"
+
+"@ranklab-gaming/svg-drawing-core@^4.2.6":
+  version "4.2.6"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-core/4.2.6/368fb5cb7c2aba76e397397d71d468a3e8841b6cd9247b7bfbdfa9f19df866aa#9e48e6bf57ac0a8d8b3a4dba653e5fd902248f93"
+  integrity sha512-BmxdC+Rw8bnqsjYTTLJYf7AcBK2gnx71maVZCKSFbNsOh8kTPbqrFjXXEsV0An1NsUDhx8Z8vMTpLXQnYVIFEw==
+
+"@ranklab-gaming/svg-drawing-react@^4.2.6":
+  version "4.2.6"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-react/4.2.6/257a9f4e51f7ff46241c95d46964bd51612ddae91b34826fa66f351b678aa457#ccd28bac375ba37fdcd495197e249bba765af5fa"
+  integrity sha512-m37Wuj9UaLGCy4kF6DXnvHz1kbyzV8//wSS2ylSLunXi/Ytc9yHrqtECNDg+oVW6Vy6G8TaWkUUGOkZ2iP1odg==
+  optionalDependencies:
+    "@ranklab-gaming/svg-drawing-animation" "^4.2.6"
+    "@ranklab-gaming/svg-drawing-core" "^4.2.6"
+
 "@sentry/browser@6.14.1":
   version "6.14.1"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-6.14.1.tgz#4d255caf9de6e07f12b6d9b350fe391439dd932e"
@@ -708,26 +728,6 @@
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
   integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
-
-"@svg-drawing/animation@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@svg-drawing/animation/-/animation-4.2.1.tgz#2f81ec6b262ba15a495c1fb78e09ef10dcd86612"
-  integrity sha512-BU/JN2DwtEJpH5v7HF5ZJaQr9PVr1J/KyDaqqO/V5DESU3cVEstxO+ONgm4bc43Q5C79nDGoxWrNVNTckkh09g==
-  optionalDependencies:
-    "@svg-drawing/core" "4.2.1"
-
-"@svg-drawing/core@4.2.1", "@svg-drawing/core@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@svg-drawing/core/-/core-4.2.1.tgz#6c0b51ecab273983ec3fa9656a22bbb76248252c"
-  integrity sha512-/BHo1VEmHQOLGii3qzeUZWfS5NG7bjdey1P/lYW4BwFi3BpObFOq4Hb7ny1QRVq3Q3+4lP54deNcWvbFhGB1fQ==
-
-"@svg-drawing/react@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@svg-drawing/react/-/react-4.2.1.tgz#0e2c8f69a5d8ebea81bf66bdf972530d2dbefb6b"
-  integrity sha512-aQNAFdtBTcnqn7PDjVQfDSeGRHcOJtvmMYFKR6tcCTh+9JSEZdZklxOi5xcpW/Zv+vriPSEUwbGEnTFXsbLK9g==
-  optionalDependencies:
-    "@svg-drawing/animation" "4.2.1"
-    "@svg-drawing/core" "4.2.1"
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
