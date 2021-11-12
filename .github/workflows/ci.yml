@@ -11,7 +11,7 @@ env:
   AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
-  GHCR_PASSWORD: ${{ secrets.GHCR_PASSWORD }}
+  NODE_AUTH_TOKEN: ${{ secrets.GHCR_PASSWORD }}
 
 jobs:
   install:
@@ -29,6 +29,11 @@ jobs:
             ${{ github.workspace }}/packages/ranklab-web/.next/cache
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@ranklab-gaming"
       - run: yarn install
       - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
