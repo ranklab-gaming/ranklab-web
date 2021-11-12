@@ -4,7 +4,7 @@ const { generalDecrypt, GeneralEncrypt } = require("jose")
 
 module.exports = async function ({ value, secret }) {
   const derivedKey = hkdf(secret, 32, { info: "JWE CEK", hash: "SHA-256" })
-  const secretKey = crypto.createSecretKey(derivedKey)
+  const secretKey = createSecretKey(derivedKey)
 
   const jwe = await new GeneralEncrypt(new TextEncoder().encode(secretKey))
     .setProtectedHeader({ enc: "A256GCM" })
