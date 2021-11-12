@@ -1,5 +1,5 @@
 const hkdf = require("futoin-hkdf")
-const { TextDecoder, generalDecrypt } = require("jose")
+const { generalDecrypt } = require("jose")
 
 module.exports = async function ({ value, secret }) {
   const key = hkdf(secret, 32, { info: "JWE CEK", hash: "SHA-256" })
