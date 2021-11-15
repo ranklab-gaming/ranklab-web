@@ -5,9 +5,9 @@ describe("review", () => {
       cy.sql(`SELECT * FROM games;`).then(([{ id: game_id }]) => {
         cy.sql(
           `INSERT INTO reviews (user_id, coach_id, title, video_url, game_id, notes)
-          VALUES ('${user_id}', NULL, 'This is a test review', 'https://${Cypress.env(
-            "s3Bucket"
-          )}.s3.eu-west-2.amazonaws.com/700a3320-b88d-4a2c-91f8-834a5da62cdc', '${game_id}', 'These are test notes');`
+          VALUES ('${user_id}', NULL, 'This is a test review', '${Cypress.env(
+            "cdnUrl"
+          )}/700a3320-b88d-4a2c-91f8-834a5da62cdc', '${game_id}', 'These are test notes');`
         )
       })
     })
