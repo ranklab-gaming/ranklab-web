@@ -194,7 +194,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
               <ReactPlayer
                 width="100%"
                 controls={true}
-                url={`https://${process.env.NEXT_PUBLIC_S3_BUCKET}.s3.eu-west-2.amazonaws.com/${recordingId}`}
+                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}`}
               />
             </Grid>
             <Grid item>
