@@ -78,7 +78,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               <ReactPlayer
                 width="100%"
                 controls={true}
-                url={review.videoUrl}
+                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
                 wrapper={Wrapper}
                 ref={playerRef}
                 onProgress={({ played }) =>

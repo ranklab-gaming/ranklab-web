@@ -284,7 +284,7 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
-    videoUrl: string;
+    videoKey: string;
 }
 
 /**
