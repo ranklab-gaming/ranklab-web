@@ -12,6 +12,7 @@ env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
   NODE_AUTH_TOKEN: ${{ secrets.GHCR_PASSWORD }}
+  AUTH0_ISSUER_BASE_URL: ${{ secrets.AUTH0_ISSUER_BASE_URL }}
 
 jobs:
   install:
