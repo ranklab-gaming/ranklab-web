@@ -194,7 +194,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
               <ReactPlayer
                 width="100%"
                 controls={true}
-                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}`}
+                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}.mp4`}
               />
             </Grid>
             <Grid item>
