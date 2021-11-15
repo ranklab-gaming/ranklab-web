@@ -28,7 +28,6 @@ module.exports = async (on, config) => {
   config.env.auth0Audience = process.env.AUTH0_AUDIENCE
   config.env.auth0ClientId = process.env.AUTH0_CLIENT_ID
   config.env.auth0Scope = process.env.AUTH0_SCOPE
-  config.env.cdnUrl = process.env.NEXT_PUBLIC_CDN_URL
 
   await queryDb(`
     CREATE OR REPLACE FUNCTION reset_db() RETURNS void AS $$

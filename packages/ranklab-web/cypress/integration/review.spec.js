@@ -20,9 +20,7 @@ describe("review", () => {
             title: "This is a test review",
             game_id: game_id,
             notes: "This is a test description",
-            video_url: `${Cypress.env(
-              "cdnUrl"
-            )}/700a3320-b88d-4a2c-91f8-834a5da62cdc`,
+            video_key: "700a3320-b88d-4a2c-91f8-834a5da62cdc",
           })
         }
       )
