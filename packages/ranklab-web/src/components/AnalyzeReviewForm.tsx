@@ -5,9 +5,11 @@ import React, {
   RefAttributes,
   useRef,
   useState,
+  useCallback,
 } from "react"
 import ReactPlayer from "react-player"
-import { Typography, Paper, Grid, Stack, Box } from "@mui/material"
+import { Typography, Paper, Grid, Stack, Box, Button } from "@mui/material"
+import CreateIcon from "@mui/icons-material/Create"
 
 import {
   Timeline,
@@ -26,20 +28,21 @@ import { Review, Comment } from "@ranklab/api"
 import api from "src/api"
 import { EditorState } from "draft-js"
 import dynamic from "next/dynamic"
+import type { DrawingType } from "./Drawing"
 
-const Drawing = dynamic(() => import("./Drawing"), {
+const Drawing: DrawingType = dynamic(() => import("./Drawing"), {
   ssr: false,
-}) as React.ElementType
+})
 
 interface Props {
   review: Review
   comments: Comment[]
 }
 
-function formatTimestamp(ms: number) {
+function formatTimestamp(secs: number) {
   const duration = intervalToDuration({
     start: 0,
-    end: ms * 1000,
+    end: secs * 1000,
   })
 
   return `${duration.minutes}:${String(duration.seconds).padStart(2, "0")}`
@@ -60,9 +63,14 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
   const playerRef = useRef<ReactPlayer>(null)
   const [drawing, setDrawing] = useState("")
+  const [isEditing, setIsEditing] = useState(false)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
+  )
+
+  const currentComment = comments.find(
+    (c) => c.videoTimestamp === currentTimestamp
   )
 
   const goToComment = (comment: Comment) => {
@@ -77,20 +85,37 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
             <Box sx={{ position: "relative" }}>
               <ReactPlayer
                 width="100%"
-                controls={true}
+                controls={!isEditing}
                 url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
                 wrapper={Wrapper}
                 ref={playerRef}
-                onProgress={({ played }) =>
-                  setCurrentTimestamp(Math.floor(played * 10))
+                onProgress={({ playedSeconds }) =>
+                  setCurrentTimestamp(playedSeconds)
                 }
               />
-              <Drawing onChange={setDrawing} />
+              {isEditing && (
+                <Drawing
+                  onChange={setDrawing}
+                  value={currentComment ? currentComment.drawing : drawing}
+                />
+              )}
             </Box>
           </Grid>
 
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
+              <Grid container spacing={2}>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    onClick={() => setIsEditing(!isEditing)}
+                  >
+                    <CreateIcon sx={{ marginRight: "5px" }} />
+                    {isEditing ? "Stop" : "Start"} Drawing
+                  </Button>
+                </Grid>
+              </Grid>
               <DraftEditor
                 editorState={newComment}
                 onEditorStateChange={setNewComment}
@@ -113,7 +138,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                         .getCurrentContent()
                         .getPlainText("\u0001"),
                       reviewId: review.id,
-                      videoTimestamp: currentTimestamp,
+                      videoTimestamp: Math.floor(currentTimestamp),
                       drawing: drawing,
                     },
                   })
@@ -149,12 +174,12 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   }}
                 >
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    <div
+                    <span
                       onClick={() => goToComment(comment)}
                       style={{ cursor: "pointer" }}
                     >
                       {comment.body}
-                    </div>
+                    </span>
                   </Typography>
                 </Paper>
               </TimelineContent>
