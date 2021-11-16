@@ -248,8 +248,7 @@ jobs:
   #       run: cat /containers/**/*.log
   deploy:
     runs-on: ubuntu-latest
-    needs:
-      [chrome-tests, chrome-mobile-tests, firefox-tests, firefox-mobile-tests]
+    needs: [chrome-tests]
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
