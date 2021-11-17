@@ -24,9 +24,9 @@ import {
 
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
-import { Review, Comment } from "@ranklab/api"
+import { Review, Comment, CreateCommentRequest } from "@ranklab/api"
 import api from "src/api"
-import { EditorState } from "draft-js"
+import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
 import type { DrawingType } from "./Drawing"
 
@@ -57,23 +57,36 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review,
   comments: fetchedComments,
 }) => {
-  const [newComment, setNewComment] = useState(EditorState.createEmpty())
+  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [comments, setComments] = useState(fetchedComments)
   const [currentTimestamp, setCurrentTimestamp] = useState(0)
+  const [comments, setComments] = useState(fetchedComments)
   const playerRef = useRef<ReactPlayer>(null)
-  const [drawing, setDrawing] = useState("")
   const [isEditing, setIsEditing] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  const initialComment = {
+    body: "",
+    drawing: "",
+    reviewId: review.id,
+    videoTimestamp: 0,
+  }
+
+  const [currentComment, setCurrentComment] =
+    useState<CreateCommentRequest>(initialComment)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
   )
 
-  const currentComment = comments.find(
-    (c) => c.videoTimestamp === currentTimestamp
-  )
-
   const goToComment = (comment: Comment) => {
+    setCurrentComment(comment)
+    setEditorState(
+      EditorState.createWithContent(
+        ContentState.createFromText(comment.body, "\u0001")
+      )
+    )
+    setCurrentTimestamp(comment.videoTimestamp)
     playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
   }
 
@@ -89,14 +102,19 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
                 wrapper={Wrapper}
                 ref={playerRef}
+                playing={isPlaying}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
                 onProgress={({ playedSeconds }) =>
-                  setCurrentTimestamp(playedSeconds)
+                  setCurrentTimestamp(Math.floor(playedSeconds))
                 }
               />
               {isEditing && (
                 <Drawing
-                  onChange={setDrawing}
-                  value={currentComment ? currentComment.drawing : drawing}
+                  onChange={(svg: string) =>
+                    setCurrentComment({ ...currentComment, drawing: svg })
+                  }
+                  value={currentComment.drawing}
                 />
               )}
             </Box>
@@ -105,87 +123,108 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               <Grid container spacing={2}>
-                <Grid item>
+                <Grid item flexGrow={1}>
                   <Button
+                    fullWidth
                     variant="contained"
                     color="info"
-                    onClick={() => setIsEditing(!isEditing)}
+                    onClick={() => {
+                      setIsEditing(!isEditing)
+                      if (!isEditing) {
+                        setIsPlaying(false)
+                      }
+                    }}
                   >
                     <CreateIcon sx={{ marginRight: "5px" }} />
-                    {isEditing ? "Stop" : "Start"} Drawing
+                    {isEditing
+                      ? "Stop Annotating"
+                      : `${
+                          (currentComment as any).id ? "Edit" : "Create"
+                        } Annotation at ${formatTimestamp(currentTimestamp)}`}
                   </Button>
                 </Grid>
               </Grid>
-              <DraftEditor
-                editorState={newComment}
-                onEditorStateChange={setNewComment}
-                simple={true}
-              />
-              <LoadingButton
-                fullWidth
-                color="info"
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-                disabled={isSubmitting}
-                onClick={async () => {
-                  setIsSubmitting(true)
+              {isEditing ? (
+                <>
+                  <DraftEditor
+                    editorState={editorState}
+                    onEditorStateChange={setEditorState}
+                    simple={true}
+                  />
+                  <LoadingButton
+                    fullWidth
+                    color="info"
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                    disabled={isSubmitting}
+                    onClick={async () => {
+                      setIsSubmitting(true)
 
-                  const createdComment = await api.client.commentsCreate({
-                    createCommentRequest: {
-                      body: newComment
-                        .getCurrentContent()
-                        .getPlainText("\u0001"),
-                      reviewId: review.id,
-                      videoTimestamp: Math.floor(currentTimestamp),
-                      drawing: drawing,
-                    },
-                  })
+                      const createdComment = await api.client.commentsCreate({
+                        createCommentRequest: {
+                          ...currentComment,
+                          videoTimestamp: currentTimestamp,
+                          body: editorState
+                            .getCurrentContent()
+                            .getPlainText("\u0001"),
+                        },
+                      })
 
-                  setComments([...comments, createdComment])
-                  setIsSubmitting(false)
-                  setNewComment(EditorState.createEmpty())
-                }}
-              >
-                Add comment at {formatTimestamp(currentTimestamp)}
-              </LoadingButton>
+                      setComments([...comments, createdComment])
+                      setIsSubmitting(false)
+                      setCurrentComment(createdComment)
+                      setIsEditing(false)
+                      setEditorState(EditorState.createEmpty())
+                    }}
+                  >
+                    Save Annotation
+                  </LoadingButton>
+                </>
+              ) : (
+                <Timeline position="alternate">
+                  {sortedComments.map((comment) => (
+                    <TimelineItem key={comment.id}>
+                      <TimelineOppositeContent>
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "text.secondary" }}
+                        >
+                          {formatTimestamp(comment.videoTimestamp)}
+                        </Typography>
+                      </TimelineOppositeContent>
+                      <TimelineSeparator>
+                        <TimelineDot color="primary"></TimelineDot>
+                        <TimelineConnector />
+                      </TimelineSeparator>
+                      <TimelineContent>
+                        <Paper
+                          sx={{
+                            p: 3,
+                            bgcolor: "grey.50012",
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "text.secondary" }}
+                          >
+                            <span
+                              onClick={() => goToComment(comment)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {comment.body}
+                            </span>
+                          </Typography>
+                        </Paper>
+                      </TimelineContent>
+                    </TimelineItem>
+                  ))}
+                </Timeline>
+              )}
             </Stack>
           </Grid>
         </Grid>
-
-        <Timeline position="alternate">
-          {sortedComments.map((comment) => (
-            <TimelineItem key={comment.id}>
-              <TimelineOppositeContent>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {formatTimestamp(comment.videoTimestamp)}
-                </Typography>
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineDot color="primary"></TimelineDot>
-                <TimelineConnector />
-              </TimelineSeparator>
-              <TimelineContent>
-                <Paper
-                  sx={{
-                    p: 3,
-                    bgcolor: "grey.50012",
-                  }}
-                >
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    <span
-                      onClick={() => goToComment(comment)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {comment.body}
-                    </span>
-                  </Typography>
-                </Paper>
-              </TimelineContent>
-            </TimelineItem>
-          ))}
-        </Timeline>
       </Stack>
     </div>
   )
