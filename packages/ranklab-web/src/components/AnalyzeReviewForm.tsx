@@ -5,7 +5,6 @@ import React, {
   RefAttributes,
   useRef,
   useState,
-  useCallback,
 } from "react"
 import ReactPlayer from "react-player"
 import { Typography, Paper, Grid, Stack, Box, Button } from "@mui/material"
@@ -30,9 +29,9 @@ import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
 import type { DrawingType } from "./Drawing"
 
-const Drawing: DrawingType = dynamic(() => import("./Drawing"), {
+const Drawing = dynamic(() => import("./Drawing"), {
   ssr: false,
-})
+}) as DrawingType
 
 interface Props {
   review: Review

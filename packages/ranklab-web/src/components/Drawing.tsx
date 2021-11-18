@@ -36,5 +36,7 @@ const Drawing: FunctionComponent<Props> = ({ onChange, value }) => {
   )
 }
 
-export type { Drawing as DrawingType }
+type DrawingType = typeof Drawing
+
+export type { DrawingType }
 export default Drawing
