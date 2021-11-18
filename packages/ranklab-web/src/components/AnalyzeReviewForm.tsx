@@ -7,23 +7,24 @@ import React, {
   useState,
 } from "react"
 import ReactPlayer from "react-player"
-import { Typography, Paper, Grid, Stack, Box, Button } from "@mui/material"
+import {
+  Typography,
+  Paper,
+  Grid,
+  Stack,
+  Box,
+  Button,
+  IconButton,
+  Card,
+  CardContent,
+} from "@mui/material"
 import CreateIcon from "@mui/icons-material/Create"
 
-import {
-  Timeline,
-  TimelineDot,
-  TimelineItem,
-  TimelineContent,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineOppositeContent,
-  LoadingButton,
-} from "@mui/lab"
+import { LoadingButton } from "@mui/lab"
 
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
-import { Review, Comment, CreateCommentRequest } from "@ranklab/api"
+import { Review, Comment } from "@ranklab/api"
 import api from "src/api"
 import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
@@ -52,6 +53,18 @@ const Wrapper: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
     return <div ref={ref}>{children}</div>
   })
 
+interface CommentForm {
+  body: EditorState
+  drawing: string
+  videoTimestamp: number
+}
+
+const initialComment: CommentForm = {
+  body: EditorState.createEmpty(),
+  drawing: "",
+  videoTimestamp: 0,
+}
+
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review,
   comments: fetchedComments,
@@ -63,30 +76,29 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const playerRef = useRef<ReactPlayer>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-
-  const initialComment = {
-    body: "",
-    drawing: "",
-    reviewId: review.id,
-    videoTimestamp: 0,
-  }
-
-  const [currentComment, setCurrentComment] =
-    useState<CreateCommentRequest>(initialComment)
+  const [commentForm, setCommentForm] = useState(initialComment)
+  const [currentComment, setCurrentComment] = useState<Comment | null>(null)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
   )
 
   const goToComment = (comment: Comment) => {
+    setIsPlaying(false)
     setCurrentComment(comment)
-    setEditorState(
-      EditorState.createWithContent(
-        ContentState.createFromText(comment.body, "\u0001")
-      )
-    )
-    setCurrentTimestamp(comment.videoTimestamp)
     playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
+  }
+
+  const goToCommentAndEdit = (comment: Comment) => {
+    goToComment(comment)
+    setCommentForm({
+      body: EditorState.createWithContent(
+        ContentState.createFromText(comment.body, "\u0001")
+      ),
+      drawing: comment.drawing,
+      videoTimestamp: comment.videoTimestamp,
+    })
+    setIsEditing(true)
   }
 
   return (
@@ -111,9 +123,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               {isEditing && (
                 <Drawing
                   onChange={(svg: string) =>
-                    setCurrentComment({ ...currentComment, drawing: svg })
+                    setCommentForm({ ...commentForm, drawing: svg })
                   }
-                  value={currentComment.drawing}
+                  value={commentForm.drawing}
                 />
               )}
             </Box>
@@ -138,7 +150,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     {isEditing
                       ? "Stop Annotating"
                       : `${
-                          (currentComment as any).id ? "Edit" : "Create"
+                          currentComment ? "Edit" : "Create"
                         } Annotation at ${formatTimestamp(currentTimestamp)}`}
                   </Button>
                 </Grid>
@@ -163,9 +175,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
                       const createdComment = await api.client.commentsCreate({
                         createCommentRequest: {
-                          ...currentComment,
-                          videoTimestamp: currentTimestamp,
-                          body: editorState
+                          ...commentForm,
+                          reviewId: review.id,
+                          body: commentForm.body
                             .getCurrentContent()
                             .getPlainText("\u0001"),
                         },
@@ -182,44 +194,41 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   </LoadingButton>
                 </>
               ) : (
-                <Timeline position="alternate">
-                  {sortedComments.map((comment) => (
-                    <TimelineItem key={comment.id}>
-                      <TimelineOppositeContent>
+                sortedComments.map((comment) => (
+                  <Card sx={{ position: "static" }} key={comment.id}>
+                    <CardContent>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {formatTimestamp(comment.videoTimestamp)}
+                      </Typography>
+
+                      <Paper
+                        sx={{
+                          p: 3,
+                          bgcolor: "grey.50012",
+                        }}
+                      >
                         <Typography
                           variant="body2"
                           sx={{ color: "text.secondary" }}
                         >
-                          {formatTimestamp(comment.videoTimestamp)}
-                        </Typography>
-                      </TimelineOppositeContent>
-                      <TimelineSeparator>
-                        <TimelineDot color="primary"></TimelineDot>
-                        <TimelineConnector />
-                      </TimelineSeparator>
-                      <TimelineContent>
-                        <Paper
-                          sx={{
-                            p: 3,
-                            bgcolor: "grey.50012",
-                          }}
-                        >
-                          <Typography
-                            variant="body2"
-                            sx={{ color: "text.secondary" }}
+                          <span
+                            onClick={() => goToComment(comment)}
+                            style={{ cursor: "pointer" }}
                           >
-                            <span
-                              onClick={() => goToComment(comment)}
-                              style={{ cursor: "pointer" }}
-                            >
-                              {comment.body}
-                            </span>
-                          </Typography>
-                        </Paper>
-                      </TimelineContent>
-                    </TimelineItem>
-                  ))}
-                </Timeline>
+                            {comment.body}
+                          </span>
+                        </Typography>
+                      </Paper>
+
+                      <IconButton onClick={() => goToCommentAndEdit(comment)}>
+                        <CreateIcon />
+                      </IconButton>
+                    </CardContent>
+                  </Card>
+                ))
               )}
             </Stack>
           </Grid>
