@@ -11,11 +11,12 @@ describe("review", () => {
     })
     cy.visit("/dashboard")
     cy.get("tr").eq(1).click()
-    cy.get('[contenteditable="true"]').type("This is a test comment")
     cy.get("video").then((videos) => {
       videos[0].currentTime = 4
     })
-    cy.contains("Add comment at 0:04").click()
+    cy.get("button").contains("Create Annotation at 0:04").click()
+    cy.get('[contenteditable="true"]').type("This is a test comment")
+    cy.get("button").contains("Save Annotation").click()
     cy.get("li").contains("0:04")
     cy.get("li").contains("This is a test comment")
   })

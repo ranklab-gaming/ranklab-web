@@ -21,7 +21,6 @@ import {
 import CreateIcon from "@mui/icons-material/Create"
 
 import { LoadingButton } from "@mui/lab"
-
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
 import { Review, Comment } from "@ranklab/api"
@@ -53,30 +52,22 @@ const Wrapper: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
     return <div ref={ref}>{children}</div>
   })
 
-interface CommentForm {
-  body: EditorState
-  drawing: string
-  videoTimestamp: number
-}
-
-const initialComment: CommentForm = {
-  body: EditorState.createEmpty(),
-  drawing: "",
-  videoTimestamp: 0,
-}
-
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review,
   comments: fetchedComments,
 }) => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const initialForm = {
+    body: EditorState.createEmpty(),
+    drawing: "",
+    videoTimestamp: 0,
+  }
+
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [currentTimestamp, setCurrentTimestamp] = useState(0)
   const [comments, setComments] = useState(fetchedComments)
   const playerRef = useRef<ReactPlayer>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [commentForm, setCommentForm] = useState(initialComment)
+  const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
 
   const sortedComments = comments.sort(
@@ -85,20 +76,19 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
   const goToComment = (comment: Comment) => {
     setIsPlaying(false)
-    setCurrentComment(comment)
     playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
   }
 
-  const goToCommentAndEdit = (comment: Comment) => {
+  const editComment = (comment: Comment) => {
     goToComment(comment)
-    setCommentForm({
+    setIsEditing(true)
+    setCurrentForm({
       body: EditorState.createWithContent(
         ContentState.createFromText(comment.body, "\u0001")
       ),
       drawing: comment.drawing,
       videoTimestamp: comment.videoTimestamp,
     })
-    setIsEditing(true)
   }
 
   return (
@@ -117,15 +107,18 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onProgress={({ playedSeconds }) =>
-                  setCurrentTimestamp(Math.floor(playedSeconds))
+                  setCurrentForm({
+                    ...currentForm,
+                    videoTimestamp: Math.floor(playedSeconds),
+                  })
                 }
               />
               {isEditing && (
                 <Drawing
-                  onChange={(svg: string) =>
-                    setCommentForm({ ...commentForm, drawing: svg })
+                  onChange={(drawing: string) =>
+                    setCurrentForm({ ...currentForm, drawing })
                   }
-                  value={commentForm.drawing}
+                  value={currentForm.drawing}
                 />
               )}
             </Box>
@@ -141,9 +134,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     color="info"
                     onClick={() => {
                       setIsEditing(!isEditing)
-                      if (!isEditing) {
-                        setIsPlaying(false)
-                      }
+                      setIsPlaying(false)
                     }}
                   >
                     <CreateIcon sx={{ marginRight: "5px" }} />
@@ -151,15 +142,19 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       ? "Stop Annotating"
                       : `${
                           currentComment ? "Edit" : "Create"
-                        } Annotation at ${formatTimestamp(currentTimestamp)}`}
+                        } Annotation at ${formatTimestamp(
+                          currentForm.videoTimestamp
+                        )}`}
                   </Button>
                 </Grid>
               </Grid>
               {isEditing ? (
                 <>
                   <DraftEditor
-                    editorState={editorState}
-                    onEditorStateChange={setEditorState}
+                    editorState={currentForm.body}
+                    onEditorStateChange={(body) =>
+                      setCurrentForm({ ...currentForm, body })
+                    }
                     simple={true}
                   />
                   <LoadingButton
@@ -175,9 +170,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
                       const createdComment = await api.client.commentsCreate({
                         createCommentRequest: {
-                          ...commentForm,
+                          ...currentForm,
                           reviewId: review.id,
-                          body: commentForm.body
+                          body: currentForm.body
                             .getCurrentContent()
                             .getPlainText("\u0001"),
                         },
@@ -186,8 +181,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       setComments([...comments, createdComment])
                       setIsSubmitting(false)
                       setCurrentComment(createdComment)
-                      setIsEditing(false)
-                      setEditorState(EditorState.createEmpty())
+                      setCurrentForm(initialForm)
                     }}
                   >
                     Save Annotation
@@ -223,7 +217,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                         </Typography>
                       </Paper>
 
-                      <IconButton onClick={() => goToCommentAndEdit(comment)}>
+                      <IconButton onClick={() => editComment(comment)}>
                         <CreateIcon />
                       </IconButton>
                     </CardContent>
