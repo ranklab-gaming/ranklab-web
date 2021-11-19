@@ -1,4 +1,4 @@
-describe("Navigation", () => {
+describe("navigation", () => {
   it("should navigate to the index page", () => {
     cy.visit("/")
 

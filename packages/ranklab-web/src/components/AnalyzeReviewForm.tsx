@@ -180,8 +180,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
                       setComments([...comments, createdComment])
                       setIsSubmitting(false)
-                      setCurrentComment(createdComment)
+                      setCurrentComment(null)
                       setCurrentForm(initialForm)
+                      setIsEditing(false)
                     }}
                   >
                     Save Annotation

@@ -1,4 +1,4 @@
-describe("review", () => {
+describe("comment", () => {
   it("should successfully create a comment in a review", () => {
     cy.login()
     cy.sql(`SELECT * FROM users;`).then(([{ id: user_id }]) => {
@@ -17,7 +17,7 @@ describe("review", () => {
     cy.get("button").contains("Create Annotation at 0:04").click()
     cy.get('[contenteditable="true"]').type("This is a test comment")
     cy.get("button").contains("Save Annotation").click()
-    cy.get("li").contains("0:04")
-    cy.get("li").contains("This is a test comment")
+    cy.get("p").contains("0:04")
+    cy.get("div").contains("This is a test comment")
   })
 })
