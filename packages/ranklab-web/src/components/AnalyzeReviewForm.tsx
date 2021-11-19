@@ -66,7 +66,6 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [comments, setComments] = useState(fetchedComments)
   const playerRef = useRef<ReactPlayer>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
   const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
 
@@ -75,7 +74,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   )
 
   const goToComment = (comment: Comment) => {
-    setIsPlaying(false)
+    playerRef.current?.setState({
+      isPlaying: false,
+    })
     playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
   }
 
@@ -103,9 +104,6 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
                 wrapper={Wrapper}
                 ref={playerRef}
-                playing={isPlaying}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
                 onProgress={({ playedSeconds }) =>
                   setCurrentForm({
                     ...currentForm,
@@ -134,7 +132,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     color="info"
                     onClick={() => {
                       setIsEditing(!isEditing)
-                      setIsPlaying(false)
+                      playerRef.current?.setState({
+                        isPlaying: false,
+                      })
                     }}
                   >
                     <CreateIcon sx={{ marginRight: "5px" }} />
