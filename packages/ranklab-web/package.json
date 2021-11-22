@@ -25,7 +25,7 @@
     "@iconify/react": "^3.1.0",
     "@mui/icons-material": "^5.1.0",
     "@mui/lab": "^5.0.0-alpha.54",
-    "@mui/material": "^5.1.0",
+    "@mui/material": "^5.1.1",
     "@ranklab-gaming/svg-drawing-core": "^4.2.6",
     "@ranklab-gaming/svg-drawing-react": "^4.2.6",
     "@ranklab/api": "1.0.0",
