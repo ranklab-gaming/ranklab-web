@@ -68,15 +68,14 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [isEditing, setIsEditing] = useState(false)
   const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
   )
 
   const goToComment = (comment: Comment) => {
-    playerRef.current?.setState({
-      isPlaying: false,
-    })
+    setIsPlaying(false)
     playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
   }
 
@@ -104,12 +103,23 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
                 wrapper={Wrapper}
                 ref={playerRef}
-                onProgress={({ playedSeconds }) =>
+                playing={isPlaying}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onProgress={({ playedSeconds }) => {
+                  if (isPlaying) {
+                    setCurrentForm({
+                      ...currentForm,
+                      videoTimestamp: Math.floor(playedSeconds),
+                    })
+                  }
+                }}
+                onSeek={(seconds) => {
                   setCurrentForm({
                     ...currentForm,
-                    videoTimestamp: Math.floor(playedSeconds),
+                    videoTimestamp: Math.floor(seconds),
                   })
-                }
+                }}
               />
               {isEditing && (
                 <Drawing
@@ -132,9 +142,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     color="info"
                     onClick={() => {
                       setIsEditing(!isEditing)
-                      playerRef.current?.setState({
-                        isPlaying: false,
-                      })
+                      setIsPlaying(false)
                     }}
                   >
                     <CreateIcon sx={{ marginRight: "5px" }} />
