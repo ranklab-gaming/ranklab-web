@@ -1,12 +1,4 @@
-import React, {
-  forwardRef,
-  ForwardRefExoticComponent,
-  FunctionComponent,
-  RefAttributes,
-  useRef,
-  useState,
-} from "react"
-import ReactPlayer from "react-player"
+import React, { FunctionComponent, useRef, useState } from "react"
 import {
   Typography,
   Paper,
@@ -28,6 +20,7 @@ import api from "src/api"
 import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
 import type { DrawingType } from "./Drawing"
+import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
 
 const Drawing = dynamic(() => import("./Drawing"), {
   ssr: false,
@@ -47,11 +40,6 @@ function formatTimestamp(secs: number) {
   return `${duration.minutes}:${String(duration.seconds).padStart(2, "0")}`
 }
 
-const Wrapper: ForwardRefExoticComponent<RefAttributes<HTMLDivElement>> =
-  forwardRef<HTMLDivElement>(({ children }, ref) => {
-    return <div ref={ref}>{children}</div>
-  })
-
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review,
   comments: fetchedComments,
@@ -64,19 +52,18 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [comments, setComments] = useState(fetchedComments)
-  const playerRef = useRef<ReactPlayer>(null)
+  const playerRef = useRef<VideoPlayerRef>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
   )
 
   const goToComment = (comment: Comment) => {
-    setIsPlaying(false)
-    playerRef.current?.seekTo(comment.videoTimestamp, "seconds")
+    playerRef.current?.pause()
+    playerRef.current?.seekTo(comment.videoTimestamp)
   }
 
   const editComment = (comment: Comment) => {
@@ -97,29 +84,16 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Box sx={{ position: "relative" }}>
-              <ReactPlayer
-                width="100%"
+              <VideoPlayer
                 controls={!isEditing}
-                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
-                wrapper={Wrapper}
                 ref={playerRef}
-                playing={isPlaying}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onProgress={({ playedSeconds }) => {
-                  if (isPlaying) {
-                    setCurrentForm({
-                      ...currentForm,
-                      videoTimestamp: Math.floor(playedSeconds),
-                    })
-                  }
-                }}
-                onSeek={(seconds) => {
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
+                onTimeUpdate={(seconds) =>
                   setCurrentForm({
                     ...currentForm,
-                    videoTimestamp: Math.floor(seconds),
+                    videoTimestamp: seconds,
                   })
-                }}
+                }
               />
               {isEditing && (
                 <Drawing
@@ -142,7 +116,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     color="info"
                     onClick={() => {
                       setIsEditing(!isEditing)
-                      setIsPlaying(false)
+                      playerRef.current?.pause()
                     }}
                   >
                     <CreateIcon sx={{ marginRight: "5px" }} />

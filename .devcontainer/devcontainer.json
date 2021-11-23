@@ -12,7 +12,8 @@
     "naumovs.color-highlight",
     "ms-vsliveshare.vsliveshare",
     "ms-vscode.js-debug-nightly",
-    "github.vscode-pull-request-github"
+    "github.vscode-pull-request-github",
+    "burkeholland.simple-react-snippets"
   ],
   "settings": {
     "editor.codeLens": false,

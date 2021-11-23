@@ -17,12 +17,12 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
 import { Controller, useForm } from "react-hook-form"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
-import ReactPlayer from "react-player"
 import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
 import React, { FunctionComponent, useState } from "react"
 import { Game } from "@ranklab/api"
 import { EditorState } from "draft-js"
+import VideoPlayer from "./VideoPlayer"
 
 export type FormValuesProps = {
   title: string
@@ -191,10 +191,8 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
         <Grid item xs={12} md={6} sx={{ display: "flex" }}>
           <Grid container direction="column" spacing={2} sx={{ flex: "1" }}>
             <Grid sx={{ flexGrow: 1 }} item>
-              <ReactPlayer
-                width="100%"
-                controls={true}
-                url={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}.mp4`}
+              <VideoPlayer
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}.mp4`}
               />
             </Grid>
             <Grid item>
