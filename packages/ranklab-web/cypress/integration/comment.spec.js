@@ -5,7 +5,7 @@ describe("comment", () => {
       cy.sql(`SELECT * FROM games;`).then(([{ id: game_id }]) => {
         cy.sql(
           `INSERT INTO reviews (user_id, coach_id, title, video_key, game_id, notes)
-          VALUES ('${user_id}', NULL, 'This is a test review', 'a5b509ba-8590-4253-9ca5-f76e09a37e64', '${game_id}', 'These are test notes');`
+          VALUES ('${user_id}', NULL, 'This is a test review', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', '${game_id}', 'These are test notes');`
         )
       })
     })
