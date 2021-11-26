@@ -23,6 +23,7 @@ import {
     Game,
     Recording,
     Review,
+    UpdateCommentRequest,
     User,
 } from '../models';
 
@@ -36,6 +37,11 @@ export interface CommentsCreateRequest {
 
 export interface CommentsListRequest {
     reviewId: string;
+}
+
+export interface CommentsUpdateRequest {
+    id: string;
+    updateCommentRequest: UpdateCommentRequest;
 }
 
 export interface ReviewsCreateRequest {
@@ -142,6 +148,41 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async commentsList(requestParameters: CommentsListRequest): Promise<Array<Comment>> {
         const response = await this.commentsListRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async commentsUpdateRaw(requestParameters: CommentsUpdateRequest): Promise<runtime.ApiResponse<Comment>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentsUpdate.');
+        }
+
+        if (requestParameters.updateCommentRequest === null || requestParameters.updateCommentRequest === undefined) {
+            throw new runtime.RequiredError('updateCommentRequest','Required parameter requestParameters.updateCommentRequest was null or undefined when calling commentsUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/comments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateCommentRequest,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async commentsUpdate(requestParameters: CommentsUpdateRequest): Promise<Comment> {
+        const response = await this.commentsUpdateRaw(requestParameters);
         return await response.value();
     }
 

@@ -17,7 +17,11 @@ export default withApiAuthRequired(async function proxy(req, res) {
       throw new Error("Expected session to be present")
     }
 
-    const response = await fetch(`${baseURL}/${req.query.path}`, {
+    const fullPath = Array.isArray(req.query.path)
+      ? req.query.path.join("/")
+      : req.query.path
+
+    const response = await fetch(`${baseURL}/${fullPath}`, {
       method: req.method,
       body: JSON.stringify(req.body),
       headers: {

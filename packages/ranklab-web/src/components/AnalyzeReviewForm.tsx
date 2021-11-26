@@ -68,6 +68,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
   const editComment = (comment: Comment) => {
     goToComment(comment)
+    setCurrentComment(comment)
     setIsEditing(true)
     setCurrentForm({
       body: EditorState.createWithContent(
@@ -122,9 +123,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     <CreateIcon sx={{ marginRight: "5px" }} />
                     {isEditing
                       ? "Stop Annotating"
-                      : `${
-                          currentComment ? "Edit" : "Create"
-                        } Annotation at ${formatTimestamp(
+                      : `Create Annotation at ${formatTimestamp(
                           currentForm.videoTimestamp
                         )}`}
                   </Button>
@@ -143,31 +142,52 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     fullWidth
                     color="info"
                     size="large"
-                    type="submit"
+                    type="button"
                     variant="contained"
                     loading={isSubmitting}
                     disabled={isSubmitting}
                     onClick={async () => {
                       setIsSubmitting(true)
 
-                      const createdComment = await api.client.commentsCreate({
-                        createCommentRequest: {
-                          ...currentForm,
-                          reviewId: review.id,
-                          body: currentForm.body
-                            .getCurrentContent()
-                            .getPlainText("\u0001"),
-                        },
-                      })
+                      if (currentComment) {
+                        const updatedComment = await api.client.commentsUpdate({
+                          id: currentComment.id,
+                          updateCommentRequest: {
+                            drawing: currentForm.drawing,
+                            body: currentForm.body
+                              .getCurrentContent()
+                              .getPlainText("\u0001"),
+                          },
+                        })
 
-                      setComments([...comments, createdComment])
+                        setComments(
+                          comments.map((comment) =>
+                            comment.id === currentComment.id
+                              ? updatedComment
+                              : comment
+                          )
+                        )
+                      } else {
+                        const createdComment = await api.client.commentsCreate({
+                          createCommentRequest: {
+                            ...currentForm,
+                            reviewId: review.id,
+                            body: currentForm.body
+                              .getCurrentContent()
+                              .getPlainText("\u0001"),
+                          },
+                        })
+
+                        setComments([...comments, createdComment])
+                      }
+
                       setIsSubmitting(false)
                       setCurrentComment(null)
                       setCurrentForm(initialForm)
                       setIsEditing(false)
                     }}
                   >
-                    Save Annotation
+                    {currentComment ? "Update" : "Create"} Annotation
                   </LoadingButton>
                 </>
               ) : (

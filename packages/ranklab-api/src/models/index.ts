@@ -290,6 +290,26 @@ export interface Review {
 /**
  * 
  * @export
+ * @interface UpdateCommentRequest
+ */
+export interface UpdateCommentRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCommentRequest
+     */
+    body: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateCommentRequest
+     */
+    drawing: string;
+}
+
+/**
+ * 
+ * @export
  * @interface User
  */
 export interface User {
