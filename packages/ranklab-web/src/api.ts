@@ -33,18 +33,34 @@ const baseConfiguration = {
   middleware: [
     {
       async post(context: ResponseContext) {
-        const json = await context.response.json()
+        try {
+          const json = await context.response.clone().json()
 
-        return new Response(JSON.stringify(camelize(json)), {
-          headers: context.response.headers,
-          status: context.response.status,
-          statusText: context.response.statusText,
-        })
+          return new Response(JSON.stringify(camelize(json)), {
+            headers: context.response.headers,
+            status: context.response.status,
+            statusText: context.response.statusText,
+          })
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            return context.response
+          }
+
+          throw e
+        }
       },
       async pre(context: RequestContext) {
         if (typeof context.init.body === "string") {
-          const json = JSON.parse(context.init.body)
-          context.init.body = JSON.stringify(decamelize(json))
+          try {
+            const json = JSON.parse(context.init.body)
+            context.init.body = JSON.stringify(decamelize(json))
+          } catch (e) {
+            if (e instanceof SyntaxError) {
+              return
+            }
+
+            throw e
+          }
         }
       },
     },
