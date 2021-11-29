@@ -16,6 +16,7 @@ const Drawing: FunctionComponent<Props> = ({ onChange, value }) => {
 
   useEffect(() => {
     draw.ref.current?.svg.parseSVGString(value)
+    draw.ref.current?.update()
   }, [value])
 
   useEffect(() => {

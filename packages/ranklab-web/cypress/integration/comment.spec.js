@@ -16,7 +16,7 @@ describe("comment", () => {
     })
     cy.get("button").contains("Create Annotation at 0:04").click()
     cy.get('[contenteditable="true"]').type("This is a test comment")
-    cy.get("button").contains("Save Annotation").click()
+    cy.get("button").contains("Create Annotation").click()
     cy.get("div").contains("0:04")
     cy.get("div").contains("This is a test comment")
   })

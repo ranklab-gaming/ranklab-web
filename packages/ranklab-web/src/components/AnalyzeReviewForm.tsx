@@ -96,6 +96,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   })
                 }
               />
+
               {isEditing && (
                 <Drawing
                   onChange={(drawing: string) =>
