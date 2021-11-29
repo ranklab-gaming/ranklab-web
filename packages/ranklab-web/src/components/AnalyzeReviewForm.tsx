@@ -118,6 +118,11 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     color="info"
                     onClick={() => {
                       setIsEditing(!isEditing)
+                      setCurrentForm({
+                        ...initialForm,
+                        videoTimestamp: currentForm.videoTimestamp,
+                      })
+                      setCurrentComment(null)
                       playerRef.current?.pause()
                     }}
                   >
@@ -184,7 +189,10 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
 
                       setIsSubmitting(false)
                       setCurrentComment(null)
-                      setCurrentForm(initialForm)
+                      setCurrentForm({
+                        ...initialForm,
+                        videoTimestamp: currentForm.videoTimestamp,
+                      })
                       setIsEditing(false)
                     }}
                   >
