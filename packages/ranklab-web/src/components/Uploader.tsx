@@ -1,4 +1,3 @@
-import { isString } from "lodash"
 import { useDropzone, DropzoneOptions } from "react-dropzone"
 // material
 import { alpha, styled } from "@mui/material/styles"
