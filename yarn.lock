@@ -568,25 +568,25 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.9.2.tgz"
   integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
 
-"@ranklab-gaming/svg-drawing-animation@^4.2.6":
-  version "4.2.6"
-  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-animation/4.2.6/2d38ddcf286082d05d50933e3ba970722ddb909d8e62d4dfd4ccdc9619a99705#8bbe12d45f2742ab53ad48d98fcbb93b5555aa47"
-  integrity sha512-EW3k1FMsGtBwsslDPHPtRbDftKxi9B/gflsHH3hGgMkjWX5su4zB31uW5/wmCGv+4CRqyd/mDZGPT9dv4Y4x3w==
+"@ranklab-gaming/svg-drawing-animation@^4.2.10":
+  version "4.2.10"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-animation/4.2.10/3d7d9bc8adca8d334c1a414c4ac64d5201323c4c49449d31cd7f5c1c3a596eb0#0b2304671e458869ab98c6d7f087a725d92d3508"
+  integrity sha512-MkDU5/WghkzjZp7IgKYHKQUGwRZnHuQK+qYo6Ig7yNVcOADsQlkrviNQrcMt60+i/j9cdkPwHAqshGpb63PuIg==
   optionalDependencies:
-    "@ranklab-gaming/svg-drawing-core" "^4.2.6"
+    "@ranklab-gaming/svg-drawing-core" "^4.2.10"
 
-"@ranklab-gaming/svg-drawing-core@^4.2.6":
-  version "4.2.6"
-  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-core/4.2.6/368fb5cb7c2aba76e397397d71d468a3e8841b6cd9247b7bfbdfa9f19df866aa#9e48e6bf57ac0a8d8b3a4dba653e5fd902248f93"
-  integrity sha512-BmxdC+Rw8bnqsjYTTLJYf7AcBK2gnx71maVZCKSFbNsOh8kTPbqrFjXXEsV0An1NsUDhx8Z8vMTpLXQnYVIFEw==
+"@ranklab-gaming/svg-drawing-core@^4.2.10":
+  version "4.2.10"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-core/4.2.10/f57c6e71a9a6747ae802dda226dcd88e087d1eb34c8cbf327e087f095d521cd8#2bedb796989750184d64a5427d637679f59240ed"
+  integrity sha512-v0hZbtNr9H6wJiLfhmggMq0lYF+daBoLLcSI8E/238n9hfQbkMRCakSe6/+iOkCqFDBdpPXYrkYzN5cjK42e7A==
 
-"@ranklab-gaming/svg-drawing-react@^4.2.6":
-  version "4.2.6"
-  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-react/4.2.6/257a9f4e51f7ff46241c95d46964bd51612ddae91b34826fa66f351b678aa457#ccd28bac375ba37fdcd495197e249bba765af5fa"
-  integrity sha512-m37Wuj9UaLGCy4kF6DXnvHz1kbyzV8//wSS2ylSLunXi/Ytc9yHrqtECNDg+oVW6Vy6G8TaWkUUGOkZ2iP1odg==
+"@ranklab-gaming/svg-drawing-react@^4.2.10":
+  version "4.2.10"
+  resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-react/4.2.10/0decc68e0533d7bfdd7f5b1cfeb599568b42d52865ca92380759a0ddb2b7eda6#cef64998faf3413c139269e24697d576e422dd8a"
+  integrity sha512-1NvxUGlvZb6zsA+KxOvJIvMpB3MaRoB5RewvyihQsdy/G7U6u5/vPP5kT16PxgczIrgzkbqJoAHdd1t1PMhWAw==
   optionalDependencies:
-    "@ranklab-gaming/svg-drawing-animation" "^4.2.6"
-    "@ranklab-gaming/svg-drawing-core" "^4.2.6"
+    "@ranklab-gaming/svg-drawing-animation" "^4.2.10"
+    "@ranklab-gaming/svg-drawing-core" "^4.2.10"
 
 "@sentry/browser@6.14.3":
   version "6.14.3"
