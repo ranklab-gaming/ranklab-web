@@ -319,10 +319,10 @@
   resolved "https://registry.npmjs.org/@iconify/icons-eva/-/icons-eva-1.1.0.tgz"
   integrity sha512-a2wCJw+6UebrsoJ2WhpHUcdr4PJljwk0tdu1GfpjzwVyiJBC7y6sc2h7as1npJPLwgMIc/q8YFJf5iFl7Ik3NA==
 
-"@iconify/icons-ic@^1.1.15":
-  version "1.1.15"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.1.15.tgz#92c94a82592804bf5a6647eee7f96d6a4c9aa109"
-  integrity sha512-gj+0JLVA+nCzoY7iY+SJpI4eeb2VMA6VZKBNix44ZB4QlOtvNjyrTGchvF7srdg3mB1JZ2ZdYGAAvLUZWcbN+Q==
+"@iconify/icons-ic@^1.1.16":
+  version "1.1.16"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.1.16.tgz#bffcce23ba741d7f0b8905522583ba09885a15a0"
+  integrity sha512-B7aoNbLM8I+jIXh9Bpvs8LhaM8dE0Uis6/te7mU8pNbMoCWkGnZbb1tJ/2ivU5GpgqHDZ5lxFA0Q/qwEir2aOw==
 
 "@iconify/icons-mdi@^1.1.40":
   version "1.1.40"
