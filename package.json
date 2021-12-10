@@ -1,15 +1,41 @@
 {
   "private": true,
+  "keywords": [
+    "turbo"
+  ],
   "scripts": {
-    "dev": "yarn workspace @ranklab/web dev",
-    "build": "yarn workspace @ranklab/web build",
-    "start": "yarn workspace @ranklab/web start",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
     "codegen": "./bin/codegen",
-    "test": "yarn workspace @ranklab/web test",
-    "cypress": "yarn workspace @ranklab/web cypress"
+    "test": "NODE_ENV=test turbo run build test"
   },
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "turbo": "^1.0.4"
+  },
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          ".next/**"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "build"
+        ],
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
+    }
+  }
 }
