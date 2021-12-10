@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn workspace @ranklab/api build && next build",
+    "build": "next build",
     "start": "next start",
     "cypress": "cypress run",
     "test:start": "NODE_ENV=test node ./cypress/server.js",
