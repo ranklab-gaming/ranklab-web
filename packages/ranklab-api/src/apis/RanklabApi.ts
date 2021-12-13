@@ -19,6 +19,7 @@ import {
     Comment,
     CreateCoachRequest,
     CreateCommentRequest,
+    CreateRecordingRequest,
     CreateReviewRequest,
     Game,
     Recording,
@@ -42,6 +43,10 @@ export interface CommentsListRequest {
 export interface CommentsUpdateRequest {
     id: string;
     updateCommentRequest: UpdateCommentRequest;
+}
+
+export interface RecordingsCreateRequest {
+    createRecordingRequest: CreateRecordingRequest;
 }
 
 export interface ReviewsCreateRequest {
@@ -212,16 +217,23 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async recordingsCreateRaw(): Promise<runtime.ApiResponse<Recording>> {
+    async recordingsCreateRaw(requestParameters: RecordingsCreateRequest): Promise<runtime.ApiResponse<Recording>> {
+        if (requestParameters.createRecordingRequest === null || requestParameters.createRecordingRequest === undefined) {
+            throw new runtime.RequiredError('createRecordingRequest','Required parameter requestParameters.createRecordingRequest was null or undefined when calling recordingsCreate.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/recordings`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: requestParameters.createRecordingRequest,
         });
 
         return new runtime.JSONApiResponse(response);
@@ -229,8 +241,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async recordingsCreate(): Promise<Recording> {
-        const response = await this.recordingsCreateRaw();
+    async recordingsCreate(requestParameters: RecordingsCreateRequest): Promise<Recording> {
+        const response = await this.recordingsCreateRaw(requestParameters);
         return await response.value();
     }
 

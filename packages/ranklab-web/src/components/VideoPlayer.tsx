@@ -2,6 +2,7 @@ import { forwardRef, useImperativeHandle, useRef } from "react"
 
 interface VideoPlayerProps {
   src: string
+  type: string
   onTimeUpdate?: (seconds: number) => void
   controls?: boolean
 }
@@ -12,7 +13,7 @@ export interface VideoPlayerRef {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ src, onTimeUpdate, controls = true }, ref) => {
+  ({ src, type, onTimeUpdate, controls = true }, ref) => {
     const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
       if (videoRef.current?.paused) {
         onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
@@ -38,7 +39,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         onTimeUpdate={handleTimeUpdate}
         ref={videoRef}
       >
-        <source src={src} type="video/mp4" />
+        <source src={src} type={type} />
       </video>
     )
   }

@@ -193,6 +193,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
             <Grid sx={{ flexGrow: 1 }} item>
               <VideoPlayer
                 src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}.mp4`}
+                type=
               />
             </Grid>
             <Grid item>

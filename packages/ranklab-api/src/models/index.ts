@@ -154,6 +154,26 @@ export interface CreateCommentRequest {
 /**
  * 
  * @export
+ * @interface CreateRecordingRequest
+ */
+export interface CreateRecordingRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateRecordingRequest
+     */
+    mimeType: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateRecordingRequest
+     */
+    size: number;
+}
+
+/**
+ * 
+ * @export
  * @interface CreateReviewRequest
  */
 export interface CreateReviewRequest {
@@ -235,6 +255,24 @@ export interface Recording {
      * @memberof Recording
      */
     uploadUrl: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Recording
+     */
+    uploaded: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    userId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    videoKey: string;
 }
 
 /**
@@ -272,6 +310,12 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
+    recordingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
     title: string;
     /**
      * 
@@ -279,12 +323,6 @@ export interface Review {
      * @memberof Review
      */
     userId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
-    videoKey: string;
 }
 
 /**

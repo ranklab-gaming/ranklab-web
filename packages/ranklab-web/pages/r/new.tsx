@@ -12,9 +12,9 @@ import Page from "src/components/Page"
 import Uploader from "src/components/Uploader"
 import DashboardLayout from "src/layouts/dashboard"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
+import { Recording } from "@ranklab/api"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import api from "@ranklab/web/src/api"
-import { Recording } from "@ranklab/api"
 
 interface NewRecordingFormProps {}
 
@@ -30,14 +30,22 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
   }, [])
 
   let [upload, { progress, done, loading }] = useUpload(async ({ files }) => {
-    const recording = await api.client.recordingsCreate()
+    const file = files[0]
+
+    if (!file) {
+      return
+    }
+
+    const recording = await api.client.recordingsCreate({
+      createRecordingRequest: { mimeType: file.type, size: file.size },
+    })
 
     setRecording(recording)
 
     return {
       method: "PUT",
       url: recording.uploadUrl,
-      body: files[0],
+      body: file,
       headers: {
         "X-Amz-Acl": "public-read",
       },
@@ -51,8 +59,7 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
       }
 
       router.push("/r/[id]", `/r/${recording.id}`)
-    }
-  }, [done])
+  }, [done, recording])
 
   return (
     <DashboardLayout>
