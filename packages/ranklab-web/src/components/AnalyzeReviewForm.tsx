@@ -15,7 +15,7 @@ import CreateIcon from "@mui/icons-material/Create"
 import { LoadingButton } from "@mui/lab"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
-import { Review, Comment } from "@ranklab/api"
+import { Review, Comment, Recording } from "@ranklab/api"
 import api from "src/api"
 import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
@@ -29,6 +29,7 @@ const Drawing = dynamic(() => import("./Drawing"), {
 interface Props {
   review: Review
   comments: Comment[]
+  recording: Recording
 }
 
 function formatTimestamp(secs: number) {
@@ -43,6 +44,7 @@ function formatTimestamp(secs: number) {
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review,
   comments: fetchedComments,
+  recording,
 }) => {
   const initialForm = {
     body: EditorState.createEmpty(),
@@ -88,7 +90,8 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               <VideoPlayer
                 controls={!isEditing}
                 ref={playerRef}
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${review.videoKey}`}
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recording.videoKey}`}
+                type={recording.mimeType}
                 onTimeUpdate={(seconds) =>
                   setCurrentForm({
                     ...currentForm,
