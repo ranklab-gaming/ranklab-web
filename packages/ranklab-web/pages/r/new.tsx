@@ -13,33 +13,16 @@ import Uploader from "src/components/Uploader"
 import DashboardLayout from "src/layouts/dashboard"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Recording } from "@ranklab/api"
-import { GetServerSideProps } from "next"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import api from "@ranklab/web/src/api"
 
-interface NewRecordingFormProps {
-  recording: Recording
-}
+interface NewRecordingFormProps {}
 
-const getDashboardServerSideProps: GetServerSideProps<NewRecordingFormProps> =
-  async function (ctx) {
-    const recording = await api.server(ctx).recordingsCreate()
+export const getServerSideProps = withPageAuthRequired()
 
-    return {
-      props: {
-        recording,
-      },
-    }
-  }
-
-export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getDashboardServerSideProps,
-})
-
-const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = ({
-  recording,
-}) => {
+const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
   const [files, setFiles] = useState<FileList | null>(null)
+  const [recording, setRecording] = useState<Recording | null>(null)
   const router = useRouter()
 
   const handleDropFile = useCallback((files) => {
@@ -47,10 +30,22 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = ({
   }, [])
 
   let [upload, { progress, done, loading }] = useUpload(async ({ files }) => {
+    const file = files[0]
+
+    if (!file) {
+      return
+    }
+
+    const recording = await api.client.recordingsCreate({
+      createRecordingRequest: { mimeType: file.type, size: file.size },
+    })
+
+    setRecording(recording)
+
     return {
       method: "PUT",
       url: recording.uploadUrl,
-      body: files[0],
+      body: file,
       headers: {
         "X-Amz-Acl": "public-read",
       },
@@ -59,9 +54,13 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = ({
 
   useEffect(() => {
     if (done) {
+      if (!recording) {
+        throw new Error("Recording not found")
+      }
+
       router.push("/r/[id]", `/r/${recording.id}`)
     }
-  }, [done])
+  }, [done, recording])
 
   return (
     <DashboardLayout>

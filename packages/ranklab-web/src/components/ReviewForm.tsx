@@ -20,7 +20,7 @@ import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
 import React, { FunctionComponent, useState } from "react"
-import { Game } from "@ranklab/api"
+import { Game, Recording } from "@ranklab/api"
 import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
 
@@ -44,9 +44,10 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
 
 interface Props {
   games: Game[]
+  recording: Recording
 }
 
-const ReviewForm: FunctionComponent<Props> = ({ games }) => {
+const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   const {
     control,
     handleSubmit,
@@ -61,16 +62,12 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [errorMessage, setErrorMessage] = useState("")
 
-  const recordingId = Array.isArray(router.query.id)
-    ? router.query.id.join(",")
-    : router.query.id
-
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await api.client.reviewsCreate({
         createReviewRequest: {
           gameId: data.gameId,
-          recordingId: recordingId!,
+          recordingId: recording.id,
           title: data.title,
           notes: data.notes,
         },
@@ -192,7 +189,8 @@ const ReviewForm: FunctionComponent<Props> = ({ games }) => {
           <Grid container direction="column" spacing={2} sx={{ flex: "1" }}>
             <Grid sx={{ flexGrow: 1 }} item>
               <VideoPlayer
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recordingId}.mp4`}
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recording.videoKey}`}
+                type={recording.mimeType}
               />
             </Grid>
             <Grid item>

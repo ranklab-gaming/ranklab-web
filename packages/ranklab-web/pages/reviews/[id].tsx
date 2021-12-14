@@ -6,34 +6,37 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
-import { Review, Comment } from "@ranklab/api"
+import { Review, Comment, Recording } from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
+import { useRequiredParam } from "src/hooks/use-param"
 
 // ----------------------------------------------------------------------
 
 interface Props {
   review: Review
   comments: Comment[]
+  recording: Recording
 }
 
 const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
-  if (!ctx.query.id) {
-    throw new Error("Id in query not present")
-  }
-
-  const id = Array.isArray(ctx.query.id) ? ctx.query.id.join(",") : ctx.query.id
+  const id = useRequiredParam(ctx, "id")
 
   const [review, comments] = await Promise.all([
     api.server(ctx).reviewsGet({ id }),
     api.server(ctx).commentsList({ reviewId: id }),
   ])
 
+  const recording = await api
+    .server(ctx)
+    .recordingsGet({ id: review.recordingId })
+
   return {
     props: {
       review,
       comments,
+      recording,
     },
   }
 }
@@ -42,7 +45,11 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getReviewShowServerSideProps,
 })
 
-const AnalyzeReviewPage: FunctionComponent<Props> = ({ review, comments }) => {
+const AnalyzeReviewPage: FunctionComponent<Props> = ({
+  review,
+  comments,
+  recording,
+}) => {
   return (
     <DashboardLayout>
       <Page title="Dashboard | Analyze VOD">
@@ -53,7 +60,11 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({ review, comments }) => {
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <AnalyzeReviewForm review={review} comments={comments} />
+              <AnalyzeReviewForm
+                review={review}
+                comments={comments}
+                recording={recording}
+              />
             </CardContent>
           </Card>
         </Container>
