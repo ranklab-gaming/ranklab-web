@@ -59,6 +59,7 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
       }
 
       router.push("/r/[id]", `/r/${recording.id}`)
+    }
   }, [done, recording])
 
   return (

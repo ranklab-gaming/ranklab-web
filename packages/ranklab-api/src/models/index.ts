@@ -254,6 +254,12 @@ export interface Recording {
      * @type {string}
      * @memberof Recording
      */
+    mimeType: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
     uploadUrl: string;
     /**
      * 

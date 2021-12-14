@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Review, Comment } from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
+import { useRequiredParam } from "src/hooks/use-param"
 
 // ----------------------------------------------------------------------
 
@@ -19,11 +20,7 @@ interface Props {
 const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
-  if (!ctx.query.id) {
-    throw new Error("Id in query not present")
-  }
-
-  const id = Array.isArray(ctx.query.id) ? ctx.query.id.join(",") : ctx.query.id
+  const id = useRequiredParam(ctx, "id")
 
   const [review, comments] = await Promise.all([
     api.server(ctx).reviewsGet({ id }),

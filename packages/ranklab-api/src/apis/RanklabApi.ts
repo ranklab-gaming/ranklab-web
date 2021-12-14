@@ -49,6 +49,10 @@ export interface RecordingsCreateRequest {
     createRecordingRequest: CreateRecordingRequest;
 }
 
+export interface RecordingsGetRequest {
+    id: string;
+}
+
 export interface ReviewsCreateRequest {
     createReviewRequest: CreateReviewRequest;
 }
@@ -243,6 +247,34 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async recordingsCreate(requestParameters: RecordingsCreateRequest): Promise<Recording> {
         const response = await this.recordingsCreateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async recordingsGetRaw(requestParameters: RecordingsGetRequest): Promise<runtime.ApiResponse<Recording>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling recordingsGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/recordings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async recordingsGet(requestParameters: RecordingsGetRequest): Promise<Recording> {
+        const response = await this.recordingsGetRaw(requestParameters);
         return await response.value();
     }
 
