@@ -221,6 +221,12 @@ export interface Game {
      * @memberof Game
      */
     name: string;
+    /**
+     * 
+     * @type {Array<SkillLevel>}
+     * @memberof Game
+     */
+    skillLevels: Array<SkillLevel>;
 }
 
 /**
@@ -329,6 +335,26 @@ export interface Review {
      * @memberof Review
      */
     userId: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface SkillLevel
+ */
+export interface SkillLevel {
+    /**
+     * 
+     * @type {string}
+     * @memberof SkillLevel
+     */
+    name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof SkillLevel
+     */
+    value: number;
 }
 
 /**

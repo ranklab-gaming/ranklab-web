@@ -21,16 +21,12 @@ describe("review", () => {
         cy.contains("Submit Form").click()
 
         cy.wait("@createReview").then((xhr) => {
-          cy.sql(`SELECT * FROM games WHERE name = 'Overwatch';`).then(
-            ([{ id: gameId }]) => {
-              cy.wrap(xhr.response.body).should("include", {
-                title: "This is a test review",
-                game_id: gameId,
-                notes: "This is a test description",
-                recording_id: recordingId,
-              })
-            }
-          )
+          cy.wrap(xhr.response.body).should("include", {
+            title: "This is a test review",
+            game_id: "overwatch",
+            notes: "This is a test description",
+            recording_id: recordingId,
+          })
         })
       })
     })

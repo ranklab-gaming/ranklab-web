@@ -3,18 +3,16 @@ describe("comment", () => {
     cy.login()
 
     cy.sql(`SELECT * FROM users;`).then(([{ id: userId }]) => {
-      cy.sql(`SELECT * FROM games;`).then(([{ id: gameId }]) => {
-        cy.sql(
-          `INSERT INTO recordings (user_id, video_key, mime_type, uploaded)
-          VALUES ('${userId}', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', 'video/mp4', 'true');`
-        )
+      cy.sql(
+        `INSERT INTO recordings (user_id, video_key, mime_type, uploaded)
+        VALUES ('${userId}', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', 'video/mp4', 'true');`
+      )
 
-        cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
-          cy.sql(
-            `INSERT INTO reviews (user_id, coach_id, title, recording_id, game_id, notes)
-             VALUES ('${userId}', NULL, 'This is a test review', '${recordingId}', '${gameId}', 'These are test notes');`
-          )
-        })
+      cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
+        cy.sql(
+          `INSERT INTO reviews (user_id, coach_id, title, recording_id, game_id, notes)
+            VALUES ('${userId}', NULL, 'This is a test review', '${recordingId}', 'overwatch', 'These are test notes');`
+        )
       })
     })
 
