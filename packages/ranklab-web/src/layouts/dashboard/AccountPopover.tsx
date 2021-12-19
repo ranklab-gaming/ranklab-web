@@ -1,8 +1,6 @@
 import { Icon } from "@iconify/react"
 import { useRef, useState } from "react"
-import homeFill from "@iconify/icons-eva/home-fill"
 import personFill from "@iconify/icons-eva/person-fill"
-import settings2Fill from "@iconify/icons-eva/settings-2-fill"
 // next
 import NextLink from "next/link"
 // material
@@ -22,11 +20,7 @@ import { useUser } from "@auth0/nextjs-auth0"
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  { label: "Home", icon: homeFill, linkTo: "/" },
-  { label: "Profile", icon: personFill, linkTo: "#" },
-  { label: "Settings", icon: settings2Fill, linkTo: "#" },
-]
+const MENU_OPTIONS = [{ label: "Profile", icon: personFill, linkTo: "#" }]
 
 // ----------------------------------------------------------------------
 

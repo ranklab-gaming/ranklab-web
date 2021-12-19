@@ -8,7 +8,6 @@ import useCollapseDrawer from "../../hooks/useCollapseDrawer"
 //
 import { MHidden } from "../../components/@material-extend"
 import AccountPopover from "./AccountPopover"
-import NotificationsPopover from "./NotificationsPopover"
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +71,6 @@ export default function DashboardNavbar({
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <NotificationsPopover />
           <AccountPopover />
         </Stack>
       </ToolbarStyle>
