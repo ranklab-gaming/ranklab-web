@@ -1,24 +1,29 @@
-import Head from 'next/head';
-import { forwardRef, ReactNode } from 'react';
-// material
-import { Box, BoxProps } from '@mui/material';
+import Head from "next/head"
+import { forwardRef, ReactNode } from "react"
+// @mui
+import { Box, BoxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
-interface PageProps extends BoxProps {
-  children: ReactNode;
-  title?: string;
+interface Props extends BoxProps {
+  children: ReactNode
+  meta?: ReactNode
+  title: string
 }
 
-const Page = forwardRef<HTMLDivElement, PageProps>(
-  ({ children, title = '', ...other }, ref) => (
-    <Box ref={ref} {...other}>
+const Page = forwardRef<HTMLDivElement, Props>(
+  ({ children, title = "", meta, ...other }, ref) => (
+    <>
       <Head>
         <title>{title}</title>
+        {meta}
       </Head>
-      {children}
-    </Box>
-  )
-);
 
-export default Page;
+      <Box ref={ref} {...other}>
+        {children}
+      </Box>
+    </>
+  )
+)
+
+export default Page

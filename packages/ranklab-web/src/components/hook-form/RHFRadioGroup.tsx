@@ -1,5 +1,5 @@
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, Controller } from "react-hook-form"
 // @mui
 import {
   Radio,
@@ -7,14 +7,14 @@ import {
   FormHelperText,
   RadioGroupProps,
   FormControlLabel,
-} from '@mui/material';
+} from "@mui/material"
 
 // ----------------------------------------------------------------------
 
 interface IProps {
-  name: string;
-  options: string[];
-  getOptionLabel?: string[];
+  name: string
+  options: string[]
+  getOptionLabel?: string[]
 }
 
 export default function RHFRadioGroup({
@@ -23,7 +23,7 @@ export default function RHFRadioGroup({
   getOptionLabel,
   ...other
 }: IProps & RadioGroupProps) {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
 
   return (
     <Controller
@@ -37,7 +37,7 @@ export default function RHFRadioGroup({
                 key={option}
                 value={option}
                 control={<Radio />}
-                label={getOptionLabel?.length ? getOptionLabel[index] : option}
+                label={getOptionLabel?.length ? getOptionLabel[index]! : option}
               />
             ))}
           </RadioGroup>
@@ -50,5 +50,5 @@ export default function RHFRadioGroup({
         </div>
       )}
     />
-  );
+  )
 }

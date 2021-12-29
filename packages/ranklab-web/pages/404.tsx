@@ -1,23 +1,22 @@
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 // next
 import NextLink from "next/link"
-// material
+// @mui
 import { styled } from "@mui/material/styles"
 import { Box, Button, Typography, Container } from "@mui/material"
 // layouts
-import LogoOnlyLayout from "@ranklab/web/src/layouts/LogoOnlyLayout"
+import Layout from "src/layouts"
 // components
-import {
-  MotionContainer,
-  varBounceIn,
-} from "@ranklab/web/src/components/animate"
-import Page from "@ranklab/web/src/components/Page"
+import Page from "src/components/Page"
+import { MotionContainer, varBounce } from "src/components/animate"
+// assets
+import { PageNotFoundIllustration } from "src/assets"
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Page)(({ theme }) => ({
+const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
-  minHeight: "100%",
+  height: "100%",
   alignItems: "center",
   paddingTop: theme.spacing(15),
   paddingBottom: theme.spacing(10),
@@ -25,34 +24,40 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function PageNotFound() {
-  return (
-    <LogoOnlyLayout>
-      <RootStyle title="404 Page Not Found | Ranklab">
-        <Container>
-          <MotionContainer initial="initial" open>
-            <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
-              <motion.div variants={varBounceIn}>
-                <Typography variant="h3" paragraph>
-                  Sorry, page not found!
-                </Typography>
-              </motion.div>
-              <Typography
-                sx={{ color: "text.secondary", my: { xs: 5, sm: 10 } }}
-              >
-                Sorry, we couldn’t find the page you’re looking for. Perhaps
-                you’ve mistyped the URL? Be sure to check your spelling.
-              </Typography>
+Page404.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout variant="logoOnly">{page}</Layout>
+}
 
-              <NextLink href="/">
-                <Button size="large" variant="contained">
-                  Go to Home
-                </Button>
-              </NextLink>
-            </Box>
-          </MotionContainer>
+// ----------------------------------------------------------------------
+
+export default function Page404() {
+  return (
+    <Page title="404 Page Not Found" sx={{ height: 1 }}>
+      <RootStyle>
+        <Container component={MotionContainer}>
+          <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
+            <m.div variants={varBounce().in}>
+              <Typography variant="h3" paragraph>
+                Sorry, page not found!
+              </Typography>
+            </m.div>
+            <Typography sx={{ color: "text.secondary" }}>
+              Sorry, we couldn’t find the page you’re looking for. Perhaps
+              you’ve mistyped the URL? Be sure to check your spelling.
+            </Typography>
+            <m.div variants={varBounce().in}>
+              <PageNotFoundIllustration
+                sx={{ height: 260, my: { xs: 5, sm: 10 } }}
+              />
+            </m.div>
+            <NextLink href="/">
+              <Button size="large" variant="contained">
+                Go to Home
+              </Button>
+            </NextLink>
+          </Box>
         </Container>
       </RootStyle>
-    </LogoOnlyLayout>
+    </Page>
   )
 }

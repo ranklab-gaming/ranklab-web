@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
+import { ReactElement } from "react"
 // next
-import NextLink from 'next/link';
+import NextLink from "next/link"
 // @mui
 import {
   Box,
@@ -8,25 +8,31 @@ import {
   Typography,
   BreadcrumbsProps,
   Breadcrumbs as MUIBreadcrumbs,
-} from '@mui/material';
+} from "@mui/material"
 
 // ----------------------------------------------------------------------
 
 type TLink = {
-  href?: string;
-  name: string;
-  icon?: ReactElement;
-};
-
-export interface Props extends BreadcrumbsProps {
-  links: TLink[];
-  activeLast?: boolean;
+  href?: string
+  name: string
+  icon?: ReactElement
 }
 
-export default function Breadcrumbs({ links, activeLast = false, ...other }: Props) {
-  const currentLink = links[links.length - 1].name;
+export interface Props extends BreadcrumbsProps {
+  links: TLink[]
+  activeLast?: boolean
+}
 
-  const listDefault = links.map((link) => <LinkItem key={link.name} link={link} />);
+export default function Breadcrumbs({
+  links,
+  activeLast = false,
+  ...other
+}: Props) {
+  const currentLink = links[links.length - 1]!.name
+
+  const listDefault = links.map((link) => (
+    <LinkItem key={link.name} link={link} />
+  ))
 
   const listActiveLast = links.map((link) => (
     <div key={link.name}>
@@ -37,41 +43,46 @@ export default function Breadcrumbs({ links, activeLast = false, ...other }: Pro
           variant="body2"
           sx={{
             maxWidth: 260,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            color: 'text.disabled',
-            textOverflow: 'ellipsis',
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            color: "text.disabled",
+            textOverflow: "ellipsis",
           }}
         >
           {currentLink}
         </Typography>
       )}
     </div>
-  ));
+  ))
 
   return (
     <MUIBreadcrumbs
       separator={
         <Box
           component="span"
-          sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: 'text.disabled' }}
+          sx={{
+            width: 4,
+            height: 4,
+            borderRadius: "50%",
+            bgcolor: "text.disabled",
+          }}
         />
       }
       {...other}
     >
       {activeLast ? listDefault : listActiveLast}
     </MUIBreadcrumbs>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 type LinkItemProps = {
-  link: TLink;
-};
+  link: TLink
+}
 
 function LinkItem({ link }: LinkItemProps) {
-  const { href = '', name, icon } = link;
+  const { href = "", name, icon } = link
   return (
     <NextLink href={href} passHref>
       <Link
@@ -79,15 +90,17 @@ function LinkItem({ link }: LinkItemProps) {
         variant="body2"
         sx={{
           lineHeight: 2,
-          display: 'flex',
-          alignItems: 'center',
-          color: 'text.primary',
-          '& > div': { display: 'inherit' },
+          display: "flex",
+          alignItems: "center",
+          color: "text.primary",
+          "& > div": { display: "inherit" },
         }}
       >
-        {icon && <Box sx={{ mr: 1, '& svg': { width: 20, height: 20 } }}>{icon}</Box>}
+        {icon && (
+          <Box sx={{ mr: 1, "& svg": { width: 20, height: 20 } }}>{icon}</Box>
+        )}
         {name}
       </Link>
     </NextLink>
-  );
+  )
 }

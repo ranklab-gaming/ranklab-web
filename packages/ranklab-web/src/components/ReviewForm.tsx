@@ -15,13 +15,12 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
 import { Controller, useForm } from "react-hook-form"
-import { DraftEditor } from "@ranklab/web/src/components/editor"
+import Editor from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api"
 import { useRouter } from "next/router"
 import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
-import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
 
 export type FormValuesProps = {
@@ -59,7 +58,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   })
 
   const router = useRouter()
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [errorMessage, setErrorMessage] = useState("")
 
   const onSubmit = async (data: FormValuesProps) => {
@@ -159,18 +157,12 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
                 name="notes"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                  <DraftEditor
-                    editorState={editorState}
-                    onEditorStateChange={(editorState) => {
-                      field.onChange(
-                        editorState.getCurrentContent().getPlainText("\u0001")
-                      )
-
-                      setEditorState(editorState)
-                    }}
+                  <Editor
+                    value={field.value}
+                    onChange={field.onChange}
                     onBlur={field.onBlur}
                     error={Boolean(error)}
-                    simple={true}
+                    simple
                   />
                 )}
               />

@@ -1,19 +1,17 @@
-// material
+import { m } from "framer-motion"
+// next
+import NextLink from "next/link"
+// @mui
 import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
-//
-import { varFadeInUp, MotionInView } from "../../animate"
+// components
+import Image from "src/components/Image"
+import { MotionViewport, varFade } from "src/components/animate"
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(24, 0),
-  backgroundImage:
-    theme.palette.mode === "light"
-      ? `linear-gradient(180deg, ${alpha(theme.palette.grey[300], 0)} 0%, ${
-          theme.palette.grey[300]
-        } 100%)`
-      : "none",
 }))
 
 const ContentStyle = styled("div")(({ theme }) => ({
@@ -26,7 +24,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-const ScreenStyle = styled(MotionInView)(({ theme }) => ({
+const ScreenStyle = styled(m.div)(({ theme }) => ({
   paddingRight: 2,
   paddingBottom: 1,
   maxWidth: 160,
@@ -71,15 +69,18 @@ const variantScreenRight = {
 
 // ----------------------------------------------------------------------
 
-export default function LandingHugePackElements() {
+export default function HomeHugePackElements() {
   const theme = useTheme()
+  const isLight = theme.palette.mode === "light"
+  const isRTL = theme.direction === "rtl"
+
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter
   const screenRightAnimate = variantScreenRight
 
   return (
     <RootStyle>
-      <Container maxWidth="lg">
+      <Container component={MotionViewport}>
         <Grid container spacing={5} justifyContent="center">
           <Grid
             item
@@ -88,40 +89,42 @@ export default function LandingHugePackElements() {
             sx={{ display: "flex", alignItems: "center" }}
           >
             <ContentStyle>
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography
-                  component="p"
+                  component="div"
                   variant="overline"
-                  sx={{ mb: 2, color: "text.secondary" }}
+                  sx={{ mb: 2, color: "text.disabled" }}
                 >
                   Interface Starter Kit
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3 }}>
                   Huge pack <br />
                   of elements
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography
                   sx={{
                     mb: 5,
-                    color: "common.white",
+                    color: isLight ? "text.secondary" : "common.white",
                   }}
                 >
                   We collected most popular elements. Menu, sliders, buttons,
                   inputs etc. are all here. Just dive in!
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
-                <Button size="large" color="inherit" variant="outlined">
-                  View All Components
-                </Button>
-              </MotionInView>
+              <m.div variants={varFade().inUp}>
+                <NextLink href="/components" passHref>
+                  <Button size="large" color="inherit" variant="outlined">
+                    View All Components
+                  </Button>
+                </NextLink>
+              </m.div>
             </ContentStyle>
           </Grid>
 
@@ -137,7 +140,6 @@ export default function LandingHugePackElements() {
               {[...Array(3)].map((_, index) => (
                 <ScreenStyle
                   key={index}
-                  threshold={0.72}
                   variants={{
                     ...(index === 0 && screenLeftAnimate),
                     ...(index === 1 && screenCenterAnimate),
@@ -145,8 +147,10 @@ export default function LandingHugePackElements() {
                   }}
                   transition={{ duration: 0.72, ease: "easeOut" }}
                   sx={{
-                    boxShadow: `80px -40px 80px ${alpha(
-                      theme.palette.common.black,
+                    boxShadow: `${isRTL ? -80 : 80}px -40px 80px ${alpha(
+                      isLight
+                        ? theme.palette.grey[600]
+                        : theme.palette.common.black,
                       0.48
                     )}`,
                     ...(index === 0 && {
@@ -161,9 +165,12 @@ export default function LandingHugePackElements() {
                     }),
                   }}
                 >
-                  <img
+                  <Image
+                    disabledEffect
                     alt={`screen ${index + 1}`}
-                    src={`/static/home/screen_dark_${index + 1}.png`}
+                    src={`https://minimal-assets-api.vercel.app/assets/images/home/screen_${
+                      isLight ? "light" : "dark"
+                    }_${index + 1}.png`}
                   />
                 </ScreenStyle>
               ))}

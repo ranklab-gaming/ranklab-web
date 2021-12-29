@@ -1,21 +1,22 @@
-// layouts
-import MainLayout from "@ranklab/web/src/layouts/main"
-// material
+// @mui
 import { styled } from "@mui/material/styles"
+// layouts
+import Layout from "src/layouts"
 // components
-import Page from "@ranklab/web/src/components/Page"
+import Page from "src/components/Page"
+// sections
 import {
-  LandingHero,
-  LandingMinimal,
-  LandingDarkMode,
-  LandingHugePackElements,
-} from "@ranklab/web/src/components/_external-pages/landing"
+  HomeHero,
+  HomeMinimal,
+  HomeDarkMode,
+  HomeHugePackElements,
+} from "sections/home"
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(Page)({
+const RootStyle = styled("div")(() => ({
   height: "100%",
-})
+}))
 
 const ContentStyle = styled("div")(({ theme }) => ({
   overflow: "hidden",
@@ -25,17 +26,23 @@ const ContentStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LandingPage() {
+HomePage.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout variant="main">{page}</Layout>
+}
+
+// ----------------------------------------------------------------------
+
+export default function HomePage() {
   return (
-    <MainLayout>
-      <RootStyle title="Be the better gamer | Ranklab" id="move_top">
-        <LandingHero />
+    <Page title="Be the better gamer | Ranklab">
+      <RootStyle>
+        <HomeHero />
         <ContentStyle>
-          <LandingMinimal />
-          <LandingHugePackElements />
-          <LandingDarkMode />
+          <HomeMinimal />
+          <HomeHugePackElements />
+          <HomeDarkMode />
         </ContentStyle>
       </RootStyle>
-    </MainLayout>
+    </Page>
   )
 }

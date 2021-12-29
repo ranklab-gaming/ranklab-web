@@ -1,18 +1,13 @@
-import { motion } from "framer-motion"
-// material
+import { m } from "framer-motion"
+// @mui
 import { styled } from "@mui/material/styles"
-import { Box, Stack, Container, Typography } from "@mui/material"
-//
-import {
-  varFadeIn,
-  varFadeInUp,
-  varWrapEnter,
-  varFadeInRight,
-} from "../../animate"
+import { Box, Container, Typography, Stack, StackProps } from "@mui/material"
+// components
+import { MotionContainer, varFade } from "src/components/animate"
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(motion.div)(({ theme }) => ({
+const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
   backgroundColor: theme.palette.grey[400],
   [theme.breakpoints.up("md")]: {
@@ -26,23 +21,23 @@ const RootStyle = styled(motion.div)(({ theme }) => ({
   },
 }))
 
-const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(
-  ({ theme }) => ({
-    zIndex: 10,
-    maxWidth: 620,
-    margin: "auto",
-    textAlign: "center",
-    position: "relative",
-    paddingTop: theme.spacing(15),
-    paddingBottom: theme.spacing(15),
-    [theme.breakpoints.up("md")]: {
-      margin: "unset",
-      textAlign: "left",
-    },
-  })
-)
+const ContentStyle = styled((props: StackProps) => (
+  <Stack spacing={5} {...props} />
+))(({ theme }) => ({
+  zIndex: 10,
+  maxWidth: 520,
+  margin: "auto",
+  textAlign: "center",
+  position: "relative",
+  paddingTop: theme.spacing(15),
+  paddingBottom: theme.spacing(15),
+  [theme.breakpoints.up("md")]: {
+    margin: "unset",
+    textAlign: "left",
+  },
+}))
 
-const HeroOverlayStyle = styled(motion.img)({
+const HeroOverlayStyle = styled(m.img)({
   zIndex: 9,
   width: "100%",
   height: "100%",
@@ -50,7 +45,7 @@ const HeroOverlayStyle = styled(motion.img)({
   position: "absolute",
 })
 
-const HeroImgStyle = styled(motion.img)(({ theme }) => ({
+const HeroImgStyle = styled(m.img)(({ theme }) => ({
   top: 0,
   right: 0,
   bottom: 0,
@@ -67,25 +62,25 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LandingHero() {
+export default function HomeHero() {
   return (
-    <>
-      <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
+    <MotionContainer>
+      <RootStyle>
         <HeroOverlayStyle
           alt="overlay"
           src="/static/overlay.svg"
-          variants={varFadeIn}
+          variants={varFade().in}
         />
 
         <HeroImgStyle
           alt="hero"
           src="/static/home/hero.png"
-          variants={varFadeInUp}
+          variants={varFade().inUp}
         />
 
         <Container maxWidth="lg">
           <ContentStyle>
-            <motion.div variants={varFadeInRight}>
+            <m.div variants={varFade().inRight}>
               <Typography variant="h1" sx={{ color: "common.white" }}>
                 Be the better gamer <br /> with
                 <Typography
@@ -97,18 +92,18 @@ export default function LandingHero() {
                 </Typography>
                 .
               </Typography>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={varFadeInRight}>
+            <m.div variants={varFade().inRight}>
               <Typography sx={{ color: "common.white" }}>
                 Get your gameplay analyzed by experienced coaches quickly and
                 without fuss.
               </Typography>
-            </motion.div>
+            </m.div>
           </ContentStyle>
         </Container>
       </RootStyle>
       <Box sx={{ height: { md: "100vh" } }} />
-    </>
+    </MotionContainer>
   )
 }
