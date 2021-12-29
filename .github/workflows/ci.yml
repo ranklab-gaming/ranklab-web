@@ -31,10 +31,10 @@ jobs:
             ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - uses: actions/setup-node@v2
-         with:
-           node-version: "14.x"
-           registry-url: "https://npm.pkg.github.com"
-           scope: "@ranklab-gaming"
+        with:
+          node-version: "14.x"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@ranklab-gaming"
       - run: yarn install
       - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
