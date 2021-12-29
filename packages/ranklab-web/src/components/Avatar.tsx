@@ -1,38 +1,31 @@
 import { forwardRef } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { Avatar, AvatarProps } from '@mui/material';
+import { Avatar as MUIAvatar, AvatarProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-type AvatarColor =
-  | 'default'
-  | 'primary'
-  | 'secondary'
-  | 'info'
-  | 'success'
-  | 'warning'
-  | 'error';
+type AvatarColor = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 
 // ----------------------------------------------------------------------
 
-export interface MAvatarProps extends AvatarProps {
+export interface Props extends AvatarProps {
   color?: AvatarColor;
 }
 
-const MAvatar = forwardRef<HTMLDivElement, MAvatarProps>(
+const Avatar = forwardRef<HTMLDivElement, Props>(
   ({ color = 'default', children, sx, ...other }, ref) => {
     const theme = useTheme();
 
     if (color === 'default') {
       return (
-        <Avatar ref={ref} sx={sx} {...other}>
+        <MUIAvatar ref={ref} sx={sx} {...other}>
           {children}
-        </Avatar>
+        </MUIAvatar>
       );
     }
 
     return (
-      <Avatar
+      <MUIAvatar
         ref={ref}
         sx={{
           fontWeight: theme.typography.fontWeightMedium,
@@ -43,9 +36,9 @@ const MAvatar = forwardRef<HTMLDivElement, MAvatarProps>(
         {...other}
       >
         {children}
-      </Avatar>
+      </MUIAvatar>
     );
   }
 );
 
-export default MAvatar;
+export default Avatar;
