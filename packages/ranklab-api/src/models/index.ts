@@ -10,6 +10,12 @@ export interface Coach {
      * @type {string}
      * @memberof Coach
      */
+    auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coach
+     */
     bio: string;
     /**
      * 
@@ -35,12 +41,6 @@ export interface Coach {
      * @memberof Coach
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Coach
-     */
-    userId: string;
 }
 
 /**
@@ -60,6 +60,12 @@ export interface Comment {
      * @type {string}
      * @memberof Comment
      */
+    coachId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
     drawing: string;
     /**
      * 
@@ -73,12 +79,6 @@ export interface Comment {
      * @memberof Comment
      */
     reviewId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Comment
-     */
-    userId: string;
     /**
      * 
      * @type {number}
@@ -246,6 +246,26 @@ export interface Health {
 /**
  * 
  * @export
+ * @interface Player
+ */
+export interface Player {
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    id: string;
+}
+
+/**
+ * 
+ * @export
  * @interface Recording
  */
 export interface Recording {
@@ -266,6 +286,12 @@ export interface Recording {
      * @type {string}
      * @memberof Recording
      */
+    playerId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
     uploadUrl: string;
     /**
      * 
@@ -273,12 +299,6 @@ export interface Recording {
      * @memberof Recording
      */
     uploaded: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof Recording
-     */
-    userId: string;
     /**
      * 
      * @type {string}
@@ -322,6 +342,12 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
+    playerId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
     recordingId: string;
     /**
      * 
@@ -329,12 +355,6 @@ export interface Review {
      * @memberof Review
      */
     title: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
-    userId: string;
 }
 
 /**
@@ -375,24 +395,4 @@ export interface UpdateCommentRequest {
      * @memberof UpdateCommentRequest
      */
     drawing: string;
-}
-
-/**
- * 
- * @export
- * @interface User
- */
-export interface User {
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    auth0Id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof User
-     */
-    id: string;
 }

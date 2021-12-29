@@ -22,10 +22,10 @@ import {
     CreateRecordingRequest,
     CreateReviewRequest,
     Game,
+    Player,
     Recording,
     Review,
     UpdateCommentRequest,
-    User,
 } from '../models';
 
 export interface CoachesCreateRequest {
@@ -221,6 +221,30 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
+    async meGetMeRaw(): Promise<runtime.ApiResponse<Player>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/me`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async meGetMe(): Promise<Player> {
+        const response = await this.meGetMeRaw();
+        return await response.value();
+    }
+
+    /**
+     */
     async recordingsCreateRaw(requestParameters: RecordingsCreateRequest): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.createRecordingRequest === null || requestParameters.createRecordingRequest === undefined) {
             throw new runtime.RequiredError('createRecordingRequest','Required parameter requestParameters.createRecordingRequest was null or undefined when calling recordingsCreate.');
@@ -358,30 +382,6 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async reviewsList(): Promise<Array<Review>> {
         const response = await this.reviewsListRaw();
-        return await response.value();
-    }
-
-    /**
-     */
-    async usersGetCurrentRaw(): Promise<runtime.ApiResponse<User>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/users/current`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response);
-    }
-
-    /**
-     */
-    async usersGetCurrent(): Promise<User> {
-        const response = await this.usersGetCurrentRaw();
         return await response.value();
     }
 
