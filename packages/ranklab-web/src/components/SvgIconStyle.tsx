@@ -1,31 +1,24 @@
-import { Box, BoxProps } from '@mui/material';
+import { Box, BoxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
-interface SvgIconStyleProps extends BoxProps {
-  src: string;
+interface Props extends BoxProps {
+  src: string
 }
 
-export default function SvgIconStyle({
-  src,
-  color = 'inherit',
-  sx,
-}: SvgIconStyleProps) {
+export default function SvgIconStyle({ src, sx }: Props) {
   return (
     <Box
-      component='span'
+      component="span"
       sx={{
         width: 24,
         height: 24,
+        display: "inline-block",
+        bgcolor: "currentColor",
         mask: `url(${src}) no-repeat center / contain`,
         WebkitMask: `url(${src}) no-repeat center / contain`,
-        bgcolor: `${color}.main`,
-        ...(color === 'inherit' && { bgcolor: 'currentColor' }),
-        ...(color === 'action' && { bgcolor: 'action.active' }),
-        ...(color === 'disabled' && { bgcolor: 'action.disabled' }),
-        ...(color === 'paper' && { bgcolor: 'background.paper' }),
         ...sx,
       }}
     />
-  );
+  )
 }

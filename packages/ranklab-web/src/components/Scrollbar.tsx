@@ -1,7 +1,7 @@
-import SimpleBarReact from "simplebar-react"
-// material
+import SimpleBarReact, { Props as ScrollbarProps } from "simplebar-react"
+// @mui
 import { alpha, styled } from "@mui/material/styles"
-import { Box, BoxProps } from "@mui/material"
+import { Box, SxProps } from "@mui/material"
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +34,11 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Scrollbar({ children, sx }: BoxProps) {
+interface Props extends ScrollbarProps {
+  sx?: SxProps
+}
+
+export default function Scrollbar({ children, sx, ...other }: Props) {
   const userAgent =
     typeof navigator === "undefined" ? "SSR" : navigator.userAgent
 
@@ -44,12 +48,16 @@ export default function Scrollbar({ children, sx }: BoxProps) {
     )
 
   if (isMobile) {
-    return <Box sx={{ overflowX: "auto", ...sx }}>{children}</Box>
+    return (
+      <Box sx={{ overflowX: "auto", ...sx }} {...other}>
+        {children}
+      </Box>
+    )
   }
 
   return (
     <RootStyle>
-      <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx}>
+      <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} {...other}>
         {children}
       </SimpleBarStyle>
     </RootStyle>
