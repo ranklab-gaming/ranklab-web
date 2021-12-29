@@ -1,8 +1,9 @@
-// material
+// @mui
 import { Theme } from "@mui/material/styles"
-// @types
-import { ColorSchema } from "../../@types/theme"
-import Iconify from "src/components/Iconify"
+// theme
+import { ColorSchema } from "../palette"
+//
+import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from "./CustomIcons"
 
 // ----------------------------------------------------------------------
 
@@ -32,10 +33,10 @@ export default function Alert(theme: Theme) {
     MuiAlert: {
       defaultProps: {
         iconMapping: {
-          error: <Iconify icon="eva:info-fill" />,
-          info: <Iconify icon="eva:alert-circle-fill" />,
-          success: <Iconify icon="eva:checkmark-circle-2-fill" />,
-          warning: <Iconify icon="eva:alert-triangle-fill" />,
+          info: <InfoIcon />,
+          success: <SuccessIcon />,
+          warning: <WarningIcon />,
+          error: <ErrorIcon />,
         },
       },
 

@@ -1,34 +1,23 @@
-import { Theme } from "@mui/material/styles"
-import Iconify from "src/components/Iconify"
+import { Theme } from '@mui/material/styles';
+//
+import { TreeViewCollapseIcon, TreeViewExpandIcon, TreeViewEndIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------
-
-const ICON_SIZE = { width: 20, height: 20 }
 
 export default function TreeView(theme: Theme) {
   return {
     MuiTreeView: {
       defaultProps: {
-        defaultCollapseIcon: (
-          <Iconify icon="eva:minus-square-outline" {...ICON_SIZE} />
-        ),
-        defaultExpandIcon: (
-          <Iconify icon="eva:close-square-outline" {...ICON_SIZE} />
-        ),
-        defaultEndIcon: (
-          <Iconify
-            icon="eva:close-square-outline"
-            {...ICON_SIZE}
-            sx={{ color: "text.secondary" }}
-          />
-        ),
+        defaultCollapseIcon: <TreeViewCollapseIcon sx={{ width: 20, height: 20 }} />,
+        defaultExpandIcon: <TreeViewExpandIcon sx={{ width: 20, height: 20 }} />,
+        defaultEndIcon: <TreeViewEndIcon sx={{ color: 'text.secondary', width: 20, height: 20 }} />,
       },
     },
     MuiTreeItem: {
       styleOverrides: {
         label: { ...theme.typography.body2 },
-        iconContainer: { width: "auto" },
+        iconContainer: { width: 'auto' },
       },
     },
-  }
+  };
 }

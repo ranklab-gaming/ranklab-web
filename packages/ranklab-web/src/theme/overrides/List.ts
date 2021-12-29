@@ -1,14 +1,14 @@
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-export default function Lists(theme: Theme) {
+export default function List(theme: Theme) {
   return {
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: "inherit",
-          minWidth: "auto",
+          color: 'inherit',
+          minWidth: 'auto',
           marginRight: theme.spacing(2),
         },
       },
@@ -16,7 +16,7 @@ export default function Lists(theme: Theme) {
     MuiListItemAvatar: {
       styleOverrides: {
         root: {
-          minWidth: "auto",
+          minWidth: 'auto',
           marginRight: theme.spacing(2),
         },
       },
@@ -33,5 +33,5 @@ export default function Lists(theme: Theme) {
         },
       },
     },
-  }
+  };
 }

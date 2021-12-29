@@ -1,36 +1,30 @@
-import { Theme } from "@mui/material/styles"
-import { SvgIcon } from "@mui/material"
-import Iconify from "src/components/Iconify"
+import { Theme } from '@mui/material/styles';
+//
+import { StarIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------
 
-const ICON_SMALL = { width: 20, height: 20 }
-const ICON_LARGE = { width: 28, height: 28 }
-
-const ICON = (
-  <SvgIcon>
-    <Iconify icon="eva:star-fill" />
-  </SvgIcon>
-)
+const ICON_SMALL = { width: 20, height: 20 };
+const ICON_LARGE = { width: 28, height: 28 };
 
 export default function Rating(theme: Theme) {
   return {
     MuiRating: {
       defaultProps: {
-        emptyIcon: ICON,
-        icon: ICON,
+        emptyIcon: <StarIcon />,
+        icon: <StarIcon />,
       },
 
       styleOverrides: {
         root: {
-          "&.Mui-disabled": {
+          '&.Mui-disabled': {
             opacity: 0.48,
           },
         },
         iconEmpty: { color: theme.palette.grey[500_48] },
-        sizeSmall: { "& svg": { ...ICON_SMALL } },
-        sizeLarge: { "& svg": { ...ICON_LARGE } },
+        sizeSmall: { '& svg': { ...ICON_SMALL } },
+        sizeLarge: { '& svg': { ...ICON_LARGE } },
       },
     },
-  }
+  };
 }
