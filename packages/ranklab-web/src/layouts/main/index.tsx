@@ -1,29 +1,31 @@
-import { ReactNode } from "react"
-import { Link as ScrollLink } from "react-scroll"
+import { ReactNode } from 'react';
 // next
-import { useRouter } from "next/router"
-// material
-import { Box, Link, Container, Typography } from "@mui/material"
+import { useRouter } from 'next/router';
+// @mui
+import { Box, Link, Container, Typography, Stack } from '@mui/material';
 // components
-import Logo from "../../components/Logo"
+import Logo from '../../components/Logo';
 //
-import MainFooter from "./MainFooter"
-import MainNavbar from "./MainNavbar"
+import MainFooter from './MainFooter';
+import MainHeader from './MainHeader';
 
 // ----------------------------------------------------------------------
 
-type MainLayoutProps = {
-  children: ReactNode
-}
+type Props = {
+  children: ReactNode;
+};
 
-export default function MainLayout({ children }: MainLayoutProps) {
-  const { pathname } = useRouter()
-  const isHome = pathname === "/"
+export default function MainLayout({ children }: Props) {
+  const { pathname } = useRouter();
+  const isHome = pathname === '/';
 
   return (
-    <>
-      <MainNavbar />
-      <div>{children}</div>
+    <Stack sx={{ minHeight: 1 }}>
+      <MainHeader />
+
+      {children}
+
+      <Box sx={{ flexGrow: 1 }} />
 
       {!isHome ? (
         <MainFooter />
@@ -31,15 +33,13 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <Box
           sx={{
             py: 5,
-            textAlign: "center",
-            position: "relative",
-            bgcolor: "background.default",
+            textAlign: 'center',
+            position: 'relative',
+            bgcolor: 'background.default',
           }}
         >
-          <Container maxWidth="lg">
-            <ScrollLink to="move_top" spy smooth>
-              <Logo sx={{ mb: 1, mx: "auto", cursor: "pointer" }} />
-            </ScrollLink>
+          <Container>
+            <Logo sx={{ mb: 1, mx: 'auto' }} />
 
             <Typography variant="caption" component="p">
               © All rights reserved
@@ -49,6 +49,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
           </Container>
         </Box>
       )}
-    </>
-  )
+    </Stack>
+  );
 }
