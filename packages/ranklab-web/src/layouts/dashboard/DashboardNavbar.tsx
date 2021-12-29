@@ -1,5 +1,3 @@
-import { Icon } from "@iconify/react"
-import menu2Fill from "@iconify/icons-eva/menu-2-fill"
 // material
 import { alpha, styled } from "@mui/material/styles"
 import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material"
@@ -8,6 +6,7 @@ import useCollapseDrawer from "../../hooks/useCollapseDrawer"
 //
 import { MHidden } from "../../components/@material-extend"
 import AccountPopover from "./AccountPopover"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +59,7 @@ export default function DashboardNavbar({
             onClick={onOpenSidebar}
             sx={{ mr: 1, color: "text.primary" }}
           >
-            <Icon icon={menu2Fill} />
+            <Iconify icon="eva:menu-2-fill" />
           </IconButton>
         </MHidden>
 

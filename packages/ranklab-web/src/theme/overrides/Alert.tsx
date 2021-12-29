@@ -1,12 +1,8 @@
-import { Icon } from "@iconify/react"
-import infoFill from "@iconify/icons-eva/info-fill"
-import alertCircleFill from "@iconify/icons-eva/alert-circle-fill"
-import alertTriangleFill from "@iconify/icons-eva/alert-triangle-fill"
-import checkmarkCircle2Fill from "@iconify/icons-eva/checkmark-circle-2-fill"
 // material
 import { Theme } from "@mui/material/styles"
 // @types
 import { ColorSchema } from "../../@types/theme"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
@@ -36,10 +32,10 @@ export default function Alert(theme: Theme) {
     MuiAlert: {
       defaultProps: {
         iconMapping: {
-          error: <Icon icon={infoFill} />,
-          info: <Icon icon={alertCircleFill} />,
-          success: <Icon icon={checkmarkCircle2Fill} />,
-          warning: <Icon icon={alertTriangleFill} />,
+          error: <Iconify icon="eva:info-fill" />,
+          info: <Iconify icon="eva:alert-circle-fill" />,
+          success: <Iconify icon="eva:checkmark-circle-2-fill" />,
+          warning: <Iconify icon="eva:alert-triangle-fill" />,
         },
       },
 

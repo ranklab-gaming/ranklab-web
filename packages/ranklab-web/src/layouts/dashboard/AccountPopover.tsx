@@ -1,6 +1,4 @@
-import { Icon } from "@iconify/react"
 import { useRef, useState } from "react"
-import personFill from "@iconify/icons-eva/person-fill"
 // next
 import NextLink from "next/link"
 // material
@@ -17,10 +15,13 @@ import {
 import MenuPopover from "../../components/MenuPopover"
 import { MIconButton } from "../../components/@material-extend"
 import { useUser } from "@auth0/nextjs-auth0"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [{ label: "Profile", icon: personFill, linkTo: "#" }]
+const MENU_OPTIONS = [
+  { label: "Profile", icon: "eva:person-fill", linkTo: "#" },
+]
 
 // ----------------------------------------------------------------------
 
@@ -96,8 +97,7 @@ export default function AccountPopover() {
               onClick={handleClose}
               sx={{ typography: "body2", py: 1, px: 2.5 }}
             >
-              <Box
-                component={Icon}
+              <Iconify
                 icon={option.icon}
                 sx={{
                   mr: 2,

@@ -2,8 +2,7 @@ import React from "react"
 // material
 import { useTheme } from "@mui/material/styles"
 import { Box, BoxProps } from "@mui/material"
-import flaskOutlineIcon from "@iconify/icons-mdi/flask-outline"
-import { Icon } from "@iconify/react"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +12,7 @@ const Logo = React.forwardRef<any, BoxProps>(({ sx }, ref) => {
 
   return (
     <Box ref={ref} sx={{ cursor: "pointer", ...sx }}>
-      <Icon icon={flaskOutlineIcon} color={PRIMARY_MAIN} fontSize="40px" />
+      <Iconify icon="mdi:flask-outline" color={PRIMARY_MAIN} fontSize="40px" />
     </Box>
   )
 })

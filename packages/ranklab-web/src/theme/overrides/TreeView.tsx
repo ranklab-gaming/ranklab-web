@@ -1,9 +1,5 @@
-import { Icon } from "@iconify/react"
-import plusSquareOutline from "@iconify/icons-eva/plus-square-outline"
-import minusSquareOutline from "@iconify/icons-eva/minus-square-outline"
-import closeSquareOutline from "@iconify/icons-eva/close-square-outline"
 import { Theme } from "@mui/material/styles"
-import { Box } from "@mui/material"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
@@ -13,12 +9,15 @@ export default function TreeView(theme: Theme) {
   return {
     MuiTreeView: {
       defaultProps: {
-        defaultCollapseIcon: <Icon icon={minusSquareOutline} {...ICON_SIZE} />,
-        defaultExpandIcon: <Icon icon={plusSquareOutline} {...ICON_SIZE} />,
+        defaultCollapseIcon: (
+          <Iconify icon="eva:minus-square-outline" {...ICON_SIZE} />
+        ),
+        defaultExpandIcon: (
+          <Iconify icon="eva:close-square-outline" {...ICON_SIZE} />
+        ),
         defaultEndIcon: (
-          <Box
-            component={Icon}
-            icon={closeSquareOutline}
+          <Iconify
+            icon="eva:close-square-outline"
             {...ICON_SIZE}
             sx={{ color: "text.secondary" }}
           />

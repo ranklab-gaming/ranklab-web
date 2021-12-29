@@ -1,7 +1,6 @@
-import { Icon } from "@iconify/react"
-import starFill from "@iconify/icons-eva/star-fill"
 import { Theme } from "@mui/material/styles"
 import { SvgIcon } from "@mui/material"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +9,7 @@ const ICON_LARGE = { width: 28, height: 28 }
 
 const ICON = (
   <SvgIcon>
-    <Icon icon={starFill} />
+    <Iconify icon="eva:star-fill" />
   </SvgIcon>
 )
 

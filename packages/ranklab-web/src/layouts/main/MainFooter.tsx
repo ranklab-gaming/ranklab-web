@@ -1,8 +1,3 @@
-import { Icon } from "@iconify/react"
-import googleFill from "@iconify/icons-eva/google-fill"
-import twitterFill from "@iconify/icons-eva/twitter-fill"
-import facebookFill from "@iconify/icons-eva/facebook-fill"
-import linkedinFill from "@iconify/icons-eva/linkedin-fill"
 import { Link as ScrollLink } from "react-scroll"
 // next
 import NextLink from "next/link"
@@ -19,14 +14,15 @@ import {
 } from "@mui/material"
 //
 import Logo from "../../components/Logo"
+import Iconify from "src/components/Iconify"
 
 // ----------------------------------------------------------------------
 
 const SOCIALS = [
-  { name: "FaceBook", icon: facebookFill },
-  { name: "Google", icon: googleFill },
-  { name: "Linkedin", icon: linkedinFill },
-  { name: "Twitter", icon: twitterFill },
+  { name: "FaceBook", icon: "eva:facebook-fill" },
+  { name: "Google", icon: "eva:google-fill" },
+  { name: "Linkedin", icon: "eva:linkedin-fill" },
+  { name: "Twitter", icon: "eva:twitter-fill" },
 ]
 
 const LINKS = [
@@ -91,7 +87,7 @@ export default function MainFooter() {
             >
               {SOCIALS.map((social) => (
                 <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
-                  <Icon icon={social.icon} width={16} height={16} />
+                  <Iconify icon={social.icon} width={16} height={16} />
                 </IconButton>
               ))}
             </Stack>
