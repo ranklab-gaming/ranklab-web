@@ -104,12 +104,6 @@ export interface CreateCoachRequest {
      * @type {string}
      * @memberof CreateCoachRequest
      */
-    email: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateCoachRequest
-     */
     gameId: string;
     /**
      * 
@@ -246,26 +240,6 @@ export interface Health {
 /**
  * 
  * @export
- * @interface Player
- */
-export interface Player {
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
-    auth0Id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
-    id: string;
-}
-
-/**
- * 
- * @export
  * @interface Recording
  */
 export interface Recording {
@@ -395,4 +369,115 @@ export interface UpdateCommentRequest {
      * @memberof UpdateCommentRequest
      */
     drawing: string;
+}
+
+/**
+ * @type User
+ * 
+ * @export
+ */
+export type User = UserOneOf | UserOneOf1;
+
+/**
+ * 
+ * @export
+ * @interface UserOneOf
+ */
+export interface UserOneOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    bio: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    gameId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    type: UserOneOfTypeEnum;
+}
+
+/**
+* @export
+* @enum {string}
+*/
+export enum UserOneOfTypeEnum {
+    Coach = 'Coach'
+}
+
+/**
+ * 
+ * @export
+ * @interface UserOneOf1
+ */
+export interface UserOneOf1 {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    type: UserOneOf1TypeEnum;
+}
+
+/**
+* @export
+* @enum {string}
+*/
+export enum UserOneOf1TypeEnum {
+    Player = 'Player'
 }
