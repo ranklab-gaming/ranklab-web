@@ -2,17 +2,21 @@ describe("comment", () => {
   it("should successfully create a comment in a review", () => {
     cy.login()
 
-    cy.sql(`SELECT * FROM users;`).then(([{ id: userId }]) => {
-      cy.sql(
-        `INSERT INTO recordings (user_id, video_key, mime_type, uploaded)
-        VALUES ('${userId}', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', 'video/mp4', 'true');`
-      )
+    cy.sql(`INSERT INTO players (auth0_id) VALUES ('123');`)
 
-      cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
+    cy.sql(`SELECT * FROM players;`).then(([{ id: playerId }]) => {
+      cy.sql(`SELECT * FROM coaches;`).then(([{ id: coachId }]) => {
         cy.sql(
-          `INSERT INTO reviews (user_id, coach_id, title, recording_id, game_id, notes)
-            VALUES ('${userId}', NULL, 'This is a test review', '${recordingId}', 'overwatch', 'These are test notes');`
+          `INSERT INTO recordings (player_id, video_key, mime_type, uploaded)
+          VALUES ('${playerId}', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', 'video/mp4', 'true');`
         )
+
+        cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
+          cy.sql(
+            `INSERT INTO reviews (player_id, coach_id, title, recording_id, game_id, notes)
+              VALUES ('${playerId}', '${coachId}', 'This is a test review', '${recordingId}', 'overwatch', 'These are test notes');`
+          )
+        })
       })
     })
 

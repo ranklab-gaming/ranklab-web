@@ -12,7 +12,7 @@ Cypress.Commands.add("login", () => {
       value: value,
       secret: Cypress.env("auth0Secret"),
     }).then(({ user }) => {
-      cy.sql(`INSERT INTO users (auth0_id) VALUES ('${user.sub}');`)
+      cy.sql(`INSERT INTO coaches (auth0_id) VALUES ('${user.sub}');`)
     })
   })
 })

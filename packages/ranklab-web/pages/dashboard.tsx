@@ -16,6 +16,15 @@ interface Props {
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
+  try {
+    await api.server(ctx).usersGetMe()
+  } catch (err) {
+    ctx.res.writeHead(301, {
+      // need to pass the user_type param
+      Location: "onboarding",
+    })
+  }
+
   const [reviews, games] = await Promise.all([
     api.server(ctx).reviewsList(),
     api.server(ctx).gamesList(),
