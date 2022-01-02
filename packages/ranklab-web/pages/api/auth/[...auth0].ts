@@ -1,5 +1,4 @@
-import { handleAuth, handleLogin } from "@auth0/nextjs-auth0"
-import type { GetLoginState } from "@auth0/nextjs-auth0/src/handlers/login"
+import { handleAuth, handleLogin, GetLoginState } from "@auth0/nextjs-auth0"
 
 const getLoginState: GetLoginState = (req, _loginOptions) => {
   return {
