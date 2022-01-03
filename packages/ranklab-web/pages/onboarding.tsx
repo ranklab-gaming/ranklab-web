@@ -1,11 +1,11 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import { useRequiredParam } from "src/hooks/use-param"
 import api from "@ranklab/web/src/api"
+import jwt from "jsonwebtoken"
 
 interface Props {
   userType: string
@@ -14,7 +14,9 @@ interface Props {
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
-  const userType = useRequiredParam(ctx, "user_type")
+  const userType = jwt.decode(getSession(ctx.req, ctx.res)?.accessToken!, {
+    json: true,
+  })!["https://ranklab.gg/user_type"]
 
   try {
     await api.server(ctx).usersGetMe()

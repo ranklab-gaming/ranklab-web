@@ -18,11 +18,12 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
 ) {
   try {
     await api.server(ctx).usersGetMe()
-  } catch (err) {
-    ctx.res.writeHead(301, {
-      // need to pass the user_type param
-      Location: "onboarding",
-    })
+  } catch (err: any) {
+    if (err instanceof Response && err.status === 400) {
+      ctx.res.writeHead(301, {
+        Location: "onboarding",
+      })
+    }
   }
 
   const [reviews, games] = await Promise.all([

@@ -2,7 +2,7 @@ import { handleAuth, handleLogin, GetLoginState } from "@auth0/nextjs-auth0"
 
 const getLoginState: GetLoginState = (req, _loginOptions) => {
   return {
-    user_type: req.query.userType,
+    user_type: req.query.user_type,
   }
 }
 
