@@ -1,10 +1,10 @@
 describe("review", () => {
   it("should successfully create a review", () => {
-    cy.login()
+    cy.login({ as: "Player" })
 
     cy.sql(`SELECT * FROM players;`).then(([{ id: playerId }]) => {
       cy.sql(
-        `INSERT INTO recordings (playerId, video_key, mime_type, uploaded)
+        `INSERT INTO recordings (player_id, video_key, mime_type, uploaded)
          VALUES ('${playerId}', 'a5b509ba-8590-4253-9ca5-f76e09a37e64.mp4', 'video/mp4', 'true');`
       )
 

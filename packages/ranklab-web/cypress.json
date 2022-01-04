@@ -3,7 +3,6 @@
   "baseUrl": "http://ranklab-test:3000",
   "retries": 1,
   "env": {
-    "auth0Password": "password123*",
-    "auth0Name": "test"
+    "auth0Password": "password123*"
   }
 }

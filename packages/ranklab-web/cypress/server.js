@@ -27,10 +27,16 @@ const config = {
   },
   scopes: process.env.AUTH0_SCOPE.split(" "),
   claims: {
-    openid: ["sub", "email", "name", "https://ranklab.gg/user_type"],
+    openid: ["sub", "email"],
   },
   clientBasedCORS() {
     return true
+  },
+  extraTokenClaims(ctx, token) {
+    return {
+      "https://ranklab.gg/user_type": token.accountId,
+      email: "test@ranklab.gg",
+    }
   },
   async findAccount(ctx, id) {
     return {
@@ -38,9 +44,7 @@ const config = {
       async claims(use, scope) {
         return {
           sub: id,
-          name: "test",
           email: "test@ranklab.gg",
-          "https://ranklab.gg/user_type": "Coach",
         }
       },
     }

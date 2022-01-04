@@ -1,6 +1,6 @@
-Cypress.Commands.add("login", () => {
+Cypress.Commands.add("login", ({ as = "Coach" } = {}) => {
   cy.visit("/api/auth/login")
-  cy.get("input[name=login]").focus().clear().type(Cypress.env("auth0Name"))
+  cy.get("input[name=login]").focus().clear().type(as)
   cy.get("input[name=password]")
     .focus()
     .clear()
@@ -12,7 +12,8 @@ Cypress.Commands.add("login", () => {
       value: value,
       secret: Cypress.env("auth0Secret"),
     }).then(({ user }) => {
-      cy.sql(`INSERT INTO coaches (auth0_id) VALUES ('${user.sub}');`)
+      const tableName = as === "Coach" ? "coaches" : "players"
+      cy.sql(`INSERT INTO ${tableName} (auth0_id) VALUES ('${user.sub}');`)
     })
   })
 })
