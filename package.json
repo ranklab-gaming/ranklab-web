@@ -24,7 +24,8 @@
           "^build"
         ],
         "outputs": [
-          ".next/**"
+          ".next/**",
+          "dist/**"
         ]
       },
       "test": {
