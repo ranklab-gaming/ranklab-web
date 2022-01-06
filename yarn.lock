@@ -2474,7 +2474,12 @@ function-bind@^1.1.1:
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-futoin-hkdf@1.4.2, futoin-hkdf@^1.4.2:
+futoin-hkdf@1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.4.3.tgz#19c52e556e90517b0fcd4263a1543a1d9d07caff"
+  integrity sha512-K4MIe2xSVRMYxsA4w0ap5fp1C2hA9StA2Ad1JZHX57VMCdHIRB5BSrd1FhuadTQG9MkjggaTCrw7v5XXFyY3/w==
+
+futoin-hkdf@^1.4.2:
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.4.2.tgz#fd534e848e0e50339b8bfbd81250b09cbff10ba3"
   integrity sha512-2BggwLEJOTfXzKq4Tl2bIT37p0IqqKkblH4e0cMp2sXTdmwg/ADBKMxvxaEytYYcgdxgng8+acsi3WgMVUl6CQ==
