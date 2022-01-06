@@ -1,6 +1,6 @@
 {
   "extends": ["config:base"],
-  "automergeStrategy": "squash",
+  "platformAutomerge": true,
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],
