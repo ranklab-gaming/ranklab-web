@@ -6,6 +6,8 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import jwt from "jsonwebtoken"
+import CoachOnboardingForm from "src/components/coach/OnboardingForm"
+import PlayerOnboardingForm from "src/components/player/OnboardingForm"
 
 interface Props {
   userType: string
@@ -45,6 +47,11 @@ const DashboardPage: FunctionComponent<Props> = function ({ userType }) {
           <Typography variant="h3" component="h1" paragraph>
             Onboarding for {userType}
           </Typography>
+          {userType === "Coach" ? (
+            <CoachOnboardingForm />
+          ) : (
+            <PlayerOnboardingForm />
+          )}
         </Container>
       </Page>
     </DashboardLayout>
