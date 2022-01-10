@@ -19,7 +19,7 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   })!["https://ranklab.gg/user_type"]
 
   try {
-    await api.server(ctx).usersGetMe()
+    await api.server(ctx).userUsersGetMe()
 
     ctx.res.writeHead(301, {
       Location: "dashboard",

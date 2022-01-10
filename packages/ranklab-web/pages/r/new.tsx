@@ -36,7 +36,7 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
       return
     }
 
-    const recording = await api.client.recordingsCreate({
+    const recording = await api.client.playerRecordingsCreate({
       createRecordingRequest: { mimeType: file.type, size: file.size },
     })
 

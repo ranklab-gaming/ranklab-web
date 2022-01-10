@@ -159,15 +159,16 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       setIsSubmitting(true)
 
                       if (currentComment) {
-                        const updatedComment = await api.client.commentsUpdate({
-                          id: currentComment.id,
-                          updateCommentRequest: {
-                            drawing: currentForm.drawing,
-                            body: currentForm.body
-                              .getCurrentContent()
-                              .getPlainText("\u0001"),
-                          },
-                        })
+                        const updatedComment =
+                          await api.client.coachCommentsUpdate({
+                            id: currentComment.id,
+                            updateCommentRequest: {
+                              drawing: currentForm.drawing,
+                              body: currentForm.body
+                                .getCurrentContent()
+                                .getPlainText("\u0001"),
+                            },
+                          })
 
                         setComments(
                           comments.map((comment) =>
@@ -177,15 +178,16 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                           )
                         )
                       } else {
-                        const createdComment = await api.client.commentsCreate({
-                          createCommentRequest: {
-                            ...currentForm,
-                            reviewId: review.id,
-                            body: currentForm.body
-                              .getCurrentContent()
-                              .getPlainText("\u0001"),
-                          },
-                        })
+                        const createdComment =
+                          await api.client.coachCommentsCreate({
+                            createCommentRequest: {
+                              ...currentForm,
+                              reviewId: review.id,
+                              body: currentForm.body
+                                .getCurrentContent()
+                                .getPlainText("\u0001"),
+                            },
+                          })
 
                         setComments([...comments, createdComment])
                       }

@@ -21,8 +21,10 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
   const recordingId = useRequiredParam(ctx, "id")
-  const games = await api.server(ctx).gamesList()
-  const recording = await api.server(ctx).recordingsGet({ id: recordingId })
+  const games = await api.server(ctx).userGamesList()
+  const recording = await api
+    .server(ctx)
+    .playerRecordingsGet({ id: recordingId })
 
   return {
     props: {

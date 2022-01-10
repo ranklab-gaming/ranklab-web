@@ -17,7 +17,7 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
   try {
-    await api.server(ctx).usersGetMe()
+    await api.server(ctx).userUsersGetMe()
   } catch (err: any) {
     if (err instanceof Response && err.status === 400) {
       ctx.res.writeHead(301, {
@@ -27,8 +27,8 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   }
 
   const [reviews, games] = await Promise.all([
-    api.server(ctx).reviewsList(),
-    api.server(ctx).gamesList(),
+    api.server(ctx).coachReviewsList(),
+    api.server(ctx).userGamesList(),
   ])
 
   return {

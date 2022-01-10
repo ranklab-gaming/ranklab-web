@@ -64,7 +64,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await api.client.reviewsCreate({
+      await api.client.playerReviewsCreate({
         createReviewRequest: {
           gameId: data.gameId,
           recordingId: recording.id,

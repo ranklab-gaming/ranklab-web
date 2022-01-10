@@ -28,36 +28,48 @@ import {
     User,
 } from '../models';
 
-export interface CoachesCreateRequest {
+export interface ClaimsCoachesCreateRequest {
     createCoachRequest: CreateCoachRequest;
 }
 
-export interface CommentsCreateRequest {
+export interface CoachCommentsCreateRequest {
     createCommentRequest: CreateCommentRequest;
 }
 
-export interface CommentsListRequest {
+export interface CoachCommentsListRequest {
     reviewId: string;
 }
 
-export interface CommentsUpdateRequest {
+export interface CoachCommentsUpdateRequest {
     id: string;
     updateCommentRequest: UpdateCommentRequest;
 }
 
-export interface RecordingsCreateRequest {
-    createRecordingRequest: CreateRecordingRequest;
-}
-
-export interface RecordingsGetRequest {
+export interface CoachRecordingsGetRequest {
     id: string;
 }
 
-export interface ReviewsCreateRequest {
+export interface CoachReviewsGetRequest {
+    id: string;
+}
+
+export interface PlayerCommentsListRequest {
+    reviewId: string;
+}
+
+export interface PlayerRecordingsCreateRequest {
+    createRecordingRequest: CreateRecordingRequest;
+}
+
+export interface PlayerRecordingsGetRequest {
+    id: string;
+}
+
+export interface PlayerReviewsCreateRequest {
     createReviewRequest: CreateReviewRequest;
 }
 
-export interface ReviewsGetRequest {
+export interface PlayerReviewsGetRequest {
     id: string;
 }
 
@@ -68,9 +80,9 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachesCreateRaw(requestParameters: CoachesCreateRequest): Promise<runtime.ApiResponse<Coach>> {
+    async claimsCoachesCreateRaw(requestParameters: ClaimsCoachesCreateRequest): Promise<runtime.ApiResponse<Coach>> {
         if (requestParameters.createCoachRequest === null || requestParameters.createCoachRequest === undefined) {
-            throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling coachesCreate.');
+            throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling claimsCoachesCreate.');
         }
 
         const queryParameters: any = {};
@@ -80,7 +92,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/coaches`,
+            path: `/claims/coaches`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -92,16 +104,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachesCreate(requestParameters: CoachesCreateRequest): Promise<Coach> {
-        const response = await this.coachesCreateRaw(requestParameters);
+    async claimsCoachesCreate(requestParameters: ClaimsCoachesCreateRequest): Promise<Coach> {
+        const response = await this.claimsCoachesCreateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async commentsCreateRaw(requestParameters: CommentsCreateRequest): Promise<runtime.ApiResponse<Comment>> {
+    async coachCommentsCreateRaw(requestParameters: CoachCommentsCreateRequest): Promise<runtime.ApiResponse<Comment>> {
         if (requestParameters.createCommentRequest === null || requestParameters.createCommentRequest === undefined) {
-            throw new runtime.RequiredError('createCommentRequest','Required parameter requestParameters.createCommentRequest was null or undefined when calling commentsCreate.');
+            throw new runtime.RequiredError('createCommentRequest','Required parameter requestParameters.createCommentRequest was null or undefined when calling coachCommentsCreate.');
         }
 
         const queryParameters: any = {};
@@ -111,7 +123,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/comments`,
+            path: `/coach/comments`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -123,16 +135,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async commentsCreate(requestParameters: CommentsCreateRequest): Promise<Comment> {
-        const response = await this.commentsCreateRaw(requestParameters);
+    async coachCommentsCreate(requestParameters: CoachCommentsCreateRequest): Promise<Comment> {
+        const response = await this.coachCommentsCreateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async commentsListRaw(requestParameters: CommentsListRequest): Promise<runtime.ApiResponse<Array<Comment>>> {
+    async coachCommentsListRaw(requestParameters: CoachCommentsListRequest): Promise<runtime.ApiResponse<Array<Comment>>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
-            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling commentsList.');
+            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling coachCommentsList.');
         }
 
         const queryParameters: any = {};
@@ -144,7 +156,7 @@ export class RanklabApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/comments`,
+            path: `/coach/comments`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -155,20 +167,20 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async commentsList(requestParameters: CommentsListRequest): Promise<Array<Comment>> {
-        const response = await this.commentsListRaw(requestParameters);
+    async coachCommentsList(requestParameters: CoachCommentsListRequest): Promise<Array<Comment>> {
+        const response = await this.coachCommentsListRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async commentsUpdateRaw(requestParameters: CommentsUpdateRequest): Promise<runtime.ApiResponse<Comment>> {
+    async coachCommentsUpdateRaw(requestParameters: CoachCommentsUpdateRequest): Promise<runtime.ApiResponse<Comment>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling commentsUpdate.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachCommentsUpdate.');
         }
 
         if (requestParameters.updateCommentRequest === null || requestParameters.updateCommentRequest === undefined) {
-            throw new runtime.RequiredError('updateCommentRequest','Required parameter requestParameters.updateCommentRequest was null or undefined when calling commentsUpdate.');
+            throw new runtime.RequiredError('updateCommentRequest','Required parameter requestParameters.updateCommentRequest was null or undefined when calling coachCommentsUpdate.');
         }
 
         const queryParameters: any = {};
@@ -178,7 +190,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/comments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/coach/comments/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
@@ -190,20 +202,24 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async commentsUpdate(requestParameters: CommentsUpdateRequest): Promise<Comment> {
-        const response = await this.commentsUpdateRaw(requestParameters);
+    async coachCommentsUpdate(requestParameters: CoachCommentsUpdateRequest): Promise<Comment> {
+        const response = await this.coachCommentsUpdateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async gamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
+    async coachRecordingsGetRaw(requestParameters: CoachRecordingsGetRequest): Promise<runtime.ApiResponse<Recording>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachRecordingsGet.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/games`,
+            path: `/coach/recordings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -214,16 +230,100 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async gamesList(): Promise<Array<Game>> {
-        const response = await this.gamesListRaw();
+    async coachRecordingsGet(requestParameters: CoachRecordingsGetRequest): Promise<Recording> {
+        const response = await this.coachRecordingsGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async recordingsCreateRaw(requestParameters: RecordingsCreateRequest): Promise<runtime.ApiResponse<Recording>> {
+    async coachReviewsGetRaw(requestParameters: CoachReviewsGetRequest): Promise<runtime.ApiResponse<Review>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachReviewsGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachReviewsGet(requestParameters: CoachReviewsGetRequest): Promise<Review> {
+        const response = await this.coachReviewsGetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachReviewsListRaw(): Promise<runtime.ApiResponse<Array<Review>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/reviews`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachReviewsList(): Promise<Array<Review>> {
+        const response = await this.coachReviewsListRaw();
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerCommentsListRaw(requestParameters: PlayerCommentsListRequest): Promise<runtime.ApiResponse<Array<Comment>>> {
+        if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
+            throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling playerCommentsList.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.reviewId !== undefined) {
+            queryParameters['review_id'] = requestParameters.reviewId;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/comments`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerCommentsList(requestParameters: PlayerCommentsListRequest): Promise<Array<Comment>> {
+        const response = await this.playerCommentsListRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerRecordingsCreateRaw(requestParameters: PlayerRecordingsCreateRequest): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.createRecordingRequest === null || requestParameters.createRecordingRequest === undefined) {
-            throw new runtime.RequiredError('createRecordingRequest','Required parameter requestParameters.createRecordingRequest was null or undefined when calling recordingsCreate.');
+            throw new runtime.RequiredError('createRecordingRequest','Required parameter requestParameters.createRecordingRequest was null or undefined when calling playerRecordingsCreate.');
         }
 
         const queryParameters: any = {};
@@ -233,7 +333,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/recordings`,
+            path: `/player/recordings`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -245,16 +345,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async recordingsCreate(requestParameters: RecordingsCreateRequest): Promise<Recording> {
-        const response = await this.recordingsCreateRaw(requestParameters);
+    async playerRecordingsCreate(requestParameters: PlayerRecordingsCreateRequest): Promise<Recording> {
+        const response = await this.playerRecordingsCreateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async recordingsGetRaw(requestParameters: RecordingsGetRequest): Promise<runtime.ApiResponse<Recording>> {
+    async playerRecordingsGetRaw(requestParameters: PlayerRecordingsGetRequest): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling recordingsGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerRecordingsGet.');
         }
 
         const queryParameters: any = {};
@@ -262,7 +362,7 @@ export class RanklabApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/recordings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/player/recordings/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -273,16 +373,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async recordingsGet(requestParameters: RecordingsGetRequest): Promise<Recording> {
-        const response = await this.recordingsGetRaw(requestParameters);
+    async playerRecordingsGet(requestParameters: PlayerRecordingsGetRequest): Promise<Recording> {
+        const response = await this.playerRecordingsGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async reviewsCreateRaw(requestParameters: ReviewsCreateRequest): Promise<runtime.ApiResponse<Review>> {
+    async playerReviewsCreateRaw(requestParameters: PlayerReviewsCreateRequest): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.createReviewRequest === null || requestParameters.createReviewRequest === undefined) {
-            throw new runtime.RequiredError('createReviewRequest','Required parameter requestParameters.createReviewRequest was null or undefined when calling reviewsCreate.');
+            throw new runtime.RequiredError('createReviewRequest','Required parameter requestParameters.createReviewRequest was null or undefined when calling playerReviewsCreate.');
         }
 
         const queryParameters: any = {};
@@ -292,7 +392,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/reviews`,
+            path: `/player/reviews`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -304,16 +404,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async reviewsCreate(requestParameters: ReviewsCreateRequest): Promise<Review> {
-        const response = await this.reviewsCreateRaw(requestParameters);
+    async playerReviewsCreate(requestParameters: PlayerReviewsCreateRequest): Promise<Review> {
+        const response = await this.playerReviewsCreateRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async reviewsGetRaw(requestParameters: ReviewsGetRequest): Promise<runtime.ApiResponse<Review>> {
+    async playerReviewsGetRaw(requestParameters: PlayerReviewsGetRequest): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling reviewsGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsGet.');
         }
 
         const queryParameters: any = {};
@@ -321,7 +421,7 @@ export class RanklabApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/player/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -332,20 +432,20 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async reviewsGet(requestParameters: ReviewsGetRequest): Promise<Review> {
-        const response = await this.reviewsGetRaw(requestParameters);
+    async playerReviewsGet(requestParameters: PlayerReviewsGetRequest): Promise<Review> {
+        const response = await this.playerReviewsGetRaw(requestParameters);
         return await response.value();
     }
 
     /**
      */
-    async reviewsListRaw(): Promise<runtime.ApiResponse<Array<Review>>> {
+    async playerReviewsListRaw(): Promise<runtime.ApiResponse<Array<Review>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/reviews`,
+            path: `/player/reviews`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -356,20 +456,20 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async reviewsList(): Promise<Array<Review>> {
-        const response = await this.reviewsListRaw();
+    async playerReviewsList(): Promise<Array<Review>> {
+        const response = await this.playerReviewsListRaw();
         return await response.value();
     }
 
     /**
      */
-    async usersGetMeRaw(): Promise<runtime.ApiResponse<User>> {
+    async userGamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/me`,
+            path: `/user/games`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -380,8 +480,32 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async usersGetMe(): Promise<User> {
-        const response = await this.usersGetMeRaw();
+    async userGamesList(): Promise<Array<Game>> {
+        const response = await this.userGamesListRaw();
+        return await response.value();
+    }
+
+    /**
+     */
+    async userUsersGetMeRaw(): Promise<runtime.ApiResponse<User>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/user/users/me`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async userUsersGetMe(): Promise<User> {
+        const response = await this.userUsersGetMeRaw();
         return await response.value();
     }
 
