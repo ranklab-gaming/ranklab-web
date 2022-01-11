@@ -106,7 +106,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
       <Grid container direction="row" spacing={4}>
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>
-            {/* @ts-ignore */}
             <Controller
               name="title"
               control={control}
@@ -120,7 +119,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
               )}
             />
 
-            {/* @ts-ignore */}
             <Controller
               name="gameId"
               control={control}
@@ -154,7 +152,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
               >
                 Notes
               </Typography>
-              {/* @ts-ignore */}
               <Controller
                 name="notes"
                 control={control}

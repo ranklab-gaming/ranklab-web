@@ -1,4 +1,5 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from "react"
+import * as Yup from "yup"
 
 export type FormValuesProps = {
   bio: string
@@ -19,7 +20,7 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
 })
 
 const CoachOnboardingForm: FunctionComponent<{}> = () => {
-  return (  );
+  return <></>
 }
 
-export default CoachOnboardingForm;
+export default CoachOnboardingForm

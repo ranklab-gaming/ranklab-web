@@ -1,4 +1,11 @@
-import { FunctionComponent } from "react"
+import { FunctionComponent, useState } from "react"
+import * as Yup from "yup"
+import api from "src/api"
+import router from "next/router"
+import { Controller, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import { Alert, Snackbar, Stack, TextField } from "@mui/material"
+import { LoadingButton } from "@mui/lab"
 
 export type FormValuesProps = {
   name: string
@@ -13,14 +20,23 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
 })
 
 const PlayerOnboardingForm: FunctionComponent<{}> = () => {
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isDirty },
+  } = useForm<FormValuesProps>({
+    mode: "onTouched",
+    resolver: yupResolver(FormSchema),
+    defaultValues,
+  })
+
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await api.client.playerReviewsCreate({
-        createReviewRequest: {
-          gameId: data.gameId,
-          recordingId: recording.id,
-          title: data.title,
-          notes: data.notes,
+      await api.client.claimsPlayersCreate({
+        createPlayerRequest: {
+          name: data.name,
         },
       })
 
@@ -29,7 +45,7 @@ const PlayerOnboardingForm: FunctionComponent<{}> = () => {
       if (e instanceof Response) {
         if (e.status !== 200) {
           setErrorMessage(
-            "There was a problem submitting your recording. Please try again later."
+            "There was a problem creating your profile. Please try again later."
           )
         }
       } else {
@@ -54,112 +70,31 @@ const PlayerOnboardingForm: FunctionComponent<{}> = () => {
           {errorMessage}
         </Alert>
       </Snackbar>
-      <Grid container direction="row" spacing={4}>
-        <Grid item xs={12} md={6}>
-          <Stack spacing={3}>
-            {/* @ts-ignore */}
-            <Controller
-              name="title"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  label="Title"
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                />
-              )}
+      <Stack spacing={3}>
+        <Controller
+          name="name"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              label="Name"
+              error={Boolean(error)}
+              helperText={error?.message}
             />
-
-            {/* @ts-ignore */}
-            <Controller
-              name="gameId"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl fullWidth>
-                  <InputLabel>Game</InputLabel>
-                  <Select
-                    label="Game"
-                    onChange={field.onChange}
-                    value={field.value}
-                    onBlur={field.onBlur}
-                    error={Boolean(error)}
-                  >
-                    <MenuItem value="">Select a Game</MenuItem>
-
-                    {games.map((game) => (
-                      <MenuItem key={game.id} value={game.id}>
-                        {game.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
-
-            <div>
-              <Typography
-                variant="subtitle2"
-                sx={{ color: "text.secondary" }}
-                gutterBottom
-              >
-                Notes
-              </Typography>
-              {/* @ts-ignore */}
-              <Controller
-                name="notes"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <DraftEditor
-                    editorState={editorState}
-                    onEditorStateChange={(editorState) => {
-                      field.onChange(
-                        editorState.getCurrentContent().getPlainText("\u0001")
-                      )
-
-                      setEditorState(editorState)
-                    }}
-                    onBlur={field.onBlur}
-                    error={Boolean(error)}
-                    simple={true}
-                  />
-                )}
-              />
-              {Boolean(errors.notes) && (
-                <FormHelperText
-                  error
-                  sx={{ px: 2, textTransform: "capitalize" }}
-                >
-                  {errors.notes?.message}
-                </FormHelperText>
-              )}
-            </div>
-          </Stack>
-        </Grid>
-        <Grid item xs={12} md={6} sx={{ display: "flex" }}>
-          <Grid container direction="column" spacing={2} sx={{ flex: "1" }}>
-            <Grid sx={{ flexGrow: 1 }} item>
-              <VideoPlayer
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recording.videoKey}`}
-                type={recording.mimeType}
-              />
-            </Grid>
-            <Grid item>
-              <LoadingButton
-                fullWidth
-                color="info"
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-                disabled={!isDirty}
-              >
-                Submit Form
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+          )}
+        />
+        <LoadingButton
+          fullWidth
+          color="info"
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+          disabled={!isDirty}
+        >
+          Create Profile
+        </LoadingButton>
+      </Stack>
     </form>
   )
 }
