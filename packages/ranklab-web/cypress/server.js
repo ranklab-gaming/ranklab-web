@@ -35,7 +35,7 @@ const config = {
   extraTokenClaims(ctx, token) {
     return {
       "https://ranklab.gg/user_type": token.accountId,
-      email: "test@ranklab.gg",
+      "https://ranklab.gg/email": "test@ranklab.gg",
     }
   },
   async findAccount(ctx, id) {
