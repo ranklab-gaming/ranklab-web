@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "cypress": "cypress run",
+    "cypress": "cypress run --spec \"cypress/integration/${SPEC:-**/*.spec.js}\"",
     "test:start": "NODE_ENV=test node ./cypress/server.js",
     "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress"
   },
