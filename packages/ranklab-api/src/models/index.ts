@@ -148,6 +148,20 @@ export interface CreateCommentRequest {
 /**
  * 
  * @export
+ * @interface CreatePlayerRequest
+ */
+export interface CreatePlayerRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePlayerRequest
+     */
+    name: string;
+}
+
+/**
+ * 
+ * @export
  * @interface CreateRecordingRequest
  */
 export interface CreateRecordingRequest {
@@ -235,6 +249,38 @@ export interface Health {
      * @memberof Health
      */
     status: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface Player
+ */
+export interface Player {
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    name: string;
 }
 
 /**

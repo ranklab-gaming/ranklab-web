@@ -1,5 +1,5 @@
 Cypress.Commands.add("login", ({ as = "Coach" } = {}) => {
-  cy.visit("/api/auth/login")
+  cy.visit(`/api/auth/login?user_type=${as}`)
   cy.get("input[name=login]").focus().clear().type(as)
   cy.get("input[name=password]")
     .focus()

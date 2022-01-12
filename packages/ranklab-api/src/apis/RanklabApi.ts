@@ -19,9 +19,11 @@ import {
     Comment,
     CreateCoachRequest,
     CreateCommentRequest,
+    CreatePlayerRequest,
     CreateRecordingRequest,
     CreateReviewRequest,
     Game,
+    Player,
     Recording,
     Review,
     UpdateCommentRequest,
@@ -30,6 +32,10 @@ import {
 
 export interface ClaimsCoachesCreateRequest {
     createCoachRequest: CreateCoachRequest;
+}
+
+export interface ClaimsPlayersCreateRequest {
+    createPlayerRequest: CreatePlayerRequest;
 }
 
 export interface CoachCommentsCreateRequest {
@@ -106,6 +112,37 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async claimsCoachesCreate(requestParameters: ClaimsCoachesCreateRequest): Promise<Coach> {
         const response = await this.claimsCoachesCreateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async claimsPlayersCreateRaw(requestParameters: ClaimsPlayersCreateRequest): Promise<runtime.ApiResponse<Player>> {
+        if (requestParameters.createPlayerRequest === null || requestParameters.createPlayerRequest === undefined) {
+            throw new runtime.RequiredError('createPlayerRequest','Required parameter requestParameters.createPlayerRequest was null or undefined when calling claimsPlayersCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/claims/players`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createPlayerRequest,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async claimsPlayersCreate(requestParameters: ClaimsPlayersCreateRequest): Promise<Player> {
+        const response = await this.claimsPlayersCreateRaw(requestParameters);
         return await response.value();
     }
 
@@ -463,7 +500,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userGamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
+    async publicGamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -480,8 +517,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userGamesList(): Promise<Array<Game>> {
-        const response = await this.userGamesListRaw();
+    async publicGamesList(): Promise<Array<Game>> {
+        const response = await this.publicGamesListRaw();
         return await response.value();
     }
 
