@@ -8,9 +8,11 @@ import api from "@ranklab/web/src/api"
 import jwt from "jsonwebtoken"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
 import PlayerOnboardingForm from "src/components/player/OnboardingForm"
+import { Game } from "@ranklab/api"
 
 interface Props {
   userType: string
+  games?: Game[]
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -28,10 +30,21 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     })
   } catch (err) {}
 
-  return {
-    props: {
-      userType,
-    },
+  if (userType === "Coach") {
+    const games = await api.server(ctx).publicGamesList()
+
+    return {
+      props: {
+        userType,
+        games,
+      },
+    }
+  } else {
+    return {
+      props: {
+        userType,
+      },
+    }
   }
 }
 
@@ -39,7 +52,7 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getDashboardServerSideProps,
 })
 
-const DashboardPage: FunctionComponent<Props> = function ({ userType }) {
+const DashboardPage: FunctionComponent<Props> = function ({ userType, games }) {
   return (
     <DashboardLayout>
       <Page title="Onboarding | Ranklab">
@@ -48,7 +61,7 @@ const DashboardPage: FunctionComponent<Props> = function ({ userType }) {
             Onboarding for {userType}
           </Typography>
           {userType === "Coach" ? (
-            <CoachOnboardingForm />
+            <CoachOnboardingForm games={games!} />
           ) : (
             <PlayerOnboardingForm />
           )}

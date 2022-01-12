@@ -500,7 +500,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userGamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
+    async publicGamesListRaw(): Promise<runtime.ApiResponse<Array<Game>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -517,8 +517,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userGamesList(): Promise<Array<Game>> {
-        const response = await this.userGamesListRaw();
+    async publicGamesList(): Promise<Array<Game>> {
+        const response = await this.publicGamesListRaw();
         return await response.value();
     }
 

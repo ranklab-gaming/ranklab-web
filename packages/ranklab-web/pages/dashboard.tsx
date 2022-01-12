@@ -32,7 +32,7 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     user?.type === "Player"
       ? api.server(ctx).playerReviewsList()
       : api.server(ctx).coachReviewsList(),
-    api.server(ctx).userGamesList(),
+    api.server(ctx).publicGamesList(),
   ])
 
   return {
