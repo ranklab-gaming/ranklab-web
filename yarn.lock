@@ -3003,10 +3003,10 @@ object-keys@~0.4.0:
   resolved "https://registry.npmjs.org/object-keys/-/object-keys-0.4.0.tgz"
   integrity sha1-KKaq50KN0sOpLz2V8hM13SBOAzY=
 
-oidc-provider@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/oidc-provider/-/oidc-provider-7.10.0.tgz#0e95910f1debf8d4719b494819c959d8e184f0a2"
-  integrity sha512-idZ+GJ9bPhMplhD5Ol7yIZJC6xVpmyLtxRYyrPhN7hw3sa6u3lN9McLBodZSVmZiqID1Deq8NUd5XmemaBq92g==
+oidc-provider@7.10.6:
+  version "7.10.6"
+  resolved "https://registry.yarnpkg.com/oidc-provider/-/oidc-provider-7.10.6.tgz#85cc16974fb114fa38289aa14451a6b5c1a790dd"
+  integrity sha512-7fbnormUyTLP34dmR5WXoJtTWtfj6MsFNzIMKVRKv21e18NIXggn14EBUFC5rrMMtmeExb03+lJI/v+opD+0oQ==
   dependencies:
     "@koa/cors" "^3.1.0"
     cacheable-lookup "^6.0.1"
