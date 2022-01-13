@@ -70,7 +70,7 @@
     "express": "4.17.2",
     "futoin-hkdf": "1.4.3",
     "jose": "4.3.8",
-    "oidc-provider": "7.10.0",
+    "oidc-provider": "7.10.6",
     "openid-client": "5.1.1",
     "pg": "8.7.1",
     "start-server-and-test": "1.14.0",
