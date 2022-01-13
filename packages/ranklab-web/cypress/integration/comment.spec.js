@@ -22,9 +22,12 @@ describe("comment", () => {
 
     cy.visit("/dashboard")
     cy.get("tr").eq(1).click()
-    cy.get("video").then((videos) => {
-      videos[0].currentTime = 4
-    })
+    cy.get("video")
+      .should("have.prop", "paused", true)
+      .and("have.prop", "ended", false)
+      .then((videos) => {
+        videos[0].currentTime = 4
+      })
     cy.get("button").contains("Create Annotation at 0:04").click()
     cy.get('[contenteditable="true"]').type("This is a test comment")
     cy.get("button").contains("Create Annotation").click()
