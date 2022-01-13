@@ -3,7 +3,7 @@ import * as Yup from "yup"
 import api from "src/api"
 import router from "next/router"
 import { Controller, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { Alert, Snackbar, Stack, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 
