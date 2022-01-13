@@ -50,7 +50,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/included:9.2.0
+      image: cypress/included:9.2.1
       options: >-
         --add-host=ranklab-test:0.0.0.0
         --network-alias=ranklab-test
