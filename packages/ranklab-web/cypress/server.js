@@ -57,6 +57,9 @@ const config = {
       defaultResource: (ctx, client, oneOf) => {
         return process.env.AUTH0_AUDIENCE
       },
+      async useGrantedResource(ctx) {
+        return true
+      },
       enabled: true,
       getResourceServerInfo: (ctx, resourceIndicator, client) => {
         return {
