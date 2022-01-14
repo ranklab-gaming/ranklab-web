@@ -320,10 +320,10 @@
   resolved "https://registry.yarnpkg.com/@iconify/icons-eva/-/icons-eva-1.1.0.tgz#6d6dae59d766587e9034bbb782acca6c40ab4b0c"
   integrity sha512-a2wCJw+6UebrsoJ2WhpHUcdr4PJljwk0tdu1GfpjzwVyiJBC7y6sc2h7as1npJPLwgMIc/q8YFJf5iFl7Ik3NA==
 
-"@iconify/icons-ic@1.1.17":
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.1.17.tgz#363f589cf3ded2f30fea48cf5f596a5c8eec54da"
-  integrity sha512-7hBao2xPa8ZAzXIMhl1sfWK74GTEZtBGhO0h53TX21JOY9xCto9uTWbbIOyEqA2Z0IzFl4tqhZKcS/4UJPB7XQ==
+"@iconify/icons-ic@1.1.18":
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.1.18.tgz#8d4c9eada4801312cfa02e6db6d62ed49f842381"
+  integrity sha512-VqQfiXGXelhdJSzv3qILHwBpdX6f5CPCKGqAmZMZLEXEuPEv7O6YVRBt52qz38SagA5bKhMyZWE2ThuuAkwdOA==
 
 "@iconify/icons-mdi@1.1.42":
   version "1.1.42"
