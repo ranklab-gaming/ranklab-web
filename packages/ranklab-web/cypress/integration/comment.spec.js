@@ -23,8 +23,20 @@ describe("comment", () => {
     cy.visit("/dashboard")
     cy.get("tr").eq(1).click()
     cy.get("video")
-      .should("have.prop", "paused", true)
-      .and("have.prop", "ended", false)
+      .should(($video) => {
+        const seekable = $video[0].seekable
+        const timeRanges = []
+
+        for (let i = 0; i < seekable.length; i++) {
+          timeRanges.push([seekable.start(i), seekable.end(i)])
+        }
+
+        const canSeek = timeRanges.some(([start, end]) => {
+          return 4 >= start && 4 <= end
+        })
+
+        expect(canSeek).to.be.true
+      })
       .then((videos) => {
         videos[0].currentTime = 4
       })
