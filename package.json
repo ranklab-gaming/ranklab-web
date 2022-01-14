@@ -15,7 +15,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "turbo": "1.0.26"
+    "turbo": "1.0.28"
   },
   "turbo": {
     "pipeline": {
