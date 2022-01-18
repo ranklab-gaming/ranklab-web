@@ -25,10 +25,10 @@ export interface Coach {
     email: string;
     /**
      * 
-     * @type {string}
+     * @type {Array<UserGame>}
      * @memberof Coach
      */
-    gameId: string;
+    games: Array<UserGame>;
     /**
      * 
      * @type {string}
@@ -101,10 +101,10 @@ export interface CreateCoachRequest {
     bio: string;
     /**
      * 
-     * @type {string}
+     * @type {Array<UserGame>}
      * @memberof CreateCoachRequest
      */
-    gameId: string;
+    games: Array<UserGame>;
     /**
      * 
      * @type {string}
@@ -151,6 +151,12 @@ export interface CreateCommentRequest {
  * @interface CreatePlayerRequest
  */
 export interface CreatePlayerRequest {
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof CreatePlayerRequest
+     */
+    games: Array<UserGame>;
     /**
      * 
      * @type {string}
@@ -271,6 +277,12 @@ export interface Player {
     email: string;
     /**
      * 
+     * @type {Array<UserGame>}
+     * @memberof Player
+     */
+    games: Array<UserGame>;
+    /**
+     * 
      * @type {string}
      * @memberof Player
      */
@@ -371,6 +383,12 @@ export interface Review {
     recordingId: string;
     /**
      * 
+     * @type {number}
+     * @memberof Review
+     */
+    skillLevel: number;
+    /**
+     * 
      * @type {string}
      * @memberof Review
      */
@@ -427,6 +445,26 @@ export type User = UserOneOf | UserOneOf1;
 /**
  * 
  * @export
+ * @interface UserGame
+ */
+export interface UserGame {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserGame
+     */
+    gameId: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserGame
+     */
+    skillLevel: number;
+}
+
+/**
+ * 
+ * @export
  * @interface UserOneOf
  */
 export interface UserOneOf {
@@ -450,10 +488,10 @@ export interface UserOneOf {
     email: string;
     /**
      * 
-     * @type {string}
+     * @type {Array<UserGame>}
      * @memberof UserOneOf
      */
-    gameId: string;
+    games: Array<UserGame>;
     /**
      * 
      * @type {string}
@@ -500,6 +538,12 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     email: string;
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof UserOneOf1
+     */
+    games: Array<UserGame>;
     /**
      * 
      * @type {string}

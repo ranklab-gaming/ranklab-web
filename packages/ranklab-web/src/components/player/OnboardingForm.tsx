@@ -4,22 +4,43 @@ import api from "src/api"
 import router from "next/router"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Alert, Snackbar, Stack, TextField } from "@mui/material"
+import {
+  Alert,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Snackbar,
+  Stack,
+  TextField,
+} from "@mui/material"
 import { LoadingButton } from "@mui/lab"
+import { Game } from "@ranklab/api"
+
+interface Props {
+  games: Game[]
+}
 
 export type FormValuesProps = {
   name: string
+  gameId: string
+  skillLevel: number
 }
 
 export const defaultValues = {
   name: "",
+  gameId: "",
+  skillLevel: 0,
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  gameId: Yup.string().required("Game is required"),
+  skillLevel: Yup.number().required("Skill level is required"),
 })
 
-const PlayerOnboardingForm: FunctionComponent<{}> = () => {
+const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const [errorMessage, setErrorMessage] = useState("")
 
   const {
@@ -37,6 +58,7 @@ const PlayerOnboardingForm: FunctionComponent<{}> = () => {
       await api.client.claimsPlayersCreate({
         createPlayerRequest: {
           name: data.name,
+          games: [{ gameId: data.gameId, skillLevel: data.skillLevel }],
         },
       })
 
@@ -81,6 +103,62 @@ const PlayerOnboardingForm: FunctionComponent<{}> = () => {
               error={Boolean(error)}
               helperText={error?.message}
             />
+          )}
+        />
+
+        <Controller
+          name="gameId"
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Games
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              >
+                {games.map((game) => (
+                  <FormControlLabel
+                    value={game.id}
+                    control={<Radio />}
+                    label={game.name}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
+          )}
+        />
+
+        <Controller
+          name="skillLevel"
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Skill Level
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              >
+                {games[0]?.skillLevels.map((skillLevel) => (
+                  <FormControlLabel
+                    value={skillLevel.value}
+                    control={<Radio />}
+                    label={skillLevel.name}
+                  />
+                ))}
+              </RadioGroup>
+            </FormControl>
           )}
         />
         <LoadingButton

@@ -13,7 +13,9 @@ Cypress.Commands.add("login", ({ as = "Coach" } = {}) => {
       secret: Cypress.env("auth0Secret"),
     }).then(({ user }) => {
       const tableName = as === "Coach" ? "coaches" : "players"
-      cy.sql(`INSERT INTO ${tableName} (auth0_id) VALUES ('${user.sub}');`)
+      cy.sql(
+        `INSERT INTO ${tableName} (auth0_id, games) VALUES ('${user.sub}', array['{"game_id": "overwatch", "skill_level": 1 }']::json[]);`
+      )
     })
   })
 })

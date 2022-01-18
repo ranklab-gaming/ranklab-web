@@ -63,7 +63,7 @@ const DashboardPage: FunctionComponent<Props> = function ({ userType, games }) {
           {userType === "Coach" ? (
             <CoachOnboardingForm games={games!} />
           ) : (
-            <PlayerOnboardingForm />
+            <PlayerOnboardingForm games={games!} />
           )}
         </Container>
       </Page>

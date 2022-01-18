@@ -24,8 +24,16 @@
           "^build"
         ],
         "outputs": [
-          ".next/**",
           "dist/**"
+        ]
+      },
+      "@ranklab/web#build": {
+        "dependsOn": [
+          "^build",
+          "@ranklab/api#build"
+        ],
+        "outputs": [
+          ".next/**"
         ]
       },
       "test": {

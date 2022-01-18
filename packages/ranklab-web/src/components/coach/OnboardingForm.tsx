@@ -3,9 +3,10 @@ import { LoadingButton } from "@mui/lab"
 import {
   Alert,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
   Snackbar,
   Stack,
   TextField,
@@ -24,18 +25,21 @@ interface Props {
 export type FormValuesProps = {
   bio: string
   gameId: string
+  skillLevel: number
   name: string
 }
 
 export const defaultValues = {
   bio: "",
   gameId: "",
+  skillLevel: 0,
   name: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   bio: Yup.string().required("Bio is required"),
   gameId: Yup.string().required("Game is required"),
+  skillLevel: Yup.number().required("Skill level is required"),
   name: Yup.string().required("Name is required"),
 })
 
@@ -58,7 +62,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
-          gameId: data.gameId,
+          games: [{ gameId: data.gameId, skillLevel: data.skillLevel }],
         },
       })
 
@@ -122,24 +126,55 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         <Controller
           name="gameId"
           control={control}
-          render={({ field, fieldState: { error } }) => (
-            <FormControl fullWidth>
-              <InputLabel>Game</InputLabel>
-              <Select
-                label="Game"
-                onChange={field.onChange}
+          render={({ field }) => (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Games
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
                 value={field.value}
                 onBlur={field.onBlur}
-                error={Boolean(error)}
+                onChange={field.onChange}
               >
-                <MenuItem value="">Select a Game</MenuItem>
-
                 {games.map((game) => (
-                  <MenuItem key={game.id} value={game.id}>
-                    {game.name}
-                  </MenuItem>
+                  <FormControlLabel
+                    value={game.id}
+                    control={<Radio />}
+                    label={game.name}
+                  />
                 ))}
-              </Select>
+              </RadioGroup>
+            </FormControl>
+          )}
+        />
+
+        <Controller
+          name="skillLevel"
+          control={control}
+          render={({ field }) => (
+            <FormControl>
+              <FormLabel id="demo-row-radio-buttons-group-label">
+                Skill Level
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+              >
+                {games[0]?.skillLevels.map((skillLevel) => (
+                  <FormControlLabel
+                    value={skillLevel.value}
+                    control={<Radio />}
+                    label={skillLevel.name}
+                  />
+                ))}
+              </RadioGroup>
             </FormControl>
           )}
         />
