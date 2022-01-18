@@ -59,6 +59,10 @@ export interface CoachReviewsGetRequest {
     id: string;
 }
 
+export interface CoachReviewsListRequest {
+    pending: boolean;
+}
+
 export interface PlayerCommentsListRequest {
     reviewId: string;
 }
@@ -302,8 +306,16 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsListRaw(): Promise<runtime.ApiResponse<Array<Review>>> {
+    async coachReviewsListRaw(requestParameters: CoachReviewsListRequest): Promise<runtime.ApiResponse<Array<Review>>> {
+        if (requestParameters.pending === null || requestParameters.pending === undefined) {
+            throw new runtime.RequiredError('pending','Required parameter requestParameters.pending was null or undefined when calling coachReviewsList.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.pending !== undefined) {
+            queryParameters['pending'] = requestParameters.pending;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -319,8 +331,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsList(): Promise<Array<Review>> {
-        const response = await this.coachReviewsListRaw();
+    async coachReviewsList(requestParameters: CoachReviewsListRequest): Promise<Array<Review>> {
+        const response = await this.coachReviewsListRaw(requestParameters);
         return await response.value();
     }
 

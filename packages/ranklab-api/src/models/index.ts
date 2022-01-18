@@ -377,6 +377,12 @@ export interface Review {
     playerId: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof Review
+     */
+    published: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof Review
      */
