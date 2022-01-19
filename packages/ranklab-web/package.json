@@ -18,7 +18,7 @@
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.6.0",
     "@hookform/devtools": "4.0.2",
-    "@hookform/resolvers": "2.8.7",
+    "@hookform/resolvers": "2.8.8",
     "@iconify/icons-eva": "1.1.0",
     "@iconify/icons-ic": "1.1.18",
     "@iconify/icons-mdi": "1.1.42",
