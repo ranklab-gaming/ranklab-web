@@ -64,7 +64,7 @@
     "@types/numeral": "2.0.2",
     "@types/react": "17.0.38",
     "@types/react-draft-wysiwyg": "1.13.4",
-    "@types/react-router-dom": "5.3.2",
+    "@types/react-router-dom": "5.3.3",
     "@types/react-scroll": "1.8.3",
     "cypress": "9.2.1",
     "express": "4.17.2",
