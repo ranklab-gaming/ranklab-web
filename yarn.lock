@@ -2463,10 +2463,10 @@ joi@^17.5.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-jose@4.3.8:
-  version "4.3.8"
-  resolved "https://registry.yarnpkg.com/jose/-/jose-4.3.8.tgz#149cb6a318689d5dbf469b40ac48c3f82276f4e6"
-  integrity sha512-dFiqN5FPLNWa/v+J3ShFjV/9sRGickxMbGUbqBrYr+BkrqLOieACaavSi9XmLJXe0Uzd7Cgs1oYtDvDrOyWLgw==
+jose@4.3.9:
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.3.9.tgz#da879cae1bc688e20c7114d131655e853442a383"
+  integrity sha512-G/HK0vtRZpfZ7OfMdzwIJf0rmJ5SWEGJGNwOYmLKPxiRo0ozdvcUKXEW+XhMjFTxbE9+5OSIFUpeQ8M8gyMzbg==
 
 jose@^2.0.5:
   version "2.0.5"
