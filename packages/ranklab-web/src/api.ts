@@ -71,8 +71,8 @@ export default {
   client: new RanklabApi(
     new Configuration({ ...baseConfiguration, basePath: "/api" })
   ),
-  server: (ctx: GetServerSidePropsContext) => {
-    const session = getSession(ctx.req, ctx.res)
+  server: ({ req, res }: Pick<GetServerSidePropsContext, "req" | "res">) => {
+    const session = getSession(req, res)
 
     const configuration = new Configuration({
       ...baseConfiguration,

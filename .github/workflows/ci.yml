@@ -72,6 +72,8 @@ jobs:
           RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
           RANKLAB_AUTH0_ISSUER_BASE_URL: http://ranklab-test:3000/oidc/
           RANKLAB_S3_BUCKET_QUEUE: ${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
+          RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
+          RANKLAB_STRIPE_WEBHOOKS_QUEUE_URL: ${{ secrets.RANKLAB_STRIPE_WEBHOOKS_QUEUE_URL }}
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
           username: ${{ secrets.GHCR_USER }}

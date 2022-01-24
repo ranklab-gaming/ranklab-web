@@ -2,6 +2,20 @@
 /**
  * 
  * @export
+ * @interface AccountLink
+ */
+export interface AccountLink {
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountLink
+     */
+    url: string;
+}
+
+/**
+ * 
+ * @export
  * @interface Coach
  */
 export interface Coach {
@@ -41,6 +55,12 @@ export interface Coach {
      * @memberof Coach
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coach
+     */
+    stripeAccountId?: string | null;
 }
 
 /**
@@ -510,6 +530,12 @@ export interface UserOneOf {
      * @memberof UserOneOf
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    stripeAccountId?: string | null;
     /**
      * 
      * @type {string}

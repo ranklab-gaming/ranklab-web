@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import {
+    AccountLink,
     Coach,
     Comment,
     CreateCoachRequest,
@@ -60,7 +61,7 @@ export interface CoachReviewsGetRequest {
 }
 
 export interface CoachReviewsListRequest {
-    pending: boolean;
+    pending?: boolean | null;
 }
 
 export interface PlayerCommentsListRequest {
@@ -147,6 +148,30 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async claimsPlayersCreate(requestParameters: ClaimsPlayersCreateRequest): Promise<Player> {
         const response = await this.claimsPlayersCreateRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachAccountLinksCreateRaw(): Promise<runtime.ApiResponse<AccountLink>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/account-links`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachAccountLinksCreate(): Promise<AccountLink> {
+        const response = await this.coachAccountLinksCreateRaw();
         return await response.value();
     }
 
@@ -307,10 +332,6 @@ export class RanklabApi extends runtime.BaseAPI {
     /**
      */
     async coachReviewsListRaw(requestParameters: CoachReviewsListRequest): Promise<runtime.ApiResponse<Array<Review>>> {
-        if (requestParameters.pending === null || requestParameters.pending === undefined) {
-            throw new runtime.RequiredError('pending','Required parameter requestParameters.pending was null or undefined when calling coachReviewsList.');
-        }
-
         const queryParameters: any = {};
 
         if (requestParameters.pending !== undefined) {
