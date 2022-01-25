@@ -39,6 +39,11 @@ export interface ClaimsPlayersCreateRequest {
     createPlayerRequest: CreatePlayerRequest;
 }
 
+export interface CoachAccountLinksCreateRequest {
+    refreshUrl: string;
+    returnUrl: string;
+}
+
 export interface CoachCommentsCreateRequest {
     createCommentRequest: CreateCommentRequest;
 }
@@ -153,8 +158,24 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachAccountLinksCreateRaw(): Promise<runtime.ApiResponse<AccountLink>> {
+    async coachAccountLinksCreateRaw(requestParameters: CoachAccountLinksCreateRequest): Promise<runtime.ApiResponse<AccountLink>> {
+        if (requestParameters.refreshUrl === null || requestParameters.refreshUrl === undefined) {
+            throw new runtime.RequiredError('refreshUrl','Required parameter requestParameters.refreshUrl was null or undefined when calling coachAccountLinksCreate.');
+        }
+
+        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
+            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachAccountLinksCreate.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.refreshUrl !== undefined) {
+            queryParameters['refresh_url'] = requestParameters.refreshUrl;
+        }
+
+        if (requestParameters.returnUrl !== undefined) {
+            queryParameters['return_url'] = requestParameters.returnUrl;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -170,8 +191,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachAccountLinksCreate(): Promise<AccountLink> {
-        const response = await this.coachAccountLinksCreateRaw();
+    async coachAccountLinksCreate(requestParameters: CoachAccountLinksCreateRequest): Promise<AccountLink> {
+        const response = await this.coachAccountLinksCreateRaw(requestParameters);
         return await response.value();
     }
 
