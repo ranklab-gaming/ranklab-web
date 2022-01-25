@@ -33,6 +33,12 @@ export interface Coach {
     bio: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof Coach
+     */
+    canReview: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof Coach
      */
@@ -506,6 +512,12 @@ export interface UserOneOf {
      * @memberof UserOneOf
      */
     bio: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf
+     */
+    canReview: boolean;
     /**
      * 
      * @type {string}
