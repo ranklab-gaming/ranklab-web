@@ -74,6 +74,7 @@ jobs:
           RANKLAB_S3_BUCKET_QUEUE: ${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
           RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
           RANKLAB_STRIPE_WEBHOOKS_QUEUE_URL: ${{ secrets.RANKLAB_STRIPE_WEBHOOKS_QUEUE_URL }}
+          RANKLAB_STRIPE_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_WEBHOOKS_SECRET }}
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
           username: ${{ secrets.GHCR_USER }}

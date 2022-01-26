@@ -141,6 +141,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
               >
                 {games.map((game) => (
                   <FormControlLabel
+                    key={game.id}
                     value={game.id}
                     control={<Radio />}
                     label={game.name}
