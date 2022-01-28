@@ -48,7 +48,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/browsers:node16.5.0-chrome94-ff93
+      image: cypress/included:9.3.1
       options: >-
         --add-host=ranklab-test:0.0.0.0
         --network-alias=ranklab-test
@@ -83,15 +83,6 @@ jobs:
         with:
           name: ranklab-web.tar.gz
       - run: tar -xzf ranklab-web.tar.gz
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}/Cypress
-          key: cypress-binary-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      - run: npx install cypress
       - name: Chrome tests
         uses: cypress-io/github-action@v2
         with:
