@@ -35,7 +35,9 @@ jobs:
           node-version: "14.x"
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
-      - run: yarn install
+      - uses: bahmutov/npm-install@v1
+        env:
+          CYPRESS_INSTALL_BINARY: 0
       - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
       - name: Save project folder
@@ -50,7 +52,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/included:9.3.1
+      image: cypress/browsers:node16.5.0-chrome94-ff93
       options: >-
         --add-host=ranklab-test:0.0.0.0
         --network-alias=ranklab-test
@@ -85,6 +87,15 @@ jobs:
         with:
           name: ranklab-web.tar.gz
       - run: tar -xzf ranklab-web.tar.gz
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}/Cypress
+          key: cypress-bynary-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - run: npx install cypress
       - name: Chrome tests
         uses: cypress-io/github-action@v2
         with:
