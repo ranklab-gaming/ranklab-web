@@ -68,7 +68,7 @@
     "@types/react-scroll": "1.8.3",
     "cypress": "9.3.1",
     "express": "4.17.2",
-    "futoin-hkdf": "1.4.3",
+    "futoin-hkdf": "1.5.0",
     "jose": "4.3.9",
     "oidc-provider": "7.10.6",
     "openid-client": "5.1.2",
