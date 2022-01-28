@@ -90,7 +90,7 @@ jobs:
         with:
           path: |
             ${{ steps.yarn-cache-dir-path.outputs.dir }}/Cypress
-          key: cypress-bynary-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: cypress-binary-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
       - run: npx install cypress
       - name: Chrome tests
         uses: cypress-io/github-action@v2
@@ -105,6 +105,9 @@ jobs:
       - name: Log server logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log
+      - name: Log npm logs
+        if: ${{ failure() }}
+        run: cat /github/home/.npm/_logs/*.log
   deploy:
     runs-on: ubuntu-latest
     needs: [chrome-tests]
