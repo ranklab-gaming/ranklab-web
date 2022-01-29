@@ -3459,10 +3459,10 @@ react-dropzone@11.5.1:
     file-selector "^0.2.2"
     prop-types "^15.7.2"
 
-react-hook-form@7.25.2:
-  version "7.25.2"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.25.2.tgz#1b4b2f53ab401c1afe7733efaa66cd1975750adf"
-  integrity sha512-ueZD1ACSkQVQs6HIl9mTqh13mv/H4pOvBXuH7vhtQIT+tOWBX4kK6Q5nlVbsLzsQntBHdVGkIVwdWKVQ/SG2TQ==
+react-hook-form@7.25.3:
+  version "7.25.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.25.3.tgz#1475fd52398e905e1f6d88835f96aaa1144635c3"
+  integrity sha512-jL4SByMaC8U3Vhu9s7CwgJBP4M6I3Kpwxib9LrCwWSRPnXDrNQL4uihSTqLLoDICqSUhwwvian9uVYfv+ITtGg==
 
 react-intersection-observer@8.33.1:
   version "8.33.1"
