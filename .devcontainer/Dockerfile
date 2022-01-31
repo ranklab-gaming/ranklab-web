@@ -1,8 +1,8 @@
 FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.1
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash - \
-    && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
-RUN sudo apt-get install nodejs yarn libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
-RUN npx cypress install
+RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install nodejs libgtk2.0-0 libgtk-3-0 libgbm-dev \
+    libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
+
+RUN sudo npm install -g yarn
