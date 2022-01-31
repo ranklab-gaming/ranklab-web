@@ -12,7 +12,8 @@ import { Game } from "@ranklab/api"
 
 interface Props {
   userType: string
-  games?: Game[]
+  games: Game[]
+  availableCountries?: string[]
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -30,19 +31,25 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     })
   } catch (err) {}
 
+  const games = await api.server(ctx).publicGamesList()
+
   if (userType === "Coach") {
-    const games = await api.server(ctx).publicGamesList()
+    const availableCountries = await api
+      .server(ctx)
+      .claimsCoachesAvailableCountries()
 
     return {
       props: {
         userType,
         games,
+        availableCountries,
       },
     }
   } else {
     return {
       props: {
         userType,
+        games,
       },
     }
   }
@@ -52,7 +59,11 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getDashboardServerSideProps,
 })
 
-const DashboardPage: FunctionComponent<Props> = function ({ userType, games }) {
+const DashboardPage: FunctionComponent<Props> = function ({
+  userType,
+  games,
+  availableCountries,
+}) {
   return (
     <DashboardLayout>
       <Page title="Onboarding | Ranklab">
@@ -61,9 +72,12 @@ const DashboardPage: FunctionComponent<Props> = function ({ userType, games }) {
             Onboarding for {userType}
           </Typography>
           {userType === "Coach" ? (
-            <CoachOnboardingForm games={games!} />
+            <CoachOnboardingForm
+              games={games}
+              availableCountries={availableCountries!}
+            />
           ) : (
-            <PlayerOnboardingForm games={games!} />
+            <PlayerOnboardingForm games={games} />
           )}
         </Container>
       </Page>

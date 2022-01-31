@@ -96,6 +96,30 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
+    async claimsCoachesAvailableCountriesRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<string>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/claims/coaches/available_countries`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     */
+    async claimsCoachesAvailableCountries(initOverrides?: RequestInit): Promise<Array<string>> {
+        const response = await this.claimsCoachesAvailableCountriesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async claimsCoachesCreateRaw(requestParameters: ClaimsCoachesCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Coach>> {
         if (requestParameters.createCoachRequest === null || requestParameters.createCoachRequest === undefined) {
             throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling claimsCoachesCreate.');

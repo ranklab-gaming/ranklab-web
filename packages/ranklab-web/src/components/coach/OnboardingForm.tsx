@@ -20,6 +20,7 @@ import * as Yup from "yup"
 
 interface Props {
   games: Game[]
+  availableCountries: string[]
 }
 
 export type FormValuesProps = {
@@ -27,6 +28,7 @@ export type FormValuesProps = {
   gameId: string
   skillLevel: number
   name: string
+  country: string
 }
 
 export const defaultValues = {
@@ -34,6 +36,7 @@ export const defaultValues = {
   gameId: "",
   skillLevel: 0,
   name: "",
+  country: "US",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
@@ -41,10 +44,16 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   gameId: Yup.string().required("Game is required"),
   skillLevel: Yup.number().required("Skill level is required"),
   name: Yup.string().required("Name is required"),
+  country: Yup.string().required("Country is required"),
 })
 
-const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
+const CoachOnboardingForm: FunctionComponent<Props> = ({
+  games,
+  availableCountries,
+}) => {
   const [errorMessage, setErrorMessage] = useState("")
+
+  const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
 
   const {
     control,
@@ -63,6 +72,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           name: data.name,
           bio: data.bio,
           games: [{ gameId: data.gameId, skillLevel: data.skillLevel }],
+          country: data.country,
         },
       })
 
@@ -124,6 +134,27 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         />
 
         <Controller
+          name="country"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              select
+              SelectProps={{ native: true }}
+              error={Boolean(error)}
+              helperText={error?.message}
+              label="Country"
+            >
+              {availableCountries.map((country) => (
+                <option key={country} value={country}>
+                  {regionNamesInEnglish.of(country)}
+                </option>
+              ))}
+            </TextField>
+          )}
+        />
+
+        <Controller
           name="gameId"
           control={control}
           render={({ field }) => (
@@ -170,6 +201,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({ games }) => {
               >
                 {games[0]?.skillLevels.map((skillLevel) => (
                   <FormControlLabel
+                    key={skillLevel.value}
                     value={skillLevel.value}
                     control={<Radio />}
                     label={skillLevel.name}
