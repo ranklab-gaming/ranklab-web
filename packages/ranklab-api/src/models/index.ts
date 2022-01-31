@@ -1,4 +1,5 @@
-
+/* tslint:disable */
+/* eslint-disable */
 /**
  * 
  * @export
@@ -12,7 +13,6 @@ export interface AccountLink {
      */
     url: string;
 }
-
 /**
  * 
  * @export
@@ -37,6 +37,12 @@ export interface Coach {
      * @memberof Coach
      */
     canReview: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coach
+     */
+    country: string;
     /**
      * 
      * @type {string}
@@ -68,7 +74,6 @@ export interface Coach {
      */
     stripeAccountId?: string | null;
 }
-
 /**
  * 
  * @export
@@ -112,7 +117,6 @@ export interface Comment {
      */
     videoTimestamp: number;
 }
-
 /**
  * 
  * @export
@@ -127,6 +131,12 @@ export interface CreateCoachRequest {
     bio: string;
     /**
      * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    country: string;
+    /**
+     * 
      * @type {Array<UserGame>}
      * @memberof CreateCoachRequest
      */
@@ -138,7 +148,6 @@ export interface CreateCoachRequest {
      */
     name: string;
 }
-
 /**
  * 
  * @export
@@ -170,7 +179,6 @@ export interface CreateCommentRequest {
      */
     videoTimestamp: number;
 }
-
 /**
  * 
  * @export
@@ -190,7 +198,6 @@ export interface CreatePlayerRequest {
      */
     name: string;
 }
-
 /**
  * 
  * @export
@@ -210,7 +217,6 @@ export interface CreateRecordingRequest {
      */
     size: number;
 }
-
 /**
  * 
  * @export
@@ -242,7 +248,6 @@ export interface CreateReviewRequest {
      */
     title: string;
 }
-
 /**
  * 
  * @export
@@ -268,7 +273,6 @@ export interface Game {
      */
     skillLevels: Array<SkillLevel>;
 }
-
 /**
  * 
  * @export
@@ -282,7 +286,6 @@ export interface Health {
      */
     status: string;
 }
-
 /**
  * 
  * @export
@@ -319,8 +322,13 @@ export interface Player {
      * @memberof Player
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    stripeCustomerId?: string | null;
 }
-
 /**
  * 
  * @export
@@ -364,7 +372,6 @@ export interface Recording {
      */
     videoKey: string;
 }
-
 /**
  * 
  * @export
@@ -426,7 +433,6 @@ export interface Review {
      */
     title: string;
 }
-
 /**
  * 
  * @export
@@ -446,7 +452,6 @@ export interface SkillLevel {
      */
     value: number;
 }
-
 /**
  * 
  * @export
@@ -466,14 +471,12 @@ export interface UpdateCommentRequest {
      */
     drawing: string;
 }
-
 /**
  * @type User
  * 
  * @export
  */
 export type User = UserOneOf | UserOneOf1;
-
 /**
  * 
  * @export
@@ -493,7 +496,6 @@ export interface UserGame {
      */
     skillLevel: number;
 }
-
 /**
  * 
  * @export
@@ -518,6 +520,12 @@ export interface UserOneOf {
      * @memberof UserOneOf
      */
     canReview: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    country: string;
     /**
      * 
      * @type {string}
@@ -563,7 +571,6 @@ export interface UserOneOf {
 export enum UserOneOfTypeEnum {
     Coach = 'Coach'
 }
-
 /**
  * 
  * @export
@@ -600,6 +607,12 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    stripeCustomerId?: string | null;
     /**
      * 
      * @type {string}

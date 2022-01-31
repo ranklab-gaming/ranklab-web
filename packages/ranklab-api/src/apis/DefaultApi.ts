@@ -25,7 +25,7 @@ export class DefaultApi extends runtime.BaseAPI {
 
     /**
      */
-    async getHealthRaw(): Promise<runtime.ApiResponse<Health>> {
+    async getHealthRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Health>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -35,15 +35,15 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
     }
 
     /**
      */
-    async getHealth(): Promise<Health> {
-        const response = await this.getHealthRaw();
+    async getHealth(initOverrides?: RequestInit): Promise<Health> {
+        const response = await this.getHealthRaw(initOverrides);
         return await response.value();
     }
 
