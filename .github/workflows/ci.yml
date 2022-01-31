@@ -96,9 +96,6 @@ jobs:
       - name: Log server logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log
-      - name: Log npm logs
-        if: ${{ failure() }}
-        run: cat /github/home/.npm/_logs/*.log
   deploy:
     runs-on: ubuntu-latest
     needs: [chrome-tests]
