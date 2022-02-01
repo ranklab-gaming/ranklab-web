@@ -17,7 +17,9 @@ import LoadingScreen from "@ranklab/web/src/components/LoadingScreen"
 import ProgressBar from "@ranklab/web/src/components/ProgressBar"
 import ThemePrimaryColor from "@ranklab/web/src/components/ThemePrimaryColor"
 import { UserProvider } from "@auth0/nextjs-auth0"
-import React from "react"
+import React, { useEffect, useState } from "react"
+import api from "@ranklab/web/src/api"
+import { User, Coach } from "@ranklab/api"
 
 // // ----------------------------------------------------------------------
 
@@ -29,6 +31,21 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const [coach, setCoach] = useState<Coach | null>(null)
+
+  useEffect(() => {
+    // api.client
+    //   .userUsersGetMe()
+    //   .then((user: User) => {
+    //     if (user.type === "Coach") {
+    //       setCoach(user)
+    //     }
+    //   })
+    //   .catch(() => {})
+  })
+
+  const hasNotSubmittedStripeDetails = !coach?.submittedStripeDetails
+  const canNotReview = !coach?.canReview
 
   return (
     <UserProvider>
@@ -45,6 +62,11 @@ export default function MyApp(props: MyAppProps) {
             <ThemePrimaryColor>
               <LoadingScreen />
               <ProgressBar />
+              {hasNotSubmittedStripeDetails ? (
+                <p>Has not submitted</p>
+              ) : (
+                canNotReview && <p>Cannot review</p>
+              )}
               <Component {...pageProps} />
             </ThemePrimaryColor>
           </ThemeConfig>

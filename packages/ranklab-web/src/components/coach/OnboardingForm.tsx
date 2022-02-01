@@ -76,7 +76,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
         },
       })
 
-      router.push("/dashboard")
+      router.push("/api/refresh-account-link")
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {
@@ -89,6 +89,19 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
       }
     }
   }
+
+  const minSkillLevelIndex = games[0]?.skillLevels
+    .map((sl) => sl.value)
+    .indexOf(games[0]?.minCoachSkillLevel.value)
+
+  const skillLevels = games[0]?.skillLevels.slice(minSkillLevelIndex)
+
+  const countries = availableCountries
+    .map((country) => ({
+      value: country,
+      label: regionNamesInEnglish.of(country),
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label))
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -145,9 +158,9 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
               helperText={error?.message}
               label="Country"
             >
-              {availableCountries.map((country) => (
-                <option key={country} value={country}>
-                  {regionNamesInEnglish.of(country)}
+              {countries.map((country) => (
+                <option key={country.value} value={country.value}>
+                  {country.label}
                 </option>
               ))}
             </TextField>
@@ -199,7 +212,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
                 onBlur={field.onBlur}
                 onChange={field.onChange}
               >
-                {games[0]?.skillLevels.map((skillLevel) => (
+                {skillLevels?.map((skillLevel) => (
                   <FormControlLabel
                     key={skillLevel.value}
                     value={skillLevel.value}

@@ -73,6 +73,12 @@ export interface Coach {
      * @memberof Coach
      */
     stripeAccountId?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Coach
+     */
+    submittedStripeDetails: boolean;
 }
 /**
  * 
@@ -262,6 +268,12 @@ export interface Game {
     id: string;
     /**
      * 
+     * @type {GameMinCoachSkillLevel}
+     * @memberof Game
+     */
+    minCoachSkillLevel: GameMinCoachSkillLevel;
+    /**
+     * 
      * @type {string}
      * @memberof Game
      */
@@ -272,6 +284,25 @@ export interface Game {
      * @memberof Game
      */
     skillLevels: Array<SkillLevel>;
+}
+/**
+ * 
+ * @export
+ * @interface GameMinCoachSkillLevel
+ */
+export interface GameMinCoachSkillLevel {
+    /**
+     * 
+     * @type {string}
+     * @memberof GameMinCoachSkillLevel
+     */
+    name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GameMinCoachSkillLevel
+     */
+    value: number;
 }
 /**
  * 
@@ -556,6 +587,12 @@ export interface UserOneOf {
      * @memberof UserOneOf
      */
     stripeAccountId?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf
+     */
+    submittedStripeDetails: boolean;
     /**
      * 
      * @type {string}
