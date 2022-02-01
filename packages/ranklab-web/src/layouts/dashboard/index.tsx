@@ -1,10 +1,13 @@
-import { ReactNode, useState } from "react"
+import { ReactNode, useState, useEffect } from "react"
 import { styled, useTheme } from "@mui/material/styles"
 // hooks
 import useCollapseDrawer from "../../hooks/useCollapseDrawer"
 //
 import DashboardNavbar from "./DashboardNavbar"
 import DashboardSidebar from "./DashboardSidebar"
+import { useRouter } from "next/router"
+import api from "@ranklab/web/src/api"
+import { Coach, User } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +43,29 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const theme = useTheme()
   const { collapseClick } = useCollapseDrawer()
   const [open, setOpen] = useState(false)
+  const [coach, setCoach] = useState<Coach | null>(null)
+
+  useEffect(() => {
+    api.client
+      .userUsersGetMe()
+      .then((user: User) => {
+        if (user.type === "Coach") {
+          setCoach(user)
+        }
+      })
+      .catch((err: any) => {
+        if (!(err instanceof Response && err.status === 400)) {
+          throw err
+        }
+      })
+  })
+
+  const router = useRouter()
+
+  const showStripeOnboardingIncomplete =
+    !coach?.submittedStripeDetails && router.pathname !== "/onboarding"
+  const showOnboardingIncomplete =
+    !coach?.canReview && router.pathname !== "/onboarding"
 
   return (
     <RootStyle>
@@ -59,6 +85,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }),
         }}
       >
+        {showStripeOnboardingIncomplete ? (
+          <>
+            <p>You have not complete onboarding on Stripe</p>
+            <button onClick={() => router.push("/api/refresh-account-link")}>
+              Complete Onboarding
+            </button>
+          </>
+        ) : (
+          showOnboardingIncomplete && <p>Waiting for approval from Stripe</p>
+        )}
         {children}
       </MainStyle>
     </RootStyle>

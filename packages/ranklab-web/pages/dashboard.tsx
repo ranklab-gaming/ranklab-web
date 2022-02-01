@@ -22,9 +22,11 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     user = await api.server(ctx).userUsersGetMe()
   } catch (err: any) {
     if (err instanceof Response && err.status === 400) {
-      ctx.res.writeHead(301, {
+      ctx.res.writeHead(302, {
         Location: "onboarding",
       })
+    } else {
+      throw err
     }
   }
 

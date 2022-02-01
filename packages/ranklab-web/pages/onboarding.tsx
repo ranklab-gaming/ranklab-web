@@ -16,7 +16,7 @@ interface Props {
   availableCountries?: string[]
 }
 
-const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
+const getOnboardingServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
   const userType = jwt.decode(getSession(ctx.req, ctx.res)?.accessToken!, {
@@ -26,10 +26,14 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   try {
     await api.server(ctx).userUsersGetMe()
 
-    ctx.res.writeHead(301, {
+    ctx.res.writeHead(302, {
       Location: "dashboard",
     })
-  } catch (err) {}
+  } catch (err) {
+    if (!(err instanceof Response && err.status === 400)) {
+      throw err
+    }
+  }
 
   const games = await api.server(ctx).publicGamesList()
 
@@ -56,10 +60,10 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
 }
 
 export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getDashboardServerSideProps,
+  getServerSideProps: getOnboardingServerSideProps,
 })
 
-const DashboardPage: FunctionComponent<Props> = function ({
+const OnboardingPage: FunctionComponent<Props> = function ({
   userType,
   games,
   availableCountries,
@@ -85,4 +89,4 @@ const DashboardPage: FunctionComponent<Props> = function ({
   )
 }
 
-export default DashboardPage
+export default OnboardingPage

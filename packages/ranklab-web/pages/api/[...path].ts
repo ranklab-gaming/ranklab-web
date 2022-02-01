@@ -21,15 +21,20 @@ export default withApiAuthRequired(async function proxy(req, res) {
       ? req.query.path.join("/")
       : req.query.path
 
-    const response = await fetch(`${baseURL}/${fullPath}`, {
+    const params = {
       method: req.method,
-      body: JSON.stringify(req.body),
       headers: {
         Authorization: `Bearer ${session.accessToken}`,
         Accept: req.headers.accept!,
         "Content-Type": req.headers["content-type"]!,
       },
-    })
+    } as any
+
+    if (!(req.method === "GET")) {
+      params.body = JSON.stringify(req.body)
+    }
+
+    const response = await fetch(`${baseURL}/${fullPath}`, params)
 
     const json = await response.json()
     res.status(response.status || 200).json(json)
