@@ -64,7 +64,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const showStripeOnboardingIncomplete =
     !coach?.submittedStripeDetails && router.pathname !== "/onboarding"
-  const showOnboardingIncomplete =
+  const showWaitingForStripeApproval =
     !coach?.canReview && router.pathname !== "/onboarding"
 
   return (
@@ -87,13 +87,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         {showStripeOnboardingIncomplete ? (
           <>
-            <p>You have not complete onboarding on Stripe</p>
+            <p>You have not completed onboarding on Stripe</p>
             <button onClick={() => router.push("/api/refresh-account-link")}>
               Complete Onboarding
             </button>
           </>
         ) : (
-          showOnboardingIncomplete && <p>Waiting for approval from Stripe</p>
+          showWaitingForStripeApproval && (
+            <p>Waiting for approval from Stripe</p>
+          )
         )}
         {children}
       </MainStyle>
