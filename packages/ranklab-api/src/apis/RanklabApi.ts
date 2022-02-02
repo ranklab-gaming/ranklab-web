@@ -24,6 +24,7 @@ import {
     CreateRecordingRequest,
     CreateReviewRequest,
     Game,
+    LoginLink,
     Player,
     Recording,
     Review,
@@ -37,11 +38,6 @@ export interface ClaimsCoachesCreateRequest {
 
 export interface ClaimsPlayersCreateRequest {
     createPlayerRequest: CreatePlayerRequest;
-}
-
-export interface CoachAccountLinksCreateRequest {
-    refreshUrl: string;
-    returnUrl: string;
 }
 
 export interface CoachCommentsCreateRequest {
@@ -67,6 +63,15 @@ export interface CoachReviewsGetRequest {
 
 export interface CoachReviewsListRequest {
     pending?: boolean | null;
+}
+
+export interface CoachStripeAccountLinksCreateRequest {
+    refreshUrl: string;
+    returnUrl: string;
+}
+
+export interface CoachStripeLoginLinksCreateRequest {
+    returnUrl: string;
 }
 
 export interface PlayerCommentsListRequest {
@@ -177,46 +182,6 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async claimsPlayersCreate(requestParameters: ClaimsPlayersCreateRequest, initOverrides?: RequestInit): Promise<Player> {
         const response = await this.claimsPlayersCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async coachAccountLinksCreateRaw(requestParameters: CoachAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AccountLink>> {
-        if (requestParameters.refreshUrl === null || requestParameters.refreshUrl === undefined) {
-            throw new runtime.RequiredError('refreshUrl','Required parameter requestParameters.refreshUrl was null or undefined when calling coachAccountLinksCreate.');
-        }
-
-        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
-            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachAccountLinksCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.refreshUrl !== undefined) {
-            queryParameters['refresh_url'] = requestParameters.refreshUrl;
-        }
-
-        if (requestParameters.returnUrl !== undefined) {
-            queryParameters['return_url'] = requestParameters.returnUrl;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/coach/account-links`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response);
-    }
-
-    /**
-     */
-    async coachAccountLinksCreate(requestParameters: CoachAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<AccountLink> {
-        const response = await this.coachAccountLinksCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -399,6 +364,78 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async coachReviewsList(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<Array<Review>> {
         const response = await this.coachReviewsListRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachStripeAccountLinksCreateRaw(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AccountLink>> {
+        if (requestParameters.refreshUrl === null || requestParameters.refreshUrl === undefined) {
+            throw new runtime.RequiredError('refreshUrl','Required parameter requestParameters.refreshUrl was null or undefined when calling coachStripeAccountLinksCreate.');
+        }
+
+        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
+            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachStripeAccountLinksCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.refreshUrl !== undefined) {
+            queryParameters['refresh_url'] = requestParameters.refreshUrl;
+        }
+
+        if (requestParameters.returnUrl !== undefined) {
+            queryParameters['return_url'] = requestParameters.returnUrl;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/account-links`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachStripeAccountLinksCreate(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<AccountLink> {
+        const response = await this.coachStripeAccountLinksCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachStripeLoginLinksCreateRaw(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<LoginLink>> {
+        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
+            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachStripeLoginLinksCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.returnUrl !== undefined) {
+            queryParameters['return_url'] = requestParameters.returnUrl;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/login-links`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachStripeLoginLinksCreate(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit): Promise<LoginLink> {
+        const response = await this.coachStripeLoginLinksCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

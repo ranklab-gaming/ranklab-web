@@ -1,7 +1,7 @@
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
-import { Container, Typography } from "@mui/material"
+import { Button, Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
 import { GetServerSideProps } from "next"
@@ -50,6 +50,15 @@ export const getServerSideProps = withPageAuthRequired({
 })
 
 const DashboardPage: FunctionComponent<Props> = function ({ reviews, games }) {
+  const visitStripeDashboard = async () => {
+    const currentLocation = window.location.href
+
+    const loginLink = await api.client.coachStripeLoginLinksCreate({
+      returnUrl: currentLocation,
+    })
+    window.location.href = loginLink.url
+  }
+
   return (
     <DashboardLayout>
       <Page title="Dashboard | Ranklab">
@@ -57,6 +66,13 @@ const DashboardPage: FunctionComponent<Props> = function ({ reviews, games }) {
           <Typography variant="h3" component="h1" paragraph>
             Dashboard
           </Typography>
+          <Button
+            variant="contained"
+            color="info"
+            onClick={visitStripeDashboard}
+          >
+            Toggle Drawer
+          </Button>
           <ReviewList reviews={reviews} games={games} />
         </Container>
       </Page>

@@ -320,6 +320,19 @@ export interface Health {
 /**
  * 
  * @export
+ * @interface LoginLink
+ */
+export interface LoginLink {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginLink
+     */
+    url: string;
+}
+/**
+ * 
+ * @export
  * @interface Player
  */
 export interface Player {
