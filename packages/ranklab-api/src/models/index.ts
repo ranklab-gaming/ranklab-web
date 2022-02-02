@@ -24,12 +24,6 @@ export interface Coach {
      * @type {string}
      * @memberof Coach
      */
-    auth0Id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Coach
-     */
     bio: string;
     /**
      * 
@@ -67,12 +61,6 @@ export interface Coach {
      * @memberof Coach
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Coach
-     */
-    stripeAccountId?: string | null;
     /**
      * 
      * @type {boolean}
@@ -366,12 +354,6 @@ export interface Player {
      * @memberof Player
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
-    stripeCustomerId?: string | null;
 }
 /**
  * 
@@ -551,12 +533,6 @@ export interface UserOneOf {
      * @type {string}
      * @memberof UserOneOf
      */
-    auth0Id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
     bio: string;
     /**
      * 
@@ -594,12 +570,6 @@ export interface UserOneOf {
      * @memberof UserOneOf
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    stripeAccountId?: string | null;
     /**
      * 
      * @type {boolean}
@@ -657,12 +627,6 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    stripeCustomerId?: string | null;
     /**
      * 
      * @type {string}
