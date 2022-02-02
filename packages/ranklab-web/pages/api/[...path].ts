@@ -9,17 +9,13 @@ export default withApiAuthRequired(async function proxy(req, res) {
       throw new Error("Expected API_HOST to be present")
     }
 
-    if (!req.query.path) {
-      throw new Error("Expected path to be present in query")
+    if (!req.url) {
+      throw new Error("Expected url to be present in query")
     }
 
     if (!session) {
       throw new Error("Expected session to be present")
     }
-
-    const fullPath = Array.isArray(req.query.path)
-      ? req.query.path.join("/")
-      : req.query.path
 
     const params = {
       method: req.method,
@@ -30,11 +26,14 @@ export default withApiAuthRequired(async function proxy(req, res) {
       },
     } as any
 
-    if (!(req.method === "GET")) {
+    if (req.method !== "GET") {
       params.body = JSON.stringify(req.body)
     }
 
-    const response = await fetch(`${baseURL}/${fullPath}`, params)
+    const response = await fetch(
+      `${baseURL}${req.url.replace("/api", "")}`,
+      params
+    )
 
     const json = await response.json()
     res.status(response.status || 200).json(json)

@@ -391,7 +391,7 @@ export class RanklabApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/coach/account-links`,
+            path: `/coach/stripe-account-links`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -423,7 +423,7 @@ export class RanklabApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/coach/login-links`,
+            path: `/coach/stripe-login-links`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

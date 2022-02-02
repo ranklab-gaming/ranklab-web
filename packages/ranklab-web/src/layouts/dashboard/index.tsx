@@ -58,7 +58,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           throw err
         }
       })
-  })
+  }, [])
 
   const router = useRouter()
 

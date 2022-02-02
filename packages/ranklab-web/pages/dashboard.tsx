@@ -11,6 +11,7 @@ import { Review, Game } from "@ranklab/api"
 interface Props {
   reviews: Review[]
   games: Game[]
+  canReview?: boolean
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -37,10 +38,13 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     api.server(ctx).publicGamesList(),
   ])
 
+  const canReview = user?.type === "Coach" && user.canReview
+
   return {
     props: {
       games,
       reviews,
+      canReview,
     },
   }
 }
@@ -49,7 +53,11 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getDashboardServerSideProps,
 })
 
-const DashboardPage: FunctionComponent<Props> = function ({ reviews, games }) {
+const DashboardPage: FunctionComponent<Props> = function ({
+  reviews,
+  games,
+  canReview,
+}) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
 
@@ -66,13 +74,15 @@ const DashboardPage: FunctionComponent<Props> = function ({ reviews, games }) {
           <Typography variant="h3" component="h1" paragraph>
             Dashboard
           </Typography>
-          <Button
-            variant="contained"
-            color="info"
-            onClick={visitStripeDashboard}
-          >
-            Toggle Drawer
-          </Button>
+          {canReview && (
+            <Button
+              variant="contained"
+              color="info"
+              onClick={visitStripeDashboard}
+            >
+              Visit Stripe Dashboard
+            </Button>
+          )}
           <ReviewList reviews={reviews} games={games} />
         </Container>
       </Page>
