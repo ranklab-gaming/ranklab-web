@@ -1,0 +1,36 @@
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@ranklab/web#build": {
+      "dependsOn": [
+        "^build",
+        "@ranklab/api#build"
+      ],
+      "outputs": [
+        ".next/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "build"
+      ],
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    }
+  },
+  "globalDependencies": [
+    "$NEXT_PUBLIC_CDN_URL",
+    "$NEXT_PUBLIC_SENTRY_DSN",
+    "tsconfig.json",
+    ".env.*"
+  ]
+}
