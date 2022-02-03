@@ -8,8 +8,10 @@ export default withApiAuthRequired(async function refreshAccountLink(req, res) {
   let accountLink = await api
     .server({ req, res })
     .coachStripeAccountLinksCreate({
-      refreshUrl: `${scheme}://${host}/api/refresh-account-link`,
-      returnUrl: `${scheme}://${host}/dashboard`,
+      createAccountLinkMutation: {
+        refreshUrl: `${scheme}://${host}/api/refresh-account-link`,
+        returnUrl: `${scheme}://${host}/dashboard`,
+      },
     })
 
   res.redirect(307, accountLink.url)

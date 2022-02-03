@@ -16,10 +16,14 @@
 import * as runtime from '../runtime';
 import {
     AccountLink,
+    CheckoutSession,
     Coach,
     Comment,
+    CreateAccountLinkMutation,
+    CreateCheckoutSessionMutation,
     CreateCoachRequest,
     CreateCommentRequest,
+    CreateLoginLinkMutation,
     CreatePlayerRequest,
     CreateRecordingRequest,
     CreateReviewRequest,
@@ -66,12 +70,11 @@ export interface CoachReviewsListRequest {
 }
 
 export interface CoachStripeAccountLinksCreateRequest {
-    refreshUrl: string;
-    returnUrl: string;
+    createAccountLinkMutation: CreateAccountLinkMutation;
 }
 
 export interface CoachStripeLoginLinksCreateRequest {
-    returnUrl: string;
+    createLoginLinkMutation: CreateLoginLinkMutation;
 }
 
 export interface PlayerCommentsListRequest {
@@ -92,6 +95,10 @@ export interface PlayerReviewsCreateRequest {
 
 export interface PlayerReviewsGetRequest {
     id: string;
+}
+
+export interface PlayerStripeCheckoutSessionsCreateRequest {
+    createCheckoutSessionMutation: CreateCheckoutSessionMutation;
 }
 
 /**
@@ -370,31 +377,22 @@ export class RanklabApi extends runtime.BaseAPI {
     /**
      */
     async coachStripeAccountLinksCreateRaw(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AccountLink>> {
-        if (requestParameters.refreshUrl === null || requestParameters.refreshUrl === undefined) {
-            throw new runtime.RequiredError('refreshUrl','Required parameter requestParameters.refreshUrl was null or undefined when calling coachStripeAccountLinksCreate.');
-        }
-
-        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
-            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachStripeAccountLinksCreate.');
+        if (requestParameters.createAccountLinkMutation === null || requestParameters.createAccountLinkMutation === undefined) {
+            throw new runtime.RequiredError('createAccountLinkMutation','Required parameter requestParameters.createAccountLinkMutation was null or undefined when calling coachStripeAccountLinksCreate.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.refreshUrl !== undefined) {
-            queryParameters['refresh_url'] = requestParameters.refreshUrl;
-        }
-
-        if (requestParameters.returnUrl !== undefined) {
-            queryParameters['return_url'] = requestParameters.returnUrl;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/coach/stripe-account-links`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: requestParameters.createAccountLinkMutation,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -410,23 +408,22 @@ export class RanklabApi extends runtime.BaseAPI {
     /**
      */
     async coachStripeLoginLinksCreateRaw(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<LoginLink>> {
-        if (requestParameters.returnUrl === null || requestParameters.returnUrl === undefined) {
-            throw new runtime.RequiredError('returnUrl','Required parameter requestParameters.returnUrl was null or undefined when calling coachStripeLoginLinksCreate.');
+        if (requestParameters.createLoginLinkMutation === null || requestParameters.createLoginLinkMutation === undefined) {
+            throw new runtime.RequiredError('createLoginLinkMutation','Required parameter requestParameters.createLoginLinkMutation was null or undefined when calling coachStripeLoginLinksCreate.');
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.returnUrl !== undefined) {
-            queryParameters['return_url'] = requestParameters.returnUrl;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
             path: `/coach/stripe-login-links`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: requestParameters.createLoginLinkMutation,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -610,6 +607,37 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerReviewsList(initOverrides?: RequestInit): Promise<Array<Review>> {
         const response = await this.playerReviewsListRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerStripeCheckoutSessionsCreateRaw(requestParameters: PlayerStripeCheckoutSessionsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<CheckoutSession>> {
+        if (requestParameters.createCheckoutSessionMutation === null || requestParameters.createCheckoutSessionMutation === undefined) {
+            throw new runtime.RequiredError('createCheckoutSessionMutation','Required parameter requestParameters.createCheckoutSessionMutation was null or undefined when calling playerStripeCheckoutSessionsCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/stripe-checkout-sessions`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createCheckoutSessionMutation,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerStripeCheckoutSessionsCreate(requestParameters: PlayerStripeCheckoutSessionsCreateRequest, initOverrides?: RequestInit): Promise<CheckoutSession> {
+        const response = await this.playerStripeCheckoutSessionsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

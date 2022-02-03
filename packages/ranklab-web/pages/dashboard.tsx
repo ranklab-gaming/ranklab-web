@@ -62,7 +62,9 @@ const DashboardPage: FunctionComponent<Props> = function ({
     const currentLocation = window.location.href
 
     const loginLink = await api.client.coachStripeLoginLinksCreate({
-      returnUrl: currentLocation,
+      createLoginLinkMutation: {
+        returnUrl: currentLocation,
+      },
     })
     window.location.href = loginLink.url
   }

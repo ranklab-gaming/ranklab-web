@@ -16,6 +16,19 @@ export interface AccountLink {
 /**
  * 
  * @export
+ * @interface CheckoutSession
+ */
+export interface CheckoutSession {
+    /**
+     * 
+     * @type {string}
+     * @memberof CheckoutSession
+     */
+    url: string;
+}
+/**
+ * 
+ * @export
  * @interface Coach
  */
 export interface Coach {
@@ -61,12 +74,6 @@ export interface Coach {
      * @memberof Coach
      */
     name: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Coach
-     */
-    submittedStripeDetails: boolean;
 }
 /**
  * 
@@ -110,6 +117,44 @@ export interface Comment {
      * @memberof Comment
      */
     videoTimestamp: number;
+}
+/**
+ * 
+ * @export
+ * @interface CreateAccountLinkMutation
+ */
+export interface CreateAccountLinkMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountLinkMutation
+     */
+    refreshUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateAccountLinkMutation
+     */
+    returnUrl: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateCheckoutSessionMutation
+ */
+export interface CreateCheckoutSessionMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCheckoutSessionMutation
+     */
+    cancelUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCheckoutSessionMutation
+     */
+    successUrl: string;
 }
 /**
  * 
@@ -172,6 +217,19 @@ export interface CreateCommentRequest {
      * @memberof CreateCommentRequest
      */
     videoTimestamp: number;
+}
+/**
+ * 
+ * @export
+ * @interface CreateLoginLinkMutation
+ */
+export interface CreateLoginLinkMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateLoginLinkMutation
+     */
+    returnUrl: string;
 }
 /**
  * 
@@ -256,10 +314,10 @@ export interface Game {
     id: string;
     /**
      * 
-     * @type {GameMinCoachSkillLevel}
+     * @type {SkillLevel}
      * @memberof Game
      */
-    minCoachSkillLevel: GameMinCoachSkillLevel;
+    minCoachSkillLevel: SkillLevel;
     /**
      * 
      * @type {string}
@@ -272,25 +330,6 @@ export interface Game {
      * @memberof Game
      */
     skillLevels: Array<SkillLevel>;
-}
-/**
- * 
- * @export
- * @interface GameMinCoachSkillLevel
- */
-export interface GameMinCoachSkillLevel {
-    /**
-     * 
-     * @type {string}
-     * @memberof GameMinCoachSkillLevel
-     */
-    name: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GameMinCoachSkillLevel
-     */
-    value: number;
 }
 /**
  * 
@@ -330,6 +369,12 @@ export interface Player {
      * @memberof Player
      */
     auth0Id: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Player
+     */
+    canCreateReviews: boolean;
     /**
      * 
      * @type {string}
@@ -572,12 +617,6 @@ export interface UserOneOf {
     name: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof UserOneOf
-     */
-    submittedStripeDetails: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof UserOneOf
      */
@@ -589,7 +628,7 @@ export interface UserOneOf {
 * @enum {string}
 */
 export enum UserOneOfTypeEnum {
-    Coach = 'Coach'
+    CoachView = 'CoachView'
 }
 /**
  * 
@@ -603,6 +642,12 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     auth0Id: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf1
+     */
+    canCreateReviews: boolean;
     /**
      * 
      * @type {string}
@@ -640,5 +685,5 @@ export interface UserOneOf1 {
 * @enum {string}
 */
 export enum UserOneOf1TypeEnum {
-    Player = 'Player'
+    PlayerView = 'PlayerView'
 }
