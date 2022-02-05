@@ -74,6 +74,12 @@ export interface Coach {
      * @memberof Coach
      */
     name: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Coach
+     */
+    stripeDetailsSubmitted: boolean;
 }
 /**
  * 
@@ -617,6 +623,12 @@ export interface UserOneOf {
     name: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof UserOneOf
+     */
+    stripeDetailsSubmitted: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof UserOneOf
      */
@@ -628,7 +640,7 @@ export interface UserOneOf {
 * @enum {string}
 */
 export enum UserOneOfTypeEnum {
-    CoachView = 'CoachView'
+    Coach = 'Coach'
 }
 /**
  * 
@@ -685,5 +697,5 @@ export interface UserOneOf1 {
 * @enum {string}
 */
 export enum UserOneOf1TypeEnum {
-    PlayerView = 'PlayerView'
+    Player = 'Player'
 }

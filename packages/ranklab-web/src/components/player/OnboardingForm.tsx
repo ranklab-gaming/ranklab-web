@@ -62,7 +62,15 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         },
       })
 
-      router.push("/dashboard")
+      const checkoutSession =
+        await api.client.playerStripeCheckoutSessionsCreate({
+          createCheckoutSessionMutation: {
+            successUrl: `${window.origin}/dashboard`,
+            cancelUrl: `${window.origin}/dashboard`,
+          },
+        })
+
+      router.push(checkoutSession.url)
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {
@@ -124,6 +132,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
               >
                 {games.map((game) => (
                   <FormControlLabel
+                    key={game.id}
                     value={game.id}
                     control={<Radio />}
                     label={game.name}

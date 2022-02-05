@@ -7,7 +7,7 @@ import DashboardNavbar from "./DashboardNavbar"
 import DashboardSidebar from "./DashboardSidebar"
 import { useRouter } from "next/router"
 import api from "@ranklab/web/src/api"
-import { Coach, User } from "@ranklab/api"
+import { Coach, User, Player } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +44,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { collapseClick } = useCollapseDrawer()
   const [open, setOpen] = useState(false)
   const [coach, setCoach] = useState<Coach | null>(null)
+  const [player, setPlayer] = useState<Player | null>(null)
 
   useEffect(() => {
     api.client
@@ -51,6 +52,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       .then((user: User) => {
         if (user.type === "Coach") {
           setCoach(user)
+        } else if (user.type === "Player") {
+          setPlayer(user)
         }
       })
       .catch((err: any) => {
@@ -63,9 +66,25 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const router = useRouter()
 
   const showStripeOnboardingIncomplete =
-    !coach?.submittedStripeDetails && router.pathname !== "/onboarding"
+    !coach?.stripeDetailsSubmitted && router.pathname !== "/onboarding"
   const showWaitingForStripeApproval =
     !coach?.canReview && router.pathname !== "/onboarding"
+  const showCheckoutSessionIncomplete =
+    !player?.stripePaymentMethodId && router.pathname !== "/onboarding"
+
+  const visitStripeCheckout = async () => {
+    const currentLocation = window.location.href
+
+    const checkoutSession = await api.client.playerStripeCheckoutSessionsCreate(
+      {
+        createCheckoutSessionMutation: {
+          successUrl: currentLocation,
+          cancelUrl: currentLocation,
+        },
+      }
+    )
+    window.location.href = checkoutSession.url
+  }
 
   return (
     <RootStyle>
@@ -85,17 +104,24 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           }),
         }}
       >
-        {showStripeOnboardingIncomplete ? (
+        {coach &&
+          (showStripeOnboardingIncomplete ? (
+            <>
+              <p>You have not completed onboarding on Stripe</p>
+              <button onClick={() => router.push("/api/refresh-account-link")}>
+                Complete Onboarding
+              </button>
+            </>
+          ) : (
+            showWaitingForStripeApproval && (
+              <p>Waiting for approval from Stripe</p>
+            )
+          ))}
+        {player && showCheckoutSessionIncomplete && (
           <>
-            <p>You have not completed onboarding on Stripe</p>
-            <button onClick={() => router.push("/api/refresh-account-link")}>
-              Complete Onboarding
-            </button>
+            <p>You have not added your payment details</p>
+            <button onClick={visitStripeCheckout}>Add payment details</button>
           </>
-        ) : (
-          showWaitingForStripeApproval && (
-            <p>Waiting for approval from Stripe</p>
-          )
         )}
         {children}
       </MainStyle>
