@@ -431,12 +431,6 @@ export interface Player {
      * @memberof Player
      */
     name: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Player
-     */
-    stripePaymentMethodSubmitted: boolean;
 }
 /**
  * 
@@ -716,12 +710,6 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     name: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserOneOf1
-     */
-    stripePaymentMethodSubmitted: boolean;
     /**
      * 
      * @type {string}

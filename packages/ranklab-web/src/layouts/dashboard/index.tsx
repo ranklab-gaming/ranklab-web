@@ -69,22 +69,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     !coach?.stripeDetailsSubmitted && router.pathname !== "/onboarding"
   const showWaitingForStripeApproval =
     !coach?.canReview && router.pathname !== "/onboarding"
-  const showCheckoutSessionIncomplete =
-    !player?.stripePaymentMethodSubmitted && router.pathname !== "/onboarding"
-
-  const visitStripeCheckout = async () => {
-    const currentLocation = window.location.href
-
-    const checkoutSession = await api.client.playerStripeCheckoutSessionsCreate(
-      {
-        createCheckoutSessionMutation: {
-          successUrl: currentLocation,
-          cancelUrl: currentLocation,
-        },
-      }
-    )
-    window.location.href = checkoutSession.url
-  }
+  const showPaymentMethodUnavailable =
+    !player?.canCreateReviews && router.pathname !== "/onboarding"
 
   return (
     <RootStyle>
@@ -117,10 +103,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <p>Waiting for approval from Stripe</p>
             )
           ))}
-        {player && showCheckoutSessionIncomplete && (
+        {player && showPaymentMethodUnavailable && (
           <>
-            <p>You have not added your payment details</p>
-            <button onClick={visitStripeCheckout}>Add payment details</button>
+            <p>You have not added a default payment method</p>
           </>
         )}
         {children}

@@ -12,7 +12,7 @@ interface Props {
   reviews: Review[]
   games: Game[]
   canReview?: boolean
-  canCreateReviews?: boolean
+  isPlayer?: boolean
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -40,14 +40,14 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ])
 
   const canReview = user?.type === "Coach" && user.canReview
-  const canCreateReviews = user?.type === "Player" && user.canCreateReviews
+  const isPlayer = user?.type === "Player"
 
   return {
     props: {
       games,
       reviews,
       canReview,
-      canCreateReviews,
+      isPlayer,
     },
   }
 }
@@ -60,7 +60,7 @@ const DashboardPage: FunctionComponent<Props> = function ({
   reviews,
   games,
   canReview,
-  canCreateReviews,
+  isPlayer,
 }) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
@@ -100,7 +100,7 @@ const DashboardPage: FunctionComponent<Props> = function ({
               Visit Stripe Dashboard
             </Button>
           )}
-          {canCreateReviews && (
+          {isPlayer && (
             <Button
               variant="contained"
               color="info"
