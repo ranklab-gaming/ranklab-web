@@ -16,10 +16,12 @@
 import * as runtime from '../runtime';
 import {
     AccountLink,
+    BillingPortalLink,
     CheckoutSession,
     Coach,
     Comment,
     CreateAccountLinkMutation,
+    CreateBillingPortalSessionMutation,
     CreateCheckoutSessionMutation,
     CreateCoachRequest,
     CreateCommentRequest,
@@ -95,6 +97,10 @@ export interface PlayerReviewsCreateRequest {
 
 export interface PlayerReviewsGetRequest {
     id: string;
+}
+
+export interface PlayerStripeBillingPortalSessionsCreateRequest {
+    createBillingPortalSessionMutation: CreateBillingPortalSessionMutation;
 }
 
 export interface PlayerStripeCheckoutSessionsCreateRequest {
@@ -607,6 +613,37 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerReviewsList(initOverrides?: RequestInit): Promise<Array<Review>> {
         const response = await this.playerReviewsListRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerStripeBillingPortalSessionsCreateRaw(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<BillingPortalLink>> {
+        if (requestParameters.createBillingPortalSessionMutation === null || requestParameters.createBillingPortalSessionMutation === undefined) {
+            throw new runtime.RequiredError('createBillingPortalSessionMutation','Required parameter requestParameters.createBillingPortalSessionMutation was null or undefined when calling playerStripeBillingPortalSessionsCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/stripe-billing-portal-sessions`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createBillingPortalSessionMutation,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerStripeBillingPortalSessionsCreate(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<BillingPortalLink> {
+        const response = await this.playerStripeBillingPortalSessionsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

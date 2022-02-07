@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const showWaitingForStripeApproval =
     !coach?.canReview && router.pathname !== "/onboarding"
   const showCheckoutSessionIncomplete =
-    !player?.stripePaymentMethodId && router.pathname !== "/onboarding"
+    !player?.stripePaymentMethodSubmitted && router.pathname !== "/onboarding"
 
   const visitStripeCheckout = async () => {
     const currentLocation = window.location.href

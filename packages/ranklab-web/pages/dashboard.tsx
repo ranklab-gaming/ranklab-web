@@ -12,6 +12,7 @@ interface Props {
   reviews: Review[]
   games: Game[]
   canReview?: boolean
+  canCreateReviews?: boolean
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -39,12 +40,14 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   ])
 
   const canReview = user?.type === "Coach" && user.canReview
+  const canCreateReviews = user?.type === "Player" && user.canCreateReviews
 
   return {
     props: {
       games,
       reviews,
       canReview,
+      canCreateReviews,
     },
   }
 }
@@ -57,12 +60,24 @@ const DashboardPage: FunctionComponent<Props> = function ({
   reviews,
   games,
   canReview,
+  canCreateReviews,
 }) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
 
     const loginLink = await api.client.coachStripeLoginLinksCreate({
       createLoginLinkMutation: {
+        returnUrl: currentLocation,
+      },
+    })
+    window.location.href = loginLink.url
+  }
+
+  const visitCustomerPortal = async () => {
+    const currentLocation = window.location.href
+
+    const loginLink = await api.client.playerStripeBillingPortalSessionsCreate({
+      createBillingPortalSessionMutation: {
         returnUrl: currentLocation,
       },
     })
@@ -83,6 +98,15 @@ const DashboardPage: FunctionComponent<Props> = function ({
               onClick={visitStripeDashboard}
             >
               Visit Stripe Dashboard
+            </Button>
+          )}
+          {canCreateReviews && (
+            <Button
+              variant="contained"
+              color="info"
+              onClick={visitCustomerPortal}
+            >
+              Change Payment Method
             </Button>
           )}
           <ReviewList reviews={reviews} games={games} />

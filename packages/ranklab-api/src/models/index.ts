@@ -16,6 +16,19 @@ export interface AccountLink {
 /**
  * 
  * @export
+ * @interface BillingPortalLink
+ */
+export interface BillingPortalLink {
+    /**
+     * 
+     * @type {string}
+     * @memberof BillingPortalLink
+     */
+    url: string;
+}
+/**
+ * 
+ * @export
  * @interface CheckoutSession
  */
 export interface CheckoutSession {
@@ -140,6 +153,19 @@ export interface CreateAccountLinkMutation {
      * 
      * @type {string}
      * @memberof CreateAccountLinkMutation
+     */
+    returnUrl: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateBillingPortalSessionMutation
+ */
+export interface CreateBillingPortalSessionMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateBillingPortalSessionMutation
      */
     returnUrl: string;
 }
@@ -405,6 +431,12 @@ export interface Player {
      * @memberof Player
      */
     name: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Player
+     */
+    stripePaymentMethodSubmitted: boolean;
 }
 /**
  * 
@@ -684,6 +716,12 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     name: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf1
+     */
+    stripePaymentMethodSubmitted: boolean;
     /**
      * 
      * @type {string}
