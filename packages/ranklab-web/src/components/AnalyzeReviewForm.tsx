@@ -58,6 +58,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [isEditing, setIsEditing] = useState(false)
   const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
@@ -205,41 +206,91 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   </LoadingButton>
                 </>
               ) : (
-                sortedComments.map((comment) => (
-                  <Card sx={{ position: "static" }} key={comment.id}>
-                    <CardContent>
-                      <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                      >
-                        {formatTimestamp(comment.videoTimestamp)}
-                      </Typography>
+                <>
+                  <LoadingButton
+                    fullWidth
+                    color="info"
+                    size="large"
+                    type="button"
+                    variant="contained"
+                    loading={isUpdating}
+                    disabled={isUpdating}
+                    onClick={async () => {
+                      setIsUpdating(true)
 
-                      <Paper
-                        sx={{
-                          p: 3,
-                          bgcolor: "grey.50012",
-                        }}
-                      >
+                      await api.client.coachReviewsUpdate({
+                        id: review.id,
+                        updateReviewRequest: {
+                          taken: true,
+                          published: null,
+                        },
+                      })
+
+                      setIsUpdating(false)
+                    }}
+                  >
+                    Take Review
+                  </LoadingButton>
+                  <LoadingButton
+                    fullWidth
+                    color="info"
+                    size="large"
+                    type="button"
+                    variant="contained"
+                    loading={isUpdating}
+                    disabled={isUpdating}
+                    onClick={async () => {
+                      setIsUpdating(true)
+
+                      await api.client.coachReviewsUpdate({
+                        id: review.id,
+                        updateReviewRequest: {
+                          taken: null,
+                          published: true,
+                        },
+                      })
+
+                      setIsUpdating(false)
+                    }}
+                  >
+                    Publish Review
+                  </LoadingButton>
+                  {sortedComments.map((comment) => (
+                    <Card sx={{ position: "static" }} key={comment.id}>
+                      <CardContent>
                         <Typography
                           variant="body2"
                           sx={{ color: "text.secondary" }}
                         >
-                          <span
-                            onClick={() => goToComment(comment)}
-                            style={{ cursor: "pointer" }}
-                          >
-                            {comment.body}
-                          </span>
+                          {formatTimestamp(comment.videoTimestamp)}
                         </Typography>
-                      </Paper>
 
-                      <IconButton onClick={() => editComment(comment)}>
-                        <CreateIcon />
-                      </IconButton>
-                    </CardContent>
-                  </Card>
-                ))
+                        <Paper
+                          sx={{
+                            p: 3,
+                            bgcolor: "grey.50012",
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{ color: "text.secondary" }}
+                          >
+                            <span
+                              onClick={() => goToComment(comment)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              {comment.body}
+                            </span>
+                          </Typography>
+                        </Paper>
+
+                        <IconButton onClick={() => editComment(comment)}>
+                          <CreateIcon />
+                        </IconButton>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </>
               )}
             </Stack>
           </Grid>

@@ -582,16 +582,16 @@ export interface UpdateCommentRequest {
 export interface UpdateReviewRequest {
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof UpdateReviewRequest
      */
-    coachId?: string | null;
+    published?: boolean | null;
     /**
      * 
      * @type {boolean}
      * @memberof UpdateReviewRequest
      */
-    published?: boolean | null;
+    taken?: boolean | null;
 }
 /**
  * @type User

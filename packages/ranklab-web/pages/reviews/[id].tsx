@@ -22,11 +22,10 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   ctx
 ) {
   const id = useRequiredParam(ctx, "id")
-
-  const [review, comments] = await Promise.all([
-    api.server(ctx).coachReviewsGet({ id }),
-    api.server(ctx).coachCommentsList({ reviewId: id }),
-  ])
+  const review = await api.server(ctx).coachReviewsGet({ id })
+  const comments = review.coachId
+    ? await api.server(ctx).coachCommentsList({ reviewId: review.id })
+    : []
 
   const recording = await api
     .server(ctx)

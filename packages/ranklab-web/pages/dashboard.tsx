@@ -35,7 +35,7 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
   const [reviews, games] = await Promise.all([
     user?.type === "Player"
       ? api.server(ctx).playerReviewsList()
-      : api.server(ctx).coachReviewsList({}),
+      : api.server(ctx).coachReviewsList({ pending: true }),
     api.server(ctx).publicGamesList(),
   ])
 
