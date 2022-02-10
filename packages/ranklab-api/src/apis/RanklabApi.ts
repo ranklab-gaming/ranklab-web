@@ -35,6 +35,7 @@ import {
     Recording,
     Review,
     UpdateCommentRequest,
+    UpdateReviewRequest,
     User,
 } from '../models';
 
@@ -69,6 +70,11 @@ export interface CoachReviewsGetRequest {
 
 export interface CoachReviewsListRequest {
     pending?: boolean | null;
+}
+
+export interface CoachReviewsUpdateRequest {
+    id: string;
+    updateReviewRequest: UpdateReviewRequest;
 }
 
 export interface CoachStripeAccountLinksCreateRequest {
@@ -377,6 +383,41 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async coachReviewsList(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<Array<Review>> {
         const response = await this.coachReviewsListRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachReviewsUpdateRaw(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachReviewsUpdate.');
+        }
+
+        if (requestParameters.updateReviewRequest === null || requestParameters.updateReviewRequest === undefined) {
+            throw new runtime.RequiredError('updateReviewRequest','Required parameter requestParameters.updateReviewRequest was null or undefined when calling coachReviewsUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/coach/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateReviewRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachReviewsUpdate(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit): Promise<Review> {
+        const response = await this.coachReviewsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

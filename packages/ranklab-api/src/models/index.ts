@@ -575,6 +575,25 @@ export interface UpdateCommentRequest {
     drawing: string;
 }
 /**
+ * 
+ * @export
+ * @interface UpdateReviewRequest
+ */
+export interface UpdateReviewRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateReviewRequest
+     */
+    coachId?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UpdateReviewRequest
+     */
+    published?: boolean | null;
+}
+/**
  * @type User
  * 
  * @export
