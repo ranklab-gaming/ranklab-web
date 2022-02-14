@@ -329,10 +329,12 @@
   dependencies:
     "@iconify/types" "^1.0.12"
 
-"@iconify/icons-ic@1.1.18":
-  version "1.1.18"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.1.18.tgz#8d4c9eada4801312cfa02e6db6d62ed49f842381"
-  integrity sha512-VqQfiXGXelhdJSzv3qILHwBpdX6f5CPCKGqAmZMZLEXEuPEv7O6YVRBt52qz38SagA5bKhMyZWE2ThuuAkwdOA==
+"@iconify/icons-ic@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.2.0.tgz#cb3fb1cea381f14f915e7f2df60f5285349879c4"
+  integrity sha512-ChIS8ZVRXU4B9oBut6+E22W34N8Qi3iKP4WkkCqPipAnsTHxdtNI+ff3OYfsZZ8L/pY6BPg3EtLohjWS2msf+A==
+  dependencies:
+    "@iconify/types" "^1.0.12"
 
 "@iconify/icons-mdi@1.1.47":
   version "1.1.47"
