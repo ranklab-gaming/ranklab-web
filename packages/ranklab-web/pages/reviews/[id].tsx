@@ -8,7 +8,7 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Review, Comment, Recording } from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
-import { useRequiredParam } from "src/hooks/use-param"
+import { useRequiredParam } from "src/hooks/useParam"
 
 // ----------------------------------------------------------------------
 

@@ -8,7 +8,7 @@ import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Game, Recording } from "@ranklab/api"
-import { useRequiredParam } from "src/hooks/use-param"
+import { useRequiredParam } from "src/hooks/useParam"
 
 // ----------------------------------------------------------------------
 
