@@ -17,20 +17,20 @@ import * as runtime from '../runtime';
 import {
     AccountLink,
     BillingPortalLink,
-    CheckoutSession,
     Coach,
     Comment,
     CreateAccountLinkMutation,
     CreateBillingPortalSessionMutation,
-    CreateCheckoutSessionMutation,
     CreateCoachRequest,
     CreateCommentRequest,
     CreateLoginLinkMutation,
+    CreatePaymentIntentMutation,
     CreatePlayerRequest,
     CreateRecordingRequest,
     CreateReviewRequest,
     Game,
     LoginLink,
+    PaymentIntent,
     Player,
     Recording,
     Review,
@@ -109,8 +109,8 @@ export interface PlayerStripeBillingPortalSessionsCreateRequest {
     createBillingPortalSessionMutation: CreateBillingPortalSessionMutation;
 }
 
-export interface PlayerStripeCheckoutSessionsCreateRequest {
-    createCheckoutSessionMutation: CreateCheckoutSessionMutation;
+export interface PlayerStripePaymentIntentsCreateRequest {
+    createPaymentIntentMutation: CreatePaymentIntentMutation;
 }
 
 /**
@@ -690,9 +690,9 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerStripeCheckoutSessionsCreateRaw(requestParameters: PlayerStripeCheckoutSessionsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<CheckoutSession>> {
-        if (requestParameters.createCheckoutSessionMutation === null || requestParameters.createCheckoutSessionMutation === undefined) {
-            throw new runtime.RequiredError('createCheckoutSessionMutation','Required parameter requestParameters.createCheckoutSessionMutation was null or undefined when calling playerStripeCheckoutSessionsCreate.');
+    async playerStripePaymentIntentsCreateRaw(requestParameters: PlayerStripePaymentIntentsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaymentIntent>> {
+        if (requestParameters.createPaymentIntentMutation === null || requestParameters.createPaymentIntentMutation === undefined) {
+            throw new runtime.RequiredError('createPaymentIntentMutation','Required parameter requestParameters.createPaymentIntentMutation was null or undefined when calling playerStripePaymentIntentsCreate.');
         }
 
         const queryParameters: any = {};
@@ -702,11 +702,11 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/player/stripe-checkout-sessions`,
+            path: `/player/stripe-payment-intents`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.createCheckoutSessionMutation,
+            body: requestParameters.createPaymentIntentMutation,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -714,8 +714,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerStripeCheckoutSessionsCreate(requestParameters: PlayerStripeCheckoutSessionsCreateRequest, initOverrides?: RequestInit): Promise<CheckoutSession> {
-        const response = await this.playerStripeCheckoutSessionsCreateRaw(requestParameters, initOverrides);
+    async playerStripePaymentIntentsCreate(requestParameters: PlayerStripePaymentIntentsCreateRequest, initOverrides?: RequestInit): Promise<PaymentIntent> {
+        const response = await this.playerStripePaymentIntentsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

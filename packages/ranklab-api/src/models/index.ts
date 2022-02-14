@@ -29,19 +29,6 @@ export interface BillingPortalLink {
 /**
  * 
  * @export
- * @interface CheckoutSession
- */
-export interface CheckoutSession {
-    /**
-     * 
-     * @type {string}
-     * @memberof CheckoutSession
-     */
-    url: string;
-}
-/**
- * 
- * @export
  * @interface Coach
  */
 export interface Coach {
@@ -172,25 +159,6 @@ export interface CreateBillingPortalSessionMutation {
 /**
  * 
  * @export
- * @interface CreateCheckoutSessionMutation
- */
-export interface CreateCheckoutSessionMutation {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateCheckoutSessionMutation
-     */
-    cancelUrl: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateCheckoutSessionMutation
-     */
-    successUrl: string;
-}
-/**
- * 
- * @export
  * @interface CreateCoachRequest
  */
 export interface CreateCoachRequest {
@@ -260,6 +228,25 @@ export interface CreateLoginLinkMutation {
      * 
      * @type {string}
      * @memberof CreateLoginLinkMutation
+     */
+    returnUrl: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreatePaymentIntentMutation
+ */
+export interface CreatePaymentIntentMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentIntentMutation
+     */
+    recordingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePaymentIntentMutation
      */
     returnUrl: string;
 }
@@ -392,6 +379,19 @@ export interface LoginLink {
 /**
  * 
  * @export
+ * @interface PaymentIntent
+ */
+export interface PaymentIntent {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentIntent
+     */
+    clientSecret: string;
+}
+/**
+ * 
+ * @export
  * @interface Player
  */
 export interface Player {
@@ -401,12 +401,6 @@ export interface Player {
      * @memberof Player
      */
     auth0Id: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Player
-     */
-    canCreateReviews: boolean;
     /**
      * 
      * @type {string}
@@ -699,12 +693,6 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     auth0Id: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserOneOf1
-     */
-    canCreateReviews: boolean;
     /**
      * 
      * @type {string}

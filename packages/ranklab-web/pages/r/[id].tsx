@@ -7,14 +7,17 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
-import { Game, Recording } from "@ranklab/api"
+import { Game, PaymentIntent, Recording } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 
 // ----------------------------------------------------------------------
 
 interface Props {
   games: Game[]
   recording: Recording
+  paymentIntent: PaymentIntent
 }
 
 const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
@@ -22,6 +25,15 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
 ) {
   const recordingId = useRequiredParam(ctx, "id")
   const games = await api.server(ctx).publicGamesList()
+  const scheme = ctx.req.socket.encrypted
+
+  const paymentIntent = await api.server(ctx).playerStripePaymentIntentsCreate({
+    createPaymentIntentMutation: {
+      recordingId,
+      returnUrl: ctx.req.headers.origin!,
+    },
+  })
+
   const recording = await api
     .server(ctx)
     .playerRecordingsGet({ id: recordingId })
@@ -30,6 +42,7 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
     props: {
       games,
       recording,
+      paymentIntent,
     },
   }
 }
@@ -38,7 +51,15 @@ export const getServerSideProps = withPageAuthRequired({
   getServerSideProps: getDashboardServerSideProps,
 })
 
-const NewReplayForm: FunctionComponent<Props> = ({ games, recording }) => {
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+)
+
+const NewReplayForm: FunctionComponent<Props> = ({
+  games,
+  recording,
+  paymentIntent,
+}) => {
   return (
     <DashboardLayout>
       <Page title="Dashboard | Submit VOD for Review">
@@ -49,7 +70,12 @@ const NewReplayForm: FunctionComponent<Props> = ({ games, recording }) => {
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <ReviewForm games={games} recording={recording} />
+              <Elements
+                stripe={stripePromise}
+                options={{ clientSecret: paymentIntent.clientSecret }}
+              >
+                <ReviewForm games={games} recording={recording} />
+              </Elements>
             </CardContent>
           </Card>
         </Container>

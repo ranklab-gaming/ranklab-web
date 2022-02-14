@@ -62,15 +62,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         },
       })
 
-      const checkoutSession =
-        await api.client.playerStripeCheckoutSessionsCreate({
-          createCheckoutSessionMutation: {
-            successUrl: `${window.origin}/dashboard`,
-            cancelUrl: `${window.origin}/dashboard`,
-          },
-        })
-
-      router.push(checkoutSession.url)
+      router.push("/dashboard")
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {
