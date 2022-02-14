@@ -25,12 +25,10 @@ const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
 ) {
   const recordingId = useRequiredParam(ctx, "id")
   const games = await api.server(ctx).publicGamesList()
-  const scheme = ctx.req.socket.encrypted
 
   const paymentIntent = await api.server(ctx).playerStripePaymentIntentsCreate({
     createPaymentIntentMutation: {
       recordingId,
-      returnUrl: ctx.req.headers.origin!,
     },
   })
 

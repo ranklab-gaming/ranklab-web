@@ -26,9 +26,11 @@ const getOnboardingServerSideProps: GetServerSideProps<Props> = async function (
   try {
     await api.server(ctx).userUsersGetMe()
 
-    ctx.res.writeHead(302, {
-      Location: "dashboard",
-    })
+    ctx.res
+      .writeHead(302, {
+        Location: "dashboard",
+      })
+      .end()
   } catch (err) {
     if (!(err instanceof Response && err.status === 400)) {
       throw err

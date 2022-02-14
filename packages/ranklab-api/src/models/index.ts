@@ -243,12 +243,6 @@ export interface CreatePaymentIntentMutation {
      * @memberof CreatePaymentIntentMutation
      */
     recordingId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePaymentIntentMutation
-     */
-    returnUrl: string;
 }
 /**
  * 
