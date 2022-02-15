@@ -23,7 +23,7 @@ import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
 import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
-import { CardElement } from "@stripe/react-stripe-js"
+import { PaymentElement } from "@stripe/react-stripe-js"
 
 export type FormValuesProps = {
   title: string
@@ -182,7 +182,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
               )}
             </div>
             <div>
-              <CardElement />
+              <PaymentElement />
             </div>
           </Stack>
         </Grid>

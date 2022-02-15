@@ -1,6 +1,12 @@
 import React, { FunctionComponent } from "react"
 // material
-import { Card, Container, CardContent, Typography } from "@mui/material"
+import {
+  Card,
+  Container,
+  CardContent,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
@@ -58,6 +64,8 @@ const NewReplayForm: FunctionComponent<Props> = ({
   recording,
   paymentIntent,
 }) => {
+  const theme = useTheme()
+
   return (
     <DashboardLayout>
       <Page title="Dashboard | Submit VOD for Review">
@@ -70,7 +78,29 @@ const NewReplayForm: FunctionComponent<Props> = ({
             <CardContent>
               <Elements
                 stripe={stripePromise}
-                options={{ clientSecret: paymentIntent.clientSecret }}
+                options={{
+                  clientSecret: paymentIntent.clientSecret,
+                  appearance: {
+                    theme: "night",
+                    variables: {
+                      colorPrimary: theme.palette.primary.main,
+                      colorBackground: theme.palette.background.paper,
+                      fontFamily: theme.typography.fontFamily,
+                    },
+                    rules: {
+                      ".Input": {
+                        boxShadow: "none",
+                        borderColor: theme.palette.divider,
+                      },
+
+                      ".Input:focus": {
+                        boxShadow: "none",
+                        outline: "none",
+                        borderColor: theme.palette.divider,
+                      },
+                    },
+                  },
+                }}
               >
                 <ReviewForm games={games} recording={recording} />
               </Elements>

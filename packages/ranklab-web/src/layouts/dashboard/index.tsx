@@ -44,7 +44,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { collapseClick } = useCollapseDrawer()
   const [open, setOpen] = useState(false)
   const [coach, setCoach] = useState<Coach | null>(null)
-  const [player, setPlayer] = useState<Player | null>(null)
 
   useEffect(() => {
     api.client
@@ -52,8 +51,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       .then((user: User) => {
         if (user.type === "Coach") {
           setCoach(user)
-        } else if (user.type === "Player") {
-          setPlayer(user)
         }
       })
       .catch((err: any) => {
@@ -69,8 +66,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     !coach?.stripeDetailsSubmitted && router.pathname !== "/onboarding"
   const showWaitingForStripeApproval =
     !coach?.canReview && router.pathname !== "/onboarding"
-  const showPaymentMethodUnavailable =
-    !player?.canCreateReviews && router.pathname !== "/onboarding"
 
   return (
     <RootStyle>
@@ -103,11 +98,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <p>Waiting for approval from Stripe</p>
             )
           ))}
-        {player && showPaymentMethodUnavailable && (
-          <>
-            <p>You have not added a default payment method</p>
-          </>
-        )}
         {children}
       </MainStyle>
     </RootStyle>
