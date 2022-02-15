@@ -95,7 +95,6 @@ const NewReplayForm: FunctionComponent<Props> = ({
 
                       ".Input:focus": {
                         boxShadow: "none",
-                        outline: "none",
                         borderColor: theme.palette.divider,
                       },
                     },
