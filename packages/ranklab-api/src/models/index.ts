@@ -285,37 +285,6 @@ export interface CreateRecordingRequest {
 /**
  * 
  * @export
- * @interface CreateReviewRequest
- */
-export interface CreateReviewRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateReviewRequest
-     */
-    gameId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateReviewRequest
-     */
-    notes: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateReviewRequest
-     */
-    recordingId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateReviewRequest
-     */
-    title: string;
-}
-/**
- * 
- * @export
  * @interface Game
  */
 export interface Game {
@@ -561,6 +530,31 @@ export interface UpdateCommentRequest {
      * @memberof UpdateCommentRequest
      */
     drawing: string;
+}
+/**
+ * 
+ * @export
+ * @interface UpdatePaymentIntentMutation
+ */
+export interface UpdatePaymentIntentMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentIntentMutation
+     */
+    gameId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentIntentMutation
+     */
+    notes: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatePaymentIntentMutation
+     */
+    title: string;
 }
 /**
  * 

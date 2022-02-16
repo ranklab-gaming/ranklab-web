@@ -18,12 +18,11 @@ import { Controller, useForm } from "react-hook-form"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api"
-import { useRouter } from "next/router"
 import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
 import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
-import { PaymentElement } from "@stripe/react-stripe-js"
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
 export type FormValuesProps = {
   title: string
@@ -59,22 +58,36 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
     defaultValues,
   })
 
-  const router = useRouter()
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [errorMessage, setErrorMessage] = useState("")
+  const stripe = useStripe()
+  const elements = useElements()
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await api.client.playerReviewsCreate({
-        createReviewRequest: {
+      await api.client.playerPaymentIntentsUpdate({
+        paymentIntentMutation: {
           gameId: data.gameId,
-          recordingId: recording.id,
           title: data.title,
           notes: data.notes,
         },
+        recordingId: recording.id,
       })
 
-      router.push("/dashboard")
+      if (!stripe || !elements) {
+        return
+      }
+
+      const result = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/dashboard`,
+        },
+      })
+
+      if (result.error) {
+        return setErrorMessage(result.error.message!)
+      }
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {
