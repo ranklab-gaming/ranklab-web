@@ -24,17 +24,15 @@ import {
     CreateCoachRequest,
     CreateCommentRequest,
     CreateLoginLinkMutation,
-    CreatePaymentIntentMutation,
     CreatePlayerRequest,
     CreateRecordingRequest,
+    CreateReviewMutation,
     Game,
     LoginLink,
-    PaymentIntent,
     Player,
     Recording,
     Review,
     UpdateCommentRequest,
-    UpdatePaymentIntentMutation,
     UpdateReviewRequest,
     User,
 } from '../models';
@@ -97,21 +95,21 @@ export interface PlayerRecordingsGetRequest {
     id: string;
 }
 
+export interface PlayerReviewsCreateRequest {
+    createReviewMutation: CreateReviewMutation;
+}
+
 export interface PlayerReviewsGetRequest {
     id: string;
 }
 
+export interface PlayerReviewsUpdateRequest {
+    id: string;
+    updateReviewRequest: UpdateReviewRequest;
+}
+
 export interface PlayerStripeBillingPortalSessionsCreateRequest {
     createBillingPortalSessionMutation: CreateBillingPortalSessionMutation;
-}
-
-export interface PlayerStripePaymentIntentsCreateRequest {
-    createPaymentIntentMutation: CreatePaymentIntentMutation;
-}
-
-export interface PlayerStripePaymentIntentsUpdateRequest {
-    recordingId: string;
-    updatePaymentIntentMutation: UpdatePaymentIntentMutation;
 }
 
 /**
@@ -577,6 +575,37 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
+    async playerReviewsCreateRaw(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+        if (requestParameters.createReviewMutation === null || requestParameters.createReviewMutation === undefined) {
+            throw new runtime.RequiredError('createReviewMutation','Required parameter requestParameters.createReviewMutation was null or undefined when calling playerReviewsCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/reviews`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createReviewMutation,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerReviewsCreate(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit): Promise<Review> {
+        const response = await this.playerReviewsCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async playerReviewsGetRaw(requestParameters: PlayerReviewsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsGet.');
@@ -629,6 +658,41 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
+    async playerReviewsUpdateRaw(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsUpdate.');
+        }
+
+        if (requestParameters.updateReviewRequest === null || requestParameters.updateReviewRequest === undefined) {
+            throw new runtime.RequiredError('updateReviewRequest','Required parameter requestParameters.updateReviewRequest was null or undefined when calling playerReviewsUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/reviews/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updateReviewRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerReviewsUpdate(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit): Promise<Review> {
+        const response = await this.playerReviewsUpdateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async playerStripeBillingPortalSessionsCreateRaw(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<BillingPortalLink>> {
         if (requestParameters.createBillingPortalSessionMutation === null || requestParameters.createBillingPortalSessionMutation === undefined) {
             throw new runtime.RequiredError('createBillingPortalSessionMutation','Required parameter requestParameters.createBillingPortalSessionMutation was null or undefined when calling playerStripeBillingPortalSessionsCreate.');
@@ -655,72 +719,6 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerStripeBillingPortalSessionsCreate(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<BillingPortalLink> {
         const response = await this.playerStripeBillingPortalSessionsCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async playerStripePaymentIntentsCreateRaw(requestParameters: PlayerStripePaymentIntentsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaymentIntent>> {
-        if (requestParameters.createPaymentIntentMutation === null || requestParameters.createPaymentIntentMutation === undefined) {
-            throw new runtime.RequiredError('createPaymentIntentMutation','Required parameter requestParameters.createPaymentIntentMutation was null or undefined when calling playerStripePaymentIntentsCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/player/stripe-payment-intents`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.createPaymentIntentMutation,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response);
-    }
-
-    /**
-     */
-    async playerStripePaymentIntentsCreate(requestParameters: PlayerStripePaymentIntentsCreateRequest, initOverrides?: RequestInit): Promise<PaymentIntent> {
-        const response = await this.playerStripePaymentIntentsCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async playerStripePaymentIntentsUpdateRaw(requestParameters: PlayerStripePaymentIntentsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaymentIntent>> {
-        if (requestParameters.recordingId === null || requestParameters.recordingId === undefined) {
-            throw new runtime.RequiredError('recordingId','Required parameter requestParameters.recordingId was null or undefined when calling playerStripePaymentIntentsUpdate.');
-        }
-
-        if (requestParameters.updatePaymentIntentMutation === null || requestParameters.updatePaymentIntentMutation === undefined) {
-            throw new runtime.RequiredError('updatePaymentIntentMutation','Required parameter requestParameters.updatePaymentIntentMutation was null or undefined when calling playerStripePaymentIntentsUpdate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/player/stripe-payment-intents/{recording_id}`.replace(`{${"recording_id"}}`, encodeURIComponent(String(requestParameters.recordingId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.updatePaymentIntentMutation,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response);
-    }
-
-    /**
-     */
-    async playerStripePaymentIntentsUpdate(requestParameters: PlayerStripePaymentIntentsUpdateRequest, initOverrides?: RequestInit): Promise<PaymentIntent> {
-        const response = await this.playerStripePaymentIntentsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

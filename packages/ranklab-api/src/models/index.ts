@@ -234,19 +234,6 @@ export interface CreateLoginLinkMutation {
 /**
  * 
  * @export
- * @interface CreatePaymentIntentMutation
- */
-export interface CreatePaymentIntentMutation {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreatePaymentIntentMutation
-     */
-    recordingId: string;
-}
-/**
- * 
- * @export
  * @interface CreatePlayerRequest
  */
 export interface CreatePlayerRequest {
@@ -281,6 +268,37 @@ export interface CreateRecordingRequest {
      * @memberof CreateRecordingRequest
      */
     size: number;
+}
+/**
+ * 
+ * @export
+ * @interface CreateReviewMutation
+ */
+export interface CreateReviewMutation {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    gameId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    notes: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    recordingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    title: string;
 }
 /**
  * 
@@ -338,19 +356,6 @@ export interface LoginLink {
      * @memberof LoginLink
      */
     url: string;
-}
-/**
- * 
- * @export
- * @interface PaymentIntent
- */
-export interface PaymentIntent {
-    /**
-     * 
-     * @type {string}
-     * @memberof PaymentIntent
-     */
-    clientSecret: string;
 }
 /**
  * 
@@ -470,12 +475,6 @@ export interface Review {
     playerId: string;
     /**
      * 
-     * @type {boolean}
-     * @memberof Review
-     */
-    published: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof Review
      */
@@ -488,10 +487,29 @@ export interface Review {
     skillLevel: number;
     /**
      * 
+     * @type {ReviewState}
+     * @memberof Review
+     */
+    state: ReviewState;
+    /**
+     * 
      * @type {string}
      * @memberof Review
      */
     title: string;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+export enum ReviewState {
+    AwaitingPayment = 'AwaitingPayment',
+    AwaitingReview = 'AwaitingReview',
+    Draft = 'Draft',
+    Published = 'Published',
+    Accepted = 'Accepted',
+    Refunded = 'Refunded'
 }
 /**
  * 
@@ -530,31 +548,6 @@ export interface UpdateCommentRequest {
      * @memberof UpdateCommentRequest
      */
     drawing: string;
-}
-/**
- * 
- * @export
- * @interface UpdatePaymentIntentMutation
- */
-export interface UpdatePaymentIntentMutation {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdatePaymentIntentMutation
-     */
-    gameId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdatePaymentIntentMutation
-     */
-    notes: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdatePaymentIntentMutation
-     */
-    title: string;
 }
 /**
  * 
