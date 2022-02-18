@@ -7,23 +7,55 @@ import {
   TableRow,
   TableBody,
 } from "@mui/material"
-import { Game, Review } from "@ranklab/api"
+import { Game, Review, ReviewState } from "@ranklab/api"
 import React, { FunctionComponent } from "react"
 import Label from "./Label"
 import NextLink from "next/link"
 
-const Status: FunctionComponent<{ underReview: boolean }> = function ({
-  underReview,
+const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
+  reviewState,
 }) {
+  const color = (() => {
+    switch (reviewState) {
+      case ReviewState.AwaitingPayment:
+        return "warning"
+      case ReviewState.AwaitingReview:
+        return "info"
+      case ReviewState.Draft:
+        return "info"
+      case ReviewState.Published:
+        return "success"
+      case ReviewState.Accepted:
+        return "success"
+      case ReviewState.Refunded:
+        return "error"
+    }
+  })()
+
+  const label = (() => {
+    switch (reviewState) {
+      case ReviewState.AwaitingPayment:
+        return "Awaiting Payment"
+      case ReviewState.AwaitingReview:
+        return "In Queue for Review"
+      case ReviewState.Draft:
+        return "Under Review"
+      case ReviewState.Published:
+        return "Reviewed"
+      case ReviewState.Accepted:
+        return "Accepted"
+      case ReviewState.Refunded:
+        return "Refunded"
+    }
+  })()
+
   return (
     <Label
       variant="filled"
-      color={
-        (underReview && "warning") || (!underReview && "info") || "success"
-      }
+      color={color}
       sx={{ textTransform: "capitalize", mx: "auto" }}
     >
-      {underReview ? "Under Review" : "In Queue for Review"}
+      {label}
     </Label>
   )
 }
@@ -65,7 +97,7 @@ const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
                   {games.find((game) => game.id === review.gameId)!.name}
                 </TableCell>
                 <TableCell align="right">
-                  <Status underReview={Boolean(review.coachId)} />
+                  <Status reviewState={review.state} />
                 </TableCell>
               </TableRow>
             </NextLink>
