@@ -496,6 +496,12 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
+    stripeClientSecret?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
     title: string;
 }
 /**
