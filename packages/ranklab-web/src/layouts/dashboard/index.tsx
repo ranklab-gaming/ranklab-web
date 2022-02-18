@@ -7,7 +7,7 @@ import DashboardNavbar from "./DashboardNavbar"
 import DashboardSidebar from "./DashboardSidebar"
 import { useRouter } from "next/router"
 import api from "@ranklab/web/src/api"
-import { Coach, User, Player } from "@ranklab/api"
+import { Coach, User } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 

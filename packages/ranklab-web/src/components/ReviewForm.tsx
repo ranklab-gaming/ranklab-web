@@ -22,7 +22,6 @@ import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
 import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
-import { PaymentElement } from "@stripe/react-stripe-js"
 import { useRouter } from "next/router"
 
 export type FormValuesProps = {
@@ -180,9 +179,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
                   {errors.notes?.message}
                 </FormHelperText>
               )}
-            </div>
-            <div>
-              <PaymentElement />
             </div>
           </Stack>
         </Grid>

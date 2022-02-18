@@ -14,6 +14,7 @@ import {
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
+import ReviewCheckout from "./ReviewCheckout"
 
 interface Props {
   review: Review
@@ -48,29 +49,14 @@ const ReviewShow: FunctionComponent<Props> = ({
 
   const theme = useTheme()
 
+  const clientSecret = review.stripeClientSecret
+
   const stripePromise =
     review.state === ReviewState.AwaitingPayment &&
-    review.stripeClientSecret !== null &&
+    clientSecret !== null &&
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
-  // const stripe = useStripe()
-  // const elements = useElements()
-  // if (!stripe || !elements) {
-  //   return
-  // }
-
-  // const result = await stripe.confirmPayment({
-  //   elements,
-  //   confirmParams: {
-  //     return_url: `${window.location.origin}/dashboard`,
-  //   },
-  // })
-
-  // if (result.error) {
-  //   return setErrorMessage(result.error.message!)
-  // }
-
-  const reviewShow = (
+  return (
     <div>
       <Stack spacing={2}>
         <Grid container spacing={2}>
@@ -89,8 +75,37 @@ const ReviewShow: FunctionComponent<Props> = ({
                   comment && goToComment(comment)
                 }}
               />
-              | | x |
             </Box>
+
+            {stripePromise && (
+              <Elements
+                stripe={stripePromise}
+                options={{
+                  clientSecret: clientSecret,
+                  appearance: {
+                    theme: "night",
+                    variables: {
+                      colorPrimary: theme.palette.primary.main,
+                      colorBackground: theme.palette.background.paper,
+                      fontFamily: theme.typography.fontFamily,
+                    },
+                    rules: {
+                      ".Input": {
+                        boxShadow: "none",
+                        borderColor: theme.palette.divider,
+                      },
+
+                      ".Input:focus": {
+                        boxShadow: "none",
+                        borderColor: theme.palette.divider,
+                      },
+                    },
+                  },
+                }}
+              >
+                <ReviewCheckout />
+              </Elements>
+            )}
           </Grid>
 
           <Grid item xs={12} md={4}>
@@ -131,38 +146,6 @@ const ReviewShow: FunctionComponent<Props> = ({
         </Grid>
       </Stack>
     </div>
-  )
-
-  return stripePromise ? (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        clientSecret: review.stripeClientSecret,
-        appearance: {
-          theme: "night",
-          variables: {
-            colorPrimary: theme.palette.primary.main,
-            colorBackground: theme.palette.background.paper,
-            fontFamily: theme.typography.fontFamily,
-          },
-          rules: {
-            ".Input": {
-              boxShadow: "none",
-              borderColor: theme.palette.divider,
-            },
-
-            ".Input:focus": {
-              boxShadow: "none",
-              borderColor: theme.palette.divider,
-            },
-          },
-        },
-      }}
-    >
-      {reviewShow}
-    </Elements>
-  ) : (
-    reviewShow
   )
 }
 

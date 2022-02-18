@@ -69,7 +69,7 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({
       <Page title="Dashboard | Analyze VOD">
         <Container maxWidth="xl">
           <Typography variant="h3" component="h1" paragraph>
-            Analyze VOD
+            {userType === "Coach" ? "Analyze VOD" : review.title}
           </Typography>
 
           <Card sx={{ position: "static" }}>
