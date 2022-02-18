@@ -84,6 +84,25 @@ export interface Coach {
 /**
  * 
  * @export
+ * @interface CoachUpdateReviewRequest
+ */
+export interface CoachUpdateReviewRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoachUpdateReviewRequest
+     */
+    published?: boolean | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoachUpdateReviewRequest
+     */
+    taken?: boolean | null;
+}
+/**
+ * 
+ * @export
  * @interface Comment
  */
 export interface Comment {
@@ -397,6 +416,19 @@ export interface Player {
 /**
  * 
  * @export
+ * @interface PlayerUpdateReviewRequest
+ */
+export interface PlayerUpdateReviewRequest {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PlayerUpdateReviewRequest
+     */
+    accepted: boolean;
+}
+/**
+ * 
+ * @export
  * @interface Recording
  */
 export interface Recording {
@@ -554,25 +586,6 @@ export interface UpdateCommentRequest {
      * @memberof UpdateCommentRequest
      */
     drawing: string;
-}
-/**
- * 
- * @export
- * @interface UpdateReviewRequest
- */
-export interface UpdateReviewRequest {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateReviewRequest
-     */
-    published?: boolean | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UpdateReviewRequest
-     */
-    taken?: boolean | null;
 }
 /**
  * @type User

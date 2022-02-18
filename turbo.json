@@ -1,26 +1,15 @@
 {
   "pipeline": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "@ranklab/web#build": {
-      "dependsOn": [
-        "^build",
-        "@ranklab/api#build"
-      ],
-      "outputs": [
-        ".next/**"
-      ]
+      "dependsOn": ["^build", "@ranklab/api#build"],
+      "outputs": [".next/**"]
     },
     "test": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "cache": false
     },
     "dev": {
@@ -30,6 +19,7 @@
   "globalDependencies": [
     "$NEXT_PUBLIC_CDN_URL",
     "$NEXT_PUBLIC_SENTRY_DSN",
+    "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
     "tsconfig.json",
     ".env.*"
   ]

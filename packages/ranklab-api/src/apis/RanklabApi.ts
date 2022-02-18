@@ -18,6 +18,7 @@ import {
     AccountLink,
     BillingPortalLink,
     Coach,
+    CoachUpdateReviewRequest,
     Comment,
     CreateAccountLinkMutation,
     CreateBillingPortalSessionMutation,
@@ -30,10 +31,10 @@ import {
     Game,
     LoginLink,
     Player,
+    PlayerUpdateReviewRequest,
     Recording,
     Review,
     UpdateCommentRequest,
-    UpdateReviewRequest,
     User,
 } from '../models';
 
@@ -72,7 +73,7 @@ export interface CoachReviewsListRequest {
 
 export interface CoachReviewsUpdateRequest {
     id: string;
-    updateReviewRequest: UpdateReviewRequest;
+    coachUpdateReviewRequest: CoachUpdateReviewRequest;
 }
 
 export interface CoachStripeAccountLinksCreateRequest {
@@ -105,7 +106,7 @@ export interface PlayerReviewsGetRequest {
 
 export interface PlayerReviewsUpdateRequest {
     id: string;
-    updateReviewRequest: UpdateReviewRequest;
+    playerUpdateReviewRequest: PlayerUpdateReviewRequest;
 }
 
 export interface PlayerStripeBillingPortalSessionsCreateRequest {
@@ -392,8 +393,8 @@ export class RanklabApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachReviewsUpdate.');
         }
 
-        if (requestParameters.updateReviewRequest === null || requestParameters.updateReviewRequest === undefined) {
-            throw new runtime.RequiredError('updateReviewRequest','Required parameter requestParameters.updateReviewRequest was null or undefined when calling coachReviewsUpdate.');
+        if (requestParameters.coachUpdateReviewRequest === null || requestParameters.coachUpdateReviewRequest === undefined) {
+            throw new runtime.RequiredError('coachUpdateReviewRequest','Required parameter requestParameters.coachUpdateReviewRequest was null or undefined when calling coachReviewsUpdate.');
         }
 
         const queryParameters: any = {};
@@ -407,7 +408,7 @@ export class RanklabApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.updateReviewRequest,
+            body: requestParameters.coachUpdateReviewRequest,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -663,8 +664,8 @@ export class RanklabApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsUpdate.');
         }
 
-        if (requestParameters.updateReviewRequest === null || requestParameters.updateReviewRequest === undefined) {
-            throw new runtime.RequiredError('updateReviewRequest','Required parameter requestParameters.updateReviewRequest was null or undefined when calling playerReviewsUpdate.');
+        if (requestParameters.playerUpdateReviewRequest === null || requestParameters.playerUpdateReviewRequest === undefined) {
+            throw new runtime.RequiredError('playerUpdateReviewRequest','Required parameter requestParameters.playerUpdateReviewRequest was null or undefined when calling playerReviewsUpdate.');
         }
 
         const queryParameters: any = {};
@@ -678,7 +679,7 @@ export class RanklabApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.updateReviewRequest,
+            body: requestParameters.playerUpdateReviewRequest,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);

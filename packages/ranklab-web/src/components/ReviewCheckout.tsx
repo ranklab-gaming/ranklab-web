@@ -1,4 +1,5 @@
 import { LoadingButton } from "@mui/lab"
+import { Typography } from "@mui/material"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { FunctionComponent, useState } from "react"
 
@@ -7,10 +8,17 @@ interface ReviewCheckoutProps {}
 const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = () => {
   const stripe = useStripe()
   const elements = useElements()
-  const [isAccepting, setIsAccepting] = useState(false)
+  const [isPaying, setIsPaying] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   return (
     <div>
+      {errorMessage && (
+        <Typography variant="body1" color="error">
+          {errorMessage}
+        </Typography>
+      )}
+
       <PaymentElement />
 
       <LoadingButton
@@ -19,30 +27,30 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = () => {
         size="large"
         type="button"
         variant="contained"
-        loading={isAccepting}
-        disabled={isAccepting}
+        loading={isPaying}
+        disabled={isPaying}
         onClick={async () => {
-          setIsAccepting(true)
+          setIsPaying(true)
 
           if (!stripe || !elements) {
             return
           }
 
-          await stripe.confirmPayment({
+          const result = await stripe.confirmPayment({
             elements,
             confirmParams: {
-              return_url: `${window.location.origin}/dashboard`,
+              return_url: window.location.href,
             },
           })
 
-          // if (result.error) {
-          //   return setErrorMessage(result.error.message!)
-          // }
+          if (result.error) {
+            setErrorMessage(result.error.message!)
+          }
 
-          setIsAccepting(false)
+          setIsPaying(false)
         }}
       >
-        Accept Review
+        Pay
       </LoadingButton>
     </div>
   )

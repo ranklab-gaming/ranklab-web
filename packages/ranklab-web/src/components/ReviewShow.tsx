@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef } from "react"
+import React, { FunctionComponent, useRef, useState } from "react"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import {
@@ -15,6 +15,8 @@ import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
 import ReviewCheckout from "./ReviewCheckout"
+import api from "@ranklab/web/src/api"
+import { LoadingButton } from "@mui/lab"
 
 interface Props {
   review: Review
@@ -55,6 +57,8 @@ const ReviewShow: FunctionComponent<Props> = ({
     review.state === ReviewState.AwaitingPayment &&
     clientSecret !== null &&
     loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+
+  const [isAccepting, setIsAccepting] = useState(false)
 
   return (
     <div>
@@ -105,6 +109,36 @@ const ReviewShow: FunctionComponent<Props> = ({
               >
                 <ReviewCheckout />
               </Elements>
+            )}
+
+            {review.state === ReviewState.Published && (
+              <LoadingButton
+                fullWidth
+                color="info"
+                size="large"
+                type="button"
+                variant="contained"
+                loading={isAccepting}
+                disabled={isAccepting}
+                onClick={async () => {
+                  setIsAccepting(true)
+
+                  await api.client.playerReviewsUpdate({
+                    id: review.id,
+                    playerUpdateReviewRequest: {
+                      accepted: true,
+                    },
+                  })
+
+                  setIsAccepting(false)
+                }}
+              >
+                Accept
+              </LoadingButton>
+            )}
+
+            {review.state === ReviewState.Accepted && (
+              <Typography variant="h6">Review accepted!</Typography>
             )}
           </Grid>
 

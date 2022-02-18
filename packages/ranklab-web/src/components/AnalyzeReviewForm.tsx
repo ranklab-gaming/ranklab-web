@@ -15,7 +15,7 @@ import CreateIcon from "@mui/icons-material/Create"
 import { LoadingButton } from "@mui/lab"
 import { DraftEditor } from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
-import { Review, Comment, Recording } from "@ranklab/api"
+import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import api from "src/api"
 import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
@@ -42,7 +42,7 @@ function formatTimestamp(secs: number) {
 }
 
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
-  review,
+  review: propReview,
   comments: fetchedComments,
   recording,
 }) => {
@@ -59,6 +59,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [currentForm, setCurrentForm] = useState(initialForm)
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
   const [isUpdating, setIsUpdating] = useState(false)
+  const [review, setReview] = useState(propReview)
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
@@ -207,54 +208,62 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 </>
               ) : (
                 <>
-                  <LoadingButton
-                    fullWidth
-                    color="info"
-                    size="large"
-                    type="button"
-                    variant="contained"
-                    loading={isUpdating}
-                    disabled={isUpdating}
-                    onClick={async () => {
-                      setIsUpdating(true)
+                  {review.state === ReviewState.AwaitingReview && (
+                    <LoadingButton
+                      fullWidth
+                      color="info"
+                      size="large"
+                      type="button"
+                      variant="contained"
+                      loading={isUpdating}
+                      disabled={isUpdating}
+                      onClick={async () => {
+                        setIsUpdating(true)
 
-                      await api.client.coachReviewsUpdate({
-                        id: review.id,
-                        updateReviewRequest: {
-                          taken: true,
-                          published: null,
-                        },
-                      })
+                        const updatedReview =
+                          await api.client.coachReviewsUpdate({
+                            id: review.id,
+                            coachUpdateReviewRequest: {
+                              taken: true,
+                              published: null,
+                            },
+                          })
 
-                      setIsUpdating(false)
-                    }}
-                  >
-                    Take Review
-                  </LoadingButton>
-                  <LoadingButton
-                    fullWidth
-                    color="info"
-                    size="large"
-                    type="button"
-                    variant="contained"
-                    loading={isUpdating}
-                    disabled={isUpdating}
-                    onClick={async () => {
-                      setIsUpdating(true)
+                        setReview(updatedReview)
+                        setIsUpdating(false)
+                      }}
+                    >
+                      Take Review
+                    </LoadingButton>
+                  )}
+                  {review.state === ReviewState.Draft && (
+                    <LoadingButton
+                      fullWidth
+                      color="info"
+                      size="large"
+                      type="button"
+                      variant="contained"
+                      loading={isUpdating}
+                      disabled={isUpdating}
+                      onClick={async () => {
+                        setIsUpdating(true)
 
-                      await api.client.coachReviewsUpdate({
-                        id: review.id,
-                        updateReviewRequest: {
-                          taken: null,
-                          published: true,
-                        },
-                      })
+                        const updatedReview =
+                          await api.client.coachReviewsUpdate({
+                            id: review.id,
+                            coachUpdateReviewRequest: {
+                              taken: null,
+                              published: true,
+                            },
+                          })
 
-                      setIsUpdating(false)
-                    }}
-                  >
-                    Publish Review
-                  </LoadingButton>
+                        setReview(updatedReview)
+                        setIsUpdating(false)
+                      }}
+                    >
+                      Publish Review
+                    </LoadingButton>
+                  )}
                   {sortedComments.map((comment) => (
                     <Card sx={{ position: "static" }} key={comment.id}>
                       <CardContent>
