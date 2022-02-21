@@ -379,6 +379,31 @@ export interface LoginLink {
 /**
  * 
  * @export
+ * @interface PaymentMethod
+ */
+export interface PaymentMethod {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentMethod
+     */
+    brand: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentMethod
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentMethod
+     */
+    last4: string;
+}
+/**
+ * 
+ * @export
  * @interface Player
  */
 export interface Player {

@@ -11,7 +11,13 @@ import {
   CardContent,
   useTheme,
 } from "@mui/material"
-import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
+import {
+  Review,
+  Comment,
+  Recording,
+  ReviewState,
+  PaymentMethod,
+} from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
 import ReviewCheckout from "./ReviewCheckout"
@@ -22,6 +28,7 @@ interface Props {
   review: Review
   comments: Comment[]
   recording: Recording
+  paymentMethods?: PaymentMethod[]
 }
 
 function formatTimestamp(secs: number) {
@@ -37,6 +44,7 @@ const ReviewShow: FunctionComponent<Props> = ({
   review,
   comments,
   recording,
+  paymentMethods,
 }) => {
   const playerRef = useRef<VideoPlayerRef>(null)
 
@@ -107,7 +115,10 @@ const ReviewShow: FunctionComponent<Props> = ({
                   },
                 }}
               >
-                <ReviewCheckout />
+                <ReviewCheckout
+                  paymentMethods={paymentMethods!}
+                  clientSecret={clientSecret!}
+                />
               </Elements>
             )}
 

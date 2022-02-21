@@ -6,7 +6,14 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
-import { Review, Comment, Recording, User } from "@ranklab/api"
+import {
+  Review,
+  Comment,
+  Recording,
+  User,
+  ReviewState,
+  PaymentMethod,
+} from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
@@ -18,6 +25,7 @@ interface Props {
   comments: Comment[]
   recording: Recording
   userType: User["type"]
+  paymentMethods?: PaymentMethod[]
 }
 
 const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
@@ -29,6 +37,7 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   let review
   let comments
   let recording
+  let paymentMethods
 
   if (user.type === "Player") {
     review = await api.server(ctx).playerReviewsGet({ id })
@@ -36,6 +45,10 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
     recording = await api.server(ctx).playerRecordingsGet({
       id: review.recordingId,
     })
+
+    if (review.state === ReviewState.AwaitingPayment) {
+      paymentMethods = await api.server(ctx).playerStripePaymentMethodsList()
+    }
   } else {
     review = await api.server(ctx).coachReviewsGet({ id })
     comments = await api.server(ctx).coachCommentsList({ reviewId: review.id })
@@ -50,6 +63,7 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
       comments,
       recording,
       userType: user.type,
+      paymentMethods,
     },
   }
 }
@@ -63,6 +77,7 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({
   comments,
   recording,
   userType,
+  paymentMethods,
 }) => {
   return (
     <DashboardLayout>
@@ -85,6 +100,7 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({
                   review={review}
                   comments={comments}
                   recording={recording}
+                  paymentMethods={paymentMethods}
                 ></ReviewShow>
               )}
             </CardContent>

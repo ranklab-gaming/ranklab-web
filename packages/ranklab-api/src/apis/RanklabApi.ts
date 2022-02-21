@@ -30,6 +30,7 @@ import {
     CreateReviewMutation,
     Game,
     LoginLink,
+    PaymentMethod,
     Player,
     PlayerUpdateReviewRequest,
     Recording,
@@ -720,6 +721,30 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerStripeBillingPortalSessionsCreate(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<BillingPortalLink> {
         const response = await this.playerStripeBillingPortalSessionsCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerStripePaymentMethodsListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<PaymentMethod>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/stripe-payment-methods`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerStripePaymentMethodsList(initOverrides?: RequestInit): Promise<Array<PaymentMethod>> {
+        const response = await this.playerStripePaymentMethodsListRaw(initOverrides);
         return await response.value();
     }
 
