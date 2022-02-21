@@ -28,7 +28,7 @@ interface Props {
   review: Review
   comments: Comment[]
   recording: Recording
-  paymentMethods?: PaymentMethod[]
+  paymentMethods: PaymentMethod[] | null
 }
 
 function formatTimestamp(secs: number) {

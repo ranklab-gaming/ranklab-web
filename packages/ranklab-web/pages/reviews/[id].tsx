@@ -25,7 +25,7 @@ interface Props {
   comments: Comment[]
   recording: Recording
   userType: User["type"]
-  paymentMethods?: PaymentMethod[]
+  paymentMethods: PaymentMethod[] | null
 }
 
 const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
@@ -37,7 +37,7 @@ const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
   let review
   let comments
   let recording
-  let paymentMethods
+  let paymentMethods = null
 
   if (user.type === "Player") {
     review = await api.server(ctx).playerReviewsGet({ id })
