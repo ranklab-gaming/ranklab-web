@@ -81,7 +81,7 @@ jobs:
           password: ${{ secrets.GHCR_PASSWORD }}
     steps:
       - name: Download the project folder
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ranklab-web.tar.gz
       - run: tar -xzf ranklab-web.tar.gz
