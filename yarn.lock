@@ -364,10 +364,10 @@
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.8.8.tgz#17cf806485435877fdafce9f3bee6ff68f7f87b6"
   integrity sha512-meAEDur1IJBfKyTo9yPYAuzjIfrxA7m9Ov+1nxaW/YupsqMeseWifoUjWK03+hz/RJizsVQAaUjVxFEkyu0GWg==
 
-"@iconify/icons-eva@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-eva/-/icons-eva-1.2.1.tgz#18e90e29fb5bdf35ad3e064e5d15bcc1bbb7686e"
-  integrity sha512-meKGFt+KmHxjz9baAqlxyvxjpDIValYm7t4Ejnshtik5qxqgldvX6PwMEp11UiDISOagtKirQKMDByXia2+EEA==
+"@iconify/icons-eva@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-eva/-/icons-eva-1.2.2.tgz#b3a05683139a81cbec037f60eebd3557ddd8fad4"
+  integrity sha512-CuFfVk+gCGjbrLARBLsZDiIZ8n2BSqwrErjlL4ffc2ife6yB5Tx4ad5NffwgsoPHKFA1jQ9NCp9yIkLP5qVYaw==
   dependencies:
     "@iconify/types" "^1.0.12"
 
