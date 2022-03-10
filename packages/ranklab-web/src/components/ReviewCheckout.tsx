@@ -56,7 +56,7 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
       return
     }
 
-    if (data.paymentMethodId) {
+    if (data.paymentMethodId !== EMPTY_PAYMENT_METHOD) {
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: data.paymentMethodId,
       })
