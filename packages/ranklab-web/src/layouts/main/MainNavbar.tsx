@@ -89,12 +89,8 @@ export default function MainNavbar() {
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 
-          <NextLink href="/api/auth/login?returnTo=/onboarding&user_type=Player">
-            <Button variant="contained">I'm a Player</Button>
-          </NextLink>
-
-          <NextLink href="/api/auth/login?returnTo=/onboarding&user_type=Coach">
-            <Button variant="contained">I'm a Coach</Button>
+          <NextLink href="/login">
+            <Button variant="contained">Sign in / Sign up</Button>
           </NextLink>
         </Container>
       </ToolbarStyle>
