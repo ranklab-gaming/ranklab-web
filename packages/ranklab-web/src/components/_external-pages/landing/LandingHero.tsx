@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 // material
-import { styled } from "@mui/material/styles"
-import { Box, Stack, Container, Typography } from "@mui/material"
+import { styled, useTheme } from "@mui/material/styles"
+import { Box, Stack, Container, Typography, Button } from "@mui/material"
 //
 import {
   varFadeIn,
@@ -9,6 +9,7 @@ import {
   varWrapEnter,
   varFadeInRight,
 } from "../../animate"
+import Link from "next/link"
 
 // ----------------------------------------------------------------------
 
@@ -68,6 +69,8 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LandingHero() {
+  const theme = useTheme()
+
   return (
     <>
       <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
@@ -104,6 +107,14 @@ export default function LandingHero() {
                 Get your gameplay analyzed by experienced coaches quickly and
                 without fuss.
               </Typography>
+            </motion.div>
+
+            <motion.div variants={varFadeInRight}>
+              <Link href="/sign-up" passHref>
+                <Button size="large" variant="contained" color="secondary">
+                  Get Started
+                </Button>
+              </Link>
             </motion.div>
           </ContentStyle>
         </Container>
