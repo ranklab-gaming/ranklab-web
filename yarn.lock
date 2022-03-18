@@ -370,10 +370,10 @@
   dependencies:
     "@iconify/types" "^1.0.12"
 
-"@iconify/icons-ic@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.2.2.tgz#6319c2d38ffb2884c2d869447faba1e0c60dc411"
-  integrity sha512-7T0i68XWlaXmI5DNSKnHEUNlng2+S0nv+HvcJLcFEX/WIcp6bHRNGn6WLZT+RbmNOw1Q4+q9cyGJVqUR0a3ANg==
+"@iconify/icons-ic@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.2.3.tgz#d61feb2ad77fefa537c194a39f59b92ea14a7e27"
+  integrity sha512-r7I5HsMQrqj3pe4PVqtaU48meYbIxxccHqq9BxIjKhKOdA4YOpi5wbiUk0vq1iijPdUM60zl1vWBzkSLsK7H3g==
   dependencies:
     "@iconify/types" "^1.0.12"
 
