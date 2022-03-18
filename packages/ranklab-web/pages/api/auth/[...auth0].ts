@@ -20,7 +20,7 @@ const getLoginState: GetLoginState = (req, _loginOptions) => {
 export default handleAuth({
   async login(req, res) {
     try {
-      await handleLogin(req, res, { getLoginState })
+      await handleLogin(req, res, { getLoginState, returnTo: "/" })
     } catch (error: any) {
       res.status(error.status || 500).end(error.message)
     }

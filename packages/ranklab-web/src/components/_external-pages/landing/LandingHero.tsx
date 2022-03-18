@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 // material
 import { styled, useTheme } from "@mui/material/styles"
-import { Box, Stack, Container, Typography, Button } from "@mui/material"
+import { Box, Stack, Container, Typography, Button, Link } from "@mui/material"
 //
 import {
   varFadeIn,
@@ -9,7 +9,7 @@ import {
   varWrapEnter,
   varFadeInRight,
 } from "../../animate"
-import Link from "next/link"
+import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
 
@@ -110,11 +110,17 @@ export default function LandingHero() {
             </motion.div>
 
             <motion.div variants={varFadeInRight}>
-              <Link href="/sign-up" passHref>
-                <Button size="large" variant="contained" color="secondary">
-                  Get Started
-                </Button>
-              </Link>
+              <Stack spacing={3} direction="row" alignItems="center">
+                <NextLink href="/api/auth/login?user_type=Player" passHref>
+                  <Button size="large" variant="contained" color="secondary">
+                    Get Started
+                  </Button>
+                </NextLink>
+
+                <NextLink href="/coach-landing" passHref>
+                  <Link color="secondary">Are you a coach?</Link>
+                </NextLink>
+              </Stack>
             </motion.div>
           </ContentStyle>
         </Container>

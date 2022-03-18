@@ -29,9 +29,7 @@ const SignInPage: FunctionComponent = function () {
               <Card raised>
                 <CardActionArea
                   onClick={() => {
-                    router.push(
-                      "/api/auth/login?returnTo=/onboarding&user_type=Player"
-                    )
+                    router.push("/api/auth/login?user_type=Player")
                   }}
                 >
                   <CardContent
@@ -57,9 +55,7 @@ const SignInPage: FunctionComponent = function () {
               <Card raised>
                 <CardActionArea
                   onClick={() => {
-                    router.push(
-                      "/api/auth/login?returnTo=/onboarding&user_type=Coach"
-                    )
+                    router.push("/api/auth/login?user_type=Coach")
                   }}
                 >
                   <CardContent

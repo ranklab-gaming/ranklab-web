@@ -10,6 +10,8 @@ import {
   LandingDarkMode,
   LandingHugePackElements,
 } from "@ranklab/web/src/components/_external-pages/landing"
+import { GetServerSideProps } from "next"
+import { getSession } from "@auth0/nextjs-auth0"
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +26,22 @@ const ContentStyle = styled("div")(({ theme }) => ({
 }))
 
 // ----------------------------------------------------------------------
+
+export const getServerSideProps: GetServerSideProps = async function (ctx) {
+  const session = getSession(ctx.req, ctx.res)
+
+  if (session) {
+    ctx.res
+      .writeHead(302, {
+        Location: "dashboard",
+      })
+      .end()
+  }
+
+  return {
+    props: {},
+  }
+}
 
 export default function LandingPage() {
   return (
