@@ -377,10 +377,10 @@
   dependencies:
     "@iconify/types" "^1.0.12"
 
-"@iconify/icons-mdi@1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.2.2.tgz#990d2801da66e51d917640b2b752ef92cb401ffd"
-  integrity sha512-qKrHDRQQsdO5OwmhgSkV3NlFNVFxbsD+TY9ymL2lBw6wZzThNLJIsWHH7IPg0ZgO6S32b+mmUE3j1+AV4C3g/A==
+"@iconify/icons-mdi@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.2.3.tgz#bd2f6e1a15d48edecc9d7db40a0d471576c9c71e"
+  integrity sha512-CH0KzXzDA+wPM55WhiZkREWaYGPyKCfZWOu6TmUwCdUsLMPlMA2VRhI9Nr0AkrxuEMyA1ONBFDT+aWaFJ0AK8g==
   dependencies:
     "@iconify/types" "^1.0.12"
 
