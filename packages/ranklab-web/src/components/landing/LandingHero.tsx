@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 // material
-import { styled, useTheme } from "@mui/material/styles"
+import { styled } from "@mui/material/styles"
 import { Box, Stack, Container, Typography, Button, Link } from "@mui/material"
 //
 import {
@@ -8,7 +8,7 @@ import {
   varFadeInUp,
   varWrapEnter,
   varFadeInRight,
-} from "../../animate"
+} from "../animate"
 import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
@@ -69,8 +69,6 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LandingHero() {
-  const theme = useTheme()
-
   return (
     <>
       <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>

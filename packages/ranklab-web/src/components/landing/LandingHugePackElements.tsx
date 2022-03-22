@@ -2,7 +2,7 @@
 import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
 //
-import { varFadeInUp, MotionInView } from "../../animate"
+import { varFadeInUp, MotionInView } from "../animate"
 
 // ----------------------------------------------------------------------
 

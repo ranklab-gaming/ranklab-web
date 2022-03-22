@@ -6,10 +6,10 @@ import { styled } from "@mui/material/styles"
 import Page from "@ranklab/web/src/components/Page"
 import {
   LandingHero,
-  LandingMinimal,
+  LandingFlow,
   LandingDarkMode,
   LandingHugePackElements,
-} from "@ranklab/web/src/components/_external-pages/landing"
+} from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
 import { getSession } from "@auth0/nextjs-auth0"
 
@@ -49,7 +49,7 @@ export default function LandingPage() {
       <RootStyle title="Be the better gamer | Ranklab" id="move_top">
         <LandingHero />
         <ContentStyle>
-          <LandingMinimal />
+          <LandingFlow />
           <LandingHugePackElements />
           <LandingDarkMode />
         </ContentStyle>

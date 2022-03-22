@@ -9,30 +9,13 @@ import {
   useMediaQuery,
 } from "@mui/material"
 //
-import { varFadeInUp, MotionInView, varFadeInDown } from "../../animate"
+import { varFadeInUp, MotionInView, varFadeInDown } from "../animate"
+import videoOutline from "@iconify/icons-mdi/video-outline"
+import fileChartCheckOutline from "@iconify/icons-mdi/file-chart-check-outline"
+import podiumGold from "@iconify/icons-mdi/podium-gold"
+import { Icon } from "@iconify/react"
 
 // ----------------------------------------------------------------------
-
-const CARDS = [
-  {
-    icon: "/static/icons/ic_design.svg",
-    title: "UI & UX Design",
-    description:
-      "The set is built on the principles of the atomic design system. It helps you to create projects fastest and easily customized packages for your projects.",
-  },
-  {
-    icon: "/static/icons/ic_code.svg",
-    title: "Development",
-    description:
-      "Easy to customize and extend each component, saving you time and money.",
-  },
-  {
-    icon: "/static/brand/logo_single.svg",
-    title: "Branding",
-    description:
-      "Consistent design in colors, fonts ... makes brand recognition easy.",
-  },
-]
 
 const shadowIcon = (color: string) =>
   `drop-shadow(2px 2px 2px ${alpha(color, 0.48)})`
@@ -90,19 +73,42 @@ const CardStyle = styled(Card)(({ theme }) => {
   }
 })
 
-const CardIconStyle = styled("img")(({ theme }) => ({
+const CardIconStyle = styled("div")(({ theme }) => ({
   width: 40,
   height: 40,
   margin: "auto",
   marginBottom: theme.spacing(10),
-  filter: shadowIcon(theme.palette.primary.main),
 }))
 
 // ----------------------------------------------------------------------
 
-export default function LandingMinimalHelps() {
+export default function LandingFlow() {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"))
+
+  const cards = [
+    {
+      icon: videoOutline,
+      title: "Record",
+      description:
+        "Download our recorder and record your gameplay. You can also upload your own videos.",
+      color: theme.palette.primary.main,
+    },
+    {
+      icon: fileChartCheckOutline,
+      title: "Get feedback",
+      description:
+        "Get a detailed analysis of your gameplay by one of our coaches with the help of comments and drawings second by second.",
+      color: theme.palette.secondary.main,
+    },
+    {
+      icon: podiumGold,
+      title: "Improve",
+      description:
+        "Incorporate the feedback you receive and get better results in your games.",
+      color: theme.palette.success.main,
+    },
+  ]
 
   return (
     <RootStyle>
@@ -114,18 +120,18 @@ export default function LandingMinimalHelps() {
               variant="overline"
               sx={{ mb: 2, color: "text.secondary", textAlign: "center" }}
             >
-              Minimal
+              Ranklab for players
             </Typography>
           </MotionInView>
           <MotionInView variants={varFadeInDown}>
             <Typography variant="h2" sx={{ textAlign: "center" }}>
-              What minimal helps you?
+              How it works
             </Typography>
           </MotionInView>
         </Box>
 
         <Grid container spacing={isDesktop ? 10 : 5}>
-          {CARDS.map((card, index) => (
+          {cards.map((card, index) => (
             <Grid key={card.title} item xs={12} md={4}>
               <MotionInView variants={varFadeInUp}>
                 <CardStyle
@@ -135,18 +141,17 @@ export default function LandingMinimalHelps() {
                     ""
                   }
                 >
-                  <CardIconStyle
-                    src={card.icon}
-                    alt={card.title}
-                    sx={{
-                      ...(index === 0 && {
-                        filter: (theme) => shadowIcon(theme.palette.info.main),
-                      }),
-                      ...(index === 1 && {
-                        filter: (theme) => shadowIcon(theme.palette.error.main),
-                      }),
-                    }}
-                  />
+                  <CardIconStyle>
+                    <Icon
+                      icon={card.icon}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        color: card.color,
+                        filter: shadowIcon(card.color),
+                      }}
+                    />
+                  </CardIconStyle>
                   <Typography variant="h5" paragraph>
                     {card.title}
                   </Typography>
