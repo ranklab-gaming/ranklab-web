@@ -3,6 +3,7 @@ import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
 //
 import { varFadeInUp, MotionInView } from "../animate"
+import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +72,7 @@ const variantScreenRight = {
 
 // ----------------------------------------------------------------------
 
-export default function LandingHugePackElements() {
+export default function LandingReview() {
   const theme = useTheme()
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter
@@ -94,14 +95,14 @@ export default function LandingHugePackElements() {
                   variant="overline"
                   sx={{ mb: 2, color: "text.secondary" }}
                 >
-                  Interface Starter Kit
+                  Your Gameplay Reviewed
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
                 <Typography variant="h2" sx={{ mb: 3 }}>
-                  Huge pack <br />
-                  of elements
+                  Key moments <br />
+                  analyzed.
                 </Typography>
               </MotionInView>
 
@@ -112,15 +113,17 @@ export default function LandingHugePackElements() {
                     color: "common.white",
                   }}
                 >
-                  We collected most popular elements. Menu, sliders, buttons,
-                  inputs etc. are all here. Just dive in!
+                  Coaches can comment or draw at specific points in the match,
+                  giving you moment by moment feedback on your gameplay.
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
-                <Button size="large" color="inherit" variant="outlined">
-                  View All Components
-                </Button>
+                <NextLink href="/api/auth/login?user_type=Player" passHref>
+                  <Button size="large" variant="outlined" color="primary">
+                    Get Started
+                  </Button>
+                </NextLink>
               </MotionInView>
             </ContentStyle>
           </Grid>

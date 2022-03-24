@@ -7,8 +7,8 @@ import Page from "@ranklab/web/src/components/Page"
 import {
   LandingHero,
   LandingFlow,
-  LandingDarkMode,
-  LandingHugePackElements,
+  LandingReview,
+  LandingDashboard,
 } from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
 import { getSession } from "@auth0/nextjs-auth0"
@@ -50,8 +50,8 @@ export default function LandingPage() {
         <LandingHero />
         <ContentStyle>
           <LandingFlow />
-          <LandingHugePackElements />
-          <LandingDarkMode />
+          <LandingReview />
+          <LandingDashboard />
         </ContentStyle>
       </RootStyle>
     </MainLayout>

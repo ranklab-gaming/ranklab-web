@@ -1,8 +1,9 @@
 // material
 import { styled } from "@mui/material/styles"
-import { Box, Grid, Container, Typography } from "@mui/material"
+import { Box, Grid, Container, Typography, Button } from "@mui/material"
 //
 import { MotionInView, varFadeInUp, varFadeInDown } from "../animate"
+import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LandingDarkMode() {
+export default function LandingDashboard() {
   return (
     <RootStyle>
       <Container maxWidth="lg" sx={{ position: "relative" }}>
@@ -61,20 +62,29 @@ export default function LandingDarkMode() {
                   variant="overline"
                   sx={{ mb: 2, color: "text.disabled", display: "block" }}
                 >
-                  Easy switch between styles.
+                  Your Dashboard
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
                 <Typography variant="h2" sx={{ mb: 3, color: "common.white" }}>
-                  Dark mode
+                  Your reviews in one place.
                 </Typography>
               </MotionInView>
 
               <MotionInView variants={varFadeInUp}>
                 <Typography sx={{ color: "common.white", mb: 5 }}>
-                  A dark theme that feels easier on the eyes.
+                  Easily go back to your past reviews and keep track of all the
+                  ones that are in progress.
                 </Typography>
+              </MotionInView>
+
+              <MotionInView variants={varFadeInUp}>
+                <NextLink href="/api/auth/login?user_type=Player" passHref>
+                  <Button size="large" variant="outlined" color="primary">
+                    Get Started
+                  </Button>
+                </NextLink>
               </MotionInView>
             </ContentStyle>
           </Grid>

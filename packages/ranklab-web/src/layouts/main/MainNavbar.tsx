@@ -90,7 +90,9 @@ export default function MainNavbar() {
           <Box sx={{ flexGrow: 1 }} />
 
           <NextLink href="/sign-in">
-            <Button variant="contained">Sign in</Button>
+            <Button variant="contained" color="secondary">
+              Sign in
+            </Button>
           </NextLink>
         </Container>
       </ToolbarStyle>

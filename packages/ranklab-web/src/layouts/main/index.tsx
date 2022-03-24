@@ -19,6 +19,7 @@ type MainLayoutProps = {
 export default function MainLayout({ children }: MainLayoutProps) {
   const { pathname } = useRouter()
   const isHome = pathname === "/"
+  const currentYear = new Date().getFullYear()
 
   return (
     <>
@@ -42,9 +43,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </ScrollLink>
 
             <Typography variant="caption" component="p">
-              © All rights reserved
-              <br /> made by &nbsp;
-              <Link href="https://minimals.cc/">minimals.cc</Link>
+              Copyright © {currentYear} Ranklab Ltd.
+              <br />
+              All rights reserved.
             </Typography>
           </Container>
         </Box>
