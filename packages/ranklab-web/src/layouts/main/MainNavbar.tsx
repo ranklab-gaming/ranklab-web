@@ -69,7 +69,7 @@ export default function MainNavbar() {
         sx={{
           ...(isOffset && {
             bgcolor: "background.default",
-            height: { md: APP_BAR_DESKTOP - 16 },
+            height: { md: APP_BAR_DESKTOP - 32 },
           }),
         }}
       >
@@ -82,7 +82,7 @@ export default function MainNavbar() {
           }}
         >
           <NextLink href="/">
-            <Logo />
+            <Logo sx={{ ...(isOffset && { width: "20px" }) }} />
           </NextLink>
           <Label color="info" sx={{ ml: 1 }}>
             Ranklab
@@ -90,7 +90,11 @@ export default function MainNavbar() {
           <Box sx={{ flexGrow: 1 }} />
 
           <NextLink href="/sign-in">
-            <Button variant="contained" color="secondary">
+            <Button
+              variant="contained"
+              color="secondary"
+              size={isOffset ? "small" : "medium"}
+            >
               Sign in
             </Button>
           </NextLink>

@@ -15,23 +15,16 @@ import {
   Divider,
   Container,
   Typography,
-  IconButton,
+  Box,
 } from "@mui/material"
 //
 import Logo from "../../components/Logo"
 
 // ----------------------------------------------------------------------
 
-const SOCIALS = [
-  { name: "FaceBook", icon: facebookFill },
-  { name: "Google", icon: googleFill },
-  { name: "Linkedin", icon: linkedinFill },
-  { name: "Twitter", icon: twitterFill },
-]
-
 const LINKS = [
   {
-    headline: "Minimal",
+    headline: "Ranklab",
     children: [
       { name: "About us", href: "#" },
       { name: "Contact us", href: "#" },
@@ -48,8 +41,8 @@ const LINKS = [
   {
     headline: "Contact",
     children: [
-      { name: "support@minimals.cc", href: "#" },
-      { name: "Los Angeles, 359  Hidden Valley Road", href: "#" },
+      { name: "support@ranklab.gg", href: "#" },
+      { name: "<Address>", href: "#" },
     ],
   },
 ]
@@ -62,34 +55,37 @@ const RootStyle = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function MainFooter() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <RootStyle>
       <Divider />
-      <Container maxWidth="lg" sx={{ pt: 10 }}>
+      <Container maxWidth="lg" sx={{ py: 10 }}>
         <Grid
           container
           justifyContent={{ xs: "center", md: "space-between" }}
           sx={{ textAlign: { xs: "center", md: "left" } }}
         >
           <Grid item xs={8} md={3}>
-            <Typography variant="body2" sx={{ pr: { md: 5 } }}>
-              The starting point for your next project with Minimal UI Kit,
-              built on the newest version of Material-UI ©, ready to be
-              customized to your style.
-            </Typography>
-
-            <Stack
-              spacing={1.5}
-              direction="row"
-              justifyContent={{ xs: "center", md: "flex-start" }}
-              sx={{ mt: 5, mb: { xs: 5, md: 0 } }}
+            <Box
+              sx={{
+                textAlign: "center",
+                position: "relative",
+                bgcolor: "background.default",
+              }}
             >
-              {SOCIALS.map((social) => (
-                <IconButton key={social.name} color="primary" sx={{ p: 1 }}>
-                  <Icon icon={social.icon} width={16} height={16} />
-                </IconButton>
-              ))}
-            </Stack>
+              <Container maxWidth="lg">
+                <ScrollLink to="move_top" spy smooth>
+                  <Logo sx={{ mb: 1, mx: "auto", cursor: "pointer" }} />
+                </ScrollLink>
+
+                <Typography variant="caption" component="p">
+                  Copyright © {currentYear} Ranklab Ltd.
+                  <br />
+                  All rights reserved.
+                </Typography>
+              </Container>
+            </Box>
           </Grid>
 
           <Grid item xs={12} md={7}>
@@ -122,19 +118,6 @@ export default function MainFooter() {
             </Stack>
           </Grid>
         </Grid>
-
-        <Typography
-          component="p"
-          variant="body2"
-          sx={{
-            mt: 10,
-            pb: 5,
-            fontSize: 13,
-            textAlign: { xs: "center", md: "left" },
-          }}
-        >
-          © 2021. All rights reserved
-        </Typography>
       </Container>
     </RootStyle>
   )
