@@ -6,14 +6,21 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
   Alert,
+  Card,
   FormControl,
   FormControlLabel,
   FormLabel,
+  Grid,
   Radio,
   RadioGroup,
   Snackbar,
   Stack,
+  CardActionArea,
+  CardContent,
   TextField,
+  MenuItem,
+  Typography,
+  Select,
 } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Game } from "@ranklab/api"
@@ -109,28 +116,37 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         <Controller
           name="gameId"
           control={control}
-          render={({ field }) => (
+          render={() => (
             <FormControl>
               <FormLabel id="demo-row-radio-buttons-group-label">
                 Games
               </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={field.value}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                sx={{ pt: 1 }}
               >
                 {games.map((game) => (
-                  <FormControlLabel
-                    key={game.id}
-                    value={game.id}
-                    control={<Radio />}
-                    label={game.name}
-                  />
+                  <Grid key={game.id} item xs={4}>
+                    <Card
+                      sx={{
+                        backgroundColor: "green",
+                        borderStyle: "solid",
+                        borderWidth: "2px",
+                      }}
+                    >
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography variant="h5" component="div">
+                            {game.name}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
                 ))}
-              </RadioGroup>
+              </Grid>
             </FormControl>
           )}
         />
