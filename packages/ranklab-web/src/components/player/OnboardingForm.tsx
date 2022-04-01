@@ -6,7 +6,6 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
   Alert,
-  Card,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -15,17 +14,11 @@ import {
   RadioGroup,
   Snackbar,
   Stack,
-  CardActionArea,
-  CardContent,
   TextField,
-  MenuItem,
-  Typography,
-  Select,
-  styled,
 } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Game } from "@ranklab/api"
-import { motion } from "framer-motion"
+import FlipCard from "../FlipCard"
 
 interface Props {
   games: Game[]
@@ -48,12 +41,6 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   gameId: Yup.string().required("Game is required"),
   skillLevel: Yup.number().required("Skill level is required"),
 })
-
-const GameCard = styled(motion.div)(() => ({
-  position: "relative",
-  width: "300px",
-  height: "300px",
-}))
 
 const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const [errorMessage, setErrorMessage] = useState("")
@@ -92,11 +79,6 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         throw e
       }
     }
-  }
-
-  const cardVariants = {
-    front: { rotateY: 0 },
-    back: { rotateY: 180 },
   }
 
   return (
@@ -145,54 +127,14 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
               >
                 {games.map((game, index) => (
                   <Grid key={game.id} item xs={3}>
-                    <GameCard
-                      variants={cardVariants}
-                      initial="front"
-                      animate={selectedGameIndex === index ? "back" : "front"}
-                    >
-                      <Card
-                        sx={{
-                          backgroundColor: "green",
-                          borderStyle: "solid",
-                          borderWidth: "2px",
-                          position: "absolute",
-                          backfaceVisibility: "hidden",
-                          transformStyle: "preserve-3d",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      >
-                        <CardActionArea
-                          onClick={() => setSelectedGameIndex(index)}
-                        >
-                          <CardContent>
-                            <Typography variant="h5" component="div">
-                              {game.name}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-
-                      <Card
-                        sx={{
-                          position: "absolute",
-                          backfaceVisibility: "hidden",
-                          transform: "rotateY(180deg)",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                      >
-                        <CardActionArea
-                          onClick={() => setSelectedGameIndex(null)}
-                        >
-                          <CardContent>
-                            <Typography variant="h5" component="div">
-                              Hello
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </GameCard>
+                    <FlipCard
+                      frontText={game.name}
+                      backText="Hello"
+                      index={index}
+                      selectedIndex={selectedGameIndex}
+                      onClickFront={() => setSelectedGameIndex(index)}
+                      onClickBack={() => setSelectedGameIndex(null)}
+                    />
                   </Grid>
                 ))}
 
@@ -223,6 +165,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
                     value={skillLevel.value}
                     control={<Radio />}
                     label={skillLevel.name}
+                    key={skillLevel.value}
                   />
                 ))}
               </RadioGroup>
