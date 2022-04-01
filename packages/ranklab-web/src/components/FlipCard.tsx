@@ -3,11 +3,13 @@ import {
   Card as MuiCard,
   CardActionArea,
   CardContent,
+  SxProps,
   Typography,
 } from "@mui/material"
 import { motion } from "framer-motion"
 import { FunctionComponent } from "react"
 import { styled } from "@mui/material/styles"
+import { Theme } from "@mui/material"
 
 interface FlipCardProps {
   selectedIndex: number | null
@@ -30,14 +32,25 @@ const Inner = styled(motion.div)(() => ({
   transformStyle: "preserve-3d",
 }))
 
-const Card = styled(MuiCard)(() => ({
-  position: "absolute",
-  top: 0,
-  left: 0,
-  width: "100%",
-  height: "100%",
-  backfaceVisibility: "hidden",
-}))
+interface CardProps {
+  sx?: SxProps<Theme>
+}
+
+const Card: FunctionComponent<CardProps> = ({ sx, children }) => (
+  <MuiCard
+    sx={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backfaceVisibility: "hidden",
+      ...sx,
+    }}
+  >
+    {children}
+  </MuiCard>
+)
 
 const FlipCard: FunctionComponent<FlipCardProps> = ({
   selectedIndex,
