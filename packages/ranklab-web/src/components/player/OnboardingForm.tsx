@@ -15,10 +15,10 @@ import {
   Snackbar,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
-import { Game } from "@ranklab/api"
-import FlipCard from "../FlipCard"
+import { Game, UserGame } from "@ranklab/api"
 
 interface Props {
   games: Game[]
@@ -26,27 +26,19 @@ interface Props {
 
 export type FormValuesProps = {
   name: string
-  gameId: string
-  skillLevel: number
 }
 
 export const defaultValues = {
   name: "",
-  gameId: "",
-  skillLevel: 0,
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  gameId: Yup.string().required("Game is required"),
-  skillLevel: Yup.number().required("Skill level is required"),
 })
 
 const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const [errorMessage, setErrorMessage] = useState("")
-  const [selectedGameIndex, setSelectedGameIndex] = useState<number | null>(
-    null
-  )
+  const [formGames, setFormGames] = useState<UserGame[]>([])
 
   const {
     control,
@@ -63,7 +55,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
       await api.client.claimsPlayersCreate({
         createPlayerRequest: {
           name: data.name,
-          games: [{ gameId: data.gameId, skillLevel: data.skillLevel }],
+          games: formGames,
         },
       })
 
@@ -111,67 +103,85 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           )}
         />
 
-        <Controller
-          name="gameId"
-          control={control}
-          render={() => (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Games
-              </FormLabel>
+        <FormControl>
+          <FormLabel
+            sx={{
+              marginBottom: 3,
+            }}
+          >
+            Games
+          </FormLabel>
+          <Stack spacing={2}>
+            {games.map((game) => (
               <Grid
                 container
-                rowSpacing={1}
-                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-                sx={{ pt: 1 }}
+                key={game.id}
+                sx={{
+                  border: 1,
+                  borderColor: "divider",
+                  borderRadius: 2,
+                  padding: 3,
+                }}
               >
-                {games.map((game, index) => (
-                  <Grid key={game.id} item xs={3}>
-                    <FlipCard
-                      frontText={game.name}
-                      backText="Hello"
-                      index={index}
-                      selectedIndex={selectedGameIndex}
-                      onClickFront={() => setSelectedGameIndex(index)}
-                      onClickBack={() => setSelectedGameIndex(null)}
+                <Grid
+                  item
+                  xs={12}
+                  md={2}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="h5">{game.name}</Typography>
+                </Grid>
+                <Grid item xs={12} md={10}>
+                  <RadioGroup
+                    row
+                    aria-labelledby="game-radio-buttons-group-label"
+                    name="game-radio-buttons-group"
+                    onChange={(_event, value) => {
+                      if (value === "") {
+                        setFormGames(
+                          formGames.filter((g) => g.gameId !== game.id)
+                        )
+                      } else {
+                        setFormGames([
+                          ...formGames.filter((g) => g.gameId !== game.id),
+                          { gameId: game.id, skillLevel: parseInt(value, 10) },
+                        ])
+                      }
+                    }}
+                  >
+                    <FormControlLabel
+                      value={""}
+                      control={<Radio />}
+                      label="Not Played"
+                      key="not-played"
+                      checked={!formGames.find((g) => g.gameId === game.id)}
                     />
-                  </Grid>
-                ))}
 
-                <Grid item xs={3}></Grid>
+                    {game.skillLevels.map((skillLevel) => (
+                      <FormControlLabel
+                        value={skillLevel.value}
+                        control={<Radio />}
+                        label={skillLevel.name}
+                        key={skillLevel.value}
+                        checked={
+                          !!formGames.find(
+                            (g) =>
+                              g.gameId === game.id &&
+                              g.skillLevel === skillLevel.value
+                          )
+                        }
+                      />
+                    ))}
+                  </RadioGroup>
+                </Grid>
               </Grid>
-            </FormControl>
-          )}
-        />
+            ))}
+          </Stack>
+        </FormControl>
 
-        <Controller
-          name="skillLevel"
-          control={control}
-          render={({ field }) => (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Skill Level
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={field.value}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
-              >
-                {games[0]?.skillLevels.map((skillLevel) => (
-                  <FormControlLabel
-                    value={skillLevel.value}
-                    control={<Radio />}
-                    label={skillLevel.name}
-                    key={skillLevel.value}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          )}
-        />
         <LoadingButton
           fullWidth
           color="info"
