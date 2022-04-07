@@ -26,36 +26,49 @@ interface Props {
 
 export type FormValuesProps = {
   name: string
+  games: UserGame[]
 }
 
 export const defaultValues = {
   name: "",
+  games: [],
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   name: Yup.string().required("Name is required"),
+  games: Yup.array()
+    .of(
+      Yup.object().shape({
+        gameId: Yup.string().required(),
+        skillLevel: Yup.number().required(),
+      })
+    )
+    .min(1, "At least one game is required"),
 })
 
 const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const [errorMessage, setErrorMessage] = useState("")
-  const [formGames, setFormGames] = useState<UserGame[]>([])
 
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting, isDirty },
+    formState: { isSubmitting, isValid },
+    watch,
+    setValue,
   } = useForm<FormValuesProps>({
     mode: "onTouched",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
 
+  const watchGames = watch("games", [] as UserGame[])
+
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await api.client.claimsPlayersCreate({
         createPlayerRequest: {
           name: data.name,
-          games: formGames,
+          games: data.games,
         },
       })
 
@@ -141,14 +154,31 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
                     name="game-radio-buttons-group"
                     onChange={(_event, value) => {
                       if (value === "") {
-                        setFormGames(
-                          formGames.filter((g) => g.gameId !== game.id)
+                        setValue(
+                          "games",
+                          watchGames.filter((g) => g.gameId !== game.id),
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          }
                         )
                       } else {
-                        setFormGames([
-                          ...formGames.filter((g) => g.gameId !== game.id),
-                          { gameId: game.id, skillLevel: parseInt(value, 10) },
-                        ])
+                        setValue(
+                          "games",
+                          [
+                            ...watchGames.filter((g) => g.gameId !== game.id),
+                            {
+                              gameId: game.id,
+                              skillLevel: parseInt(value, 10),
+                            },
+                          ],
+                          {
+                            shouldValidate: true,
+                            shouldDirty: true,
+                            shouldTouch: true,
+                          }
+                        )
                       }
                     }}
                   >
@@ -157,7 +187,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
                       control={<Radio />}
                       label="Not Played"
                       key="not-played"
-                      checked={!formGames.find((g) => g.gameId === game.id)}
+                      checked={!watchGames.find((g) => g.gameId === game.id)}
                     />
 
                     {game.skillLevels.map((skillLevel) => (
@@ -167,7 +197,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
                         label={skillLevel.name}
                         key={skillLevel.value}
                         checked={
-                          !!formGames.find(
+                          !!watchGames.find(
                             (g) =>
                               g.gameId === game.id &&
                               g.skillLevel === skillLevel.value
@@ -189,7 +219,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          disabled={!isDirty}
+          disabled={!isValid}
         >
           Create Profile
         </LoadingButton>
