@@ -64,7 +64,7 @@
     "@types/lodash": "4.14.181",
     "@types/nprogress": "0.2.0",
     "@types/numeral": "2.0.2",
-    "@types/react": "18.0.2",
+    "@types/react": "18.0.3",
     "@types/react-draft-wysiwyg": "1.13.4",
     "@types/react-router-dom": "5.3.3",
     "@types/react-scroll": "1.8.3",
