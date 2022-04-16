@@ -37,7 +37,7 @@ jobs:
       - run: yarn build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
       - name: Save project folder
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ranklab-web.tar.gz
           if-no-files-found: error
