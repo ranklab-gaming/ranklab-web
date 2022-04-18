@@ -1,4 +1,4 @@
-import { AppBar, Box, Container } from "@mui/material"
+import { Box, Container } from "@mui/material"
 import { ReactNode } from "react"
 import MainFooter from "../main/MainFooter"
 import NextLink from "next/link"

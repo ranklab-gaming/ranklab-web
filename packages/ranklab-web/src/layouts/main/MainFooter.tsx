@@ -1,8 +1,3 @@
-import { Icon } from "@iconify/react"
-import googleFill from "@iconify/icons-eva/google-fill"
-import twitterFill from "@iconify/icons-eva/twitter-fill"
-import facebookFill from "@iconify/icons-eva/facebook-fill"
-import linkedinFill from "@iconify/icons-eva/linkedin-fill"
 import { Link as ScrollLink } from "react-scroll"
 // next
 import NextLink from "next/link"

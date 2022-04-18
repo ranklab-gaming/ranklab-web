@@ -101,7 +101,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
       value: country,
       label: regionNamesInEnglish.of(country),
     }))
-    .sort((a, b) => a.label.localeCompare(b.label))
+    .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
