@@ -1,7 +1,6 @@
 describe("comment", () => {
   it("should successfully create a comment in a review", () => {
     cy.login()
-
     cy.sql(`INSERT INTO players (auth0_id) VALUES ('123');`)
 
     cy.sql(`SELECT * FROM players;`).then(([{ id: playerId }]) => {
@@ -13,8 +12,8 @@ describe("comment", () => {
 
         cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
           cy.sql(
-            `INSERT INTO reviews (player_id, coach_id, title, recording_id, game_id, notes)
-              VALUES ('${playerId}', '${coachId}', 'This is a test review', '${recordingId}', 'overwatch', 'These are test notes');`
+            `INSERT INTO reviews (player_id, coach_id, title, recording_id, game_id, skill_level, state, notes)
+              VALUES ('${playerId}', '${coachId}', 'This is a test review', '${recordingId}', 'overwatch', 1, 'draft', 'These are test notes');`
           )
         })
       })

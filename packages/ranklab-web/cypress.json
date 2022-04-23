@@ -2,6 +2,8 @@
   "projectId": "mw3765",
   "baseUrl": "http://ranklab-test:3000",
   "env": {
-    "auth0Password": "password123*"
+    "auth0Password": "password123*",
+    "stripeAccountId": "acct_1KrckzRBbbylp4Zr",
+    "stripeCustomerId": "cus_LYlDvX9dqnxdgX"
   }
 }
