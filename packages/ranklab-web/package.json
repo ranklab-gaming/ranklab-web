@@ -55,7 +55,7 @@
     "react-scroll": "1.8.7",
     "simplebar": "5.3.6",
     "simplebar-react": "2.3.7",
-    "stylis": "4.1.0",
+    "stylis": "4.1.1",
     "stylis-plugin-rtl": "2.1.1",
     "yup": "0.32.11"
   },
