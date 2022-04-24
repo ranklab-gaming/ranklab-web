@@ -31,7 +31,7 @@
     "@ranklab-gaming/svg-drawing-react": "^4.2.10",
     "@ranklab/api": "1.0.0",
     "@sentry/nextjs": "6.19.6",
-    "@stripe/react-stripe-js": "1.7.1",
+    "@stripe/react-stripe-js": "1.7.2",
     "@stripe/stripe-js": "1.29.0",
     "@zach.codes/use-upload": "1.0.1",
     "change-case": "4.1.2",
