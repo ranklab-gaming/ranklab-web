@@ -48,7 +48,7 @@ jobs:
     timeout-minutes: 10
     needs: install
     container:
-      image: cypress/included:9.3.1
+      image: cypress/included:9.5.4
       options: >-
         --add-host=ranklab-test:0.0.0.0
         --network-alias=ranklab-test
@@ -56,7 +56,7 @@ jobs:
         - /var/lib/docker/containers:/containers
     services:
       postgres:
-        image: postgres:13.4
+        image: postgres:14.2
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

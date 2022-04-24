@@ -28,6 +28,8 @@ module.exports = async (on, config) => {
   config.env.auth0Audience = process.env.AUTH0_AUDIENCE
   config.env.auth0ClientId = process.env.AUTH0_CLIENT_ID
   config.env.auth0Scope = process.env.AUTH0_SCOPE
+  config.env.stripeAccountId = process.env.TEST_STRIPE_ACCOUNT_ID
+  config.env.stripeCustomerId = process.env.TEST_STRIPE_CUSTOMER_ID
 
   await queryDb(`
     CREATE OR REPLACE FUNCTION reset_db() RETURNS void AS $$
