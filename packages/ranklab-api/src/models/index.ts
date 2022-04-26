@@ -37,25 +37,25 @@ export interface Coach {
      * @type {string}
      * @memberof Coach
      */
-    bio: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Coach
-     */
-    canReview: boolean;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof Coach
      */
-    country: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof Coach
      */
     email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coach
+     */
+    bio: string;
     /**
      * 
      * @type {Array<UserGame>}
@@ -67,13 +67,13 @@ export interface Coach {
      * @type {string}
      * @memberof Coach
      */
-    id: string;
+    country: string;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof Coach
      */
-    name: string;
+    canReview: boolean;
     /**
      * 
      * @type {boolean}
@@ -111,7 +111,13 @@ export interface Comment {
      * @type {string}
      * @memberof Comment
      */
-    body: string;
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    reviewId: string;
     /**
      * 
      * @type {string}
@@ -123,25 +129,19 @@ export interface Comment {
      * @type {string}
      * @memberof Comment
      */
-    drawing: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Comment
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Comment
-     */
-    reviewId: string;
+    body: string;
     /**
      * 
      * @type {number}
      * @memberof Comment
      */
     videoTimestamp: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Comment
+     */
+    drawing: string;
 }
 /**
  * 
@@ -186,13 +186,13 @@ export interface CreateCoachRequest {
      * @type {string}
      * @memberof CreateCoachRequest
      */
-    bio: string;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof CreateCoachRequest
      */
-    country: string;
+    bio: string;
     /**
      * 
      * @type {Array<UserGame>}
@@ -204,7 +204,7 @@ export interface CreateCoachRequest {
      * @type {string}
      * @memberof CreateCoachRequest
      */
-    name: string;
+    country: string;
 }
 /**
  * 
@@ -220,10 +220,10 @@ export interface CreateCommentRequest {
     body: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof CreateCommentRequest
      */
-    drawing: string;
+    videoTimestamp: number;
     /**
      * 
      * @type {string}
@@ -232,10 +232,10 @@ export interface CreateCommentRequest {
     reviewId: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof CreateCommentRequest
      */
-    videoTimestamp: number;
+    drawing: string;
 }
 /**
  * 
@@ -258,16 +258,16 @@ export interface CreateLoginLinkMutation {
 export interface CreatePlayerRequest {
     /**
      * 
-     * @type {Array<UserGame>}
-     * @memberof CreatePlayerRequest
-     */
-    games: Array<UserGame>;
-    /**
-     * 
      * @type {string}
      * @memberof CreatePlayerRequest
      */
     name: string;
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof CreatePlayerRequest
+     */
+    games: Array<UserGame>;
 }
 /**
  * 
@@ -277,16 +277,16 @@ export interface CreatePlayerRequest {
 export interface CreateRecordingRequest {
     /**
      * 
-     * @type {string}
-     * @memberof CreateRecordingRequest
-     */
-    mimeType: string;
-    /**
-     * 
      * @type {number}
      * @memberof CreateRecordingRequest
      */
     size: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateRecordingRequest
+     */
+    mimeType: string;
 }
 /**
  * 
@@ -299,7 +299,13 @@ export interface CreateReviewMutation {
      * @type {string}
      * @memberof CreateReviewMutation
      */
-    gameId: string;
+    recordingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    title: string;
     /**
      * 
      * @type {string}
@@ -311,13 +317,7 @@ export interface CreateReviewMutation {
      * @type {string}
      * @memberof CreateReviewMutation
      */
-    recordingId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateReviewMutation
-     */
-    title: string;
+    gameId: string;
 }
 /**
  * 
@@ -330,25 +330,25 @@ export interface Game {
      * @type {string}
      * @memberof Game
      */
-    id: string;
-    /**
-     * 
-     * @type {SkillLevel}
-     * @memberof Game
-     */
-    minCoachSkillLevel: SkillLevel;
+    name: string;
     /**
      * 
      * @type {string}
      * @memberof Game
      */
-    name: string;
+    id: string;
     /**
      * 
      * @type {Array<SkillLevel>}
      * @memberof Game
      */
     skillLevels: Array<SkillLevel>;
+    /**
+     * 
+     * @type {SkillLevel}
+     * @memberof Game
+     */
+    minCoachSkillLevel: SkillLevel;
 }
 /**
  * 
@@ -387,13 +387,13 @@ export interface PaymentMethod {
      * @type {string}
      * @memberof PaymentMethod
      */
-    brand: string;
+    id: string;
     /**
      * 
      * @type {string}
      * @memberof PaymentMethod
      */
-    id: string;
+    brand: string;
     /**
      * 
      * @type {string}
@@ -412,7 +412,19 @@ export interface Player {
      * @type {string}
      * @memberof Player
      */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
     auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Player
+     */
+    name: string;
     /**
      * 
      * @type {string}
@@ -425,18 +437,6 @@ export interface Player {
      * @memberof Player
      */
     games: Array<UserGame>;
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
-    name: string;
 }
 /**
  * 
@@ -468,13 +468,13 @@ export interface Recording {
      * @type {string}
      * @memberof Recording
      */
-    mimeType: string;
+    playerId: string;
     /**
      * 
      * @type {string}
      * @memberof Recording
      */
-    playerId: string;
+    videoKey: string;
     /**
      * 
      * @type {string}
@@ -492,7 +492,7 @@ export interface Recording {
      * @type {string}
      * @memberof Recording
      */
-    videoKey: string;
+    mimeType: string;
 }
 /**
  * 
@@ -505,25 +505,7 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
-    coachId?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
-    gameId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
     id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
-    notes: string;
     /**
      * 
      * @type {string}
@@ -535,13 +517,37 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
+    coachId?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
+    title: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
     recordingId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
+    gameId: string;
     /**
      * 
      * @type {number}
      * @memberof Review
      */
     skillLevel: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Review
+     */
+    notes: string;
     /**
      * 
      * @type {ReviewState}
@@ -554,12 +560,6 @@ export interface Review {
      * @memberof Review
      */
     stripeClientSecret?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Review
-     */
-    title: string;
 }
 /**
  * 
@@ -648,31 +648,7 @@ export interface UserOneOf {
      * @type {string}
      * @memberof UserOneOf
      */
-    bio: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserOneOf
-     */
-    canReview: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    country: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    email: string;
-    /**
-     * 
-     * @type {Array<UserGame>}
-     * @memberof UserOneOf
-     */
-    games: Array<UserGame>;
+    type: UserOneOfTypeEnum;
     /**
      * 
      * @type {string}
@@ -687,16 +663,40 @@ export interface UserOneOf {
     name: string;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof UserOneOf
      */
-    stripeDetailsSubmitted: boolean;
+    email: string;
     /**
      * 
      * @type {string}
      * @memberof UserOneOf
      */
-    type: UserOneOfTypeEnum;
+    bio: string;
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof UserOneOf
+     */
+    games: Array<UserGame>;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf
+     */
+    country: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf
+     */
+    canReview: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof UserOneOf
+     */
+    stripeDetailsSubmitted: boolean;
 }
 
 /**
@@ -717,7 +717,25 @@ export interface UserOneOf1 {
      * @type {string}
      * @memberof UserOneOf1
      */
+    type: UserOneOf1TypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
     auth0Id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserOneOf1
+     */
+    name: string;
     /**
      * 
      * @type {string}
@@ -730,24 +748,6 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     games: Array<UserGame>;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    type: UserOneOf1TypeEnum;
 }
 
 /**

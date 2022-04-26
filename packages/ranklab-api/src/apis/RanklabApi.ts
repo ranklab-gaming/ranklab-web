@@ -29,6 +29,7 @@ import {
     CreateRecordingRequest,
     CreateReviewMutation,
     Game,
+    Health,
     LoginLink,
     PaymentMethod,
     Player,
@@ -486,6 +487,30 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
+    async indexGetHealthRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Health>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async indexGetHealth(initOverrides?: RequestInit): Promise<Health> {
+        const response = await this.indexGetHealthRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async playerCommentsListRaw(requestParameters: PlayerCommentsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Comment>>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling playerCommentsList.');
@@ -572,6 +597,30 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerRecordingsGet(requestParameters: PlayerRecordingsGetRequest, initOverrides?: RequestInit): Promise<Recording> {
         const response = await this.playerRecordingsGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerRecordingsListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Recording>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/recordings`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerRecordingsList(initOverrides?: RequestInit): Promise<Array<Recording>> {
+        const response = await this.playerRecordingsListRaw(initOverrides);
         return await response.value();
     }
 

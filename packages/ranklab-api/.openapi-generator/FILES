@@ -1,7 +1,6 @@
 .gitignore
 .npmignore
 README.md
-src/apis/DefaultApi.ts
 src/apis/RanklabApi.ts
 src/apis/index.ts
 src/index.ts
