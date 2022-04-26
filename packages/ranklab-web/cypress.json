@@ -1,6 +1,6 @@
 {
   "projectId": "mw3765",
-  "defaultCommandTimeout": "8000",
+  "defaultCommandTimeout": 8000,
   "baseUrl": "http://ranklab-test:3000",
   "env": {
     "auth0Password": "password123*"
