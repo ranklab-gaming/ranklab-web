@@ -4,21 +4,10 @@ import api from "src/api"
 import router from "next/router"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import {
-  Alert,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Snackbar,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material"
+import { Alert, Snackbar, Stack, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Game, UserGame } from "@ranklab/api"
+import GamesSelect from "../GamesSelect"
 
 interface Props {
   games: Game[]
@@ -116,101 +105,17 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           )}
         />
 
-        <FormControl>
-          <FormLabel
-            sx={{
-              marginBottom: 3,
-            }}
-          >
-            Games
-          </FormLabel>
-          <Stack spacing={2}>
-            {games.map((game) => (
-              <Grid
-                container
-                key={game.id}
-                sx={{
-                  border: 1,
-                  borderColor: "divider",
-                  borderRadius: 2,
-                  padding: 3,
-                }}
-              >
-                <Grid
-                  item
-                  xs={12}
-                  md={2}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="h5">{game.name}</Typography>
-                </Grid>
-                <Grid item xs={12} md={10}>
-                  <RadioGroup
-                    row
-                    aria-labelledby="game-radio-buttons-group-label"
-                    name="game-radio-buttons-group"
-                    onChange={(_event, value) => {
-                      if (value === "") {
-                        setValue(
-                          "games",
-                          watchGames.filter((g) => g.gameId !== game.id),
-                          {
-                            shouldValidate: true,
-                            shouldDirty: true,
-                            shouldTouch: true,
-                          }
-                        )
-                      } else {
-                        setValue(
-                          "games",
-                          [
-                            ...watchGames.filter((g) => g.gameId !== game.id),
-                            {
-                              gameId: game.id,
-                              skillLevel: parseInt(value, 10),
-                            },
-                          ],
-                          {
-                            shouldValidate: true,
-                            shouldDirty: true,
-                            shouldTouch: true,
-                          }
-                        )
-                      }
-                    }}
-                  >
-                    <FormControlLabel
-                      value={""}
-                      control={<Radio />}
-                      label="Not Played"
-                      key="not-played"
-                      checked={!watchGames.find((g) => g.gameId === game.id)}
-                    />
-
-                    {game.skillLevels.map((skillLevel) => (
-                      <FormControlLabel
-                        value={skillLevel.value}
-                        control={<Radio />}
-                        label={skillLevel.name}
-                        key={skillLevel.value}
-                        checked={
-                          !!watchGames.find(
-                            (g) =>
-                              g.gameId === game.id &&
-                              g.skillLevel === skillLevel.value
-                          )
-                        }
-                      />
-                    ))}
-                  </RadioGroup>
-                </Grid>
-              </Grid>
-            ))}
-          </Stack>
-        </FormControl>
+        <GamesSelect
+          games={games}
+          selectedGames={watchGames}
+          setGames={(games) => {
+            setValue("games", games, {
+              shouldValidate: true,
+              shouldDirty: true,
+              shouldTouch: true,
+            })
+          }}
+        />
 
         <LoadingButton
           fullWidth

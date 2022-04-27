@@ -11,12 +11,13 @@ import {
   Stack,
   TextField,
 } from "@mui/material"
-import { Game } from "@ranklab/api"
+import { Game, UserGame } from "@ranklab/api"
 import router from "next/router"
 import { FunctionComponent, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import api from "src/api"
 import * as Yup from "yup"
+import GamesSelect from "../GamesSelect"
 
 interface Props {
   games: Game[]
@@ -25,7 +26,7 @@ interface Props {
 
 export type FormValuesProps = {
   bio: string
-  gameId: string
+  games: UserGame[]
   skillLevel: number
   name: string
   country: string
@@ -33,7 +34,7 @@ export type FormValuesProps = {
 
 export const defaultValues = {
   bio: "",
-  gameId: "",
+  games: [],
   skillLevel: 0,
   name: "",
   country: "US",
@@ -41,7 +42,14 @@ export const defaultValues = {
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   bio: Yup.string().required("Bio is required"),
-  gameId: Yup.string().required("Game is required"),
+  games: Yup.array()
+    .of(
+      Yup.object().shape({
+        gameId: Yup.string().required(),
+        skillLevel: Yup.number().required(),
+      })
+    )
+    .min(1, "At least one game is required"),
   skillLevel: Yup.number().required("Skill level is required"),
   name: Yup.string().required("Name is required"),
   country: Yup.string().required("Country is required"),
@@ -58,25 +66,27 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting, isDirty },
+    setValue,
   } = useForm<FormValuesProps>({
     mode: "onTouched",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const watchGames = watch("games", [] as UserGame[])
+
+  const createCoach = async (data: FormValuesProps) => {
     try {
       await api.client.claimsCoachesCreate({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
-          games: [{ gameId: data.gameId, skillLevel: data.skillLevel }],
+          games: data.games,
           country: data.country,
         },
       })
-
-      router.push("/api/refresh-account-link")
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {
@@ -90,11 +100,22 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     }
   }
 
-  const minSkillLevelIndex = games[0]?.skillLevels
-    .map((sl) => sl.value)
-    .indexOf(games[0]?.minCoachSkillLevel.value)
+  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
+    await createCoach(data)
 
-  const skillLevels = games[0]?.skillLevels.slice(minSkillLevelIndex)
+    router.push("/dashboard")
+  }
+
+  const coachGames = games.map((game) => {
+    const minSkillLevelIndex = game.skillLevels
+      .map((sl) => sl.value)
+      .indexOf(game.minCoachSkillLevel.value)
+
+    return {
+      ...game,
+      skillLevels: game.skillLevels.slice(minSkillLevelIndex),
+    }
+  })
 
   const countries = availableCountries
     .map((country) => ({
@@ -104,7 +125,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={Boolean(errorMessage)}
@@ -167,62 +188,16 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           )}
         />
 
-        <Controller
-          name="gameId"
-          control={control}
-          render={({ field }) => (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Games
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={field.value}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
-              >
-                {games.map((game) => (
-                  <FormControlLabel
-                    key={game.id}
-                    value={game.id}
-                    control={<Radio />}
-                    label={game.name}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          )}
-        />
-
-        <Controller
-          name="skillLevel"
-          control={control}
-          render={({ field }) => (
-            <FormControl>
-              <FormLabel id="demo-row-radio-buttons-group-label">
-                Skill Level
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                value={field.value}
-                onBlur={field.onBlur}
-                onChange={field.onChange}
-              >
-                {skillLevels?.map((skillLevel) => (
-                  <FormControlLabel
-                    key={skillLevel.value}
-                    value={skillLevel.value}
-                    control={<Radio />}
-                    label={skillLevel.name}
-                  />
-                ))}
-              </RadioGroup>
-            </FormControl>
-          )}
+        <GamesSelect
+          games={coachGames}
+          selectedGames={watchGames}
+          setGames={(games) => {
+            setValue("games", games, {
+              shouldValidate: true,
+              shouldDirty: true,
+              shouldTouch: true,
+            })
+          }}
         />
 
         <LoadingButton
