@@ -1,16 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import {
-  Alert,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Snackbar,
-  Stack,
-  TextField,
-} from "@mui/material"
+import { Alert, Snackbar, Stack, TextField } from "@mui/material"
 import { Game, UserGame } from "@ranklab/api"
 import router from "next/router"
 import { FunctionComponent, useState } from "react"
