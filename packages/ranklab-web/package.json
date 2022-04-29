@@ -70,7 +70,7 @@
     "@types/react-router-dom": "5.3.3",
     "@types/react-scroll": "1.8.3",
     "cypress": "9.6.0",
-    "express": "4.18.0",
+    "express": "4.18.1",
     "futoin-hkdf": "1.5.0",
     "jose": "4.8.0",
     "oidc-provider": "7.11.1",
