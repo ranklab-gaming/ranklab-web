@@ -381,12 +381,12 @@
   dependencies:
     "@iconify/types" "^1.0.12"
 
-"@iconify/icons-ic@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.2.3.tgz#d61feb2ad77fefa537c194a39f59b92ea14a7e27"
-  integrity sha512-r7I5HsMQrqj3pe4PVqtaU48meYbIxxccHqq9BxIjKhKOdA4YOpi5wbiUk0vq1iijPdUM60zl1vWBzkSLsK7H3g==
+"@iconify/icons-ic@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.2.4.tgz#3a253a35cfe4e97214bd74cf5ea836879178bc10"
+  integrity sha512-xnubUtDDIi4VUsS9U5s7wcb3wVpp4D7Vc6yvwtaUPIqrPslEysbb8X1PJKzFWOKppP1L+3RxEfpkParL14XieQ==
   dependencies:
-    "@iconify/types" "^1.0.12"
+    "@iconify/types" "^1.1.0"
 
 "@iconify/icons-mdi@1.2.8":
   version "1.2.8"
@@ -404,6 +404,11 @@
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/@iconify/types/-/types-1.0.12.tgz#839f1f784b7030b94482d51996570f4dbd7d6796"
   integrity sha512-6er6wSGF3hgc1JEZqiGpg21CTCjHBYOUwqLmb2Idzkjiw6ogalGP0ZMLVutCzah+0WB4yP+Zd2oVPN8jvJ+Ftg==
+
+"@iconify/types@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@iconify/types/-/types-1.1.0.tgz#dc15fc988b1b3fd558dd140a24ede7e0aac11280"
+  integrity sha512-Jh0llaK2LRXQoYsorIH8maClebsnzTcve+7U3rQUSnC11X4jtPnFuyatqFLvMxZ8MLG8dB4zfHsbPfuvxluONw==
 
 "@juggle/resize-observer@^3.3.1":
   version "3.3.1"
