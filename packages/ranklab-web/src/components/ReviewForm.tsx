@@ -51,9 +51,9 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty },
+    formState: { errors, isSubmitting },
   } = useForm<FormValuesProps>({
-    mode: "onTouched",
+    mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
@@ -198,7 +198,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
-                disabled={!isDirty}
+                disabled={isSubmitting}
               >
                 Submit Form
               </LoadingButton>

@@ -41,11 +41,11 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting, isValid },
+    formState: { isSubmitting },
     watch,
     setValue,
   } = useForm<FormValuesProps>({
-    mode: "onTouched",
+    mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
@@ -124,7 +124,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          disabled={!isValid}
+          disabled={isSubmitting}
         >
           Create Profile
         </LoadingButton>

@@ -38,7 +38,7 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
   }
 
   const { control, handleSubmit, watch } = useForm<FormValuesProps>({
-    mode: "onTouched",
+    mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })

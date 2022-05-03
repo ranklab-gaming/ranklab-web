@@ -57,10 +57,10 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     control,
     handleSubmit,
     watch,
-    formState: { isSubmitting, isDirty },
+    formState: { isSubmitting },
     setValue,
   } = useForm<FormValuesProps>({
-    mode: "onTouched",
+    mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
@@ -197,7 +197,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           type="submit"
           variant="contained"
           loading={isSubmitting}
-          disabled={!isDirty}
+          disabled={isSubmitting}
         >
           Create Profile
         </LoadingButton>
