@@ -1,7 +1,5 @@
 import { ReactNode } from "react"
-// next
-import NextLink from "next/link"
-// material
+// @mui
 import { styled } from "@mui/material/styles"
 // components
 import Logo from "../components/Logo"
@@ -22,17 +20,15 @@ const HeaderStyle = styled("header")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type LogoOnlyLayoutProps = {
-  children: ReactNode
+type Props = {
+  children?: ReactNode
 }
 
-export default function LogoOnlyLayout({ children }: LogoOnlyLayoutProps) {
+export default function LogoOnlyLayout({ children }: Props) {
   return (
     <>
       <HeaderStyle>
-        <NextLink href="/">
-          <Logo />
-        </NextLink>
+        <Logo />
       </HeaderStyle>
       {children}
     </>

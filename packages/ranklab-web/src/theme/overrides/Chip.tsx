@@ -1,6 +1,6 @@
-import { Icon } from "@iconify/react"
-import closeCircleFill from "@iconify/icons-eva/close-circle-fill"
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
+//
+import { CloseIcon } from './CustomIcons';
 
 // ----------------------------------------------------------------------
 
@@ -8,21 +8,21 @@ export default function Chip(theme: Theme) {
   return {
     MuiChip: {
       defaultProps: {
-        deleteIcon: <Icon icon={closeCircleFill} />,
+        deleteIcon: <CloseIcon />,
       },
 
       styleOverrides: {
         colorDefault: {
-          "& .MuiChip-avatarMedium, .MuiChip-avatarSmall": {
+          '& .MuiChip-avatarMedium, .MuiChip-avatarSmall': {
             color: theme.palette.text.secondary,
           },
         },
         outlined: {
           borderColor: theme.palette.grey[500_32],
-          "&.MuiChip-colorPrimary": {
+          '&.MuiChip-colorPrimary': {
             borderColor: theme.palette.primary.main,
           },
-          "&.MuiChip-colorSecondary": {
+          '&.MuiChip-colorSecondary': {
             borderColor: theme.palette.secondary.main,
           },
         },
@@ -45,5 +45,5 @@ export default function Chip(theme: Theme) {
         },
       },
     },
-  }
+  };
 }

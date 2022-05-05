@@ -1,17 +1,17 @@
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-export default function Badge(_theme: Theme) {
+export default function Badge(theme: Theme) {
   return {
     MuiBadge: {
       styleOverrides: {
         dot: {
           width: 10,
           height: 10,
-          borderRadius: "50%",
-        },
-      },
-    },
-  }
+          borderRadius: '50%'
+        }
+      }
+    }
+  };
 }

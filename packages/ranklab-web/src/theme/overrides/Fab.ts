@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -6,36 +6,35 @@ export default function Fab(theme: Theme) {
   return {
     MuiFab: {
       defaultProps: {
-        color: "primary",
+        color: 'primary'
       },
-
-      variants: [
-        {
-          props: { color: "primary" },
-          style: {
-            boxShadow: theme.customShadows.primary,
-            "&:hover": {
-              backgroundColor: theme.palette.primary.dark,
-            },
-          },
-        },
-      ],
 
       styleOverrides: {
         root: {
           boxShadow: theme.customShadows.z8,
-          "&:hover": {
-            boxShadow: "none",
-            backgroundColor: theme.palette.grey[400],
-          },
+          '&:hover': {
+            boxShadow: 'none',
+            backgroundColor: theme.palette.grey[400]
+          }
         },
-        primary: {},
+        primary: {
+          boxShadow: theme.customShadows.primary,
+          '&:hover': {
+            backgroundColor: theme.palette.primary.dark
+          }
+        },
+        secondary: {
+          boxShadow: theme.customShadows.secondary,
+          '&:hover': {
+            backgroundColor: theme.palette.secondary.dark
+          }
+        },
         extended: {
-          "& svg": {
-            marginRight: theme.spacing(1),
-          },
-        },
-      },
-    },
-  }
+          '& svg': {
+            marginRight: theme.spacing(1)
+          }
+        }
+      }
+    }
+  };
 }
