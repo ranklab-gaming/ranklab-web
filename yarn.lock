@@ -388,12 +388,12 @@
   dependencies:
     "@iconify/types" "^1.1.0"
 
-"@iconify/icons-mdi@1.2.8":
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.2.8.tgz#ac0a958b0e59cfc2c1e982c8e31dec52415bfaf4"
-  integrity sha512-LerIU0XQIMT4Rev81ZFBweciILuo1uCZ4WgNajjj5M0+lbu70y08BnzeqOHNlDFYHeymauhKszMF5ST/S4WotQ==
+"@iconify/icons-mdi@1.2.10":
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.2.10.tgz#0373825cfe561e55da072c0fd1a7c9ab87e21fdf"
+  integrity sha512-Lk5xpg0J/Pzv8kJMEio8itvP5ylxkE3mtyDuFBdANfcKZLaAlVruvrQcEI8nK+6IBxb0DbJzkPrrDCftX4pJLQ==
   dependencies:
-    "@iconify/types" "^1.0.12"
+    "@iconify/types" "^1.1.0"
 
 "@iconify/react@3.2.1":
   version "3.2.1"
