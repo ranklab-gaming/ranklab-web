@@ -2,8 +2,9 @@
 import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
 //
-import { varFadeInUp, MotionInView } from "../animate"
 import NextLink from "next/link"
+import { MotionContainer, varFade } from "../animate"
+import { m } from "framer-motion"
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-const ScreenStyle = styled(MotionInView)(({ theme }) => ({
+const ScreenStyle = styled(m.div)(({ theme }) => ({
   paddingRight: 2,
   paddingBottom: 1,
   maxWidth: 160,
@@ -80,7 +81,7 @@ export default function LandingReview() {
 
   return (
     <RootStyle>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" component={MotionContainer}>
         <Grid container spacing={5} justifyContent="center">
           <Grid
             item
@@ -89,7 +90,7 @@ export default function LandingReview() {
             sx={{ display: "flex", alignItems: "center" }}
           >
             <ContentStyle>
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography
                   component="p"
                   variant="overline"
@@ -97,16 +98,16 @@ export default function LandingReview() {
                 >
                   Your Gameplay Reviewed
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3 }}>
                   Key moments <br />
                   analyzed.
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <Typography
                   sx={{
                     mb: 5,
@@ -116,15 +117,15 @@ export default function LandingReview() {
                   Coaches can comment or draw at specific points in the match,
                   giving you moment by moment feedback on your gameplay.
                 </Typography>
-              </MotionInView>
+              </m.div>
 
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <NextLink href="/api/auth/login?user_type=Player" passHref>
                   <Button size="large" variant="outlined" color="primary">
                     Get Started
                   </Button>
                 </NextLink>
-              </MotionInView>
+              </m.div>
             </ContentStyle>
           </Grid>
 

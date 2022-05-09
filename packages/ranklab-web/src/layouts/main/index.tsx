@@ -1,20 +1,26 @@
 import { ReactNode } from "react"
-//
+// @mui
+import { Box, Stack } from "@mui/material"
+// components
 import MainFooter from "./MainFooter"
-import MainNavbar from "./MainNavbar"
+import MainHeader from "./MainHeader"
 
 // ----------------------------------------------------------------------
 
-type MainLayoutProps = {
+type Props = {
   children: ReactNode
 }
 
-export default function MainLayout({ children }: MainLayoutProps) {
+export default function MainLayout({ children }: Props) {
   return (
-    <>
-      <MainNavbar />
-      <div>{children}</div>
+    <Stack sx={{ minHeight: 1 }}>
+      <MainHeader />
+
+      {children}
+
+      <Box sx={{ flexGrow: 1 }} />
+
       <MainFooter />
-    </>
+    </Stack>
   )
 }
