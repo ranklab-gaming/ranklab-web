@@ -2,13 +2,17 @@ import * as React from "react"
 // next
 import Document, { Html, Head, Main, NextScript } from "next/document"
 // emotion
+import { CacheProvider } from "@emotion/react"
+import createCache from "@emotion/cache"
 import createEmotionServer from "@emotion/server/create-instance"
-// utils
-import createEmotionCache from "@ranklab/web/src/utils/createEmotionCache"
 // theme
-import palette from "@ranklab/web/src/theme/palette"
+import palette from "../theme/palette"
 
-// // ----------------------------------------------------------------------
+// ----------------------------------------------------------------------
+
+function createEmotionCache() {
+  return createCache({ key: "css" })
+}
 
 export default class MyDocument extends Document {
   render() {
@@ -36,12 +40,22 @@ export default class MyDocument extends Document {
 
           <meta name="theme-color" content={palette.light.primary.main} />
           <link rel="manifest" href="/manifest.json" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
 
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
+
+          <meta
+            name="description"
+            content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
+          />
+          <meta
+            name="keywords"
+            content="react,material,kit,application,dashboard,admin,template"
+          />
+          <meta name="author" content="Minimal UI Kit" />
         </Head>
 
         <body>
@@ -53,17 +67,22 @@ export default class MyDocument extends Document {
   }
 }
 
+// ----------------------------------------------------------------------
+
 MyDocument.getInitialProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage
 
   const cache = createEmotionCache()
-
   const { extractCriticalToChunks } = createEmotionServer(cache)
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App: any) => (props) =>
-        <App emotionCache={cache} {...props} />,
+      enhanceApp: (App) => (props) =>
+        (
+          <CacheProvider value={cache}>
+            <App {...props} />
+          </CacheProvider>
+        ),
     })
 
   const initialProps = await Document.getInitialProps(ctx)

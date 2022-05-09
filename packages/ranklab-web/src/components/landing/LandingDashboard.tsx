@@ -2,7 +2,7 @@
 import { styled } from "@mui/material/styles"
 import { Box, Grid, Container, Typography, Button } from "@mui/material"
 //
-import { MotionInView, varFadeInUp, varFadeInDown } from "../animate"
+import { MotionContainer, varFade } from "../animate"
 import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
@@ -32,7 +32,11 @@ const ContentStyle = styled("div")(({ theme }) => ({
 export default function LandingDashboard() {
   return (
     <RootStyle>
-      <Container maxWidth="lg" sx={{ position: "relative" }}>
+      <Container
+        maxWidth="lg"
+        sx={{ position: "relative" }}
+        component={MotionContainer}
+      >
         <Box
           component="img"
           alt="image shape"
@@ -56,7 +60,7 @@ export default function LandingDashboard() {
         >
           <Grid item xs={12} md={4}>
             <ContentStyle>
-              <MotionInView variants={varFadeInUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography
                   component="p"
                   variant="overline"
@@ -66,20 +70,20 @@ export default function LandingDashboard() {
                 </Typography>
               </MotionInView>
 
-              <MotionInView variants={varFadeInUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3, color: "common.white" }}>
                   Your reviews in one place.
                 </Typography>
               </MotionInView>
 
-              <MotionInView variants={varFadeInUp}>
+              <MotionInView variants={varFade().inUp}>
                 <Typography sx={{ color: "common.white", mb: 5 }}>
                   Easily go back to your past reviews and keep track of all the
                   ones that are in progress.
                 </Typography>
               </MotionInView>
 
-              <MotionInView variants={varFadeInUp}>
+              <MotionInView variants={varFade().inUp}>
                 <NextLink href="/api/auth/login?user_type=Player" passHref>
                   <Button size="large" variant="outlined" color="primary">
                     Get Started
@@ -90,12 +94,12 @@ export default function LandingDashboard() {
           </Grid>
 
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
-            <MotionInView threshold={0.5} variants={varFadeInUp}>
+            <MotionInView threshold={0.5} variants={varFade().inUp}>
               <img alt="light mode" src="/static/home/lightmode.png" />
             </MotionInView>
             <MotionInView
               threshold={0.5}
-              variants={varFadeInDown}
+              variants={varFade().inDown}
               sx={{ top: 0, left: 0, position: "absolute" }}
             >
               <img alt="dark mode" src="/static/home/darkmode.png" />

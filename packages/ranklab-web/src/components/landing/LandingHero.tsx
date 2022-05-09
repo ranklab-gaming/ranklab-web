@@ -3,12 +3,7 @@ import { motion } from "framer-motion"
 import { styled } from "@mui/material/styles"
 import { Box, Stack, Container, Typography, Button } from "@mui/material"
 //
-import {
-  varFadeIn,
-  varFadeInUp,
-  varWrapEnter,
-  varFadeInRight,
-} from "../animate"
+import { varFade, MotionContainer } from "../animate"
 import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
@@ -71,22 +66,22 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
 export default function LandingHero() {
   return (
     <>
-      <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
+      <RootStyle initial="initial" animate="animate">
         <HeroOverlayStyle
           alt="overlay"
           src="/static/overlay.svg"
-          variants={varFadeIn}
+          variants={varFade().in}
         />
 
         <HeroImgStyle
           alt="hero"
           src="/static/home/hero.png"
-          variants={varFadeInUp}
+          variants={varFade().inUp}
         />
 
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" component={MotionContainer}>
           <ContentStyle>
-            <motion.div variants={varFadeInRight}>
+            <motion.div variants={varFade().inRight}>
               <Typography variant="h1" sx={{ color: "common.white" }}>
                 Be the better gamer <br /> with
                 <Typography
@@ -100,14 +95,14 @@ export default function LandingHero() {
               </Typography>
             </motion.div>
 
-            <motion.div variants={varFadeInRight}>
+            <motion.div variants={varFade().inRight}>
               <Typography sx={{ color: "common.white" }}>
                 Get your gameplay analyzed by experienced coaches quickly and
                 without fuss.
               </Typography>
             </motion.div>
 
-            <motion.div variants={varFadeInRight}>
+            <motion.div variants={varFade().inRight}>
               <Stack spacing={3} direction="row" alignItems="center">
                 <NextLink href="/api/auth/login?user_type=Player" passHref>
                   <Button size="large" variant="contained" color="primary">
