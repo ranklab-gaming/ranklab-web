@@ -65,7 +65,7 @@ const CardStyle = styled(Card)(({ theme }) => {
           position: "absolute",
           width: "calc(100% - 40px)",
           height: "calc(100% - 40px)",
-          borderRadius: theme.shape.borderRadiusMd,
+          borderRadius: theme.shape.borderRadius,
           backgroundColor: theme.palette.background.paper,
           boxShadow: `-20px 20px 40px 0 ${shadowCard(0.12)}`,
         },
@@ -113,7 +113,7 @@ export default function LandingFlow() {
 
   return (
     <RootStyle>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" component={MotionContainer}>
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
           <m.div variants={varFade().inUp}>
             <Typography

@@ -1,6 +1,4 @@
 // components
-import Label from "../../../components/Label"
-import Iconify from "../../../components/Iconify"
 import SvgIconStyle from "../../../components/SvgIconStyle"
 
 // ----------------------------------------------------------------------

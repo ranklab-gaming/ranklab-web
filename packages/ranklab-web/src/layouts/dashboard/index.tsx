@@ -1,47 +1,28 @@
-import { ReactNode, useState, useEffect } from "react"
-import { styled, useTheme } from "@mui/material/styles"
+import { useState, ReactNode, useEffect } from "react"
+// @mui
+import { Box } from "@mui/material"
 // hooks
-import useCollapseDrawer from "../../hooks/useCollapseDrawer"
+import useResponsive from "../../hooks/useResponsive"
+// config
+import { HEADER } from "../../config"
 //
-import DashboardNavbar from "./DashboardNavbar"
-import DashboardSidebar from "./DashboardSidebar"
-import { useRouter } from "next/router"
+import DashboardHeader from "./header"
+import NavbarVertical from "./navbar/NavbarVertical"
+import NavbarHorizontal from "./navbar/NavbarHorizontal"
+
 import api from "@ranklab/web/src/api"
 import { Coach, User } from "@ranklab/api"
+import { useRouter } from "next/router"
+// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 
-const APP_BAR_MOBILE = 64
-const APP_BAR_DESKTOP = 92
-
-const RootStyle = styled("div")(() => ({
-  display: "flex",
-  minHeight: "100%",
-  overflow: "hidden",
-}))
-
-const MainStyle = styled("div")(({ theme }) => ({
-  flexGrow: 1,
-  overflow: "auto",
-  minHeight: "100%",
-  paddingTop: APP_BAR_MOBILE + 24,
-  paddingBottom: theme.spacing(10),
-  [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP + 24,
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-}))
-
-// ----------------------------------------------------------------------
-
-type DashboardLayoutProps = {
-  children?: ReactNode
+type Props = {
+  children: ReactNode
 }
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const theme = useTheme()
-  const { collapseClick } = useCollapseDrawer()
+export default function DashboardLayout({ children }: Props) {
+  const isDesktop = useResponsive("up", "lg")
   const [open, setOpen] = useState(false)
   const [coach, setCoach] = useState<Coach | null>(null)
 
@@ -68,21 +49,33 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     !coach?.canReview && router.pathname !== "/onboarding"
 
   return (
-    <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar
-        isOpenSidebar={open}
-        onCloseSidebar={() => setOpen(false)}
+    <>
+      <DashboardHeader
+        onOpenSidebar={() => setOpen(true)}
+        verticalLayout={true}
       />
 
-      <MainStyle
+      {isDesktop ? (
+        <NavbarHorizontal />
+      ) : (
+        <NavbarVertical
+          isOpenSidebar={open}
+          onCloseSidebar={() => setOpen(false)}
+        />
+      )}
+
+      <Box
+        component="main"
         sx={{
-          transition: theme.transitions.create("margin", {
-            duration: theme.transitions.duration.complex,
-          }),
-          ...(collapseClick && {
-            ml: "102px",
-          }),
+          px: { lg: 2 },
+          pt: {
+            xs: `${HEADER.MOBILE_HEIGHT + 24}px`,
+            lg: `${HEADER.DASHBOARD_DESKTOP_HEIGHT + 80}px`,
+          },
+          pb: {
+            xs: `${HEADER.MOBILE_HEIGHT + 24}px`,
+            lg: `${HEADER.DASHBOARD_DESKTOP_HEIGHT + 24}px`,
+          },
         }}
       >
         {coach &&
@@ -99,7 +92,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             )
           ))}
         {children}
-      </MainStyle>
-    </RootStyle>
+      </Box>
+    </>
   )
 }

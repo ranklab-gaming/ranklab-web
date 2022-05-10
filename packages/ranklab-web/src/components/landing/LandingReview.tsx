@@ -141,13 +141,12 @@ export default function LandingReview() {
               {[...Array(3)].map((_, index) => (
                 <ScreenStyle
                   key={index}
-                  threshold={0.72}
+                  transition={{ duration: 0.72, ease: "easeOut" }}
                   variants={{
                     ...(index === 0 && screenLeftAnimate),
                     ...(index === 1 && screenCenterAnimate),
                     ...(index === 2 && screenRightAnimate),
                   }}
-                  transition={{ duration: 0.72, ease: "easeOut" }}
                   sx={{
                     boxShadow: `80px -40px 80px ${alpha(
                       theme.palette.common.black,

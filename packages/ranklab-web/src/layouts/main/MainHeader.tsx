@@ -1,5 +1,3 @@
-// next
-import { useRouter } from "next/router"
 // @mui
 import { styled, useTheme } from "@mui/material/styles"
 import { Box, Button, AppBar, Toolbar, Container } from "@mui/material"

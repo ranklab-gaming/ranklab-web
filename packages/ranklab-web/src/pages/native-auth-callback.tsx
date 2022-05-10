@@ -4,11 +4,8 @@ import { Box, Button, Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import { styled } from "@mui/material/styles"
 import LogoOnlyLayout from "src/layouts/LogoOnlyLayout"
-import {
-  MotionContainer,
-  varBounceIn,
-} from "@ranklab/web/src/components/animate"
-import { motion } from "framer-motion"
+import { MotionContainer, varBounce } from "@ranklab/web/src/components/animate"
+import { m } from "framer-motion"
 
 const RootStyle = styled(Page)(({ theme }) => ({
   display: "flex",
@@ -59,19 +56,17 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
   return (
     <LogoOnlyLayout>
       <RootStyle title="Login Successful | Ranklab">
-        <Container>
-          <MotionContainer initial="initial" open>
-            <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
-              <motion.div variants={varBounceIn}>
-                <Typography variant="h3" paragraph>
-                  Login was successful. You can now close this window.
-                </Typography>
-              </motion.div>
-              <Button size="large" variant="contained" onClick={openNativeApp}>
-                Open Ranklab
-              </Button>
-            </Box>
-          </MotionContainer>
+        <Container component={MotionContainer}>
+          <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
+            <m.div variants={varBounce().in}>
+              <Typography variant="h3" paragraph>
+                Login was successful. You can now close this window.
+              </Typography>
+            </m.div>
+            <Button size="large" variant="contained" onClick={openNativeApp}>
+              Open Ranklab
+            </Button>
+          </Box>
         </Container>
       </RootStyle>
     </LogoOnlyLayout>

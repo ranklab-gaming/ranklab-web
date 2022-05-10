@@ -1,6 +1,3 @@
-// highlight
-import "../utils/highlight"
-
 // scroll bar
 import "simplebar/src/simplebar.css"
 

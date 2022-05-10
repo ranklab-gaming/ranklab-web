@@ -9,7 +9,7 @@ import {
 import { FunctionComponent, useCallback, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import Page from "src/components/Page"
-import Uploader from "src/components/Uploader"
+import { UploadSingleFile } from "src/components/upload"
 import DashboardLayout from "src/layouts/dashboard"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Recording } from "@ranklab/api"
@@ -72,7 +72,10 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <Uploader file={files?.[0] ?? null} onDrop={handleDropFile} />
+              <UploadSingleFile
+                file={files?.[0] ?? null}
+                onDrop={handleDropFile}
+              />
               {loading && (
                 <LinearProgress variant="determinate" value={progress ?? 0} />
               )}

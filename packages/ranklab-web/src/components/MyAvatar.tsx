@@ -1,23 +1,23 @@
 // hooks
-import useAuth from '../hooks/useAuth';
+import { useUser } from "@auth0/nextjs-auth0"
 // utils
-import createAvatar from '../utils/createAvatar';
+import createAvatar from "../utils/createAvatar"
 //
-import Avatar, { Props as AvatarProps } from './Avatar';
+import Avatar, { Props as AvatarProps } from "./Avatar"
 
 // ----------------------------------------------------------------------
 
 export default function MyAvatar({ ...other }: AvatarProps) {
-  const { user } = useAuth();
+  const { user } = useUser()
 
   return (
     <Avatar
-      src={user?.photoURL}
-      alt={user?.displayName}
-      color={user?.photoURL ? 'default' : createAvatar(user?.displayName).color}
+      src={user?.picture || undefined}
+      alt={user?.name!}
+      color={user?.picture ? "default" : createAvatar(user?.name!).color}
       {...other}
     >
-      {createAvatar(user?.displayName).name}
+      {createAvatar(user?.name!).name}
     </Avatar>
-  );
+  )
 }
