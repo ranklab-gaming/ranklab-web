@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -7,9 +7,10 @@ export default function Popover(theme: Theme) {
     MuiPopover: {
       styleOverrides: {
         paper: {
-          boxShadow: theme.customShadows.z12,
+          boxShadow: theme.customShadows.dropdown,
+          borderRadius: Number(theme.shape.borderRadius) * 1.5,
         },
       },
     },
-  }
+  };
 }

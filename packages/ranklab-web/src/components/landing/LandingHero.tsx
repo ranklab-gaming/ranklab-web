@@ -1,19 +1,14 @@
-import { motion } from "framer-motion"
+import { m } from "framer-motion"
 // material
 import { styled } from "@mui/material/styles"
 import { Box, Stack, Container, Typography, Button } from "@mui/material"
 //
-import {
-  varFadeIn,
-  varFadeInUp,
-  varWrapEnter,
-  varFadeInRight,
-} from "../animate"
+import { varFade, MotionContainer } from "../animate"
 import NextLink from "next/link"
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled(motion.div)(({ theme }) => ({
+const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
   backgroundColor: theme.palette.grey[400],
   [theme.breakpoints.up("md")]: {
@@ -43,7 +38,7 @@ const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(
   })
 )
 
-const HeroOverlayStyle = styled(motion.img)({
+const HeroOverlayStyle = styled(m.img)({
   zIndex: 9,
   width: "100%",
   height: "100%",
@@ -51,7 +46,7 @@ const HeroOverlayStyle = styled(motion.img)({
   position: "absolute",
 })
 
-const HeroImgStyle = styled(motion.img)(({ theme }) => ({
+const HeroImgStyle = styled(m.img)(({ theme }) => ({
   top: 0,
   right: 0,
   bottom: 0,
@@ -71,22 +66,22 @@ const HeroImgStyle = styled(motion.img)(({ theme }) => ({
 export default function LandingHero() {
   return (
     <>
-      <RootStyle initial="initial" animate="animate" variants={varWrapEnter}>
+      <RootStyle initial="initial" animate="animate">
         <HeroOverlayStyle
           alt="overlay"
           src="/static/overlay.svg"
-          variants={varFadeIn}
+          variants={varFade().in}
         />
 
         <HeroImgStyle
           alt="hero"
           src="/static/home/hero.png"
-          variants={varFadeInUp}
+          variants={varFade().inUp}
         />
 
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" component={MotionContainer}>
           <ContentStyle>
-            <motion.div variants={varFadeInRight}>
+            <m.div variants={varFade().inRight}>
               <Typography variant="h1" sx={{ color: "common.white" }}>
                 Be the better gamer <br /> with
                 <Typography
@@ -98,16 +93,16 @@ export default function LandingHero() {
                 </Typography>
                 .
               </Typography>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={varFadeInRight}>
+            <m.div variants={varFade().inRight}>
               <Typography sx={{ color: "common.white" }}>
                 Get your gameplay analyzed by experienced coaches quickly and
                 without fuss.
               </Typography>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={varFadeInRight}>
+            <m.div variants={varFade().inRight}>
               <Stack spacing={3} direction="row" alignItems="center">
                 <NextLink href="/api/auth/login?user_type=Player" passHref>
                   <Button size="large" variant="contained" color="primary">
@@ -121,7 +116,7 @@ export default function LandingHero() {
                   </Button>
                 </NextLink>
               </Stack>
-            </motion.div>
+            </m.div>
           </ContentStyle>
         </Container>
       </RootStyle>

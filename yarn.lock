@@ -633,12 +633,12 @@
   optionalDependencies:
     "@ranklab-gaming/svg-drawing-core" "^4.2.10"
 
-"@ranklab-gaming/svg-drawing-core@^4.2.10":
+"@ranklab-gaming/svg-drawing-core@4.2.10", "@ranklab-gaming/svg-drawing-core@^4.2.10":
   version "4.2.10"
   resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-core/4.2.10/f57c6e71a9a6747ae802dda226dcd88e087d1eb34c8cbf327e087f095d521cd8#2bedb796989750184d64a5427d637679f59240ed"
   integrity sha512-v0hZbtNr9H6wJiLfhmggMq0lYF+daBoLLcSI8E/238n9hfQbkMRCakSe6/+iOkCqFDBdpPXYrkYzN5cjK42e7A==
 
-"@ranklab-gaming/svg-drawing-react@^4.2.10":
+"@ranklab-gaming/svg-drawing-react@4.2.10":
   version "4.2.10"
   resolved "https://npm.pkg.github.com/download/@ranklab-gaming/svg-drawing-react/4.2.10/0decc68e0533d7bfdd7f5b1cfeb599568b42d52865ca92380759a0ddb2b7eda6#cef64998faf3413c139269e24697d576e422dd8a"
   integrity sha512-1NvxUGlvZb6zsA+KxOvJIvMpB3MaRoB5RewvyihQsdy/G7U6u5/vPP5kT16PxgczIrgzkbqJoAHdd1t1PMhWAw==
@@ -935,6 +935,14 @@
   integrity sha512-A0DQ1YWZ0RG2+PV7neAotNCIh8gZ3z7tQnDJyS2xRPDNtAtSPcJ9YyfMP8be36Ha0kQRzbZCrrTMznA4blqO5g==
   dependencies:
     "@types/react" "*"
+
+"@types/react-lazy-load-image-component@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@types/react-lazy-load-image-component/-/react-lazy-load-image-component-1.5.2.tgz#b87e814b6b91853b802f04465364ff1e913dce6a"
+  integrity sha512-4NLJsMJVrMv18FuMIkUUBVj/PH9A+BvLKrZC75EWiEFn1IsMrZHgL1tVKw5QBfoa0Qjz6SkWIzEvwcyZ8PgnIg==
+  dependencies:
+    "@types/react" "*"
+    csstype "^3.0.2"
 
 "@types/react-router-dom@5.3.3":
   version "5.3.3"
@@ -1445,7 +1453,7 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
-clsx@^1.1.1:
+clsx@^1.1.0, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -2295,7 +2303,7 @@ history@^5.2.0:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
-hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -3111,6 +3119,14 @@ normalize-url@^6.0.1:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-6.1.0.tgz#40d0885b535deffe3f3147bec877d05fe4c5668a"
   integrity sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==
 
+notistack@2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/notistack/-/notistack-2.0.4.tgz#9e043991d4788bed3d1701d1b2f694233ad38dd8"
+  integrity sha512-kOJmKvTG91ElMzi4aHu82BDe1liQ0zMrBp+TnWJptgowDsTbeTKbZmsRqJNIj145BmlOtZsEE9xjcrN46zVo3w==
+  dependencies:
+    clsx "^1.1.0"
+    hoist-non-react-statics "^3.3.0"
+
 npm-run-path@^4.0.0, npm-run-path@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-4.0.1.tgz#b7ecd1e5ed53da8e37a55e1c2269e0b97ed748ea"
@@ -3652,6 +3668,14 @@ react-is@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-lazy-load-image-component@1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/react-lazy-load-image-component/-/react-lazy-load-image-component-1.5.2.tgz#c539f219e2461af1808cc987af8682d4a0adaf8d"
+  integrity sha512-/aJsEs/szuoXfs1VTzndPsOcfS3qBDiryoXdmfeL+ACwyC78DccY7BkySxLFu+PT/IGR1FgjF9Zd4x37EpFpdQ==
+  dependencies:
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
 
 react-router-dom@6.3.0:
   version "6.3.0"

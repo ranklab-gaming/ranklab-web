@@ -1,4 +1,4 @@
-import { Theme } from "@mui/material/styles"
+import { Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -7,8 +7,8 @@ export default function Button(theme: Theme) {
     MuiButton: {
       styleOverrides: {
         root: {
-          "&:hover": {
-            boxShadow: "none",
+          '&:hover': {
+            boxShadow: 'none',
           },
         },
         sizeLarge: {
@@ -18,7 +18,7 @@ export default function Button(theme: Theme) {
         containedInherit: {
           color: theme.palette.grey[800],
           boxShadow: theme.customShadows.z8,
-          "&:hover": {
+          '&:hover': {
             backgroundColor: theme.palette.grey[400],
           },
         },
@@ -43,16 +43,16 @@ export default function Button(theme: Theme) {
         // outlined
         outlinedInherit: {
           border: `1px solid ${theme.palette.grey[500_32]}`,
-          "&:hover": {
+          '&:hover': {
             backgroundColor: theme.palette.action.hover,
           },
         },
         textInherit: {
-          "&:hover": {
+          '&:hover': {
             backgroundColor: theme.palette.action.hover,
           },
         },
       },
     },
-  }
+  };
 }

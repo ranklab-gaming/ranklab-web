@@ -1,36 +1,42 @@
-import { motion, AnimatePresence } from 'framer-motion';
-// material
+import { m, AnimatePresence } from 'framer-motion';
+// @mui
 import { Dialog, Box, Paper, DialogProps } from '@mui/material';
 //
-import { varFadeInUp } from './variants';
+import { varFade } from './variants';
 
 // ----------------------------------------------------------------------
 
-interface DialogAnimateProps extends DialogProps {
-  animate?: object;
+export interface Props extends DialogProps {
+  variants?: Record<string, unknown>;
   onClose?: VoidFunction;
 }
 
 export default function DialogAnimate({
   open = false,
-  animate,
+  variants,
   onClose,
   children,
   sx,
   ...other
-}: DialogAnimateProps) {
+}: Props) {
   return (
     <AnimatePresence>
       {open && (
         <Dialog
           fullWidth
-          maxWidth='xs'
+          maxWidth="xs"
           open={open}
           onClose={onClose}
           PaperComponent={(props) => (
             <Box
-              component={motion.div}
-              {...(animate || varFadeInUp)}
+              component={m.div}
+              {...(variants ||
+                varFade({
+                  distance: 120,
+                  durationIn: 0.32,
+                  durationOut: 0.24,
+                  easeIn: 'easeInOut',
+                }).inUp)}
               sx={{
                 width: '100%',
                 height: '100%',
@@ -39,11 +45,10 @@ export default function DialogAnimate({
                 justifyContent: 'center',
               }}
             >
-              <Box
-                onClick={onClose}
-                sx={{ width: '100%', height: '100%', position: 'fixed' }}
-              />
-              <Paper {...props}>{props.children}</Paper>
+              <Box onClick={onClose} sx={{ width: '100%', height: '100%', position: 'fixed' }} />
+              <Paper sx={sx} {...props}>
+                {props.children}
+              </Paper>
             </Box>
           )}
           {...other}

@@ -9,7 +9,8 @@ import {
   useMediaQuery,
 } from "@mui/material"
 //
-import { varFadeInUp, MotionInView, varFadeInDown } from "../animate"
+import { m } from "framer-motion"
+import { varFade, MotionContainer } from "../animate"
 import videoOutline from "@iconify/icons-mdi/video-outline"
 import fileChartCheckOutline from "@iconify/icons-mdi/file-chart-check-outline"
 import podiumGold from "@iconify/icons-mdi/podium-gold"
@@ -64,7 +65,7 @@ const CardStyle = styled(Card)(({ theme }) => {
           position: "absolute",
           width: "calc(100% - 40px)",
           height: "calc(100% - 40px)",
-          borderRadius: theme.shape.borderRadiusMd,
+          borderRadius: theme.shape.borderRadius,
           backgroundColor: theme.palette.background.paper,
           boxShadow: `-20px 20px 40px 0 ${shadowCard(0.12)}`,
         },
@@ -112,9 +113,9 @@ export default function LandingFlow() {
 
   return (
     <RootStyle>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" component={MotionContainer}>
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
-          <MotionInView variants={varFadeInUp}>
+          <m.div variants={varFade().inUp}>
             <Typography
               component="p"
               variant="overline"
@@ -122,18 +123,18 @@ export default function LandingFlow() {
             >
               Ranklab for players
             </Typography>
-          </MotionInView>
-          <MotionInView variants={varFadeInDown}>
+          </m.div>
+          <m.div variants={varFade().inDown}>
             <Typography variant="h2" sx={{ textAlign: "center" }}>
               How it works
             </Typography>
-          </MotionInView>
+          </m.div>
         </Box>
 
         <Grid container spacing={isDesktop ? 10 : 5}>
           {cards.map((card, index) => (
             <Grid key={card.title} item xs={12} md={4}>
-              <MotionInView variants={varFadeInUp}>
+              <m.div variants={varFade().inUp}>
                 <CardStyle
                   className={
                     (index === 0 && "cardLeft") ||
@@ -159,7 +160,7 @@ export default function LandingFlow() {
                     {card.description}
                   </Typography>
                 </CardStyle>
-              </MotionInView>
+              </m.div>
             </Grid>
           ))}
         </Grid>

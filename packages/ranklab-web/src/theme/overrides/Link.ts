@@ -8,10 +8,6 @@ export default function Link(_theme: Theme) {
       defaultProps: {
         underline: "hover",
       },
-
-      styleOverrides: {
-        root: {},
-      },
     },
   }
 }

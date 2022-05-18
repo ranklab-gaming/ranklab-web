@@ -1,42 +1,49 @@
-import { ReactNode } from "react"
-
-// material
+import { useMemo, ReactNode } from "react"
+// @mui
 import { CssBaseline } from "@mui/material"
-import { createTheme, ThemeProvider, ThemeOptions } from "@mui/material/styles"
-// hooks
+import {
+  createTheme,
+  ThemeOptions,
+  ThemeProvider as MUIThemeProvider,
+} from "@mui/material/styles"
 //
-import shape from "./shape"
 import palette from "./palette"
 import typography from "./typography"
 import breakpoints from "./breakpoints"
-import GlobalStyles from "./globalStyles"
 import componentsOverride from "./overrides"
 import shadows, { customShadows } from "./shadows"
 
 // ----------------------------------------------------------------------
 
-type ThemeConfigProps = {
+type Props = {
   children: ReactNode
 }
 
-export default function ThemeConfig({ children }: ThemeConfigProps) {
-  const themeOptions: ThemeOptions = {
-    palette: { ...palette.dark, mode: "dark" },
-    shape,
-    typography,
-    breakpoints,
-    shadows: shadows.dark,
-    customShadows: customShadows.dark,
-  }
+export default function ThemeProvider({ children }: Props) {
+  const isLight = false
+  const themeDirection = "ltr"
+
+  const themeOptions: ThemeOptions = useMemo(
+    () => ({
+      palette: isLight ? palette.light : palette.dark,
+      typography,
+      breakpoints,
+      shape: { borderRadius: 8 },
+      direction: themeDirection,
+      shadows: isLight ? shadows.light : shadows.dark,
+      customShadows: isLight ? customShadows.light : customShadows.dark,
+    }),
+    [isLight, themeDirection]
+  )
 
   const theme = createTheme(themeOptions)
+
   theme.components = componentsOverride(theme)
 
   return (
-    <ThemeProvider theme={theme}>
+    <MUIThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalStyles />
       {children}
-    </ThemeProvider>
+    </MUIThemeProvider>
   )
 }
