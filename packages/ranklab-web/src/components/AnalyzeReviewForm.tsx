@@ -13,11 +13,10 @@ import {
 import CreateIcon from "@mui/icons-material/Create"
 
 import { LoadingButton } from "@mui/lab"
-import { DraftEditor } from "@ranklab/web/src/components/editor"
+import Editor from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import api from "src/api"
-import { ContentState, EditorState } from "draft-js"
 import dynamic from "next/dynamic"
 import type { DrawingType } from "./Drawing"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
@@ -47,7 +46,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   recording,
 }) => {
   const initialForm = {
-    body: EditorState.createEmpty(),
+    body: "",
     drawing: "",
     videoTimestamp: 0,
   }
@@ -75,9 +74,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
     setCurrentComment(comment)
     setIsEditing(true)
     setCurrentForm({
-      body: EditorState.createWithContent(
-        ContentState.createFromText(comment.body, "\u0001")
-      ),
+      body: comment.body,
       drawing: comment.drawing,
       videoTimestamp: comment.videoTimestamp,
     })
@@ -142,12 +139,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               </Grid>
               {isEditing ? (
                 <>
-                  <DraftEditor
-                    editorState={currentForm.body}
-                    onEditorStateChange={(body) =>
+                  <Editor
+                    simple
+                    id="simple-editor"
+                    value={currentForm.body}
+                    onChange={(body) =>
                       setCurrentForm({ ...currentForm, body })
                     }
-                    simple={true}
                   />
                   <LoadingButton
                     fullWidth
@@ -166,9 +164,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                             id: currentComment.id,
                             updateCommentRequest: {
                               drawing: currentForm.drawing,
-                              body: currentForm.body
-                                .getCurrentContent()
-                                .getPlainText("\u0001"),
+                              body: currentForm.body,
                             },
                           })
 
@@ -185,9 +181,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                             createCommentRequest: {
                               ...currentForm,
                               reviewId: review.id,
-                              body: currentForm.body
-                                .getCurrentContent()
-                                .getPlainText("\u0001"),
+                              body: currentForm.body,
                             },
                           })
 

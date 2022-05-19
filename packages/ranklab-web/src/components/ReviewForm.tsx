@@ -15,19 +15,18 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
-import { DraftEditor } from "@ranklab/web/src/components/editor"
+import Editor from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api"
 import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
-import { EditorState } from "draft-js"
 import VideoPlayer from "./VideoPlayer"
 import { useRouter } from "next/router"
 
 export type FormValuesProps = {
   title: string
   gameId: string
-  notes: string
+  notes?: string
 }
 
 export const defaultValues = {
@@ -39,7 +38,7 @@ export const defaultValues = {
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   gameId: Yup.string().required("Game is required"),
-  notes: Yup.string().required(),
+  notes: Yup.string(),
 })
 
 interface Props {
@@ -58,7 +57,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
     defaultValues,
   })
 
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [errorMessage, setErrorMessage] = useState("")
   const router = useRouter()
 
@@ -68,7 +66,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
         createReviewMutation: {
           gameId: data.gameId,
           title: data.title,
-          notes: data.notes,
+          notes: data.notes ?? "",
           recordingId: recording.id,
         },
       })
@@ -156,18 +154,12 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
                 name="notes"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                  <DraftEditor
-                    editorState={editorState}
-                    onEditorStateChange={(editorState) => {
-                      field.onChange(
-                        editorState.getCurrentContent().getPlainText("\u0001")
-                      )
-
-                      setEditorState(editorState)
-                    }}
+                  <Editor
+                    value={field.value}
+                    onChange={field.onChange}
                     onBlur={field.onBlur}
                     error={Boolean(error)}
-                    simple={true}
+                    simple
                   />
                 )}
               />

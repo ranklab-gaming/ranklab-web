@@ -1,5 +1,7 @@
 // scroll bar
 import "simplebar/src/simplebar.css"
+// editor
+import "react-quill/dist/quill.snow.css"
 
 import { ReactElement, ReactNode } from "react"
 // next
