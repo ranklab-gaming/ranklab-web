@@ -13,7 +13,7 @@
     "test": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "1.8.0",
+    "@auth0/nextjs-auth0": "1.9.0",
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.9.0",
     "@emotion/server": "11.4.0",
