@@ -6,6 +6,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
     volumes:
       - ..:/workspace:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       ranklab:
         aliases:
@@ -14,6 +15,7 @@ services:
       ranklab-test: 0.0.0.0
     environment:
       - NODE_OPTIONS=--max_old_space_size=4096
+      - DISPLAY=:0
 networks:
   ranklab:
     name: ranklab

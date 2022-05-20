@@ -12,11 +12,11 @@ describe("review", () => {
         cy.intercept("POST", "/api/player/reviews").as("createReview")
         cy.visit(`/r/${recordingId}`)
         cy.get("input[name=title]").type("This is a test review")
-        cy.contains("Game").parent().get("[role=button]").click()
+        cy.get("label").contains("Game").parent().find("[role=button]").click()
         cy.contains("Overwatch").click()
         cy.contains("Notes")
           .parent()
-          .get('[contenteditable="true"]')
+          .get('.ql-editor[contenteditable="true"]')
           .type("This is a test description")
         cy.contains("Submit Form").click()
 
@@ -24,7 +24,7 @@ describe("review", () => {
           cy.wrap(xhr.response.body).should("include", {
             title: "This is a test review",
             game_id: "overwatch",
-            notes: "This is a test description",
+            notes: "<p>This is a test description</p>",
             recording_id: recordingId,
           })
         })
