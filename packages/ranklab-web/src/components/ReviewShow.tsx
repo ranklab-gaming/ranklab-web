@@ -179,7 +179,11 @@ const ReviewShow: FunctionComponent<Props> = ({
                           onClick={() => goToComment(comment)}
                           style={{ cursor: "pointer" }}
                         >
-                          {comment.body}
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: comment.body,
+                            }}
+                          />
                         </span>
                       </Typography>
                     </Paper>
