@@ -1,4 +1,4 @@
-FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.1
+FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.2
 
 RUN curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 
