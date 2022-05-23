@@ -12,7 +12,7 @@ env:
   NEXT_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_STRIPE_PUBLISHABLE_KEY }}
   TEST_STRIPE_ACCOUNT_ID: ${{ secrets.TEST_STRIPE_ACCOUNT_ID }}
   TEST_STRIPE_CUSTOMER_ID: ${{ secrets.TEST_STRIPE_CUSTOMER_ID }}
-  NODE_AUTH_TOKEN: ${{ secrets.GHCR_PASSWORD }}
+  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   install:
@@ -79,8 +79,8 @@ jobs:
           RANKLAB_STRIPE_PRODUCT_ID: ${{ secrets.RANKLAB_STRIPE_PRODUCT_ID }}
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
-          username: ${{ secrets.GHCR_USER }}
-          password: ${{ secrets.GHCR_PASSWORD }}
+          username: $
+          password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Download the project folder
         uses: actions/download-artifact@v3
