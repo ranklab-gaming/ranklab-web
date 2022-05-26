@@ -7,6 +7,7 @@ import {
   RadioGroup,
   Stack,
   Typography,
+  FormHelperText,
 } from "@mui/material"
 import { Game, UserGame } from "@ranklab/api"
 
@@ -14,14 +15,23 @@ interface GamesSelectProps {
   games: Game[]
   selectedGames: UserGame[]
   setGames: (games: UserGame[]) => void
+  error: boolean
+  helperText?: string
 }
 
-function GamesSelect({ games, selectedGames, setGames }: GamesSelectProps) {
+function GamesSelect({
+  games,
+  selectedGames,
+  setGames,
+  error = false,
+  helperText,
+}: GamesSelectProps) {
   return (
     <FormControl>
       <FormLabel
         sx={{
           marginBottom: 3,
+          color: error ? "error.main" : undefined,
         }}
       >
         Games
@@ -33,7 +43,7 @@ function GamesSelect({ games, selectedGames, setGames }: GamesSelectProps) {
             key={game.id}
             sx={{
               border: 1,
-              borderColor: "divider",
+              borderColor: error ? "error.main" : "divider",
               borderRadius: 2,
               padding: 3,
             }}
@@ -95,6 +105,12 @@ function GamesSelect({ games, selectedGames, setGames }: GamesSelectProps) {
             </Grid>
           </Grid>
         ))}
+
+        {helperText && (
+          <FormHelperText sx={{ color: error ? "error.main" : undefined }}>
+            {helperText}
+          </FormHelperText>
+        )}
       </Stack>
     </FormControl>
   )

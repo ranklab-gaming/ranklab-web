@@ -42,15 +42,11 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
     control,
     handleSubmit,
     formState: { isSubmitting },
-    watch,
-    setValue,
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
-
-  const watchGames = watch("games", [] as UserGame[])
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
@@ -105,16 +101,18 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           )}
         />
 
-        <GamesSelect
-          games={games}
-          selectedGames={watchGames}
-          setGames={(games) => {
-            setValue("games", games, {
-              shouldValidate: true,
-              shouldDirty: true,
-              shouldTouch: true,
-            })
-          }}
+        <Controller
+          name="games"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <GamesSelect
+              games={games}
+              selectedGames={field.value}
+              setGames={field.onChange}
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
         />
 
         <LoadingButton
