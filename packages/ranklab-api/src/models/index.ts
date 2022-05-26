@@ -493,6 +493,18 @@ export interface Recording {
      * @memberof Recording
      */
     mimeType: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    createdAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    updatedAt: string;
 }
 /**
  * 

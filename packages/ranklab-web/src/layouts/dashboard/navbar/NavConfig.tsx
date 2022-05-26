@@ -1,18 +1,10 @@
 // components
-import SvgIconStyle from "../../../components/SvgIconStyle"
-
-// ----------------------------------------------------------------------
-
-const getIcon = (name: string) => (
-  <SvgIconStyle
-    src={`/assets/icons/navbar/${name}.svg`}
-    sx={{ width: 1, height: 1 }}
-  />
-)
+import Iconify from "src/components/Iconify"
 
 const ICONS = {
-  user: getIcon("ic_user"),
-  dashboard: getIcon("ic_dashboard"),
+  user: <Iconify icon={"mdi:account"} />,
+  dashboard: <Iconify icon={"mdi:view-dashboard"} />,
+  recordings: <Iconify icon={"mdi:video"} />,
 }
 
 const navConfig = [
@@ -20,17 +12,20 @@ const navConfig = [
   // ----------------------------------------------------------------------
   {
     subheader: "general",
-    items: [{ title: "app", path: "/dashboard", icon: ICONS.dashboard }],
+    items: [
+      { title: "dashboard", path: "/dashboard", icon: ICONS.dashboard },
+      { title: "recordings", path: "/recordings", icon: ICONS.recordings },
+    ],
   },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: "management",
+    subheader: "account",
     items: [
       // USER
       {
-        title: "user",
+        title: "profile",
         path: "/profile",
         icon: ICONS.user,
       },

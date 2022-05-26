@@ -383,7 +383,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsList(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<Array<Review>> {
+    async coachReviewsList(requestParameters: CoachReviewsListRequest = {}, initOverrides?: RequestInit): Promise<Array<Review>> {
         const response = await this.coachReviewsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
