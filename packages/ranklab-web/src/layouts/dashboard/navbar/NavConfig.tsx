@@ -5,27 +5,29 @@ const ICONS = {
   user: <Iconify icon={"mdi:account"} />,
   dashboard: <Iconify icon={"mdi:view-dashboard"} />,
   recordings: <Iconify icon={"mdi:video"} />,
+  upload: <Iconify icon={"mdi:plus"} />,
 }
 
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: "general",
+    subheader: "",
     items: [
-      { title: "dashboard", path: "/dashboard", icon: ICONS.dashboard },
-      { title: "recordings", path: "/recordings", icon: ICONS.recordings },
+      { title: "Upload VOD", path: "/r/new", icon: ICONS.upload },
+      { title: "Dashboard", path: "/dashboard", icon: ICONS.dashboard },
+      { title: "Recordings", path: "/recordings", icon: ICONS.recordings },
     ],
   },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: "account",
+    subheader: "Settings",
     items: [
       // USER
       {
-        title: "profile",
+        title: "Account",
         path: "/profile",
         icon: ICONS.user,
       },
