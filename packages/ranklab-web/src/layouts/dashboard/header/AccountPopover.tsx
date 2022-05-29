@@ -1,20 +1,14 @@
 import { useSnackbar } from "notistack"
 import { useState } from "react"
-// next
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-// @mui
 import { alpha } from "@mui/material/styles"
 import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
-// hooks
 import useIsMountedRef from "@ranklab/web/src/hooks/useIsMountedRef"
-// components
 import MyAvatar from "@ranklab/web/src/components/MyAvatar"
 import MenuPopover from "@ranklab/web/src/components/MenuPopover"
 import { IconButtonAnimate } from "@ranklab/web/src/components/animate"
-import { useUser } from "@auth0/nextjs-auth0"
-
-// ----------------------------------------------------------------------
+import useUser from "@ranklab/web/hooks/useUser"
 
 const MENU_OPTIONS = [
   {
@@ -27,17 +21,11 @@ const MENU_OPTIONS = [
   },
 ]
 
-// ----------------------------------------------------------------------
-
 export default function AccountPopover() {
   const router = useRouter()
-
-  const { user } = useUser()
-
+  const user = useUser()
   const isMountedRef = useIsMountedRef()
-
   const { enqueueSnackbar } = useSnackbar()
-
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -99,10 +87,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.name}
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {user?.email}
+            {user.email}
           </Typography>
         </Box>
 

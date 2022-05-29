@@ -1,9 +1,7 @@
 import React, { FunctionComponent } from "react"
-// material
 import { Card, Container, CardContent, Typography } from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import {
@@ -17,8 +15,7 @@ import {
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
-
-// ----------------------------------------------------------------------
+import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
 
 interface Props {
   review: Review
@@ -28,49 +25,48 @@ interface Props {
   paymentMethods: PaymentMethod[] | null
 }
 
-const getReviewShowServerSideProps: GetServerSideProps<Props> = async function (
-  ctx
-) {
-  const id = useRequiredParam(ctx, "id")
-  const user = await api.server(ctx).userUsersGetMe()
+export const getServerSideProps: GetServerSideProps<Props> =
+  withPageOnboardingRequired(async function (ctx) {
+    const id = useRequiredParam(ctx, "id")
+    const user = await api.server(ctx).userUsersGetMe()
 
-  let review
-  let comments
-  let recording
-  let paymentMethods = null
+    let review
+    let comments
+    let recording
+    let paymentMethods = null
 
-  if (user.type === "Player") {
-    review = await api.server(ctx).playerReviewsGet({ id })
-    comments = await api.server(ctx).playerCommentsList({ reviewId: review.id })
-    recording = await api.server(ctx).playerRecordingsGet({
-      id: review.recordingId,
-    })
+    if (user.type === "Player") {
+      review = await api.server(ctx).playerReviewsGet({ id })
+      comments = await api
+        .server(ctx)
+        .playerCommentsList({ reviewId: review.id })
+      recording = await api.server(ctx).playerRecordingsGet({
+        id: review.recordingId,
+      })
 
-    if (review.state === ReviewState.AwaitingPayment) {
-      paymentMethods = await api.server(ctx).playerStripePaymentMethodsList()
+      if (review.state === ReviewState.AwaitingPayment) {
+        paymentMethods = await api.server(ctx).playerStripePaymentMethodsList()
+      }
+    } else {
+      review = await api.server(ctx).coachReviewsGet({ id })
+      comments = await api
+        .server(ctx)
+        .coachCommentsList({ reviewId: review.id })
+      recording = await api.server(ctx).coachRecordingsGet({
+        id: review.recordingId,
+      })
     }
-  } else {
-    review = await api.server(ctx).coachReviewsGet({ id })
-    comments = await api.server(ctx).coachCommentsList({ reviewId: review.id })
-    recording = await api.server(ctx).coachRecordingsGet({
-      id: review.recordingId,
-    })
-  }
 
-  return {
-    props: {
-      review,
-      comments,
-      recording,
-      userType: user.type,
-      paymentMethods,
-    },
-  }
-}
-
-export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getReviewShowServerSideProps,
-})
+    return {
+      props: {
+        review,
+        comments,
+        recording,
+        userType: user.type,
+        paymentMethods,
+      },
+    }
+  })
 
 const AnalyzeReviewPage: FunctionComponent<Props> = ({
   review,

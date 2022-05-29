@@ -1,20 +1,11 @@
-import * as React from "react"
-// next
-import Document, { Html, Head, Main, NextScript } from "next/document"
-// emotion
+import { Children } from "react"
+import NextDocument, { Html, Head, Main, NextScript } from "next/document"
 import { CacheProvider } from "@emotion/react"
 import createCache from "@emotion/cache"
 import createEmotionServer from "@emotion/server/create-instance"
-// theme
 import palette from "../theme/palette"
 
-// ----------------------------------------------------------------------
-
-function createEmotionCache() {
-  return createCache({ key: "css" })
-}
-
-export default class MyDocument extends Document {
+export default class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
@@ -67,12 +58,9 @@ export default class MyDocument extends Document {
   }
 }
 
-// ----------------------------------------------------------------------
-
-MyDocument.getInitialProps = async (ctx) => {
+Document.getInitialProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage
-
-  const cache = createEmotionCache()
+  const cache = createCache({ key: "css" })
   const { extractCriticalToChunks } = createEmotionServer(cache)
 
   ctx.renderPage = () =>
@@ -85,23 +73,19 @@ MyDocument.getInitialProps = async (ctx) => {
         ),
     })
 
-  const initialProps = await Document.getInitialProps(ctx)
-
+  const initialProps = await NextDocument.getInitialProps(ctx)
   const emotionStyles = extractCriticalToChunks(initialProps.html)
+
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(" ")}`}
       key={style.key}
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
     />
   ))
 
   return {
     ...initialProps,
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      ...emotionStyleTags,
-    ],
+    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
   }
 }

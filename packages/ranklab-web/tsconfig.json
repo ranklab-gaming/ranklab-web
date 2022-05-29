@@ -26,7 +26,10 @@
     "jsx": "preserve",
     "incremental": true,
     "types": ["cypress"],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@ranklab/web/*": ["./src/*"]
+    }
   },
   "exclude": ["node_modules", ".next"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
