@@ -505,6 +505,18 @@ export interface Recording {
      * @memberof Recording
      */
     updatedAt: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    reviewTitle?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recording
+     */
+    reviewId?: string | null;
 }
 /**
  * 
