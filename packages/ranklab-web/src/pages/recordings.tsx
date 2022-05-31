@@ -1,4 +1,3 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
@@ -7,40 +6,22 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Recording } from "@ranklab/api"
 import RecordingList from "src/components/RecordingList"
+import withPageOnboardingRequired from "../helpers/withPageOnboardingRequired"
 
 interface Props {
   recordings: Recording[]
 }
 
-const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
-  ctx
-) {
-  try {
-    await api.server(ctx).userUsersGetMe()
-  } catch (err: any) {
-    if (err instanceof Response && err.status === 400) {
-      ctx.res
-        .writeHead(302, {
-          Location: "onboarding",
-        })
-        .end()
-    } else {
-      throw err
+export const getServerSideProps: GetServerSideProps<Props> =
+  withPageOnboardingRequired(async function (ctx) {
+    const recordings = await api.server(ctx).playerRecordingsList()
+
+    return {
+      props: {
+        recordings,
+      },
     }
-  }
-
-  const recordings = await api.server(ctx).playerRecordingsList()
-
-  return {
-    props: {
-      recordings,
-    },
-  }
-}
-
-export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getDashboardServerSideProps,
-})
+  })
 
 const RecordingsPage: FunctionComponent<Props> = function ({ recordings }) {
   return (

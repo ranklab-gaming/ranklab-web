@@ -1,13 +1,8 @@
-// next
 import NextLink from "next/link"
-// @mui
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
-// components
 import MyAvatar from "../../../components/MyAvatar"
-import { useUser } from "@auth0/nextjs-auth0"
-
-// ----------------------------------------------------------------------
+import useUser from "@ranklab/web/hooks/useUser"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -20,14 +15,12 @@ const RootStyle = styled("div")(({ theme }) => ({
   }),
 }))
 
-// ----------------------------------------------------------------------
-
 type Props = {
   isCollapse: boolean | undefined
 }
 
 export default function NavbarAccount({ isCollapse }: Props) {
-  const { user } = useUser()
+  const user = useUser()
 
   return (
     <NextLink href="/profile" passHref>
@@ -55,7 +48,7 @@ export default function NavbarAccount({ isCollapse }: Props) {
             }}
           >
             <Typography variant="subtitle2" noWrap>
-              {user?.name}
+              {user.name}
             </Typography>
           </Box>
         </RootStyle>

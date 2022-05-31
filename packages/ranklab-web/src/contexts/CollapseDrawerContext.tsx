@@ -1,9 +1,6 @@
 import { ReactNode, createContext, useState, useEffect } from "react"
-// material
 import { useMediaQuery } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
-
-// ----------------------------------------------------------------------
 
 export type CollapseDrawerContextProps = {
   isCollapse?: boolean

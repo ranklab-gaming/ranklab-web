@@ -1,38 +1,26 @@
-// scroll bar
 import "simplebar/src/simplebar.css"
-// editor
 import "react-quill/dist/quill.snow.css"
 
 import { ReactElement, ReactNode } from "react"
-// next
 import { NextPage } from "next"
 import Head from "next/head"
-import App, { AppProps, AppContext } from "next/app"
-// contexts
-import { CollapseDrawerProvider } from "../contexts/CollapseDrawerContext"
-// theme
-import ThemeProvider from "../theme"
-// components
-import ProgressBar from "../components/ProgressBar"
-import NotistackProvider from "../components/NotistackProvider"
-import MotionLazyContainer from "../components/animate/MotionLazyContainer"
-
-// Check our docs
-// https://docs-minimals.vercel.app/authentication/ts-version
-
+import NextApp, { AppProps as NextAppProps, AppContext } from "next/app"
+import { CollapseDrawerProvider } from "@ranklab/web/contexts/CollapseDrawerContext"
+import ThemeProvider from "@ranklab/web/theme"
+import ProgressBar from "@ranklab/web/components/ProgressBar"
+import NotistackProvider from "@ranklab/web/components/NotistackProvider"
+import MotionLazyContainer from "@ranklab/web/components/animate/MotionLazyContainer"
 import { UserProvider } from "@auth0/nextjs-auth0"
-
-// ----------------------------------------------------------------------
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode
 }
 
-interface MyAppProps extends AppProps {
+interface AppProps extends NextAppProps {
   Component: NextPageWithLayout
 }
 
-export default function MyApp(props: MyAppProps) {
+export default function App(props: AppProps) {
   const { Component, pageProps } = props
 
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -59,8 +47,6 @@ export default function MyApp(props: MyAppProps) {
   )
 }
 
-// ----------------------------------------------------------------------
-
-MyApp.getInitialProps = async (context: AppContext) => {
-  return await App.getInitialProps(context)
+App.getInitialProps = async (context: AppContext) => {
+  return await NextApp.getInitialProps(context)
 }

@@ -23,23 +23,26 @@ Cypress.Commands.add("login", ({ as = "Coach" } = {}) => {
             games,
             stripe_account_id,
             stripe_details_submitted,
-            stripe_payouts_enabled
+            stripe_payouts_enabled,
+            name
           )
           VALUES (
             '${user.sub}',
             array ['{"game_id": "overwatch", "skill_level": 6 }'] :: json [],
             '${stripeAccountId}',
             true,
-            true
+            true,
+            'Test Coach'
           );
         `)
       } else {
         cy.sql(`
-          INSERT INTO players (auth0_id, games, stripe_customer_id)
+          INSERT INTO players (auth0_id, games, stripe_customer_id, name)
           VALUES (
             '${user.sub}',
             array ['{"game_id": "overwatch", "skill_level": 1 }'] :: json [],
-            '${stripeCustomerId}'
+            '${stripeCustomerId}',
+            'Test Player'
           );
         `)
       }

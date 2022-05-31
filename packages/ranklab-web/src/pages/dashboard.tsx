@@ -1,12 +1,15 @@
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Button, Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
-import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Review, Game } from "@ranklab/api"
+import withPageOnboardingRequired, {
+  Props as PropsWithAuth,
+} from "../helpers/withPageOnboardingRequired"
+import { UserProvider } from "../contexts/UserContext"
+import { GetServerSideProps } from "next"
 
 interface Props {
   reviews: Review[]
@@ -15,54 +18,43 @@ interface Props {
   isPlayer?: boolean
 }
 
-const getDashboardServerSideProps: GetServerSideProps<Props> = async function (
-  ctx
-) {
-  let user
+export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
+  async function (ctx) {
+    const res = await withPageOnboardingRequired()(ctx)
 
-  try {
-    user = await api.server(ctx).userUsersGetMe()
-  } catch (err: any) {
-    if (err instanceof Response && err.status === 400) {
-      ctx.res
-        .writeHead(302, {
-          Location: "onboarding",
-        })
-        .end()
-    } else {
-      throw err
+    if ("redirect" in res || "notFound" in res) {
+      return res
+    }
+
+    const { auth } = await res.props
+
+    const [reviews, games] = await Promise.all([
+      auth.user.type === "Player"
+        ? api.server(ctx).playerReviewsList()
+        : api.server(ctx).coachReviewsList({}),
+      api.server(ctx).publicGamesList(),
+    ])
+
+    const canReview = auth.user.type === "Coach" && auth.user.canReview
+    const isPlayer = auth.user.type === "Player"
+
+    return {
+      props: {
+        games,
+        reviews,
+        canReview,
+        isPlayer,
+        auth,
+      },
     }
   }
 
-  const [reviews, games] = await Promise.all([
-    user?.type === "Player"
-      ? api.server(ctx).playerReviewsList()
-      : api.server(ctx).coachReviewsList({}),
-    api.server(ctx).publicGamesList(),
-  ])
-
-  const canReview = user?.type === "Coach" && user.canReview
-  const isPlayer = user?.type === "Player"
-
-  return {
-    props: {
-      games,
-      reviews,
-      canReview,
-      isPlayer,
-    },
-  }
-}
-
-export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getDashboardServerSideProps,
-})
-
-const DashboardPage: FunctionComponent<Props> = function ({
+const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   reviews,
   games,
   canReview,
   isPlayer,
+  auth,
 }) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
@@ -87,34 +79,36 @@ const DashboardPage: FunctionComponent<Props> = function ({
   }
 
   return (
-    <DashboardLayout>
-      <Page title="Dashboard | Ranklab">
-        <Container maxWidth="xl">
-          <Typography variant="h3" component="h1" paragraph>
-            Dashboard
-          </Typography>
-          {canReview && (
-            <Button
-              variant="contained"
-              color="info"
-              onClick={visitStripeDashboard}
-            >
-              Visit Stripe Dashboard
-            </Button>
-          )}
-          {isPlayer && (
-            <Button
-              variant="contained"
-              color="info"
-              onClick={visitCustomerPortal}
-            >
-              Change Payment Method
-            </Button>
-          )}
-          <ReviewList reviews={reviews} games={games} />
-        </Container>
-      </Page>
-    </DashboardLayout>
+    <UserProvider user={auth.user}>
+      <DashboardLayout>
+        <Page title="Dashboard | Ranklab">
+          <Container maxWidth="xl">
+            <Typography variant="h3" component="h1" paragraph>
+              Dashboard
+            </Typography>
+            {canReview && (
+              <Button
+                variant="contained"
+                color="info"
+                onClick={visitStripeDashboard}
+              >
+                Visit Stripe Dashboard
+              </Button>
+            )}
+            {isPlayer && (
+              <Button
+                variant="contained"
+                color="info"
+                onClick={visitCustomerPortal}
+              >
+                Change Payment Method
+              </Button>
+            )}
+            <ReviewList reviews={reviews} games={games} />
+          </Container>
+        </Page>
+      </DashboardLayout>
+    </UserProvider>
   )
 }
 

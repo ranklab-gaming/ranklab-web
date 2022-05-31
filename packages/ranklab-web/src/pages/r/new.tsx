@@ -13,12 +13,12 @@ import { UploadSingleFile } from "src/components/upload"
 import DashboardLayout from "src/layouts/dashboard"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Recording } from "@ranklab/api"
-import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import api from "@ranklab/web/src/api"
+import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
 
 interface NewRecordingFormProps {}
 
-export const getServerSideProps = withPageAuthRequired()
+export const getServerSideProps = withPageOnboardingRequired()
 
 const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
   const [files, setFiles] = useState<FileList | null>(null)

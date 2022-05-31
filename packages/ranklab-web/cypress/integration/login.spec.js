@@ -3,6 +3,6 @@ describe("login", () => {
     cy.login()
     cy.visit("/dashboard")
     cy.get(".MuiAvatar-root").click()
-    cy.contains("test@ranklab.gg")
+    cy.contains("Test Coach")
   })
 })

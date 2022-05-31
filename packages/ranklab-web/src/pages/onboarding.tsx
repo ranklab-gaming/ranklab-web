@@ -1,14 +1,13 @@
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0"
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
-import jwt from "jsonwebtoken"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
 import PlayerOnboardingForm from "src/components/player/OnboardingForm"
 import { Game } from "@ranklab/api"
+import withPageAuthRequired from "../helpers/withPageAuthRequired"
+import MinimalLayout from "../layouts/minimal"
 
 interface Props {
   userType: string
@@ -16,21 +15,19 @@ interface Props {
   availableCountries?: string[]
 }
 
-const getOnboardingServerSideProps: GetServerSideProps<Props> = async function (
-  ctx
-) {
-  const userType = jwt.decode(getSession(ctx.req, ctx.res)?.accessToken!, {
-    json: true,
-  })!["https://ranklab.gg/user_type"]
+export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  const res = await withPageAuthRequired()(ctx)
+
+  if ("redirect" in res || "notFound" in res) {
+    return res
+  }
+
+  const { auth } = await res.props
+  const userType = auth.claims["https://ranklab.gg/user_type"]
 
   try {
     await api.server(ctx).userUsersGetMe()
-
-    ctx.res
-      .writeHead(302, {
-        Location: "dashboard",
-      })
-      .end()
+    return { redirect: { destination: "dashboard" }, props: {} as Props }
   } catch (err) {
     if (!(err instanceof Response && err.status === 400)) {
       throw err
@@ -56,14 +53,10 @@ const getOnboardingServerSideProps: GetServerSideProps<Props> = async function (
       props: {
         userType,
         games,
-      },
+      } as Props,
     }
   }
 }
-
-export const getServerSideProps = withPageAuthRequired({
-  getServerSideProps: getOnboardingServerSideProps,
-})
 
 const OnboardingPage: FunctionComponent<Props> = function ({
   userType,
@@ -71,7 +64,7 @@ const OnboardingPage: FunctionComponent<Props> = function ({
   availableCountries,
 }) {
   return (
-    <DashboardLayout>
+    <MinimalLayout>
       <Page title="Onboarding | Ranklab">
         <Container maxWidth="xl">
           <Typography variant="h3" component="h1" paragraph>
@@ -87,7 +80,7 @@ const OnboardingPage: FunctionComponent<Props> = function ({
           )}
         </Container>
       </Page>
-    </DashboardLayout>
+    </MinimalLayout>
   )
 }
 
