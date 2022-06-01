@@ -31,6 +31,7 @@ import {
     Game,
     Health,
     LoginLink,
+    PaginatedResultForReview,
     PaymentMethod,
     Player,
     PlayerUpdateReviewRequest,
@@ -71,6 +72,7 @@ export interface CoachReviewsGetRequest {
 
 export interface CoachReviewsListRequest {
     pending?: boolean | null;
+    page?: number | null;
 }
 
 export interface CoachReviewsUpdateRequest {
@@ -104,6 +106,10 @@ export interface PlayerReviewsCreateRequest {
 
 export interface PlayerReviewsGetRequest {
     id: string;
+}
+
+export interface PlayerReviewsListRequest {
+    page?: number | null;
 }
 
 export interface PlayerReviewsUpdateRequest {
@@ -362,11 +368,15 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsListRaw(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Review>>> {
+    async coachReviewsListRaw(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
         const queryParameters: any = {};
 
         if (requestParameters.pending !== undefined) {
             queryParameters['pending'] = requestParameters.pending;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -383,7 +393,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsList(requestParameters: CoachReviewsListRequest = {}, initOverrides?: RequestInit): Promise<Array<Review>> {
+    async coachReviewsList(requestParameters: CoachReviewsListRequest = {}, initOverrides?: RequestInit): Promise<PaginatedResultForReview> {
         const response = await this.coachReviewsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -685,8 +695,12 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Review>>> {
+    async playerReviewsListRaw(requestParameters: PlayerReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
         const queryParameters: any = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -702,8 +716,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsList(initOverrides?: RequestInit): Promise<Array<Review>> {
-        const response = await this.playerReviewsListRaw(initOverrides);
+    async playerReviewsList(requestParameters: PlayerReviewsListRequest = {}, initOverrides?: RequestInit): Promise<PaginatedResultForReview> {
+        const response = await this.playerReviewsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

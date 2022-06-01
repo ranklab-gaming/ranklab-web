@@ -379,6 +379,25 @@ export interface LoginLink {
 /**
  * 
  * @export
+ * @interface PaginatedResultForReview
+ */
+export interface PaginatedResultForReview {
+    /**
+     * 
+     * @type {Array<Review>}
+     * @memberof PaginatedResultForReview
+     */
+    records: Array<Review>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForReview
+     */
+    totalPages: number;
+}
+/**
+ * 
+ * @export
  * @interface PaymentMethod
  */
 export interface PaymentMethod {

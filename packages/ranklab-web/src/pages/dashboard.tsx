@@ -16,6 +16,7 @@ interface Props {
   games: Game[]
   canReview?: boolean
   isPlayer?: boolean
+  totalPages: number
 }
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
@@ -28,7 +29,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 
     const { auth } = await res.props
 
-    const [reviews, games] = await Promise.all([
+    const [{ records: reviews, totalPages }, games] = await Promise.all([
       auth.user.type === "Player"
         ? api.server(ctx).playerReviewsList()
         : api.server(ctx).coachReviewsList({}),
@@ -45,6 +46,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
         canReview,
         isPlayer,
         auth,
+        totalPages,
       },
     }
   }
@@ -55,6 +57,7 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   canReview,
   isPlayer,
   auth,
+  totalPages,
 }) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
@@ -105,6 +108,7 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
               </Button>
             )}
             <ReviewList reviews={reviews} games={games} />
+            {totalPages}
           </Container>
         </Page>
       </DashboardLayout>
