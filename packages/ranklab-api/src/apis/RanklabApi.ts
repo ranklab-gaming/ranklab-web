@@ -71,7 +71,6 @@ export interface CoachReviewsGetRequest {
 }
 
 export interface CoachReviewsListRequest {
-    pending?: boolean | null;
     page?: number | null;
 }
 
@@ -370,10 +369,6 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async coachReviewsListRaw(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
         const queryParameters: any = {};
-
-        if (requestParameters.pending !== undefined) {
-            queryParameters['pending'] = requestParameters.pending;
-        }
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;

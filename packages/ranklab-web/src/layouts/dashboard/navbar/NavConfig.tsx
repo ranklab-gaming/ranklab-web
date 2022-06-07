@@ -6,6 +6,7 @@ const ICONS = {
   dashboard: <Iconify icon={"mdi:view-dashboard"} />,
   recordings: <Iconify icon={"mdi:video"} />,
   upload: <Iconify icon={"mdi:plus"} />,
+  archive: <Iconify icon={"mdi:archive"} />,
 }
 
 const navConfig = [
@@ -16,6 +17,7 @@ const navConfig = [
     items: [
       { title: "Upload VOD", path: "/r/new", icon: ICONS.upload },
       { title: "Dashboard", path: "/dashboard", icon: ICONS.dashboard },
+      { title: "Archive", path: "/archive", icon: ICONS.archive },
       { title: "Recordings", path: "/recordings", icon: ICONS.recordings },
     ],
   },
