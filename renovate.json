@@ -11,7 +11,7 @@
       "automerge": true
     },
     {
-      "matchPackageName": ["cypress"],
+      "matchPackageNames": ["cypress"],
       "postUpgradeTasks": {
         "commands": ["./bin/update-cypress"],
         "fileFilters": [".github/workflows/ci.yml"],
