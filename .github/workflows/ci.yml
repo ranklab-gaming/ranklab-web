@@ -53,7 +53,7 @@ jobs:
         --network-alias=ranklab-test
       volumes:
         - /var/lib/docker/containers:/containers
-        - /tmp/ranklab-web.tar.zst:/tmp/ranklab-web.tar.zst
+        - /tmp:/tmp
     services:
       postgres:
         image: postgres:14.2
@@ -82,6 +82,8 @@ jobs:
           username: $
           password: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Install zstd
+        run: apt-get install -y zstd
       - name: Download the project folder
         uses: actions/download-artifact@v3
         with:
