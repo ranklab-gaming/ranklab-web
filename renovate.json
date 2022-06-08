@@ -9,6 +9,14 @@
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
+    },
+    {
+      "matchPackageName": ["cypress"],
+      "postUpgradeTasks": {
+        "commands": ["./bin/update-cypress"],
+        "fileFilters": [".github/workflows/ci.yml"],
+        "executionMode": "update"
+      }
     }
   ]
 }
