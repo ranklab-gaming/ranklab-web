@@ -8,5 +8,5 @@ openapi-generator-cli generate \
   -g typescript-fetch \
   -c ./openapi.config.json
 
-yarn workspace @ranklab/api install
-yarn workspace @ranklab/api build
+npm install -w @ranklab/api
+npm run build -w @ranklab/api

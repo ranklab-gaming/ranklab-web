@@ -25,7 +25,7 @@ jobs:
         with:
           path: |
             ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          key: npm-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
       - uses: actions/setup-node@v3
         with:
           node-version: "14.x"
@@ -34,7 +34,7 @@ jobs:
       - uses: bahmutov/npm-install@v1
         env:
           CYPRESS_INSTALL_BINARY: 0
-      - run: yarn build
+      - run: npm run build
       - run: tar -czf /tmp/ranklab-web.tar.gz .
       - name: Save project folder
         uses: actions/upload-artifact@v3
@@ -92,7 +92,7 @@ jobs:
         with:
           working-directory: packages/ranklab-web
           record: true
-          start: yarn test:start
+          start: npm run test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"
           browser: chrome
           group: "Chrome"

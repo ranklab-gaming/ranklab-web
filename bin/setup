@@ -1,7 +1,9 @@
 #!/bin/sh
 
 sudo chown -R vscode .
+sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 aws s3 cp s3://ranklab-development-secrets/.env.web ./packages/ranklab-web/.env.development.local
 aws s3 cp s3://ranklab-test-secrets/.env.web ./packages/ranklab-web/.env.test.local --profile test
-yarn install
-yarn workspace @ranklab/api build
+sudo npm install --location=global npm@latest
+npm install
+npm run build -w @ranklab/api
