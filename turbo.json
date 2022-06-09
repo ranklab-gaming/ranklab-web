@@ -20,7 +20,6 @@
     "$NEXT_PUBLIC_CDN_URL",
     "$NEXT_PUBLIC_SENTRY_DSN",
     "$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-    "tsconfig.json",
-    ".env.*"
+    "tsconfig.json"
   ]
 }
