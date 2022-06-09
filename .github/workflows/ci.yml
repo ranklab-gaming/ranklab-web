@@ -15,7 +15,7 @@ env:
   TURBO_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
 jobs:
-  install:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,7 +33,7 @@ jobs:
   chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: install
+    needs: build
     services:
       postgres:
         image: postgres:14.2

@@ -1,6 +1,8 @@
 const { loadEnvConfig } = require("@next/env")
 const decrypt = require("./decrypt")
 const { Client } = require("pg")
+const path = require("path")
+const projectDir = path.join(__dirname, "../../")
 
 async function queryDb(query) {
   const client = new Client({ connectionString: process.env.DATABASE_URL })
@@ -20,7 +22,6 @@ module.exports = async (on, config) => {
     decrypt,
   })
 
-  const projectDir = process.cwd()
   loadEnvConfig(projectDir)
 
   config.env.auth0ClientSecret = process.env.AUTH0_CLIENT_SECRET
