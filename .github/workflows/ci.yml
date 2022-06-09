@@ -13,6 +13,8 @@ env:
   TEST_STRIPE_ACCOUNT_ID: ${{ secrets.TEST_STRIPE_ACCOUNT_ID }}
   TEST_STRIPE_CUSTOMER_ID: ${{ secrets.TEST_STRIPE_CUSTOMER_ID }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TURBO_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
 
 jobs:
   install:
