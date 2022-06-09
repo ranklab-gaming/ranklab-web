@@ -65,6 +65,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
         ports:
           - "8000:8000"
+        options: >-
+          --add-host=ranklab-test:host-gateway
     steps:
       - name: Checkout
         uses: actions/checkout@v3
