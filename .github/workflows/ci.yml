@@ -29,7 +29,7 @@ jobs:
       - name: Install NPM dependencies
         uses: bahmutov/npm-install@v1
       - name: Build
-      - run: npm run build
+        run: npm run build
   chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -70,16 +70,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
-      - run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
+      - name: Add hosts
+        run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
       - name: Install NPM dependencies
         uses: bahmutov/npm-install@v1
       - name: Build
-      - run: npm run build
+        run: npm run build
       - name: Run Chrome tests
         uses: cypress-io/github-action@v4
         with:
@@ -90,7 +91,7 @@ jobs:
           browser: chrome
           group: "Chrome"
           install: false
-      - name: Print container logs
+      - name: Output container logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log
   deploy:
