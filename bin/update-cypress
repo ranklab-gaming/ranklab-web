@@ -1,5 +1,0 @@
-#!/bin/bash
-
-set -e
-version=$(npm list cypress | sed -En 's/.*cypress@(.+)/\1/p')
-sed -Ei "s|cypress/included:(.+)|cypress/included:$version|g" .github/workflows/ci.yml

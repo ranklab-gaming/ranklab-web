@@ -24,36 +24,22 @@ jobs:
         with:
           path: |
             ${{ github.workspace }}/packages/ranklab-web/.next/cache
-          key: next-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: next-cache-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            next-cache-${{ runner.os }}-${{ github.sha }}
+            next-cache-${{ runner.os }}-
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
-      - uses: bahmutov/npm-install@v1
-        env:
-          CYPRESS_INSTALL_BINARY: 0
+      - name: Install npm dependencies
+        uses: bahmutov/npm-install@v1
       - run: npm run build
-      - run: tar --use-compress-program zstd -cf /tmp/ranklab-web.tar.zst .
-      - name: Save project folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: ranklab-web.tar.zst
-          if-no-files-found: error
-          path: /tmp/ranklab-web.tar.zst
-          retention-days: 1
   chrome-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: install
-    container:
-      image: cypress/included:9.7.0
-      options: >-
-        --add-host=ranklab-test:0.0.0.0
-        --network-alias=ranklab-test
-      volumes:
-        - /var/lib/docker/containers:/containers
-        - /tmp:/tmp
     services:
       postgres:
         image: postgres:14.2
@@ -61,6 +47,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: app_test
+        ports:
+          - "5432:5432"
       ranklab-api:
         env:
           ROCKET_PROFILE: test
@@ -81,16 +69,27 @@ jobs:
         credentials:
           username: $
           password: ${{ secrets.GITHUB_TOKEN }}
+        ports:
+          - "8000:8000"
     steps:
-      - name: Install zstd
-        run: apt-get install -y zstd
-      - name: Download the project folder
-        uses: actions/download-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
-          name: ranklab-web.tar.zst
-      - run: tar --use-compress-program zstd -xf /tmp/ranklab-web.tar.zst
+          path: |
+            ${{ github.workspace }}/packages/ranklab-web/.next/cache
+          key: next-cache-${{ runner.os }}-${{ github.sha }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@ranklab-gaming"
+      - run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
+      - name: Install npm dependencies
+        uses: bahmutov/npm-install@v1
+      - run: npm run build
       - name: Chrome tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           working-directory: packages/ranklab-web
           record: true
