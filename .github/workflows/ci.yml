@@ -1,6 +1,5 @@
 name: Test and Deploy
 on: [push]
-
 env:
   NODE_ENV: test
   NODE_OPTIONS: --max_old_space_size=4096
@@ -15,20 +14,21 @@ env:
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   TURBO_TOKEN: ${{ secrets.VERCEL_TOKEN }}
   TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
-
 jobs:
   install:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Node
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
-      - name: Install npm dependencies
+      - name: Install NPM dependencies
         uses: bahmutov/npm-install@v1
+      - name: Build
       - run: npm run build
   chrome-tests:
     runs-on: ubuntu-latest
@@ -69,16 +69,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup Node
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
       - run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
-      - name: Install npm dependencies
+      - name: Install NPM dependencies
         uses: bahmutov/npm-install@v1
+      - name: Build
       - run: npm run build
-      - name: Chrome tests
+      - name: Run Chrome tests
         uses: cypress-io/github-action@v4
         with:
           working-directory: packages/ranklab-web
@@ -88,7 +90,7 @@ jobs:
           browser: chrome
           group: "Chrome"
           install: false
-      - name: Log server logs
+      - name: Print container logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log
   deploy:
@@ -96,8 +98,10 @@ jobs:
     needs: [chrome-tests]
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v3
-      - uses: amondnet/vercel-action@v20
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
