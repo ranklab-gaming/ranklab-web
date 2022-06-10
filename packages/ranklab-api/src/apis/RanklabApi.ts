@@ -72,6 +72,7 @@ export interface CoachReviewsGetRequest {
 
 export interface CoachReviewsListRequest {
     page?: number | null;
+    archived?: boolean | null;
 }
 
 export interface CoachReviewsUpdateRequest {
@@ -372,6 +373,10 @@ export class RanklabApi extends runtime.BaseAPI {
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.archived !== undefined) {
+            queryParameters['archived'] = requestParameters.archived;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

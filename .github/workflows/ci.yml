@@ -84,7 +84,7 @@ jobs:
       - name: Run Chrome tests
         uses: cypress-io/github-action@v4
         with:
-          working-directory: packages/ranklab-web
+          working-directory: apps/ranklab-web
           record: true
           start: npm run test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"

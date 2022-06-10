@@ -6,7 +6,7 @@
       "type": "node-terminal",
       "request": "launch",
       "sourceMapPathOverrides": {
-        "webpack://?:*/./*": "${workspaceFolder}/packages/ranklab-web/*"
+        "webpack://?:*/./*": "${workspaceFolder}/apps/ranklab-web/*"
       },
       "command": "npm run dev",
       "resolveSourceMapLocations": ["**", "**/node_modules/**"]

@@ -5,12 +5,13 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build --ignore=\"packages/ranklab-web/cypress/**/*\"",
+    "build": "turbo run build --ignore=\"apps/ranklab-web/cypress/**/*\"",
     "start": "turbo run start",
     "codegen": "./bin/codegen",
-    "test": "NODE_ENV=test turbo run build test --ignore=\"packages/ranklab-web/cypress/**/*\""
+    "test": "NODE_ENV=test turbo run build test --ignore=\"apps/ranklab-web/cypress/**/*\""
   },
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "dependencies": {},
