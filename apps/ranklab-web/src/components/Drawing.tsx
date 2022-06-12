@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from "react"
 import { Box } from "@mui/material"
-import { useSvgDrawing } from "@ranklab-gaming/svg-drawing-react"
+import { useSvgDrawing } from "@svg-drawing/react"
 
 interface Props {
   onChange: (svg: string) => void
