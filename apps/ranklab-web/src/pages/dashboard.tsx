@@ -10,13 +10,14 @@ import withPageOnboardingRequired, {
 } from "../helpers/withPageOnboardingRequired"
 import { UserProvider } from "../contexts/UserContext"
 import { GetServerSideProps } from "next"
+import { Pagination } from "../@types"
 
 interface Props {
   reviews: Review[]
   games: Game[]
   canReview?: boolean
   isPlayer?: boolean
-  totalPages: number
+  pagination: Pagination
 }
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 
     const { auth } = await res.props
 
-    const [{ records: reviews, totalPages }, games] = await Promise.all([
+    const [{ records: reviews, ...pagination }, games] = await Promise.all([
       auth.user.type === "Player"
         ? api.server(ctx).playerReviewsList()
         : api.server(ctx).coachReviewsList({}),
@@ -46,7 +47,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
         canReview,
         isPlayer,
         auth,
-        totalPages,
+        pagination,
       },
     }
   }
@@ -57,7 +58,7 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   canReview,
   isPlayer,
   auth,
-  totalPages,
+  pagination,
 }) {
   const visitStripeDashboard = async () => {
     const currentLocation = window.location.href
@@ -107,8 +108,11 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
                 Change Payment Method
               </Button>
             )}
-            <ReviewList reviews={reviews} games={games} />
-            {totalPages}
+            <ReviewList
+              reviews={reviews}
+              games={games}
+              pagination={pagination}
+            />
           </Container>
         </Page>
       </DashboardLayout>

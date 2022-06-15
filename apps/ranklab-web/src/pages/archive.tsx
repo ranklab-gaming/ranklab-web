@@ -10,13 +10,14 @@ import withPageOnboardingRequired, {
 } from "../helpers/withPageOnboardingRequired"
 import { UserProvider } from "../contexts/UserContext"
 import { GetServerSideProps } from "next"
+import { Pagination } from "../@types"
 
 interface Props {
   reviews: Review[]
   games: Game[]
   canReview?: boolean
   isPlayer?: boolean
-  totalPages: number
+  pagination: Pagination
 }
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 
     const { auth } = await res.props
 
-    const [{ records: reviews, totalPages }, games] = await Promise.all([
+    const [{ records: reviews, ...pagination }, games] = await Promise.all([
       api.server(ctx).coachReviewsList({ archived: true }),
       api.server(ctx).publicGamesList(),
     ])
@@ -39,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
         games,
         reviews,
         auth,
-        totalPages,
+        pagination,
       },
     }
   }
@@ -48,7 +49,7 @@ const ArchivePage: FunctionComponent<PropsWithAuth<Props>> = function ({
   reviews,
   games,
   auth,
-  totalPages,
+  pagination,
 }) {
   return (
     <UserProvider user={auth.user}>
@@ -58,8 +59,12 @@ const ArchivePage: FunctionComponent<PropsWithAuth<Props>> = function ({
             <Typography variant="h3" component="h1" paragraph>
               Archive
             </Typography>
-            <ReviewList reviews={reviews} games={games} />
-            {totalPages}
+            <ReviewList
+              reviews={reviews}
+              games={games}
+              pagination={pagination}
+              queryParams={{ archived: true }}
+            />
           </Container>
         </Page>
       </DashboardLayout>

@@ -394,6 +394,24 @@ export interface PaginatedResultForReview {
      * @memberof PaginatedResultForReview
      */
     totalPages: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForReview
+     */
+    perPage: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForReview
+     */
+    page: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForReview
+     */
+    count: number;
 }
 /**
  * 

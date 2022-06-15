@@ -6,11 +6,15 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  TablePagination,
 } from "@mui/material"
 import { Game, Review, ReviewState } from "@ranklab/api"
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useState, MouseEvent } from "react"
 import Label from "./Label"
 import NextLink from "next/link"
+import { Pagination } from "../@types"
+import useUser from "../hooks/useUser"
+import api from "@ranklab/web/api"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,
@@ -63,9 +67,36 @@ const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
 interface Props {
   reviews: Review[]
   games: Game[]
+  pagination: Pagination
+  queryParams?: {
+    archived: boolean
+  }
 }
 
-const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
+const ReviewList: FunctionComponent<Props> = function ({
+  reviews: initialReviews,
+  games,
+  pagination,
+  queryParams,
+}) {
+  const [page, setPage] = useState(pagination.page)
+  const [reviews, setReviews] = useState(initialReviews)
+  const user = useUser()
+
+  const onPageChange = async (
+    _event: MouseEvent<HTMLButtonElement> | null,
+    page: number
+  ) => {
+    const requestParams = { page: page + 1, ...(queryParams || {}) }
+
+    const result = await (user.type === "Player"
+      ? api.client.playerReviewsList(requestParams)
+      : api.client.coachReviewsList(requestParams))
+
+    setPage(result.page)
+    setReviews(result.records)
+  }
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -103,6 +134,15 @@ const ReviewList: FunctionComponent<Props> = function ({ reviews, games }) {
             </NextLink>
           ))}
         </TableBody>
+        {pagination.totalPages > 1 && (
+          <TablePagination
+            rowsPerPage={pagination.perPage}
+            rowsPerPageOptions={[]}
+            count={pagination.count}
+            page={page - 1}
+            onPageChange={onPageChange}
+          />
+        )}
       </Table>
     </TableContainer>
   )
