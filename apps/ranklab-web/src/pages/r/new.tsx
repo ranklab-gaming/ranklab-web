@@ -15,6 +15,7 @@ import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Recording } from "@ranklab/api"
 import api from "@ranklab/web/src/api"
 import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
+import NextLink from "next/link"
 
 interface NewRecordingFormProps {}
 
@@ -66,6 +67,12 @@ const NewRecordingForm: FunctionComponent<NewRecordingFormProps> = () => {
     <DashboardLayout>
       <Page title="Dashboard | Upload your recording">
         <Container maxWidth="xl">
+          <NextLink href="https://ranklab-production-assets.s3.eu-west-2.amazonaws.com/RanklabSetup.exe">
+            <Button variant="contained" color="info">
+              Download Client
+            </Button>
+          </NextLink>
+
           <Typography variant="h3" component="h1" paragraph>
             Upload your recording
           </Typography>

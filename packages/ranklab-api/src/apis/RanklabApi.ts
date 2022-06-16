@@ -110,6 +110,7 @@ export interface PlayerReviewsGetRequest {
 
 export interface PlayerReviewsListRequest {
     page?: number | null;
+    archived?: boolean | null;
 }
 
 export interface PlayerReviewsUpdateRequest {
@@ -700,6 +701,10 @@ export class RanklabApi extends runtime.BaseAPI {
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.archived !== undefined) {
+            queryParameters['archived'] = requestParameters.archived;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
