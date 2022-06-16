@@ -65,7 +65,7 @@
     "@types/lodash": "4.14.182",
     "@types/nprogress": "0.2.0",
     "@types/numeral": "2.0.2",
-    "@types/react": "17.0.45",
+    "@types/react": "17.0.46",
     "@types/react-lazy-load-image-component": "1.5.2",
     "@types/react-router-dom": "5.3.3",
     "@types/react-scroll": "1.8.3",
