@@ -89,7 +89,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
               <VideoPlayer
                 controls={!isEditing}
                 ref={playerRef}
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recording.videoKey}`}
+                src={`${process.env.NEXT_PUBLIC_UPLOADS_CDN_URL}/${recording.videoKey}`}
                 type={recording.mimeType}
                 onTimeUpdate={(seconds) =>
                   setCurrentForm({

@@ -178,7 +178,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
           <Grid container direction="column" spacing={2} sx={{ flex: "1" }}>
             <Grid sx={{ flexGrow: 1 }} item>
               <VideoPlayer
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/${recording.videoKey}`}
+                src={`${process.env.NEXT_PUBLIC_UPLOADS_CDN_URL}/${recording.videoKey}`}
                 type={recording.mimeType}
               />
             </Grid>
