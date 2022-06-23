@@ -30,7 +30,7 @@ const navConfig = [
       // USER
       {
         title: "Account",
-        path: "/profile",
+        path: "/account",
         icon: ICONS.user,
       },
     ],

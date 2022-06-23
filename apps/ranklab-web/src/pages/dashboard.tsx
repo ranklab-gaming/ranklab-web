@@ -38,14 +38,12 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     ])
 
     const canReview = auth.user.type === "Coach" && auth.user.canReview
-    const isPlayer = auth.user.type === "Player"
 
     return {
       props: {
         games,
         reviews,
         canReview,
-        isPlayer,
         auth,
         pagination,
       },
@@ -56,7 +54,6 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   reviews,
   games,
   canReview,
-  isPlayer,
   auth,
   pagination,
 }) {
@@ -65,17 +62,6 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
 
     const loginLink = await api.client.coachStripeLoginLinksCreate({
       createLoginLinkMutation: {
-        returnUrl: currentLocation,
-      },
-    })
-    window.location.href = loginLink.url
-  }
-
-  const visitCustomerPortal = async () => {
-    const currentLocation = window.location.href
-
-    const loginLink = await api.client.playerStripeBillingPortalSessionsCreate({
-      createBillingPortalSessionMutation: {
         returnUrl: currentLocation,
       },
     })
@@ -97,15 +83,6 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
                 onClick={visitStripeDashboard}
               >
                 Visit Stripe Dashboard
-              </Button>
-            )}
-            {isPlayer && (
-              <Button
-                variant="contained"
-                color="info"
-                onClick={visitCustomerPortal}
-              >
-                Change Payment Method
               </Button>
             )}
             <ReviewList

@@ -16,8 +16,8 @@ const MENU_OPTIONS = [
     linkTo: "/",
   },
   {
-    label: "Profile",
-    linkTo: "/profile",
+    label: "Account",
+    linkTo: "/account",
   },
 ]
 
