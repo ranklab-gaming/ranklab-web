@@ -9,7 +9,6 @@ import Iconify from "@ranklab/web/components/Iconify"
 import {
   AccountGeneral,
   AccountBilling,
-  AccountNotifications,
   AccountChangePassword,
 } from "@ranklab/web/components/account"
 import DashboardLayout from "../layouts/dashboard"
@@ -57,11 +56,6 @@ export default function UserAccount({ auth }: Props<{}>) {
       value: "billing",
       icon: <Iconify icon={"ic:round-receipt"} width={20} height={20} />,
       component: <AccountBilling />,
-    },
-    {
-      value: "notifications",
-      icon: <Iconify icon={"eva:bell-fill"} width={20} height={20} />,
-      component: <AccountNotifications />,
     },
     {
       value: "change_password",

@@ -1,7 +1,7 @@
 import { useSnackbar } from "notistack"
 import { Stack, Card, Typography, Button } from "@mui/material"
 import useUser from "@ranklab/web/hooks/useUser"
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ export default function AccountChangePassword() {
         email,
         connection: "Username-Password-Authentication",
       },
-    }
+    } as AxiosRequestConfig
 
     try {
       await axios(options)

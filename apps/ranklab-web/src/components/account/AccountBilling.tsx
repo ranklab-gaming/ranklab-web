@@ -1,5 +1,5 @@
 // @mui
-import { Box, Card, Button, Typography, Stack } from "@mui/material"
+import { Card, Button, Typography, Stack } from "@mui/material"
 import api from "@ranklab/web/api"
 import useUser from "@ranklab/web/hooks/useUser"
 // ----------------------------------------------------------------------
