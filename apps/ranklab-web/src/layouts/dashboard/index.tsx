@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }: Props) {
 
   useEffect(() => {
     api.client
-      .userUsersGetMe()
+      .userMeGetMe()
       .then((user: User) => {
         if (user.type === "Coach") {
           setCoach(user)

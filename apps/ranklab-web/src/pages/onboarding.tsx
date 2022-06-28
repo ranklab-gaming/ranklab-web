@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const userType = auth.claims["https://ranklab.gg/user_type"]
 
   try {
-    await api.server(ctx).userUsersGetMe()
+    await api.server(ctx).userMeGetMe()
     return { redirect: { destination: "dashboard" }, props: {} as Props }
   } catch (err) {
     if (!(err instanceof Response && err.status === 400)) {

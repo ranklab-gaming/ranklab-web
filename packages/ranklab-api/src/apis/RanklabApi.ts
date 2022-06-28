@@ -842,13 +842,13 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userUsersGetMeRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<User>> {
+    async userMeGetMeRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<User>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         const response = await this.request({
-            path: `/user/users/me`,
+            path: `/user/me`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -859,8 +859,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userUsersGetMe(initOverrides?: RequestInit): Promise<User> {
-        const response = await this.userUsersGetMeRaw(initOverrides);
+    async userMeGetMe(initOverrides?: RequestInit): Promise<User> {
+        const response = await this.userMeGetMeRaw(initOverrides);
         return await response.value();
     }
 

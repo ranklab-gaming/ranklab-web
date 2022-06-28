@@ -28,7 +28,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired(async function (ctx) {
     const id = useRequiredParam(ctx, "id")
-    const user = await api.server(ctx).userUsersGetMe()
+    const user = await api.server(ctx).userMeGetMe()
 
     let review
     let comments
