@@ -478,6 +478,31 @@ export interface Player {
 /**
  * 
  * @export
+ * @interface PlayerUpdateAccountRequest
+ */
+export interface PlayerUpdateAccountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PlayerUpdateAccountRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PlayerUpdateAccountRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof PlayerUpdateAccountRequest
+     */
+    games: Array<UserGame>;
+}
+/**
+ * 
+ * @export
  * @interface PlayerUpdateReviewRequest
  */
 export interface PlayerUpdateReviewRequest {

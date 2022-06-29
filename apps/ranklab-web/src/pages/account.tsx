@@ -14,9 +14,11 @@ import {
 import DashboardLayout from "../layouts/dashboard"
 import { GetServerSideProps } from "next"
 import withPageOnboardingRequired, {
-  Props,
+  Props as PropsWithAuth,
 } from "../helpers/withPageOnboardingRequired"
 import { UserProvider } from "../contexts/UserContext"
+import api from "@ranklab/web/api"
+import { Game } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +26,11 @@ UserAccount.getLayout = function getLayout(page: React.ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>
 }
 
-export const getServerSideProps: GetServerSideProps<Props<{}>> =
+interface Props {
+  games: Game[]
+}
+
+export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
     const res = await withPageOnboardingRequired()(ctx)
 
@@ -33,24 +39,26 @@ export const getServerSideProps: GetServerSideProps<Props<{}>> =
     }
 
     const { auth } = await res.props
+    const games = await api.server(ctx).publicGamesList()
 
     return {
       props: {
         auth,
+        games,
       },
     }
   }
 
 // ----------------------------------------------------------------------
 
-export default function UserAccount({ auth }: Props<{}>) {
+export default function UserAccount({ auth, games }: PropsWithAuth<Props>) {
   const { currentTab, onChangeTab } = useTabs("general")
 
   const ACCOUNT_TABS = [
     {
       value: "general",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <AccountGeneral />,
+      component: <AccountGeneral games={games} />,
     },
     {
       value: "billing",

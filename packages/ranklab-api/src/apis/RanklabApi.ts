@@ -34,6 +34,7 @@ import {
     PaginatedResultForReview,
     PaymentMethod,
     Player,
+    PlayerUpdateAccountRequest,
     PlayerUpdateReviewRequest,
     Recording,
     Review,
@@ -86,6 +87,10 @@ export interface CoachStripeAccountLinksCreateRequest {
 
 export interface CoachStripeLoginLinksCreateRequest {
     createLoginLinkMutation: CreateLoginLinkMutation;
+}
+
+export interface PlayerAccountUpdateRequest {
+    playerUpdateAccountRequest: PlayerUpdateAccountRequest;
 }
 
 export interface PlayerCommentsListRequest {
@@ -517,6 +522,37 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async indexGetHealth(initOverrides?: RequestInit): Promise<Health> {
         const response = await this.indexGetHealthRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerAccountUpdateRaw(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Player>> {
+        if (requestParameters.playerUpdateAccountRequest === null || requestParameters.playerUpdateAccountRequest === undefined) {
+            throw new runtime.RequiredError('playerUpdateAccountRequest','Required parameter requestParameters.playerUpdateAccountRequest was null or undefined when calling playerAccountUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/account`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.playerUpdateAccountRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerAccountUpdate(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit): Promise<Player> {
+        const response = await this.playerAccountUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

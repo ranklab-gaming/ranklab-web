@@ -6,6 +6,10 @@ import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
+import api from "@ranklab/web/api"
+import GamesSelect from "../GamesSelect"
+import { UserGame, Game } from "@ranklab/api"
+import { FunctionComponent } from "react"
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +18,11 @@ type FormValuesProps = {
   email: string
   bio?: string
   type: string
+  games: UserGame[]
+}
+
+interface Props {
+  games: Game[]
 }
 
 const UpdateUserSchema = Yup.object().shape({
@@ -24,9 +33,17 @@ const UpdateUserSchema = Yup.object().shape({
     then: Yup.string().required("Bio is required"),
   }),
   type: Yup.string().required(),
+  games: Yup.array()
+    .of(
+      Yup.object().shape({
+        gameId: Yup.string().required(),
+        skillLevel: Yup.number().required(),
+      })
+    )
+    .min(1, "At least one game is required"),
 })
 
-export default function AccountGeneral() {
+const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
   const { enqueueSnackbar } = useSnackbar()
 
   const user = useUser()
@@ -36,6 +53,7 @@ export default function AccountGeneral() {
     email: user.email,
     bio: user.type === "Coach" ? user.bio : undefined,
     type: user.type,
+    games: user.games,
   }
 
   const form = useForm<FormValuesProps>({
@@ -49,11 +67,16 @@ export default function AccountGeneral() {
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (_data: FormValuesProps) => {
+  const onSubmit = async (data: FormValuesProps) => {
     try {
+      await api.client.playerAccountUpdate({
+        playerUpdateAccountRequest: data,
+      })
       enqueueSnackbar("Profile updated successfully")
     } catch (error) {
-      console.error(error)
+      enqueueSnackbar("An error occurred while updating your profile", {
+        variant: "error",
+      })
     }
   }
 
@@ -61,48 +84,20 @@ export default function AccountGeneral() {
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card sx={{ p: 3 }}>
-          <Box
-            sx={{
-              display: "grid",
-              rowGap: 3,
-              columnGap: 2,
-              gridTemplateColumns: {
-                xs: "repeat(1, 1fr)",
-                sm: "repeat(2, 1fr)",
-              },
-            }}
-          >
-            <Controller
-              name="name"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  error={!!error}
-                  helperText={error?.message}
-                  label="Name"
-                />
-              )}
-            />
-
-            <Controller
-              name="email"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  error={!!error}
-                  helperText={error?.message}
-                  label="Email"
-                />
-              )}
-            />
-
-            {user.type === "Coach" && (
+          <Stack spacing={2}>
+            <Box
+              sx={{
+                display: "grid",
+                rowGap: 3,
+                columnGap: 2,
+                gridTemplateColumns: {
+                  xs: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                },
+              }}
+            >
               <Controller
-                name="bio"
+                name="name"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                   <TextField
@@ -110,12 +105,56 @@ export default function AccountGeneral() {
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
-                    label="Bio"
+                    label="Name"
                   />
                 )}
               />
-            )}
-          </Box>
+
+              <Controller
+                name="email"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    error={!!error}
+                    helperText={error?.message}
+                    label="Email"
+                  />
+                )}
+              />
+
+              {user.type === "Coach" && (
+                <Controller
+                  name="bio"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!error}
+                      helperText={error?.message}
+                      label="Bio"
+                    />
+                  )}
+                />
+              )}
+            </Box>
+
+            <Controller
+              name="games"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <GamesSelect
+                  games={games}
+                  selectedGames={field.value}
+                  setGames={field.onChange}
+                  error={Boolean(error)}
+                  helperText={error?.message}
+                />
+              )}
+            />
+          </Stack>
 
           <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton
@@ -131,3 +170,5 @@ export default function AccountGeneral() {
     </FormProvider>
   )
 }
+
+export default AccountGeneral
