@@ -73,7 +73,7 @@
     "cypress": "10.2.0",
     "express": "4.18.1",
     "futoin-hkdf": "1.5.1",
-    "jose": "4.8.1",
+    "jose": "4.8.3",
     "oidc-provider": "7.11.3",
     "openid-client": "5.1.7",
     "pg": "8.7.3",
