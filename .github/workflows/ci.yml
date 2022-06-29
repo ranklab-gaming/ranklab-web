@@ -59,8 +59,8 @@ jobs:
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }}
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }}
           RANKLAB_STRIPE_PRODUCT_ID: ${{ secrets.RANKLAB_STRIPE_PRODUCT_ID }}
-          RANKLAB_AUTH0_CLIENT_ID:
-          RANKLAB_AUTH0_CLIENT_SECRET:
+          RANKLAB_AUTH0_CLIENT_ID: ""
+          RANKLAB_AUTH0_CLIENT_SECRET: ""
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
           username: $
