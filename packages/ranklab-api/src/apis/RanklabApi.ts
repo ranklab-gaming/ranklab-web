@@ -18,6 +18,7 @@ import {
     AccountLink,
     BillingPortalLink,
     Coach,
+    CoachUpdateAccountRequest,
     CoachUpdateReviewRequest,
     Comment,
     CreateAccountLinkMutation,
@@ -48,6 +49,10 @@ export interface ClaimsCoachesCreateRequest {
 
 export interface ClaimsPlayersCreateRequest {
     createPlayerRequest: CreatePlayerRequest;
+}
+
+export interface CoachAccountUpdateRequest {
+    coachUpdateAccountRequest: CoachUpdateAccountRequest;
 }
 
 export interface CoachCommentsCreateRequest {
@@ -215,6 +220,37 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async claimsPlayersCreate(requestParameters: ClaimsPlayersCreateRequest, initOverrides?: RequestInit): Promise<Player> {
         const response = await this.claimsPlayersCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachAccountUpdateRaw(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Coach>> {
+        if (requestParameters.coachUpdateAccountRequest === null || requestParameters.coachUpdateAccountRequest === undefined) {
+            throw new runtime.RequiredError('coachUpdateAccountRequest','Required parameter requestParameters.coachUpdateAccountRequest was null or undefined when calling coachAccountUpdate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/coach/account`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.coachUpdateAccountRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async coachAccountUpdate(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit): Promise<Coach> {
+        const response = await this.coachAccountUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

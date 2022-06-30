@@ -84,6 +84,37 @@ export interface Coach {
 /**
  * 
  * @export
+ * @interface CoachUpdateAccountRequest
+ */
+export interface CoachUpdateAccountRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CoachUpdateAccountRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoachUpdateAccountRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {Array<UserGame>}
+     * @memberof CoachUpdateAccountRequest
+     */
+    games: Array<UserGame>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoachUpdateAccountRequest
+     */
+    bio: string;
+}
+/**
+ * 
+ * @export
  * @interface CoachUpdateReviewRequest
  */
 export interface CoachUpdateReviewRequest {
@@ -455,12 +486,6 @@ export interface Player {
      * @type {string}
      * @memberof Player
      */
-    auth0Id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Player
-     */
     name: string;
     /**
      * 
@@ -810,12 +835,6 @@ export interface UserOneOf1 {
      * @memberof UserOneOf1
      */
     id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    auth0Id: string;
     /**
      * 
      * @type {string}
