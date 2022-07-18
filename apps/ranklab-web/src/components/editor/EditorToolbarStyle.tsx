@@ -24,6 +24,9 @@ const EditorToolbarStyle = styled("div")(({ theme }) => {
     "& .ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill": {
       fill: theme.palette.text.primary,
     },
+    "& .ql-snow .ql-picker-label": {
+      color: theme.palette.text.primary,
+    },
     "& .ql-snow .ql-picker, .ql-snow .ql-picker-options, .ql-snow .ql-picker-item, .ql-snow .ql-picker-label, .ql-snow button":
       {
         "&:focus": { outline: "none" },

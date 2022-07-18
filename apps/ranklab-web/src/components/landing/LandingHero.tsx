@@ -110,11 +110,13 @@ export default function LandingHero() {
                   </Button>
                 </NextLink>
 
-                <NextLink href="/coach-landing" passHref>
-                  <Button variant="outlined" color="inherit" size="large">
-                    Are you a coach?
-                  </Button>
-                </NextLink>
+                {false && (
+                  <NextLink href="/coach-landing" passHref>
+                    <Button variant="outlined" color="inherit" size="large">
+                      Are you a coach?
+                    </Button>
+                  </NextLink>
+                )}
               </Stack>
             </m.div>
           </ContentStyle>

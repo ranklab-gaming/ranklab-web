@@ -71,7 +71,7 @@ export default function MainHeader() {
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 
-          <NextLink href="/sign-in">
+          <NextLink href="/api/auth/login?user_type=Player">
             <Button
               variant="contained"
               color="secondary"
