@@ -16,6 +16,7 @@ import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
 import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
+import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 
 interface Props {
   review: Review
@@ -79,6 +80,8 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({
     <DashboardLayout>
       <Page title="Dashboard | Analyze VOD">
         <Container maxWidth="xl">
+          <NewReviewHeader activeStep="payment" />
+
           <Typography variant="h3" component="h1" paragraph>
             {userType === "Coach" ? "Analyze VOD" : review.title}
           </Typography>

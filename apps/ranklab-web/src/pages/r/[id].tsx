@@ -9,6 +9,7 @@ import api from "@ranklab/web/src/api"
 import { Game, Recording } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
+import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 
 interface Props {
   games: Game[]
@@ -37,6 +38,8 @@ const NewReplayForm: FunctionComponent<Props> = ({ games, recording }) => {
     <DashboardLayout>
       <Page title="Dashboard | Submit VOD for Review">
         <Container maxWidth="xl">
+          <NewReviewHeader activeStep="submit" />
+
           <Typography variant="h3" component="h1" paragraph>
             Submit VOD for Review
           </Typography>
