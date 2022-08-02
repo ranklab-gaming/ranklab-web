@@ -89,7 +89,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
   const createAndRedirectToDashboard = async (data: FormValuesProps) => {
     await createCoach(data)
 
-    router.push("/dashboard")
+    router.push("/coach/dashboard")
   }
 
   const coachGames = games.map((game) => {

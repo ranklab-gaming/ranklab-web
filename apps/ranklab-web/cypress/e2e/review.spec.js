@@ -10,7 +10,7 @@ describe("review", () => {
 
       cy.sql(`SELECT * FROM recordings;`).then(([{ id: recordingId }]) => {
         cy.intercept("POST", "/api/player/reviews").as("createReview")
-        cy.visit(`/r/${recordingId}`)
+        cy.visit(`/player/recordings/${recordingId}`)
         cy.get("input[name=title]").type("This is a test review")
         cy.get("label").contains("Game").parent().find("[role=button]").click()
         cy.contains("Overwatch").click()

@@ -14,6 +14,7 @@ export type Props<P> = P &
   }>
 
 export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
+  userType: "Coach" | "Player",
   getServerSideProps?: GetServerSideProps<P, Q>
 ): GetServerSideProps<Props<P>, Q> {
   return async (ctx) => {
@@ -31,9 +32,23 @@ export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
       user = await api.server(ctx).userMeGetMe()
     } catch (err: any) {
       if (err instanceof Response && err.status === 400) {
-        return { redirect: { destination: "/onboarding", statusCode: 302 } }
+        return {
+          redirect: {
+            destination: `${userType.toLowerCase()}/onboarding`,
+            statusCode: 302,
+          },
+        }
       } else {
         throw err
+      }
+    }
+
+    if (user.type !== userType) {
+      return {
+        redirect: {
+          destination: "/",
+          statusCode: 302,
+        },
       }
     }
 

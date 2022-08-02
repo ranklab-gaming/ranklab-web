@@ -57,7 +57,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
         },
       })
 
-      router.push("/dashboard")
+      router.push("/player/dashboard")
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {

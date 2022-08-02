@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired(async function (ctx) {
+  withPageOnboardingRequired("Player", async function (ctx) {
     const recordingId = useRequiredParam(ctx, "id")
     const games = await api.server(ctx).publicGamesList()
 

@@ -71,7 +71,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
         },
       })
 
-      router.push(`/reviews/${review.id}`)
+      router.push(`/player/reviews/${review.id}`)
     } catch (e: any) {
       if (e instanceof Response) {
         if (e.status !== 200) {

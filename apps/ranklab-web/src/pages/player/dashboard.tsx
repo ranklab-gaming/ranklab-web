@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
-import { Button, Container, Typography } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
 import api from "@ranklab/web/src/api"
 import { Review, Game } from "@ranklab/api"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
-} from "../helpers/withPageOnboardingRequired"
-import { UserProvider } from "../contexts/UserContext"
+} from "../../helpers/withPageOnboardingRequired"
+import { UserProvider } from "../../contexts/UserContext"
 import { GetServerSideProps } from "next"
-import { Pagination } from "../@types"
+import { Pagination } from "../../@types"
 
 interface Props {
   reviews: Review[]
@@ -22,7 +22,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
-    const res = await withPageOnboardingRequired()(ctx)
+    const res = await withPageOnboardingRequired("Player")(ctx)
 
     if ("redirect" in res || "notFound" in res) {
       return res
@@ -31,19 +31,14 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     const { auth } = await res.props
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([
-      auth.user.type === "Player"
-        ? api.server(ctx).playerReviewsList()
-        : api.server(ctx).coachReviewsList({}),
+      api.server(ctx).playerReviewsList(),
       api.server(ctx).publicGamesList(),
     ])
-
-    const canReview = auth.user.type === "Coach" && auth.user.canReview
 
     return {
       props: {
         games,
         reviews,
-        canReview,
         auth,
         pagination,
       },
@@ -53,21 +48,9 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   reviews,
   games,
-  canReview,
   auth,
   pagination,
 }) {
-  const visitStripeDashboard = async () => {
-    const currentLocation = window.location.href
-
-    const loginLink = await api.client.coachStripeLoginLinksCreate({
-      createLoginLinkMutation: {
-        returnUrl: currentLocation,
-      },
-    })
-    window.location.href = loginLink.url
-  }
-
   return (
     <UserProvider user={auth.user}>
       <DashboardLayout>
@@ -76,15 +59,6 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
             <Typography variant="h3" component="h1" paragraph>
               Dashboard
             </Typography>
-            {canReview && (
-              <Button
-                variant="contained"
-                color="info"
-                onClick={visitStripeDashboard}
-              >
-                Visit Stripe Dashboard
-              </Button>
-            )}
             <ReviewList
               reviews={reviews}
               games={games}

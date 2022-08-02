@@ -16,13 +16,13 @@ import NextLink from "next/link"
 
 import DashboardLayout from "src/layouts/dashboard"
 // @mui
-import { Grid, Step, Stepper, Container, StepLabel } from "@mui/material"
+import { Grid, Container } from "@mui/material"
 import Page from "@ranklab/web/components/Page"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 
 // ----------------------------------------------------------------------
 
-export const getServerSideProps = withPageOnboardingRequired()
+export const getServerSideProps = withPageOnboardingRequired("Player")
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +64,10 @@ export default function NewRecordingForm() {
         throw new Error("Recording not found")
       }
 
-      router.push("/r/[id]", `/r/${recording.id}`)
+      router.push(
+        "/player/recordings/[id]",
+        `/player/recordings/${recording.id}`
+      )
     }
   }, [done, recording])
 

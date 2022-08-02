@@ -38,7 +38,7 @@ const RecordingList: FunctionComponent<Props> = function ({ recordings }) {
               href={
                 recording.reviewId
                   ? `/reviews/${recording.reviewId}`
-                  : `/r/${recording.id}`
+                  : `/player/recordings/${recording.id}`
               }
               key={recording.id}
             >

@@ -19,7 +19,7 @@ describe("comment", () => {
       })
     })
 
-    cy.visit("/dashboard")
+    cy.visit("/coach/dashboard")
     cy.get("tr").eq(1).click()
     cy.get("video")
       .should(($video) => {

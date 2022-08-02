@@ -7,10 +7,10 @@ import api from "@ranklab/web/src/api"
 import { Review, Game } from "@ranklab/api"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
-} from "../helpers/withPageOnboardingRequired"
-import { UserProvider } from "../contexts/UserContext"
+} from "../../helpers/withPageOnboardingRequired"
+import { UserProvider } from "../../contexts/UserContext"
 import { GetServerSideProps } from "next"
-import { Pagination } from "../@types"
+import { Pagination } from "../../@types"
 
 interface Props {
   reviews: Review[]
@@ -22,7 +22,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
-    const res = await withPageOnboardingRequired()(ctx)
+    const res = await withPageOnboardingRequired("Player")(ctx)
 
     if ("redirect" in res || "notFound" in res) {
       return res
@@ -31,9 +31,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     const { auth } = await res.props
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([
-      auth.user.type === "Player"
-        ? api.server(ctx).playerReviewsList({ archived: true })
-        : api.server(ctx).coachReviewsList({ archived: true }),
+      api.server(ctx).playerReviewsList({ archived: true }),
       api.server(ctx).publicGamesList(),
     ])
 

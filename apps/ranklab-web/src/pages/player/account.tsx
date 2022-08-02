@@ -11,12 +11,12 @@ import {
   AccountBilling,
   AccountChangePassword,
 } from "@ranklab/web/components/account"
-import DashboardLayout from "../layouts/dashboard"
+import DashboardLayout from "../../layouts/dashboard"
 import { GetServerSideProps } from "next"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
-} from "../helpers/withPageOnboardingRequired"
-import { UserProvider } from "../contexts/UserContext"
+} from "../../helpers/withPageOnboardingRequired"
+import { UserProvider } from "../../contexts/UserContext"
 import api from "@ranklab/web/api"
 import { Game } from "@ranklab/api"
 
@@ -32,7 +32,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
-    const res = await withPageOnboardingRequired()(ctx)
+    const res = await withPageOnboardingRequired("Player")(ctx)
 
     if ("redirect" in res || "notFound" in res) {
       return res

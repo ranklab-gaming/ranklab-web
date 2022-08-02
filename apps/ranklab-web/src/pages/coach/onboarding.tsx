@@ -4,10 +4,9 @@ import { Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
-import PlayerOnboardingForm from "src/components/player/OnboardingForm"
 import { Game } from "@ranklab/api"
-import withPageAuthRequired from "../helpers/withPageAuthRequired"
-import MinimalLayout from "../layouts/minimal"
+import withPageAuthRequired from "../../helpers/withPageAuthRequired"
+import MinimalLayout from "../../layouts/minimal"
 
 interface Props {
   userType: string
@@ -25,9 +24,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { auth } = await res.props
   const userType = auth.claims["https://ranklab.gg/user_type"]
 
+  if (userType !== "Coach") {
+    return {
+      redirect: {
+        destination: "/",
+        statusCode: 302,
+      },
+    }
+  }
+
   try {
     await api.server(ctx).userMeGetMe()
-    return { redirect: { destination: "dashboard" }, props: {} as Props }
+    return { redirect: { destination: "dashboard", statusCode: 302 } }
   } catch (err) {
     if (!(err instanceof Response && err.status === 400)) {
       throw err
@@ -36,25 +44,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
   const games = await api.server(ctx).publicGamesList()
 
-  if (userType === "Coach") {
-    const availableCountries = await api
-      .server(ctx)
-      .claimsCoachesAvailableCountries()
+  const availableCountries = await api
+    .server(ctx)
+    .claimsCoachesAvailableCountries()
 
-    return {
-      props: {
-        userType,
-        games,
-        availableCountries,
-      },
-    }
-  } else {
-    return {
-      props: {
-        userType,
-        games,
-      } as Props,
-    }
+  return {
+    props: {
+      userType,
+      games,
+      availableCountries,
+    },
   }
 }
 
@@ -70,14 +69,10 @@ const OnboardingPage: FunctionComponent<Props> = function ({
           <Typography variant="h3" component="h1" paragraph>
             Onboarding for {userType}
           </Typography>
-          {userType === "Coach" ? (
-            <CoachOnboardingForm
-              games={games}
-              availableCountries={availableCountries!}
-            />
-          ) : (
-            <PlayerOnboardingForm games={games} />
-          )}
+          <CoachOnboardingForm
+            games={games}
+            availableCountries={availableCountries!}
+          />
         </Container>
       </Page>
     </MinimalLayout>

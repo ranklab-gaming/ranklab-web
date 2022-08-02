@@ -1,4 +1,4 @@
-import { useState, ReactNode, useEffect } from "react"
+import { useState, ReactNode } from "react"
 // @mui
 import { Box, styled } from "@mui/material"
 // config
@@ -7,10 +7,10 @@ import { HEADER, NAVBAR } from "../../config"
 import DashboardHeader from "./header"
 import NavbarVertical from "./navbar/NavbarVertical"
 
-import api from "@ranklab/web/src/api"
-import { Coach, User } from "@ranklab/api"
+import { Coach } from "@ranklab/api"
 import { useRouter } from "next/router"
 import useCollapseDrawer from "src/hooks/useCollapseDrawer"
+import useUser from "@ranklab/web/hooks/useUser"
 // ----------------------------------------------------------------------
 
 type MainStyleProps = {
@@ -46,30 +46,17 @@ type Props = {
 
 export default function DashboardLayout({ children }: Props) {
   const [open, setOpen] = useState(false)
-  const [coach, setCoach] = useState<Coach | null>(null)
   const { collapseClick, isCollapse } = useCollapseDrawer()
-
-  useEffect(() => {
-    api.client
-      .userMeGetMe()
-      .then((user: User) => {
-        if (user.type === "Coach") {
-          setCoach(user)
-        }
-      })
-      .catch((err: any) => {
-        if (!(err instanceof Response && err.status === 400)) {
-          throw err
-        }
-      })
-  }, [])
-
+  const user = useUser()
   const router = useRouter()
+  let coach: Coach | undefined
 
-  const showStripeOnboardingIncomplete =
-    !coach?.stripeDetailsSubmitted && router.pathname !== "/onboarding"
-  const showWaitingForStripeApproval =
-    !coach?.canReview && router.pathname !== "/onboarding"
+  if (user.type === "Coach") {
+    coach = user as Coach
+  }
+
+  const showStripeOnboardingIncomplete = !coach?.stripeDetailsSubmitted
+  const showWaitingForStripeApproval = !coach?.canReview
 
   return (
     <Box
