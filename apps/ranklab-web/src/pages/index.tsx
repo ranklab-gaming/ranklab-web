@@ -9,6 +9,7 @@ import {
 } from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
 import { getSession } from "@auth0/nextjs-auth0"
+import jwt from "jsonwebtoken"
 
 const RootStyle = styled(Page)({
   height: "100%",
@@ -24,9 +25,19 @@ export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const session = getSession(ctx.req, ctx.res)
 
   if (session) {
+    const claims = jwt.decode(session.accessToken!, {
+      json: true,
+    })
+
+    if (!claims) {
+      throw new Error("Could not decode access token")
+    }
+
+    const userType = claims["https://ranklab.gg/user_type"]
+
     ctx.res
       .writeHead(302, {
-        Location: "dashboard",
+        Location: `/${userType.toLowerCase()}/dashboard`,
       })
       .end()
   }

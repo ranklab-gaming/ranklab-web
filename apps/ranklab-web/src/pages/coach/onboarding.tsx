@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 
   try {
     await api.server(ctx).userMeGetMe()
-    return { redirect: { destination: "dashboard", statusCode: 302 } }
+    return { redirect: { destination: "/coach/dashboard", statusCode: 302 } }
   } catch (err) {
     if (!(err instanceof Response && err.status === 400)) {
       throw err

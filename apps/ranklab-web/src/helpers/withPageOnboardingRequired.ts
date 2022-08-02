@@ -34,7 +34,7 @@ export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
       if (err instanceof Response && err.status === 400) {
         return {
           redirect: {
-            destination: `${userType.toLowerCase()}/onboarding`,
+            destination: `/${userType.toLowerCase()}/onboarding`,
             statusCode: 302,
           },
         }
