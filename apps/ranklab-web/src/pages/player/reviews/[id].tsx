@@ -16,6 +16,7 @@ import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
 import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
+import ReviewCheckout from "@ranklab/web/components/ReviewCheckout"
 
 interface Props {
   review: Review
@@ -72,16 +73,23 @@ const ReviewPage: FunctionComponent<Props> = ({
             {review.title}
           </Typography>
 
-          <Card sx={{ position: "static" }}>
-            <CardContent>
-              <ReviewShow
-                review={review}
-                comments={comments}
-                recording={recording}
-                paymentMethods={paymentMethods}
-              ></ReviewShow>
-            </CardContent>
-          </Card>
+          {review.state === ReviewState.AwaitingPayment && paymentMethods ? (
+            <ReviewCheckout
+              review={review}
+              recording={recording}
+              paymentMethods={paymentMethods}
+            />
+          ) : (
+            <Card sx={{ position: "static" }}>
+              <CardContent>
+                <ReviewShow
+                  review={review}
+                  comments={comments}
+                  recording={recording}
+                />
+              </CardContent>
+            </Card>
+          )}
         </Container>
       </Page>
     </DashboardLayout>

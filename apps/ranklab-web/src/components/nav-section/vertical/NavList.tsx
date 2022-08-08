@@ -1,28 +1,28 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useState } from "react"
+import { useRouter } from "next/router"
 // @mui
-import { List, Collapse } from '@mui/material';
+import { List, Collapse } from "@mui/material"
 // type
-import { NavListProps } from '../type';
+import { NavListProps } from "../type"
 //
-import { NavItemRoot, NavItemSub } from './NavItem';
-import { getActive } from '..';
+import { NavItemRoot, NavItemSub } from "./NavItem"
+import { getActive } from ".."
 
 // ----------------------------------------------------------------------
 
 type NavListRootProps = {
-  list: NavListProps;
-  isCollapse: boolean;
-};
+  list: NavListProps
+  isCollapse: boolean
+}
 
 export function NavListRoot({ list, isCollapse }: NavListRootProps) {
-  const { pathname, asPath } = useRouter();
+  const { pathname } = useRouter()
 
-  const active = getActive(list.path, pathname, asPath);
+  const active = getActive(list.path, pathname)
 
-  const [open, setOpen] = useState(active);
+  const [open, setOpen] = useState(active)
 
-  const hasChildren = list.children;
+  const hasChildren = list.children
 
   if (hasChildren) {
     return (
@@ -45,31 +45,36 @@ export function NavListRoot({ list, isCollapse }: NavListRootProps) {
           </Collapse>
         )}
       </>
-    );
+    )
   }
 
-  return <NavItemRoot item={list} active={active} isCollapse={isCollapse} />;
+  return <NavItemRoot item={list} active={active} isCollapse={isCollapse} />
 }
 
 // ----------------------------------------------------------------------
 
 type NavListSubProps = {
-  list: NavListProps;
-};
+  list: NavListProps
+}
 
 function NavListSub({ list }: NavListSubProps) {
-  const { pathname, asPath } = useRouter();
+  const { pathname, asPath } = useRouter()
 
-  const active = getActive(list.path, pathname, asPath);
+  const active = getActive(list.path, pathname, asPath)
 
-  const [open, setOpen] = useState(active);
+  const [open, setOpen] = useState(active)
 
-  const hasChildren = list.children;
+  const hasChildren = list.children
 
   if (hasChildren) {
     return (
       <>
-        <NavItemSub item={list} onOpen={() => setOpen(!open)} open={open} active={active} />
+        <NavItemSub
+          item={list}
+          onOpen={() => setOpen(!open)}
+          open={open}
+          active={active}
+        />
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 3 }}>
@@ -83,8 +88,8 @@ function NavListSub({ list }: NavListSubProps) {
           </List>
         </Collapse>
       </>
-    );
+    )
   }
 
-  return <NavItemSub item={list} active={active} />;
+  return <NavItemSub item={list} active={active} />
 }

@@ -11,8 +11,10 @@ import {
   CardContent,
   InputAdornment,
 } from "@mui/material"
+import { Recording } from "@ranklab/api"
 import { fCurrency } from "@ranklab/web/utils/formatNumber"
 import Iconify from "../Iconify"
+import VideoPlayer from "../VideoPlayer"
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +27,7 @@ type Props = {
   enableEdit?: boolean
   onApplyDiscount?: (discount: number) => void
   enableDiscount?: boolean
+  recording: Recording
 }
 
 export default function CheckoutSummary({
@@ -36,6 +39,7 @@ export default function CheckoutSummary({
   onApplyDiscount,
   enableEdit = false,
   enableDiscount = false,
+  recording,
 }: Props) {
   const displayShipping = shipping !== null ? "Free" : "-"
 
@@ -58,6 +62,13 @@ export default function CheckoutSummary({
 
       <CardContent>
         <Stack spacing={2}>
+          <Box sx={{ position: "relative" }}>
+            <VideoPlayer
+              controls={false}
+              src={`${process.env.NEXT_PUBLIC_UPLOADS_CDN_URL}/${recording.videoKey}`}
+              type={recording.mimeType}
+            />
+          </Box>
           <Stack direction="row" justifyContent="space-between">
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
               Sub Total

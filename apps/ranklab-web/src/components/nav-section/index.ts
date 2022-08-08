@@ -1,14 +1,12 @@
 // ----------------------------------------------------------------------
 
-export { default as NavSectionVertical } from './vertical';
-export { default as NavSectionHorizontal } from './horizontal';
+export { default as NavSectionVertical } from "./vertical"
+export { default as NavSectionHorizontal } from "./horizontal"
 
 export function isExternalLink(path: string) {
-  return path.includes('http');
+  return path.includes("http")
 }
 
-export function getActive(path: string, pathname: string, asPath: string) {
-  const checkPath = path.startsWith('#');
-
-  return (!checkPath && pathname.includes(path)) || (!checkPath && asPath.includes(path));
+export function getActive(path: string, pathname: string) {
+  return pathname === path
 }

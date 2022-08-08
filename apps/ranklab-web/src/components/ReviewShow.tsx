@@ -20,7 +20,7 @@ import {
 } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
-import ReviewCheckout from "./ReviewCheckout"
+import ReviewCheckout from "./ReviewPayment"
 import api from "@ranklab/web/src/api"
 import { LoadingButton } from "@mui/lab"
 
@@ -28,7 +28,6 @@ interface Props {
   review: Review
   comments: Comment[]
   recording: Recording
-  paymentMethods: PaymentMethod[] | null
 }
 
 function formatTimestamp(secs: number) {
@@ -44,7 +43,6 @@ const ReviewShow: FunctionComponent<Props> = ({
   review,
   comments,
   recording,
-  paymentMethods,
 }) => {
   const playerRef = useRef<VideoPlayerRef>(null)
 
@@ -58,14 +56,6 @@ const ReviewShow: FunctionComponent<Props> = ({
   }
 
   const theme = useTheme()
-
-  const clientSecret = review.stripeClientSecret
-
-  const stripePromise =
-    review.state === ReviewState.AwaitingPayment &&
-    clientSecret !== null &&
-    loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
-
   const [isAccepting, setIsAccepting] = useState(false)
 
   return (
@@ -88,39 +78,6 @@ const ReviewShow: FunctionComponent<Props> = ({
                 }}
               />
             </Box>
-
-            {stripePromise && (
-              <Elements
-                stripe={stripePromise}
-                options={{
-                  clientSecret: clientSecret,
-                  appearance: {
-                    theme: "night",
-                    variables: {
-                      colorPrimary: theme.palette.primary.main,
-                      colorBackground: theme.palette.background.paper,
-                      fontFamily: theme.typography.fontFamily,
-                    },
-                    rules: {
-                      ".Input": {
-                        boxShadow: "none",
-                        borderColor: theme.palette.divider,
-                      },
-
-                      ".Input:focus": {
-                        boxShadow: "none",
-                        borderColor: theme.palette.divider,
-                      },
-                    },
-                  },
-                }}
-              >
-                <ReviewCheckout
-                  paymentMethods={paymentMethods!}
-                  clientSecret={clientSecret!}
-                />
-              </Elements>
-            )}
 
             {review.state === ReviewState.Published && (
               <LoadingButton

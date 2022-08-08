@@ -1,140 +1,97 @@
-import { LoadingButton } from "@mui/lab"
+import React, { FunctionComponent } from "react"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 import {
+  Box,
+  Grid,
+  Stack,
+  useTheme,
+  Card,
+  CardContent,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material"
-import { PaymentMethod } from "@ranklab/api"
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { FunctionComponent, useState } from "react"
-import * as Yup from "yup"
-import { Controller, useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { capitalize } from "@mui/material"
+import { Review, Recording, PaymentMethod } from "@ranklab/api"
+import ReviewPayment from "./ReviewPayment"
+import { CheckoutSummary } from "./checkout"
 
-const EMPTY_PAYMENT_METHOD = "EMPTY_PAYMENT_METHOD"
-
-interface ReviewCheckoutProps {
-  clientSecret: string
+interface Props {
+  review: Review
+  recording: Recording
   paymentMethods: PaymentMethod[]
 }
 
-type FormValuesProps = {
-  paymentMethodId?: string
-}
-
-const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
-  paymentMethodId: Yup.string().optional(),
-})
-
-const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
-  clientSecret,
+const ReviewCheckout: FunctionComponent<Props> = ({
+  review,
+  recording,
   paymentMethods,
 }) => {
-  const defaultValues = {
-    paymentMethodId: paymentMethods[0]?.id || EMPTY_PAYMENT_METHOD,
-  }
+  const theme = useTheme()
+  const clientSecret = review.stripeClientSecret
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  )
 
-  const { control, handleSubmit, watch } = useForm<FormValuesProps>({
-    mode: "onSubmit",
-    resolver: yupResolver(FormSchema),
-    defaultValues,
-  })
-
-  const stripe = useStripe()
-  const elements = useElements()
-  const [isPaying, setIsPaying] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
-
-  const onSubmit = async (data: FormValuesProps) => {
-    setIsPaying(true)
-
-    if (!stripe || !elements) {
-      return
-    }
-
-    if (data.paymentMethodId !== EMPTY_PAYMENT_METHOD) {
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: data.paymentMethodId,
-      })
-
-      if (!result.error) {
-        window.location.reload()
-      } else {
-        setErrorMessage(result.error.message!)
-        setIsPaying(false)
-      }
-    } else {
-      const result = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: window.location.href,
-        },
-      })
-
-      if (result?.error) {
-        setErrorMessage(result.error.message!)
-      }
-
-      setIsPaying(false)
-    }
+  if (!clientSecret) {
+    throw new Error("Client secret was not present")
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {errorMessage && (
-        <Typography variant="body1" color="error">
-          {errorMessage}
-        </Typography>
-      )}
+    <div>
+      <Stack spacing={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            <Stack spacing={2}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">Review ...</Typography>
+                  <Typography variant="body1">
+                    Your review is pending approval
+                  </Typography>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <Elements
+                    stripe={stripePromise}
+                    options={{
+                      clientSecret: clientSecret,
+                      appearance: {
+                        theme: "night",
+                        variables: {
+                          colorPrimary: theme.palette.primary.main,
+                          colorBackground: theme.palette.background.paper,
+                          fontFamily: theme.typography.fontFamily,
+                        },
+                        rules: {
+                          ".Input": {
+                            boxShadow: "none",
+                            borderColor: theme.palette.divider,
+                          },
 
-      {watch("paymentMethodId") === EMPTY_PAYMENT_METHOD && <PaymentElement />}
-      {paymentMethods.length > 0 && (
-        <>
-          <Controller
-            name="paymentMethodId"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl fullWidth>
-                <InputLabel>Payment Method</InputLabel>
-                <Select
-                  label="Payment Methods"
-                  onChange={field.onChange}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  error={Boolean(error)}
-                  placeholder="Use a different payment method"
-                >
-                  {paymentMethods.map((paymentMethod) => (
-                    <MenuItem key={paymentMethod.id} value={paymentMethod.id}>
-                      **** {paymentMethod.last4} -{" "}
-                      {capitalize(paymentMethod.brand)}
-                    </MenuItem>
-                  ))}
+                          ".Input:focus": {
+                            boxShadow: "none",
+                            borderColor: theme.palette.divider,
+                          },
+                        },
+                      },
+                    }}
+                  >
+                    <ReviewPayment
+                      paymentMethods={paymentMethods}
+                      clientSecret={clientSecret}
+                    />
+                  </Elements>
+                </CardContent>
+              </Card>
+            </Stack>
+          </Grid>
 
-                  <MenuItem value={EMPTY_PAYMENT_METHOD}>
-                    Use a different payment method
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            )}
-          />
-        </>
-      )}
-      <LoadingButton
-        fullWidth
-        color="info"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isPaying}
-        disabled={isPaying}
-      >
-        Pay
-      </LoadingButton>
-    </form>
+          <Grid item xs={12} md={4}>
+            <CheckoutSummary total={10} subtotal={10} recording={recording} />
+          </Grid>
+        </Grid>
+      </Stack>
+    </div>
   )
 }
 
