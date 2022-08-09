@@ -22,10 +22,6 @@ import { Game } from "@ranklab/api"
 
 // ----------------------------------------------------------------------
 
-UserAccount.getLayout = function getLayout(page: React.ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>
-}
-
 interface Props {
   games: Game[]
 }
@@ -74,34 +70,36 @@ export default function UserAccount({ auth, games }: PropsWithAuth<Props>) {
 
   return (
     <UserProvider user={auth.user}>
-      <Page title="Account | Ranklab">
-        <Container maxWidth="lg">
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={currentTab}
-            onChange={onChangeTab}
-          >
-            {ACCOUNT_TABS.map((tab) => (
-              <Tab
-                disableRipple
-                key={tab.value}
-                label={capitalCase(tab.value)}
-                icon={tab.icon}
-                value={tab.value}
-              />
-            ))}
-          </Tabs>
+      <DashboardLayout>
+        <Page title="Account | Ranklab">
+          <Container maxWidth="lg">
+            <Tabs
+              allowScrollButtonsMobile
+              variant="scrollable"
+              scrollButtons="auto"
+              value={currentTab}
+              onChange={onChangeTab}
+            >
+              {ACCOUNT_TABS.map((tab) => (
+                <Tab
+                  disableRipple
+                  key={tab.value}
+                  label={capitalCase(tab.value)}
+                  icon={tab.icon}
+                  value={tab.value}
+                />
+              ))}
+            </Tabs>
 
-          <Box sx={{ mb: 5 }} />
+            <Box sx={{ mb: 5 }} />
 
-          {ACCOUNT_TABS.map((tab) => {
-            const isMatched = tab.value === currentTab
-            return isMatched && <Box key={tab.value}>{tab.component}</Box>
-          })}
-        </Container>
-      </Page>
+            {ACCOUNT_TABS.map((tab) => {
+              const isMatched = tab.value === currentTab
+              return isMatched && <Box key={tab.value}>{tab.component}</Box>
+            })}
+          </Container>
+        </Page>
+      </DashboardLayout>
     </UserProvider>
   )
 }

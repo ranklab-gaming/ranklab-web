@@ -14,9 +14,12 @@ import {
 } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
-import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
+import withPageOnboardingRequired, {
+  Props as PropsWithAuth,
+} from "@ranklab/web/helpers/withPageOnboardingRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 import ReviewCheckout from "@ranklab/web/components/ReviewCheckout"
+import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
 
 interface Props {
   review: Review
@@ -57,42 +60,45 @@ export const getServerSideProps: GetServerSideProps<Props> =
     }
   })
 
-const ReviewPage: FunctionComponent<Props> = ({
+const ReviewPage: FunctionComponent<PropsWithAuth<Props>> = ({
   review,
   comments,
   recording,
   paymentMethods,
+  auth,
 }) => {
   return (
-    <DashboardLayout>
-      <Page title={`Dashboard | ${review.title}`}>
-        <Container maxWidth="xl">
-          <NewReviewHeader activeStep="payment" />
+    <UserProvider user={auth.user}>
+      <DashboardLayout>
+        <Page title={`Dashboard | ${review.title}`}>
+          <Container maxWidth="xl">
+            <NewReviewHeader activeStep="payment" />
 
-          <Typography variant="h3" component="h1" paragraph>
-            {review.title}
-          </Typography>
+            <Typography variant="h3" component="h1" paragraph>
+              {review.title}
+            </Typography>
 
-          {review.state === ReviewState.AwaitingPayment && paymentMethods ? (
-            <ReviewCheckout
-              review={review}
-              recording={recording}
-              paymentMethods={paymentMethods}
-            />
-          ) : (
-            <Card sx={{ position: "static" }}>
-              <CardContent>
-                <ReviewShow
-                  review={review}
-                  comments={comments}
-                  recording={recording}
-                />
-              </CardContent>
-            </Card>
-          )}
-        </Container>
-      </Page>
-    </DashboardLayout>
+            {review.state === ReviewState.AwaitingPayment && paymentMethods ? (
+              <ReviewCheckout
+                review={review}
+                recording={recording}
+                paymentMethods={paymentMethods}
+              />
+            ) : (
+              <Card sx={{ position: "static" }}>
+                <CardContent>
+                  <ReviewShow
+                    review={review}
+                    comments={comments}
+                    recording={recording}
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </Container>
+        </Page>
+      </DashboardLayout>
+    </UserProvider>
   )
 }
 

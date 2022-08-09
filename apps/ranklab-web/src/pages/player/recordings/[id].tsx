@@ -8,8 +8,11 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import { Game, Recording } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
-import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
+import withPageOnboardingRequired, {
+  Props as PropsWithAuth,
+} from "@ranklab/web/helpers/withPageOnboardingRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
+import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
 
 interface Props {
   games: Game[]
@@ -33,25 +36,31 @@ export const getServerSideProps: GetServerSideProps<Props> =
     }
   })
 
-const NewReplayForm: FunctionComponent<Props> = ({ games, recording }) => {
+const NewReplayForm: FunctionComponent<PropsWithAuth<Props>> = ({
+  games,
+  recording,
+  auth,
+}) => {
   return (
-    <DashboardLayout>
-      <Page title="Dashboard | Submit VOD for Review">
-        <Container maxWidth="xl">
-          <NewReviewHeader activeStep="submit" />
+    <UserProvider user={auth.user}>
+      <DashboardLayout>
+        <Page title="Dashboard | Submit VOD for Review">
+          <Container maxWidth="xl">
+            <NewReviewHeader activeStep="submit" />
 
-          <Typography variant="h3" component="h1" paragraph>
-            Submit VOD for Review
-          </Typography>
+            <Typography variant="h3" component="h1" paragraph>
+              Submit VOD for Review
+            </Typography>
 
-          <Card sx={{ position: "static" }}>
-            <CardContent>
-              <ReviewForm games={games} recording={recording} />
-            </CardContent>
-          </Card>
-        </Container>
-      </Page>
-    </DashboardLayout>
+            <Card sx={{ position: "static" }}>
+              <CardContent>
+                <ReviewForm games={games} recording={recording} />
+              </CardContent>
+            </Card>
+          </Container>
+        </Page>
+      </DashboardLayout>
+    </UserProvider>
   )
 }
 

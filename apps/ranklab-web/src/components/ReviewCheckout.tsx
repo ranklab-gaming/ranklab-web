@@ -9,6 +9,10 @@ import {
   Card,
   CardContent,
   Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
 } from "@mui/material"
 import { Review, Recording, PaymentMethod } from "@ranklab/api"
 import ReviewPayment from "./ReviewPayment"
@@ -43,10 +47,24 @@ const ReviewCheckout: FunctionComponent<Props> = ({
             <Stack spacing={2}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6">Review ...</Typography>
-                  <Typography variant="body1">
-                    Your review is pending approval
-                  </Typography>
+                  <Typography variant="h6">What happens next</Typography>
+                  <List
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                    }}
+                  >
+                    <ListItem>
+                      <ListItemText primary="You submit payment for review" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Your recording goes into a queue and one of our coaches will pick it up" />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="If none reviews your recording in 5 days the money you pay now will get refunded automatically" />
+                    </ListItem>
+                  </List>
                 </CardContent>
               </Card>
               <Card>
