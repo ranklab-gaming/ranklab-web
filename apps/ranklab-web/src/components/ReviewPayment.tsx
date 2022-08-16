@@ -13,10 +13,11 @@ import * as Yup from "yup"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { capitalize } from "@mui/material"
+import { useRouter } from "next/router"
 
 const EMPTY_PAYMENT_METHOD = "EMPTY_PAYMENT_METHOD"
 
-interface ReviewCheckoutProps {
+interface ReviewPaymentProps {
   clientSecret: string
   paymentMethods: PaymentMethod[]
 }
@@ -29,7 +30,7 @@ const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   paymentMethodId: Yup.string().optional(),
 })
 
-const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
+const ReviewPayment: FunctionComponent<ReviewPaymentProps> = ({
   clientSecret,
   paymentMethods,
 }) => {
@@ -47,6 +48,7 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
   const elements = useElements()
   const [isPaying, setIsPaying] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
+  const router = useRouter()
 
   const onSubmit = async (data: FormValuesProps) => {
     setIsPaying(true)
@@ -61,7 +63,10 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
       })
 
       if (!result.error) {
-        window.location.reload()
+        router.push(
+          "/player/reviews/[id]/success",
+          `/player/reviews/${router.query.id}/success`
+        )
       } else {
         setErrorMessage(result.error.message!)
         setIsPaying(false)
@@ -70,7 +75,7 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
       const result = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: window.location.href,
+          return_url: `${window.location.href}/success`,
         },
       })
 
@@ -138,4 +143,4 @@ const ReviewCheckout: FunctionComponent<ReviewCheckoutProps> = ({
   )
 }
 
-export default ReviewCheckout
+export default ReviewPayment

@@ -80,9 +80,13 @@ function QontoStepIcon({
 
 interface Props {
   activeStep: typeof STEPS[number]["id"]
+  allCompleted?: boolean
 }
 
-const NewReviewHeader: FunctionComponent<Props> = ({ activeStep }) => {
+const NewReviewHeader: FunctionComponent<Props> = ({
+  activeStep,
+  allCompleted = false,
+}) => {
   const activeIndex = STEPS.findIndex((step) => step.id === activeStep)
 
   return (
@@ -96,7 +100,13 @@ const NewReviewHeader: FunctionComponent<Props> = ({ activeStep }) => {
           {STEPS.map(({ label, id }) => (
             <Step key={id}>
               <StepLabel
-                StepIconComponent={QontoStepIcon}
+                StepIconComponent={(props) =>
+                  allCompleted ? (
+                    <QontoStepIcon active={false} completed={true} />
+                  ) : (
+                    <QontoStepIcon {...props} />
+                  )
+                }
                 sx={{
                   "& .MuiStepLabel-label": {
                     typography: "subtitle2",

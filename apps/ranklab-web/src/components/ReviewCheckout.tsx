@@ -2,7 +2,6 @@ import React, { FunctionComponent } from "react"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import {
-  Box,
   Grid,
   Stack,
   useTheme,
@@ -11,7 +10,6 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
 } from "@mui/material"
 import { Review, Recording, PaymentMethod } from "@ranklab/api"

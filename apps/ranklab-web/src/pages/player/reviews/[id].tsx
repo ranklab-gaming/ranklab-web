@@ -26,7 +26,7 @@ interface Props {
   comments: Comment[]
   recording: Recording
   userType: User["type"]
-  paymentMethods: PaymentMethod[] | null
+  paymentMethods: PaymentMethod[]
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
     let review
     let comments
     let recording
-    let paymentMethods = null
+    let paymentMethods: PaymentMethod[] = []
 
     review = await api.server(ctx).playerReviewsGet({ id })
     comments = await api.server(ctx).playerCommentsList({ reviewId: review.id })
@@ -78,7 +78,7 @@ const ReviewPage: FunctionComponent<PropsWithAuth<Props>> = ({
               {review.title}
             </Typography>
 
-            {review.state === ReviewState.AwaitingPayment && paymentMethods ? (
+            {review.state === ReviewState.AwaitingPayment ? (
               <ReviewCheckout
                 review={review}
                 recording={recording}
