@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Snackbar, Stack, TextField } from "@mui/material"
 import { Game, UserGame } from "@ranklab/api"
+import { capitalize } from "lodash"
 import router from "next/router"
 import { FunctionComponent, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -57,6 +58,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
+    setError,
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
@@ -74,22 +76,49 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
         },
       })
     } catch (e: any) {
-      if (e instanceof Response) {
-        if (e.status !== 200) {
-          setErrorMessage(
-            "There was a problem creating your profile. Please try again later."
-          )
-        }
-      } else {
-        throw e
+      if (e instanceof Response && e.status >= 500) {
+        setErrorMessage(
+          "There was a problem creating your profile. Please try again later."
+        )
       }
+
+      throw e
     }
   }
 
-  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
-    await createCoach(data)
+  const errorMessageFromError = (field: string, error: any) => {
+    switch (error.code) {
+      case "length":
+        return `${capitalize(field)} must be at least ${
+          error.params.min
+        } characters long`
+    }
 
-    router.push("/coach/dashboard")
+    return `${capitalize(field)} is invalid`
+  }
+
+  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
+    try {
+      await createCoach(data)
+      router.push("/coach/dashboard")
+    } catch (e: any) {
+      if (e instanceof Response && e.status === 422) {
+        const errors = await e.json()
+
+        Object.entries(errors).forEach(([field, error]: any) => {
+          setError(field, {
+            type: "server",
+            message: error
+              .map((e: any) => errorMessageFromError(field, e))
+              .join(", "),
+          })
+        })
+
+        return
+      }
+
+      throw e
+    }
   }
 
   const coachGames = games.map((game) => {

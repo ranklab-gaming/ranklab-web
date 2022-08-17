@@ -25,8 +25,6 @@ export const getServerSideProps: GetServerSideProps<Props> =
 
     review = await api.server(ctx).playerReviewsGet({ id })
 
-    // TODO: redirect if the review has already been paid for
-
     return {
       props: {
         review,
