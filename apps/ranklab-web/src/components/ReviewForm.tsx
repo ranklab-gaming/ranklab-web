@@ -22,6 +22,7 @@ import React, { FunctionComponent, useState } from "react"
 import { Game, Recording } from "@ranklab/api"
 import VideoPlayer from "./VideoPlayer"
 import { useRouter } from "next/router"
+import failsafeSubmit from "../utils/failsafeSubmit"
 
 export type FormValuesProps = {
   title: string
@@ -50,6 +51,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
@@ -61,8 +63,13 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   const router = useRouter()
 
   const onSubmit = async (data: FormValuesProps) => {
-    try {
-      const review = await api.client.playerReviewsCreate({
+    const review = await failsafeSubmit(
+      setError,
+      () =>
+        setErrorMessage(
+          "There was a problem submitting your recording. Please try again later."
+        ),
+      api.client.playerReviewsCreate({
         createReviewMutation: {
           gameId: data.gameId,
           title: data.title,
@@ -70,18 +77,10 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
           recordingId: recording.id,
         },
       })
+    )
 
+    if (review) {
       router.push(`/player/reviews/${review.id}`)
-    } catch (e: any) {
-      if (e instanceof Response) {
-        if (e.status !== 200) {
-          setErrorMessage(
-            "There was a problem submitting your recording. Please try again later."
-          )
-        }
-      } else {
-        throw e
-      }
     }
   }
 

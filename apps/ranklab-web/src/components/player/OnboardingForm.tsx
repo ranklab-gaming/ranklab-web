@@ -24,7 +24,9 @@ export const defaultValues = {
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
+  name: Yup.string()
+    .required("Name is required")
+    .min(2, "Name must be at least 2 characters"),
   games: Yup.array()
     .of(
       Yup.object().shape({

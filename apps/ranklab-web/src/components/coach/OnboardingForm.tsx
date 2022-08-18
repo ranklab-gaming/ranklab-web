@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Snackbar, Stack, TextField } from "@mui/material"
 import { Game, UserGame } from "@ranklab/api"
-import { capitalize } from "lodash"
+import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 import router from "next/router"
 import { FunctionComponent, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -32,7 +32,9 @@ export const defaultValues = {
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
-  bio: Yup.string().required("Bio is required"),
+  bio: Yup.string()
+    .required("Bio is required")
+    .min(30, "Bio must be at least 30 characters"),
   games: Yup.array()
     .of(
       Yup.object().shape({
@@ -42,7 +44,9 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
     )
     .min(1, "At least one game is required"),
   skillLevel: Yup.number().required("Skill level is required"),
-  name: Yup.string().required("Name is required"),
+  name: Yup.string()
+    .required("Name is required")
+    .min(2, "Name must be at least 2 characters"),
   country: Yup.string().required("Country is required"),
 })
 
@@ -65,9 +69,14 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     defaultValues,
   })
 
-  const createCoach = async (data: FormValuesProps) => {
-    try {
-      await api.client.claimsCoachesCreate({
+  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
+    const coach = await failsafeSubmit(
+      setError,
+      () =>
+        setErrorMessage(
+          "There was a problem creating your profile. Please try again later."
+        ),
+      api.client.claimsCoachesCreate({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
@@ -75,49 +84,10 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           country: data.country,
         },
       })
-    } catch (e: any) {
-      if (e instanceof Response && e.status >= 500) {
-        setErrorMessage(
-          "There was a problem creating your profile. Please try again later."
-        )
-      }
+    )
 
-      throw e
-    }
-  }
-
-  const errorMessageFromError = (field: string, error: any) => {
-    switch (error.code) {
-      case "length":
-        return `${capitalize(field)} must be at least ${
-          error.params.min
-        } characters long`
-    }
-
-    return `${capitalize(field)} is invalid`
-  }
-
-  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
-    try {
-      await createCoach(data)
+    if (coach) {
       router.push("/coach/dashboard")
-    } catch (e: any) {
-      if (e instanceof Response && e.status === 422) {
-        const errors = await e.json()
-
-        Object.entries(errors).forEach(([field, error]: any) => {
-          setError(field, {
-            type: "server",
-            message: error
-              .map((e: any) => errorMessageFromError(field, e))
-              .join(", "),
-          })
-        })
-
-        return
-      }
-
-      throw e
     }
   }
 
