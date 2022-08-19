@@ -1,11 +1,5 @@
 import { LoadingButton } from "@mui/lab"
-import {
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material"
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material"
 import { PaymentMethod } from "@ranklab/api"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { FunctionComponent, useState } from "react"
@@ -14,6 +8,7 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { capitalize } from "@mui/material"
 import { useRouter } from "next/router"
+import { useSnackbar } from "notistack"
 
 const EMPTY_PAYMENT_METHOD = "EMPTY_PAYMENT_METHOD"
 
@@ -47,8 +42,8 @@ const ReviewPayment: FunctionComponent<ReviewPaymentProps> = ({
   const stripe = useStripe()
   const elements = useElements()
   const [isPaying, setIsPaying] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit = async (data: FormValuesProps) => {
     setIsPaying(true)
@@ -68,7 +63,7 @@ const ReviewPayment: FunctionComponent<ReviewPaymentProps> = ({
           `/player/reviews/${router.query.id}/success`
         )
       } else {
-        setErrorMessage(result.error.message!)
+        enqueueSnackbar(result.error.message!, { variant: "error" })
         setIsPaying(false)
       }
     } else {
@@ -80,7 +75,7 @@ const ReviewPayment: FunctionComponent<ReviewPaymentProps> = ({
       })
 
       if (result?.error) {
-        setErrorMessage(result.error.message!)
+        enqueueSnackbar(result.error.message!, { variant: "error" })
       }
 
       setIsPaying(false)
@@ -89,12 +84,6 @@ const ReviewPayment: FunctionComponent<ReviewPaymentProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {errorMessage && (
-        <Typography variant="body1" color="error">
-          {errorMessage}
-        </Typography>
-      )}
-
       {watch("paymentMethodId") === EMPTY_PAYMENT_METHOD && <PaymentElement />}
       {paymentMethods.length > 0 && (
         <>

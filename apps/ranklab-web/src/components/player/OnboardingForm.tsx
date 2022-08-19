@@ -1,13 +1,15 @@
-import { FunctionComponent, useState } from "react"
+import { FunctionComponent } from "react"
 import * as Yup from "yup"
 import api from "src/api"
 import router from "next/router"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Alert, Snackbar, Stack, TextField } from "@mui/material"
+import { Stack, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { Game, UserGame } from "@ranklab/api"
 import GamesSelect from "../GamesSelect"
+import { useSnackbar } from "notistack"
+import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
 interface Props {
   games: Game[]
@@ -38,57 +40,42 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
 })
 
 const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
-  const [errorMessage, setErrorMessage] = useState("")
-
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
+    setError,
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
   })
 
+  const { enqueueSnackbar } = useSnackbar()
+
   const onSubmit = async (data: FormValuesProps) => {
-    try {
-      await api.client.claimsPlayersCreate({
+    const player = await failsafeSubmit(
+      setError,
+      () =>
+        enqueueSnackbar(
+          "There was a problem creating your profile. Please try again later.",
+          { variant: "error" }
+        ),
+      api.client.claimsPlayersCreate({
         createPlayerRequest: {
           name: data.name,
           games: data.games,
         },
       })
+    )
 
+    if (player) {
       router.push("/player/dashboard")
-    } catch (e: any) {
-      if (e instanceof Response) {
-        if (e.status !== 200) {
-          setErrorMessage(
-            "There was a problem creating your profile. Please try again later."
-          )
-        }
-      } else {
-        throw e
-      }
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={Boolean(errorMessage)}
-        onClose={() => setErrorMessage("")}
-        autoHideDuration={5000}
-      >
-        <Alert
-          onClose={() => setErrorMessage("")}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
       <Stack spacing={3}>
         <Controller
           name="name"

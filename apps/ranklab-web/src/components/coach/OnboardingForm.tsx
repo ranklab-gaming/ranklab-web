@@ -1,10 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Alert, Snackbar, Stack, TextField } from "@mui/material"
+import { Stack, TextField } from "@mui/material"
 import { Game, UserGame } from "@ranklab/api"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 import router from "next/router"
-import { FunctionComponent, useState } from "react"
+import { useSnackbar } from "notistack"
+import { FunctionComponent } from "react"
 import { Controller, useForm } from "react-hook-form"
 import api from "src/api"
 import * as Yup from "yup"
@@ -54,8 +55,6 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
   games,
   availableCountries,
 }) => {
-  const [errorMessage, setErrorMessage] = useState("")
-
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
 
   const {
@@ -69,12 +68,15 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
     defaultValues,
   })
 
+  const { enqueueSnackbar } = useSnackbar()
+
   const createAndRedirectToDashboard = async (data: FormValuesProps) => {
     const coach = await failsafeSubmit(
       setError,
       () =>
-        setErrorMessage(
-          "There was a problem creating your profile. Please try again later."
+        enqueueSnackbar(
+          "There was a problem creating your profile. Please try again later.",
+          { variant: "error" }
         ),
       api.client.claimsCoachesCreate({
         createCoachRequest: {
@@ -111,20 +113,6 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
 
   return (
     <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={Boolean(errorMessage)}
-        onClose={() => setErrorMessage("")}
-        autoHideDuration={5000}
-      >
-        <Alert
-          onClose={() => setErrorMessage("")}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
       <Stack spacing={3}>
         <Controller
           name="name"

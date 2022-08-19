@@ -9,8 +9,6 @@ import {
   InputLabel,
   Grid,
   Typography,
-  Snackbar,
-  Alert,
 } from "@mui/material"
 
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -18,11 +16,12 @@ import { Controller, useForm } from "react-hook-form"
 import Editor from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api"
-import React, { FunctionComponent, useState } from "react"
+import React, { FunctionComponent } from "react"
 import { Game, Recording } from "@ranklab/api"
 import VideoPlayer from "./VideoPlayer"
 import { useRouter } from "next/router"
 import failsafeSubmit from "../utils/failsafeSubmit"
+import { useSnackbar } from "notistack"
 
 export type FormValuesProps = {
   title: string
@@ -59,15 +58,16 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
     defaultValues,
   })
 
-  const [errorMessage, setErrorMessage] = useState("")
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit = async (data: FormValuesProps) => {
     const review = await failsafeSubmit(
       setError,
       () =>
-        setErrorMessage(
-          "There was a problem submitting your recording. Please try again later."
+        enqueueSnackbar(
+          "There was a problem submitting your recording. Please try again later.",
+          { variant: "error" }
         ),
       api.client.playerReviewsCreate({
         createReviewMutation: {
@@ -86,20 +86,6 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={Boolean(errorMessage)}
-        onClose={() => setErrorMessage("")}
-        autoHideDuration={5000}
-      >
-        <Alert
-          onClose={() => setErrorMessage("")}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
       <Grid container direction="row" spacing={4}>
         <Grid item xs={12} md={6}>
           <Stack spacing={3}>

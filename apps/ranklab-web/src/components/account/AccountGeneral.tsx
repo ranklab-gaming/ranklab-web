@@ -11,6 +11,7 @@ import GamesSelect from "../GamesSelect"
 import { UserGame, Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
 import { omit } from "lodash"
+import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
 // ----------------------------------------------------------------------
 
@@ -66,28 +67,33 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
     control,
     handleSubmit,
     formState: { isSubmitting },
+    setError,
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    try {
-      if (data.type === "Coach") {
-        await api.client.coachAccountUpdate({
-          coachUpdateAccountRequest: omit(
-            data as Required<typeof data>,
-            "type"
-          ),
-        })
-      } else {
-        await api.client.playerAccountUpdate({
-          playerUpdateAccountRequest: omit(data, "type"),
-        })
-      }
+    let updateAccount
 
-      enqueueSnackbar("Profile updated successfully")
-    } catch (error) {
-      enqueueSnackbar("An error occurred while updating your profile", {
-        variant: "error",
+    if (data.type === "Coach") {
+      updateAccount = api.client.coachAccountUpdate({
+        coachUpdateAccountRequest: omit(data as Required<typeof data>, "type"),
       })
+    } else {
+      updateAccount = api.client.playerAccountUpdate({
+        playerUpdateAccountRequest: omit(data, "type"),
+      })
+    }
+
+    const account = await failsafeSubmit(
+      setError,
+      () =>
+        enqueueSnackbar("An error occurred while updating your profile", {
+          variant: "error",
+        }),
+      updateAccount
+    )
+
+    if (account) {
+      enqueueSnackbar("Profile updated successfully", { variant: "success" })
     }
   }
 
