@@ -99,7 +99,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 }
               />
 
-              {isEditing && (
+              {review.state === ReviewState.Draft && isEditing && (
                 <Drawing
                   onChange={(drawing: string) =>
                     setCurrentForm({ ...currentForm, drawing })
@@ -113,29 +113,31 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               <Grid container spacing={2}>
-                <Grid item flexGrow={1}>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="info"
-                    onClick={() => {
-                      setIsEditing(!isEditing)
-                      setCurrentForm({
-                        ...initialForm,
-                        videoTimestamp: currentForm.videoTimestamp,
-                      })
-                      setCurrentComment(null)
-                      playerRef.current?.pause()
-                    }}
-                  >
-                    <CreateIcon sx={{ marginRight: "5px" }} />
-                    {isEditing
-                      ? "Stop Annotating"
-                      : `Create Annotation at ${formatTimestamp(
-                          currentForm.videoTimestamp
-                        )}`}
-                  </Button>
-                </Grid>
+                {review.state === ReviewState.Draft && (
+                  <Grid item flexGrow={1}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="info"
+                      onClick={() => {
+                        setIsEditing(!isEditing)
+                        setCurrentForm({
+                          ...initialForm,
+                          videoTimestamp: currentForm.videoTimestamp,
+                        })
+                        setCurrentComment(null)
+                        playerRef.current?.pause()
+                      }}
+                    >
+                      <CreateIcon sx={{ marginRight: "5px" }} />
+                      {isEditing
+                        ? "Stop Annotating"
+                        : `Create Annotation at ${formatTimestamp(
+                            currentForm.videoTimestamp
+                          )}`}
+                    </Button>
+                  </Grid>
+                )}
               </Grid>
               {isEditing ? (
                 <>

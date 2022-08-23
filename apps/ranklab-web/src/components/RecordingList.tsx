@@ -37,7 +37,7 @@ const RecordingList: FunctionComponent<Props> = function ({ recordings }) {
             <NextLink
               href={
                 recording.reviewId
-                  ? `/reviews/${recording.reviewId}`
+                  ? `/player/reviews/${recording.reviewId}`
                   : `/player/recordings/${recording.id}`
               }
               key={recording.id}

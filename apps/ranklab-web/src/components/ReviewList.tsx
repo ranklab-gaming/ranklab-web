@@ -109,7 +109,10 @@ const ReviewList: FunctionComponent<Props> = function ({
         </TableHead>
         <TableBody>
           {reviews.map((review) => (
-            <NextLink href={`/reviews/${review.id}`} key={review.id}>
+            <NextLink
+              href={`/${user.type.toLowerCase()}/reviews/${review.id}`}
+              key={review.id}
+            >
               <TableRow
                 sx={{
                   cursor: "pointer",

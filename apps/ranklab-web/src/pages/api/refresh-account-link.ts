@@ -10,7 +10,7 @@ export default withApiAuthRequired(async function refreshAccountLink(req, res) {
     .coachStripeAccountLinksCreate({
       createAccountLinkMutation: {
         refreshUrl: `${scheme}://${host}/api/refresh-account-link`,
-        returnUrl: `${scheme}://${host}/dashboard`,
+        returnUrl: `${scheme}://${host}/coach/dashboard`,
       },
     })
 

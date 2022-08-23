@@ -55,8 +55,6 @@ const AnalyzeReviewPage: FunctionComponent<Props> = ({
     <DashboardLayout>
       <Page title="Dashboard | Analyze VOD">
         <Container maxWidth="xl">
-          <NewReviewHeader activeStep="payment" />
-
           <Typography variant="h3" component="h1" paragraph>
             Analyze VOD
           </Typography>

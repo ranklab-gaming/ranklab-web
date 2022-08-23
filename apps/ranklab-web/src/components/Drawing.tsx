@@ -2,6 +2,10 @@ import { FunctionComponent, useEffect } from "react"
 import { Box } from "@mui/material"
 import { useSvgDrawing } from "@svg-drawing/react"
 
+if (window.TouchEvent === undefined) {
+  window["TouchEvent"] = (() => {}) as any
+}
+
 interface Props {
   onChange: (svg: string) => void
   value: string
@@ -15,7 +19,7 @@ const Drawing: FunctionComponent<Props> = ({ onChange, value }) => {
   })
 
   useEffect(() => {
-    draw.ref.current?.svg.parseSVGString(value)
+    draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")
     draw.ref.current?.update()
   }, [value])
 
