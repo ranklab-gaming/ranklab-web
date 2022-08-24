@@ -4,6 +4,7 @@ interface VideoPlayerProps {
   src: string
   type: string
   onTimeUpdate?: (seconds: number) => void
+  onPlay?: () => void
   controls?: boolean
 }
 
@@ -13,11 +14,15 @@ export interface VideoPlayerRef {
 }
 
 const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ src, type, onTimeUpdate, controls = true }, ref) => {
+  ({ src, type, onTimeUpdate, onPlay, controls = true }, ref) => {
     const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
       if (videoRef.current?.paused) {
         onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
       }
+    }
+
+    const handleOnPlay = () => {
+      onPlay?.()
     }
 
     const videoRef = useRef<HTMLVideoElement>(null)
@@ -38,6 +43,7 @@ const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
         width="100%"
         onTimeUpdate={handleTimeUpdate}
         ref={videoRef}
+        onPlay={handleOnPlay}
       >
         <source src={src} type={type} />
       </video>

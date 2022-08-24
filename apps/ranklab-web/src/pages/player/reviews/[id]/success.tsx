@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
 
     let review
 
-    review = await api.server(ctx).playerReviewsGet({ id })
+    review = await (await api.server(ctx)).playerReviewsGet({ id })
 
     return {
       props: {

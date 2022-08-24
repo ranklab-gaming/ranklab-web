@@ -53,10 +53,11 @@ const ReviewShow: FunctionComponent<Props> = ({
   const goToComment = (comment: Comment) => {
     playerRef.current?.pause()
     playerRef.current?.seekTo(comment.videoTimestamp)
+    setSelectedComment(comment)
   }
 
-  const theme = useTheme()
   const [isAccepting, setIsAccepting] = useState(false)
+  const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
 
   return (
     <div>
@@ -69,14 +70,26 @@ const ReviewShow: FunctionComponent<Props> = ({
                 ref={playerRef}
                 src={`${process.env.NEXT_PUBLIC_UPLOADS_CDN_URL}/${recording.videoKey}`}
                 type={recording.mimeType}
-                onTimeUpdate={(seconds) => {
-                  const filteredComments = comments.filter(
-                    (c) => c.videoTimestamp <= seconds
-                  )
-                  const comment = filteredComments[filteredComments.length - 1]
-                  comment && goToComment(comment)
-                }}
+                onPlay={() => setSelectedComment(null)}
               />
+              {selectedComment?.drawing && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: selectedComment.drawing,
+                    }}
+                  />
+                </Box>
+              )}
             </Box>
 
             {review.state === ReviewState.Published && (
@@ -131,18 +144,13 @@ const ReviewShow: FunctionComponent<Props> = ({
                       <Typography
                         variant="body2"
                         sx={{ color: "text.secondary" }}
-                      >
-                        <span
-                          onClick={() => goToComment(comment)}
-                          style={{ cursor: "pointer" }}
-                        >
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: comment.body,
-                            }}
-                          />
-                        </span>
-                      </Typography>
+                        onClick={() => goToComment(comment)}
+                        style={{ cursor: "pointer" }}
+                        component="span"
+                        dangerouslySetInnerHTML={{
+                          __html: comment.body,
+                        }}
+                      />
                     </Paper>
                   </CardContent>
                 </Card>

@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     }
 
     const { auth } = await res.props
-    const games = await api.server(ctx).publicGamesList()
+    const games = await (await api.server(ctx)).publicGamesList()
 
     return {
       props: {

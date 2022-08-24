@@ -1,8 +1,9 @@
-import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0"
+import { withApiAuthRequired } from "@auth0/nextjs-auth0"
+import { getAccessToken } from "@ranklab/web/utils/getAccessToken"
 
 export default withApiAuthRequired(async function proxy(req, res) {
   try {
-    const session = getSession(req, res)
+    const { accessToken } = await getAccessToken(req, res)
     const baseURL = process.env.API_HOST
 
     if (!baseURL) {
@@ -13,14 +14,10 @@ export default withApiAuthRequired(async function proxy(req, res) {
       throw new Error("Expected url to be present in query")
     }
 
-    if (!session) {
-      throw new Error("Expected session to be present")
-    }
-
     const params = {
       method: req.method,
       headers: {
-        Authorization: `Bearer ${session.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         Accept: req.headers.accept!,
         "Content-Type": req.headers["content-type"]!,
       },

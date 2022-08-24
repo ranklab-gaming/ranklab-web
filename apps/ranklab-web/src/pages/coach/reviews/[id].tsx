@@ -31,9 +31,13 @@ export const getServerSideProps: GetServerSideProps<Props> =
     let comments
     let recording
 
-    review = await api.server(ctx).coachReviewsGet({ id })
-    comments = await api.server(ctx).coachCommentsList({ reviewId: review.id })
-    recording = await api.server(ctx).coachRecordingsGet({
+    review = await (await api.server(ctx)).coachReviewsGet({ id })
+    comments = await (
+      await api.server(ctx)
+    ).coachCommentsList({ reviewId: review.id })
+    recording = await (
+      await api.server(ctx)
+    ).coachRecordingsGet({
       id: review.recordingId,
     })
 

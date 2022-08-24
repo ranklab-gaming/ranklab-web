@@ -29,9 +29,9 @@ export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
     let user
 
     try {
-      user = await api.server(ctx).userMeGetMe()
+      user = await (await api.server(ctx)).userMeGetMe()
     } catch (err: any) {
-      if (err instanceof Response && err.status === 400) {
+      if (err instanceof Response && err.status === 404) {
         return {
           redirect: {
             destination: `/${userType.toLowerCase()}/onboarding`,

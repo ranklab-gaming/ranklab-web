@@ -2,10 +2,9 @@ import { ParsedUrlQuery } from "querystring"
 import { GetServerSideProps } from "next"
 import {
   Claims,
-  getSession,
   withPageAuthRequired as withAuth0PageAuthRequired,
 } from "@auth0/nextjs-auth0"
-import jwt from "jsonwebtoken"
+import { getAccessToken } from "../utils/getAccessToken"
 
 export type Props<P> = P & {
   auth: {
@@ -18,23 +17,7 @@ export default function withPageAuthRequired<P, Q extends ParsedUrlQuery>(
 ): GetServerSideProps<Props<P>, Q> {
   return withAuth0PageAuthRequired({
     async getServerSideProps(ctx) {
-      const session = getSession(ctx.req, ctx.res)
-
-      if (!session) {
-        throw new Error("Session not present in request")
-      }
-
-      if (!session.accessToken) {
-        throw new Error("Access token not present in session")
-      }
-
-      const claims = jwt.decode(session.accessToken, {
-        json: true,
-      })
-
-      if (!claims) {
-        throw new Error("Could not decode access token")
-      }
+      const { claims } = await getAccessToken(ctx.req, ctx.res)
 
       let props = {} as P
 

@@ -1,4 +1,3 @@
-import { getSession } from "@auth0/nextjs-auth0"
 import {
   RanklabApi,
   Configuration,
@@ -8,6 +7,7 @@ import {
 import { GetServerSidePropsContext } from "next"
 import "isomorphic-fetch"
 import { camelCase, transform, isArray, isObject, snakeCase } from "lodash"
+import { getAccessToken } from "./utils/getAccessToken"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
@@ -71,15 +71,18 @@ export default {
   client: new RanklabApi(
     new Configuration({ ...baseConfiguration, basePath: "/api" })
   ),
-  server: ({ req, res }: Pick<GetServerSidePropsContext, "req" | "res">) => {
-    const session = getSession(req, res)
+  server: async ({
+    req,
+    res,
+  }: Pick<GetServerSidePropsContext, "req" | "res">) => {
+    const { accessToken } = await getAccessToken(req, res)
 
     const configuration = new Configuration({
       ...baseConfiguration,
       fetchApi: fetch,
       basePath: process.env.API_HOST,
       headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     })
 

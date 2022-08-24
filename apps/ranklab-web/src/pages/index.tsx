@@ -24,8 +24,8 @@ const ContentStyle = styled("div")(({ theme }) => ({
 export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const session = getSession(ctx.req, ctx.res)
 
-  if (session) {
-    const claims = jwt.decode(session.accessToken!, {
+  if (session?.accessToken) {
+    const claims = jwt.decode(session.accessToken, {
       json: true,
     })
 
