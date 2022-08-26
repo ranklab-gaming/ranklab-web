@@ -9,6 +9,7 @@ import {
   IconButton,
   Card,
   CardContent,
+  Toolbar,
 } from "@mui/material"
 import CreateIcon from "@mui/icons-material/Create"
 
@@ -67,6 +68,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const goToComment = (comment: Comment) => {
     playerRef.current?.pause()
     playerRef.current?.seekTo(comment.videoTimestamp)
+    setCurrentComment(comment)
   }
 
   const editComment = (comment: Comment) => {
@@ -97,21 +99,53 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     videoTimestamp: seconds,
                   })
                 }
+                onPlay={() => {
+                  setCurrentComment(null)
+                }}
               />
-
-              {review.state === ReviewState.Draft && isEditing && (
-                <Drawing
-                  onChange={(drawing: string) =>
-                    setCurrentForm({ ...currentForm, drawing })
-                  }
-                  value={currentForm.drawing}
-                />
-              )}
+              {review.state === ReviewState.Draft
+                ? isEditing && (
+                    <Drawing
+                      onChange={(drawing: string) =>
+                        setCurrentForm({ ...currentForm, drawing })
+                      }
+                      value={currentForm.drawing}
+                    />
+                  )
+                : currentComment && (
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: currentComment.drawing,
+                        }}
+                      />
+                    </Box>
+                  )}
             </Box>
           </Grid>
 
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
+              {isEditing && (
+                <Toolbar>
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                  ></IconButton>
+                </Toolbar>
+              )}
               <Grid container spacing={2}>
                 {review.state === ReviewState.Draft && (
                   <Grid item flexGrow={1}>
@@ -278,24 +312,20 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                         >
                           <Typography
                             variant="body2"
-                            sx={{ color: "text.secondary" }}
-                          >
-                            <span
-                              onClick={() => goToComment(comment)}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <span
-                                dangerouslySetInnerHTML={{
-                                  __html: comment.body,
-                                }}
-                              />
-                            </span>
-                          </Typography>
+                            component="span"
+                            sx={{ color: "text.secondary", cursor: "pointer" }}
+                            onClick={() => goToComment(comment)}
+                            dangerouslySetInnerHTML={{
+                              __html: comment.body,
+                            }}
+                          />
                         </Paper>
 
-                        <IconButton onClick={() => editComment(comment)}>
-                          <CreateIcon />
-                        </IconButton>
+                        {review.state === ReviewState.Draft && (
+                          <IconButton onClick={() => editComment(comment)}>
+                            <CreateIcon />
+                          </IconButton>
+                        )}
                       </CardContent>
                     </Card>
                   ))}

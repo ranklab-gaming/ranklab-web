@@ -32,27 +32,22 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired("Player", async function (ctx) {
     const id = useRequiredParam(ctx, "id")
-    const user = await (await api.server(ctx)).userMeGetMe()
+    const server = await api.server(ctx)
+    const user = await server.userMeGetMe()
 
     let review
     let comments
     let recording
     let paymentMethods: PaymentMethod[] = []
 
-    review = await (await api.server(ctx)).playerReviewsGet({ id })
-    comments = await (
-      await api.server(ctx)
-    ).playerCommentsList({ reviewId: review.id })
-    recording = await (
-      await api.server(ctx)
-    ).playerRecordingsGet({
+    review = await server.playerReviewsGet({ id })
+    comments = await server.playerCommentsList({ reviewId: review.id })
+    recording = await server.playerRecordingsGet({
       id: review.recordingId,
     })
 
     if (review.state === ReviewState.AwaitingPayment) {
-      paymentMethods = await (
-        await api.server(ctx)
-      ).playerStripePaymentMethodsList()
+      paymentMethods = await server.playerStripePaymentMethodsList()
     }
 
     return {

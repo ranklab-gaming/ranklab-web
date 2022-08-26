@@ -33,8 +33,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
+  const server = await api.server(ctx)
+
   try {
-    await (await api.server(ctx)).userMeGetMe()
+    await server.userMeGetMe()
     return { redirect: { destination: "/coach/dashboard", statusCode: 302 } }
   } catch (err) {
     if (!(err instanceof Response && err.status === 404)) {
@@ -42,11 +44,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  const games = await (await api.server(ctx)).publicGamesList()
-
-  const availableCountries = await api
-    .server(ctx)
-    .claimsCoachesAvailableCountries()
+  const games = await server.publicGamesList()
+  const availableCountries = server.claimsCoachesAvailableCountries()
 
   return {
     props: {

@@ -30,10 +30,11 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 
     const { auth } = await res.props
     const user = auth.user as Coach
+    const server = await api.server(ctx)
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([
-      (await api.server(ctx)).coachReviewsList({}),
-      (await api.server(ctx)).publicGamesList(),
+      server.coachReviewsList({}),
+      server.publicGamesList(),
     ])
 
     return {

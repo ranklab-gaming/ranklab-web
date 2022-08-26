@@ -32,8 +32,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
+  const server = await api.server(ctx)
+
   try {
-    await (await api.server(ctx)).userMeGetMe()
+    await server.userMeGetMe()
     return {
       redirect: { destination: "/player/dashboard", statusCode: 302 },
     }
@@ -43,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  const games = await (await api.server(ctx)).publicGamesList()
+  const games = await server.publicGamesList()
 
   return {
     props: {

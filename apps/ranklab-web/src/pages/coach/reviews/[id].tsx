@@ -26,18 +26,15 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired("Coach", async function (ctx) {
     const id = useRequiredParam(ctx, "id")
+    const server = await api.server(ctx)
 
     let review
     let comments
     let recording
 
-    review = await (await api.server(ctx)).coachReviewsGet({ id })
-    comments = await (
-      await api.server(ctx)
-    ).coachCommentsList({ reviewId: review.id })
-    recording = await (
-      await api.server(ctx)
-    ).coachRecordingsGet({
+    review = await server.coachReviewsGet({ id })
+    comments = await server.coachCommentsList({ reviewId: review.id })
+    recording = await server.coachRecordingsGet({
       id: review.recordingId,
     })
 
