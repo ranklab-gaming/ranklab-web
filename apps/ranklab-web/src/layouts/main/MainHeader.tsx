@@ -11,6 +11,8 @@ import Logo from "../../components/Logo"
 import Label from "../../components/Label"
 //
 import NextLink from "next/link"
+import SplitButton from "@ranklab/web/components/SplitButton"
+import { useRouter } from "next/router"
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +44,7 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
 
 export default function MainHeader() {
   const isOffset = useOffSetTop(HEADER.MAIN_DESKTOP_HEIGHT)
-
+  const router = useRouter()
   const theme = useTheme()
 
   return (
@@ -71,15 +73,15 @@ export default function MainHeader() {
           </Label>
           <Box sx={{ flexGrow: 1 }} />
 
-          <NextLink href="/api/auth/login?user_type=Player">
-            <Button
-              variant="contained"
-              color="secondary"
-              size={isOffset ? "small" : "medium"}
-            >
-              Sign in
-            </Button>
-          </NextLink>
+          <SplitButton
+            variant="contained"
+            color="secondary"
+            options={["Sign in", "Sign in as coach"]}
+            handleClick={() => router.push("/api/auth/login?user_type=Player")}
+            handleMenuItemClick={() =>
+              router.push("/api/auth/login?user_type=Coach")
+            }
+          />
         </Container>
       </ToolbarStyle>
 
