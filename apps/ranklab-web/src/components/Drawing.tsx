@@ -9,12 +9,13 @@ if (window.TouchEvent === undefined) {
 interface Props {
   onChange: (svg: string) => void
   value: string
+  penColor: string
 }
 
-const Drawing: FunctionComponent<Props> = ({ onChange, value }) => {
+const Drawing: FunctionComponent<Props> = ({ onChange, value, penColor }) => {
   const [drawingRef, draw] = useSvgDrawing({
-    penWidth: 5,
-    penColor: "red",
+    penWidth: 3,
+    penColor,
     delay: 100,
   })
 
@@ -26,6 +27,10 @@ const Drawing: FunctionComponent<Props> = ({ onChange, value }) => {
   useEffect(() => {
     onChange(draw.getSvgXML() ?? "")
   }, [draw.getSvgXML()])
+
+  useEffect(() => {
+    draw.changePenColor(penColor)
+  }, [penColor])
 
   return (
     <Box

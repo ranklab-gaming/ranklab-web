@@ -10,6 +10,10 @@ import {
   Card,
   CardContent,
   Toolbar,
+  Radio,
+  FormControl,
+  FormLabel,
+  RadioGroup,
 } from "@mui/material"
 import CreateIcon from "@mui/icons-material/Create"
 
@@ -21,6 +25,15 @@ import api from "src/api"
 import dynamic from "next/dynamic"
 import type { DrawingType } from "./Drawing"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
+import {
+  red,
+  orange,
+  yellow,
+  green,
+  blue,
+  purple,
+  grey,
+} from "@mui/material/colors"
 
 const Drawing = dynamic(() => import("./Drawing"), {
   ssr: false,
@@ -41,6 +54,24 @@ function formatTimestamp(secs: number) {
   return `${duration.minutes}:${String(duration.seconds).padStart(2, "0")}`
 }
 
+const PEN_COLORS = [
+  red,
+  orange,
+  yellow,
+  green,
+  blue,
+  purple,
+  grey,
+  {
+    800: "#000000",
+    600: "#000000",
+  },
+  {
+    800: "#ffffff",
+    600: "#ffffff",
+  },
+]
+
 const AnalyzeReviewForm: FunctionComponent<Props> = ({
   review: propReview,
   comments: fetchedComments,
@@ -60,6 +91,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [currentComment, setCurrentComment] = useState<Comment | null>(null)
   const [isUpdating, setIsUpdating] = useState(false)
   const [review, setReview] = useState(propReview)
+  const [penColor, setPenColor] = useState(PEN_COLORS[0]![600])
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
@@ -103,76 +135,91 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                   setCurrentComment(null)
                 }}
               />
-              {review.state === ReviewState.Draft
-                ? isEditing && (
-                    <Drawing
-                      onChange={(drawing: string) =>
-                        setCurrentForm({ ...currentForm, drawing })
-                      }
-                      value={currentForm.drawing}
-                    />
-                  )
-                : currentComment && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        pointerEvents: "none",
+              {isEditing ? (
+                <Drawing
+                  onChange={(drawing: string) =>
+                    setCurrentForm({ ...currentForm, drawing })
+                  }
+                  value={currentForm.drawing}
+                  penColor={penColor}
+                />
+              ) : (
+                currentComment && (
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      pointerEvents: "none",
+                    }}
+                  >
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: currentComment.drawing,
                       }}
-                    >
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: currentComment.drawing,
-                        }}
-                      />
-                    </Box>
-                  )}
+                    />
+                  </Box>
+                )
+              )}
             </Box>
           </Grid>
 
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               {isEditing && (
-                <Toolbar>
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{ mr: 2 }}
-                  ></IconButton>
-                </Toolbar>
+                <FormControl>
+                  <FormLabel focused={false}>Pen color</FormLabel>
+                  <RadioGroup
+                    defaultValue={PEN_COLORS[0]![600]}
+                    onChange={(_e, value) => {
+                      setPenColor(value)
+                    }}
+                  >
+                    <Toolbar disableGutters variant="dense">
+                      {PEN_COLORS.map((color) => (
+                        <Radio
+                          value={color[600]}
+                          sx={{
+                            padding: 0,
+                            color: color[800],
+                            "&.Mui-checked": {
+                              color: color[600],
+                            },
+                            "& .MuiSvgIcon-root": {
+                              fontSize: 32,
+                            },
+                          }}
+                        />
+                      ))}
+                    </Toolbar>
+                  </RadioGroup>
+                </FormControl>
               )}
-              <Grid container spacing={2}>
-                {review.state === ReviewState.Draft && (
-                  <Grid item flexGrow={1}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="info"
-                      onClick={() => {
-                        setIsEditing(!isEditing)
-                        setCurrentForm({
-                          ...initialForm,
-                          videoTimestamp: currentForm.videoTimestamp,
-                        })
-                        setCurrentComment(null)
-                        playerRef.current?.pause()
-                      }}
-                    >
-                      <CreateIcon sx={{ marginRight: "5px" }} />
-                      {isEditing
-                        ? "Stop Annotating"
-                        : `Create Annotation at ${formatTimestamp(
-                            currentForm.videoTimestamp
-                          )}`}
-                    </Button>
-                  </Grid>
-                )}
-              </Grid>
+              {review.state === ReviewState.Draft && (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="info"
+                  onClick={() => {
+                    setIsEditing(!isEditing)
+                    setCurrentForm({
+                      ...initialForm,
+                      videoTimestamp: currentForm.videoTimestamp,
+                    })
+                    setCurrentComment(null)
+                    playerRef.current?.pause()
+                  }}
+                >
+                  <CreateIcon sx={{ marginRight: "5px" }} />
+                  {isEditing
+                    ? "Stop Annotating"
+                    : `Create Annotation at ${formatTimestamp(
+                        currentForm.videoTimestamp
+                      )}`}
+                </Button>
+              )}
               {isEditing ? (
                 <>
                   <Editor
