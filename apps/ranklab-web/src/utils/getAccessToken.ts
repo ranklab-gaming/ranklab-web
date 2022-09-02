@@ -23,13 +23,13 @@ export async function getAccessToken(
     throw new Error("Could not decode access token")
   }
 
+  const isCoach = sessionClaims["https://ranklab.gg/user_type"] === "Coach"
+
   const { accessToken } = await auth0GetAccessToken(req, res, {
     authorizationParams: {
-      state: Buffer.from(
-        JSON.stringify({
-          user_type: sessionClaims["https://ranklab.gg/user_type"],
-        })
-      ).toString("base64"),
+      scope: isCoach
+        ? `${process.env.AUTH0_SCOPE} coach`
+        : process.env.AUTH0_SCOPE,
     },
   })
 

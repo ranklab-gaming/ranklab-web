@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   }
 
   const games = await server.publicGamesList()
-  const availableCountries = server.claimsCoachesAvailableCountries()
+  const availableCountries = await server.claimsCoachesAvailableCountries()
 
   return {
     props: {

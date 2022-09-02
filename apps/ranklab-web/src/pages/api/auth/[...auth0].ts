@@ -10,11 +10,13 @@ export default handleAuth({
       res.redirect(307, "/")
     }
 
+    const isCoach = userType === "Coach"
+
     await handleLogin(req, res, {
-      getLoginState() {
-        return {
-          user_type: req.query.user_type,
-        }
+      authorizationParams: {
+        scope: isCoach
+          ? `${process.env.AUTH0_SCOPE} coach`
+          : process.env.AUTH0_SCOPE,
       },
       returnTo: "/",
     })
