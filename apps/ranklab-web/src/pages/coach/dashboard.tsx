@@ -15,7 +15,6 @@ import { Pagination } from "../../@types"
 interface Props {
   reviews: Review[]
   games: Game[]
-  canReview?: boolean
   isPlayer?: boolean
   pagination: Pagination
 }
@@ -41,7 +40,6 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
       props: {
         games,
         reviews,
-        canReview: user.canReview,
         auth,
         pagination,
       },
@@ -51,21 +49,9 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
   reviews,
   games,
-  canReview,
   auth,
   pagination,
 }) {
-  const visitStripeDashboard = async () => {
-    const currentLocation = window.location.href
-
-    const loginLink = await api.client.coachStripeLoginLinksCreate({
-      createLoginLinkMutation: {
-        returnUrl: currentLocation,
-      },
-    })
-    window.location.href = loginLink.url
-  }
-
   return (
     <UserProvider user={auth.user}>
       <DashboardLayout>
@@ -74,15 +60,6 @@ const DashboardPage: FunctionComponent<PropsWithAuth<Props>> = function ({
             <Typography variant="h3" component="h1" paragraph>
               Dashboard
             </Typography>
-            {canReview && (
-              <Button
-                variant="contained"
-                color="info"
-                onClick={visitStripeDashboard}
-              >
-                Visit Stripe Dashboard
-              </Button>
-            )}
             <ReviewList
               reviews={reviews}
               games={games}

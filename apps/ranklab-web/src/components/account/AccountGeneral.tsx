@@ -140,23 +140,25 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
                   />
                 )}
               />
-
-              {user.type === "Coach" && (
-                <Controller
-                  name="bio"
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      error={!!error}
-                      helperText={error?.message}
-                      label="Bio"
-                    />
-                  )}
-                />
-              )}
             </Box>
+
+            {user.type === "Coach" && (
+              <Controller
+                name="bio"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    error={!!error}
+                    helperText={error?.message}
+                    label="Bio"
+                    multiline
+                    minRows={4}
+                  />
+                )}
+              />
+            )}
 
             <Controller
               name="games"

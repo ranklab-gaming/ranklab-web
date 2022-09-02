@@ -1,7 +1,8 @@
 // @mui
-import { Card, Button, Typography, Stack } from "@mui/material"
+import { Card, Button, Typography, Stack, Alert } from "@mui/material"
 import api from "@ranklab/web/api"
 import useUser from "@ranklab/web/hooks/useUser"
+import { useRouter } from "next/router"
 // ----------------------------------------------------------------------
 
 const visitCustomerPortal = async () => {
@@ -15,8 +16,20 @@ const visitCustomerPortal = async () => {
   window.location.href = loginLink.url
 }
 
+const visitStripeDashboard = async () => {
+  const currentLocation = window.location.href
+
+  const loginLink = await api.client.coachStripeLoginLinksCreate({
+    createLoginLinkMutation: {
+      returnUrl: currentLocation,
+    },
+  })
+  window.location.href = loginLink.url
+}
+
 export default function AccountBilling() {
   const user = useUser()
+  const router = useRouter()
 
   return (
     <Stack spacing={3}>
@@ -36,6 +49,31 @@ export default function AccountBilling() {
             Change Payment Method
           </Button>
         )}
+        {user.type === "Coach" &&
+          (user.canReview ? (
+            <Button
+              variant="contained"
+              color="info"
+              onClick={visitStripeDashboard}
+            >
+              Go to Stripe Dashboard
+            </Button>
+          ) : user.stripeDetailsSubmitted ? (
+            <Alert severity="info">
+              <Typography variant="body1">
+                Your account information has been submitted to Stripe and is
+                awaiting approval.
+              </Typography>
+            </Alert>
+          ) : (
+            <Button
+              variant="contained"
+              color="info"
+              onClick={() => router.push("/api/refresh-account-link")}
+            >
+              Complete Onboarding
+            </Button>
+          ))}
       </Card>
     </Stack>
   )

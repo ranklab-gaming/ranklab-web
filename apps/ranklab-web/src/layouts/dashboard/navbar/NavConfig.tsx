@@ -38,7 +38,7 @@ const navConfig = [
       // USER
       {
         title: "Account",
-        path: "/account",
+        path: "/player/account",
         icon: ICONS.user,
       },
     ],

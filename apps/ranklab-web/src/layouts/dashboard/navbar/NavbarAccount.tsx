@@ -23,7 +23,7 @@ export default function NavbarAccount({ isCollapse }: Props) {
   const user = useUser()
 
   return (
-    <NextLink href="/account" passHref>
+    <NextLink href={`/${user.type.toLowerCase()}/account`} passHref>
       <Link underline="none" color="inherit">
         <RootStyle
           sx={{

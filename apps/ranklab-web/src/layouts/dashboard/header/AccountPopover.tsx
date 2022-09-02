@@ -10,17 +10,6 @@ import MenuPopover from "@ranklab/web/src/components/MenuPopover"
 import { IconButtonAnimate } from "@ranklab/web/src/components/animate"
 import useUser from "@ranklab/web/hooks/useUser"
 
-const MENU_OPTIONS = [
-  {
-    label: "Home",
-    linkTo: "/",
-  },
-  {
-    label: "Account",
-    linkTo: "/account",
-  },
-]
-
 export default function AccountPopover() {
   const router = useRouter()
   const user = useUser()
@@ -48,6 +37,17 @@ export default function AccountPopover() {
       enqueueSnackbar("Unable to logout!", { variant: "error" })
     }
   }
+
+  const menuOptions = [
+    {
+      label: "Home",
+      linkTo: "/",
+    },
+    {
+      label: "Account",
+      linkTo: `/${user.type.toLowerCase()}/account`,
+    },
+  ]
 
   return (
     <>
@@ -97,7 +97,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: "dashed" }} />
 
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
+          {menuOptions.map((option) => (
             <NextLink key={option.label} href={option.linkTo} passHref>
               <MenuItem key={option.label} onClick={handleClose}>
                 {option.label}

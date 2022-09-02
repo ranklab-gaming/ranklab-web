@@ -14,6 +14,8 @@ import {
   FormControl,
   FormLabel,
   RadioGroup,
+  Alert,
+  AlertTitle,
 } from "@mui/material"
 import CreateIcon from "@mui/icons-material/Create"
 
@@ -34,6 +36,8 @@ import {
   purple,
   grey,
 } from "@mui/material/colors"
+import useUser from "../hooks/useUser"
+import { useRouter } from "next/router"
 
 const Drawing = dynamic(() => import("./Drawing"), {
   ssr: false,
@@ -92,6 +96,12 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [isUpdating, setIsUpdating] = useState(false)
   const [review, setReview] = useState(propReview)
   const [penColor, setPenColor] = useState(PEN_COLORS[0]![600])
+  const user = useUser()
+  const router = useRouter()
+
+  if (user.type !== "Coach") {
+    throw new Error("Only coaches can analyze reviews")
+  }
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp
@@ -285,7 +295,8 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 </>
               ) : (
                 <>
-                  {review.state === ReviewState.AwaitingReview && (
+                  {review.state === ReviewState.AwaitingReview &&
+                  user.canReview ? (
                     <LoadingButton
                       fullWidth
                       color="info"
@@ -312,6 +323,31 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                     >
                       Take Review
                     </LoadingButton>
+                  ) : (
+                    <>
+                      <Alert severity="info">
+                        <Typography>
+                          You need complete onboarding to take this review.
+                        </Typography>
+                      </Alert>
+                      <Button
+                        fullWidth
+                        color="info"
+                        size="large"
+                        type="button"
+                        variant="contained"
+                        onClick={() => {
+                          router.push({
+                            pathname: "/coach/account",
+                            query: {
+                              show_billing: true,
+                            },
+                          })
+                        }}
+                      >
+                        Complete Onboarding
+                      </Button>
+                    </>
                   )}
                   {review.state === ReviewState.Draft && (
                     <LoadingButton

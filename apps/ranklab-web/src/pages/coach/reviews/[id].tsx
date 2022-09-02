@@ -4,18 +4,13 @@ import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
-import {
-  Review,
-  Comment,
-  Recording,
-  User,
-  ReviewState,
-  PaymentMethod,
-} from "@ranklab/api"
+import { Review, Comment, Recording } from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
-import withPageOnboardingRequired from "@ranklab/web/helpers/withPageOnboardingRequired"
-import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
+import withPageOnboardingRequired, {
+  Props as PropsWithAuth,
+} from "@ranklab/web/helpers/withPageOnboardingRequired"
+import { UserProvider } from "@ranklab/web/contexts/UserContext"
 
 interface Props {
   review: Review
@@ -47,31 +42,34 @@ export const getServerSideProps: GetServerSideProps<Props> =
     }
   })
 
-const AnalyzeReviewPage: FunctionComponent<Props> = ({
+const AnalyzeReviewPage: FunctionComponent<PropsWithAuth<Props>> = ({
   review,
   comments,
   recording,
+  auth,
 }) => {
   return (
-    <DashboardLayout>
-      <Page title="Dashboard | Analyze VOD">
-        <Container maxWidth="xl">
-          <Typography variant="h3" component="h1" paragraph>
-            Analyze VOD
-          </Typography>
+    <UserProvider user={auth.user}>
+      <DashboardLayout>
+        <Page title="Dashboard | Analyze VOD">
+          <Container maxWidth="xl">
+            <Typography variant="h3" component="h1" paragraph>
+              Analyze VOD
+            </Typography>
 
-          <Card sx={{ position: "static" }}>
-            <CardContent>
-              <AnalyzeReviewForm
-                review={review}
-                comments={comments}
-                recording={recording}
-              />
-            </CardContent>
-          </Card>
-        </Container>
-      </Page>
-    </DashboardLayout>
+            <Card sx={{ position: "static" }}>
+              <CardContent>
+                <AnalyzeReviewForm
+                  review={review}
+                  comments={comments}
+                  recording={recording}
+                />
+              </CardContent>
+            </Card>
+          </Container>
+        </Page>
+      </DashboardLayout>
+    </UserProvider>
   )
 }
 

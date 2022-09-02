@@ -15,7 +15,6 @@ import { Pagination } from "../../@types"
 interface Props {
   reviews: Review[]
   games: Game[]
-  canReview?: boolean
   isPlayer?: boolean
   pagination: Pagination
 }

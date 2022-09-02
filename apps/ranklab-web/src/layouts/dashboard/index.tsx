@@ -7,8 +7,6 @@ import { HEADER, NAVBAR } from "../../config"
 import DashboardHeader from "./header"
 import NavbarVertical from "./navbar/NavbarVertical"
 
-import { Coach } from "@ranklab/api"
-import { useRouter } from "next/router"
 import useCollapseDrawer from "src/hooks/useCollapseDrawer"
 import useUser from "@ranklab/web/hooks/useUser"
 // ----------------------------------------------------------------------
@@ -47,16 +45,6 @@ type Props = {
 export default function DashboardLayout({ children }: Props) {
   const [open, setOpen] = useState(false)
   const { collapseClick, isCollapse } = useCollapseDrawer()
-  const user = useUser()
-  const router = useRouter()
-  let coach: Coach | undefined
-
-  if (user.type === "Coach") {
-    coach = user as Coach
-  }
-
-  const showStripeOnboardingIncomplete = !coach?.stripeDetailsSubmitted
-  const showWaitingForStripeApproval = !coach?.canReview
 
   return (
     <Box
@@ -75,22 +63,7 @@ export default function DashboardLayout({ children }: Props) {
         onCloseSidebar={() => setOpen(false)}
       />
 
-      <MainStyle collapseClick={collapseClick}>
-        {coach &&
-          (showStripeOnboardingIncomplete ? (
-            <>
-              <p>You have not completed onboarding on Stripe</p>
-              <button onClick={() => router.push("/api/refresh-account-link")}>
-                Complete Onboarding
-              </button>
-            </>
-          ) : (
-            showWaitingForStripeApproval && (
-              <p>Waiting for approval from Stripe</p>
-            )
-          ))}
-        {children}
-      </MainStyle>
+      <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
     </Box>
   )
 }
