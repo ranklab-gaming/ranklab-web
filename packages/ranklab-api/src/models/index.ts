@@ -58,10 +58,10 @@ export interface Coach {
     bio: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<string>}
      * @memberof Coach
      */
-    games: Array<UserGame>;
+    gameIds: Array<string>;
     /**
      * 
      * @type {string}
@@ -101,10 +101,10 @@ export interface CoachUpdateAccountRequest {
     email: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<string>}
      * @memberof CoachUpdateAccountRequest
      */
-    games: Array<UserGame>;
+    gameIds: Array<string>;
     /**
      * 
      * @type {string}
@@ -226,10 +226,10 @@ export interface CreateCoachRequest {
     bio: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<string>}
      * @memberof CreateCoachRequest
      */
-    games: Array<UserGame>;
+    gameIds: Array<string>;
     /**
      * 
      * @type {string}
@@ -374,12 +374,6 @@ export interface Game {
      * @memberof Game
      */
     skillLevels: Array<SkillLevel>;
-    /**
-     * 
-     * @type {SkillLevel}
-     * @memberof Game
-     */
-    minCoachSkillLevel: SkillLevel;
 }
 /**
  * 
@@ -786,10 +780,10 @@ export interface UserOneOf {
     bio: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<string>}
      * @memberof UserOneOf
      */
-    games: Array<UserGame>;
+    gameIds: Array<string>;
     /**
      * 
      * @type {string}
