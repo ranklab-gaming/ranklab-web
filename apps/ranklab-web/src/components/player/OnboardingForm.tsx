@@ -6,8 +6,8 @@ import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Stack, TextField } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
-import { Game, UserGame } from "@ranklab/api"
-import GamesSelect from "../GamesSelect"
+import { Game, PlayerGame } from "@ranklab/api"
+import GamesSelect from "./GamesSelect"
 import { useSnackbar } from "notistack"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
@@ -17,7 +17,7 @@ interface Props {
 
 export type FormValuesProps = {
   name: string
-  games: UserGame[]
+  games: PlayerGame[]
 }
 
 export const defaultValues = {

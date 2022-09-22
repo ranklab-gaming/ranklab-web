@@ -1,7 +1,6 @@
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   Radio,
   RadioGroup,
@@ -9,12 +8,12 @@ import {
   Typography,
   FormHelperText,
 } from "@mui/material"
-import { Game, UserGame } from "@ranklab/api"
+import { Game, PlayerGame } from "@ranklab/api"
 
-interface GamesSelectProps {
+interface Props {
   games: Game[]
-  selectedGames: UserGame[]
-  setGames: (games: UserGame[]) => void
+  selectedGames: PlayerGame[]
+  setGames: (games: PlayerGame[]) => void
   error: boolean
   helperText?: string
 }
@@ -25,17 +24,9 @@ function GamesSelect({
   setGames,
   error = false,
   helperText,
-}: GamesSelectProps) {
+}: Props) {
   return (
     <FormControl>
-      <FormLabel
-        sx={{
-          marginBottom: 3,
-          color: error ? "error.main" : undefined,
-        }}
-      >
-        Games
-      </FormLabel>
       <Stack spacing={2}>
         {games.map((game) => (
           <Grid

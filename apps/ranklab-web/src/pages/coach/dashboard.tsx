@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
-import { Button, Container, Typography } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
 import api from "@ranklab/web/src/api"
-import { Review, Game, Coach } from "@ranklab/api"
+import { Review, Game } from "@ranklab/api"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
 } from "../../helpers/withPageOnboardingRequired"
@@ -28,7 +28,6 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     }
 
     const { auth } = await res.props
-    const user = auth.user as Coach
     const server = await api.server(ctx)
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([

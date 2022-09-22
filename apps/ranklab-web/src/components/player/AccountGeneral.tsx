@@ -7,10 +7,9 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/api"
-import GamesSelect from "../GamesSelect"
-import { UserGame, Game } from "@ranklab/api"
+import GamesSelect from "./GamesSelect"
+import { PlayerGame, Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
-import { omit } from "lodash"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
 // ----------------------------------------------------------------------
@@ -18,9 +17,7 @@ import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 type FormValuesProps = {
   name: string
   email: string
-  bio?: string
-  type: string
-  games: UserGame[]
+  games: PlayerGame[]
 }
 
 interface Props {
@@ -30,11 +27,6 @@ interface Props {
 const UpdateUserSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Email is invalid").required("Email is required"),
-  bio: Yup.string().when("type", {
-    is: "Coach",
-    then: Yup.string().required("Bio is required"),
-  }),
-  type: Yup.string().required(),
   games: Yup.array()
     .of(
       Yup.object().shape({
@@ -50,11 +42,13 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
 
   const user = useUser()
 
+  if (user.type !== "Player") {
+    throw new Error("Expected a player in AccountGeneral")
+  }
+
   const defaultValues = {
     name: user.name,
     email: user.email,
-    bio: user.type === "Coach" ? user.bio : undefined,
-    type: user.type,
     games: user.games,
   }
 
@@ -71,25 +65,15 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    let updateAccount
-
-    if (data.type === "Coach") {
-      updateAccount = api.client.coachAccountUpdate({
-        coachUpdateAccountRequest: omit(data as Required<typeof data>, "type"),
-      })
-    } else {
-      updateAccount = api.client.playerAccountUpdate({
-        playerUpdateAccountRequest: omit(data, "type"),
-      })
-    }
-
     const account = await failsafeSubmit(
       setError,
       () =>
         enqueueSnackbar("An error occurred while updating your profile", {
           variant: "error",
         }),
-      updateAccount
+      api.client.playerAccountUpdate({
+        playerUpdateAccountRequest: data,
+      })
     )
 
     if (account) {
@@ -141,24 +125,6 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
                 )}
               />
             </Box>
-
-            {user.type === "Coach" && (
-              <Controller
-                name="bio"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!error}
-                    helperText={error?.message}
-                    label="Bio"
-                    multiline
-                    minRows={4}
-                  />
-                )}
-              />
-            )}
 
             <Controller
               name="games"

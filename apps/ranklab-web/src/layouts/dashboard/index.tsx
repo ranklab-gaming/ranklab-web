@@ -8,7 +8,6 @@ import DashboardHeader from "./header"
 import NavbarVertical from "./navbar/NavbarVertical"
 
 import useCollapseDrawer from "src/hooks/useCollapseDrawer"
-import useUser from "@ranklab/web/hooks/useUser"
 // ----------------------------------------------------------------------
 
 type MainStyleProps = {

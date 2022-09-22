@@ -1,20 +1,6 @@
 // @mui
-import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
-import { DialogAnimate } from "../animate"
 import { OrderCompleteIllustration } from "@ranklab/web/assets"
-
-// ----------------------------------------------------------------------
-
-const DialogStyle = styled(DialogAnimate)(({ theme }) => ({
-  "& .MuiDialog-paper": {
-    margin: 0,
-    [theme.breakpoints.up("md")]: {
-      maxWidth: "calc(100% - 48px)",
-      maxHeight: "calc(100% - 48px)",
-    },
-  },
-}))
 
 // ----------------------------------------------------------------------
 

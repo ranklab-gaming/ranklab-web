@@ -7,7 +7,6 @@ import useTabs from "@ranklab/web/hooks/useTabs"
 import Page from "@ranklab/web/components/Page"
 import Iconify from "@ranklab/web/components/Iconify"
 import {
-  AccountGeneral,
   AccountBilling,
   AccountChangePassword,
 } from "@ranklab/web/components/account"
@@ -20,6 +19,7 @@ import { UserProvider } from "../../contexts/UserContext"
 import api from "@ranklab/web/api"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
+import AccountGeneral from "@ranklab/web/components/coach/AccountGeneral"
 
 // ----------------------------------------------------------------------
 

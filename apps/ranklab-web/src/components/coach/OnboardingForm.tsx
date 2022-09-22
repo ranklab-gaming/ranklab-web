@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
-import { Game, UserGame } from "@ranklab/api"
+import { Game } from "@ranklab/api"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 import router from "next/router"
 import { useSnackbar } from "notistack"
@@ -9,7 +9,7 @@ import { FunctionComponent } from "react"
 import { Controller, useForm } from "react-hook-form"
 import api from "src/api"
 import * as Yup from "yup"
-import GamesSelect from "../GamesSelect"
+import GamesSelect from "./GamesSelect"
 
 interface Props {
   games: Game[]
@@ -18,16 +18,14 @@ interface Props {
 
 export type FormValuesProps = {
   bio: string
-  games: UserGame[]
-  skillLevel: number
+  gameIds: string[]
   name: string
   country: string
 }
 
 export const defaultValues = {
   bio: "",
-  games: [],
-  skillLevel: 0,
+  gameIds: [],
   name: "",
   country: "US",
 }
@@ -36,15 +34,9 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   bio: Yup.string()
     .required("Bio is required")
     .min(30, "Bio must be at least 30 characters"),
-  games: Yup.array()
-    .of(
-      Yup.object().shape({
-        gameId: Yup.string().required(),
-        skillLevel: Yup.number().required(),
-      })
-    )
-    .min(1, "At least one game is required"),
-  skillLevel: Yup.number().required("Skill level is required"),
+  gameIds: Yup.array()
+    .of(Yup.string().required())
+    .min(1, "You must select at least one game"),
   name: Yup.string()
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
@@ -56,6 +48,10 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
   availableCountries,
 }) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
+
+  const gameFromId = (gameId: string) => {
+    return games.find((g) => g.id === gameId)!
+  }
 
   const {
     control,
@@ -82,7 +78,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
-          games: data.games,
+          gameIds: data.gameIds,
           country: data.country,
         },
       })
@@ -92,17 +88,6 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
       router.push("/coach/dashboard")
     }
   }
-
-  const coachGames = games.map((game) => {
-    const minSkillLevelIndex = game.skillLevels
-      .map((sl) => sl.value)
-      .indexOf(game.minCoachSkillLevel.value)
-
-    return {
-      ...game,
-      skillLevels: game.skillLevels.slice(minSkillLevelIndex),
-    }
-  })
 
   const countries = availableCountries
     .map((country) => ({
@@ -162,12 +147,12 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
         />
 
         <Controller
-          name="games"
+          name="gameIds"
           control={control}
           render={({ field, fieldState: { error } }) => (
             <GamesSelect
-              games={coachGames}
-              selectedGames={field.value}
+              games={games}
+              selectedGames={field.value.map(gameFromId)}
               setGames={field.onChange}
               error={Boolean(error)}
               helperText={error?.message}

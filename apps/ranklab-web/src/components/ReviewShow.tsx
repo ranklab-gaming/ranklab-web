@@ -1,6 +1,4 @@
 import React, { FunctionComponent, useRef, useState } from "react"
-import { Elements } from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
 import {
   Typography,
   Paper,
@@ -9,18 +7,10 @@ import {
   Box,
   Card,
   CardContent,
-  useTheme,
 } from "@mui/material"
-import {
-  Review,
-  Comment,
-  Recording,
-  ReviewState,
-  PaymentMethod,
-} from "@ranklab/api"
+import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
-import ReviewCheckout from "./ReviewPayment"
 import api from "@ranklab/web/src/api"
 import { LoadingButton } from "@mui/lab"
 

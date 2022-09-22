@@ -58,9 +58,9 @@ type NavListSubProps = {
 }
 
 function NavListSub({ list }: NavListSubProps) {
-  const { pathname, asPath } = useRouter()
+  const { pathname } = useRouter()
 
-  const active = getActive(list.path, pathname, asPath)
+  const active = getActive(list.path, pathname)
 
   const [open, setOpen] = useState(active)
 
@@ -82,7 +82,7 @@ function NavListSub({ list }: NavListSubProps) {
               <NavItemSub
                 key={item.title + item.path}
                 item={item}
-                active={getActive(item.path, pathname, asPath)}
+                active={getActive(item.path, pathname)}
               />
             ))}
           </List>

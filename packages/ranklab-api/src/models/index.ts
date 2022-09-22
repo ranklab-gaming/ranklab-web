@@ -295,10 +295,10 @@ export interface CreatePlayerRequest {
     name: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<PlayerGame>}
      * @memberof CreatePlayerRequest
      */
-    games: Array<UserGame>;
+    games: Array<PlayerGame>;
 }
 /**
  * 
@@ -489,10 +489,29 @@ export interface Player {
     email: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<PlayerGame>}
      * @memberof Player
      */
-    games: Array<UserGame>;
+    games: Array<PlayerGame>;
+}
+/**
+ * 
+ * @export
+ * @interface PlayerGame
+ */
+export interface PlayerGame {
+    /**
+     * 
+     * @type {string}
+     * @memberof PlayerGame
+     */
+    gameId: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PlayerGame
+     */
+    skillLevel: number;
 }
 /**
  * 
@@ -514,10 +533,10 @@ export interface PlayerUpdateAccountRequest {
     email: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<PlayerGame>}
      * @memberof PlayerUpdateAccountRequest
      */
-    games: Array<UserGame>;
+    games: Array<PlayerGame>;
 }
 /**
  * 
@@ -726,25 +745,6 @@ export type User = UserOneOf | UserOneOf1;
 /**
  * 
  * @export
- * @interface UserGame
- */
-export interface UserGame {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserGame
-     */
-    gameId: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof UserGame
-     */
-    skillLevel: number;
-}
-/**
- * 
- * @export
  * @interface UserOneOf
  */
 export interface UserOneOf {
@@ -843,10 +843,10 @@ export interface UserOneOf1 {
     email: string;
     /**
      * 
-     * @type {Array<UserGame>}
+     * @type {Array<PlayerGame>}
      * @memberof UserOneOf1
      */
-    games: Array<UserGame>;
+    games: Array<PlayerGame>;
 }
 
 /**
