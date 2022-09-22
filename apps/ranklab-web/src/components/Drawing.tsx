@@ -1,23 +1,36 @@
-import { FunctionComponent, useEffect } from "react"
+import {
+  ForwardedRef,
+  FunctionComponent,
+  useEffect,
+  useImperativeHandle,
+} from "react"
 import { Box } from "@mui/material"
-import { useSvgDrawing } from "@svg-drawing/react"
+import { UseSvgDrawing, useSvgDrawing } from "@svg-drawing/react"
 
 if (window.TouchEvent === undefined) {
   window["TouchEvent"] = (() => {}) as any
 }
 
-interface Props {
+export interface DrawingProps {
   onChange: (svg: string) => void
   value: string
   penColor: string
+  drawingRef?: ForwardedRef<UseSvgDrawing>
 }
 
-const Drawing: FunctionComponent<Props> = ({ onChange, value, penColor }) => {
+const Drawing: FunctionComponent<DrawingProps> = ({
+  onChange,
+  value,
+  penColor,
+  drawingRef: ref,
+}) => {
   const [drawingRef, draw] = useSvgDrawing({
     penWidth: 3,
     penColor,
     delay: 100,
   })
+
+  useImperativeHandle(ref, () => draw)
 
   useEffect(() => {
     draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")

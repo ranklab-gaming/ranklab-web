@@ -153,7 +153,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
             <GamesSelect
               games={games}
               selectedGames={field.value.map(gameFromId)}
-              setGames={field.onChange}
+              setGames={(games) => field.onChange(games.map((g) => g.id))}
               error={Boolean(error)}
               helperText={error?.message}
             />

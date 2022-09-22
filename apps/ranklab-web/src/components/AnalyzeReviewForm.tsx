@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef, useState } from "react"
+import React, { forwardRef, FunctionComponent, useRef, useState } from "react"
 import {
   Typography,
   Paper,
@@ -24,7 +24,7 @@ import { intervalToDuration } from "date-fns"
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import api from "src/api"
 import dynamic from "next/dynamic"
-import type { DrawingType } from "./Drawing"
+import type { DrawingProps, DrawingType } from "./Drawing"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
 import {
   red,
@@ -37,10 +37,15 @@ import {
 } from "@mui/material/colors"
 import useUser from "../hooks/useUser"
 import { useRouter } from "next/router"
+import { UseSvgDrawing } from "@svg-drawing/react"
 
 const Drawing = dynamic(() => import("./Drawing"), {
   ssr: false,
 }) as DrawingType
+
+const DrawingWithRef = forwardRef<UseSvgDrawing, DrawingProps>((props, ref) => (
+  <Drawing {...props} drawingRef={ref} />
+))
 
 interface Props {
   review: Review
@@ -97,6 +102,7 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [penColor, setPenColor] = useState(PEN_COLORS[0]![600])
   const user = useUser()
   const router = useRouter()
+  const drawingRef = useRef<UseSvgDrawing>(null)
 
   if (user.type !== "Coach") {
     throw new Error("Only coaches can analyze reviews")
@@ -145,12 +151,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                 }}
               />
               {isEditing ? (
-                <Drawing
+                <DrawingWithRef
                   onChange={(drawing: string) =>
                     setCurrentForm({ ...currentForm, drawing })
                   }
                   value={currentForm.drawing}
                   penColor={penColor}
+                  ref={drawingRef}
                 />
               ) : (
                 currentComment && (
@@ -178,33 +185,49 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
           <Grid item xs={12} md={4}>
             <Stack spacing={2}>
               {isEditing && (
-                <FormControl>
-                  <FormLabel focused={false}>Pen color</FormLabel>
-                  <RadioGroup
-                    defaultValue={PEN_COLORS[0]![600]}
-                    onChange={(_e, value) => {
-                      setPenColor(value)
-                    }}
-                  >
+                <>
+                  <FormControl>
+                    <FormLabel focused={false}>Pen color</FormLabel>
+                    <RadioGroup
+                      defaultValue={PEN_COLORS[0]![600]}
+                      onChange={(_e, value) => {
+                        setPenColor(value)
+                      }}
+                    >
+                      <Toolbar disableGutters variant="dense">
+                        {PEN_COLORS.map((color) => (
+                          <Radio
+                            value={color[600]}
+                            sx={{
+                              padding: 0,
+                              color: color[800],
+                              "&.Mui-checked": {
+                                color: color[600],
+                              },
+                              "& .MuiSvgIcon-root": {
+                                fontSize: 32,
+                              },
+                            }}
+                          />
+                        ))}
+                      </Toolbar>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel focused={false}>Actions</FormLabel>
+
                     <Toolbar disableGutters variant="dense">
-                      {PEN_COLORS.map((color) => (
-                        <Radio
-                          value={color[600]}
-                          sx={{
-                            padding: 0,
-                            color: color[800],
-                            "&.Mui-checked": {
-                              color: color[600],
-                            },
-                            "& .MuiSvgIcon-root": {
-                              fontSize: 32,
-                            },
-                          }}
-                        />
-                      ))}
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          drawingRef.current?.undo()
+                        }}
+                      >
+                        Undo
+                      </Button>
                     </Toolbar>
-                  </RadioGroup>
-                </FormControl>
+                  </FormControl>
+                </>
               )}
               {review.state === ReviewState.Draft && (
                 <Button
