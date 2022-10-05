@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build --ignore=\"apps/ranklab-web/cypress/**/*\"",
+    "turbo-build": "turbo run build --ignore=\"apps/ranklab-web/cypress/**/*\"",
+    "build": "next build",
     "start": "turbo run start",
     "codegen": "./bin/codegen",
     "test": "NODE_ENV=test turbo run build test --ignore=\"apps/ranklab-web/cypress/**/*\""
