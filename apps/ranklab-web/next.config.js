@@ -6,9 +6,8 @@
 const { withSentryConfig } = require("@sentry/nextjs")
 
 const moduleExports = {
-  // temporary workaround https://github.com/getsentry/sentry-javascript/issues/4103
-  outputFileTracing: false,
   swcMinify: false,
+  output: "standalone",
 }
 
 const sentryWebpackPluginOptions = {
