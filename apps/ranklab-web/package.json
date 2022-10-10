@@ -31,7 +31,7 @@
     "@ranklab/api": "1.0.0",
     "@sentry/nextjs": "7.15.0",
     "@stripe/react-stripe-js": "1.9.0",
-    "@stripe/stripe-js": "1.32.0",
+    "@stripe/stripe-js": "1.39.0",
     "@svg-drawing/core": "4.2.5",
     "@svg-drawing/react": "4.2.5",
     "@zach.codes/use-upload": "1.0.1",
