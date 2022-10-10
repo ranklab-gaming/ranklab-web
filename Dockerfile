@@ -5,13 +5,23 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json ./
+COPY apps/ranklab-web/package.json ./apps/ranklab-web/
+COPY packages/ranklab-api/package.json ./packages/ranklab-api/
+
 RUN npm ci
 
 # Rebuild the source code only when needed
+ARG NEXT_PUBLIC_ASSETS_CDN_URL
+ARG NEXT_PUBLIC_UPLOADS_CDN_URL
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+
 FROM node:16-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/ranklab-web/node_modules ./apps/ranklab-web/node_modules
+COPY --from=deps /app/packages/ranklab-api/node_modules ./packages/ranklab-api/node_modules
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -27,8 +37,11 @@ FROM node:16-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_PUBLIC_ASSETS_CDN_URL=$NEXT_PUBLIC_ASSETS_CDN_URL
+ENV NEXT_PUBLIC_UPLOADS_CDN_URL=$NEXT_PUBLIC_UPLOADS_CDN_URL
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
