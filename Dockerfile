@@ -52,6 +52,7 @@ COPY --from=builder /app/apps/ranklab-web/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/apps/ranklab-web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ ./node_modules/
 COPY --from=builder --chown=nextjs:nodejs /app/apps/ranklab-web/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/ranklab-web/.env.production ./.env.production
 
 USER nextjs
 
