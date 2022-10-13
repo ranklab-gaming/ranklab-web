@@ -12,9 +12,9 @@ loadEnvConfig(projectDir)
 const config = {
   clients: [
     {
-      client_id: process.env.AUTH0_CLIENT_ID,
-      client_secret: process.env.AUTH0_CLIENT_SECRET,
-      redirect_uris: ["http://ranklab-test:3000/api/auth/callback"],
+      client_id: "web",
+      client_secret: process.env.AUTH_CLIENT_SECRET,
+      redirect_uris: ["http://ranklab-test:3000/auth/callback"],
       post_logout_redirect_uris: ["http://ranklab-test:3000"],
       token_endpoint_auth_method: "client_secret_post",
       grant_types: ["authorization_code", "refresh_token"],
@@ -25,7 +25,6 @@ const config = {
     token: "/oauth/token",
     end_session: "/v2/logout",
   },
-  scopes: process.env.AUTH0_SCOPE.split(" "),
   claims: {
     openid: ["sub", "email"],
   },
@@ -54,9 +53,6 @@ const config = {
       enabled: true,
     },
     resourceIndicators: {
-      defaultResource: (ctx, client, oneOf) => {
-        return process.env.AUTH0_AUDIENCE
-      },
       async useGrantedResource(ctx) {
         return true
       },
@@ -64,7 +60,6 @@ const config = {
       getResourceServerInfo: (ctx, resourceIndicator, client) => {
         return {
           scope: ctx.oidc.params.scope,
-          audience: process.env.AUTH0_AUDIENCE,
           accessTokenTTL: 2 * 60 * 60, // 2 hours
           accessTokenFormat: "jwt",
           jwt: {
@@ -78,14 +73,14 @@ const config = {
 }
 
 function oidc(opts) {
-  const issuer = `http://ranklab-test:${opts.port || 3000}/oidc/`
+  const issuer = `http://ranklab-test:${opts.port || 3000}`
   const provider = new Provider(issuer, config)
 
   provider.use(async (ctx, next) => {
     await next()
 
     if (ctx.oidc.route === "end_session_success") {
-      ctx.redirect("http://ranklab-test:3000")
+      ctx.redirect(`http://ranklab-test:${opts.port || 3000}`)
     }
   })
 
@@ -97,7 +92,7 @@ app
   .then(() => {
     const server = express()
 
-    server.use("/oidc", oidc({}).callback())
+    server.use("/api/auth", oidc({}).callback())
 
     server.all("*", (req, res) => {
       return handle(req, res)

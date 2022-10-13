@@ -8,8 +8,8 @@ import {
   LandingDashboard,
 } from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
-import { getSession } from "@auth0/nextjs-auth0"
 import jwt from "jsonwebtoken"
+import { getToken } from "next-auth/jwt"
 
 const RootStyle = styled(Page)({
   height: "100%",
@@ -22,18 +22,10 @@ const ContentStyle = styled("div")(({ theme }) => ({
 }))
 
 export const getServerSideProps: GetServerSideProps = async function (ctx) {
-  const session = getSession(ctx.req, ctx.res)
+  const token = await getToken({ req: ctx.req })
 
-  if (session?.accessToken) {
-    const claims = jwt.decode(session.accessToken, {
-      json: true,
-    })
-
-    if (!claims) {
-      throw new Error("Could not decode access token")
-    }
-
-    const userType = claims["https://ranklab.gg/user_type"]
+  if (token) {
+    const userType = token["https://ranklab.gg/user_type"] as string
 
     ctx.res
       .writeHead(302, {

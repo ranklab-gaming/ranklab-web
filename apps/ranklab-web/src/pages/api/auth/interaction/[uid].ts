@@ -1,1 +1,1 @@
-export default function interaction() {}
+export default function AuthInteraction() {}

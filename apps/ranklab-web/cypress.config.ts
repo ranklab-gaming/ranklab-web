@@ -4,7 +4,7 @@ export default defineConfig({
   projectId: "mw3765",
   defaultCommandTimeout: 8000,
   env: {
-    auth0Password: "password123*",
+    authPassword: "password123*",
   },
   e2e: {
     setupNodeEvents(on, config) {

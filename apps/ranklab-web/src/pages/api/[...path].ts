@@ -1,9 +1,9 @@
-import { withApiAuthRequired } from "@auth0/nextjs-auth0"
-import { getAccessToken } from "@ranklab/web/utils/getAccessToken"
+import { NextApiRequest, NextApiResponse } from "next"
+import { getToken } from "next-auth/jwt"
 
-export default withApiAuthRequired(async function proxy(req, res) {
+export default async function proxy(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { accessToken } = await getAccessToken(req, res)
+    const token = await getToken({ req })
     const baseURL = process.env.API_HOST
 
     if (!baseURL) {
@@ -17,7 +17,7 @@ export default withApiAuthRequired(async function proxy(req, res) {
     const params = {
       method: req.method,
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
         Accept: req.headers.accept!,
         "Content-Type": req.headers["content-type"]!,
       },
@@ -42,4 +42,4 @@ export default withApiAuthRequired(async function proxy(req, res) {
       error: error.message,
     })
   }
-})
+}

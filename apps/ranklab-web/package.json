@@ -14,7 +14,6 @@
     "test:open": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress:open"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "1.9.2",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "11.10.0",
@@ -43,6 +42,7 @@
     "jsonwebtoken": "8.5.1",
     "lodash": "4.17.21",
     "next": "12.3.1",
+    "next-auth": "^4.13.0",
     "notistack": "2.0.5",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",

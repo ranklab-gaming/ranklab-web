@@ -1,7 +1,6 @@
 describe("comment", () => {
   it("should successfully create a comment in a review", () => {
     cy.login()
-    cy.sql(`INSERT INTO players (auth0_id) VALUES ('123');`)
 
     cy.sql(`SELECT * FROM players;`).then(([{ id: playerId }]) => {
       cy.sql(`SELECT * FROM coaches;`).then(([{ id: coachId }]) => {

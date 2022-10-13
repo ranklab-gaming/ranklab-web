@@ -8,10 +8,14 @@ import ThemeProvider from "@ranklab/web/theme"
 import ProgressBar from "@ranklab/web/components/ProgressBar"
 import NotistackProvider from "@ranklab/web/components/NotistackProvider"
 import MotionLazyContainer from "@ranklab/web/components/animate/MotionLazyContainer"
-import { UserProvider } from "@auth0/nextjs-auth0"
+import { SessionProvider } from "next-auth/react"
+import { Session } from "next-auth"
 
-export default function App(props: NextAppProps) {
-  const { Component, pageProps } = props
+export default function App(props: NextAppProps<{ session?: Session }>) {
+  const {
+    Component,
+    pageProps: { session, ...pageProps },
+  } = props
 
   return (
     <>
@@ -19,7 +23,7 @@ export default function App(props: NextAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <UserProvider>
+      <SessionProvider session={session}>
         <CollapseDrawerProvider>
           <MotionLazyContainer>
             <ThemeProvider>
@@ -30,7 +34,7 @@ export default function App(props: NextAppProps) {
             </ThemeProvider>
           </MotionLazyContainer>
         </CollapseDrawerProvider>
-      </UserProvider>
+      </SessionProvider>
     </>
   )
 }

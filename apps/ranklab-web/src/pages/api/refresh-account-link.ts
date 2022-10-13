@@ -1,7 +1,10 @@
-import { withApiAuthRequired } from "@auth0/nextjs-auth0"
+import { NextApiRequest, NextApiResponse } from "next"
 import api from "src/api"
 
-export default withApiAuthRequired(async function refreshAccountLink(req, res) {
+export default async function refreshAccountLink(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const host = req.headers.host
   const scheme = req.headers.origin?.match(/^https/) ? "https" : "http"
 
@@ -15,4 +18,4 @@ export default withApiAuthRequired(async function refreshAccountLink(req, res) {
   })
 
   res.redirect(307, accountLink.url)
-})
+}

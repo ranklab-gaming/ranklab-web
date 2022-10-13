@@ -1,44 +1,39 @@
 import { ParsedUrlQuery } from "querystring"
 import { GetServerSideProps } from "next"
-import {
-  Claims,
-  withPageAuthRequired as withAuth0PageAuthRequired,
-} from "@auth0/nextjs-auth0"
-import { getAccessToken } from "../utils/getAccessToken"
+import { Session, unstable_getServerSession } from "next-auth"
 
 export type Props<P> = P & {
-  auth: {
-    claims: Claims
-  }
+  session?: Session
 }
 
-export default function withPageAuthRequired<P, Q extends ParsedUrlQuery>(
+export default function withPageAuthRequired<
+  P extends { [key: string]: any },
+  Q extends ParsedUrlQuery
+>(
   getServerSideProps?: GetServerSideProps<P, Q>
 ): GetServerSideProps<Props<P>, Q> {
-  return withAuth0PageAuthRequired({
-    async getServerSideProps(ctx) {
-      const { claims } = await getAccessToken(ctx.req, ctx.res)
+  return async (ctx) => {
+    const session = await unstable_getServerSession(ctx.req, ctx.res, {
+      providers: [],
+    })
 
-      let props = {} as P
+    let props = {} as P
 
-      if (getServerSideProps) {
-        const res = await getServerSideProps(ctx)
+    if (getServerSideProps) {
+      const res = await getServerSideProps(ctx)
 
-        if ("redirect" in res || "notFound" in res) {
-          return res
-        }
-
-        props = await res.props
+      if ("redirect" in res || "notFound" in res) {
+        return res
       }
 
-      return {
-        props: {
-          auth: {
-            claims,
-          },
-          ...props,
-        },
-      }
-    },
-  })
+      props = await res.props
+    }
+
+    return {
+      props: {
+        session,
+        ...props,
+      },
+    }
+  }
 }

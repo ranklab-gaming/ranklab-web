@@ -1,31 +1,22 @@
 import { User } from "@ranklab/api"
 import { ParsedUrlQuery } from "querystring"
-import withPageAuthRequired, {
-  Props as PropsWithAuth,
-} from "./withPageAuthRequired"
 import { GetServerSideProps } from "next"
 import api from "../api"
 
-export type Props<P> = P &
-  PropsWithAuth<{
-    auth: {
-      user: User
-    }
-  }>
+export type Props<P> = P & {
+  auth: {
+    user: User
+  }
+}
 
-export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
+export default function withPageOnboardingRequired<
+  P extends { [key: string]: any },
+  Q extends ParsedUrlQuery
+>(
   userType: "Coach" | "Player",
   getServerSideProps?: GetServerSideProps<P, Q>
 ): GetServerSideProps<Props<P>, Q> {
   return async (ctx) => {
-    const res = await withPageAuthRequired()(ctx)
-
-    if ("redirect" in res || "notFound" in res) {
-      return res
-    }
-
-    const authProps = await res.props
-
     let user
 
     try {
@@ -67,7 +58,6 @@ export default function withPageOnboardingRequired<P, Q extends ParsedUrlQuery>(
     return {
       props: {
         auth: {
-          ...authProps.auth,
           user,
         },
         ...props,
