@@ -8,6 +8,14 @@ const { withSentryConfig } = require("@sentry/nextjs")
 const moduleExports = {
   swcMinify: false,
   output: "standalone",
+  async rewrites() {
+    return [
+      {
+        source: "/api/oidc/interactions/:interaction",
+        destination: "/oidc/interactions/:interaction",
+      },
+    ]
+  },
 }
 
 const sentryWebpackPluginOptions = {

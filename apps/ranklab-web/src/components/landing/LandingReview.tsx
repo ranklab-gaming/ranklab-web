@@ -166,7 +166,7 @@ export default function LandingReview() {
                 >
                   <img
                     alt={`screen ${index + 1}`}
-                    src={`/static/home/screen_dark_${index + 1}.png`}
+                    src={`/assets/images/home/screen_dark_${index + 1}.png`}
                   />
                 </ScreenStyle>
               ))}

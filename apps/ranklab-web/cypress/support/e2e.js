@@ -1,9 +1,6 @@
 require("./login")
+require("./sql")
 
 beforeEach(() => {
   cy.task("db:reset")
-})
-
-Cypress.Commands.add("sql", (query) => {
-  cy.task("db:query", query)
 })

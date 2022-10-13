@@ -1,48 +1,71 @@
-Cypress.Commands.add("login", ({ as = "Coach" } = {}) => {
-  cy.log("AS:", as)
-  cy.visit(`/api/auth/login?user_type=${as}`)
-  cy.get("input[name=login]").focus().clear().type(as)
-  cy.get("input[name=password]")
-    .focus()
-    .clear()
-    .type(Cypress.env("authPassword"))
-  cy.get("button.login").click()
-  cy.get("button.login").click()
-  cy.getCookie("appSession").then(({ value }) => {
-    cy.task("decrypt", {
-      value: value,
-      secret: Cypress.env("cookieSecret"),
-    }).then(() => {
-      const stripeAccountId = Cypress.env("stripeAccountId")
-      const stripeCustomerId = Cypress.env("stripeCustomerId")
+Cypress.Commands.add("login", ({ as = "coach" } = {}) => {
+  return cy
+    .sql(
+      `
+      INSERT INTO users (name, email)
+      VALUES (
+        'Test ${as === "coach" ? "Coach" : "Player"}',
+        'test@${as === "coach" ? "coach" : "player"}.com'
+      )
+      RETURNING id, name, email;
+      `
+    )
+    .then(([[{ id: userId, name, email }]]) => {
+      return cy
+        .task("jwt:sign", {
+          "https://ranklab.gg/user_type": as,
+          name,
+          email,
+          sub: userId,
+        })
+        .then((token) => {
+          cy.setCookie("next-auth.session-token", JSON.stringify(token))
 
-      if (as === "Coach") {
-        cy.sql(`
-          INSERT INTO coaches (
-            games,
-            stripe_account_id,
-            stripe_details_submitted,
-            stripe_payouts_enabled,
-            name
-          )
-          VALUES (
-            array ['{"game_id": "overwatch", "skill_level": 6 }'] :: json [],
-            '${stripeAccountId}',
-            true,
-            true,
-            'Test Coach'
-          );
-        `)
-      } else {
-        cy.sql(`
-          INSERT INTO players (games, stripe_customer_id, name)
-          VALUES (
-            array ['{"game_id": "overwatch", "skill_level": 1 }'] :: json [],
-            '${stripeCustomerId}',
-            'Test Player'
-          );
-        `)
-      }
+          if (as === "coach") {
+            const stripeAccountId = Cypress.env("stripeAccountId")
+
+            return cy
+              .sql(
+                `
+                INSERT INTO coaches (
+                  user_id,
+                  games,
+                  stripe_account_id,
+                  stripe_details_submitted,
+                  stripe_payouts_enabled
+                )
+                VALUES (
+                  '${userId}',
+                  array ['overwatch'] :: json [],
+                  '${stripeAccountId}',
+                  true,
+                  true
+                )
+                RETURNING id;
+                `
+              )
+              .then(([[{ id: coachId }]]) => {
+                return cy.wrap({ coachId })
+              })
+          } else {
+            const stripeCustomerId = Cypress.env("stripeCustomerId")
+
+            return cy
+              .sql(
+                `
+                INSERT INTO players (user_id, games, stripe_customer_id)
+                VALUES (
+                  '${userId}',
+                  array ['{"game_id": "overwatch", "skill_level": 1 }'] :: json [],
+                  '${stripeCustomerId}'
+                )
+                RETURNING id;
+                `
+              )
+              .then(([[{ id: playerId }]]) => {
+                return cy.wrap({ playerId })
+              })
+          }
+        })
     })
-  })
 })
