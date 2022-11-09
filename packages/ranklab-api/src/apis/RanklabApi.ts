@@ -14,41 +14,41 @@
 
 
 import * as runtime from '../runtime';
-import {
-    AccountLink,
-    BillingPortalLink,
-    Coach,
-    CoachUpdateAccountRequest,
-    CoachUpdateReviewRequest,
-    Comment,
-    CreateAccountLinkMutation,
-    CreateBillingPortalSessionMutation,
-    CreateCoachRequest,
-    CreateCommentRequest,
-    CreateLoginLinkMutation,
-    CreatePlayerRequest,
-    CreateRecordingRequest,
-    CreateReviewMutation,
-    Game,
-    Health,
-    LoginLink,
-    PaginatedResultForReview,
-    PaymentMethod,
-    Player,
-    PlayerUpdateAccountRequest,
-    PlayerUpdateReviewRequest,
-    Recording,
-    Review,
-    UpdateCommentRequest,
-    User,
+import type {
+  AccountLink,
+  AuthQuery,
+  BillingPortalLink,
+  Coach,
+  CoachUpdateAccountRequest,
+  CoachUpdateReviewRequest,
+  Comment,
+  CreateAccountLinkMutation,
+  CreateBillingPortalSessionMutation,
+  CreateCoachRequest,
+  CreateCommentRequest,
+  CreateLoginLinkMutation,
+  CreatePlayerRequest,
+  CreateRecordingRequest,
+  CreateReviewMutation,
+  CreateSessionRequest,
+  CreateSessionResponse,
+  Game,
+  LoginLink,
+  PaginatedResultForReview,
+  PaymentMethod,
+  Player,
+  PlayerUpdateAccountRequest,
+  PlayerUpdateReviewRequest,
+  Recording,
+  ResetPasswordRequest,
+  Review,
+  StatusResponse,
+  UpdateCommentRequest,
+  UpdatePasswordRequest,
 } from '../models';
 
-export interface ClaimsCoachesCreateRequest {
+export interface CoachAccountCreateRequest {
     createCoachRequest: CreateCoachRequest;
-}
-
-export interface ClaimsPlayersCreateRequest {
-    createPlayerRequest: CreatePlayerRequest;
 }
 
 export interface CoachAccountUpdateRequest {
@@ -94,6 +94,10 @@ export interface CoachStripeLoginLinksCreateRequest {
     createLoginLinkMutation: CreateLoginLinkMutation;
 }
 
+export interface PlayerAccountCreateRequest {
+    createPlayerRequest: CreatePlayerRequest;
+}
+
 export interface PlayerAccountUpdateRequest {
     playerUpdateAccountRequest: PlayerUpdateAccountRequest;
 }
@@ -132,6 +136,19 @@ export interface PlayerStripeBillingPortalSessionsCreateRequest {
     createBillingPortalSessionMutation: CreateBillingPortalSessionMutation;
 }
 
+export interface SessionCreateRequest {
+    createSessionRequest: CreateSessionRequest;
+}
+
+export interface SessionResetPasswordRequest {
+    resetPasswordRequest: ResetPasswordRequest;
+}
+
+export interface SessionUpdatePasswordRequest {
+    auth: AuthQuery;
+    updatePasswordRequest: UpdatePasswordRequest;
+}
+
 /**
  * 
  */
@@ -139,33 +156,9 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async claimsCoachesAvailableCountriesRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<string>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/claims/coaches/available_countries`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     */
-    async claimsCoachesAvailableCountries(initOverrides?: RequestInit): Promise<Array<string>> {
-        const response = await this.claimsCoachesAvailableCountriesRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async claimsCoachesCreateRaw(requestParameters: ClaimsCoachesCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Coach>> {
+    async coachAccountCreateRaw(requestParameters: CoachAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Coach>> {
         if (requestParameters.createCoachRequest === null || requestParameters.createCoachRequest === undefined) {
-            throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling claimsCoachesCreate.');
+            throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling coachAccountCreate.');
         }
 
         const queryParameters: any = {};
@@ -175,7 +168,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/claims/coaches`,
+            path: `/coach/account`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -187,30 +180,23 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async claimsCoachesCreate(requestParameters: ClaimsCoachesCreateRequest, initOverrides?: RequestInit): Promise<Coach> {
-        const response = await this.claimsCoachesCreateRaw(requestParameters, initOverrides);
+    async coachAccountCreate(requestParameters: CoachAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Coach> {
+        const response = await this.coachAccountCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async claimsPlayersCreateRaw(requestParameters: ClaimsPlayersCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Player>> {
-        if (requestParameters.createPlayerRequest === null || requestParameters.createPlayerRequest === undefined) {
-            throw new runtime.RequiredError('createPlayerRequest','Required parameter requestParameters.createPlayerRequest was null or undefined when calling claimsPlayersCreate.');
-        }
-
+    async coachAccountGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Coach>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        headerParameters['Content-Type'] = 'application/json';
-
         const response = await this.request({
-            path: `/claims/players`,
-            method: 'POST',
+            path: `/coach/account`,
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.createPlayerRequest,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -218,14 +204,38 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async claimsPlayersCreate(requestParameters: ClaimsPlayersCreateRequest, initOverrides?: RequestInit): Promise<Player> {
-        const response = await this.claimsPlayersCreateRaw(requestParameters, initOverrides);
+    async coachAccountGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Coach> {
+        const response = await this.coachAccountGetRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachAccountUpdateRaw(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Coach>> {
+    async coachAccountGetCountriesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<string>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/coach/countries`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     */
+    async coachAccountGetCountries(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<string>> {
+        const response = await this.coachAccountGetCountriesRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async coachAccountUpdateRaw(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Coach>> {
         if (requestParameters.coachUpdateAccountRequest === null || requestParameters.coachUpdateAccountRequest === undefined) {
             throw new runtime.RequiredError('coachUpdateAccountRequest','Required parameter requestParameters.coachUpdateAccountRequest was null or undefined when calling coachAccountUpdate.');
         }
@@ -249,14 +259,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachAccountUpdate(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit): Promise<Coach> {
+    async coachAccountUpdate(requestParameters: CoachAccountUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Coach> {
         const response = await this.coachAccountUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachCommentsCreateRaw(requestParameters: CoachCommentsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Comment>> {
+    async coachCommentsCreateRaw(requestParameters: CoachCommentsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Comment>> {
         if (requestParameters.createCommentRequest === null || requestParameters.createCommentRequest === undefined) {
             throw new runtime.RequiredError('createCommentRequest','Required parameter requestParameters.createCommentRequest was null or undefined when calling coachCommentsCreate.');
         }
@@ -280,14 +290,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachCommentsCreate(requestParameters: CoachCommentsCreateRequest, initOverrides?: RequestInit): Promise<Comment> {
+    async coachCommentsCreate(requestParameters: CoachCommentsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Comment> {
         const response = await this.coachCommentsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachCommentsListRaw(requestParameters: CoachCommentsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Comment>>> {
+    async coachCommentsListRaw(requestParameters: CoachCommentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Comment>>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling coachCommentsList.');
         }
@@ -312,14 +322,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachCommentsList(requestParameters: CoachCommentsListRequest, initOverrides?: RequestInit): Promise<Array<Comment>> {
+    async coachCommentsList(requestParameters: CoachCommentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Comment>> {
         const response = await this.coachCommentsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachCommentsUpdateRaw(requestParameters: CoachCommentsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Comment>> {
+    async coachCommentsUpdateRaw(requestParameters: CoachCommentsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Comment>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachCommentsUpdate.');
         }
@@ -347,14 +357,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachCommentsUpdate(requestParameters: CoachCommentsUpdateRequest, initOverrides?: RequestInit): Promise<Comment> {
+    async coachCommentsUpdate(requestParameters: CoachCommentsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Comment> {
         const response = await this.coachCommentsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachRecordingsGetRaw(requestParameters: CoachRecordingsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Recording>> {
+    async coachRecordingsGetRaw(requestParameters: CoachRecordingsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachRecordingsGet.');
         }
@@ -375,14 +385,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachRecordingsGet(requestParameters: CoachRecordingsGetRequest, initOverrides?: RequestInit): Promise<Recording> {
+    async coachRecordingsGet(requestParameters: CoachRecordingsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Recording> {
         const response = await this.coachRecordingsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachReviewsGetRaw(requestParameters: CoachReviewsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+    async coachReviewsGetRaw(requestParameters: CoachReviewsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachReviewsGet.');
         }
@@ -403,14 +413,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsGet(requestParameters: CoachReviewsGetRequest, initOverrides?: RequestInit): Promise<Review> {
+    async coachReviewsGet(requestParameters: CoachReviewsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Review> {
         const response = await this.coachReviewsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachReviewsListRaw(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
+    async coachReviewsListRaw(requestParameters: CoachReviewsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -435,14 +445,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsList(requestParameters: CoachReviewsListRequest = {}, initOverrides?: RequestInit): Promise<PaginatedResultForReview> {
+    async coachReviewsList(requestParameters: CoachReviewsListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResultForReview> {
         const response = await this.coachReviewsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachReviewsUpdateRaw(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+    async coachReviewsUpdateRaw(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling coachReviewsUpdate.');
         }
@@ -470,14 +480,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachReviewsUpdate(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit): Promise<Review> {
+    async coachReviewsUpdate(requestParameters: CoachReviewsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Review> {
         const response = await this.coachReviewsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachStripeAccountLinksCreateRaw(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AccountLink>> {
+    async coachStripeAccountLinksCreateRaw(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccountLink>> {
         if (requestParameters.createAccountLinkMutation === null || requestParameters.createAccountLinkMutation === undefined) {
             throw new runtime.RequiredError('createAccountLinkMutation','Required parameter requestParameters.createAccountLinkMutation was null or undefined when calling coachStripeAccountLinksCreate.');
         }
@@ -501,14 +511,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachStripeAccountLinksCreate(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit): Promise<AccountLink> {
+    async coachStripeAccountLinksCreate(requestParameters: CoachStripeAccountLinksCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccountLink> {
         const response = await this.coachStripeAccountLinksCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async coachStripeLoginLinksCreateRaw(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<LoginLink>> {
+    async coachStripeLoginLinksCreateRaw(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LoginLink>> {
         if (requestParameters.createLoginLinkMutation === null || requestParameters.createLoginLinkMutation === undefined) {
             throw new runtime.RequiredError('createLoginLinkMutation','Required parameter requestParameters.createLoginLinkMutation was null or undefined when calling coachStripeLoginLinksCreate.');
         }
@@ -532,14 +542,38 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async coachStripeLoginLinksCreate(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit): Promise<LoginLink> {
+    async coachStripeLoginLinksCreate(requestParameters: CoachStripeLoginLinksCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LoginLink> {
         const response = await this.coachStripeLoginLinksCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async indexGetHealthRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Health>> {
+    async gameListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Game>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/games`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async gameList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Game>> {
+        const response = await this.gameListRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async indexGetHealthRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StatusResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -556,14 +590,69 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async indexGetHealth(initOverrides?: RequestInit): Promise<Health> {
+    async indexGetHealth(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StatusResponse> {
         const response = await this.indexGetHealthRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerAccountUpdateRaw(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Player>> {
+    async playerAccountCreateRaw(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Player>> {
+        if (requestParameters.createPlayerRequest === null || requestParameters.createPlayerRequest === undefined) {
+            throw new runtime.RequiredError('createPlayerRequest','Required parameter requestParameters.createPlayerRequest was null or undefined when calling playerAccountCreate.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/player/account`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.createPlayerRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerAccountCreate(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Player> {
+        const response = await this.playerAccountCreateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerAccountGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Player>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/account`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerAccountGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Player> {
+        const response = await this.playerAccountGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerAccountUpdateRaw(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Player>> {
         if (requestParameters.playerUpdateAccountRequest === null || requestParameters.playerUpdateAccountRequest === undefined) {
             throw new runtime.RequiredError('playerUpdateAccountRequest','Required parameter requestParameters.playerUpdateAccountRequest was null or undefined when calling playerAccountUpdate.');
         }
@@ -587,14 +676,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerAccountUpdate(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit): Promise<Player> {
+    async playerAccountUpdate(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Player> {
         const response = await this.playerAccountUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerCommentsListRaw(requestParameters: PlayerCommentsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Comment>>> {
+    async playerCommentsListRaw(requestParameters: PlayerCommentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Comment>>> {
         if (requestParameters.reviewId === null || requestParameters.reviewId === undefined) {
             throw new runtime.RequiredError('reviewId','Required parameter requestParameters.reviewId was null or undefined when calling playerCommentsList.');
         }
@@ -619,14 +708,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerCommentsList(requestParameters: PlayerCommentsListRequest, initOverrides?: RequestInit): Promise<Array<Comment>> {
+    async playerCommentsList(requestParameters: PlayerCommentsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Comment>> {
         const response = await this.playerCommentsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerRecordingsCreateRaw(requestParameters: PlayerRecordingsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Recording>> {
+    async playerRecordingsCreateRaw(requestParameters: PlayerRecordingsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.createRecordingRequest === null || requestParameters.createRecordingRequest === undefined) {
             throw new runtime.RequiredError('createRecordingRequest','Required parameter requestParameters.createRecordingRequest was null or undefined when calling playerRecordingsCreate.');
         }
@@ -650,14 +739,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerRecordingsCreate(requestParameters: PlayerRecordingsCreateRequest, initOverrides?: RequestInit): Promise<Recording> {
+    async playerRecordingsCreate(requestParameters: PlayerRecordingsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Recording> {
         const response = await this.playerRecordingsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerRecordingsGetRaw(requestParameters: PlayerRecordingsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Recording>> {
+    async playerRecordingsGetRaw(requestParameters: PlayerRecordingsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Recording>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerRecordingsGet.');
         }
@@ -678,14 +767,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerRecordingsGet(requestParameters: PlayerRecordingsGetRequest, initOverrides?: RequestInit): Promise<Recording> {
+    async playerRecordingsGet(requestParameters: PlayerRecordingsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Recording> {
         const response = await this.playerRecordingsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerRecordingsListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Recording>>> {
+    async playerRecordingsListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Recording>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -702,14 +791,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerRecordingsList(initOverrides?: RequestInit): Promise<Array<Recording>> {
+    async playerRecordingsList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Recording>> {
         const response = await this.playerRecordingsListRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerReviewsCreateRaw(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+    async playerReviewsCreateRaw(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.createReviewMutation === null || requestParameters.createReviewMutation === undefined) {
             throw new runtime.RequiredError('createReviewMutation','Required parameter requestParameters.createReviewMutation was null or undefined when calling playerReviewsCreate.');
         }
@@ -733,14 +822,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsCreate(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit): Promise<Review> {
+    async playerReviewsCreate(requestParameters: PlayerReviewsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Review> {
         const response = await this.playerReviewsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerReviewsGetRaw(requestParameters: PlayerReviewsGetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+    async playerReviewsGetRaw(requestParameters: PlayerReviewsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsGet.');
         }
@@ -761,14 +850,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsGet(requestParameters: PlayerReviewsGetRequest, initOverrides?: RequestInit): Promise<Review> {
+    async playerReviewsGet(requestParameters: PlayerReviewsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Review> {
         const response = await this.playerReviewsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerReviewsListRaw(requestParameters: PlayerReviewsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
+    async playerReviewsListRaw(requestParameters: PlayerReviewsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResultForReview>> {
         const queryParameters: any = {};
 
         if (requestParameters.page !== undefined) {
@@ -793,14 +882,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsList(requestParameters: PlayerReviewsListRequest = {}, initOverrides?: RequestInit): Promise<PaginatedResultForReview> {
+    async playerReviewsList(requestParameters: PlayerReviewsListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResultForReview> {
         const response = await this.playerReviewsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerReviewsUpdateRaw(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Review>> {
+    async playerReviewsUpdateRaw(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Review>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling playerReviewsUpdate.');
         }
@@ -828,14 +917,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerReviewsUpdate(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit): Promise<Review> {
+    async playerReviewsUpdate(requestParameters: PlayerReviewsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Review> {
         const response = await this.playerReviewsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerStripeBillingPortalSessionsCreateRaw(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<BillingPortalLink>> {
+    async playerStripeBillingPortalSessionsCreateRaw(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BillingPortalLink>> {
         if (requestParameters.createBillingPortalSessionMutation === null || requestParameters.createBillingPortalSessionMutation === undefined) {
             throw new runtime.RequiredError('createBillingPortalSessionMutation','Required parameter requestParameters.createBillingPortalSessionMutation was null or undefined when calling playerStripeBillingPortalSessionsCreate.');
         }
@@ -859,14 +948,14 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerStripeBillingPortalSessionsCreate(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit): Promise<BillingPortalLink> {
+    async playerStripeBillingPortalSessionsCreate(requestParameters: PlayerStripeBillingPortalSessionsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BillingPortalLink> {
         const response = await this.playerStripeBillingPortalSessionsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async playerStripePaymentMethodsListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<PaymentMethod>>> {
+    async playerStripePaymentMethodsListRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<PaymentMethod>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -883,23 +972,30 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerStripePaymentMethodsList(initOverrides?: RequestInit): Promise<Array<PaymentMethod>> {
+    async playerStripePaymentMethodsList(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<PaymentMethod>> {
         const response = await this.playerStripePaymentMethodsListRaw(initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async publicGamesListRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Game>>> {
+    async sessionCreateRaw(requestParameters: SessionCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSessionResponse>> {
+        if (requestParameters.createSessionRequest === null || requestParameters.createSessionRequest === undefined) {
+            throw new runtime.RequiredError('createSessionRequest','Required parameter requestParameters.createSessionRequest was null or undefined when calling sessionCreate.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
-            path: `/user/games`,
-            method: 'GET',
+            path: `/sessions`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: requestParameters.createSessionRequest,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -907,23 +1003,30 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async publicGamesList(initOverrides?: RequestInit): Promise<Array<Game>> {
-        const response = await this.publicGamesListRaw(initOverrides);
+    async sessionCreate(requestParameters: SessionCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateSessionResponse> {
+        const response = await this.sessionCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async userMeGetMeRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<User>> {
+    async sessionResetPasswordRaw(requestParameters: SessionResetPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StatusResponse>> {
+        if (requestParameters.resetPasswordRequest === null || requestParameters.resetPasswordRequest === undefined) {
+            throw new runtime.RequiredError('resetPasswordRequest','Required parameter requestParameters.resetPasswordRequest was null or undefined when calling sessionResetPassword.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        headerParameters['Content-Type'] = 'application/json';
+
         const response = await this.request({
-            path: `/user/me`,
-            method: 'GET',
+            path: `/sessions/reset-password`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: requestParameters.resetPasswordRequest,
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response);
@@ -931,8 +1034,47 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async userMeGetMe(initOverrides?: RequestInit): Promise<User> {
-        const response = await this.userMeGetMeRaw(initOverrides);
+    async sessionResetPassword(requestParameters: SessionResetPasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StatusResponse> {
+        const response = await this.sessionResetPasswordRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async sessionUpdatePasswordRaw(requestParameters: SessionUpdatePasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StatusResponse>> {
+        if (requestParameters.auth === null || requestParameters.auth === undefined) {
+            throw new runtime.RequiredError('auth','Required parameter requestParameters.auth was null or undefined when calling sessionUpdatePassword.');
+        }
+
+        if (requestParameters.updatePasswordRequest === null || requestParameters.updatePasswordRequest === undefined) {
+            throw new runtime.RequiredError('updatePasswordRequest','Required parameter requestParameters.updatePasswordRequest was null or undefined when calling sessionUpdatePassword.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.auth !== undefined) {
+            queryParameters['auth'] = requestParameters.auth;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/sessions/password`,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.updatePasswordRequest,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async sessionUpdatePassword(requestParameters: SessionUpdatePasswordRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<StatusResponse> {
+        const response = await this.sessionUpdatePasswordRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

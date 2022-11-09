@@ -16,6 +16,25 @@ export interface AccountLink {
 /**
  * 
  * @export
+ * @interface AuthQuery
+ */
+export interface AuthQuery {
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthQuery
+     */
+    token: string;
+    /**
+     * 
+     * @type {UserType}
+     * @memberof AuthQuery
+     */
+    userType: UserType;
+}
+/**
+ * 
+ * @export
  * @interface BillingPortalLink
  */
 export interface BillingPortalLink {
@@ -217,6 +236,18 @@ export interface CreateCoachRequest {
      * @type {string}
      * @memberof CreateCoachRequest
      */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    password: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
     name: string;
     /**
      * 
@@ -295,6 +326,18 @@ export interface CreatePlayerRequest {
     name: string;
     /**
      * 
+     * @type {string}
+     * @memberof CreatePlayerRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePlayerRequest
+     */
+    password: string;
+    /**
+     * 
      * @type {Array<PlayerGame>}
      * @memberof CreatePlayerRequest
      */
@@ -353,6 +396,44 @@ export interface CreateReviewMutation {
 /**
  * 
  * @export
+ * @interface CreateSessionRequest
+ */
+export interface CreateSessionRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSessionRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSessionRequest
+     */
+    password: string;
+    /**
+     * 
+     * @type {UserType}
+     * @memberof CreateSessionRequest
+     */
+    userType: UserType;
+}
+/**
+ * 
+ * @export
+ * @interface CreateSessionResponse
+ */
+export interface CreateSessionResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSessionResponse
+     */
+    token: string;
+}
+/**
+ * 
+ * @export
  * @interface Game
  */
 export interface Game {
@@ -374,19 +455,6 @@ export interface Game {
      * @memberof Game
      */
     skillLevels: Array<SkillLevel>;
-}
-/**
- * 
- * @export
- * @interface Health
- */
-export interface Health {
-    /**
-     * 
-     * @type {string}
-     * @memberof Health
-     */
-    status: string;
 }
 /**
  * 
@@ -621,6 +689,25 @@ export interface Recording {
 /**
  * 
  * @export
+ * @interface ResetPasswordRequest
+ */
+export interface ResetPasswordRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResetPasswordRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {UserType}
+     * @memberof ResetPasswordRequest
+     */
+    userType: UserType;
+}
+/**
+ * 
+ * @export
  * @interface Review
  */
 export interface Review {
@@ -685,19 +772,21 @@ export interface Review {
      */
     stripeClientSecret?: string | null;
 }
+
 /**
  * 
  * @export
- * @enum {string}
  */
-export enum ReviewState {
-    AwaitingPayment = 'AwaitingPayment',
-    AwaitingReview = 'AwaitingReview',
-    Draft = 'Draft',
-    Published = 'Published',
-    Accepted = 'Accepted',
-    Refunded = 'Refunded'
-}
+export const ReviewState = {
+    AwaitingPayment: 'AwaitingPayment',
+    AwaitingReview: 'AwaitingReview',
+    Draft: 'Draft',
+    Published: 'Published',
+    Accepted: 'Accepted',
+    Refunded: 'Refunded'
+} as const;
+export type ReviewState = typeof ReviewState[keyof typeof ReviewState];
+
 /**
  * 
  * @export
@@ -720,6 +809,19 @@ export interface SkillLevel {
 /**
  * 
  * @export
+ * @interface StatusResponse
+ */
+export interface StatusResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponse
+     */
+    status: string;
+}
+/**
+ * 
+ * @export
  * @interface UpdateCommentRequest
  */
 export interface UpdateCommentRequest {
@@ -737,122 +839,26 @@ export interface UpdateCommentRequest {
     drawing: string;
 }
 /**
- * @type User
  * 
  * @export
+ * @interface UpdatePasswordRequest
  */
-export type User = UserOneOf | UserOneOf1;
-/**
- * 
- * @export
- * @interface UserOneOf
- */
-export interface UserOneOf {
+export interface UpdatePasswordRequest {
     /**
      * 
      * @type {string}
-     * @memberof UserOneOf
+     * @memberof UpdatePasswordRequest
      */
-    type: UserOneOfTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    email: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    bio: string;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof UserOneOf
-     */
-    gameIds: Array<string>;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf
-     */
-    country: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserOneOf
-     */
-    canReview: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof UserOneOf
-     */
-    stripeDetailsSubmitted: boolean;
+    password: string;
 }
 
 /**
-* @export
-* @enum {string}
-*/
-export enum UserOneOfTypeEnum {
-    Coach = 'Coach'
-}
-/**
  * 
  * @export
- * @interface UserOneOf1
  */
-export interface UserOneOf1 {
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    type: UserOneOf1TypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    id: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    name: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UserOneOf1
-     */
-    email: string;
-    /**
-     * 
-     * @type {Array<PlayerGame>}
-     * @memberof UserOneOf1
-     */
-    games: Array<PlayerGame>;
-}
+export const UserType = {
+    Coach: 'coach',
+    Player: 'player'
+} as const;
+export type UserType = typeof UserType[keyof typeof UserType];
 
-/**
-* @export
-* @enum {string}
-*/
-export enum UserOneOf1TypeEnum {
-    Player = 'Player'
-}
