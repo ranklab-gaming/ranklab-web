@@ -1,6 +1,6 @@
 import { Configuration, JWKS, Provider } from "oidc-provider"
 
-const jwks = JSON.parse(atob(process.env.JWKS!)) as JWKS
+const jwks = JSON.parse(atob(process.env.AUTH_JWKS!)) as JWKS
 
 const config: Configuration = {
   clients: [
@@ -8,12 +8,12 @@ const config: Configuration = {
       client_id: "web",
       client_secret: process.env.AUTH_CLIENT_SECRET,
       grant_types: ["refresh_token", "authorization_code"],
-      redirect_uris: [`${process.env.WEB_HOST}/auth/callback`],
+      redirect_uris: [`${process.env.WEB_HOST}/api/auth/callback`],
     },
   ],
   interactions: {
     url(_ctx, interaction) {
-      return `/auth/${interaction.uid}`
+      return `/api/oidc/${interaction.uid}`
     },
   },
   async findAccount(_ctx, id) {
@@ -29,7 +29,7 @@ const config: Configuration = {
   },
   claims: {
     email: ["email"],
-    profile: ["nickname", "picture"],
+    profile: ["name", "picture"],
   },
   features: {
     devInteractions: { enabled: false },
@@ -39,6 +39,6 @@ const config: Configuration = {
 }
 
 export default new Provider(
-  `${process.env.WEB_HOST}/api/auth`,
+  `${process.env.WEB_HOST}/api/oidc`,
   config
 ).callback()

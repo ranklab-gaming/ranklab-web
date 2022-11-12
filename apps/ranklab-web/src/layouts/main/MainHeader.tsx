@@ -77,9 +77,9 @@ export default function MainHeader() {
             variant="contained"
             color="secondary"
             options={["Sign in", "Sign in as coach"]}
-            handleClick={() => router.push("/api/auth/login?user_type=Player")}
+            handleClick={() => router.push("/api/auth/signin?user_type=Player")}
             handleMenuItemClick={() =>
-              router.push("/api/auth/login?user_type=Coach")
+              router.push("/api/auth/signin?user_type=Coach")
             }
           />
         </Container>
