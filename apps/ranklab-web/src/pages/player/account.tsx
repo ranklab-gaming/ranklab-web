@@ -28,14 +28,14 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
-    const res = await withPageOnboardingRequired("Player")(ctx)
+    const res = await withPageOnboardingRequired("player")(ctx)
 
     if ("redirect" in res || "notFound" in res) {
       return res
     }
 
     const { auth } = await res.props
-    const games = await (await api.server(ctx)).publicGamesList()
+    const games = await (await api.server(ctx)).gameList()
 
     return {
       props: {

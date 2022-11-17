@@ -4,12 +4,12 @@ import { Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
-import { Game } from "@ranklab/api"
+import { Game, UserType } from "@ranklab/api"
 import withPageAuthRequired from "../../helpers/withPageAuthRequired"
 import MinimalLayout from "../../layouts/minimal"
 
 interface Props {
-  userType: string
+  userType: UserType
   games: Game[]
   availableCountries?: string[]
 }
@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { auth } = await res.props
   const userType = auth.claims["https://ranklab.gg/user_type"]
 
-  if (userType !== "Coach") {
+  if (userType !== "coach") {
     return {
       redirect: {
         destination: "/",
@@ -36,7 +36,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const server = await api.server(ctx)
 
   try {
-    await server.userMeGetMe()
+    await (userType === "coach"
+      ? server.coachAccountGet()
+      : server.playerAccountGet())
     return { redirect: { destination: "/coach/dashboard", statusCode: 302 } }
   } catch (err) {
     if (!(err instanceof Response && err.status === 404)) {
@@ -44,8 +46,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  const games = await server.publicGamesList()
-  const availableCountries = await server.claimsCoachesAvailableCountries()
+  const games = await server.gameList()
+  const availableCountries = await server.coachAccountGetCountries()
 
   return {
     props: {

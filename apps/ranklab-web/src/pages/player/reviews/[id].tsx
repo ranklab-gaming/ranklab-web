@@ -8,7 +8,6 @@ import {
   Review,
   Comment,
   Recording,
-  User,
   ReviewState,
   PaymentMethod,
 } from "@ranklab/api"
@@ -25,15 +24,13 @@ interface Props {
   review: Review
   comments: Comment[]
   recording: Recording
-  userType: User["type"]
   paymentMethods: PaymentMethod[]
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("Player", async function (ctx) {
+  withPageOnboardingRequired("player", async function (ctx) {
     const id = useRequiredParam(ctx, "id")
     const server = await api.server(ctx)
-    const user = await server.userMeGetMe()
 
     let review
     let comments
@@ -55,7 +52,6 @@ export const getServerSideProps: GetServerSideProps<Props> =
         review,
         comments,
         recording,
-        userType: user.type,
         paymentMethods,
       },
     }

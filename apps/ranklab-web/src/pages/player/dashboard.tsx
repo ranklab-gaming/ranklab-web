@@ -21,7 +21,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
   async function (ctx) {
-    const res = await withPageOnboardingRequired("Player")(ctx)
+    const res = await withPageOnboardingRequired("player")(ctx)
 
     if ("redirect" in res || "notFound" in res) {
       return res
@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([
       server.playerReviewsList(),
-      server.publicGamesList(),
+      server.gameList(),
     ])
 
     return {

@@ -1,5 +1,5 @@
 import { ReactNode, createContext } from "react"
-import { User } from "@ranklab/api"
+import { User } from "../@types"
 
 type UserProviderProps = {
   children: ReactNode

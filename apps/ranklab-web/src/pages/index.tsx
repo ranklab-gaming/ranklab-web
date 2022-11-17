@@ -8,7 +8,6 @@ import {
   LandingDashboard,
 } from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
-import jwt from "jsonwebtoken"
 import { getToken } from "next-auth/jwt"
 
 const RootStyle = styled(Page)({

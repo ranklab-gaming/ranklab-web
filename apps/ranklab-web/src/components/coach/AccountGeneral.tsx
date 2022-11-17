@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/api"
 import GamesSelect from "./GamesSelect"
-import { Game } from "@ranklab/api"
+import { Coach, Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
@@ -37,17 +37,12 @@ const UpdateUserSchema = Yup.object().shape({
 const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
   const { enqueueSnackbar } = useSnackbar()
 
-  const user = useUser()
-
-  if (user.type !== "Coach") {
-    throw new Error("Expected a coach in AccountGeneral")
-  }
+  const user = useUser() as Coach
 
   const defaultValues = {
     name: user.name,
     email: user.email,
     bio: user.bio,
-    type: user.type,
     gameIds: user.gameIds,
   }
 

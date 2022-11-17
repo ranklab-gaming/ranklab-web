@@ -25,7 +25,7 @@ import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 
 // ----------------------------------------------------------------------
 
-export const getServerSideProps = withPageOnboardingRequired("Player")
+export const getServerSideProps = withPageOnboardingRequired("player")
 
 // ----------------------------------------------------------------------
 

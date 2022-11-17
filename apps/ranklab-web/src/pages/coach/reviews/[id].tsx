@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("Coach", async function (ctx) {
+  withPageOnboardingRequired("coach", async function (ctx) {
     const id = useRequiredParam(ctx, "id")
     const server = await api.server(ctx)
 

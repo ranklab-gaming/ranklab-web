@@ -21,6 +21,8 @@ export type FormValuesProps = {
   gameIds: string[]
   name: string
   country: string
+  email: string
+  password: string
 }
 
 export const defaultValues = {
@@ -28,6 +30,8 @@ export const defaultValues = {
   gameIds: [],
   name: "",
   country: "US",
+  email: "",
+  password: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
@@ -41,6 +45,8 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
   country: Yup.string().required("Country is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
 })
 
 const CoachOnboardingForm: FunctionComponent<Props> = ({
@@ -74,12 +80,14 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.client.claimsCoachesCreate({
+      api.client.coachAccountCreate({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
           gameIds: data.gameIds,
           country: data.country,
+          email: data.email,
+          password: data.password,
         },
       })
     )
@@ -106,6 +114,34 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
             <TextField
               {...field}
               label="Name"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="email"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type="email"
+              label="Email"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="password"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type="password"
+              label="Password"
               error={Boolean(error)}
               helperText={error?.message}
             />
@@ -169,7 +205,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           loading={isSubmitting}
           disabled={isSubmitting}
         >
-          Create Profile
+          Create Account
         </LoadingButton>
       </Stack>
     </form>

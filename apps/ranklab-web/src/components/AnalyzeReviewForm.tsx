@@ -21,7 +21,7 @@ import CreateIcon from "@mui/icons-material/Create"
 import { LoadingButton } from "@mui/lab"
 import Editor from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
-import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
+import { Review, Comment, Recording, ReviewState, Coach } from "@ranklab/api"
 import api from "src/api"
 import dynamic from "next/dynamic"
 import type { DrawingProps, DrawingType } from "./Drawing"
@@ -100,13 +100,9 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
   const [isUpdating, setIsUpdating] = useState(false)
   const [review, setReview] = useState(propReview)
   const [penColor, setPenColor] = useState(PEN_COLORS[0]![600])
-  const user = useUser()
+  const user = useUser() as Coach
   const router = useRouter()
   const drawingRef = useRef<UseSvgDrawing>(null)
-
-  if (user.type !== "Coach") {
-    throw new Error("Only coaches can analyze reviews")
-  }
 
   const sortedComments = comments.sort(
     (a, b) => a.videoTimestamp - b.videoTimestamp

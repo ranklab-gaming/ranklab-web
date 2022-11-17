@@ -89,7 +89,7 @@ const ReviewList: FunctionComponent<Props> = function ({
   ) => {
     const requestParams = { page: page + 1, ...(queryParams || {}) }
 
-    const result = await (user.type === "Player"
+    const result = await (user.type === "player"
       ? api.client.playerReviewsList(requestParams)
       : api.client.coachReviewsList(requestParams))
 

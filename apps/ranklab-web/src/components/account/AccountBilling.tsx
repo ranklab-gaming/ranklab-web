@@ -40,7 +40,7 @@ export default function AccountBilling() {
         >
           Billing Details
         </Typography>
-        {user.type === "Player" && (
+        {user.type === "player" && (
           <Button
             variant="contained"
             color="info"
@@ -49,7 +49,7 @@ export default function AccountBilling() {
             Change Payment Method
           </Button>
         )}
-        {user.type === "Coach" &&
+        {user.type === "coach" &&
           (user.canReview ? (
             <Button
               variant="contained"

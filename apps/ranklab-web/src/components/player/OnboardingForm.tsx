@@ -18,11 +18,15 @@ interface Props {
 export type FormValuesProps = {
   name: string
   games: PlayerGame[]
+  email: string
+  password: string
 }
 
 export const defaultValues = {
   name: "",
   games: [],
+  email: "",
+  password: "",
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
@@ -37,6 +41,8 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
       })
     )
     .min(1, "At least one game is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
 })
 
 const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
@@ -61,10 +67,12 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.client.claimsPlayersCreate({
+      api.client.playerAccountCreate({
         createPlayerRequest: {
           name: data.name,
           games: data.games,
+          email: data.email,
+          password: data.password,
         },
       })
     )
@@ -84,6 +92,34 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
             <TextField
               {...field}
               label="Name"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="email"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              label="Email"
+              type="email"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="password"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              label="Password"
+              type="password"
               error={Boolean(error)}
               helperText={error?.message}
             />
