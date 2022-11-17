@@ -14,10 +14,10 @@
     "test:open": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress:open"
   },
   "dependencies": {
-    "@emotion/cache": "11.10.3",
-    "@emotion/react": "11.10.4",
+    "@emotion/cache": "11.10.5",
+    "@emotion/react": "11.10.5",
     "@emotion/server": "11.10.0",
-    "@emotion/styled": "11.10.4",
+    "@emotion/styled": "11.10.5",
     "@hookform/devtools": "4.2.3",
     "@hookform/resolvers": "2.9.10",
     "@iconify/icons-eva": "1.2.3",
