@@ -17,7 +17,7 @@ process.env.NEXTAUTH_URL = process.env.WEB_HOST
 app.prepare().then(() => {
   const server = express()
 
-  server.use(provider.callback())
+  server.use("/oidc/", provider.callback())
   server.use(handle)
 
   server.listen(port, (err) => {

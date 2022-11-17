@@ -8,12 +8,13 @@ const config = {
       client_id: "web",
       client_secret: process.env.AUTH_CLIENT_SECRET,
       grant_types: ["refresh_token", "authorization_code"],
-      redirect_uris: [`${process.env.WEB_HOST}/api/auth/callback`],
+      token_endpoint_auth_method: "client_secret_post",
+      redirect_uris: [`${process.env.WEB_HOST}/api/auth/callback/ranklab`],
     },
   ],
   interactions: {
     url(_ctx, interaction) {
-      return `/api/oidc/${interaction.uid}`
+      return `/auth/${interaction.uid}`
     },
   },
   async findAccount(_ctx, id) {
@@ -38,4 +39,4 @@ const config = {
   jwks,
 }
 
-module.exports = new Provider(`${process.env.WEB_HOST}/api/oidc`, config)
+module.exports = new Provider(`${process.env.WEB_HOST}/oidc`, config)
