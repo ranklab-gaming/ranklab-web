@@ -20,6 +20,14 @@ app.prepare().then(() => {
   server.use("/oidc/", provider.callback())
   server.use(handle)
 
+  server.post("/oidc/login", (req, res) => {
+    provider.interactionFinished(req, res, {
+      login: {
+        accountId: "765de6b8-272b-42c5-b548-d1c47c64273d",
+      },
+    })
+  })
+
   server.listen(port, (err) => {
     if (err) throw err
     console.log(`> Ready on http://${hostname}:${port}`)

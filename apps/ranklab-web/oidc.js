@@ -13,15 +13,21 @@ const config = {
     },
   ],
   interactions: {
-    url(_ctx, interaction) {
-      return `/auth/${interaction.uid}`
+    url(_ctx, _interaction) {
+      return "/oidc/login"
     },
   },
   async findAccount(_ctx, id) {
     return {
       accountId: id,
       async claims(_use, _scope) {
-        return { sub: id }
+        return {
+          sub: id,
+          "https://ranklab.gg/email": "eugeniodepalo@gmail.com",
+          name: "Eugenio Depalo",
+          picture: "https://avatars.githubusercontent.com/u/10214025?v=4",
+          "https://ranklab.gg/user_type": "player",
+        }
       },
     }
   },
