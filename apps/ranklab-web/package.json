@@ -67,7 +67,7 @@
     "@types/nprogress": "0.2.0",
     "@types/numeral": "2.0.2",
     "@types/oidc-provider": "^7.12.0",
-    "@types/react": "17.0.47",
+    "@types/react": "17.0.52",
     "@types/react-lazy-load-image-component": "1.5.2",
     "@types/react-router-dom": "5.3.3",
     "@types/react-scroll": "1.8.4",
