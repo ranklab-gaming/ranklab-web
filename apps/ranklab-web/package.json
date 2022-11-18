@@ -29,7 +29,7 @@
     "@mui/material": "5.10.14",
     "@ranklab/api": "1.0.0",
     "@sentry/nextjs": "7.20.0",
-    "@stripe/react-stripe-js": "1.13.0",
+    "@stripe/react-stripe-js": "1.15.0",
     "@stripe/stripe-js": "1.44.1",
     "@svg-drawing/core": "4.2.5",
     "@svg-drawing/react": "4.2.5",
