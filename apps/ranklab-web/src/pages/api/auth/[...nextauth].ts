@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import { OAuthConfig, OAuthUserConfig } from "next-auth/providers"
 
 interface RanklabProfile {
@@ -31,7 +31,7 @@ function Ranklab<P extends RanklabProfile>(
   }
 }
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     Ranklab({
       clientId: "web",
@@ -39,4 +39,6 @@ export default NextAuth({
     }),
   ],
   secret: process.env.COOKIE_SECRET!,
-})
+}
+
+export default NextAuth(authOptions)

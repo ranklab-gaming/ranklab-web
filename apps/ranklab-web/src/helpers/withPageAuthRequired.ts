@@ -1,6 +1,7 @@
 import { ParsedUrlQuery } from "querystring"
 import { GetServerSideProps } from "next"
 import { Session, unstable_getServerSession } from "next-auth"
+import { authOptions } from "../pages/api/auth/[...nextauth]"
 
 export type Props<P> = P & {
   session?: Session
@@ -13,9 +14,11 @@ export default function withPageAuthRequired<
   getServerSideProps?: GetServerSideProps<P, Q>
 ): GetServerSideProps<Props<P>, Q> {
   return async (ctx) => {
-    const session = await unstable_getServerSession(ctx.req, ctx.res, {
-      providers: [],
-    })
+    const session = await unstable_getServerSession(
+      ctx.req,
+      ctx.res,
+      authOptions
+    )
 
     let props = {} as P
 

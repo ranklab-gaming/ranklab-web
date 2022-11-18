@@ -13,6 +13,7 @@ import Label from "../../components/Label"
 import NextLink from "next/link"
 import SplitButton from "@ranklab/web/components/SplitButton"
 import { useRouter } from "next/router"
+import { signIn } from "next-auth/react"
 
 // ----------------------------------------------------------------------
 
@@ -77,9 +78,9 @@ export default function MainHeader() {
             variant="contained"
             color="secondary"
             options={["Sign in", "Sign in as coach"]}
-            handleClick={() => router.push("/api/auth/signin?user_type=Player")}
+            handleClick={() => signIn("ranklab", {}, { user_type: "player" })}
             handleMenuItemClick={() =>
-              router.push("/api/auth/signin?user_type=Coach")
+              signIn("ranklab", {}, { user_type: "coach" })
             }
           />
         </Container>

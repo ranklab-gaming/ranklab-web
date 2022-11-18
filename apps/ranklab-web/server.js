@@ -17,16 +17,16 @@ process.env.NEXTAUTH_URL = process.env.WEB_HOST
 app.prepare().then(() => {
   const server = express()
 
-  server.use("/oidc/", provider.callback())
-  server.use(handle)
-
-  server.post("/oidc/login", (req, res) => {
+  server.post("/auth/login/finish", (req, res) => {
     provider.interactionFinished(req, res, {
       login: {
         accountId: "765de6b8-272b-42c5-b548-d1c47c64273d",
       },
     })
   })
+
+  server.use("/oidc/", provider.callback())
+  server.use(handle)
 
   server.listen(port, (err) => {
     if (err) throw err

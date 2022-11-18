@@ -14,7 +14,7 @@ const config = {
   ],
   interactions: {
     url(_ctx, _interaction) {
-      return "/oidc/login"
+      return "/auth/login"
     },
   },
   async findAccount(_ctx, id) {
