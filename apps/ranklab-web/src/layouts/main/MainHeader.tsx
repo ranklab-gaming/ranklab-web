@@ -12,7 +12,6 @@ import Label from "../../components/Label"
 //
 import NextLink from "next/link"
 import SplitButton from "@ranklab/web/components/SplitButton"
-import { useRouter } from "next/router"
 import { signIn } from "next-auth/react"
 
 // ----------------------------------------------------------------------
@@ -45,7 +44,6 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
 
 export default function MainHeader() {
   const isOffset = useOffSetTop(HEADER.MAIN_DESKTOP_HEIGHT)
-  const router = useRouter()
   const theme = useTheme()
 
   return (
