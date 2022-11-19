@@ -25,13 +25,19 @@ const config: Configuration = {
     Session: 24 * 60 * 60,
     Interaction: 5 * 60,
   },
+  extraParams: ["user_type"],
+  extraTokenClaims(ctx) {
+    return {
+      user_type: ctx.oidc.params!.user_type,
+    }
+  },
   async findAccount(_ctx, id) {
     return {
       accountId: id,
-      async claims(_use, _scope) {
+      async claims(_use, _scope, { user_type: userType }) {
         return {
           sub: id,
-          user_type: "player",
+          user_type: userType,
         }
       },
     }
@@ -50,10 +56,7 @@ const config: Configuration = {
   adapter: RedisAdapter,
 }
 
-export const oidcProvider = new Provider(
-  `${process.env.WEB_HOST}/api/oidc`,
-  config
-)
+export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
 
 const app = new koa()
 

@@ -1,3 +1,4 @@
+import { jwtDecrypt } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
 import { oidcProvider } from "src/pages/api/oidc/[...path]"
 
@@ -9,6 +10,22 @@ export default async function finishInteraction(
     return res.status(405).end()
   }
 
+  const { token } = JSON.parse(req.body)
+
+  const {
+    payload: { sub: accountId },
+  } = await jwtDecrypt(
+    token,
+    new TextEncoder().encode(process.env.AUTH_CLIENT_SECRET),
+    {
+      issuer: process.env.WEB_HOST,
+    }
+  )
+
+  if (!accountId) {
+    throw new Error("Invalid token")
+  }
+
   let { grantId } = await oidcProvider.interactionDetails(req, res)
   let grant: any
 
@@ -16,7 +33,7 @@ export default async function finishInteraction(
     grant = await oidcProvider.Grant.find(grantId)
   } else {
     grant = new oidcProvider.Grant({
-      accountId: "765de6b8-272b-42c5-b548-d1c47c64273d",
+      accountId,
       clientId: "web",
     })
   }
@@ -29,7 +46,7 @@ export default async function finishInteraction(
     res,
     {
       login: {
-        accountId: "765de6b8-272b-42c5-b548-d1c47c64273d",
+        accountId,
       },
       consent: {
         grantId,

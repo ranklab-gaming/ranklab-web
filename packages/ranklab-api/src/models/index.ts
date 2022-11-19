@@ -429,13 +429,7 @@ export interface CreateSessionResponse {
      * @type {string}
      * @memberof CreateSessionResponse
      */
-    userId: string;
-    /**
-     * 
-     * @type {UserType}
-     * @memberof CreateSessionResponse
-     */
-    userType: UserType;
+    token: string;
 }
 /**
  * 
