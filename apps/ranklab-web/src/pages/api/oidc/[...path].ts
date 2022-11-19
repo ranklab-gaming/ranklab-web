@@ -17,8 +17,8 @@ const config: Configuration = {
     },
   ],
   interactions: {
-    url(_ctx, interaction) {
-      return `/api/oidc/interactions/${interaction.uid}`
+    url() {
+      return "/api/oidc/login"
     },
   },
   ttl: {
@@ -31,9 +31,6 @@ const config: Configuration = {
       async claims(_use, _scope) {
         return {
           sub: id,
-          email: "eugeniodepalo@gmail.com",
-          name: "Eugenio Depalo",
-          picture: "https://avatars.githubusercontent.com/u/10214025?v=4",
           user_type: "player",
         }
       },
@@ -43,7 +40,7 @@ const config: Configuration = {
     keys: [process.env.COOKIE_SECRET!],
   },
   claims: {
-    openid: ["sub", "name", "picture", "email", "user_type"],
+    openid: ["sub", "user_type"],
   },
   features: {
     devInteractions: { enabled: false },

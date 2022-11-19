@@ -11,8 +11,8 @@ const moduleExports = {
   async rewrites() {
     return [
       {
-        source: "/api/oidc/interactions/:interaction",
-        destination: "/oidc/interactions/:interaction",
+        source: "/api/oidc/login",
+        destination: "/oidc/login",
       },
     ]
   },
