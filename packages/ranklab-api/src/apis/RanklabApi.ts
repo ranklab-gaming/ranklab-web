@@ -137,6 +137,7 @@ export interface PlayerStripeBillingPortalSessionsCreateRequest {
 }
 
 export interface SessionCreateRequest {
+    clientSecret: string;
     createSessionRequest: CreateSessionRequest;
 }
 
@@ -980,11 +981,19 @@ export class RanklabApi extends runtime.BaseAPI {
     /**
      */
     async sessionCreateRaw(requestParameters: SessionCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSessionResponse>> {
+        if (requestParameters.clientSecret === null || requestParameters.clientSecret === undefined) {
+            throw new runtime.RequiredError('clientSecret','Required parameter requestParameters.clientSecret was null or undefined when calling sessionCreate.');
+        }
+
         if (requestParameters.createSessionRequest === null || requestParameters.createSessionRequest === undefined) {
             throw new runtime.RequiredError('createSessionRequest','Required parameter requestParameters.createSessionRequest was null or undefined when calling sessionCreate.');
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.clientSecret !== undefined) {
+            queryParameters['client_secret'] = requestParameters.clientSecret;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
