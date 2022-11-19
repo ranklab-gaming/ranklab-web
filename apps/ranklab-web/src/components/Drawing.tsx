@@ -53,7 +53,7 @@ const Drawing: FunctionComponent<DrawingProps> = ({
         left: 0,
         right: 0,
         bottom: 0,
-        cursor: "url(/static/edit.png) 0 16, auto",
+        cursor: "url(/assets/images/edit.png) 0 16, auto",
       }}
       ref={drawingRef}
     />

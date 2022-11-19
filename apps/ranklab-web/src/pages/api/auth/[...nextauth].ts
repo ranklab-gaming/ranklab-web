@@ -14,9 +14,8 @@ function Ranklab<P extends RanklabProfile>(
   return {
     id: "ranklab",
     name: "Ranklab",
-    wellKnown: `${process.env.WEB_HOST}/oidc/.well-known/openid-configuration`,
+    wellKnown: `${process.env.WEB_HOST}/api/oidc/.well-known/openid-configuration`,
     type: "oauth",
-    authorization: { params: { scope: "openid email profile" } },
     checks: ["pkce", "state"],
     idToken: true,
     profile(profile) {

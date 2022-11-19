@@ -13,8 +13,6 @@ env:
   TEST_STRIPE_ACCOUNT_ID: ${{ secrets.TEST_STRIPE_ACCOUNT_ID }}
   TEST_STRIPE_CUSTOMER_ID: ${{ secrets.TEST_STRIPE_CUSTOMER_ID }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  TURBO_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  TURBO_TEAM: ${{ secrets.VERCEL_ORG_ID }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -82,16 +80,16 @@ jobs:
         uses: bahmutov/npm-install@v1
       - name: Build
         run: npm run build
-      # - name: Run Chrome tests
-      #   uses: cypress-io/github-action@v4
-      #   with:
-      #     working-directory: apps/ranklab-web
-      #     record: true
-      #     start: npm run test:start
-      #     wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"
-      #     browser: chrome
-      #     group: "Chrome"
-      #     install: false
+      - name: Run Chrome tests
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: apps/ranklab-web
+          record: true
+          start: npm run test:start
+          wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"
+          browser: chrome
+          group: "Chrome"
+          install: false
       - name: Output container logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log

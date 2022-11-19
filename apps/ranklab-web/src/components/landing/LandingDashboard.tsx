@@ -41,7 +41,7 @@ export default function LandingDashboard() {
         <Box
           component="img"
           alt="image shape"
-          src="/static/home/shape.svg"
+          src="/assets/images/home/shape.svg"
           sx={{
             top: 0,
             right: 0,
@@ -96,7 +96,7 @@ export default function LandingDashboard() {
 
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
             <m.div variants={varFade().inUp}>
-              <img alt="light mode" src="/static/home/lightmode.png" />
+              <img alt="light mode" src="/assets/images/home/lightmode.png" />
             </m.div>
           </Grid>
         </Grid>

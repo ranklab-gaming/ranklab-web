@@ -25,7 +25,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": ["cypress"],
     "isolatedModules": true,
     "paths": {
       "@ranklab/web/*": ["./src/*"]

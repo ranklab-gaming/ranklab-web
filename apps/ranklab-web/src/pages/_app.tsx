@@ -11,7 +11,11 @@ import MotionLazyContainer from "@ranklab/web/components/animate/MotionLazyConta
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth"
 
-export default function App(props: NextAppProps<{ session?: Session }>) {
+export interface AppPageProps {
+  session?: Session
+}
+
+export default function App<T extends AppPageProps>(props: NextAppProps<T>) {
   const {
     Component,
     pageProps: { session, ...pageProps },

@@ -69,13 +69,13 @@ export default function LandingHero() {
       <RootStyle initial="initial" animate="animate">
         <HeroOverlayStyle
           alt="overlay"
-          src="/static/overlay.svg"
+          src="/assets/images/overlay.svg"
           variants={varFade().in}
         />
 
         <HeroImgStyle
           alt="hero"
-          src="/static/home/hero.png"
+          src="/assets/images/home/hero.png"
           variants={varFade().inUp}
         />
 
