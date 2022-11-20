@@ -18,7 +18,7 @@ export default async function finishInteraction(
     token,
     new TextEncoder().encode(process.env.AUTH_CLIENT_SECRET),
     {
-      issuer: process.env.WEB_HOST,
+      issuer: process.env.API_HOST,
     }
   )
 

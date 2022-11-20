@@ -68,7 +68,10 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
         createSessionRequest: { ...data, userType },
       })
     } catch (error) {
-      if (error instanceof Response && error.status === 422) {
+      if (
+        error instanceof Response &&
+        (error.status === 422 || error.status === 404)
+      ) {
         enqueueSnackbar("Invalid email or password. Please try again.", {
           variant: "error",
         })
@@ -78,11 +81,13 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
           { variant: "error" }
         )
       }
+
+      return
     }
 
     const response = await fetch("/api/oidc/login/finish", {
       method: "POST",
-      body: JSON.stringify({ token: session!.token }),
+      body: JSON.stringify({ token: session.token }),
     })
 
     if (response.redirected) {
@@ -109,7 +114,7 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
             />
 
             <Controller
-              name="email"
+              name="password"
               control={control}
               render={({ field }) => (
                 <TextField
