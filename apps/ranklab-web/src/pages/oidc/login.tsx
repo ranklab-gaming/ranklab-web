@@ -88,10 +88,14 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
     const response = await fetch("/api/oidc/login/finish", {
       method: "POST",
       body: JSON.stringify({ token: session.token }),
+      headers: {
+        "Content-Type": "application/json",
+      },
     })
 
-    if (response.redirected) {
-      window.location.href = response.headers.get("location")!
+    if (response.ok) {
+      const json = await response.json()
+      window.location.href = json.location
     } else {
       enqueueSnackbar(
         "There was a problem logging in. Please try again later.",

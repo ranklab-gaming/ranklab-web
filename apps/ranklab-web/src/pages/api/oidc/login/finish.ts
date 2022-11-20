@@ -1,4 +1,4 @@
-import { jwtDecrypt } from "jose"
+import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
 import { oidcProvider } from "src/pages/api/oidc/[...path]"
 
@@ -10,12 +10,10 @@ export default async function finishInteraction(
     return res.status(405).end()
   }
 
-  const { token } = JSON.parse(req.body)
-
   const {
     payload: { sub: accountId },
-  } = await jwtDecrypt(
-    token,
+  } = await jwtVerify(
+    req.body.token,
     new TextEncoder().encode(process.env.AUTH_CLIENT_SECRET),
     {
       issuer: process.env.API_HOST,
@@ -41,7 +39,7 @@ export default async function finishInteraction(
   grant.addOIDCScope("openid")
   grantId = await grant.save()
 
-  return oidcProvider.interactionFinished(
+  const location = await oidcProvider.interactionResult(
     req,
     res,
     {
@@ -54,4 +52,6 @@ export default async function finishInteraction(
     },
     { mergeWithLastSubmission: false }
   )
+
+  return res.status(200).json({ location })
 }
