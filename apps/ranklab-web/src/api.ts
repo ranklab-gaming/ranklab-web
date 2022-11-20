@@ -71,8 +71,14 @@ export default {
   client: new RanklabApi(
     new Configuration({ ...baseConfiguration, basePath: "/api" })
   ),
-  server: async ({ req }: Pick<GetServerSidePropsContext, "req" | "res">) => {
-    const token = await getToken({ req })
+  server: async ({
+    req,
+    accessToken,
+  }: {
+    req?: GetServerSidePropsContext["req"]
+    accessToken?: string
+  }) => {
+    const token = accessToken ?? (await getToken({ req: req! }))
 
     const configuration = new Configuration({
       ...baseConfiguration,

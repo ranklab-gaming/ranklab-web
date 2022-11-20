@@ -9,7 +9,7 @@ export default async function refreshAccountLink(
   const scheme = req.headers.origin?.match(/^https/) ? "https" : "http"
 
   let accountLink = await (
-    await api.server({ req, res })
+    await api.server({ req })
   ).coachStripeAccountLinksCreate({
     createAccountLinkMutation: {
       refreshUrl: `${scheme}://${host}/api/refresh-account-link`,

@@ -3,6 +3,8 @@ import koa from "koa"
 import mount from "koa-mount"
 import { NextApiRequest, NextApiResponse } from "next"
 import RedisAdapter from "@ranklab/web/utils/oidcRedisAdapter"
+import api from "@ranklab/web/api"
+import { Coach, Player } from "@ranklab/api"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
 
@@ -31,13 +33,33 @@ const config: Configuration = {
       user_type: ctx.oidc.params!.user_type,
     }
   },
-  async findAccount(_ctx, id) {
+  async findAccount(_ctx, id, token) {
     return {
       accountId: id,
-      async claims(_use, _scope, { user_type: userType }) {
+      async claims(use, _scope, { user_type: userType }) {
+        if (use === "id_token") {
+          return {
+            sub: id,
+            user_type: userType?.value,
+          }
+        }
+
+        const server = await api.server({
+          accessToken: token!.toString(),
+        })
+
+        let user: Coach | Player
+
+        if (userType!.value === "coach") {
+          user = await server.coachAccountGet()
+        } else {
+          user = await server.playerAccountGet()
+        }
+
         return {
           sub: id,
-          user_type: userType,
+          name: user.name,
+          email: user.email,
         }
       },
     }

@@ -23,7 +23,6 @@ function Ranklab<P extends RanklabProfile>(
         id: profile.sub,
         name: profile.name,
         email: profile.email,
-        image: profile.picture,
       }
     },
     options,
