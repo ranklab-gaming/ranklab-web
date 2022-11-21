@@ -1,5 +1,17 @@
 // @mui
-import { Card, Stack, TextField } from "@mui/material"
+import {
+  Box,
+  Card,
+  Container,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  styled,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material"
 import { useSnackbar } from "notistack"
 import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
@@ -9,6 +21,11 @@ import api from "@ranklab/web/api"
 import { CreateSessionResponse, UserType } from "@ranklab/api"
 import { GetServerSideProps, NextPage } from "next"
 import { oidcProvider } from "../api/oidc/[...path]"
+import MinimalLayout from "@ranklab/web/layouts/minimal"
+import Iconify from "@ranklab/web/components/Iconify"
+import NextLink from "next/link"
+import { useState } from "react"
+import { signIn } from "next-auth/react"
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +45,14 @@ const CreateSessionSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 })
 
+const ContentStyle = styled("div")(() => ({
+  maxWidth: 480,
+  margin: "auto",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+}))
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const interaction = await oidcProvider.interactionDetails(
     context.req,
@@ -46,6 +71,8 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
     email: "",
     password: "",
   }
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -105,44 +132,110 @@ const OidcLoginPage: NextPage<Props> = function ({ userType }) {
   }
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Card sx={{ p: 3 }}>
-          <Stack spacing={2}>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField {...field} fullWidth label="Email" type="email" />
-              )}
-            />
+    <MinimalLayout>
+      <Container maxWidth="sm">
+        <ContentStyle>
+          <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Typography variant="h4" gutterBottom>
+                Sign in to Ranklab
+              </Typography>
+              <Typography sx={{ color: "text.secondary" }}>
+                Enter your details below.
+              </Typography>
+            </Box>
+          </Stack>
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  label="Password"
-                  type="password"
+          <FormProvider {...form}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack spacing={3}>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!error}
+                      helperText={error?.message}
+                      label="Email"
+                      type="email"
+                    />
+                  )}
                 />
-              )}
-            />
-          </Stack>
 
-          <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      error={!!error}
+                      helperText={error?.message}
+                      label="Password"
+                      type={showPassword ? "text" : "password"}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                            >
+                              <Iconify
+                                icon={
+                                  showPassword
+                                    ? "eva:eye-fill"
+                                    : "eva:eye-off-fill"
+                                }
+                              />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  )}
+                />
+              </Stack>
+
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ my: 2 }}
+              >
+                <NextLink href="/auth/reset-password" passHref>
+                  <Link variant="subtitle2">Forgot password?</Link>
+                </NextLink>
+              </Stack>
+
+              <LoadingButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
+                Login
+              </LoadingButton>
+            </form>
+          </FormProvider>
+
+          <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+            Don’t have an account?{" "}
+            <Link
+              component="button"
+              variant="subtitle2"
+              onClick={() => {
+                signIn("ranklab", {}, { intent: "signup" })
+              }}
             >
-              Login
-            </LoadingButton>
-          </Stack>
-        </Card>
-      </form>
-    </FormProvider>
+              Get started
+            </Link>
+          </Typography>
+        </ContentStyle>
+      </Container>
+    </MinimalLayout>
   )
 }
 

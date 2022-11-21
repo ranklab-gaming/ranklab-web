@@ -3,7 +3,7 @@ import Page from "@ranklab/web/src/components/Page"
 import { Box, Button, Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import { styled } from "@mui/material/styles"
-import LogoOnlyLayout from "src/layouts/LogoOnlyLayout"
+import MinimalLayout from "src/layouts/minimal"
 import { MotionContainer, varBounce } from "@ranklab/web/src/components/animate"
 import { m } from "framer-motion"
 
@@ -54,7 +54,7 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
   useEffect(openNativeApp)
 
   return (
-    <LogoOnlyLayout>
+    <MinimalLayout>
       <RootStyle title="Login Successful | Ranklab">
         <Container component={MotionContainer}>
           <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
@@ -69,7 +69,7 @@ const NativeAuthCallbackPage: FunctionComponent<Props> = function ({
           </Box>
         </Container>
       </RootStyle>
-    </LogoOnlyLayout>
+    </MinimalLayout>
   )
 }
 

@@ -2,7 +2,7 @@ import { m } from "framer-motion"
 import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Button, Typography, Container } from "@mui/material"
-import LogoOnlyLayout from "@ranklab/web/src/layouts/LogoOnlyLayout"
+import MinimalLayout from "@ranklab/web/src/layouts/minimal"
 import { MotionContainer, varBounce } from "@ranklab/web/src/components/animate"
 import Page from "@ranklab/web/src/components/Page"
 
@@ -16,7 +16,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function PageNotFound() {
   return (
-    <LogoOnlyLayout>
+    <MinimalLayout>
       <RootStyle title="404 Page Not Found | Ranklab">
         <Container component={MotionContainer}>
           <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
@@ -38,6 +38,6 @@ export default function PageNotFound() {
           </Box>
         </Container>
       </RootStyle>
-    </LogoOnlyLayout>
+    </MinimalLayout>
   )
 }
