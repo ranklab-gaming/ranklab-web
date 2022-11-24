@@ -9,7 +9,13 @@ import {
   Link,
   styled,
 } from "@mui/material"
-import { Game, PlayerGame, UserType } from "@ranklab/api"
+import {
+  Game,
+  Player,
+  PlayerGame,
+  UserType,
+  CreateSessionResponse,
+} from "@ranklab/api"
 import { FunctionComponent, useEffect, useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
 import Iconify from "./Iconify"
@@ -81,7 +87,42 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (data: FormValuesProps) => {}
+  const onSubmit = async (data: FormValuesProps) => {
+    let session: CreateSessionResponse
+
+    try {
+      session = await api.client.playerAccountCreate({
+        createPlayerRequest: data,
+      })
+    } catch (error) {
+      if (!(error instanceof Response && error.status === 422)) {
+        enqueueSnackbar(
+          "There was a problem signin up. Please try again later.",
+          { variant: "error" }
+        )
+      }
+
+      return
+    }
+
+    const response = await fetch("/api/oidc/login/finish", {
+      method: "POST",
+      body: JSON.stringify({ token: session.token }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (response.ok) {
+      const json = await response.json()
+      window.location.href = json.location
+    } else {
+      enqueueSnackbar(
+        "There was a problem signin up. Please try again later.",
+        { variant: "error" }
+      )
+    }
+  }
 
   return (
     <>

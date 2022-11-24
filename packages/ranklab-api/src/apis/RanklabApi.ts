@@ -24,7 +24,6 @@ import type {
   Comment,
   CreateAccountLinkMutation,
   CreateBillingPortalSessionMutation,
-  CreateCoachRequest,
   CreateCommentRequest,
   CreateLoginLinkMutation,
   CreatePlayerRequest,
@@ -46,10 +45,6 @@ import type {
   UpdateCommentRequest,
   UpdatePasswordRequest,
 } from '../models';
-
-export interface CoachAccountCreateRequest {
-    createCoachRequest: CreateCoachRequest;
-}
 
 export interface CoachAccountUpdateRequest {
     coachUpdateAccountRequest: CoachUpdateAccountRequest;
@@ -153,37 +148,6 @@ export interface SessionUpdatePasswordRequest {
  * 
  */
 export class RanklabApi extends runtime.BaseAPI {
-
-    /**
-     */
-    async coachAccountCreateRaw(requestParameters: CoachAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Coach>> {
-        if (requestParameters.createCoachRequest === null || requestParameters.createCoachRequest === undefined) {
-            throw new runtime.RequiredError('createCoachRequest','Required parameter requestParameters.createCoachRequest was null or undefined when calling coachAccountCreate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/coach/account`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.createCoachRequest,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response);
-    }
-
-    /**
-     */
-    async coachAccountCreate(requestParameters: CoachAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Coach> {
-        const response = await this.coachAccountCreateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
 
     /**
      */
@@ -597,7 +561,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerAccountCreateRaw(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Player>> {
+    async playerAccountCreateRaw(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateSessionResponse>> {
         if (requestParameters.createPlayerRequest === null || requestParameters.createPlayerRequest === undefined) {
             throw new runtime.RequiredError('createPlayerRequest','Required parameter requestParameters.createPlayerRequest was null or undefined when calling playerAccountCreate.');
         }
@@ -621,7 +585,7 @@ export class RanklabApi extends runtime.BaseAPI {
 
     /**
      */
-    async playerAccountCreate(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Player> {
+    async playerAccountCreate(requestParameters: PlayerAccountCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateSessionResponse> {
         const response = await this.playerAccountCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
