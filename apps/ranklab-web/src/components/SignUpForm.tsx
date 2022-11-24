@@ -175,11 +175,21 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
 
           <Box
             display="flex"
-            justifyContent="space-between"
             alignItems="center"
+            flexWrap="wrap"
+            gap={2}
+            sx={{ mt: 3 }}
           >
-            <Typography variant="body2" sx={{ mt: 3 }}>
-              Already have an account?{" "}
+            <Box
+              marginRight="auto"
+              flexShrink={0}
+              display="flex"
+              alignItems="center"
+            >
+              <Typography variant="body2" sx={{ mr: 1 }}>
+                Already have an account?
+              </Typography>
+
               <Link
                 component="button"
                 variant="subtitle2"
@@ -189,14 +199,14 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
               >
                 Login
               </Link>
-            </Typography>
+            </Box>
             <LoadingButton
               fullWidth
               size="large"
               type="submit"
               variant="contained"
               loading={isSubmitting}
-              sx={{ mt: 5, maxWidth: 240 }}
+              sx={{ maxWidth: 240 }}
             >
               Sign up
             </LoadingButton>
