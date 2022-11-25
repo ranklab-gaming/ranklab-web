@@ -7,7 +7,7 @@ import {
 import { GetServerSidePropsContext } from "next"
 import "isomorphic-fetch"
 import { camelCase, transform, isArray, isObject, snakeCase } from "lodash"
-import { getToken } from "next-auth/jwt"
+import { authOptions } from "./pages/api/auth/[...nextauth]"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
@@ -29,7 +29,7 @@ function decamelize(json: Record<string, any>) {
   )
 }
 
-const baseConfiguration = {
+export const baseConfiguration = {
   middleware: [
     {
       async post(context: ResponseContext) {
@@ -65,30 +65,4 @@ const baseConfiguration = {
       },
     },
   ],
-}
-
-export default {
-  client: new RanklabApi(
-    new Configuration({ ...baseConfiguration, basePath: "/api" })
-  ),
-  server: async ({
-    req,
-    accessToken,
-  }: {
-    req?: GetServerSidePropsContext["req"]
-    accessToken?: string
-  }) => {
-    const token = accessToken ?? (await getToken({ req: req! }))
-
-    const configuration = new Configuration({
-      ...baseConfiguration,
-      fetchApi: fetch,
-      basePath: process.env.API_HOST,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    return new RanklabApi(configuration)
-  },
 }

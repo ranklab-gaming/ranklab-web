@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import api from "src/api"
+import api from "src/api/server"
 
 export default async function refreshAccountLink(
   req: NextApiRequest,
@@ -9,7 +9,7 @@ export default async function refreshAccountLink(
   const scheme = req.headers.origin?.match(/^https/) ? "https" : "http"
 
   let accountLink = await (
-    await api.server({ req })
+    await api({ req, res })
   ).coachStripeAccountLinksCreate({
     createAccountLinkMutation: {
       refreshUrl: `${scheme}://${host}/api/refresh-account-link`,

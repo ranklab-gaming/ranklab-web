@@ -14,7 +14,7 @@ import Label from "./Label"
 import NextLink from "next/link"
 import { Pagination } from "../@types"
 import useUser from "../hooks/useUser"
-import api from "@ranklab/web/api"
+import api from "@ranklab/web/api/client"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,
@@ -90,8 +90,8 @@ const ReviewList: FunctionComponent<Props> = function ({
     const requestParams = { page: page + 1, ...(queryParams || {}) }
 
     const result = await (user.type === "player"
-      ? api.client.playerReviewsList(requestParams)
-      : api.client.coachReviewsList(requestParams))
+      ? api.playerReviewsList(requestParams)
+      : api.coachReviewsList(requestParams))
 
     setPage(result.page)
     setReviews(result.records)

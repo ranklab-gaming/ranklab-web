@@ -14,7 +14,7 @@ import { UserType, CreateSessionResponse } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { FunctionComponent, useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
-import api from "../api"
+import api from "../api/client"
 import Iconify from "./Iconify"
 import * as Yup from "yup"
 import NextLink from "next/link"
@@ -72,7 +72,7 @@ const LoginForm: FunctionComponent<Props> = function ({
     let session: CreateSessionResponse
 
     try {
-      session = await api.client.sessionCreate({
+      session = await api.sessionCreate({
         createSessionRequest: { ...data, userType },
       })
     } catch (error) {
@@ -200,8 +200,11 @@ const LoginForm: FunctionComponent<Props> = function ({
       </FormProvider>
 
       {userType === "player" && (
-        <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-          Don’t have an account?{" "}
+        <Box display="flex" alignItems="center" mt={3}>
+          <Typography variant="body2" sx={{ mr: 1 }}>
+            Don't have an account?
+          </Typography>
+
           <Link
             component="button"
             variant="subtitle2"
@@ -211,7 +214,7 @@ const LoginForm: FunctionComponent<Props> = function ({
           >
             Get started
           </Link>
-        </Typography>
+        </Box>
       )}
     </ContentStyle>
   )

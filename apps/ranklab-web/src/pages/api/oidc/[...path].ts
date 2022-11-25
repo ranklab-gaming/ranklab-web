@@ -3,7 +3,7 @@ import koa from "koa"
 import mount from "koa-mount"
 import { NextApiRequest, NextApiResponse } from "next"
 import RedisAdapter from "@ranklab/web/utils/oidcRedisAdapter"
-import api from "@ranklab/web/api"
+import { apiWithAccessToken } from "@ranklab/web/api/server"
 import { Coach, Player } from "@ranklab/api"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
@@ -44,9 +44,7 @@ const config: Configuration = {
           }
         }
 
-        const server = await api.server({
-          accessToken: token!.toString(),
-        })
+        const server = await apiWithAccessToken(token!.toString())
 
         let user: Coach | Player
 
