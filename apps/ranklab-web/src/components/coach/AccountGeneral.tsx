@@ -6,7 +6,7 @@ import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import api from "@ranklab/web/api"
+import api from "@ranklab/web/api/client"
 import GamesSelect from "./GamesSelect"
 import { Coach, Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
@@ -65,7 +65,7 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
         enqueueSnackbar("An error occurred while updating your profile", {
           variant: "error",
         }),
-      api.client.coachAccountUpdate({
+      api.coachAccountUpdate({
         coachUpdateAccountRequest: data,
       })
     )

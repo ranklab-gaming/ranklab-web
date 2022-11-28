@@ -228,6 +228,49 @@ export interface CreateBillingPortalSessionMutation {
 /**
  * 
  * @export
+ * @interface CreateCoachRequest
+ */
+export interface CreateCoachRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    password: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    bio: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateCoachRequest
+     */
+    gameIds: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateCoachRequest
+     */
+    country: string;
+}
+/**
+ * 
+ * @export
  * @interface CreateCommentRequest
  */
 export interface CreateCommentRequest {

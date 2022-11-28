@@ -10,7 +10,7 @@ import { useRouter } from "next/router"
 import { UploadSingleFile } from "src/components/upload"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Recording } from "@ranklab/api"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/client"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
 } from "@ranklab/web/helpers/withPageOnboardingRequired"
@@ -45,7 +45,7 @@ export default function NewRecordingForm({ auth }: PropsWithAuth<{}>) {
       return
     }
 
-    const recording = await api.client.playerRecordingsCreate({
+    const recording = await api.playerRecordingsCreate({
       createRecordingRequest: { mimeType: file.type, size: file.size },
     })
 

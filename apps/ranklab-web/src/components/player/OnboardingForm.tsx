@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react"
 import * as Yup from "yup"
-import api from "src/api"
+import api from "src/api/client"
 import router from "next/router"
 import { Controller, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -67,7 +67,7 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.client.playerAccountCreate({
+      api.playerAccountCreate({
         createPlayerRequest: {
           name: data.name,
           games: data.games,

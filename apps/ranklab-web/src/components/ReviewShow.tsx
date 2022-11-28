@@ -11,7 +11,7 @@ import {
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/client"
 import { LoadingButton } from "@mui/lab"
 
 interface Props {
@@ -94,7 +94,7 @@ const ReviewShow: FunctionComponent<Props> = ({
                 onClick={async () => {
                   setIsAccepting(true)
 
-                  await api.client.playerReviewsUpdate({
+                  await api.playerReviewsUpdate({
                     id: review.id,
                     playerUpdateReviewRequest: {
                       accepted: true,

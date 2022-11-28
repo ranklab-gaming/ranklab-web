@@ -7,7 +7,7 @@ import router from "next/router"
 import { useSnackbar } from "notistack"
 import { FunctionComponent } from "react"
 import { Controller, useForm } from "react-hook-form"
-import api from "src/api"
+import api from "src/api/client"
 import * as Yup from "yup"
 import GamesSelect from "./GamesSelect"
 
@@ -80,7 +80,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.client.coachAccountCreate({
+      api.coachAccountCreate({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,

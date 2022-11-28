@@ -5,7 +5,7 @@ import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import { Game, Recording } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageOnboardingRequired, {
@@ -22,7 +22,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired("player", async function (ctx) {
     const recordingId = useRequiredParam(ctx, "id")
-    const server = await api.server(ctx)
+    const server = await api(ctx)
     const games = await server.gameList()
     const recording = await server.playerRecordingsGet({ id: recordingId })
 

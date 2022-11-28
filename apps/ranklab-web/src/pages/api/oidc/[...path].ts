@@ -28,19 +28,21 @@ const config: Configuration = {
     Interaction: 5 * 60,
   },
   extraParams: ["user_type"],
-  extraTokenClaims(ctx) {
-    return {
-      user_type: ctx.oidc.params!.user_type,
-    }
-  },
-  async findAccount(_ctx, id, token) {
+  async findAccount(ctx, id, token) {
     return {
       accountId: id,
-      async claims(use, _scope, { user_type: userType }) {
+      async claims(use) {
+        const interaction = await ctx.oidc.provider.interactionDetails(
+          ctx.req,
+          ctx.res
+        )
+
+        const { user_type: userType } = interaction.params
+
         if (use === "id_token") {
           return {
             sub: id,
-            user_type: userType?.value,
+            user_type: userType,
           }
         }
 
@@ -48,7 +50,7 @@ const config: Configuration = {
 
         let user: Coach | Player
 
-        if (userType!.value === "coach") {
+        if (userType === "coach") {
           user = await server.coachAccountGet()
         } else {
           user = await server.playerAccountGet()

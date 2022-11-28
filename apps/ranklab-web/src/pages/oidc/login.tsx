@@ -1,5 +1,5 @@
 // @mui
-import { Container, styled } from "@mui/material"
+import { Container } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { GetServerSideProps, NextPage } from "next"
 import { oidcProvider } from "../api/oidc/[...path]"

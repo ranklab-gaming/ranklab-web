@@ -7,23 +7,15 @@ import {
   IconButton,
   Box,
   Link,
-  styled,
 } from "@mui/material"
-import {
-  Game,
-  Player,
-  PlayerGame,
-  UserType,
-  CreateSessionResponse,
-} from "@ranklab/api"
+import { Game, PlayerGame, CreateSessionResponse } from "@ranklab/api"
 import { FunctionComponent, useEffect, useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
 import Iconify from "./Iconify"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useSnackbar } from "notistack"
-import NextLink from "next/link"
-import api from "../api"
+import api from "../api/client"
 import GamesSelect from "./player/GamesSelect"
 
 interface Props {
@@ -67,7 +59,7 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
 
   useEffect(() => {
     ;(async () => {
-      const games = await api.client.gameList()
+      const games = await api.gameList()
       setGames(games)
     })()
   }, [])
@@ -91,7 +83,7 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
     let session: CreateSessionResponse
 
     try {
-      session = await api.client.playerAccountCreate({
+      session = await api.playerAccountCreate({
         createPlayerRequest: data,
       })
     } catch (error) {

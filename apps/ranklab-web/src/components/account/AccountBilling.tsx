@@ -1,6 +1,6 @@
 // @mui
 import { Card, Button, Typography, Stack, Alert } from "@mui/material"
-import api from "@ranklab/web/api"
+import api from "@ranklab/web/api/client"
 import useUser from "@ranklab/web/hooks/useUser"
 import { useRouter } from "next/router"
 // ----------------------------------------------------------------------
@@ -8,7 +8,7 @@ import { useRouter } from "next/router"
 const visitCustomerPortal = async () => {
   const currentLocation = window.location.href
 
-  const loginLink = await api.client.playerStripeBillingPortalSessionsCreate({
+  const loginLink = await api.playerStripeBillingPortalSessionsCreate({
     createBillingPortalSessionMutation: {
       returnUrl: currentLocation,
     },
@@ -19,7 +19,7 @@ const visitCustomerPortal = async () => {
 const visitStripeDashboard = async () => {
   const currentLocation = window.location.href
 
-  const loginLink = await api.client.coachStripeLoginLinksCreate({
+  const loginLink = await api.coachStripeLoginLinksCreate({
     createLoginLinkMutation: {
       returnUrl: currentLocation,
     },

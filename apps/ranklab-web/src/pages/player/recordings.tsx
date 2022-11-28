@@ -3,7 +3,7 @@ import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import { Recording } from "@ranklab/api"
 import RecordingList from "src/components/RecordingList"
 import withPageOnboardingRequired from "../../helpers/withPageOnboardingRequired"
@@ -14,7 +14,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired("player", async function (ctx) {
-    const recordings = await (await api.server(ctx)).playerRecordingsList()
+    const recordings = await (await api(ctx)).playerRecordingsList()
 
     return {
       props: {

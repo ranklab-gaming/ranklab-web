@@ -1,7 +1,7 @@
 import { UserType } from "@ranklab/api"
 import { ParsedUrlQuery } from "querystring"
 import { GetServerSideProps } from "next"
-import api from "../api"
+import api from "../api/server"
 import { User } from "../@types"
 
 export type Props<P> = P & {
@@ -25,11 +25,11 @@ export default function withPageOnboardingRequired<
         userType === "player"
           ? {
               type: "player",
-              ...(await (await api.server(ctx)).playerAccountGet()),
+              ...(await (await api(ctx)).playerAccountGet()),
             }
           : {
               type: "coach",
-              ...(await (await api.server(ctx)).coachAccountGet()),
+              ...(await (await api(ctx)).coachAccountGet()),
             }
     } catch (err: any) {
       if (err instanceof Response && err.status === 404) {

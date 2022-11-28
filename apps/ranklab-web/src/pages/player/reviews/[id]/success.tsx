@@ -3,7 +3,7 @@ import { Container, Typography } from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import { Review } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageOnboardingRequired, {
@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
 
     let review
 
-    review = await (await api.server(ctx)).playerReviewsGet({ id })
+    review = await (await api(ctx)).playerReviewsGet({ id })
 
     return {
       props: {

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react"
 import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
 import { Game, UserType } from "@ranklab/api"
 import withPageAuthRequired from "../../helpers/withPageAuthRequired"
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  const server = await api.server(ctx)
+  const server = await api(ctx)
 
   try {
     await (userType === "coach"

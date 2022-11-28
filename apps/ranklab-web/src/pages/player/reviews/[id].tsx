@@ -3,7 +3,7 @@ import { Card, Container, CardContent, Typography } from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import {
   Review,
   Comment,
@@ -30,7 +30,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps<Props> =
   withPageOnboardingRequired("player", async function (ctx) {
     const id = useRequiredParam(ctx, "id")
-    const server = await api.server(ctx)
+    const server = await api(ctx)
 
     let review
     let comments

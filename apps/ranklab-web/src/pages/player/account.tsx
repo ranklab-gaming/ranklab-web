@@ -16,7 +16,7 @@ import withPageOnboardingRequired, {
   Props as PropsWithAuth,
 } from "../../helpers/withPageOnboardingRequired"
 import { UserProvider } from "../../contexts/UserContext"
-import api from "@ranklab/web/api"
+import api from "@ranklab/web/api/server"
 import { Game } from "@ranklab/api"
 import AccountGeneral from "@ranklab/web/components/player/AccountGeneral"
 
@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     }
 
     const { auth } = await res.props
-    const games = await (await api.server(ctx)).gameList()
+    const games = await (await api(ctx)).gameList()
 
     return {
       props: {

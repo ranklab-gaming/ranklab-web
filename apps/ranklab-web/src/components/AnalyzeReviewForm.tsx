@@ -22,7 +22,7 @@ import { LoadingButton } from "@mui/lab"
 import Editor from "@ranklab/web/src/components/editor"
 import { intervalToDuration } from "date-fns"
 import { Review, Comment, Recording, ReviewState, Coach } from "@ranklab/api"
-import api from "src/api"
+import api from "src/api/client"
 import dynamic from "next/dynamic"
 import type { DrawingProps, DrawingType } from "./Drawing"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
@@ -270,14 +270,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       setIsSubmitting(true)
 
                       if (currentComment) {
-                        const updatedComment =
-                          await api.client.coachCommentsUpdate({
-                            id: currentComment.id,
-                            updateCommentRequest: {
-                              drawing: currentForm.drawing,
-                              body: currentForm.body,
-                            },
-                          })
+                        const updatedComment = await api.coachCommentsUpdate({
+                          id: currentComment.id,
+                          updateCommentRequest: {
+                            drawing: currentForm.drawing,
+                            body: currentForm.body,
+                          },
+                        })
 
                         setComments(
                           comments.map((comment) =>
@@ -287,14 +286,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                           )
                         )
                       } else {
-                        const createdComment =
-                          await api.client.coachCommentsCreate({
-                            createCommentRequest: {
-                              ...currentForm,
-                              reviewId: review.id,
-                              body: currentForm.body,
-                            },
-                          })
+                        const createdComment = await api.coachCommentsCreate({
+                          createCommentRequest: {
+                            ...currentForm,
+                            reviewId: review.id,
+                            body: currentForm.body,
+                          },
+                        })
 
                         setComments([...comments, createdComment])
                       }
@@ -326,14 +324,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       onClick={async () => {
                         setIsUpdating(true)
 
-                        const updatedReview =
-                          await api.client.coachReviewsUpdate({
-                            id: review.id,
-                            coachUpdateReviewRequest: {
-                              taken: true,
-                              published: null,
-                            },
-                          })
+                        const updatedReview = await api.coachReviewsUpdate({
+                          id: review.id,
+                          coachUpdateReviewRequest: {
+                            taken: true,
+                            published: null,
+                          },
+                        })
 
                         setReview(updatedReview)
                         setIsUpdating(false)
@@ -379,14 +376,13 @@ const AnalyzeReviewForm: FunctionComponent<Props> = ({
                       onClick={async () => {
                         setIsUpdating(true)
 
-                        const updatedReview =
-                          await api.client.coachReviewsUpdate({
-                            id: review.id,
-                            coachUpdateReviewRequest: {
-                              taken: null,
-                              published: true,
-                            },
-                          })
+                        const updatedReview = await api.coachReviewsUpdate({
+                          id: review.id,
+                          coachUpdateReviewRequest: {
+                            taken: null,
+                            published: true,
+                          },
+                        })
 
                         setReview(updatedReview)
                         setIsUpdating(false)

@@ -1,13 +1,6 @@
-import {
-  RanklabApi,
-  Configuration,
-  ResponseContext,
-  RequestContext,
-} from "@ranklab/api"
-import { GetServerSidePropsContext } from "next"
+import { ResponseContext, RequestContext } from "@ranklab/api"
 import "isomorphic-fetch"
 import { camelCase, transform, isArray, isObject, snakeCase } from "lodash"
-import { authOptions } from "./pages/api/auth/[...nextauth]"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(

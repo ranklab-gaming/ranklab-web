@@ -3,7 +3,7 @@ import Page from "@ranklab/web/src/components/Page"
 import { Container, Typography } from "@mui/material"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewList from "@ranklab/web/src/components/ReviewList"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/server"
 import { Review, Game } from "@ranklab/api"
 import withPageOnboardingRequired, {
   Props as PropsWithAuth,
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
     }
 
     const { auth } = await res.props
-    const server = await api.server(ctx)
+    const server = await api(ctx)
 
     const [{ records: reviews, ...pagination }, games] = await Promise.all([
       server.playerReviewsList({ archived: true }),

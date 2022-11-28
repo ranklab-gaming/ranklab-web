@@ -15,7 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
 import Editor from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
-import api from "@ranklab/web/src/api"
+import api from "@ranklab/web/src/api/client"
 import React, { FunctionComponent } from "react"
 import { Game, Recording } from "@ranklab/api"
 import VideoPlayer from "./VideoPlayer"
@@ -69,7 +69,7 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
           "There was a problem submitting your recording. Please try again later.",
           { variant: "error" }
         ),
-      api.client.playerReviewsCreate({
+      api.playerReviewsCreate({
         createReviewMutation: {
           gameId: data.gameId,
           title: data.title,
