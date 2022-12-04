@@ -1,5 +1,15 @@
+import { Coach, Player } from "@ranklab/api"
 import { ReactNode, createContext } from "react"
-import { User } from "../@types"
+
+interface CoachUser extends Coach {
+  type: "coach"
+}
+
+interface PlayerUser extends Player {
+  type: "player"
+}
+
+export type User = CoachUser | PlayerUser
 
 type UserProviderProps = {
   children: ReactNode

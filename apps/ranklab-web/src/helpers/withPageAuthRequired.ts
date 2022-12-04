@@ -5,6 +5,7 @@ import { authOptions } from "../pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import { decodeJwt } from "jose"
 import api from "../api/server"
+import { User } from "../contexts/UserContext"
 
 export type PropsWithSession<P> = P & {
   session?: Session

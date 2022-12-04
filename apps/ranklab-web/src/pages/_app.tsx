@@ -10,8 +10,7 @@ import NotistackProvider from "@ranklab/web/components/NotistackProvider"
 import MotionLazyContainer from "@ranklab/web/components/animate/MotionLazyContainer"
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth"
-import { UserProvider } from "../contexts/UserContext"
-import { User } from "../@types"
+import { User, UserProvider } from "../contexts/UserContext"
 
 export interface AppPageProps {
   session?: Session | null

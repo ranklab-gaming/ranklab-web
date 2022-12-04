@@ -2,16 +2,6 @@ import { Coach, Player, UserType } from "@ranklab/api"
 import { useContext } from "react"
 import { UserContext } from "../contexts/UserContext"
 
-interface CoachUser extends Coach {
-  type: "coach"
-}
-
-interface PlayerUser extends Player {
-  type: "player"
-}
-
-export type User = CoachUser | PlayerUser
-
 export default function useUser() {
   const user = useContext(UserContext)
 

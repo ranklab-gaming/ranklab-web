@@ -12,7 +12,6 @@ import withPageAuthRequired, {
   PropsWithSession,
 } from "@ranklab/web/helpers/withPageAuthRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
-import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
 
 interface Props {
   games: Game[]

@@ -18,7 +18,6 @@ import withPageAuthRequired, {
 } from "@ranklab/web/helpers/withPageAuthRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 import ReviewCheckout from "@ranklab/web/components/ReviewCheckout"
-import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
 
 interface Props {
   review: Review
