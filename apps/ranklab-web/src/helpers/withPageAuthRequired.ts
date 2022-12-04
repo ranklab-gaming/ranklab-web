@@ -4,7 +4,6 @@ import { Session, unstable_getServerSession } from "next-auth"
 import { authOptions } from "../pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import { decodeJwt } from "jose"
-import { User } from "../@types"
 import api from "../api/server"
 
 export type PropsWithSession<P> = P & {

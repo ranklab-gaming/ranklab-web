@@ -1,6 +1,5 @@
 // @mui
 import { Box, Card, Stack, TextField } from "@mui/material"
-import useUser from "@ranklab/web/hooks/useUser"
 import { useSnackbar } from "notistack"
 import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
@@ -11,6 +10,7 @@ import GamesSelect from "./GamesSelect"
 import { PlayerGame, Game, Player } from "@ranklab/api"
 import { FunctionComponent } from "react"
 import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
+import { usePlayer } from "@ranklab/web/hooks/useUser"
 
 // ----------------------------------------------------------------------
 
@@ -39,8 +39,7 @@ const UpdateUserSchema = Yup.object().shape({
 
 const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
   const { enqueueSnackbar } = useSnackbar()
-
-  const user = useUser() as Player
+  const user = usePlayer()
 
   const defaultValues = {
     name: user.name,
