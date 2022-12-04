@@ -11,15 +11,13 @@ import {
   AccountChangePassword,
 } from "@ranklab/web/components/account"
 import DashboardLayout from "../../layouts/dashboard"
-import { GetServerSideProps } from "next"
-import withPageOnboardingRequired, {
-  Props as PropsWithAuth,
-} from "../../helpers/withPageOnboardingRequired"
-import { UserProvider } from "../../contexts/UserContext"
 import api from "@ranklab/web/api/server"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
 import AccountGeneral from "@ranklab/web/components/coach/AccountGeneral"
+import withPageAuthRequired, {
+  PropsWithSession,
+} from "@ranklab/web/helpers/withPageAuthRequired"
 
 // ----------------------------------------------------------------------
 
@@ -27,28 +25,24 @@ interface Props {
   games: Game[]
 }
 
-export const getServerSideProps: GetServerSideProps<PropsWithAuth<Props>> =
-  async function (ctx) {
-    const res = await withPageOnboardingRequired("coach")(ctx)
-
-    if ("redirect" in res || "notFound" in res) {
-      return res
-    }
-
-    const { auth } = await res.props
-    const games = await (await api(ctx)).gameList()
+export const getServerSideProps = withPageAuthRequired({
+  requiredUserType: "coach",
+  fetchUser: true,
+  getServerSideProps: async (ctx) => {
+    const server = await api(ctx)
+    const games = await server.gameList()
 
     return {
       props: {
-        auth,
         games,
       },
     }
-  }
+  },
+})
 
 // ----------------------------------------------------------------------
 
-export default function UserAccount({ auth, games }: PropsWithAuth<Props>) {
+export default function UserAccount({ games }: PropsWithSession<Props>) {
   const router = useRouter()
   const showBillingTab = router.query.show_billing === "true"
   const { currentTab, onChangeTab } = useTabs(
@@ -74,37 +68,35 @@ export default function UserAccount({ auth, games }: PropsWithAuth<Props>) {
   ]
 
   return (
-    <UserProvider user={auth.user}>
-      <DashboardLayout>
-        <Page title="Account | Ranklab">
-          <Container maxWidth="lg">
-            <Tabs
-              allowScrollButtonsMobile
-              variant="scrollable"
-              scrollButtons="auto"
-              value={currentTab}
-              onChange={onChangeTab}
-            >
-              {ACCOUNT_TABS.map((tab) => (
-                <Tab
-                  disableRipple
-                  key={tab.value}
-                  label={capitalCase(tab.value)}
-                  icon={tab.icon}
-                  value={tab.value}
-                />
-              ))}
-            </Tabs>
+    <DashboardLayout>
+      <Page title="Account | Ranklab">
+        <Container maxWidth="lg">
+          <Tabs
+            allowScrollButtonsMobile
+            variant="scrollable"
+            scrollButtons="auto"
+            value={currentTab}
+            onChange={onChangeTab}
+          >
+            {ACCOUNT_TABS.map((tab) => (
+              <Tab
+                disableRipple
+                key={tab.value}
+                label={capitalCase(tab.value)}
+                icon={tab.icon}
+                value={tab.value}
+              />
+            ))}
+          </Tabs>
 
-            <Box sx={{ mb: 5 }} />
+          <Box sx={{ mb: 5 }} />
 
-            {ACCOUNT_TABS.map((tab) => {
-              const isMatched = tab.value === currentTab
-              return isMatched && <Box key={tab.value}>{tab.component}</Box>
-            })}
-          </Container>
-        </Page>
-      </DashboardLayout>
-    </UserProvider>
+          {ACCOUNT_TABS.map((tab) => {
+            const isMatched = tab.value === currentTab
+            return isMatched && <Box key={tab.value}>{tab.component}</Box>
+          })}
+        </Container>
+      </Page>
+    </DashboardLayout>
   )
 }

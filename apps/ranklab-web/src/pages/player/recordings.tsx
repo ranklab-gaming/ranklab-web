@@ -6,21 +6,25 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api/server"
 import { Recording } from "@ranklab/api"
 import RecordingList from "src/components/RecordingList"
-import withPageOnboardingRequired from "../../helpers/withPageOnboardingRequired"
+import withPageAuthRequired from "../../helpers/withPageAuthRequired"
 
 interface Props {
   recordings: Recording[]
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("player", async function (ctx) {
-    const recordings = await (await api(ctx)).playerRecordingsList()
+  withPageAuthRequired({
+    requiredUserType: "player",
+    getServerSideProps: async function (ctx) {
+      const server = await api(ctx)
+      const recordings = await server.playerRecordingsList()
 
-    return {
-      props: {
-        recordings,
-      },
-    }
+      return {
+        props: {
+          recordings,
+        },
+      }
+    },
   })
 
 const RecordingsPage: FunctionComponent<Props> = function ({ recordings }) {

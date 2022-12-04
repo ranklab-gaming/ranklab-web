@@ -13,9 +13,9 @@ import {
 } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
-import withPageOnboardingRequired, {
-  Props as PropsWithAuth,
-} from "@ranklab/web/helpers/withPageOnboardingRequired"
+import withPageAuthRequired, {
+  PropsWithSession,
+} from "@ranklab/web/helpers/withPageAuthRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 import ReviewCheckout from "@ranklab/web/components/ReviewCheckout"
 import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
@@ -28,74 +28,74 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("player", async function (ctx) {
-    const id = useRequiredParam(ctx, "id")
-    const server = await api(ctx)
+  withPageAuthRequired({
+    requiredUserType: "player",
+    getServerSideProps: async function (ctx) {
+      const id = useRequiredParam(ctx, "id")
+      const server = await api(ctx)
 
-    let review
-    let comments
-    let recording
-    let paymentMethods: PaymentMethod[] = []
+      let review
+      let comments
+      let recording
+      let paymentMethods: PaymentMethod[] = []
 
-    review = await server.playerReviewsGet({ id })
-    comments = await server.playerCommentsList({ reviewId: review.id })
-    recording = await server.playerRecordingsGet({
-      id: review.recordingId,
-    })
+      review = await server.playerReviewsGet({ id })
+      comments = await server.playerCommentsList({ reviewId: review.id })
+      recording = await server.playerRecordingsGet({
+        id: review.recordingId,
+      })
 
-    if (review.state === ReviewState.AwaitingPayment) {
-      paymentMethods = await server.playerStripePaymentMethodsList()
-    }
+      if (review.state === ReviewState.AwaitingPayment) {
+        paymentMethods = await server.playerStripePaymentMethodsList()
+      }
 
-    return {
-      props: {
-        review,
-        comments,
-        recording,
-        paymentMethods,
-      },
-    }
+      return {
+        props: {
+          review,
+          comments,
+          recording,
+          paymentMethods,
+        },
+      }
+    },
   })
 
-const ReviewPage: FunctionComponent<PropsWithAuth<Props>> = ({
+const ReviewPage: FunctionComponent<PropsWithSession<Props>> = ({
   review,
   comments,
   recording,
   paymentMethods,
-  auth,
 }) => {
   return (
-    <UserProvider user={auth.user}>
-      <DashboardLayout>
-        <Page title={`Dashboard | ${review.title}`}>
-          <Container maxWidth="xl">
-            <NewReviewHeader activeStep="payment" />
+    <DashboardLayout>
+      <Page title={`Dashboard | ${review.title}`}>
+        <Container maxWidth="xl">
+          <NewReviewHeader activeStep="payment" />
 
-            <Typography variant="h3" component="h1" paragraph>
-              {review.title}
-            </Typography>
+          <Typography variant="h3" component="h1" paragraph>
+            {review.title}
+          </Typography>
 
-            {review.state === ReviewState.AwaitingPayment ? (
-              <ReviewCheckout
-                review={review}
-                recording={recording}
-                paymentMethods={paymentMethods}
-              />
-            ) : (
-              <Card sx={{ position: "static" }}>
-                <CardContent>
-                  <ReviewShow
-                    review={review}
-                    comments={comments}
-                    recording={recording}
-                  />
-                </CardContent>
-              </Card>
-            )}
-          </Container>
-        </Page>
-      </DashboardLayout>
-    </UserProvider>
+          {review.state === ReviewState.AwaitingPayment ? (
+            <ReviewCheckout
+              review={review}
+              recording={recording}
+              paymentMethods={paymentMethods}
+            />
+          ) : (
+            <Card sx={{ position: "static" }}>
+              <CardContent>
+                <ReviewShow
+                  review={review}
+                  comments={comments}
+                  recording={recording}
+                />
+              </CardContent>
+            </Card>
+          )}
+        </Container>
+      </Page>
+    </DashboardLayout>
   )
 }
 

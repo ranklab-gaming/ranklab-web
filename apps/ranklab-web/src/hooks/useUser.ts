@@ -4,7 +4,7 @@ import { UserContext } from "../contexts/UserContext"
 export default () => {
   const user = useContext(UserContext)
 
-  if (user === null) {
+  if (!user) {
     throw new Error("useUser must be used within a UserProvider")
   }
 

@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { getToken } from "next-auth/jwt"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "./auth/[...nextauth]"
 
 export default async function proxy(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const token = await getToken({ req })
+    const session = await unstable_getServerSession(req, res, authOptions)
+    const token = session?.accessToken
     const baseURL = process.env.API_HOST
 
     if (!baseURL) {

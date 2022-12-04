@@ -11,8 +11,8 @@ export default async ({
   req: GetServerSidePropsContext["req"]
   res: GetServerSidePropsContext["res"]
 }) => {
-  const token = await unstable_getServerSession(req, res, authOptions)
-  return apiWithAccessToken(token?.accessToken!)
+  const session = await unstable_getServerSession(req, res, authOptions)
+  return apiWithAccessToken(session?.accessToken!)
 }
 
 export async function apiWithAccessToken(

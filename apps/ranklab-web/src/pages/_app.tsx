@@ -10,15 +10,18 @@ import NotistackProvider from "@ranklab/web/components/NotistackProvider"
 import MotionLazyContainer from "@ranklab/web/components/animate/MotionLazyContainer"
 import { SessionProvider } from "next-auth/react"
 import { Session } from "next-auth"
+import { UserProvider } from "../contexts/UserContext"
+import { User } from "../@types"
 
 export interface AppPageProps {
-  session?: Session
+  session?: Session | null
+  user?: User | null
 }
 
 export default function App<T extends AppPageProps>(props: NextAppProps<T>) {
   const {
     Component,
-    pageProps: { session, ...pageProps },
+    pageProps: { session, user, ...pageProps },
   } = props
 
   return (
@@ -28,16 +31,18 @@ export default function App<T extends AppPageProps>(props: NextAppProps<T>) {
       </Head>
 
       <SessionProvider session={session}>
-        <CollapseDrawerProvider>
-          <MotionLazyContainer>
-            <ThemeProvider>
-              <NotistackProvider>
-                <ProgressBar />
-                <Component {...pageProps} />
-              </NotistackProvider>
-            </ThemeProvider>
-          </MotionLazyContainer>
-        </CollapseDrawerProvider>
+        <UserProvider user={user}>
+          <CollapseDrawerProvider>
+            <MotionLazyContainer>
+              <ThemeProvider>
+                <NotistackProvider>
+                  <ProgressBar />
+                  <Component {...pageProps} />
+                </NotistackProvider>
+              </ThemeProvider>
+            </MotionLazyContainer>
+          </CollapseDrawerProvider>
+        </UserProvider>
       </SessionProvider>
     </>
   )

@@ -24,11 +24,11 @@ export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const token = await getToken({ req: ctx.req })
 
   if (token) {
-    const userType = token["https://ranklab.gg/user_type"] as string
+    const userType = token.sub!.split(":")[0]
 
     ctx.res
       .writeHead(302, {
-        Location: `/${userType.toLowerCase()}/dashboard`,
+        Location: `/${userType}/dashboard`,
       })
       .end()
   }

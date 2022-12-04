@@ -6,11 +6,10 @@ import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api/server"
 import { Review } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
-import withPageOnboardingRequired, {
-  Props as PropsWithAuth,
-} from "@ranklab/web/helpers/withPageOnboardingRequired"
+import withPageAuthRequired, {
+  PropsWithSession,
+} from "@ranklab/web/helpers/withPageAuthRequired"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
-import { UserProvider } from "@ranklab/web/src/contexts/UserContext"
 import { CheckoutOrderComplete } from "@ranklab/web/components/checkout"
 
 interface Props {
@@ -18,40 +17,38 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("player", async function (ctx) {
-    const id = useRequiredParam(ctx, "id")
+  withPageAuthRequired({
+    requiredUserType: "player",
+    getServerSideProps: async function (ctx) {
+      const id = useRequiredParam(ctx, "id")
+      const server = await api(ctx)
+      const review = await server.playerReviewsGet({ id })
 
-    let review
-
-    review = await (await api(ctx)).playerReviewsGet({ id })
-
-    return {
-      props: {
-        review,
-      },
-    }
+      return {
+        props: {
+          review,
+        },
+      }
+    },
   })
 
-const PaymentSuccessPage: FunctionComponent<PropsWithAuth<Props>> = ({
+const PaymentSuccessPage: FunctionComponent<PropsWithSession<Props>> = ({
   review,
-  auth,
 }) => {
   return (
-    <UserProvider user={auth.user}>
-      <DashboardLayout>
-        <Page title={`Dashboard | ${review.title}`}>
-          <Container maxWidth="xl">
-            <NewReviewHeader activeStep="payment" allCompleted={true} />
+    <DashboardLayout>
+      <Page title={`Dashboard | ${review.title}`}>
+        <Container maxWidth="xl">
+          <NewReviewHeader activeStep="payment" allCompleted={true} />
 
-            <Typography variant="h3" component="h1" paragraph>
-              {review.title}
-            </Typography>
+          <Typography variant="h3" component="h1" paragraph>
+            {review.title}
+          </Typography>
 
-            <CheckoutOrderComplete />
-          </Container>
-        </Page>
-      </DashboardLayout>
-    </UserProvider>
+          <CheckoutOrderComplete />
+        </Container>
+      </Page>
+    </DashboardLayout>
   )
 }
 

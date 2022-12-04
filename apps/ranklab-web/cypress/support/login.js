@@ -13,10 +13,9 @@ Cypress.Commands.add("login", ({ as = "coach" } = {}) => {
     .then(([[{ id: userId, name, email }]]) => {
       return cy
         .task("jwt:sign", {
-          "https://ranklab.gg/user_type": as,
           name,
           email,
-          sub: userId,
+          sub: `${as}:${userId}`,
         })
         .then((token) => {
           cy.setCookie("next-auth.session-token", JSON.stringify(token))

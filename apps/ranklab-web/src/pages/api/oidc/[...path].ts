@@ -1,10 +1,7 @@
 import { Configuration, Provider } from "oidc-provider"
 import koa from "koa"
 import mount from "koa-mount"
-import { NextApiRequest, NextApiResponse } from "next"
 import RedisAdapter from "@ranklab/web/utils/oidcRedisAdapter"
-import { apiWithAccessToken } from "@ranklab/web/api/server"
-import { Coach, Player } from "@ranklab/api"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
 
@@ -19,60 +16,45 @@ const config: Configuration = {
     },
   ],
   interactions: {
-    url() {
-      return "/api/oidc/login"
-    },
+    url: () => "/api/oidc/login",
+  },
+  pkce: {
+    methods: ["S256"],
+    required: () => true,
   },
   ttl: {
     Session: 24 * 60 * 60,
     Interaction: 5 * 60,
+    AccessToken: 2 * 60 * 60,
+    Grant: 24 * 60 * 60,
   },
   extraParams: ["user_type"],
-  async findAccount(ctx, id, token) {
+  async findAccount(_ctx, id) {
     return {
       accountId: id,
-      async claims(use) {
-        const interaction = await ctx.oidc.provider.interactionDetails(
-          ctx.req,
-          ctx.res
-        )
-
-        const { user_type: userType } = interaction.params
-
-        if (use === "id_token") {
-          return {
-            sub: id,
-            user_type: userType,
-          }
-        }
-
-        const server = await apiWithAccessToken(token!.toString())
-
-        let user: Coach | Player
-
-        if (userType === "coach") {
-          user = await server.coachAccountGet()
-        } else {
-          user = await server.playerAccountGet()
-        }
-
-        return {
-          sub: id,
-          name: user.name,
-          email: user.email,
-        }
-      },
+      claims: () => ({
+        sub: id,
+      }),
     }
   },
   cookies: {
     keys: [process.env.COOKIE_SECRET!],
   },
   claims: {
-    openid: ["sub", "user_type"],
+    openid: ["sub"],
   },
   features: {
     devInteractions: { enabled: false },
     revocation: { enabled: true },
+    resourceIndicators: {
+      enabled: true,
+      defaultResource: () => process.env.WEB_HOST!,
+      useGrantedResource: () => true,
+      getResourceServerInfo: () => ({
+        scope: "openid",
+        accessTokenFormat: "jwt",
+      }),
+    },
   },
   jwks,
   adapter: RedisAdapter,
@@ -84,6 +66,4 @@ const app = new koa()
 
 app.use(mount("/api/oidc", oidcProvider.app))
 
-export default function oidc(req: NextApiRequest, res: NextApiResponse) {
-  return app.callback()(req, res)
-}
+export default app.callback()

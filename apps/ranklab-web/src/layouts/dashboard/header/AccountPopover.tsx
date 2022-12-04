@@ -8,11 +8,11 @@ import useIsMountedRef from "@ranklab/web/src/hooks/useIsMountedRef"
 import MyAvatar from "@ranklab/web/src/components/MyAvatar"
 import MenuPopover from "@ranklab/web/src/components/MenuPopover"
 import { IconButtonAnimate } from "@ranklab/web/src/components/animate"
-import useUser from "@ranklab/web/hooks/useUser"
+import useSession from "@ranklab/web/hooks/useSession"
 
 export default function AccountPopover() {
   const router = useRouter()
-  const user = useUser()
+  const session = useSession()
   const isMountedRef = useIsMountedRef()
   const { enqueueSnackbar } = useSnackbar()
   const [open, setOpen] = useState<HTMLElement | null>(null)
@@ -45,7 +45,7 @@ export default function AccountPopover() {
     },
     {
       label: "Account",
-      linkTo: `/${user.type.toLowerCase()}/account`,
+      linkTo: `/${session.user.type.toLowerCase()}/account`,
     },
   ]
 
@@ -87,10 +87,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user.name}
+            {session.user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {user.email}
+            {session.user.email}
           </Typography>
         </Box>
 

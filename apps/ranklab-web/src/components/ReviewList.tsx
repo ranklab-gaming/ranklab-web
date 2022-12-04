@@ -13,8 +13,8 @@ import React, { FunctionComponent, useState, MouseEvent } from "react"
 import Label from "./Label"
 import NextLink from "next/link"
 import { Pagination } from "../@types"
-import useUser from "../hooks/useUser"
 import api from "@ranklab/web/api/client"
+import useSession from "../hooks/useSession"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,
@@ -81,7 +81,7 @@ const ReviewList: FunctionComponent<Props> = function ({
 }) {
   const [page, setPage] = useState(pagination.page)
   const [reviews, setReviews] = useState(initialReviews)
-  const user = useUser()
+  const session = useSession()
 
   const onPageChange = async (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -89,7 +89,7 @@ const ReviewList: FunctionComponent<Props> = function ({
   ) => {
     const requestParams = { page: page + 1, ...(queryParams || {}) }
 
-    const result = await (user.type === "player"
+    const result = await (session.user.type === "player"
       ? api.playerReviewsList(requestParams)
       : api.coachReviewsList(requestParams))
 
@@ -110,7 +110,7 @@ const ReviewList: FunctionComponent<Props> = function ({
         <TableBody>
           {reviews.map((review) => (
             <NextLink
-              href={`/${user.type.toLowerCase()}/reviews/${review.id}`}
+              href={`/${session.user.type.toLowerCase()}/reviews/${review.id}`}
               key={review.id}
             >
               <TableRow

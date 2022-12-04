@@ -2,15 +2,13 @@ import React, { FunctionComponent } from "react"
 import { Card, Container, CardContent, Typography } from "@mui/material"
 import Page from "@ranklab/web/src/components/Page"
 import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
-import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api/server"
 import { Review, Comment, Recording } from "@ranklab/api"
 import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
-import withPageOnboardingRequired, {
-  Props as PropsWithAuth,
-} from "@ranklab/web/helpers/withPageOnboardingRequired"
-import { UserProvider } from "@ranklab/web/contexts/UserContext"
+import withPageAuthRequired, {
+  PropsWithSession,
+} from "@ranklab/web/helpers/withPageAuthRequired"
 
 interface Props {
   review: Review
@@ -18,8 +16,10 @@ interface Props {
   recording: Recording
 }
 
-export const getServerSideProps: GetServerSideProps<Props> =
-  withPageOnboardingRequired("coach", async function (ctx) {
+export const getServerSideProps = withPageAuthRequired({
+  requiredUserType: "coach",
+  fetchUser: true,
+  getServerSideProps: async function (ctx) {
     const id = useRequiredParam(ctx, "id")
     const server = await api(ctx)
 
@@ -40,36 +40,34 @@ export const getServerSideProps: GetServerSideProps<Props> =
         recording,
       },
     }
-  })
+  },
+})
 
-const AnalyzeReviewPage: FunctionComponent<PropsWithAuth<Props>> = ({
+const AnalyzeReviewPage: FunctionComponent<PropsWithSession<Props>> = ({
   review,
   comments,
   recording,
-  auth,
 }) => {
   return (
-    <UserProvider user={auth.user}>
-      <DashboardLayout>
-        <Page title="Dashboard | Analyze VOD">
-          <Container maxWidth="xl">
-            <Typography variant="h3" component="h1" paragraph>
-              Analyze VOD
-            </Typography>
+    <DashboardLayout>
+      <Page title="Dashboard | Analyze VOD">
+        <Container maxWidth="xl">
+          <Typography variant="h3" component="h1" paragraph>
+            Analyze VOD
+          </Typography>
 
-            <Card sx={{ position: "static" }}>
-              <CardContent>
-                <AnalyzeReviewForm
-                  review={review}
-                  comments={comments}
-                  recording={recording}
-                />
-              </CardContent>
-            </Card>
-          </Container>
-        </Page>
-      </DashboardLayout>
-    </UserProvider>
+          <Card sx={{ position: "static" }}>
+            <CardContent>
+              <AnalyzeReviewForm
+                review={review}
+                comments={comments}
+                recording={recording}
+              />
+            </CardContent>
+          </Card>
+        </Container>
+      </Page>
+    </DashboardLayout>
   )
 }
 

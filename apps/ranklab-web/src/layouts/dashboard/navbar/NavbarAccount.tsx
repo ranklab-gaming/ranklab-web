@@ -2,7 +2,7 @@ import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
 import MyAvatar from "../../../components/MyAvatar"
-import useUser from "@ranklab/web/hooks/useUser"
+import useSession from "@ranklab/web/hooks/useSession"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -20,10 +20,10 @@ type Props = {
 }
 
 export default function NavbarAccount({ isCollapse }: Props) {
-  const user = useUser()
+  const session = useSession()
 
   return (
-    <NextLink href={`/${user.type.toLowerCase()}/account`} passHref>
+    <NextLink href={`/${session.user.type.toLowerCase()}/account`} passHref>
       <Link underline="none" color="inherit">
         <RootStyle
           sx={{
@@ -48,7 +48,7 @@ export default function NavbarAccount({ isCollapse }: Props) {
             }}
           >
             <Typography variant="subtitle2" noWrap>
-              {user.name}
+              {session.user.name}
             </Typography>
           </Box>
         </RootStyle>

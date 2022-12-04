@@ -24,20 +24,15 @@ export default async function finishInteraction(
     throw new Error("Invalid token")
   }
 
-  let { grantId } = await oidcProvider.interactionDetails(req, res)
-  let grant: any
-
-  if (grantId) {
-    grant = await oidcProvider.Grant.find(grantId)
-  } else {
-    grant = new oidcProvider.Grant({
-      accountId,
-      clientId: "web",
-    })
-  }
+  const grant = new oidcProvider.Grant({
+    accountId,
+    clientId: "web",
+  })
 
   grant.addOIDCScope("openid")
-  grantId = await grant.save()
+  grant.addResourceScope(process.env.WEB_HOST!, "openid")
+
+  const grantId = await grant.save()
 
   const location = await oidcProvider.interactionResult(
     req,

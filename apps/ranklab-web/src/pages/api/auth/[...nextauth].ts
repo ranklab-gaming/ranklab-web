@@ -1,3 +1,5 @@
+import { Coach, Player } from "@ranklab/api"
+import { apiWithAccessToken } from "@ranklab/web/api/server"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import { OAuthConfig, OAuthUserConfig } from "next-auth/providers"
 
@@ -9,14 +11,11 @@ declare module "next-auth" {
 
 interface RanklabProfile {
   sub: string
-  name: string
-  email: string
-  picture: string
 }
 
-function Ranklab<P extends RanklabProfile>(
-  options: OAuthUserConfig<P>
-): OAuthConfig<P> {
+function Ranklab(
+  options: OAuthUserConfig<RanklabProfile>
+): OAuthConfig<RanklabProfile> {
   return {
     id: "ranklab",
     name: "Ranklab",
@@ -24,11 +23,22 @@ function Ranklab<P extends RanklabProfile>(
     type: "oauth",
     checks: ["pkce", "state"],
     idToken: true,
-    profile(profile) {
+    async profile(profile, tokens) {
+      let user: Coach | Player
+      const userType = profile.sub.split(":")[0]
+      const api = await apiWithAccessToken(tokens.access_token!)
+
+      if (userType === "coach") {
+        user = await api.coachAccountGet()
+      } else {
+        user = await api.playerAccountGet()
+      }
+
       return {
         id: profile.sub,
-        name: profile.name,
-        email: profile.email,
+        name: user.name,
+        email: user.email,
+        image: null,
       }
     },
     options,
@@ -48,7 +58,7 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async jwt({ token, account }) {
-      token.accessToken = account?.access_token
+      token.accessToken = account ? account.access_token : token.accessToken
       return token
     },
   },
