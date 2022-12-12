@@ -181,7 +181,10 @@ const LoginForm: FunctionComponent<Props> = function ({
             justifyContent="space-between"
             sx={{ my: 2 }}
           >
-            <NextLink href="/auth/reset-password" passHref>
+            <NextLink
+              href={`/auth/reset-password?user_type=${userType}`}
+              passHref
+            >
               <Link variant="subtitle2">Forgot password?</Link>
             </NextLink>
           </Stack>

@@ -2,7 +2,7 @@
 import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
 //
-import NextLink from "next/link"
+import { signIn } from "next-auth/react"
 import { MotionContainer, varFade } from "../animate"
 import { m } from "framer-motion"
 
@@ -120,11 +120,14 @@ export default function LandingReview() {
               </m.div>
 
               <m.div variants={varFade().inUp}>
-                <NextLink href="/api/auth/login?user_type=Player" passHref>
-                  <Button size="large" variant="outlined" color="primary">
-                    Get Started
-                  </Button>
-                </NextLink>
+                <Button
+                  size="large"
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => signIn("ranklab", {}, { user_type: "player" })}
+                >
+                  Get Started
+                </Button>
               </m.div>
             </ContentStyle>
           </Grid>
