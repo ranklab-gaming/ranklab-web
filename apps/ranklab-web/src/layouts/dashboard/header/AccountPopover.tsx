@@ -1,19 +1,15 @@
-import { useSnackbar } from "notistack"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import NextLink from "next/link"
 import { alpha } from "@mui/material/styles"
 import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
-import useIsMountedRef from "@ranklab/web/src/hooks/useIsMountedRef"
 import MyAvatar from "@ranklab/web/src/components/MyAvatar"
 import MenuPopover from "@ranklab/web/src/components/MenuPopover"
 import { IconButtonAnimate } from "@ranklab/web/src/components/animate"
 import useSession from "@ranklab/web/hooks/useSession"
-import { signOut } from "next-auth/react"
 
 export default function AccountPopover() {
   const session = useSession()
-  const isMountedRef = useIsMountedRef()
-  const { enqueueSnackbar } = useSnackbar()
+  const logoutForm = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,19 +18,6 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null)
-  }
-
-  const handleLogout = async () => {
-    try {
-      signOut()
-
-      if (isMountedRef.current) {
-        handleClose()
-      }
-    } catch (error) {
-      console.error(error)
-      enqueueSnackbar("Unable to logout!", { variant: "error" })
-    }
   }
 
   const menuOptions = [
@@ -107,9 +90,11 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
-        </MenuItem>
+        <form method="POST" action="/api/auth/logout" ref={logoutForm}>
+          <MenuItem onClick={() => logoutForm.current?.submit()} sx={{ m: 1 }}>
+            Logout
+          </MenuItem>
+        </form>
       </MenuPopover>
     </>
   )
