@@ -1,4 +1,8 @@
-import { ResponseContext, RequestContext } from "@ranklab/api"
+import {
+  ResponseContext,
+  RequestContext,
+  ConfigurationParameters,
+} from "@ranklab/api"
 import "isomorphic-fetch"
 import { camelCase, transform, isArray, isObject, snakeCase } from "lodash"
 
@@ -22,7 +26,7 @@ function decamelize(json: Record<string, any>) {
   )
 }
 
-export const baseConfiguration = {
+export const baseConfiguration: ConfigurationParameters = {
   middleware: [
     {
       async post(context: ResponseContext) {
@@ -43,8 +47,6 @@ export const baseConfiguration = {
         }
       },
       async pre(context: RequestContext) {
-        console.log("in pre bro")
-        debugger
         if (typeof context.init.body === "string") {
           try {
             const json = JSON.parse(context.init.body)
@@ -58,14 +60,23 @@ export const baseConfiguration = {
           }
         }
 
-        const url = new URL(context.url)
+        const url = new URL(context.url, window.location.origin)
+        const params = new URLSearchParams()
 
-        url.searchParams.forEach((value, key) => {
-          url.searchParams.delete(key)
-          url.searchParams.append(snakeCase(key), value)
-        })
+        for (const [key, value] of url.searchParams) {
+          const matches = key.match(/^(.+)\[(.+)\]$/)
 
-        console.log(url.toString())
+          if (matches) {
+            params.append(
+              `${snakeCase(matches[1])}.${snakeCase(matches[2])}`,
+              value
+            )
+          } else {
+            params.append(snakeCase(key), value)
+          }
+        }
+
+        url.search = params.toString()
 
         return {
           init: context.init,
