@@ -17,9 +17,10 @@ import MinimalLayout from "@ranklab/web/layouts/minimal"
 import api from "../../api/client"
 import { useRequiredParam } from "@ranklab/web/hooks/useParam"
 import { GetServerSideProps } from "next"
+import { signIn } from "next-auth/react"
 
 type FormValuesProps = {
-  email: string
+  password: string
 }
 
 const ContentStyle = styled("div")(() => ({
@@ -32,33 +33,37 @@ const ContentStyle = styled("div")(() => ({
 
 interface Props {
   userType: UserType
+  token: string
 }
 
-const ResetPasswordSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Email must be valid")
-    .required("Email is required"),
+const UpdatePasswordSchema = Yup.object().shape({
+  password: Yup.string().required("Password is required"),
 })
 
 export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const userType = useRequiredParam(ctx, "user_type")
+  const token = useRequiredParam(ctx, "token")
 
   return {
     props: {
       userType,
+      token,
     },
   }
 }
 
-const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
+const UpdatePassword: FunctionComponent<Props> = function ({
+  userType,
+  token,
+}) {
   const defaultValues = {
-    email: "",
+    password: "",
   }
 
   const { enqueueSnackbar } = useSnackbar()
 
   const form = useForm<FormValuesProps>({
-    resolver: yupResolver(ResetPasswordSchema),
+    resolver: yupResolver(UpdatePasswordSchema),
     defaultValues,
   })
 
@@ -70,8 +75,9 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await api.sessionResetPassword({
-        resetPasswordRequest: { ...data, userType },
+      await api.sessionUpdatePassword({
+        updatePasswordRequest: data,
+        auth: { userType, token },
       })
     } catch (error) {
       enqueueSnackbar(
@@ -81,9 +87,11 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
       return
     }
 
-    enqueueSnackbar("Check your email for a link to reset your password.", {
+    enqueueSnackbar("Your password was updated successfully.", {
       variant: "success",
     })
+
+    signIn("ranklab", {}, { user_type: userType })
   }
 
   return (
@@ -93,7 +101,7 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
           <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Reset your password
+                Update your password
               </Typography>
             </Box>
           </Stack>
@@ -102,7 +110,7 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
             <form onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={3} sx={{ maxWidth: 480 }}>
                 <Controller
-                  name="email"
+                  name="password"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
@@ -110,8 +118,8 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
                       fullWidth
                       error={!!error}
                       helperText={error?.message}
-                      label="Email"
-                      type="email"
+                      label="Password"
+                      type="password"
                     />
                   )}
                 />
@@ -125,7 +133,7 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
                 loading={isSubmitting}
                 sx={{ maxWidth: 480, mt: 2 }}
               >
-                Reset Password
+                Update Password
               </LoadingButton>
             </form>
           </FormProvider>
@@ -135,4 +143,4 @@ const ResetPassword: FunctionComponent<Props> = function ({ userType }) {
   )
 }
 
-export default ResetPassword
+export default UpdatePassword

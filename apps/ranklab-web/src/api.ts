@@ -43,6 +43,8 @@ export const baseConfiguration = {
         }
       },
       async pre(context: RequestContext) {
+        console.log("in pre bro")
+        debugger
         if (typeof context.init.body === "string") {
           try {
             const json = JSON.parse(context.init.body)
@@ -54,6 +56,20 @@ export const baseConfiguration = {
 
             throw e
           }
+        }
+
+        const url = new URL(context.url)
+
+        url.searchParams.forEach((value, key) => {
+          url.searchParams.delete(key)
+          url.searchParams.append(snakeCase(key), value)
+        })
+
+        console.log(url.toString())
+
+        return {
+          init: context.init,
+          url: url.toString(),
         }
       },
     },
