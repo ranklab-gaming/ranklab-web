@@ -5,7 +5,7 @@ import { Box, Stack, Container, Typography, Button } from "@mui/material"
 //
 import { varFade, MotionContainer } from "../animate"
 import NextLink from "next/link"
-import { signIn } from "next-auth/react"
+import signIn from "@ranklab/web/utils/signIn"
 
 // ----------------------------------------------------------------------
 
@@ -109,7 +109,7 @@ export default function LandingHero() {
                   size="large"
                   variant="contained"
                   color="primary"
-                  onClick={() => signIn("ranklab", {}, { user_type: "player" })}
+                  onClick={() => signIn("player")}
                 >
                   Get Started
                 </Button>

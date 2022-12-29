@@ -60,27 +60,31 @@ export const baseConfiguration: ConfigurationParameters = {
           }
         }
 
-        const url = new URL(context.url, window.location.origin)
-        const params = new URLSearchParams()
+        const queryParamsString = context.url.split("?")[1] ?? ""
+        const params = new URLSearchParams(queryParamsString)
+        const newParams = new URLSearchParams()
 
-        for (const [key, value] of url.searchParams) {
+        for (const [key, value] of params) {
           const matches = key.match(/^(.+)\[(.+)\]$/)
 
           if (matches) {
-            params.append(
+            newParams.append(
               `${snakeCase(matches[1])}.${snakeCase(matches[2])}`,
               value
             )
           } else {
-            params.append(snakeCase(key), value)
+            newParams.append(snakeCase(key), value)
           }
         }
 
-        url.search = params.toString()
+        const url =
+          queryParamsString.length > 0
+            ? `${context.url.split("?")[0]}?${newParams.toString()}`
+            : context.url
 
         return {
           init: context.init,
-          url: url.toString(),
+          url,
         }
       },
     },

@@ -4,13 +4,13 @@ import { unstable_getServerSession } from "next-auth"
 import { baseConfiguration } from "../api"
 import { authOptions } from "../pages/api/auth/[...nextauth]"
 
-export default async ({
+export default async function server({
   req,
   res,
 }: {
   req: GetServerSidePropsContext["req"]
   res: GetServerSidePropsContext["res"]
-}) => {
+}) {
   const session = await unstable_getServerSession(req, res, authOptions)
   return apiWithAccessToken(session?.accessToken!)
 }

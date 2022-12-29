@@ -2,7 +2,7 @@
 import { alpha, useTheme, styled } from "@mui/material/styles"
 import { Box, Grid, Button, Container, Typography } from "@mui/material"
 //
-import { signIn } from "next-auth/react"
+import signIn from "@ranklab/web/utils/signIn"
 import { MotionContainer, varFade } from "../animate"
 import { m } from "framer-motion"
 
@@ -124,7 +124,7 @@ export default function LandingReview() {
                   size="large"
                   variant="outlined"
                   color="primary"
-                  onClick={() => signIn("ranklab", {}, { user_type: "player" })}
+                  onClick={() => signIn("player")}
                 >
                   Get Started
                 </Button>

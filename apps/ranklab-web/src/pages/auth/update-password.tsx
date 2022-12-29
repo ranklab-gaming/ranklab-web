@@ -17,7 +17,7 @@ import MinimalLayout from "@ranklab/web/layouts/minimal"
 import api from "../../api/client"
 import { useRequiredParam } from "@ranklab/web/hooks/useParam"
 import { GetServerSideProps } from "next"
-import { signIn } from "next-auth/react"
+import signIn from "@ranklab/web/utils/signIn"
 
 type FormValuesProps = {
   password: string
@@ -91,7 +91,7 @@ const UpdatePassword: FunctionComponent<Props> = function ({
       variant: "success",
     })
 
-    signIn("ranklab", {}, { user_type: userType })
+    signIn(userType)
   }
 
   return (

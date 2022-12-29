@@ -12,7 +12,7 @@ import Label from "../../components/Label"
 //
 import NextLink from "next/link"
 import SplitButton from "@ranklab/web/components/SplitButton"
-import { signIn } from "next-auth/react"
+import signIn from "@ranklab/web/utils/signIn"
 
 // ----------------------------------------------------------------------
 
@@ -76,9 +76,9 @@ export default function MainHeader() {
             variant="contained"
             color="secondary"
             options={["Sign in", "Sign in as coach"]}
-            handleClick={() => signIn("ranklab", {}, { user_type: "player" })}
+            handleClick={() => signIn("player")}
             handleMenuItemClick={() =>
-              signIn("ranklab", {}, { user_type: "coach" })
+              signIn("coach")
             }
           />
         </Container>
