@@ -60,22 +60,22 @@ const PlayerOnboardingForm: FunctionComponent<Props> = ({ games }) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit = async (data: FormValuesProps) => {
-    const player = await failsafeSubmit(
+    const player = await failsafeSubmit({
       setError,
-      () =>
+      onServerError: () =>
         enqueueSnackbar(
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.playerAccountCreate({
+      request: api.playerAccountCreate({
         createPlayerRequest: {
           name: data.name,
           games: data.games,
           email: data.email,
           password: data.password,
         },
-      })
-    )
+      }),
+    })
 
     if (player) {
       router.push("/player/dashboard")

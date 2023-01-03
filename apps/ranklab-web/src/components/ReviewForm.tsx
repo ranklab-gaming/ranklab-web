@@ -62,22 +62,22 @@ const ReviewForm: FunctionComponent<Props> = ({ games, recording }) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const onSubmit = async (data: FormValuesProps) => {
-    const review = await failsafeSubmit(
+    const review = await failsafeSubmit({
       setError,
-      () =>
+      onServerError: () =>
         enqueueSnackbar(
           "There was a problem submitting your recording. Please try again later.",
           { variant: "error" }
         ),
-      api.playerReviewsCreate({
+      request: api.playerReviewsCreate({
         createReviewMutation: {
           gameId: data.gameId,
           title: data.title,
           notes: data.notes ?? "",
           recordingId: recording.id,
         },
-      })
-    )
+      }),
+    })
 
     if (review) {
       router.push(`/player/reviews/${review.id}`)

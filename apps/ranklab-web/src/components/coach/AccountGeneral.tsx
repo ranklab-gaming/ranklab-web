@@ -59,16 +59,16 @@ const AccountGeneral: FunctionComponent<Props> = function ({ games }) {
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    const account = await failsafeSubmit(
+    const account = await failsafeSubmit({
       setError,
-      () =>
+      onServerError: () =>
         enqueueSnackbar("An error occurred while updating your profile", {
           variant: "error",
         }),
-      api.coachAccountUpdate({
+      request: api.coachAccountUpdate({
         coachUpdateAccountRequest: data,
-      })
-    )
+      }),
+    })
 
     if (account) {
       enqueueSnackbar("Profile updated successfully", { variant: "success" })

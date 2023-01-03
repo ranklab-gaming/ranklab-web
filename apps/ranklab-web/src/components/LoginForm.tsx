@@ -10,7 +10,7 @@ import {
   Link,
   styled,
 } from "@mui/material"
-import { UserType, CreateSessionResponse } from "@ranklab/api"
+import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { FunctionComponent, useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
@@ -18,6 +18,7 @@ import api from "../api/client"
 import Iconify from "./Iconify"
 import * as Yup from "yup"
 import NextLink from "next/link"
+import failsafeSubmit from "../utils/failsafeSubmit"
 
 type FormValuesProps = {
   email: string
@@ -66,30 +67,29 @@ const LoginForm: FunctionComponent<Props> = function ({
     control,
     handleSubmit,
     formState: { isSubmitting },
+    setError,
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    let session: CreateSessionResponse
-
-    try {
-      session = await api.sessionCreate({
-        createSessionRequest: { ...data, userType },
-      })
-    } catch (error) {
-      if (
-        error instanceof Response &&
-        (error.status === 422 || error.status === 404)
-      ) {
-        enqueueSnackbar("Invalid email or password. Please try again.", {
-          variant: "error",
-        })
-      } else {
+    const session = await failsafeSubmit({
+      setError,
+      errorHandlers: {
+        404: () =>
+          enqueueSnackbar("Invalid email or password. Please try again.", {
+            variant: "error",
+          }),
+      },
+      onServerError: () =>
         enqueueSnackbar(
           "There was a problem logging in. Please try again later.",
           { variant: "error" }
-        )
-      }
+        ),
+      request: api.sessionCreate({
+        createSessionRequest: { ...data, userType },
+      }),
+    })
 
+    if (!session) {
       return
     }
 

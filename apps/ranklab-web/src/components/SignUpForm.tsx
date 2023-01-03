@@ -8,7 +8,7 @@ import {
   Box,
   Link,
 } from "@mui/material"
-import { Game, PlayerGame, CreateSessionResponse } from "@ranklab/api"
+import { Game, PlayerGame } from "@ranklab/api"
 import { FunctionComponent, useEffect, useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
 import Iconify from "./Iconify"
@@ -17,6 +17,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useSnackbar } from "notistack"
 import api from "../api/client"
 import GamesSelect from "./player/GamesSelect"
+import failsafeSubmit from "../utils/failsafeSubmit"
 
 interface Props {
   setShowSignUp: (showSignUp: boolean) => void
@@ -76,24 +77,24 @@ const SignUpForm: FunctionComponent<Props> = function ({ setShowSignUp }) {
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    let session: CreateSessionResponse
-
-    try {
-      session = await api.playerAccountCreate({
-        createPlayerRequest: data,
-      })
-    } catch (error) {
-      if (!(error instanceof Response && error.status === 422)) {
+    const session = await failsafeSubmit({
+      setError,
+      onServerError: () =>
         enqueueSnackbar(
           "There was a problem signin up. Please try again later.",
           { variant: "error" }
-        )
-      }
+        ),
+      request: api.playerAccountCreate({
+        createPlayerRequest: data,
+      }),
+    })
 
+    if (!session) {
       return
     }
 

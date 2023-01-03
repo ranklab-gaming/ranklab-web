@@ -1,5 +1,5 @@
 import { capitalize } from "lodash"
-import { Path, UseFormSetError } from "react-hook-form"
+import { FieldValues, Path, UseFormSetError } from "react-hook-form"
 
 interface LengthErrorParams {
   min?: number
@@ -30,7 +30,7 @@ function errorMessageFromError<T>(field: Path<T>, error: Error) {
   return `${capitalize(field)} is invalid`
 }
 
-export default function setServerErrors<T>(
+export default function setServerErrors<T extends FieldValues>(
   setError: UseFormSetError<T>,
   errors: Errors<T>
 ) {

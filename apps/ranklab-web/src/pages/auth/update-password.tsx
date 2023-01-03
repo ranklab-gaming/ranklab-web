@@ -18,6 +18,7 @@ import api from "../../api/client"
 import { useRequiredParam } from "@ranklab/web/hooks/useParam"
 import { GetServerSideProps } from "next"
 import signIn from "@ranklab/web/utils/signIn"
+import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
 
 type FormValuesProps = {
   password: string
@@ -70,20 +71,25 @@ const UpdatePassword: FunctionComponent<Props> = function ({
   const {
     control,
     handleSubmit,
+    setError,
     formState: { isSubmitting },
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    try {
-      await api.sessionUpdatePassword({
+    const status = await failsafeSubmit({
+      setError,
+      onServerError: () =>
+        enqueueSnackbar(
+          "There was a problem resetting your password. Please try again later.",
+          { variant: "error" }
+        ),
+      request: api.sessionUpdatePassword({
         updatePasswordRequest: data,
         auth: { userType, token },
-      })
-    } catch (error) {
-      enqueueSnackbar(
-        "There was a problem resetting your password. Please try again later.",
-        { variant: "error" }
-      )
+      }),
+    })
+
+    if (!status) {
       return
     }
 

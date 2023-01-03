@@ -73,14 +73,14 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
   const { enqueueSnackbar } = useSnackbar()
 
   const createAndRedirectToDashboard = async (data: FormValuesProps) => {
-    const coach = await failsafeSubmit(
+    const coach = await failsafeSubmit({
       setError,
-      () =>
+      onServerError: () =>
         enqueueSnackbar(
           "There was a problem creating your profile. Please try again later.",
           { variant: "error" }
         ),
-      api.coachAccountCreate({
+      request: api.coachAccountCreate({
         createCoachRequest: {
           name: data.name,
           bio: data.bio,
@@ -89,8 +89,8 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           email: data.email,
           password: data.password,
         },
-      })
-    )
+      }),
+    })
 
     if (coach) {
       router.push("/coach/dashboard")
