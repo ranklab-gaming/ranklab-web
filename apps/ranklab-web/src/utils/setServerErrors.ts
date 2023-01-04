@@ -1,23 +1,25 @@
 import { capitalize } from "lodash"
 import { FieldValues, Path, UseFormSetError } from "react-hook-form"
 
-interface LengthErrorParams {
-  min?: number
-  max?: number
-}
-
-type Params = LengthErrorParams
-type Code = "length" | "custom"
-
 type Errors<T> = {
   [key in Path<T>]: Error[]
 }
 
-interface Error {
+type Error = {
   message?: string
-  code: Code
-  params: Params
-}
+} & (
+  | {
+      code: "length"
+      params: {
+        min?: number
+        max?: number
+      }
+    }
+  | {
+      code: "custom"
+      params: {}
+    }
+)
 
 function errorMessageFromError<T>(field: Path<T>, error: Error) {
   switch (error.code) {

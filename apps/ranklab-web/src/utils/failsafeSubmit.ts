@@ -1,3 +1,4 @@
+import { ResponseError } from "@ranklab/api"
 import setServerErrors from "@ranklab/web/utils/setServerErrors"
 import { FieldValues, UseFormSetError } from "react-hook-form"
 
@@ -17,21 +18,22 @@ export default async function failsafeSubmit<T extends FieldValues, U>({
   try {
     return await request
   } catch (e: any) {
-    if (e instanceof Response) {
-      const errorHandler = errorHandlers[e.status]
+    if (e instanceof Response || e instanceof ResponseError) {
+      const response = e instanceof Response ? e : e.response
+      const errorHandler = errorHandlers[response.status]
 
       if (errorHandler) {
         errorHandler()
         return
       }
 
-      if (e.status === 422) {
-        const errors = await e.json()
+      if (response.status === 422) {
+        const errors = await response.json()
         setServerErrors(setError, errors)
         return
       }
 
-      if (e.status >= 500) {
+      if (response.status >= 500) {
         onServerError?.()
         return
       }
