@@ -9,6 +9,8 @@ import {
 } from "@ranklab/web/src/components/landing"
 import { GetServerSideProps } from "next"
 import { getToken } from "next-auth/jwt"
+import { useParam } from "../hooks/useParam"
+import { useSnackbar } from "notistack"
 
 const RootStyle = styled(Page)({
   height: "100%",
@@ -19,6 +21,14 @@ const ContentStyle = styled("div")(({ theme }) => ({
   position: "relative",
   backgroundColor: theme.palette.background.default,
 }))
+
+enum ErrorType {
+  Login = "Login",
+  Configuration = "Configuration",
+  AccessDenied = "AccessDenied",
+  Verification = "Verification",
+  Default = "Default",
+}
 
 export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const token = await getToken({ req: ctx.req })
@@ -33,12 +43,25 @@ export const getServerSideProps: GetServerSideProps = async function (ctx) {
       .end()
   }
 
+  const error = useParam(ctx, "error")
+
   return {
-    props: {},
+    props: {
+      error,
+    },
   }
 }
 
-export default function LandingPage() {
+export default function LandingPage({ error }: { error: string | null }) {
+  const { enqueueSnackbar } = useSnackbar()
+
+  if (error && Object.values(ErrorType).includes(error as ErrorType)) {
+    enqueueSnackbar(
+      "There was an error while authenticating, please try again later.",
+      { variant: "error" }
+    )
+  }
+
   return (
     <MainLayout>
       <RootStyle title="Be the better gamer | Ranklab" id="move_top">

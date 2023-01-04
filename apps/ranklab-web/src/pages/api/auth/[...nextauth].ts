@@ -63,6 +63,9 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.COOKIE_SECRET!,
+  pages: {
+    error: "/",
+  },
 }
 
 export default NextAuth(authOptions)

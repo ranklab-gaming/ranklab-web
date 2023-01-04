@@ -58,6 +58,9 @@ const config: Configuration = {
   },
   jwks,
   adapter: RedisAdapter,
+  renderError: async (ctx) => {
+    ctx.redirect("/?error=Login")
+  },
 }
 
 export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
