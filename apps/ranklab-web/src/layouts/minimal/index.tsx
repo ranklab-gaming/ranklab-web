@@ -24,11 +24,16 @@ export default function MinimalLayout({ children }: MainLayoutProps) {
         }}
       >
         <NextLink href="/">
-          <Logo />
+          <Box
+            sx={{ display: "flex", cursor: "pointer", alignItems: "center" }}
+          >
+            <Logo />
+
+            <Label color="info" sx={{ ml: 1, cursor: "inherit" }}>
+              Ranklab
+            </Label>
+          </Box>
         </NextLink>
-        <Label color="info" sx={{ ml: 1 }}>
-          Ranklab
-        </Label>
         <Box sx={{ flexGrow: 1 }} />
       </Container>
       <Container maxWidth="lg" sx={{ pt: 5, pb: 10 }}>

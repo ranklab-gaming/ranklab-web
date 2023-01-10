@@ -27,7 +27,7 @@ const LINKS = [
   {
     headline: "Legal",
     children: [
-      { name: "Terms and Condition", href: "#" },
+      { name: "Terms and Conditions", href: "/terms-and-conditions" },
       { name: "Privacy Policy", href: "#" },
     ],
   },

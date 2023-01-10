@@ -11,10 +11,12 @@ import {
   List,
   ListItem,
   ListItemText,
+  Link,
 } from "@mui/material"
 import { Review, Recording, PaymentMethod } from "@ranklab/api"
 import ReviewPayment from "./ReviewPayment"
 import { CheckoutSummary } from "./checkout"
+import NextLink from "next/link"
 
 interface Props {
   review: Review
@@ -60,9 +62,18 @@ const ReviewCheckout: FunctionComponent<Props> = ({
                       <ListItemText primary="Your recording goes into a queue and one of our coaches will pick it up" />
                     </ListItem>
                     <ListItem>
-                      <ListItemText primary="If none reviews your recording in 5 days the money you pay now will get refunded automatically" />
+                      <ListItemText primary="If no coach reviews your recording in 5 days the money you pay now will get refunded automatically" />
                     </ListItem>
                   </List>
+
+                  {/* link to terms and conditions */}
+                  <Typography variant="body2" color="grey">
+                    If you're not happy with the review you can submit a refund
+                    request which will need to be approved by us. See our{" "}
+                    <NextLink passHref href="/terms-and-conditions">
+                      <Link>terms and conditions</Link>
+                    </NextLink>
+                  </Typography>
                 </CardContent>
               </Card>
               <Card>

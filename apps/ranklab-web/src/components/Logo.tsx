@@ -7,7 +7,7 @@ import LogoImage from "../assets/logo"
 
 const Logo = React.forwardRef<any, BoxProps>(({ sx }, ref) => {
   return (
-    <Box ref={ref} sx={{ cursor: "pointer", width: "40px", ...sx }}>
+    <Box ref={ref} sx={{ width: "40px", ...sx }}>
       <LogoImage />
     </Box>
   )
