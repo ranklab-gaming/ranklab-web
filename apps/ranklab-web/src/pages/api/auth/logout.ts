@@ -1,5 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next"
 
+const COOKIES = [
+  "_session",
+  "_session.sig",
+  "_session.legacy",
+  "_session.legacy.sig",
+  "next-auth.session-token",
+]
+
 export default async function logout(
   req: NextApiRequest,
   res: NextApiResponse
@@ -8,18 +16,15 @@ export default async function logout(
     return res.status(405).end()
   }
 
-  const cookies = [
-    "_session",
-    "_session.sig",
-    "_session.legacy",
-    "_session.legacy.sig",
-    "next-auth.session-token",
-  ]
-
   res.setHeader(
     "Set-Cookie",
-    cookies.map((cookie) => `${cookie}=; Max-Age=0; Path=/; HttpOnly`)
+    COOKIES.map((cookie) => `${cookie}=; Max-Age=0; Path=/; HttpOnly`)
   )
+
+  // if redirect param is true redirect
+  if (req.query.error) {
+    return res.redirect(`/?error=${req.query.error}&logout=true`).end()
+  }
 
   return res.redirect("/").end()
 }

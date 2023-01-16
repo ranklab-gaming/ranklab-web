@@ -65,6 +65,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.COOKIE_SECRET!,
   pages: {
     error: "/",
+    signIn: "/?error=Login",
+    signOut: "/?error=Login",
   },
 }
 

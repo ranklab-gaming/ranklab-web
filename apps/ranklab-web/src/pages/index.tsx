@@ -11,6 +11,7 @@ import { GetServerSideProps } from "next"
 import { getToken } from "next-auth/jwt"
 import { useParam } from "../hooks/useParam"
 import { useSnackbar } from "notistack"
+import { useEffect } from "react"
 
 const RootStyle = styled(Page)({
   height: "100%",
@@ -44,23 +45,42 @@ export const getServerSideProps: GetServerSideProps = async function (ctx) {
   }
 
   const error = useParam(ctx, "error")
+  const logout = useParam(ctx, "logout")
 
   return {
     props: {
       error,
+      logout,
     },
   }
 }
 
-export default function LandingPage({ error }: { error: string | null }) {
+export default function LandingPage({
+  error,
+  logout,
+}: {
+  error: string | null
+  logout: string | null
+}) {
   const { enqueueSnackbar } = useSnackbar()
 
-  if (error && Object.values(ErrorType).includes(error as ErrorType)) {
-    enqueueSnackbar(
-      "There was an error while authenticating, please try again later.",
-      { variant: "error" }
-    )
-  }
+  useEffect(() => {
+    if (error && Object.values(ErrorType).includes(error as ErrorType)) {
+      if (logout) {
+        enqueueSnackbar(
+          "There was an error while authenticating, please try again later.",
+          { variant: "error" }
+        )
+      } else {
+        const form = document.createElement("form")
+        form.method = "POST"
+        form.action = "/api/auth/logout?error=Login"
+        form.style.display = "none"
+        document.body.appendChild(form)
+        form.submit()
+      }
+    }
+  })
 
   return (
     <MainLayout>
