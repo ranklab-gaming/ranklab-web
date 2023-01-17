@@ -64,9 +64,9 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.COOKIE_SECRET!,
   pages: {
-    error: "/",
-    signIn: "/?error=Login",
-    signOut: "/?error=Login",
+    error: "/api/auth/logout",
+    signIn: "/api/auth/logout?error=Login",
+    signOut: "/api/auth/logout?error=Login",
   },
 }
 

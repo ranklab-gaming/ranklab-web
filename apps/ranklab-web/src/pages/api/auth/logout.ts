@@ -12,7 +12,7 @@ export default async function logout(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
+  if (!["GET", "POST"].includes(req.method ?? "")) {
     return res.status(405).end()
   }
 
@@ -21,9 +21,8 @@ export default async function logout(
     COOKIES.map((cookie) => `${cookie}=; Max-Age=0; Path=/; HttpOnly`)
   )
 
-  // if redirect param is true redirect
   if (req.query.error) {
-    return res.redirect(`/?error=${req.query.error}&logout=true`).end()
+    return res.redirect(`/?error=${req.query.error}`).end()
   }
 
   return res.redirect("/").end()
