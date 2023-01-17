@@ -29,6 +29,12 @@ export default async function failsafeSubmit<T extends FieldValues, U>({
 
       if (response.status === 422) {
         const errors = await response.json()
+
+        if ("error" in errors && !Array.isArray(errors.error)) {
+          onServerError?.()
+          return
+        }
+
         setServerErrors(setError, errors)
         return
       }

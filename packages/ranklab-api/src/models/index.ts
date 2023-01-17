@@ -392,6 +392,12 @@ export interface CreateReviewMutation {
      * @memberof CreateReviewMutation
      */
     gameId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateReviewMutation
+     */
+    coachId: string;
 }
 /**
  * 
@@ -728,7 +734,7 @@ export interface Review {
      * @type {string}
      * @memberof Review
      */
-    coachId?: string | null;
+    coachId: string;
     /**
      * 
      * @type {string}
