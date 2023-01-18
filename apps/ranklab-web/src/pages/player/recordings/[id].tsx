@@ -7,7 +7,7 @@ import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api/server"
 import { Game, Recording } from "@ranklab/api"
-import { useRequiredParam } from "src/hooks/useParam"
+import { useParam, useRequiredParam } from "src/hooks/useParam"
 import withPageAuthRequired, {
   PropsWithSession,
 } from "@ranklab/web/helpers/withPageAuthRequired"
@@ -16,6 +16,7 @@ import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 interface Props {
   games: Game[]
   recording: Recording
+  coachId: string | null
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
@@ -23,6 +24,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
     requiredUserType: "player",
     getServerSideProps: async function (ctx) {
       const recordingId = useRequiredParam(ctx, "id")
+      const coachId = useParam(ctx, "coachId")
       const server = await api(ctx)
       const games = await server.gameList()
       const recording = await server.playerRecordingsGet({ id: recordingId })
@@ -31,6 +33,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
         props: {
           games,
           recording,
+          coachId,
         },
       }
     },
@@ -39,6 +42,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
 const NewReplayForm: FunctionComponent<PropsWithSession<Props>> = ({
   games,
   recording,
+  coachId,
 }) => {
   return (
     <DashboardLayout>
@@ -52,7 +56,11 @@ const NewReplayForm: FunctionComponent<PropsWithSession<Props>> = ({
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <ReviewForm games={games} recording={recording} />
+              <ReviewForm
+                games={games}
+                recording={recording}
+                coachId={coachId ?? undefined}
+              />
             </CardContent>
           </Card>
         </Container>
