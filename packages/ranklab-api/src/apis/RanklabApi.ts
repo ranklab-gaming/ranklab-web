@@ -34,6 +34,7 @@ import type {
   CreateSessionResponse,
   Game,
   LoginLink,
+  PaginatedResultForCoach,
   PaginatedResultForReview,
   PaymentMethod,
   Player,
@@ -100,6 +101,15 @@ export interface PlayerAccountCreateRequest {
 
 export interface PlayerAccountUpdateRequest {
     playerUpdateAccountRequest: PlayerUpdateAccountRequest;
+}
+
+export interface PlayerCoachesGetRequest {
+    coachId: string;
+}
+
+export interface PlayerCoachesListRequest {
+    page?: number | null;
+    q?: string | null;
 }
 
 export interface PlayerCommentsListRequest {
@@ -678,6 +688,66 @@ export class RanklabApi extends runtime.BaseAPI {
      */
     async playerAccountUpdate(requestParameters: PlayerAccountUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Player> {
         const response = await this.playerAccountUpdateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerCoachesGetRaw(requestParameters: PlayerCoachesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Coach>> {
+        if (requestParameters.coachId === null || requestParameters.coachId === undefined) {
+            throw new runtime.RequiredError('coachId','Required parameter requestParameters.coachId was null or undefined when calling playerCoachesGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/coaches/{coach_id}`.replace(`{${"coach_id"}}`, encodeURIComponent(String(requestParameters.coachId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerCoachesGet(requestParameters: PlayerCoachesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Coach> {
+        const response = await this.playerCoachesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async playerCoachesListRaw(requestParameters: PlayerCoachesListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResultForCoach>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.q !== undefined) {
+            queryParameters['q'] = requestParameters.q;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/player/coaches`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response);
+    }
+
+    /**
+     */
+    async playerCoachesList(requestParameters: PlayerCoachesListRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResultForCoach> {
+        const response = await this.playerCoachesListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

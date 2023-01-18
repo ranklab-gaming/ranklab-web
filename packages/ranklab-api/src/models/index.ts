@@ -478,6 +478,43 @@ export interface LoginLink {
 /**
  * 
  * @export
+ * @interface PaginatedResultForCoach
+ */
+export interface PaginatedResultForCoach {
+    /**
+     * 
+     * @type {Array<Coach>}
+     * @memberof PaginatedResultForCoach
+     */
+    records: Array<Coach>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForCoach
+     */
+    totalPages: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForCoach
+     */
+    perPage: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForCoach
+     */
+    page: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaginatedResultForCoach
+     */
+    count: number;
+}
+/**
+ * 
+ * @export
  * @interface PaginatedResultForReview
  */
 export interface PaginatedResultForReview {
