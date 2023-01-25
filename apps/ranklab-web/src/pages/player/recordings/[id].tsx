@@ -6,8 +6,8 @@ import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
 import ReviewForm from "@ranklab/web/src/components/ReviewForm"
 import { GetServerSideProps } from "next"
 import api from "@ranklab/web/src/api/server"
-import { Game, Recording } from "@ranklab/api"
-import { useParam, useRequiredParam } from "src/hooks/useParam"
+import { Coach, Game, Recording } from "@ranklab/api"
+import { useRequiredParam } from "src/hooks/useParam"
 import withPageAuthRequired, {
   PropsWithSession,
 } from "@ranklab/web/helpers/withPageAuthRequired"
@@ -16,7 +16,7 @@ import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
 interface Props {
   games: Game[]
   recording: Recording
-  coachId: string | null
+  coach: Coach
 }
 
 export const getServerSideProps: GetServerSideProps<Props> =
@@ -24,16 +24,17 @@ export const getServerSideProps: GetServerSideProps<Props> =
     requiredUserType: "player",
     getServerSideProps: async function (ctx) {
       const recordingId = useRequiredParam(ctx, "id")
-      const coachId = useParam(ctx, "coachId")
+      const coachId = useRequiredParam(ctx, "coach_id")
       const server = await api(ctx)
       const games = await server.gameList()
       const recording = await server.playerRecordingsGet({ id: recordingId })
+      const coach = await server.playerCoachesGet({ coachId })
 
       return {
         props: {
           games,
           recording,
-          coachId,
+          coach,
         },
       }
     },
@@ -42,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<Props> =
 const NewReplayForm: FunctionComponent<PropsWithSession<Props>> = ({
   games,
   recording,
-  coachId,
+  coach,
 }) => {
   return (
     <DashboardLayout>
@@ -51,16 +52,12 @@ const NewReplayForm: FunctionComponent<PropsWithSession<Props>> = ({
           <NewReviewHeader activeStep="submit" />
 
           <Typography variant="h3" component="h1" paragraph>
-            Submit VOD for Review
+            Submit VOD for Review to {coach.name}
           </Typography>
 
           <Card sx={{ position: "static" }}>
             <CardContent>
-              <ReviewForm
-                games={games}
-                recording={recording}
-                coachId={coachId ?? undefined}
-              />
+              <ReviewForm games={games} recording={recording} coach={coach} />
             </CardContent>
           </Card>
         </Container>

@@ -17,54 +17,35 @@ import Editor from "@ranklab/web/src/components/editor"
 import { LoadingButton } from "@mui/lab"
 import api from "@ranklab/web/src/api/client"
 import React, { FunctionComponent } from "react"
-import { Game, Recording } from "@ranklab/api"
+import { Coach, Game, Recording } from "@ranklab/api"
 import VideoPlayer from "./VideoPlayer"
 import { useRouter } from "next/router"
 import failsafeSubmit from "../utils/failsafeSubmit"
 import { useSnackbar } from "notistack"
-import Autocomplete from "./Autocomplete"
 
 export type FormValuesProps = {
   title: string
   gameId: string
   notes?: string
-  coachId: string
 }
 
 export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   gameId: Yup.string().required("Game is required"),
   notes: Yup.string(),
-  coachId: Yup.string().required("Coach is required"),
 })
 
 interface Props {
   games: Game[]
   recording: Recording
-  coachId?: string
+  coach: Coach
 }
 
-const searchCoaches = async (query: string) => {
-  const coaches = await api.playerCoachesList({
-    q: query,
-  })
-
-  return coaches.records.map((coach) => ({
-    label: coach.name,
-    value: coach.id,
-  }))
-}
-
-const ReviewForm: FunctionComponent<Props> = ({
-  games,
-  recording,
-  coachId,
-}) => {
+const ReviewForm: FunctionComponent<Props> = ({ games, recording, coach }) => {
   const defaultValues = {
     title: "",
     gameId: "",
     notes: "",
-    coachId: coachId ?? "",
   }
 
   const {
@@ -94,7 +75,7 @@ const ReviewForm: FunctionComponent<Props> = ({
           gameId: data.gameId,
           title: data.title,
           notes: data.notes ?? "",
-          coachId: data.coachId,
+          coachId: coach.id,
           recordingId: recording.id,
         },
       }),
@@ -120,24 +101,6 @@ const ReviewForm: FunctionComponent<Props> = ({
                   error={Boolean(error)}
                   helperText={error?.message}
                 />
-              )}
-            />
-
-            <Controller
-              name="coachId"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl fullWidth>
-                  <InputLabel>Coach</InputLabel>
-                  <Autocomplete
-                    label="Coach"
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={error}
-                    search={searchCoaches}
-                    noOptionsText="No coaches found"
-                  />
-                </FormControl>
               )}
             />
 

@@ -16,25 +16,6 @@ export interface AccountLink {
 /**
  * 
  * @export
- * @interface AuthQuery
- */
-export interface AuthQuery {
-    /**
-     * 
-     * @type {string}
-     * @memberof AuthQuery
-     */
-    token: string;
-    /**
-     * 
-     * @type {UserType}
-     * @memberof AuthQuery
-     */
-    userType: UserType;
-}
-/**
- * 
- * @export
  * @interface BillingPortalLink
  */
 export interface BillingPortalLink {
@@ -99,6 +80,19 @@ export interface Coach {
      * @memberof Coach
      */
     stripeDetailsSubmitted: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface CoachInvitationAuthQuery
+ */
+export interface CoachInvitationAuthQuery {
+    /**
+     * 
+     * @type {string}
+     * @memberof CoachInvitationAuthQuery
+     */
+    token: string;
 }
 /**
  * 
@@ -474,6 +468,25 @@ export interface LoginLink {
      * @memberof LoginLink
      */
     url: string;
+}
+/**
+ * 
+ * @export
+ * @interface OneTimeTokenAuthQuery
+ */
+export interface OneTimeTokenAuthQuery {
+    /**
+     * 
+     * @type {string}
+     * @memberof OneTimeTokenAuthQuery
+     */
+    token: string;
+    /**
+     * 
+     * @type {UserType}
+     * @memberof OneTimeTokenAuthQuery
+     */
+    userType: UserType;
 }
 /**
  * 

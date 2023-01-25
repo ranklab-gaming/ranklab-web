@@ -8,10 +8,12 @@ import withPageAuthRequired, {
   PropsWithSession,
 } from "../../helpers/withPageAuthRequired"
 import MinimalLayout from "../../layouts/minimal"
+import { useRequiredParam } from "@ranklab/web/hooks/useParam"
 
 interface Props {
   games: Game[]
   availableCountries?: string[]
+  invitationToken: string
 }
 
 export const getServerSideProps = withPageAuthRequired({
@@ -19,11 +21,13 @@ export const getServerSideProps = withPageAuthRequired({
     const server = await api(ctx)
     const games = await server.gameList()
     const availableCountries = await server.coachAccountGetCountries()
+    const invitationToken = useRequiredParam(ctx, "token")
 
     return {
       props: {
         games,
         availableCountries,
+        invitationToken,
       },
     }
   },
@@ -32,6 +36,7 @@ export const getServerSideProps = withPageAuthRequired({
 const OnboardingPage: FunctionComponent<PropsWithSession<Props>> = function ({
   games,
   availableCountries,
+  invitationToken,
 }) {
   return (
     <MinimalLayout>
@@ -43,6 +48,7 @@ const OnboardingPage: FunctionComponent<PropsWithSession<Props>> = function ({
           <CoachOnboardingForm
             games={games}
             availableCountries={availableCountries!}
+            invitationToken={invitationToken}
           />
         </Container>
       </Page>

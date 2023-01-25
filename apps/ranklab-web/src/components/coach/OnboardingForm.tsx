@@ -14,6 +14,7 @@ import GamesSelect from "./GamesSelect"
 interface Props {
   games: Game[]
   availableCountries: string[]
+  invitationToken: string
 }
 
 export type FormValuesProps = {
@@ -52,6 +53,7 @@ export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
 const CoachOnboardingForm: FunctionComponent<Props> = ({
   games,
   availableCountries,
+  invitationToken,
 }) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
 
@@ -89,6 +91,7 @@ const CoachOnboardingForm: FunctionComponent<Props> = ({
           email: data.email,
           password: data.password,
         },
+        auth: { token: invitationToken },
       }),
     })
 
