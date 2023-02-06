@@ -17,7 +17,7 @@ const navConfig = [
     items: [
       {
         title: "Upload VOD",
-        path: "/player/recordings/new",
+        path: "/player/coaches",
         icon: ICONS.upload,
       },
       { title: "Dashboard", path: "/player/dashboard", icon: ICONS.dashboard },

@@ -1,11 +1,12 @@
 // @mui
 import { Box, Typography, Stack } from "@mui/material"
+import { Coach } from "@ranklab/api"
 // assets
 import { UploadIllustration } from "../../assets"
 
 // ----------------------------------------------------------------------
 
-export default function BlockContent() {
+export default function BlockContent({ coach }: { coach: Coach }) {
   return (
     <Stack
       spacing={2}
@@ -18,7 +19,7 @@ export default function BlockContent() {
 
       <Box sx={{ p: 3 }}>
         <Typography gutterBottom variant="h5">
-          Upload VOD
+          Upload VOD for {coach.name}
         </Typography>
       </Box>
     </Stack>

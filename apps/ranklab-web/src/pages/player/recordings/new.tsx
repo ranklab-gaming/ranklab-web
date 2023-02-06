@@ -1,34 +1,43 @@
-import {
-  Card,
-  Typography,
-  CardContent,
-  Button,
-  LinearProgress,
-} from "@mui/material"
-import { useCallback, useState, useEffect } from "react"
+import { Card, CardContent, Button, LinearProgress } from "@mui/material"
+import { useCallback, useState, useEffect, FunctionComponent } from "react"
 import { useRouter } from "next/router"
 import { UploadSingleFile } from "src/components/upload"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
-import { Recording } from "@ranklab/api"
-import api from "@ranklab/web/src/api/client"
-import withPageAuthRequired from "@ranklab/web/helpers/withPageAuthRequired"
-import NextLink from "next/link"
+import { Coach, Recording } from "@ranklab/api"
+import api from "@ranklab/web/src/api/server"
+import clientApi from "@ranklab/web/src/api/client"
+import withPageAuthRequired, {
+  PropsWithSession,
+} from "@ranklab/web/helpers/withPageAuthRequired"
 
 import DashboardLayout from "src/layouts/dashboard"
 // @mui
-import { Grid, Container } from "@mui/material"
+import { Container } from "@mui/material"
 import Page from "@ranklab/web/components/Page"
 import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
+import { useRequiredParam } from "@ranklab/web/hooks/useParam"
 
 // ----------------------------------------------------------------------
 
 export const getServerSideProps = withPageAuthRequired({
   requiredUserType: "player",
+  getServerSideProps: async function (ctx) {
+    const coachId = useRequiredParam(ctx, "coach_id")
+    const server = await api(ctx)
+    const coach = await server.playerCoachesGet({ coachId })
+    return { props: { coach } }
+  },
 })
+
+interface Props {
+  coach: Coach
+}
 
 // ----------------------------------------------------------------------
 
-export default function NewRecordingForm() {
+const NewRecordingForm: FunctionComponent<PropsWithSession<Props>> = function ({
+  coach,
+}) {
   const [files, setFiles] = useState<FileList | null>(null)
   const [recording, setRecording] = useState<Recording | null>(null)
   const router = useRouter()
@@ -44,7 +53,7 @@ export default function NewRecordingForm() {
       return
     }
 
-    const recording = await api.playerRecordingsCreate({
+    const recording = await clientApi.playerRecordingsCreate({
       createRecordingRequest: { mimeType: file.type, size: file.size },
     })
 
@@ -79,70 +88,30 @@ export default function NewRecordingForm() {
         <Container maxWidth="lg">
           <NewReviewHeader activeStep="upload" />
 
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            spacing={2}
-          >
-            <Grid item xs={12} md={5}>
-              <Card>
-                <CardContent>
-                  <Grid
-                    container
-                    justifyContent="center"
-                    alignItems="center"
-                    sx={{
-                      height: "217px",
-                      padding: "40px 8px",
-                    }}
-                  >
-                    <NextLink
-                      href={`${process.env.NEXT_PUBLIC_ASSETS_CDN_URL}/RanklabSetup.exe`}
-                      download
-                    >
-                      <Button variant="contained" color="info">
-                        Download Client
-                      </Button>
-                    </NextLink>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-
-            <Grid item xs={12} md={1}>
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                OR
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12} md={5}>
-              <Card sx={{ position: "static" }}>
-                <CardContent>
-                  <UploadSingleFile
-                    file={files?.[0] ?? null}
-                    onDrop={handleDropFile}
-                  />
-                  {loading && (
-                    <LinearProgress
-                      variant="determinate"
-                      value={progress ?? 0}
-                    />
-                  )}
-                  {files && (
-                    <Button
-                      disabled={loading}
-                      onClick={() => upload({ files: files })}
-                    >
-                      Upload
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+          <Card sx={{ position: "static" }}>
+            <CardContent>
+              <UploadSingleFile
+                file={files?.[0] ?? null}
+                onDrop={handleDropFile}
+                coach={coach}
+              />
+              {loading && (
+                <LinearProgress variant="determinate" value={progress ?? 0} />
+              )}
+              {files && (
+                <Button
+                  disabled={loading}
+                  onClick={() => upload({ files: files })}
+                >
+                  Upload
+                </Button>
+              )}
+            </CardContent>
+          </Card>
         </Container>
       </Page>
     </DashboardLayout>
   )
 }
+
+export default NewRecordingForm
