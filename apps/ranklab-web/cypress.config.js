@@ -2,6 +2,7 @@ import { defineConfig } from "cypress"
 const { loadEnvConfig } = require("@next/env")
 
 export default defineConfig({
+  projectId: "mw3765",
   defaultCommandTimeout: 8000,
   e2e: {
     async setupNodeEvents(on, config) {
