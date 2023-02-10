@@ -9,12 +9,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { PaymentMethod } from "@ranklab/api"
-import {
-  CardElement,
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js"
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import { FunctionComponent, useState } from "react"
 import * as Yup from "yup"
 import { Controller, useForm } from "react-hook-form"

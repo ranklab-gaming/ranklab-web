@@ -1,11 +1,8 @@
 import {
-  Avatar,
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Grid,
-  Link,
   TablePagination,
   Typography,
 } from "@mui/material"

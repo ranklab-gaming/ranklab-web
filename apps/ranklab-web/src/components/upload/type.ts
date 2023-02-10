@@ -20,14 +20,3 @@ export interface UploadProps extends DropzoneOptions {
   sx?: SxProps<Theme>
   coach: Coach
 }
-
-export interface UploadMultiFileProps extends DropzoneOptions {
-  files: (File | string)[]
-  error?: boolean
-  showPreview?: boolean
-  sx?: SxProps<Theme>
-  helperText?: ReactNode
-  onUpload?: VoidFunction
-  onRemove?: (file: File | string) => void
-  onRemoveAll?: VoidFunction
-}
