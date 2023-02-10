@@ -2,7 +2,6 @@
 import { Container } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { GetServerSideProps, NextPage } from "next"
-import { oidcProvider } from "../api/oidc/[...path]"
 import MinimalLayout from "@ranklab/web/layouts/minimal"
 import { useState } from "react"
 import SignUpForm from "@ranklab/web/components/SignUpForm"
@@ -15,6 +14,8 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { oidcProvider } = await import("../api/oidc/[...path]")
+
   const interaction = await oidcProvider.interactionDetails(
     context.req,
     context.res
