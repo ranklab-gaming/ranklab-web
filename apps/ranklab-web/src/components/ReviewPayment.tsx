@@ -31,7 +31,7 @@ type FormValuesProps = {
   setupFutureUsage: boolean
 }
 
-const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
+const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
   paymentMethodId: Yup.string().optional(),
   setupFutureUsage: Yup.boolean().required(),
 })

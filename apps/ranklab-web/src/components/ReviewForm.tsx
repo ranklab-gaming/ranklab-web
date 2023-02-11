@@ -29,7 +29,7 @@ export type FormValuesProps = {
   notes?: string
 }
 
-export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
+export const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
   title: Yup.string().required("Title is required"),
   gameId: Yup.string().required("Game is required"),
   notes: Yup.string(),
