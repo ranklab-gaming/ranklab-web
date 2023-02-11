@@ -49,7 +49,7 @@ export default function Scrollbar({ children, sx }: BoxProps) {
 
   return (
     <RootStyle>
-      <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx}>
+      <SimpleBarStyle clickOnTrack={false} sx={sx}>
         {children}
       </SimpleBarStyle>
     </RootStyle>
