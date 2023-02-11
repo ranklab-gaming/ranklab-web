@@ -35,13 +35,14 @@ export const defaultValues = {
   password: "",
 }
 
-export const FormSchema: Yup.SchemaOf<FormValuesProps> = Yup.object().shape({
+export const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
   bio: Yup.string()
     .required("Bio is required")
     .min(30, "Bio must be at least 30 characters"),
   gameIds: Yup.array()
     .of(Yup.string().required())
-    .min(1, "You must select at least one game"),
+    .min(1, "You must select at least one game")
+    .required(),
   name: Yup.string()
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
