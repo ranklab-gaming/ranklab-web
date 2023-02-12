@@ -48,7 +48,7 @@ export const NavItemRoot = forwardRef<
 
   return isExternalLink(path) ? (
     <ListItem
-      component={Link}
+      component={<Link />}
       href={path}
       target="_blank"
       rel="noopener"
@@ -99,7 +99,7 @@ export const NavItemSub = forwardRef<
       disableRipple
       rel="noopener"
       target="_blank"
-      component={Link}
+      component={<Link />}
       disabled={disabled}
       roles={roles}
     >

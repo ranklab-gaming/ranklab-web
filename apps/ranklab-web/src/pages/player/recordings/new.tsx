@@ -42,7 +42,7 @@ const NewRecordingForm: FunctionComponent<PropsWithSession<Props>> = function ({
   const [recording, setRecording] = useState<Recording | null>(null)
   const router = useRouter()
 
-  const handleDropFile = useCallback((files) => {
+  const handleDropFile = useCallback((files: FileList | null) => {
     setFiles(files)
   }, [])
 
@@ -92,7 +92,11 @@ const NewRecordingForm: FunctionComponent<PropsWithSession<Props>> = function ({
             <CardContent>
               <UploadSingleFile
                 file={files?.[0] ?? null}
-                onDrop={handleDropFile}
+                onDrop={(_, __, e) =>
+                  handleDropFile(
+                    "dataTransfer" in e ? e.dataTransfer?.files ?? null : null
+                  )
+                }
                 coach={coach}
               />
               {loading && (

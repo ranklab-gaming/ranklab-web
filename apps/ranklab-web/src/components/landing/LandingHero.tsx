@@ -6,6 +6,7 @@ import { Box, Stack, Container, Typography, Button } from "@mui/material"
 import { varFade, MotionContainer } from "../animate"
 import NextLink from "next/link"
 import signIn from "@ranklab/web/utils/signIn"
+import { FunctionComponent, PropsWithChildren } from "react"
 
 // ----------------------------------------------------------------------
 
@@ -23,21 +24,23 @@ const RootStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(
-  ({ theme }) => ({
-    zIndex: 10,
-    maxWidth: 620,
-    margin: "auto",
-    textAlign: "center",
-    position: "relative",
-    paddingTop: theme.spacing(15),
-    paddingBottom: theme.spacing(15),
-    [theme.breakpoints.up("md")]: {
-      margin: "unset",
-      textAlign: "left",
-    },
-  })
+const Content: FunctionComponent<PropsWithChildren<{}>> = (props) => (
+  <Stack spacing={5} {...props} />
 )
+
+const ContentStyle = styled(Content)(({ theme }) => ({
+  zIndex: 10,
+  maxWidth: 620,
+  margin: "auto",
+  textAlign: "center",
+  position: "relative",
+  paddingTop: theme.spacing(15),
+  paddingBottom: theme.spacing(15),
+  [theme.breakpoints.up("md")]: {
+    margin: "unset",
+    textAlign: "left",
+  },
+}))
 
 const HeroOverlayStyle = styled(m.img)({
   zIndex: 9,
