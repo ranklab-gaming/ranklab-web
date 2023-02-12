@@ -1,19 +1,15 @@
-import { ReactNode } from 'react';
-import { LazyMotion } from 'framer-motion';
-
-// ----------------------------------------------------------------------
-
-// eslint-disable-next-line import/extensions
-const loadFeatures = () => import('./features.js').then((res) => res.default);
+import { ReactNode } from "react"
+import { LazyMotion } from "framer-motion"
+import features from "./features"
 
 type Props = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default function MotionLazyContainer({ children }: Props) {
   return (
-    <LazyMotion strict features={loadFeatures}>
+    <LazyMotion strict features={features}>
       {children}
     </LazyMotion>
-  );
+  )
 }
