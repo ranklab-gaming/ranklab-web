@@ -80,7 +80,7 @@ export function NavItemRoot({
 
   return isExternalLink(path) ? (
     <ListItem
-      component={Link}
+      component={<Link />}
       href={path}
       target="_blank"
       rel="noopener"
@@ -150,7 +150,7 @@ export function NavItemSub({
 
   return isExternalLink(path) ? (
     <ListItem
-      component={Link}
+      component={<Link />}
       href={path}
       target="_blank"
       rel="noopener"

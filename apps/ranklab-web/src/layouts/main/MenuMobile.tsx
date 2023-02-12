@@ -1,9 +1,9 @@
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from "react"
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from "next/link"
+import { useRouter } from "next/router"
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from "@mui/material/styles"
 import {
   Box,
   List,
@@ -15,60 +15,62 @@ import {
   ListItemIcon,
   ListItemButton,
   ListItemButtonProps,
-} from '@mui/material';
+} from "@mui/material"
 // config
-import { NAVBAR } from '../../config';
+import { NAVBAR } from "../../config"
 // components
-import Logo from '../../components/Logo';
-import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import { IconButtonAnimate } from '../../components/animate';
-import { NavSectionVertical } from '../../components/nav-section';
+import Logo from "../../components/Logo"
+import Iconify from "../../components/Iconify"
+import Scrollbar from "../../components/Scrollbar"
+import { IconButtonAnimate } from "../../components/animate"
+import { NavSectionVertical } from "../../components/nav-section"
 //
-import { MenuProps, MenuItemProps } from './type';
+import { MenuProps, MenuItemProps } from "./type"
 
 // ----------------------------------------------------------------------
 
-type StyleProps = LinkProps & ListItemButtonProps;
+type StyleProps = LinkProps & ListItemButtonProps
 
 interface ListItemStyleProps extends StyleProps {
-  component?: ReactNode;
+  component?: ReactNode
 }
 
-const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(({ theme }) => ({
-  ...theme.typography.body2,
-  height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
-  textTransform: 'capitalize',
-  color: theme.palette.text.secondary,
-}));
+const ListItemStyle = styled(ListItemButton)<ListItemStyleProps>(
+  ({ theme }) => ({
+    ...theme.typography.body2,
+    height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
+    textTransform: "capitalize",
+    color: theme.palette.text.secondary,
+  })
+)
 
 // ----------------------------------------------------------------------
 
 export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
-  const { pathname } = useRouter();
+  const { pathname } = useRouter()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   useEffect(() => {
     if (drawerOpen) {
-      handleDrawerClose();
+      handleDrawerClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleOpen = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
+    setDrawerOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+    setDrawerOpen(false)
+  }
 
   return (
     <>
@@ -76,11 +78,11 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
         onClick={handleDrawerOpen}
         sx={{
           ml: 1,
-          ...(isHome && { color: 'common.white' }),
-          ...(isOffset && { color: 'text.primary' }),
+          ...(isHome && { color: "common.white" }),
+          ...(isOffset && { color: "text.primary" }),
         }}
       >
-        <Iconify icon={'eva:menu-2-fill'} />
+        <Iconify icon={"eva:menu-2-fill"} />
       </IconButtonAnimate>
 
       <Drawer
@@ -94,28 +96,33 @@ export default function MenuMobile({ isOffset, isHome, navConfig }: MenuProps) {
 
           <List disablePadding>
             {navConfig.map((link) => (
-              <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={handleOpen} />
+              <MenuMobileItem
+                key={link.title}
+                item={link}
+                isOpen={open}
+                onOpen={handleOpen}
+              />
             ))}
           </List>
         </Scrollbar>
       </Drawer>
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 type MenuMobileItemProps = {
-  item: MenuItemProps;
-  isOpen: boolean;
-  onOpen: VoidFunction;
-};
+  item: MenuItemProps
+  isOpen: boolean
+  onOpen: VoidFunction
+}
 
 function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
-  const { pathname } = useRouter();
-  const { title, path, icon, children } = item;
+  const { pathname } = useRouter()
+  const { title, path, icon, children } = item
 
-  const isActive = pathname === path;
+  const isActive = pathname === path
 
   if (children) {
     return (
@@ -124,40 +131,50 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
           <ListItemIcon>{icon}</ListItemIcon>
           <ListItemText disableTypography primary={title} />
           <Iconify
-            icon={isOpen ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
+            icon={
+              isOpen
+                ? "eva:arrow-ios-downward-fill"
+                : "eva:arrow-ios-forward-fill"
+            }
             sx={{ width: 16, height: 16, ml: 1 }}
           />
         </ListItemStyle>
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
+          <Box sx={{ display: "flex", flexDirection: "column-reverse" }}>
             <NavSectionVertical
               navConfig={children}
               sx={{
-                '& .MuiList-root:last-of-type .MuiListItemButton-root': {
+                "& .MuiList-root:last-of-type .MuiListItemButton-root": {
                   height: 200,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  bgcolor: 'background.neutral',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundImage: 'url(/assets/illustrations/illustration_dashboard.png)',
-                  '& > *:not(.MuiTouchRipple-root)': { display: 'none' },
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  bgcolor: "background.neutral",
+                  backgroundRepeat: "no-repeat",
+                  backgroundImage:
+                    "url(/assets/illustrations/illustration_dashboard.png)",
+                  "& > *:not(.MuiTouchRipple-root)": { display: "none" },
                 },
               }}
             />
           </Box>
         </Collapse>
       </>
-    );
+    )
   }
 
-  if (title === 'Documentation') {
+  if (title === "Documentation") {
     return (
-      <ListItemStyle href={path} target="_blank" rel="noopener" component={Link}>
+      <ListItemStyle
+        href={path}
+        target="_blank"
+        rel="noopener"
+        component={<Link />}
+      >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText disableTypography primary={title} />
       </ListItemStyle>
-    );
+    )
   }
 
   return (
@@ -165,10 +182,13 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
       <ListItemStyle
         sx={{
           ...(isActive && {
-            color: 'primary.main',
-            fontWeight: 'fontWeightMedium',
+            color: "primary.main",
+            fontWeight: "fontWeightMedium",
             bgcolor: (theme) =>
-              alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.selectedOpacity
+              ),
           }),
         }}
       >
@@ -176,5 +196,5 @@ function MenuMobileItem({ item, isOpen, onOpen }: MenuMobileItemProps) {
         <ListItemText disableTypography primary={title} />
       </ListItemStyle>
     </NextLink>
-  );
+  )
 }

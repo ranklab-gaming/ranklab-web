@@ -1,16 +1,21 @@
 // @mui
 import { styled } from "@mui/material/styles"
-import { List, Box, ListSubheader } from "@mui/material"
+import { List, Box, ListSubheader as MuiListSubheader } from "@mui/material"
 // type
 import { NavSectionProps } from "../type"
 //
 import { NavListRoot } from "./NavList"
+import { ComponentProps, FunctionComponent } from "react"
 
 // ----------------------------------------------------------------------
 
-export const ListSubheaderStyle = styled((props) => (
-  <ListSubheader disableSticky disableGutters {...props} />
-))(({ theme }) => ({
+type ListSubheaderProps = ComponentProps<typeof MuiListSubheader>
+
+const ListSubheader: FunctionComponent<ListSubheaderProps> = (props) => (
+  <MuiListSubheader disableSticky disableGutters {...props} />
+)
+
+export const ListSubheaderStyle = styled(ListSubheader)(({ theme }) => ({
   ...theme.typography.overline,
   paddingTop: theme.spacing(3),
   paddingLeft: theme.spacing(2),
