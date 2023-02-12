@@ -75,7 +75,12 @@ export default function MainFooter() {
                     {list.headline}
                   </Typography>
                   {list.children.map((link) => (
-                    <NextLink key={link.name} href={link.href} passHref>
+                    <NextLink
+                      key={link.name}
+                      href={link.href}
+                      passHref
+                      legacyBehavior
+                    >
                       <Link
                         color="inherit"
                         variant="body2"

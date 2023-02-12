@@ -77,9 +77,7 @@ export default function MainHeader() {
             color="secondary"
             options={["Sign in", "Sign in as coach"]}
             handleClick={() => signIn("player")}
-            handleMenuItemClick={() =>
-              signIn("coach")
-            }
+            handleMenuItemClick={() => signIn("coach")}
           />
         </Container>
       </ToolbarStyle>

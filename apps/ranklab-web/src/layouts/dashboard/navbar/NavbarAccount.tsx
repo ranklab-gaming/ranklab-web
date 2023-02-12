@@ -23,7 +23,11 @@ export default function NavbarAccount({ isCollapse }: Props) {
   const session = useSession()
 
   return (
-    <NextLink href={`/${session.user.type.toLowerCase()}/account`} passHref>
+    <NextLink
+      href={`/${session.user.type.toLowerCase()}/account`}
+      passHref
+      legacyBehavior
+    >
       <Link underline="none" color="inherit">
         <RootStyle
           sx={{

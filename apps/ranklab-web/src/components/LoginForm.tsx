@@ -184,6 +184,7 @@ const LoginForm: FunctionComponent<Props> = function ({
             <NextLink
               href={`/auth/reset-password?user_type=${userType}`}
               passHref
+              legacyBehavior
             >
               <Link variant="subtitle2">Forgot password?</Link>
             </NextLink>

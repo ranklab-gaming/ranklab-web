@@ -70,7 +70,11 @@ const ReviewCheckout: FunctionComponent<Props> = ({
                   <Typography variant="body2" color="grey">
                     If you're not happy with the review you can submit a refund
                     request which will need to be approved by us. See our{" "}
-                    <NextLink passHref href="/terms-and-conditions">
+                    <NextLink
+                      passHref
+                      href="/terms-and-conditions"
+                      legacyBehavior
+                    >
                       <Link>terms and conditions</Link>
                     </NextLink>
                   </Typography>

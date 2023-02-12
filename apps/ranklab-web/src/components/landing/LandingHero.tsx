@@ -118,7 +118,7 @@ export default function LandingHero() {
                 </Button>
 
                 {false && (
-                  <NextLink href="/coach-landing" passHref>
+                  <NextLink href="/coach-landing" passHref legacyBehavior>
                     <Button variant="outlined" color="inherit" size="large">
                       Are you a coach?
                     </Button>

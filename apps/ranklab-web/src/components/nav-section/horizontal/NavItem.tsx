@@ -58,7 +58,7 @@ export const NavItemRoot = forwardRef<
       <NavItemContent icon={icon} title={title} children={children} />
     </ListItem>
   ) : (
-    <NextLink href={path} passHref>
+    <NextLink href={path} passHref legacyBehavior>
       <ListItem activeRoot={active} disabled={disabled} roles={roles}>
         <NavItemContent icon={icon} title={title} children={children} />
       </ListItem>
@@ -106,7 +106,7 @@ export const NavItemSub = forwardRef<
       <NavItemContent icon={icon} title={title} children={children} subItem />
     </ListItem>
   ) : (
-    <NextLink href={path} passHref>
+    <NextLink href={path} passHref legacyBehavior>
       <ListItem
         disableRipple
         activeSub={active}

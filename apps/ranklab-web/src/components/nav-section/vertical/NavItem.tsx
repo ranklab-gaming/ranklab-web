@@ -90,7 +90,7 @@ export function NavItemRoot({
       {renderContent}
     </ListItem>
   ) : (
-    <NextLink href={path} passHref>
+    <NextLink href={path} passHref legacyBehavior>
       <ListItem activeRoot={active} disabled={disabled} roles={roles}>
         {renderContent}
       </ListItem>
@@ -161,7 +161,7 @@ export function NavItemSub({
       {renderContent}
     </ListItem>
   ) : (
-    <NextLink href={path} passHref>
+    <NextLink href={path} passHref legacyBehavior>
       <ListItem activeSub={active} subItem disabled={disabled} roles={roles}>
         {renderContent}
       </ListItem>

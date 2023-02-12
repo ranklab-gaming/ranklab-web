@@ -80,7 +80,12 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {menuOptions.map((option) => (
-            <NextLink key={option.label} href={option.linkTo} passHref>
+            <NextLink
+              key={option.label}
+              href={option.linkTo}
+              passHref
+              legacyBehavior
+            >
               <MenuItem key={option.label} onClick={handleClose}>
                 {option.label}
               </MenuItem>
