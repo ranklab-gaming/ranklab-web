@@ -1,4 +1,4 @@
-import "simplebar/src/simplebar.css"
+import "simplebar/dist/simplebar.css"
 import "react-quill/dist/quill.snow.css"
 
 import Head from "next/head"
