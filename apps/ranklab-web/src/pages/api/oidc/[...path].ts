@@ -1,4 +1,4 @@
-import { Configuration, Provider } from "oidc-provider"
+import Provider, { Configuration } from "oidc-provider"
 import koa from "koa"
 import mount from "koa-mount"
 import RedisAdapter from "@ranklab/web/utils/oidcRedisAdapter"
