@@ -1,6 +1,6 @@
 {
   "name": "Ranklab Web",
-  "postCreateCommand": "bash -ic ./bin/setup",
+  "postCreateCommand": "./bin/setup",
   "dockerComposeFile": "docker-compose.yml",
   "service": "ranklab-web",
   "shutdownAction": "stopCompose",
