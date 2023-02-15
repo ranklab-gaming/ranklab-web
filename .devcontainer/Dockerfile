@@ -1,4 +1,4 @@
-FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.3
+FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.4
 
 RUN sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
 
