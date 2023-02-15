@@ -65,6 +65,7 @@ export const CoachesDirectory: FunctionComponent<Props> = function ({
           count={count}
           page={page - 1}
           onPageChange={(_e, p) => onPageChange(p)}
+          component="div"
         />
       </Grid>
     </Grid>
