@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect } from "react"
-import Page from "@ranklab/web/src/components/Page"
+import Page from "@/components/Page"
 import { Box, Button, Container, Typography } from "@mui/material"
 import { GetServerSideProps } from "next"
 import { styled } from "@mui/material/styles"
 import MinimalLayout from "src/layouts/minimal"
-import { MotionContainer, varBounce } from "@ranklab/web/src/components/animate"
+import { MotionContainer, varBounce } from "@/components/animate"
 import { m } from "framer-motion"
 
 const RootStyle = styled(Page)(({ theme }) => ({

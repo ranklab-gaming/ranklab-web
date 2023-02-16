@@ -2,7 +2,7 @@ import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
 import MyAvatar from "../../../components/MyAvatar"
-import useSession from "@ranklab/web/hooks/useSession"
+import useSession from "@/hooks/useSession"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",

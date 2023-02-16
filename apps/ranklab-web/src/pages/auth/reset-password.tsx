@@ -13,11 +13,11 @@ import { useSnackbar } from "notistack"
 import { FunctionComponent } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
 import * as Yup from "yup"
-import MinimalLayout from "@ranklab/web/layouts/minimal"
+import MinimalLayout from "@/layouts/minimal"
 import api from "../../api/client"
-import { useRequiredParam } from "@ranklab/web/hooks/useParam"
+import { useRequiredParam } from "@/hooks/useParam"
 import { GetServerSideProps } from "next"
-import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
+import failsafeSubmit from "@/utils/failsafeSubmit"
 
 type FormValuesProps = {
   email: string

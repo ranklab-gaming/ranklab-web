@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from "react"
-import Page from "@ranklab/web/src/components/Page"
+import Page from "@/components/Page"
 import { Container, Typography } from "@mui/material"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
-import api from "@ranklab/web/src/api/server"
+import DashboardLayout from "@/layouts/dashboard"
+import api from "@/api/server"
 import { Coach } from "@ranklab/api"
 import withPageAuthRequired, {
   PropsWithSession,
 } from "../../helpers/withPageAuthRequired"
 import { Pagination } from "../../@types"
-import { CoachesDirectory } from "@ranklab/web/components/CoachesDirectory"
+import { CoachesDirectory } from "@/components/CoachesDirectory"
 
 interface Props {
   coaches: Coach[]

@@ -1,5 +1,5 @@
 import { ResponseError } from "@ranklab/api"
-import setServerErrors from "@ranklab/web/utils/setServerErrors"
+import setServerErrors from "@/utils/setServerErrors"
 import { FieldValues, UseFormSetError } from "react-hook-form"
 
 interface FailsafeSubmitOptions<T extends FieldValues, U> {

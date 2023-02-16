@@ -4,7 +4,7 @@ import { Box, Grid, Container, Typography, Button } from "@mui/material"
 //
 import { MotionContainer, varFade } from "../animate"
 import { m } from "framer-motion"
-import signIn from "@ranklab/web/utils/signIn"
+import signIn from "@/utils/signIn"
 
 // ----------------------------------------------------------------------
 

@@ -4,18 +4,18 @@ import { useRouter } from "next/router"
 import { UploadSingleFile } from "src/components/upload"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { Coach, Recording } from "@ranklab/api"
-import api from "@ranklab/web/src/api/server"
-import clientApi from "@ranklab/web/src/api/client"
+import api from "@/api/server"
+import clientApi from "@/api/client"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
+} from "@/helpers/withPageAuthRequired"
 
 import DashboardLayout from "src/layouts/dashboard"
 // @mui
 import { Container } from "@mui/material"
-import Page from "@ranklab/web/components/Page"
-import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
-import { useRequiredParam } from "@ranklab/web/hooks/useParam"
+import Page from "@/components/Page"
+import NewReviewHeader from "@/components/NewReviewHeader"
+import { useRequiredParam } from "@/hooks/useParam"
 
 // ----------------------------------------------------------------------
 

@@ -27,7 +27,7 @@
     "incremental": true,
     "isolatedModules": true,
     "paths": {
-      "@ranklab/web/*": ["./src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", ".next"],

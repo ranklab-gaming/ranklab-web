@@ -5,7 +5,7 @@ import { Box, Stack, Container, Typography, Button } from "@mui/material"
 //
 import { varFade, MotionContainer } from "../animate"
 import NextLink from "next/link"
-import signIn from "@ranklab/web/utils/signIn"
+import signIn from "@/utils/signIn"
 import { FunctionComponent, PropsWithChildren } from "react"
 
 // ----------------------------------------------------------------------

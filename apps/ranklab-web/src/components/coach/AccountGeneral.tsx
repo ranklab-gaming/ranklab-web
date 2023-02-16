@@ -1,16 +1,16 @@
 // @mui
 import { Box, Card, Stack, TextField } from "@mui/material"
-import { useCoach } from "@ranklab/web/hooks/useUser"
+import { useCoach } from "@/hooks/useUser"
 import { useSnackbar } from "notistack"
 import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import api from "@ranklab/web/api/client"
+import api from "@/api/client"
 import GamesSelect from "./GamesSelect"
 import { Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
-import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
+import failsafeSubmit from "@/utils/failsafeSubmit"
 
 // ----------------------------------------------------------------------
 

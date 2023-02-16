@@ -2,9 +2,9 @@ import { m } from "framer-motion"
 import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Button, Typography, Container } from "@mui/material"
-import MinimalLayout from "@ranklab/web/src/layouts/minimal"
-import { MotionContainer, varBounce } from "@ranklab/web/src/components/animate"
-import Page from "@ranklab/web/src/components/Page"
+import MinimalLayout from "@/layouts/minimal"
+import { MotionContainer, varBounce } from "@/components/animate"
+import Page from "@/components/Page"
 
 const RootStyle = styled(Page)(({ theme }) => ({
   display: "flex",

@@ -2,10 +2,10 @@ import { useRef, useState } from "react"
 import NextLink from "next/link"
 import { alpha } from "@mui/material/styles"
 import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
-import MyAvatar from "@ranklab/web/src/components/MyAvatar"
-import MenuPopover from "@ranklab/web/src/components/MenuPopover"
-import { IconButtonAnimate } from "@ranklab/web/src/components/animate"
-import useSession from "@ranklab/web/hooks/useSession"
+import MyAvatar from "@/components/MyAvatar"
+import MenuPopover from "@/components/MenuPopover"
+import { IconButtonAnimate } from "@/components/animate"
+import useSession from "@/hooks/useSession"
 
 export default function AccountPopover() {
   const session = useSession()

@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from "react"
 import { Card, Container, CardContent, Typography } from "@mui/material"
-import Page from "@ranklab/web/src/components/Page"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
-import api from "@ranklab/web/src/api/server"
+import Page from "@/components/Page"
+import DashboardLayout from "@/layouts/dashboard"
+import api from "@/api/server"
 import { Review, Comment, Recording } from "@ranklab/api"
-import AnalyzeReviewForm from "@ranklab/web/src/components/AnalyzeReviewForm"
+import AnalyzeReviewForm from "@/components/AnalyzeReviewForm"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
+} from "@/helpers/withPageAuthRequired"
 
 interface Props {
   review: Review

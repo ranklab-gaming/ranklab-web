@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from "react"
 import { Container, Typography } from "@mui/material"
-import Page from "@ranklab/web/src/components/Page"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
+import Page from "@/components/Page"
+import DashboardLayout from "@/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api/server"
+import api from "@/api/server"
 import { Review } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
-import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
-import { CheckoutOrderComplete } from "@ranklab/web/components/checkout"
+} from "@/helpers/withPageAuthRequired"
+import NewReviewHeader from "@/components/NewReviewHeader"
+import { CheckoutOrderComplete } from "@/components/checkout"
 
 interface Props {
   review: Review

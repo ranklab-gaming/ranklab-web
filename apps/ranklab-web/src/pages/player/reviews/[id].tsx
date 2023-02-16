@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react"
 import { Card, Container, CardContent, Typography } from "@mui/material"
-import Page from "@ranklab/web/src/components/Page"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
+import Page from "@/components/Page"
+import DashboardLayout from "@/layouts/dashboard"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api/server"
+import api from "@/api/server"
 import {
   Review,
   Comment,
@@ -15,9 +15,9 @@ import { useRequiredParam } from "src/hooks/useParam"
 import ReviewShow from "src/components/ReviewShow"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
-import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
-import ReviewCheckout from "@ranklab/web/components/ReviewCheckout"
+} from "@/helpers/withPageAuthRequired"
+import NewReviewHeader from "@/components/NewReviewHeader"
+import ReviewCheckout from "@/components/ReviewCheckout"
 
 interface Props {
   review: Review

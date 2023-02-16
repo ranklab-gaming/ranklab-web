@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles"
-import MinimalLayout from "@ranklab/web/src/layouts/minimal"
-import Page from "@ranklab/web/src/components/Page"
+import MinimalLayout from "@/layouts/minimal"
+import Page from "@/components/Page"
 import { useEffect } from "react"
 import { GlobalStyles } from "@mui/material"
 

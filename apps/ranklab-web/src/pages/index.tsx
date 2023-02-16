@@ -1,12 +1,12 @@
-import MainLayout from "@ranklab/web/src/layouts/main"
+import MainLayout from "@/layouts/main"
 import { styled } from "@mui/material/styles"
-import Page from "@ranklab/web/src/components/Page"
+import Page from "@/components/Page"
 import {
   LandingHero,
   LandingFlow,
   LandingReview,
   LandingDashboard,
-} from "@ranklab/web/src/components/landing"
+} from "@/components/landing"
 import { GetServerSideProps } from "next"
 import { getToken } from "next-auth/jwt"
 import { useParam } from "../hooks/useParam"

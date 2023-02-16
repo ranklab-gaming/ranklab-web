@@ -13,7 +13,7 @@ import React, { FunctionComponent, useState, MouseEvent } from "react"
 import Label from "./Label"
 import NextLink from "next/link"
 import { Pagination } from "../@types"
-import api from "@ranklab/web/api/client"
+import api from "@/api/client"
 import useSession from "../hooks/useSession"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({

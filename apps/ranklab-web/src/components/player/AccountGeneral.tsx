@@ -5,12 +5,12 @@ import { useForm, FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import api from "@ranklab/web/api/client"
+import api from "@/api/client"
 import GamesSelect from "./GamesSelect"
 import { PlayerGame, Game } from "@ranklab/api"
 import { FunctionComponent } from "react"
-import failsafeSubmit from "@ranklab/web/utils/failsafeSubmit"
-import { usePlayer } from "@ranklab/web/hooks/useUser"
+import failsafeSubmit from "@/utils/failsafeSubmit"
+import { usePlayer } from "@/hooks/useUser"
 
 // ----------------------------------------------------------------------
 

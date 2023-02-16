@@ -1,6 +1,6 @@
 import { useSnackbar } from "notistack"
 import { Stack, Card, Typography, Button } from "@mui/material"
-// import useUser from "@ranklab/web/hooks/useUser"
+// import useUser from "@/hooks/useUser"
 // import axios, { AxiosRequestConfig } from "axios"
 
 // ----------------------------------------------------------------------

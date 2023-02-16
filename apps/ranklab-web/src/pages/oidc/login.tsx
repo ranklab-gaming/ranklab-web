@@ -2,10 +2,10 @@
 import { Container } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { GetServerSideProps, NextPage } from "next"
-import MinimalLayout from "@ranklab/web/layouts/minimal"
+import MinimalLayout from "@/layouts/minimal"
 import { useState } from "react"
-import SignUpForm from "@ranklab/web/components/SignUpForm"
-import LoginForm from "@ranklab/web/components/LoginForm"
+import SignUpForm from "@/components/SignUpForm"
+import LoginForm from "@/components/LoginForm"
 
 // ----------------------------------------------------------------------
 

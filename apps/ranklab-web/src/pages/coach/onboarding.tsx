@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from "react"
-import Page from "@ranklab/web/src/components/Page"
+import Page from "@/components/Page"
 import { Container, Typography } from "@mui/material"
-import api from "@ranklab/web/src/api/server"
+import api from "@/api/server"
 import CoachOnboardingForm from "src/components/coach/OnboardingForm"
 import { Game } from "@ranklab/api"
 import withPageAuthRequired, {
   PropsWithSession,
 } from "../../helpers/withPageAuthRequired"
 import MinimalLayout from "../../layouts/minimal"
-import { useRequiredParam } from "@ranklab/web/hooks/useParam"
+import { useRequiredParam } from "@/hooks/useParam"
 
 interface Props {
   games: Game[]

@@ -11,7 +11,7 @@ import {
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import { intervalToDuration } from "date-fns"
 import VideoPlayer, { VideoPlayerRef } from "./VideoPlayer"
-import api from "@ranklab/web/src/api/client"
+import api from "@/api/client"
 import { LoadingButton } from "@mui/lab"
 
 interface Props {

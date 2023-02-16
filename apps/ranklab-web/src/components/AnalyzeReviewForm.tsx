@@ -19,7 +19,7 @@ import {
 import CreateIcon from "@mui/icons-material/Create"
 
 import { LoadingButton } from "@mui/lab"
-import Editor from "@ranklab/web/src/components/editor"
+import Editor from "@/components/editor"
 import { intervalToDuration } from "date-fns"
 import { Review, Comment, Recording, ReviewState } from "@ranklab/api"
 import api from "src/api/client"

@@ -1,7 +1,7 @@
 // @mui
 import { Card, Button, Typography, Stack, Alert } from "@mui/material"
-import api from "@ranklab/web/api/client"
-import useUser from "@ranklab/web/hooks/useUser"
+import api from "@/api/client"
+import useUser from "@/hooks/useUser"
 import { useRouter } from "next/router"
 // ----------------------------------------------------------------------
 

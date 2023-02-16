@@ -2,22 +2,19 @@ import { capitalCase } from "change-case"
 // @mui
 import { Container, Tab, Box, Tabs } from "@mui/material"
 // hooks
-import useTabs from "@ranklab/web/hooks/useTabs"
+import useTabs from "@/hooks/useTabs"
 // components
-import Page from "@ranklab/web/components/Page"
-import Iconify from "@ranklab/web/components/Iconify"
-import {
-  AccountBilling,
-  AccountChangePassword,
-} from "@ranklab/web/components/account"
+import Page from "@/components/Page"
+import Iconify from "@/components/Iconify"
+import { AccountBilling, AccountChangePassword } from "@/components/account"
 import DashboardLayout from "../../layouts/dashboard"
-import api from "@ranklab/web/api/server"
+import api from "@/api/server"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
-import AccountGeneral from "@ranklab/web/components/coach/AccountGeneral"
+import AccountGeneral from "@/components/coach/AccountGeneral"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
+} from "@/helpers/withPageAuthRequired"
 
 // ----------------------------------------------------------------------
 

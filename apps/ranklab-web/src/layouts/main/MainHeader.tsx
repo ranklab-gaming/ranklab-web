@@ -11,8 +11,8 @@ import Logo from "../../components/Logo"
 import Label from "../../components/Label"
 //
 import NextLink from "next/link"
-import SplitButton from "@ranklab/web/components/SplitButton"
-import signIn from "@ranklab/web/utils/signIn"
+import SplitButton from "@/components/SplitButton"
+import signIn from "@/utils/signIn"
 
 // ----------------------------------------------------------------------
 

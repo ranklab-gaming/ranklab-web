@@ -12,7 +12,7 @@ import {
   InputAdornment,
 } from "@mui/material"
 import { Recording } from "@ranklab/api"
-import { fCurrency } from "@ranklab/web/utils/formatNumber"
+import { fCurrency } from "@/utils/formatNumber"
 import Iconify from "../Iconify"
 import VideoPlayer from "../VideoPlayer"
 

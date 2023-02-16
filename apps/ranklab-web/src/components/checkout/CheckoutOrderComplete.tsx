@@ -1,6 +1,6 @@
 // @mui
 import { Box, Link, Typography } from "@mui/material"
-import { OrderCompleteIllustration } from "@ranklab/web/assets"
+import { OrderCompleteIllustration } from "@/assets"
 
 // ----------------------------------------------------------------------
 

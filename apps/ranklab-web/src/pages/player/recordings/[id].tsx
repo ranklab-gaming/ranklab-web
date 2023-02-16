@@ -1,17 +1,17 @@
 import React, { FunctionComponent } from "react"
 // material
 import { Card, Container, CardContent, Typography } from "@mui/material"
-import Page from "@ranklab/web/src/components/Page"
-import DashboardLayout from "@ranklab/web/src/layouts/dashboard"
-import ReviewForm from "@ranklab/web/src/components/ReviewForm"
+import Page from "@/components/Page"
+import DashboardLayout from "@/layouts/dashboard"
+import ReviewForm from "@/components/ReviewForm"
 import { GetServerSideProps } from "next"
-import api from "@ranklab/web/src/api/server"
+import api from "@/api/server"
 import { Coach, Game, Recording } from "@ranklab/api"
 import { useRequiredParam } from "src/hooks/useParam"
 import withPageAuthRequired, {
   PropsWithSession,
-} from "@ranklab/web/helpers/withPageAuthRequired"
-import NewReviewHeader from "@ranklab/web/components/NewReviewHeader"
+} from "@/helpers/withPageAuthRequired"
+import NewReviewHeader from "@/components/NewReviewHeader"
 
 interface Props {
   games: Game[]

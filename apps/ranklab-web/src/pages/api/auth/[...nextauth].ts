@@ -1,5 +1,5 @@
 import { Coach, Player } from "@ranklab/api"
-import { apiWithAccessToken } from "@ranklab/web/api/server"
+import { apiWithAccessToken } from "@/api/server"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import { OAuthConfig, OAuthUserConfig } from "next-auth/providers"
 

@@ -13,9 +13,9 @@ import {
 
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Controller, useForm } from "react-hook-form"
-import Editor from "@ranklab/web/src/components/editor"
+import Editor from "@/components/editor"
 import { LoadingButton } from "@mui/lab"
-import api from "@ranklab/web/src/api/client"
+import api from "@/api/client"
 import React, { FunctionComponent } from "react"
 import { Coach, Game, Recording } from "@ranklab/api"
 import VideoPlayer from "./VideoPlayer"
