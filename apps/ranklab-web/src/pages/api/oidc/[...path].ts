@@ -2,8 +2,22 @@ import Provider, { Configuration } from "oidc-provider"
 import koa from "koa"
 import mount from "koa-mount"
 import RedisAdapter from "@/utils/oidcRedisAdapter"
+import * as Sentry from "@sentry/nextjs"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
+const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
+
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    // Adjust this value in production, or use tracesSampler for greater control
+    tracesSampleRate: 1.0,
+    // ...
+    // Note: if you want to override the automatic release value, do not set a
+    // `release` value here - use the environment variable `SENTRY_RELEASE`, so
+    // that it will also get attached to your source maps
+  })
+}
 
 const config: Configuration = {
   clients: [
@@ -58,7 +72,9 @@ const config: Configuration = {
   },
   jwks,
   adapter: RedisAdapter,
-  renderError: async (ctx) => {
+  renderError: async (ctx, _, err) => {
+    Sentry.captureException(err)
+    await Sentry.flush(2000)
     ctx.redirect("/?error=Login")
   },
 }
