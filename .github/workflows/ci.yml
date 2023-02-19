@@ -102,7 +102,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      app-name: ranklab-web-production
+      app-name: ${{ secrets.ECR_REPOSITORY_NAME }}
+      container-name: ${{ secrets.ECS_CONTAINER_NAME }}
+      cluster-name: ${{ secrets.ECS_CLUSTER_NAME }}
+      service-name: ${{ secrets.ECS_SERVICE_NAME }}
     if: github.ref == 'refs/heads/master'
     needs: chrome-tests
     steps:
@@ -145,5 +148,20 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
+            ${{ steps.ecr-login.outputs.registry }}/${{ env.app-name }}:${{ github.sha }}
             ${{ steps.ecr-login.outputs.registry }}/${{ env.app-name }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:latest
+      - name: Render Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.container-name }}
+          image: ${{ steps.ecr-login.outputs.registry }}/${{ env.app-name }}:${{ github.sha }}
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+          service: ${{ env.service-name }}
+          cluster: ${{ env.cluster-name }}
+          wait-for-service-stability: true
