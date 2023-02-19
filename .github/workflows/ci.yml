@@ -157,6 +157,7 @@ jobs:
           aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_DEFINITION_FAMILY }} --query taskDefinition > task-definition.json
       - name: Render Amazon ECS task definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
+        id: render-task-definition
         with:
           task-definition: task-definition.json
           container-name: ${{ env.container-name }}
