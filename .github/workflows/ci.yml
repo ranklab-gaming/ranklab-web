@@ -152,6 +152,9 @@ jobs:
             ${{ steps.ecr-login.outputs.registry }}/${{ env.app-name }}:latest
             ghcr.io/${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:latest
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ secrets.ECS_TASK_DEFINITION_FAMILY }} --query taskDefinition > task-definition.json
       - name: Render Amazon ECS task definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
