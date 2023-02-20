@@ -14,7 +14,7 @@
     "test:open": "NODE_ENV=test start-server-and-test test:start \"http://ranklab-test:3000|http://ranklab-api:8000\" cypress:open"
   },
   "dependencies": {
-    "@babel/core": "7.20.12",
+    "@babel/core": "7.21.0",
     "@emotion/cache": "11.10.5",
     "@emotion/react": "11.10.6",
     "@emotion/server": "11.10.0",
