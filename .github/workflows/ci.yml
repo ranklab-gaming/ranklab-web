@@ -140,6 +140,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           build-args: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.NEXT_PUBLIC_PLOADS_CDN_URL }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
