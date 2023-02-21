@@ -3,22 +3,8 @@ import koa from "koa"
 import mount from "koa-mount"
 import RedisAdapter from "@/utils/oidcRedisAdapter"
 import * as Sentry from "@sentry/nextjs"
-import pino from "koa-pino-logger"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
-
-if (SENTRY_DSN) {
-  Sentry.init({
-    dsn: SENTRY_DSN,
-    // Adjust this value in production, or use tracesSampler for greater control
-    tracesSampleRate: 1.0,
-    // ...
-    // Note: if you want to override the automatic release value, do not set a
-    // `release` value here - use the environment variable `SENTRY_RELEASE`, so
-    // that it will also get attached to your source maps
-  })
-}
 
 const config: Configuration = {
   clients: [
@@ -84,7 +70,6 @@ export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
 
 const app = new koa()
 
-app.use(pino())
 app.use(mount("/api/oidc", oidcProvider.app))
 
 export default app.callback()

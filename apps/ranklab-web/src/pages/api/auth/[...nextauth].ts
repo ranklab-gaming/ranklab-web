@@ -2,6 +2,7 @@ import { Coach, Player } from "@ranklab/api"
 import { apiWithAccessToken } from "@/api/server"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import { OAuthConfig, OAuthUserConfig } from "next-auth/providers"
+import * as Sentry from "@sentry/nextjs"
 
 declare module "next-auth" {
   export interface Session {
@@ -63,6 +64,13 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.COOKIE_SECRET!,
+  logger: {
+    error: async (message) => {
+      Sentry.captureException(new Error(message))
+      await Sentry.flush(2000)
+      console.error(message)
+    },
+  },
   pages: {
     error: "/api/auth/logout",
     signIn: "/api/auth/logout?error=Login",
