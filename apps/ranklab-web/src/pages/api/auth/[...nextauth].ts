@@ -63,7 +63,6 @@ export const authOptions: NextAuthOptions = {
       return token
     },
   },
-  secret: process.env.COOKIE_SECRET!,
   logger: {
     error: async (message) => {
       Sentry.captureException(new Error(message))
