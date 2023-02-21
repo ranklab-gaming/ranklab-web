@@ -12,7 +12,6 @@ import { getToken } from "next-auth/jwt"
 import { useParam } from "../hooks/useParam"
 import { useSnackbar } from "notistack"
 import { useEffect } from "react"
-import * as Sentry from "@sentry/nextjs"
 
 const RootStyle = styled(Page)({
   height: "100%",
@@ -34,9 +33,6 @@ enum ErrorType {
 
 export const getServerSideProps: GetServerSideProps = async function (ctx) {
   const token = await getToken({ req: ctx.req })
-
-  Sentry.captureException(new Error("test"))
-  await Sentry.flush(2000)
 
   if (token) {
     const userType = token.sub!.split(":")[0]
