@@ -16,3 +16,9 @@ cypress/screenshots
 cypress.env.json
 # Sentry
 .sentryclirc
+
+# Sentry
+.sentryclirc
+
+# Sentry
+next.config.original.js
