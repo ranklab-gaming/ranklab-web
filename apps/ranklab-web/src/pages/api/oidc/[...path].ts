@@ -3,6 +3,7 @@ import koa from "koa"
 import mount from "koa-mount"
 import RedisAdapter from "@/utils/oidcRedisAdapter"
 import * as Sentry from "@sentry/nextjs"
+import pino from "koa-pino-logger"
 
 const jwks = JSON.parse(atob(process.env.AUTH_JWKS!))
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
@@ -83,6 +84,7 @@ export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
 
 const app = new koa()
 
+app.use(pino)
 app.use(mount("/api/oidc", oidcProvider.app))
 
 export default app.callback()
