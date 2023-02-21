@@ -84,7 +84,7 @@ export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
 
 const app = new koa()
 
-app.use(pino)
+app.use(pino())
 app.use(mount("/api/oidc", oidcProvider.app))
 
 export default app.callback()
