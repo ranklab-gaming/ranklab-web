@@ -1,39 +1,25 @@
 {
   "pipeline": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "@ranklab/web#build": {
-      "dependsOn": [
-        "^build",
-        "@ranklab/api#build"
-      ],
-      "outputs": [
-        ".next/**"
-      ]
+      "dependsOn": ["^build", "@ranklab/api#build"],
+      "outputs": [".next/**"]
     },
     "test": {
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "cache": false
     },
     "dev": {
-      "dependsOn": [
-        "@ranklab/api#build"
-      ],
+      "dependsOn": ["@ranklab/api#build"],
       "cache": false
     }
   },
-  "globalDependencies": [
-    "tsconfig.json"
-  ],
+  "globalDependencies": ["tsconfig.json"],
   "globalEnv": [
+    "SENTRY_AUTH_TOKEN",
     "NEXT_PUBLIC_ASSETS_CDN_URL",
     "NEXT_PUBLIC_UPLOADS_CDN_URL",
     "NEXT_PUBLIC_SENTRY_DSN",
