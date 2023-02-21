@@ -9,21 +9,19 @@ const { withSentryConfig } = require('@sentry/nextjs');
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-const moduleExports = {
-  swcMinify: false,
-  output: "standalone",
-  async rewrites() {
-    return [
-      {
-        source: "/api/oidc/login",
-        destination: "/oidc/login",
-      },
-    ]
-  },
-}
 
 module.exports = withSentryConfig(
-  moduleExports,
+  {
+    output: "standalone",
+    async rewrites() {
+      return [
+        {
+          source: "/api/oidc/login",
+          destination: "/oidc/login",
+        },
+      ]
+    },
+  },
   { silent: true },
   { hideSourcemaps: true },
 );
