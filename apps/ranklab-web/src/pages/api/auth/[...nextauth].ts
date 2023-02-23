@@ -64,10 +64,11 @@ export const authOptions: NextAuthOptions = {
     },
   },
   logger: {
-    error: async (message) => {
-      Sentry.captureException(new Error(message))
+    error: async (_code, metadata) => {
+      const error = metadata instanceof Error ? metadata : metadata.error
+      Sentry.captureException(error)
       await Sentry.flush(2000)
-      console.error(message)
+      console.error(error)
     },
   },
   pages: {
