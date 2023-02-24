@@ -70,6 +70,10 @@ export const oidcProvider = new Provider(process.env.WEB_HOST!, config)
 
 const app = new koa()
 
+if (process.env.NODE_ENV === "production") {
+  app.proxy = true
+}
+
 app.use(mount("/api/oidc", oidcProvider.app))
 
 export default app.callback()
