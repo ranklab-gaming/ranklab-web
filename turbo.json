@@ -19,7 +19,6 @@
   },
   "globalDependencies": ["tsconfig.json"],
   "globalEnv": [
-    "SENTRY_AUTH_TOKEN",
     "NEXT_PUBLIC_ASSETS_CDN_URL",
     "NEXT_PUBLIC_UPLOADS_CDN_URL",
     "NEXT_PUBLIC_SENTRY_DSN",
