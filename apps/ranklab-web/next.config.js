@@ -12,7 +12,6 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 module.exports = withSentryConfig(
   {
-    swcMinify: false,
     output: "standalone",
     async rewrites() {
       return [
