@@ -6,7 +6,7 @@ import useTabs from "@/hooks/useTabs"
 // components
 import Page from "@/components/Page"
 import Iconify from "@/components/Iconify"
-import { AccountBilling, AccountChangePassword } from "@/components/account"
+import { AccountBilling } from "@/components/account"
 import DashboardLayout from "../../layouts/dashboard"
 import api from "@/api/server"
 import { Game } from "@ranklab/api"
@@ -56,11 +56,6 @@ export default function UserAccount({ games }: PropsWithSession<Props>) {
       value: "billing",
       icon: <Iconify icon={"ic:round-receipt"} width={20} height={20} />,
       component: <AccountBilling />,
-    },
-    {
-      value: "change_password",
-      icon: <Iconify icon={"ic:round-vpn-key"} width={20} height={20} />,
-      component: <AccountChangePassword />,
     },
   ]
 
