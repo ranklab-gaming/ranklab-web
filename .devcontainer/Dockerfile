@@ -1,17 +1,12 @@
-FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v1.3.4
+FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v2.0.0
 
-RUN sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
-RUN sudo wget \
-  https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/6.2.1/openapi-generator-cli-6.2.1.jar \
-  -O /usr/local/share/openapi-generator-cli.jar
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && sudo apt-get update \
+    && sudo apt-get install nodejs libgtk2.0-0 libgtk-3-0 libgbm-dev \
+       libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
 
-RUN echo 'java -jar /usr/local/share/openapi-generator-cli.jar "$@"' | sudo tee /usr/local/bin/openapi-generator-cli
-RUN sudo chmod +x /usr/local/bin/openapi-generator-cli
-
-RUN curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-
-RUN sudo DEBIAN_FRONTEND=noninteractive apt-get install nodejs libgtk2.0-0 libgtk-3-0 libgbm-dev \
-  libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
-
-RUN sudo npm install --location=global npm@latest
+RUN sudo npm install -g npm@latest
+RUN sudo npm install -g @openapitools/openapi-generator-cli@latest
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
