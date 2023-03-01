@@ -1,7 +1,6 @@
 {
   "extends": ["config:base"],
   "platformAutomerge": true,
-  "allowedPostUpgradeCommands": ["./bin/update-cypress"],
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],

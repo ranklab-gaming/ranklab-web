@@ -19,17 +19,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
-      - name: Install NPM dependencies
-        uses: bahmutov/npm-install@v1
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: npm run build
-  chrome-tests:
+        run: pnpm run build
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: build
@@ -62,7 +67,6 @@ jobs:
           RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }}
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }}
-          RANKLAB_STRIPE_PRODUCT_ID: ${{ secrets.RANKLAB_STRIPE_PRODUCT_ID }}
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
           username: $
@@ -74,24 +78,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
+          cache: pnpm
       - name: Add hosts
         run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
-      - name: Install NPM dependencies
-        uses: bahmutov/npm-install@v1
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: npm run build
-      - name: Run Chrome tests
+        run: pnpm run build
+      - name: Run tests
         uses: cypress-io/github-action@v4
         with:
           working-directory: apps/ranklab-web
           record: true
-          start: npm run test:start
+          start: pnpm run test:start
           wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"
           browser: chrome
           group: "Chrome"
@@ -107,7 +116,7 @@ jobs:
       cluster-name: ${{ secrets.ECS_CLUSTER_NAME }}
       service-name: ${{ secrets.ECS_SERVICE_NAME }}
     if: github.ref == 'refs/heads/master'
-    needs: chrome-tests
+    needs: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3

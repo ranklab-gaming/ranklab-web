@@ -2,4 +2,4 @@
 
 aws s3 cp s3://ranklab-development-secrets/.env.web ./apps/ranklab-web/.env.development.local
 aws s3 cp s3://ranklab-test-secrets/.env.web ./apps/ranklab-web/.env.test.local --profile test
-npm install
+pnpm install
