@@ -7,44 +7,48 @@
   "workspaceFolder": "/workspace",
   "overrideCommand": true,
   "remoteUser": "vscode",
-  "extensions": [
-    "esbenp.prettier-vscode",
-    "naumovs.color-highlight",
-    "ms-vscode.js-debug-nightly",
-    "github.vscode-pull-request-github",
-    "burkeholland.simple-react-snippets",
-    "eamodio.gitlens",
-    "github.copilot"
-  ],
-  "settings": {
-    "editor.codeLens": false,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.detectIndentation": false,
-    "editor.formatOnSave": true,
-    "editor.inlineSuggest.enabled": true,
-    "editor.minimap.enabled": false,
-    "editor.rulers": [100],
-    "editor.tabSize": 2,
-    "editor.wordWrap": "on",
-    "explorer.confirmDelete": false,
-    "explorer.confirmDragAndDrop": false,
-    "extensions.ignoreRecommendations": false,
-    "files.autoSave": "onFocusChange",
-    "files.trimTrailingWhitespace": true,
-    "files.watcherExclude": {
-      "**/.git": true,
-      "**/.DS_Store": true,
-      "**/.git/objects/**": true,
-      "**/node_modules/**": true,
-      "**/tmp/**": true
-    },
-    "git.autofetch": true,
-    "prettier.requireConfig": true,
-    "search.followSymlinks": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "workbench.editor.closeEmptyGroups": false,
-    "workbench.editor.enablePreviewFromQuickOpen": false,
-    "workbench.settings.useSplitJSON": true
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "naumovs.color-highlight",
+        "ms-vscode.js-debug-nightly",
+        "github.vscode-pull-request-github",
+        "burkeholland.simple-react-snippets",
+        "eamodio.gitlens",
+        "github.copilot"
+      ],
+      "settings": {
+        "editor.codeLens": false,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true,
+        "editor.inlineSuggest.enabled": true,
+        "editor.minimap.enabled": false,
+        "editor.rulers": [100],
+        "editor.tabSize": 2,
+        "editor.wordWrap": "on",
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+        "extensions.ignoreRecommendations": false,
+        "files.autoSave": "onFocusChange",
+        "files.trimTrailingWhitespace": true,
+        "files.watcherExclude": {
+          "**/.git": true,
+          "**/.DS_Store": true,
+          "**/.git/objects/**": true,
+          "**/node_modules/**": true,
+          "**/tmp/**": true
+        },
+        "git.autofetch": true,
+        "prettier.requireConfig": true,
+        "search.followSymlinks": false,
+        "security.workspace.trust.untrustedFiles": "open",
+        "typescript.updateImportsOnFileMove.enabled": "always",
+        "workbench.editor.closeEmptyGroups": false,
+        "workbench.editor.enablePreviewFromQuickOpen": false,
+        "workbench.settings.useSplitJSON": true
+      }
+    }
   }
 }
