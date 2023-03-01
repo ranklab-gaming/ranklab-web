@@ -11,10 +11,6 @@
     "codegen": "./bin/codegen",
     "test": "NODE_ENV=test turbo run build test --ignore=\"apps/ranklab-web/cypress/**/*\""
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "dependencies": {},
   "devDependencies": {
     "turbo": "1.8.3"
