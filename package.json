@@ -1,15 +1,14 @@
 {
-  "name": "ranklab",
+  "name": "@ranklab/ranklab",
   "private": true,
   "keywords": [
     "turbo"
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "build": "turbo run build --ignore=\"apps/ranklab-web/cypress/**/*\" --force",
+    "build": "turbo run build",
     "start": "turbo run start",
-    "codegen": "./bin/codegen",
-    "test": "NODE_ENV=test turbo run build test --ignore=\"apps/ranklab-web/cypress/**/*\""
+    "test": "NODE_ENV=test turbo run test"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.2",

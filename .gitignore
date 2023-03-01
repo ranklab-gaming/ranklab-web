@@ -1,7 +1,3 @@
-/tmp
 node_modules
-npm-debug.log*
-cypress/videos
-cypress/screenshots
 .turbo
-.pnpm-store
+ranklab-web-old

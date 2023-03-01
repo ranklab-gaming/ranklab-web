@@ -1,23 +1,22 @@
 {
+  "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
-    },
-    "@ranklab/web#build": {
-      "dependsOn": ["^build", "@ranklab/api#build"],
       "outputs": [".next/**"]
     },
     "test": {
-      "dependsOn": ["build"],
-      "cache": false
+      "dependsOn": ["build"]
     },
     "dev": {
-      "dependsOn": ["@ranklab/api#build"],
-      "cache": false
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false,
+      "persistent": true
     }
   },
-  "globalDependencies": ["tsconfig.json"],
   "globalEnv": [
     "NEXT_PUBLIC_ASSETS_CDN_URL",
     "NEXT_PUBLIC_UPLOADS_CDN_URL",

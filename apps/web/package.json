@@ -1,0 +1,51 @@
+{
+  "name": "@ranklab/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.10.5",
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.6",
+    "@hookform/resolvers": "^2.9.11",
+    "@iconify/icons-mdi": "^1.2.42",
+    "@iconify/react": "^4.1.0",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/lab": "5.0.0-alpha.121",
+    "@mui/material": "^5.11.11",
+    "@ranklab/api": "workspace:*",
+    "@sentry/nextjs": "^7.39.0",
+    "@types/node": "18.14.2",
+    "@types/react": "18.0.28",
+    "@types/react-dom": "18.0.11",
+    "framer-motion": "^10.0.1",
+    "ioredis": "^5.3.1",
+    "jose": "^4.13.1",
+    "koa": "^2.14.1",
+    "koa-mount": "^4.0.0",
+    "lodash": "^4.17.21",
+    "next": "13.2.3",
+    "next-auth": "^4.20.0",
+    "notistack": "^2.0.8",
+    "oidc-provider": "^8.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.3",
+    "typescript": "4.9.5",
+    "yup": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.5",
+    "@types/koa-mount": "^4.0.2",
+    "@types/lodash": "^4.14.191",
+    "@types/oidc-provider": "^8.1.1",
+    "cypress": "^12.7.0",
+    "pg": "^8.9.0"
+  }
+}
