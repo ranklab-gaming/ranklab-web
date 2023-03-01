@@ -4,6 +4,7 @@
     "npmName": "@ranklab/api",
     "supportsES6": true,
     "typescriptThreePlus": true,
-    "withoutRuntimeChecks": true
+    "withoutRuntimeChecks": true,
+    "enablePostProcessFile": true
   }
 }
