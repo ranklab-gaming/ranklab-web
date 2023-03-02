@@ -54,7 +54,7 @@ importers:
       framer-motion: 10.0.1
       ioredis: 5.3.1
       isomorphic-fetch: 3.0.0
-      jose: 4.13.0
+      jose: 4.13.1
       koa: 2.14.1
       koa-mount: 4.0.0
       lodash: 4.17.21
@@ -111,7 +111,7 @@ importers:
       framer-motion: 10.0.1_biqbaboplfbrettd7655fr4n2y
       ioredis: 5.3.1
       isomorphic-fetch: 3.0.0
-      jose: 4.13.0
+      jose: 4.13.1
       koa: 2.14.1
       koa-mount: 4.0.0
       lodash: 4.17.21
@@ -3235,8 +3235,8 @@ packages:
       '@sideway/pinpoint': 2.0.0
     dev: true
 
-  /jose/4.13.0:
-    resolution: {integrity: sha512-v6BN7fuPVfG9XIxcPT2jzyAg5EmA/mtNeJEXJ7d31Wz7fFOqOZeN8mPtNJYQmnuAIxJII7EcURcbZ7qXs9a4kA==}
+  /jose/4.13.1:
+    resolution: {integrity: sha512-MSJQC5vXco5Br38mzaQKiq9mwt7lwj2eXpgpRyQYNHYt2lq1PjkWa7DLXX0WVcQLE9HhMh3jPiufS7fhJf+CLQ==}
     dev: false
 
   /js-tokens/4.0.0:
@@ -3621,7 +3621,7 @@ packages:
       '@babel/runtime': 7.21.0
       '@panva/hkdf': 1.0.4
       cookie: 0.5.0
-      jose: 4.13.0
+      jose: 4.13.1
       next: 13.2.3_6m24vuloj5ihw4zc5lbsktc4fu
       oauth: 0.9.15
       openid-client: 5.4.0
@@ -3791,7 +3791,7 @@ packages:
       debug: 4.3.4
       ejs: 3.1.8
       got: 12.5.3
-      jose: 4.13.0
+      jose: 4.13.1
       jsesc: 3.0.2
       koa: 2.14.1
       nanoid: 4.0.1
@@ -3833,7 +3833,7 @@ packages:
   /openid-client/5.4.0:
     resolution: {integrity: sha512-hgJa2aQKcM2hn3eyVtN12tEA45ECjTJPXCgUh5YzTzy9qwapCvmDTVPWOcWVL0d34zeQoQ/hbG9lJhl3AYxJlQ==}
     dependencies:
-      jose: 4.13.0
+      jose: 4.13.1
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.1
