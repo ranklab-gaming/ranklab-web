@@ -60,7 +60,7 @@ importers:
       lodash: 4.17.21
       lodash-es: 4.17.21
       next: 13.2.3
-      next-auth: 4.19.2
+      next-auth: 4.20.1
       notistack: 2.0.8
       nprogress: 0.2.0
       numeral: 2.0.6
@@ -117,7 +117,7 @@ importers:
       lodash: 4.17.21
       lodash-es: 4.17.21
       next: 13.2.3_6m24vuloj5ihw4zc5lbsktc4fu
-      next-auth: 4.19.2_nvzgbose6yf6w7ijjprgspqefi
+      next-auth: 4.20.1_nvzgbose6yf6w7ijjprgspqefi
       notistack: 2.0.8_igc4uct3vur6mnmpd3oer3xfp4
       nprogress: 0.2.0
       numeral: 2.0.6
@@ -3607,8 +3607,8 @@ packages:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
 
-  /next-auth/4.19.2_nvzgbose6yf6w7ijjprgspqefi:
-    resolution: {integrity: sha512-6V2YG3IJQVhgCAH7mvT3yopTW92gMdUrcwGX7NQ0dCreT/+axGua/JmVdarjec0C/oJukKpIYRgjMlV+L5ZQOQ==}
+  /next-auth/4.20.1_nvzgbose6yf6w7ijjprgspqefi:
+    resolution: {integrity: sha512-ZcTUN4qzzZ/zJYgOW0hMXccpheWtAol8QOMdMts+LYRcsPGsqf2hEityyaKyECQVw1cWInb9dF3wYwI5GZdEmQ==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5

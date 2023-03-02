@@ -48,7 +48,7 @@
     "lodash": "4.17.21",
     "lodash-es": "4.17.21",
     "next": "13.2.3",
-    "next-auth": "4.19.2",
+    "next-auth": "4.20.1",
     "notistack": "2.0.8",
     "nprogress": "0.2.0",
     "numeral": "2.0.6",
