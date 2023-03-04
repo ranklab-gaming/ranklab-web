@@ -1,12 +1,12 @@
 import { api } from "@/api/client"
-import { failsafeSubmit } from "@/form"
+import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Select, Stack, TextField } from "@mui/material"
+import { MenuItem, Select, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
-import router from "next/router"
+import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
-import { Controller, useForm } from "react-hook-form"
+import { Controller } from "react-hook-form"
 import * as Yup from "yup"
 
 interface Props {
@@ -49,75 +49,60 @@ const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
   price: Yup.number().required("Price is required").min(100),
 })
 
-export function CoachSignupForm({
+export function CoachSignupPage({
   games,
   availableCountries,
   invitationToken,
 }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
 
-  const gameFromId = (gameId: string) => {
-    return games.find((g) => g.id === gameId)!
-  }
-
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
-    setError,
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
     defaultValues,
+    serverErrorMessage:
+      "There was a problem creating your profile. Please try again later.",
   })
 
   const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
 
   const createAndRedirectToDashboard = async (data: FormValuesProps) => {
-    const onError = () =>
+    const session = await api.coachAccountCreate({
+      createCoachRequest: {
+        name: data.name,
+        bio: data.bio,
+        gameId: data.gameId,
+        country: data.country,
+        email: data.email,
+        password: data.password,
+        price: data.price,
+      },
+      auth: { token: invitationToken },
+    })
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({ token: session.token }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (response.ok) {
+      const json = await response.json()
+      window.location.href = json.location
+    } else {
       enqueueSnackbar(
-        "There was a problem creating your profile. Please try again later.",
+        "There was a problem logging in. Please try again later.",
         { variant: "error" }
       )
 
-    const session = await failsafeSubmit({
-      setError,
-      errorHandlers: {
-        404: onError,
-      },
-      onServerError: onError,
-      request: api.coachAccountCreate({
-        createCoachRequest: {
-          name: data.name,
-          bio: data.bio,
-          gameId: data.gameId,
-          country: data.country,
-          email: data.email,
-          password: data.password,
-          price: data.price,
-        },
-        auth: { token: invitationToken },
-      }),
-    })
-
-    if (session) {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        body: JSON.stringify({ token: session.token }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
-      if (response.ok) {
-        const json = await response.json()
-        window.location.href = json.location
-      } else {
-        enqueueSnackbar(
-          "There was a problem logging in. Please try again later.",
-          { variant: "error" }
-        )
-      }
+      router.push("/")
     }
   }
 
@@ -212,9 +197,9 @@ export function CoachSignupForm({
           render={({ field, fieldState: { error } }) => (
             <Select {...field} label="Game" error={Boolean(error)}>
               {games.map((game) => (
-                <option key={game.id} value={game.id}>
+                <MenuItem key={game.id} value={game.id}>
                   {game.name}
-                </option>
+                </MenuItem>
               ))}
             </Select>
           )}

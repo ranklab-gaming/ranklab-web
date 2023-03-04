@@ -1,13 +1,5 @@
-import { Container } from "@mui/material"
-import { BasicLayout } from "@/components/BasicLayout"
-import { LoginForm } from "@/components/LoginForm"
+import { LoginPage } from "@/components/LoginPage"
 
 export default function () {
-  return (
-    <BasicLayout>
-      <Container>
-        <LoginForm userType="coach" />
-      </Container>
-    </BasicLayout>
-  )
+  return <LoginPage userType="coach" />
 }

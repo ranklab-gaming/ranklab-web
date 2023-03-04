@@ -1,4 +1,4 @@
-import type { GetServerSidePropsContext } from "next"
+import { GetServerSidePropsContext } from "next"
 import { ParsedUrlQuery } from "querystring"
 
 export function getParam<T extends ParsedUrlQuery>(

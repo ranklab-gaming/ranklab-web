@@ -10,7 +10,7 @@ export function Page({ children, title, ...other }: PageProps) {
   return (
     <Box {...other}>
       <Head>
-        <title>{title}</title>
+        <title>{title} | Ranklab</title>
       </Head>
       {children}
     </Box>

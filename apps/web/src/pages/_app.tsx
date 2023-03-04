@@ -1,4 +1,4 @@
-import type { AppProps as NextAppProps } from "next/app"
+import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import { ThemeProvider, CssBaseline } from "@mui/material"
 import { theme } from "@/theme/theme"

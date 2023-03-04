@@ -1,10 +1,8 @@
-import { Container } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { GetServerSideProps } from "next"
-import { BasicLayout } from "@/components/BasicLayout"
-import { CoachSignupForm } from "@/components/CoachSignupForm"
+import { CoachSignupPage } from "@/components/CoachSignupPage"
 import { createServerApi } from "@/api/server"
-import { getParam } from "@/request"
+import { getParam } from "@/pages"
 
 interface Props {
   invitationToken: string
@@ -38,14 +36,10 @@ export default function ({
   availableCountries,
 }: Props) {
   return (
-    <BasicLayout>
-      <Container>
-        <CoachSignupForm
-          invitationToken={invitationToken}
-          games={games}
-          availableCountries={availableCountries}
-        />
-      </Container>
-    </BasicLayout>
+    <CoachSignupPage
+      invitationToken={invitationToken}
+      games={games}
+      availableCountries={availableCountries}
+    />
   )
 }

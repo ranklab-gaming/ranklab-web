@@ -1,7 +1,6 @@
 import { m } from "framer-motion"
 import { styled } from "@mui/material/styles"
 import { Box, Stack, Container, Typography, Button } from "@mui/material"
-import NextLink from "next/link"
 import { FunctionComponent, PropsWithChildren } from "react"
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"

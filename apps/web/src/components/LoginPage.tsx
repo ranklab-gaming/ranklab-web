@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
   Stack,
@@ -7,54 +8,47 @@ import {
   IconButton,
   Box,
   Link,
+  styled,
 } from "@mui/material"
-import { Game, PlayerGame } from "@ranklab/api"
+import { UserType } from "@ranklab/api"
+import { useSnackbar } from "notistack"
 import { useState } from "react"
 import { FormProvider, Controller, useForm } from "react-hook-form"
+import { api } from "@/api/client"
 import { Iconify } from "@/components/Iconify"
 import * as Yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useSnackbar } from "notistack"
-import { api } from "@/api/client"
-import { GamesSelect } from "./GamesSelect"
+import NextLink from "next/link"
 import { failsafeSubmit } from "@/form"
 import { useRouter } from "next/router"
 
 type FormValuesProps = {
   email: string
   password: string
-  games: PlayerGame[]
-  name: string
 }
+
+const ContentStyle = styled("div")(() => ({
+  maxWidth: "480px",
+  margin: "auto",
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "column",
+}))
 
 interface Props {
-  games: Game[]
+  userType: UserType
 }
 
-const CreatePlayerSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Name is required")
-    .min(2, "Name must be at least 2 characters"),
-  games: Yup.array()
-    .of(
-      Yup.object().shape({
-        gameId: Yup.string().required(),
-        skillLevel: Yup.number().required(),
-      })
-    )
-    .min(1, "At least one game is required"),
+const CreateSessionSchema = Yup.object().shape({
   email: Yup.string()
     .email("Email must be valid")
     .required("Email is required"),
   password: Yup.string().required("Password is required"),
 })
 
-export function PlayerSignupForm({ games }: Props) {
+export function LoginPage({ userType }: Props) {
   const defaultValues = {
     email: "",
     password: "",
-    games: [],
-    name: "",
   }
 
   const [showPassword, setShowPassword] = useState(false)
@@ -62,27 +56,33 @@ export function PlayerSignupForm({ games }: Props) {
   const { enqueueSnackbar } = useSnackbar()
 
   const form = useForm<FormValuesProps>({
-    resolver: yupResolver(CreatePlayerSchema),
+    resolver: yupResolver(CreateSessionSchema),
     defaultValues,
   })
 
   const {
     control,
     handleSubmit,
-    setError,
     formState: { isSubmitting },
+    setError,
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
     const session = await failsafeSubmit({
       setError,
+      errorHandlers: {
+        404: () =>
+          enqueueSnackbar("Invalid email or password. Please try again.", {
+            variant: "error",
+          }),
+      },
       onServerError: () =>
         enqueueSnackbar(
-          "There was a problem signin up. Please try again later.",
+          "There was a problem logging in. Please try again later.",
           { variant: "error" }
         ),
-      request: api.playerAccountCreate({
-        createPlayerRequest: data,
+      request: api.sessionCreate({
+        createSessionRequest: { ...data, userType },
       }),
     })
 
@@ -103,18 +103,18 @@ export function PlayerSignupForm({ games }: Props) {
       window.location.href = json.location
     } else {
       enqueueSnackbar(
-        "There was a problem signin up. Please try again later.",
+        "There was a problem logging in. Please try again later.",
         { variant: "error" }
       )
     }
   }
 
   return (
-    <>
+    <ContentStyle>
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h4" gutterBottom>
-            Sign up to Ranklab
+            Sign in to Ranklab
           </Typography>
           <Typography sx={{ color: "text.secondary" }}>
             Enter your details below.
@@ -124,20 +124,7 @@ export function PlayerSignupForm({ games }: Props) {
 
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={3}>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <TextField
-                  {...field}
-                  label="Name"
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                />
-              )}
-            />
-
+          <Stack spacing={3} sx={{ maxWidth: 480 }}>
             <Controller
               name="email"
               control={control}
@@ -183,62 +170,53 @@ export function PlayerSignupForm({ games }: Props) {
                 />
               )}
             />
-
-            <Controller
-              name="games"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <GamesSelect
-                  games={games}
-                  selectedGames={field.value}
-                  setGames={field.onChange}
-                  error={Boolean(error)}
-                  helperText={error?.message}
-                />
-              )}
-            />
           </Stack>
 
-          <Box
-            display="flex"
+          <Stack
+            direction="row"
             alignItems="center"
-            flexWrap="wrap"
-            gap={2}
-            sx={{ mt: 3 }}
+            justifyContent="space-between"
+            sx={{ my: 2 }}
           >
-            <Box
-              marginRight="auto"
-              flexShrink={0}
-              display="flex"
-              alignItems="center"
+            <NextLink
+              href={`/password/request-reset?user_type=${userType}`}
+              passHref
+              legacyBehavior
             >
-              <Typography variant="body2" sx={{ mr: 1 }}>
-                Already have an account?
-              </Typography>
+              <Link variant="subtitle2">Forgot password?</Link>
+            </NextLink>
+          </Stack>
 
-              <Link
-                component="button"
-                variant="subtitle2"
-                onClick={() => {
-                  router.push("/player/login")
-                }}
-              >
-                Sign in
-              </Link>
-            </Box>
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-              sx={{ maxWidth: 240 }}
-            >
-              Sign up
-            </LoadingButton>
-          </Box>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            sx={{ maxWidth: 480 }}
+          >
+            Sign in
+          </LoadingButton>
         </form>
       </FormProvider>
-    </>
+
+      {userType === "player" && (
+        <Box display="flex" alignItems="center" mt={3}>
+          <Typography variant="body2" sx={{ mr: 1 }}>
+            Don't have an account?
+          </Typography>
+
+          <Link
+            component="button"
+            variant="subtitle2"
+            onClick={() => {
+              router.push("/player/signup")
+            }}
+          >
+            Get started
+          </Link>
+        </Box>
+      )}
+    </ContentStyle>
   )
 }

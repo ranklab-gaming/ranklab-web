@@ -1,9 +1,7 @@
-import { Container } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { GetServerSideProps } from "next"
-import { BasicLayout } from "@/components/BasicLayout"
 import { createServerApi } from "@/api/server"
-import { PlayerSignupForm } from "@/components/PlayerSignupForm"
+import { PlayerSignupPage } from "@/components/PlayerSignupPage"
 
 interface Props {
   games: Game[]
@@ -21,11 +19,5 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 }
 
 export default function (props: Props) {
-  return (
-    <BasicLayout>
-      <Container>
-        <PlayerSignupForm games={props.games} />
-      </Container>
-    </BasicLayout>
-  )
+  return <PlayerSignupPage games={props.games} />
 }

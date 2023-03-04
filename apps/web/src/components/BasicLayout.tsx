@@ -29,9 +29,7 @@ export function BasicLayout({ children }: PropsWithChildren) {
         </NextLink>
         <Box sx={{ flexGrow: 1 }} />
       </Container>
-      <Container maxWidth="lg" sx={{ pt: 5, pb: 10 }}>
-        {children}
-      </Container>
+      <Box sx={{ pt: 5, pb: 10 }}>{children}</Box>
       <Footer />
     </>
   )
