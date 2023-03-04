@@ -1,24 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import {
-  Stack,
-  Typography,
-  TextField,
-  Box,
-  styled,
-  Container,
-} from "@mui/material"
+import { Stack, Typography, TextField, Box, styled } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { FunctionComponent } from "react"
-import { FormProvider, Controller, useForm } from "react-hook-form"
+import { FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
 import { api } from "@/api/client"
-import { getParam } from "@/pages"
+import { getParam } from "@/request"
 import { GetServerSideProps } from "next"
-import { failsafeSubmit } from "@/form"
 import { authenticate } from "@/auth"
+import { useForm } from "@/hooks/useForm"
 
 type FormValuesProps = {
   password: string
@@ -76,32 +69,21 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
   const form = useForm<FormValuesProps>({
     resolver: yupResolver(ResetPasswordSchema),
     defaultValues,
+    serverErrorMessage:
+      "There was a problem resetting your password. Please try again later.",
   })
 
   const {
     control,
     handleSubmit,
-    setError,
     formState: { isSubmitting },
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    const status = await failsafeSubmit({
-      setError,
-      onServerError: () =>
-        enqueueSnackbar(
-          "There was a problem resetting your password. Please try again later.",
-          { variant: "error" }
-        ),
-      request: api.sessionUpdatePassword({
-        updatePasswordRequest: data,
-        auth: { userType, token },
-      }),
+    await api.sessionUpdatePassword({
+      updatePasswordRequest: data,
+      auth: { userType, token },
     })
-
-    if (!status) {
-      return
-    }
 
     enqueueSnackbar("Your password was updated successfully.", {
       variant: "success",
@@ -111,50 +93,48 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
   }
 
   return (
-    <BasicLayout>
-      <Container>
-        <ContentStyle>
-          <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-            <Box sx={{ flexGrow: 1 }}>
-              <Typography variant="h4" gutterBottom>
-                Change your password
-              </Typography>
-            </Box>
-          </Stack>
+    <BasicLayout title="Reset Your Password">
+      <ContentStyle>
+        <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h4" gutterBottom>
+              Change your password
+            </Typography>
+          </Box>
+        </Stack>
 
-          <FormProvider {...form}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack spacing={3} sx={{ maxWidth: 480 }}>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      error={!!error}
-                      helperText={error?.message}
-                      label="Password"
-                      type="password"
-                    />
-                  )}
-                />
-              </Stack>
+        <FormProvider {...form}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={3} sx={{ maxWidth: 480 }}>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    error={!!error}
+                    helperText={error?.message}
+                    label="Password"
+                    type="password"
+                  />
+                )}
+              />
+            </Stack>
 
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-                sx={{ maxWidth: 480, mt: 2 }}
-              >
-                Change Password
-              </LoadingButton>
-            </form>
-          </FormProvider>
-        </ContentStyle>
-      </Container>
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+              sx={{ maxWidth: 480, mt: 2 }}
+            >
+              Change Password
+            </LoadingButton>
+          </form>
+        </FormProvider>
+      </ContentStyle>
     </BasicLayout>
   )
 }

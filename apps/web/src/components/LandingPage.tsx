@@ -5,9 +5,9 @@ import { LandingDashboard } from "./LandingPage/Dashboard"
 import { LandingFlow } from "./LandingPage/Flow"
 import { LandingHero } from "./LandingPage/Hero"
 import { LandingReview } from "./LandingPage/Review"
-import { Page } from "./Page"
+import { Page } from "@/components/Page"
 
-const RootStyle = styled(Page)({
+const RootStyle = styled("div")({
   height: "100%",
 })
 
@@ -19,18 +19,20 @@ const ContentStyle = styled("div")(({ theme }) => ({
 
 export function LandingPage() {
   return (
-    <Stack sx={{ minHeight: 1 }}>
-      <Header />
-      <RootStyle title="Be the better gamer | Ranklab">
-        <LandingHero />
-        <ContentStyle>
-          <LandingFlow />
-          <LandingReview />
-          <LandingDashboard />
-        </ContentStyle>
-      </RootStyle>
-      <Box sx={{ flexGrow: 1 }} />
-      <Footer />
-    </Stack>
+    <Page title="Be the better gamer">
+      <Stack sx={{ minHeight: 1 }}>
+        <Header />
+        <RootStyle>
+          <LandingHero />
+          <ContentStyle>
+            <LandingFlow />
+            <LandingReview />
+            <LandingDashboard />
+          </ContentStyle>
+        </RootStyle>
+        <Box sx={{ flexGrow: 1 }} />
+        <Footer />
+      </Stack>
+    </Page>
   )
 }

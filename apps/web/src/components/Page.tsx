@@ -1,18 +1,17 @@
 import Head from "next/head"
 import { PropsWithChildren } from "react"
-import { Box, BoxProps } from "@mui/material"
 
-interface PageProps extends PropsWithChildren<BoxProps> {
+interface PageProps extends PropsWithChildren {
   title?: string
 }
 
-export function Page({ children, title, ...other }: PageProps) {
+export function Page({ children, title }: PageProps) {
   return (
-    <Box {...other}>
+    <>
       <Head>
-        <title>{title} | Ranklab</title>
+        <title>{`${title} | Ranklab`}</title>
       </Head>
       {children}
-    </Box>
+    </>
   )
 }

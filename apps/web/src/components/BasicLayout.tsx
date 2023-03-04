@@ -4,10 +4,15 @@ import NextLink from "next/link"
 import { Logo } from "@/components/Logo"
 import { Label } from "@/components/Label"
 import { Footer } from "@/components/Footer"
+import { Page } from "@/components/Page"
 
-export function BasicLayout({ children }: PropsWithChildren) {
+interface Props {
+  title: string
+}
+
+export function BasicLayout({ children, title }: PropsWithChildren<Props>) {
   return (
-    <>
+    <Page title={title}>
       <Container
         maxWidth="lg"
         sx={{
@@ -29,8 +34,10 @@ export function BasicLayout({ children }: PropsWithChildren) {
         </NextLink>
         <Box sx={{ flexGrow: 1 }} />
       </Container>
-      <Box sx={{ pt: 5, pb: 10 }}>{children}</Box>
+      <Container maxWidth="lg" sx={{ my: 8 }}>
+        {children}
+      </Container>
       <Footer />
-    </>
+    </Page>
   )
 }

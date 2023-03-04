@@ -10,15 +10,17 @@ import {
 } from "@mui/material"
 import { Game, PlayerGame } from "@ranklab/api"
 import { useState } from "react"
-import { FormProvider, Controller, useForm } from "react-hook-form"
+import { FormProvider, Controller } from "react-hook-form"
 import { Iconify } from "@/components/Iconify"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useSnackbar } from "notistack"
 import { api } from "@/api/client"
 import { GamesSelect } from "./GamesSelect"
-import { failsafeSubmit } from "@/form"
 import { useRouter } from "next/router"
+import { BasicLayout } from "@/components/BasicLayout"
+import { Page } from "@/components/Page"
+import { useForm } from "@/hooks/useForm"
 
 type FormValuesProps = {
   email: string
@@ -64,31 +66,20 @@ export function PlayerSignupPage({ games }: Props) {
   const form = useForm<FormValuesProps>({
     resolver: yupResolver(CreatePlayerSchema),
     defaultValues,
+    serverErrorMessage:
+      "There was a problem signin up. Please try again later.",
   })
 
   const {
     control,
     handleSubmit,
-    setError,
     formState: { isSubmitting },
   } = form
 
   const onSubmit = async (data: FormValuesProps) => {
-    const session = await failsafeSubmit({
-      setError,
-      onServerError: () =>
-        enqueueSnackbar(
-          "There was a problem signin up. Please try again later.",
-          { variant: "error" }
-        ),
-      request: api.playerAccountCreate({
-        createPlayerRequest: data,
-      }),
+    const session = await api.playerAccountCreate({
+      createPlayerRequest: data,
     })
-
-    if (!session) {
-      return
-    }
 
     const response = await fetch("/api/login", {
       method: "POST",
@@ -103,14 +94,16 @@ export function PlayerSignupPage({ games }: Props) {
       window.location.href = json.location
     } else {
       enqueueSnackbar(
-        "There was a problem signin up. Please try again later.",
+        "There was a problem logging in. Please try again later.",
         { variant: "error" }
       )
+
+      router.push("/")
     }
   }
 
   return (
-    <>
+    <BasicLayout title="Player Signup">
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h4" gutterBottom>
@@ -239,6 +232,6 @@ export function PlayerSignupPage({ games }: Props) {
           </Box>
         </form>
       </FormProvider>
-    </>
+    </BasicLayout>
   )
 }

@@ -8,6 +8,7 @@ import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import { Controller } from "react-hook-form"
 import * as Yup from "yup"
+import { BasicLayout } from "@/components/BasicLayout"
 
 interface Props {
   games: Game[]
@@ -114,122 +115,124 @@ export function CoachSignupPage({
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
-      <Stack spacing={3}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Name"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
+    <BasicLayout title="Coach Signup">
+      <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
+        <Stack spacing={3}>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Name"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <Controller
-          name="email"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              type="email"
-              label="Email"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                type="email"
+                label="Email"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <Controller
-          name="password"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              type="password"
-              label="Password"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                type="password"
+                label="Password"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <Controller
-          name="bio"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Bio"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
+          <Controller
+            name="bio"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Bio"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <Controller
-          name="country"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              select
-              SelectProps={{ native: true }}
-              error={Boolean(error)}
-              helperText={error?.message}
-              label="Country"
-            >
-              {countries.map((country) => (
-                <option key={country.value} value={country.value}>
-                  {country.label}
-                </option>
-              ))}
-            </TextField>
-          )}
-        />
+          <Controller
+            name="country"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                select
+                SelectProps={{ native: true }}
+                error={Boolean(error)}
+                helperText={error?.message}
+                label="Country"
+              >
+                {countries.map((country) => (
+                  <option key={country.value} value={country.value}>
+                    {country.label}
+                  </option>
+                ))}
+              </TextField>
+            )}
+          />
 
-        <Controller
-          name="gameId"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <Select {...field} label="Game" error={Boolean(error)}>
-              {games.map((game) => (
-                <MenuItem key={game.id} value={game.id}>
-                  {game.name}
-                </MenuItem>
-              ))}
-            </Select>
-          )}
-        />
+          <Controller
+            name="gameId"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Select {...field} label="Game" error={Boolean(error)}>
+                {games.map((game) => (
+                  <MenuItem key={game.id} value={game.id}>
+                    {game.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
 
-        <Controller
-          name="price"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Price"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
+          <Controller
+            name="price"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Price"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
 
-        <LoadingButton
-          fullWidth
-          color="info"
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-          disabled={isSubmitting}
-        >
-          Create Account
-        </LoadingButton>
-      </Stack>
-    </form>
+          <LoadingButton
+            fullWidth
+            color="info"
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
+            Create Account
+          </LoadingButton>
+        </Stack>
+      </form>
+    </BasicLayout>
   )
 }

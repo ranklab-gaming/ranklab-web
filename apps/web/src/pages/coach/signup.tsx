@@ -2,7 +2,7 @@ import { Game } from "@ranklab/api"
 import { GetServerSideProps } from "next"
 import { CoachSignupPage } from "@/components/CoachSignupPage"
 import { createServerApi } from "@/api/server"
-import { getParam } from "@/pages"
+import { getParam } from "@/request"
 
 interface Props {
   invitationToken: string

@@ -8,6 +8,7 @@ import {
   UseFormReturn,
   UseFormSetError,
   useForm as baseUseForm,
+  SubmitHandler,
 } from "react-hook-form"
 
 type Errors<T> = {
@@ -60,6 +61,9 @@ function setValidationErrors<T extends FieldValues>(
 interface UseFormProps<TFieldValues extends FieldValues, TContext = any>
   extends BaseUseFormProps<TFieldValues, TContext> {
   serverErrorMessage?: string
+  errorMessages?: {
+    [key: number]: string
+  }
 }
 
 export function useForm<TFieldValues extends FieldValues, TContext = any>(
@@ -68,37 +72,50 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
   const form = baseUseForm(props)
   const { enqueueSnackbar } = useSnackbar()
 
+  const submitHandler = async (
+    data: TFieldValues,
+    handler: SubmitHandler<TFieldValues>
+  ) => {
+    try {
+      await handler(data)
+    } catch (e: unknown) {
+      if (!(e instanceof ResponseError)) {
+        throw e
+      }
+
+      if (e.response.status === 422) {
+        const errors = await e.response.json()
+
+        if ("error" in errors && !Array.isArray(errors.error)) {
+          return
+        }
+
+        setValidationErrors(form.setError, errors)
+        return
+      }
+
+      if (props.errorMessages && e.response.status in props.errorMessages) {
+        enqueueSnackbar(props.errorMessages[e.response.status], {
+          variant: "error",
+        })
+
+        return
+      }
+
+      enqueueSnackbar(
+        props.serverErrorMessage ??
+          "An unexpected server error occurred, please try again later.",
+        {
+          variant: "error",
+        }
+      )
+    }
+  }
+
   return {
     ...form,
     handleSubmit(handler) {
-      return form.handleSubmit(async (data) => {
-        try {
-          await handler(data)
-        } catch (e: any) {
-          if (e instanceof ResponseError) {
-            if (e.response.status === 422) {
-              const errors = await e.response.json()
-
-              if ("error" in errors && !Array.isArray(errors.error)) {
-                return
-              }
-
-              setValidationErrors(form.setError, errors)
-              return
-            }
-
-            enqueueSnackbar(
-              props.serverErrorMessage ??
-                "An unexpected server error occurred, please try again later.",
-              {
-                variant: "error",
-              }
-            )
-          }
-
-          throw e
-        }
-      })
+      return form.handleSubmit((data) => submitHandler(data, handler))
     },
   }
 }
