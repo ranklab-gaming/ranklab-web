@@ -31,7 +31,7 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
   boxShadow: theme.customShadows.z8,
 }))
 
-export function Header() {
+export function LandingPageHeader() {
   const isOffset = useOffsetTop(headerStyles.mainDesktopHeight)
   const theme = useTheme()
 

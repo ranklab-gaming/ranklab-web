@@ -103,18 +103,14 @@ export function PlayerSignupPage({ games }: Props) {
   }
 
   return (
-    <BasicLayout title="Player Signup">
+    <BasicLayout title="Signup to Ranklab">
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4" gutterBottom>
-            Sign up to Ranklab
-          </Typography>
           <Typography sx={{ color: "text.secondary" }}>
             Enter your details below.
           </Typography>
         </Box>
       </Stack>
-
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
@@ -130,7 +126,6 @@ export function PlayerSignupPage({ games }: Props) {
                 />
               )}
             />
-
             <Controller
               name="email"
               control={control}
@@ -145,7 +140,6 @@ export function PlayerSignupPage({ games }: Props) {
                 />
               )}
             />
-
             <Controller
               name="password"
               control={control}
@@ -176,7 +170,6 @@ export function PlayerSignupPage({ games }: Props) {
                 />
               )}
             />
-
             <Controller
               name="games"
               control={control}
@@ -191,7 +184,6 @@ export function PlayerSignupPage({ games }: Props) {
               )}
             />
           </Stack>
-
           <Box
             display="flex"
             alignItems="center"
@@ -208,7 +200,6 @@ export function PlayerSignupPage({ games }: Props) {
               <Typography variant="body2" sx={{ mr: 1 }}>
                 Already have an account?
               </Typography>
-
               <Link
                 component="button"
                 variant="subtitle2"

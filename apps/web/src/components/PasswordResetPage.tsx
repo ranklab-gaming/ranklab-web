@@ -60,10 +60,7 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
   userType,
   token,
 }) {
-  const defaultValues = {
-    password: "",
-  }
-
+  const defaultValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
 
   const form = useForm<FormValuesProps>({
@@ -102,7 +99,6 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
             </Typography>
           </Box>
         </Stack>
-
         <FormProvider {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={3} sx={{ maxWidth: 480 }}>
@@ -121,7 +117,6 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
                 )}
               />
             </Stack>
-
             <LoadingButton
               fullWidth
               size="large"

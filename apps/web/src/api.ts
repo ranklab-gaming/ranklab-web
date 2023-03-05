@@ -1,5 +1,3 @@
-import { Coach, Player, UserType } from "@ranklab/api"
-
 export type PaginatedResult<T> = {
   records: T[]
   page: number
@@ -7,7 +5,3 @@ export type PaginatedResult<T> = {
   totalPages: number
   count: number
 }
-
-export type User<U extends UserType = UserType> = U extends "coach"
-  ? Coach
-  : Player

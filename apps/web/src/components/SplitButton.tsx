@@ -1,4 +1,3 @@
-import * as React from "react"
 import Button from "@mui/material/Button"
 import ButtonGroup from "@mui/material/ButtonGroup"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
@@ -8,11 +7,12 @@ import Paper from "@mui/material/Paper"
 import Popper from "@mui/material/Popper"
 import MenuItem from "@mui/material/MenuItem"
 import MenuList from "@mui/material/MenuList"
+import { MouseEvent as ReactMouseEvent, useRef, useState } from "react"
 
 interface Props {
-  handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleClick: (event: ReactMouseEvent<HTMLButtonElement>) => void
   handleMenuItemClick: (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    event: ReactMouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => void
   options: string[]
@@ -34,11 +34,11 @@ export function SplitButton({
   variant,
   color,
 }: Props) {
-  const [open, setOpen] = React.useState(false)
-  const anchorRef = React.useRef<HTMLDivElement>(null)
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef<HTMLDivElement>(null)
 
   const onMenuItemClick = (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    event: ReactMouseEvent<HTMLLIElement, MouseEvent>,
     index: number
   ) => {
     handleMenuItemClick(event, index)
@@ -61,7 +61,7 @@ export function SplitButton({
   }
 
   return (
-    <React.Fragment>
+    <>
       <ButtonGroup
         variant={variant}
         color={color}
@@ -114,6 +114,6 @@ export function SplitButton({
           </Grow>
         )}
       </Popper>
-    </React.Fragment>
+    </>
   )
 }

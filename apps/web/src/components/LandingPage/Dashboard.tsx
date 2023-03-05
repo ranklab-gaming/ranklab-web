@@ -25,7 +25,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-export function LandingDashboard() {
+export function LandingPageDashboard() {
   return (
     <RootStyle>
       <Container

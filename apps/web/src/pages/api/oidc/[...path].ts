@@ -49,7 +49,7 @@ const config: Configuration = {
   },
   ttl: {
     Session: 24 * 60 * 60,
-    Interaction: 5 * 60,
+    Interaction: 60,
     AccessToken: 2 * 60 * 60,
     Grant: 24 * 60 * 60,
     IdToken: 2 * 60 * 60,

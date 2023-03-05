@@ -1,31 +1,30 @@
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+} from "next"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
-import { Coach, Player, UserType } from "@ranklab/api"
+import { UserType } from "@ranklab/api"
 import { createServerApi } from "@/api/server"
 import { decodeJwt } from "jose"
-import { User } from "@/api"
+import { User, userFromCoach, userFromPlayer } from "@/auth"
 
-export type PropsWithUser<P, U extends UserType> = P & {
-  user: User<U>
+export type PropsWithUser<P> = P & {
+  user: User
 }
 
-type GetServerSidePropsWithUserResult<
-  P,
-  U extends UserType
-> = GetServerSidePropsResult<PropsWithUser<P, U>>
-
-type GetServerSidePropsWithUser<P, U extends UserType> = (
-  ctx: GetServerSidePropsContext & { user: User<U> }
+type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
+  ctx: PropsWithUser<GetServerSidePropsContext>
 ) => Promise<GetServerSidePropsResult<P>>
 
-export function withPageUserRequired<
-  P extends { [key: string]: any } = { [key: string]: any },
-  U extends UserType = UserType
->(userType: U, getServerSideProps: GetServerSidePropsWithUser<P, U>) {
+export function withPageUserRequired<P extends { [key: string]: any }>(
+  userType: UserType,
+  getServerSideProps: GetServerSidePropsWithUser<P>
+): GetServerSideProps<PropsWithUser<P>> {
   return async (
     ctx: GetServerSidePropsContext
-  ): Promise<GetServerSidePropsWithUserResult<P, U>> => {
+  ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
     const session = await getServerSession(ctx.req, ctx.res, authOptions)
     const api = await createServerApi(ctx)
 
@@ -55,13 +54,10 @@ export function withPageUserRequired<
       }
     }
 
-    let user: User<U>
-
-    if (userType === "coach") {
-      user = (await api.coachAccountGet()) as User<U>
-    } else {
-      user = (await api.playerAccountGet()) as User<U>
-    }
+    const user =
+      userType === "coach"
+        ? userFromCoach(await api.coachAccountGet())
+        : userFromPlayer(await api.playerAccountGet())
 
     const res = await getServerSideProps({ ...ctx, user })
 
@@ -71,9 +67,8 @@ export function withPageUserRequired<
 
     const props = await res.props
 
-    return { props: { ...props, user } } as GetServerSidePropsWithUserResult<
-      P,
-      U
-    >
+    return {
+      props: { ...props, user },
+    }
   }
 }

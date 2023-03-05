@@ -27,14 +27,6 @@ type FormValuesProps = {
   password: string
 }
 
-const ContentStyle = styled("div")(() => ({
-  maxWidth: "480px",
-  margin: "auto",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-}))
-
 interface Props {
   userType: UserType
 }
@@ -98,120 +90,106 @@ export function LoginPage({ userType }: Props) {
     }
   }
 
-  const title = userType === "coach" ? "Coach" : "Player"
-
   return (
-    <BasicLayout title={`${title} Login`}>
-      <ContentStyle>
-        <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
-              Sign in to Ranklab
-            </Typography>
-            <Typography sx={{ color: "text.secondary" }}>
-              Enter your details below.
-            </Typography>
-          </Box>
-        </Stack>
-
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={3} sx={{ maxWidth: 480 }}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!error}
-                    helperText={error?.message}
-                    label="Email"
-                    type="email"
-                  />
-                )}
-              />
-
-              <Controller
-                name="password"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!error}
-                    helperText={error?.message}
-                    label="Password"
-                    type={showPassword ? "text" : "password"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            <Iconify
-                              icon={
-                                showPassword
-                                  ? "eva:eye-fill"
-                                  : "eva:eye-off-fill"
-                              }
-                            />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
-              />
-            </Stack>
-
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{ my: 2 }}
+    <BasicLayout title="Sign in to Ranklab">
+      <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography sx={{ color: "text.secondary" }}>
+            Enter your details below.
+          </Typography>
+        </Box>
+      </Stack>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={3} sx={{ maxWidth: 480 }}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  error={!!error}
+                  helperText={error?.message}
+                  label="Email"
+                  type="email"
+                />
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  error={!!error}
+                  helperText={error?.message}
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          <Iconify
+                            icon={
+                              showPassword ? "eva:eye-fill" : "eva:eye-off-fill"
+                            }
+                          />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+            />
+          </Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ my: 2 }}
+          >
+            <NextLink
+              href={`/password/request-reset?user_type=${userType}`}
+              passHref
+              legacyBehavior
             >
-              <NextLink
-                href={`/password/request-reset?user_type=${userType}`}
-                passHref
-                legacyBehavior
-              >
-                <Link variant="subtitle2">Forgot password?</Link>
-              </NextLink>
-            </Stack>
+              <Link variant="subtitle2">Forgot password?</Link>
+            </NextLink>
+          </Stack>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            sx={{ maxWidth: 480 }}
+          >
+            Sign in
+          </LoadingButton>
+        </form>
+      </FormProvider>
+      {userType === "player" && (
+        <Box display="flex" alignItems="center" mt={3}>
+          <Typography variant="body2" sx={{ mr: 1 }}>
+            Don't have an account?
+          </Typography>
 
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-              sx={{ maxWidth: 480 }}
-            >
-              Sign in
-            </LoadingButton>
-          </form>
-        </FormProvider>
-
-        {userType === "player" && (
-          <Box display="flex" alignItems="center" mt={3}>
-            <Typography variant="body2" sx={{ mr: 1 }}>
-              Don't have an account?
-            </Typography>
-
-            <Link
-              component="button"
-              variant="subtitle2"
-              onClick={() => {
-                router.push("/player/signup")
-              }}
-            >
-              Get started
-            </Link>
-          </Box>
-        )}
-      </ContentStyle>
+          <Link
+            component="button"
+            variant="subtitle2"
+            onClick={() => {
+              router.push("/player/signup")
+            }}
+          >
+            Get started
+          </Link>
+        </Box>
+      )}
     </BasicLayout>
   )
 }

@@ -1,8 +1,8 @@
 import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
-import MyAvatar from "../../../components/MyAvatar"
-import useSession from "@/hooks/useSession"
+import { DashboardLayoutAvatar } from "./Avatar"
+import useUser from "@/hooks/useUser"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -15,29 +15,14 @@ const RootStyle = styled("div")(({ theme }) => ({
   }),
 }))
 
-type Props = {
-  isCollapse: boolean | undefined
-}
-
-export default function NavbarAccount({ isCollapse }: Props) {
-  const session = useSession()
+export default function NavbarAccount() {
+  const user = useUser()
 
   return (
-    <NextLink
-      href={`/${session.user.type.toLowerCase()}/account`}
-      passHref
-      legacyBehavior
-    >
+    <NextLink href={`/${user.type}/account`} passHref legacyBehavior>
       <Link underline="none" color="inherit">
-        <RootStyle
-          sx={{
-            ...(isCollapse && {
-              bgcolor: "transparent",
-            }),
-          }}
-        >
-          <MyAvatar />
-
+        <RootStyle>
+          <DashboardLayoutAvatar />
           <Box
             sx={{
               ml: 2,
@@ -45,14 +30,10 @@ export default function NavbarAccount({ isCollapse }: Props) {
                 theme.transitions.create("width", {
                   duration: theme.transitions.duration.shorter,
                 }),
-              ...(isCollapse && {
-                ml: 0,
-                width: 0,
-              }),
             }}
           >
             <Typography variant="subtitle2" noWrap>
-              {session.user.name}
+              {user.name}
             </Typography>
           </Box>
         </RootStyle>

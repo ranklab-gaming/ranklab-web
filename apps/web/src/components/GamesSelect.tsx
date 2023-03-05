@@ -76,7 +76,6 @@ export function GamesSelect({
                   key="not-played"
                   checked={!selectedGames.find((g) => g.gameId === game.id)}
                 />
-
                 {game.skillLevels.map((skillLevel) => (
                   <FormControlLabel
                     value={skillLevel.value}
@@ -96,7 +95,6 @@ export function GamesSelect({
             </Grid>
           </Grid>
         ))}
-
         {helperText && (
           <FormHelperText sx={{ color: error ? "error.main" : undefined }}>
             {helperText}

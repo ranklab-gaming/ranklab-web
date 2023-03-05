@@ -2,7 +2,13 @@ import { api } from "@/api/client"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { MenuItem, Select, Stack, TextField } from "@mui/material"
+import {
+  InputAdornment,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
@@ -23,17 +29,7 @@ type FormValuesProps = {
   country: string
   email: string
   password: string
-  price: number
-}
-
-const defaultValues = {
-  bio: "",
-  gameId: "",
-  name: "",
-  country: "US",
-  email: "",
-  password: "",
-  price: 1000,
+  price: string
 }
 
 const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
@@ -47,7 +43,12 @@ const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
   country: Yup.string().required("Country is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
-  price: Yup.number().required("Price is required").min(100),
+  price: Yup.string()
+    .required("Price is required")
+    .matches(
+      /^\d+\.?\d{0,2}$/,
+      "Price must be a number with no more than 2 decimal places"
+    ),
 })
 
 export function CoachSignupPage({
@@ -56,6 +57,18 @@ export function CoachSignupPage({
   invitationToken,
 }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
+
+  const defaultValues = {
+    bio: "",
+    gameId: games[0].id,
+    name: "",
+    country: "US",
+    email: "",
+    password: "",
+    price: "10.00",
+  }
 
   const {
     control,
@@ -69,9 +82,6 @@ export function CoachSignupPage({
       "There was a problem creating your profile. Please try again later.",
   })
 
-  const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
-
   const createAndRedirectToDashboard = async (data: FormValuesProps) => {
     const session = await api.coachAccountCreate({
       createCoachRequest: {
@@ -81,7 +91,7 @@ export function CoachSignupPage({
         country: data.country,
         email: data.email,
         password: data.password,
-        price: data.price,
+        price: Number(data.price) * 100,
       },
       auth: { token: invitationToken },
     })
@@ -115,7 +125,7 @@ export function CoachSignupPage({
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <BasicLayout title="Coach Signup">
+    <BasicLayout title="Signup to Ranklab as a Coach">
       <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
         <Stack spacing={3}>
           <Controller
@@ -130,7 +140,6 @@ export function CoachSignupPage({
               />
             )}
           />
-
           <Controller
             name="email"
             control={control}
@@ -144,7 +153,6 @@ export function CoachSignupPage({
               />
             )}
           />
-
           <Controller
             name="password"
             control={control}
@@ -158,7 +166,6 @@ export function CoachSignupPage({
               />
             )}
           />
-
           <Controller
             name="bio"
             control={control}
@@ -171,7 +178,6 @@ export function CoachSignupPage({
               />
             )}
           />
-
           <Controller
             name="country"
             control={control}
@@ -192,34 +198,43 @@ export function CoachSignupPage({
               </TextField>
             )}
           />
-
           <Controller
             name="gameId"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Select {...field} label="Game" error={Boolean(error)}>
+              <TextField
+                {...field}
+                select
+                SelectProps={{ native: true }}
+                error={Boolean(error)}
+                helperText={error?.message}
+                label="Game"
+              >
                 {games.map((game) => (
-                  <MenuItem key={game.id} value={game.id}>
+                  <option key={game.id} value={game.id}>
                     {game.name}
-                  </MenuItem>
+                  </option>
                 ))}
-              </Select>
+              </TextField>
             )}
           />
-
           <Controller
             name="price"
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
                 {...field}
-                label="Price"
+                label="Price (per VOD)"
                 error={Boolean(error)}
                 helperText={error?.message}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
               />
             )}
           />
-
           <LoadingButton
             fullWidth
             color="info"

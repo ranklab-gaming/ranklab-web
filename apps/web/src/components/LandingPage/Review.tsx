@@ -62,7 +62,7 @@ const variantScreenRight = {
   animate: { ...common, translateX: "50%", translateY: -40, opacity: 1 },
 }
 
-export function LandingReview() {
+export function LandingPageReview() {
   const theme = useTheme()
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter

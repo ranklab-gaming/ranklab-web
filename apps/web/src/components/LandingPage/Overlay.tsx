@@ -1,6 +1,6 @@
 import { Box, BoxProps } from "@mui/material"
 
-export function Overlay(props: BoxProps) {
+export function LandingPageOverlay(props: BoxProps) {
   return (
     <Box {...props}>
       <svg

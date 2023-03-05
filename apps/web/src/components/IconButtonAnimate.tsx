@@ -2,20 +2,6 @@ import { m } from "framer-motion"
 import { Box, IconButton, IconButtonProps } from "@mui/material"
 import { PropsWithChildren } from "react"
 
-export function IconButtonAnimate({
-  children,
-  size = "medium",
-  ...other
-}: IconButtonProps) {
-  return (
-    <AnimateWrap size={size}>
-      <IconButton size={size} {...other}>
-        {children}
-      </IconButton>
-    </AnimateWrap>
-  )
-}
-
 interface AnimateWrapProp extends PropsWithChildren {
   size: "small" | "medium" | "large"
 }
@@ -53,5 +39,19 @@ function AnimateWrap({ size, children }: AnimateWrapProp) {
     >
       {children}
     </Box>
+  )
+}
+
+export function IconButtonAnimate({
+  children,
+  size = "medium",
+  ...other
+}: IconButtonProps) {
+  return (
+    <AnimateWrap size={size}>
+      <IconButton size={size} {...other}>
+        {children}
+      </IconButton>
+    </AnimateWrap>
   )
 }

@@ -53,10 +53,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async function (
 const PasswordRequestResetPage: FunctionComponent<Props> = function ({
   userType,
 }) {
-  const defaultValues = {
-    email: "",
-  }
-
+  const defaultValues = { email: "" }
   const { enqueueSnackbar } = useSnackbar()
 
   const form = useForm<FormValuesProps>({

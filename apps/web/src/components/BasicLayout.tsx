@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material"
+import { Box, Container, Typography } from "@mui/material"
 import { PropsWithChildren } from "react"
 import NextLink from "next/link"
 import { Logo } from "@/components/Logo"
@@ -22,7 +22,7 @@ export function BasicLayout({ children, title }: PropsWithChildren<Props>) {
           pt: 5,
         }}
       >
-        <NextLink href="/">
+        <NextLink href="/" style={{ textDecoration: "none" }}>
           <Box
             sx={{ display: "flex", cursor: "pointer", alignItems: "center" }}
           >
@@ -34,7 +34,10 @@ export function BasicLayout({ children, title }: PropsWithChildren<Props>) {
         </NextLink>
         <Box sx={{ flexGrow: 1 }} />
       </Container>
-      <Container maxWidth="lg" sx={{ my: 8 }}>
+      <Container maxWidth="sm" sx={{ my: 8 }}>
+        <Typography variant="h3" component="h1" paragraph>
+          {title}
+        </Typography>
         {children}
       </Container>
       <Footer />

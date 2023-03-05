@@ -1,23 +1,22 @@
-import { useRef, useState } from "react"
+import { useState, MouseEvent } from "react"
 import NextLink from "next/link"
 import { alpha } from "@mui/material/styles"
 import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
-import MyAvatar from "@/components/MyAvatar"
-import MenuPopover from "@/components/MenuPopover"
-import { IconButtonAnimate } from "@/components/animate"
-import useSession from "@/hooks/useSession"
+import { DashboardLayoutAvatar } from "./Avatar"
+import { DashboardLayoutMenuPopover } from "./MenuPopover"
+import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import useUser from "@/hooks/useUser"
 
-export default function AccountPopover() {
-  const session = useSession()
-  const logoutForm = useRef<HTMLFormElement>(null)
-  const [open, setOpen] = useState<HTMLElement | null>(null)
+export function DashboardLayoutAccountPopover() {
+  const user = useUser()
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null)
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setOpen(event.currentTarget)
+  const handleOpen = (event: MouseEvent<HTMLElement>) => {
+    setAnchor(event.currentTarget)
   }
 
   const handleClose = () => {
-    setOpen(null)
+    setAnchor(null)
   }
 
   const menuOptions = [
@@ -27,7 +26,7 @@ export default function AccountPopover() {
     },
     {
       label: "Account",
-      linkTo: `/${session.user.type.toLowerCase()}/account`,
+      linkTo: `/${user.type}/account`,
     },
   ]
 
@@ -37,7 +36,7 @@ export default function AccountPopover() {
         onClick={handleOpen}
         sx={{
           p: 0,
-          ...(open && {
+          ...(anchor && {
             "&:before": {
               zIndex: 1,
               content: "''",
@@ -50,12 +49,11 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <MyAvatar />
+        <DashboardLayoutAvatar />
       </IconButtonAnimate>
-
-      <MenuPopover
-        open={Boolean(open)}
-        anchorEl={open}
+      <DashboardLayoutMenuPopover
+        open={Boolean(anchor)}
+        anchorEl={anchor}
         onClose={handleClose}
         sx={{
           p: 0,
@@ -69,15 +67,13 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {session.user.name}
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-            {session.user.email}
+            {user.email}
           </Typography>
         </Box>
-
         <Divider sx={{ borderStyle: "dashed" }} />
-
         <Stack sx={{ p: 1 }}>
           {menuOptions.map((option) => (
             <NextLink
@@ -92,15 +88,11 @@ export default function AccountPopover() {
             </NextLink>
           ))}
         </Stack>
-
         <Divider sx={{ borderStyle: "dashed" }} />
-
-        <form method="POST" action="/api/auth/logout" ref={logoutForm}>
-          <MenuItem onClick={() => logoutForm.current?.submit()} sx={{ m: 1 }}>
-            Logout
-          </MenuItem>
-        </form>
-      </MenuPopover>
+        <NextLink href="/logout" passHref legacyBehavior>
+          <MenuItem sx={{ m: 1 }}>Logout</MenuItem>
+        </NextLink>
+      </DashboardLayoutMenuPopover>
     </>
   )
 }

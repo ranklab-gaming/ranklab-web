@@ -4,7 +4,7 @@ import { Box, Stack, Container, Typography, Button } from "@mui/material"
 import { FunctionComponent, PropsWithChildren } from "react"
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Overlay } from "./Overlay"
+import { LandingPageOverlay } from "./Overlay"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -60,12 +60,12 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
   },
 }))
 
-export function LandingHero() {
+export function LandingPageHero() {
   return (
     <>
       <RootStyle initial="initial" animate="animate">
         <HeroOverlayStyle variants={animateFade().in}>
-          <Overlay />
+          <LandingPageOverlay />
         </HeroOverlayStyle>
         <HeroImgStyle
           alt="hero"

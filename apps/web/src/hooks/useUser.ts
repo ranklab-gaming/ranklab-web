@@ -1,20 +1,12 @@
-import { CoachContext } from "@/contexts/CoachContext"
-import { PlayerContext } from "@/contexts/PlayerContext"
+import { UserContext } from "@/contexts/UserContext"
 import { useContext } from "react"
 
 export default function useUser() {
-  const coach = useContext(CoachContext)
-  const player = useContext(PlayerContext)
+  const user = useContext(UserContext)
 
-  if (coach) {
-    return coach
+  if (!user) {
+    throw new Error("useUser must be used within a UserProvider")
   }
 
-  if (player) {
-    return player
-  }
-
-  throw new Error(
-    "useUser must be used within a CoachProvider or PlayerProvider"
-  )
+  return user
 }

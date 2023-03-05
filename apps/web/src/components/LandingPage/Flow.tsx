@@ -72,7 +72,7 @@ const CardIconStyle = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(10),
 }))
 
-export function LandingFlow() {
+export function LandingPageFlow() {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"))
 

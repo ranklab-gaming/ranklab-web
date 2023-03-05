@@ -48,6 +48,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0
       react-hook-form: ^7.43.3
+      simplebar-react: ^3.2.1
       typescript: 4.9.5
       yup: ^1.0.2
     dependencies:
@@ -79,6 +80,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-hook-form: 7.43.3_react@18.2.0
+      simplebar-react: 3.2.1_react@18.2.0
       typescript: 4.9.5
       yup: 1.0.2
     devDependencies:
@@ -1426,6 +1428,10 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
+  /can-use-dom/0.1.0:
+    resolution: {integrity: sha512-ceOhN1DL7Y4O6M0j9ICgmTYziV89WMd96SvSl0REd8PMgrY0B/WBOPoed5S1KUmJqXgUXh8gzSe6E3ae27upsQ==}
+    dev: false
+
   /caniuse-lite/1.0.30001458:
     resolution: {integrity: sha512-lQ1VlUUq5q9ro9X+5gOEyH7i3vm+AYVT1WDCVB69XOZ17KZRhnZ9J0Sqz7wTHQaLBJccNCHq8/Ww5LlOIZbB0w==}
     dev: false
@@ -2623,6 +2629,10 @@ packages:
       lie: 3.1.1
     dev: false
 
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
+
   /lodash.defaults/4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
     dev: false
@@ -3512,6 +3522,22 @@ packages:
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: true
+
+  /simplebar-core/1.2.1:
+    resolution: {integrity: sha512-dgX6qDOSDM3+crxFstIKOlxyxnD3NYGRPm7CqmAtnNfFLVeadrydym5eNpduIO7aDFU/rayS6hEdrcxO0WBqnQ==}
+    dependencies:
+      can-use-dom: 0.1.0
+      lodash-es: 4.17.21
+    dev: false
+
+  /simplebar-react/3.2.1_react@18.2.0:
+    resolution: {integrity: sha512-viHQs/34ZQk956b88Kl7+VckWO8DKOhg2Hkl8kjPv2q16w+/nnOJOGhZKrpj/egMGqDpQywou2AhdRkAM0oddA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      simplebar-core: 1.2.1
+    dev: false
 
   /slice-ansi/3.0.0:
     resolution: {integrity: sha512-pSyv7bSTC7ig9Dcgbw9AuRNUb5k5V6oDudjZoMBSr13qpLBG7tB+zgCkARjq7xIUgdz5P1Qe8u+rSGdouOOIyQ==}
