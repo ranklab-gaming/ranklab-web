@@ -1,5 +1,5 @@
 import { UserType } from "@ranklab/api"
-import { getParam } from "@/server/getParam"
+import { getParam } from "@/server/utils"
 import { GetServerSideProps } from "next"
 import PasswordResetPage from "@/components/PasswordResetPage"
 

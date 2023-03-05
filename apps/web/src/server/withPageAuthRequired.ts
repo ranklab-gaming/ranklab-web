@@ -1,41 +1,38 @@
-import { ParsedUrlQuery } from "querystring"
-import { GetServerSideProps } from "next"
-import { Session, unstable_getServerSession } from "next-auth"
-import { authOptions } from "../pages/api/auth/[...nextauth]"
-import { UserType } from "@ranklab/api"
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { Coach, Player, UserType } from "@ranklab/api"
+import { createServerApi } from "@/api/server"
 import { decodeJwt } from "jose"
-import api from "../api/server"
-import { User } from "../contexts/UserContext"
+import { User } from "@/api"
 
-export type PropsWithSession<P> = P & {
-  session?: Session
+export type PropsWithUser<P, U extends UserType> = P & {
+  user: User<U>
 }
 
-interface Options<P extends { [key: string]: any }, Q extends ParsedUrlQuery> {
-  getServerSideProps?: GetServerSideProps<P, Q>
-  requiredUserType?: UserType
-  fetchUser?: boolean
-}
+type GetServerSidePropsWithUserResult<
+  P,
+  U extends UserType
+> = GetServerSidePropsResult<PropsWithUser<P, U>>
 
-export default function withPageAuthRequired<
-  P extends { [key: string]: any },
-  Q extends ParsedUrlQuery
->({
-  getServerSideProps,
-  requiredUserType,
-  fetchUser,
-}: Options<P, Q>): GetServerSideProps<PropsWithSession<P>, Q> {
-  return async (ctx) => {
-    const session = await unstable_getServerSession(
-      ctx.req,
-      ctx.res,
-      authOptions
-    )
+type GetServerSidePropsWithUser<P, U extends UserType> = (
+  ctx: GetServerSidePropsContext & { user: User<U> }
+) => Promise<GetServerSidePropsResult<P>>
+
+export function withPageUserRequired<
+  P extends { [key: string]: any } = { [key: string]: any },
+  U extends UserType = UserType
+>(userType: U, getServerSideProps: GetServerSidePropsWithUser<P, U>) {
+  return async (
+    ctx: GetServerSidePropsContext
+  ): Promise<GetServerSidePropsWithUserResult<P, U>> => {
+    const session = await getServerSession(ctx.req, ctx.res, authOptions)
+    const api = await createServerApi(ctx)
 
     if (!session) {
       return {
         redirect: {
-          destination: "/",
+          destination: "/login?user_type=" + userType,
           permanent: false,
         },
       }
@@ -44,49 +41,39 @@ export default function withPageAuthRequired<
     const jwt = decodeJwt(session.accessToken)
 
     if (!jwt.sub) {
-      throw new Error("Expected sub to be present in JWT")
+      throw new Error("sub is missing from jwt")
     }
 
-    const userType = jwt.sub.split(":")[0]
+    const sessionUserType = jwt.sub.split(":")[0]
 
-    if (requiredUserType !== undefined && userType !== requiredUserType) {
+    if (userType !== sessionUserType) {
       return {
         redirect: {
-          destination: "/",
+          destination: "/login?user_type=" + userType,
           permanent: false,
         },
       }
     }
 
-    let props = {} as P
+    let user: User<U>
 
-    if (getServerSideProps) {
-      const res = await getServerSideProps(ctx)
-
-      if ("redirect" in res || "notFound" in res) {
-        return res
-      }
-
-      props = await res.props
+    if (userType === "coach") {
+      user = (await api.coachAccountGet()) as User<U>
+    } else {
+      user = (await api.playerAccountGet()) as User<U>
     }
 
-    let user: User | null = null
+    const res = await getServerSideProps({ ...ctx, user })
 
-    if (fetchUser) {
-      const server = await api(ctx)
-
-      user =
-        userType === "coach"
-          ? { ...(await server.coachAccountGet()), type: "coach" }
-          : { ...(await server.playerAccountGet()), type: "player" }
+    if ("redirect" in res || "notFound" in res) {
+      return res
     }
 
-    return {
-      props: {
-        session,
-        user,
-        ...props,
-      },
-    }
+    const props = await res.props
+
+    return { props: { ...props, user } } as GetServerSidePropsWithUserResult<
+      P,
+      U
+    >
   }
 }

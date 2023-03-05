@@ -58,9 +58,7 @@ const config: Configuration = {
   async findAccount(_ctx, id) {
     return {
       accountId: id,
-      claims: () => ({
-        sub: id,
-      }),
+      claims: () => ({ sub: id }),
     }
   },
   cookies: {

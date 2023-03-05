@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next"
-import { getParam } from "@/server/getParam"
+import { getParam } from "@/server/utils"
 import { useEffect, useState } from "react"
 import { authenticate } from "@/auth"
 import { getSession } from "next-auth/react"

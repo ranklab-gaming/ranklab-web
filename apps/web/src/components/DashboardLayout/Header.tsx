@@ -9,8 +9,8 @@ import cssStyles from "../../../utils/cssStyles"
 // config
 import { HEADER, NAVBAR } from "../../../config"
 // components
-import Logo from "../../../components/Logo"
-import Iconify from "../../../components/Iconify"
+import Logo from "../../Logo"
+import Iconify from "../../Iconify"
 import { IconButtonAnimate } from "../../../components/animate"
 //
 import AccountPopover from "./AccountPopover"

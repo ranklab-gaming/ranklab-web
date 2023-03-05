@@ -1,8 +1,6 @@
-import { ServerApi } from "@/api/server"
 import { cookieSecret, webHost, authClientSecret } from "@/config/server"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import * as Sentry from "@sentry/nextjs"
-import { Account } from "@/api"
 
 export const authOptions: NextAuthOptions = {
   secret: cookieSecret,
@@ -16,28 +14,7 @@ export const authOptions: NextAuthOptions = {
       idToken: true,
       clientId: "web",
       clientSecret: authClientSecret,
-      async profile(profile, tokens) {
-        if (!tokens.access_token) {
-          throw new Error("access token is missing")
-        }
-
-        let user: Account
-        const userType = profile.sub.split(":")[0]
-        const api = new ServerApi(tokens.access_token)
-
-        if (userType === "coach") {
-          user = await api.coachAccountGet()
-        } else {
-          user = await api.playerAccountGet()
-        }
-
-        return {
-          id: profile.sub,
-          name: user.name,
-          email: user.email,
-          image: null,
-        }
-      },
+      profile: ({ sub }) => ({ id: sub }),
     },
   ],
   callbacks: {

@@ -1,4 +1,4 @@
-import { getParam } from "@/server/getParam"
+import { getParam } from "@/server/utils"
 import { GetServerSideProps } from "next"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/router"

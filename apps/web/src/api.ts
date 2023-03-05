@@ -1,4 +1,4 @@
-import { Coach, Player } from "@ranklab/api"
+import { Coach, Player, UserType } from "@ranklab/api"
 
 export type PaginatedResult<T> = {
   records: T[]
@@ -8,4 +8,6 @@ export type PaginatedResult<T> = {
   count: number
 }
 
-export type Account = Coach | Player
+export type User<U extends UserType = UserType> = U extends "coach"
+  ? Coach
+  : Player

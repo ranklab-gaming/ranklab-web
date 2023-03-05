@@ -1,49 +1,27 @@
-import { useState, ReactNode } from "react"
-// @mui
+import { useState, PropsWithChildren } from "react"
 import { Box, styled } from "@mui/material"
-// config
-import { HEADER, NAVBAR } from "../../config"
-//
-import DashboardHeader from "./header"
-import NavbarVertical from "./navbar/NavbarVertical"
+import DashboardHeader from "./DashboardLayout/Header"
+import NavbarVertical from "./DashboardLayout/NavbarVertical"
+import { headerStyles, navbarStyles } from "@/styles"
 
-import useCollapseDrawer from "src/hooks/useCollapseDrawer"
-// ----------------------------------------------------------------------
-
-type MainStyleProps = {
-  collapseClick: boolean
-}
-
-const MainStyle = styled("main", {
-  shouldForwardProp: (prop) => prop !== "collapseClick",
-})<MainStyleProps>(({ collapseClick, theme }) => ({
+const MainStyle = styled("main")(({ theme }) => ({
   flexGrow: 1,
-  paddingTop: HEADER.MOBILE_HEIGHT + 24,
-  paddingBottom: HEADER.MOBILE_HEIGHT + 24,
+  paddingTop: headerStyles.mobileHeight + 24,
+  paddingBottom: headerStyles.mobileHeight + 24,
   [theme.breakpoints.up("lg")]: {
     paddingLeft: 16,
     paddingRight: 16,
-    paddingTop: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
-    paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
-    width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
+    paddingTop: headerStyles.dashboardDesktopHeight + 24,
+    paddingBottom: headerStyles.dashboardDesktopHeight + 24,
+    width: `calc(100% - ${navbarStyles.dashboardWidth}px)`,
     transition: theme.transitions.create("margin-left", {
       duration: theme.transitions.duration.shorter,
-    }),
-    ...(collapseClick && {
-      marginLeft: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
     }),
   },
 }))
 
-// ----------------------------------------------------------------------
-
-type Props = {
-  children: ReactNode
-}
-
-export default function DashboardLayout({ children }: Props) {
+export default function DashboardLayout({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false)
-  const { collapseClick, isCollapse } = useCollapseDrawer()
 
   return (
     <Box
@@ -52,17 +30,12 @@ export default function DashboardLayout({ children }: Props) {
         minHeight: { lg: 1 },
       }}
     >
-      <DashboardHeader
-        isCollapse={isCollapse}
-        onOpenSidebar={() => setOpen(true)}
-      />
-
+      <DashboardHeader onOpenSidebar={() => setOpen(true)} />
       <NavbarVertical
         isOpenSidebar={open}
         onCloseSidebar={() => setOpen(false)}
       />
-
-      <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+      <MainStyle>{children}</MainStyle>
     </Box>
   )
 }

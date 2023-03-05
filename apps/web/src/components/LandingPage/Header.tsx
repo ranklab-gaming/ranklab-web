@@ -1,42 +1,20 @@
 import { styled, useTheme } from "@mui/material/styles"
 import { Box, AppBar, Toolbar, Container } from "@mui/material"
 import { useOffsetTop } from "@/hooks/useOffsetTop"
-import { styles } from "@/styles"
+import { headerStyles, styles } from "@/styles"
 import { Logo } from "@/components/Logo"
 import { Label } from "@/components/Label"
 import { SplitButton } from "@/components/SplitButton"
 import { authenticate } from "@/auth"
-import { useRouter } from "next/router"
-
-export const header = {
-  mobileHeight: 88,
-  mainDesktopHeight: 88,
-  dashboardDesktopHeight: 92,
-  dashboardDesktopOffsetHeight: 92 - 32,
-}
-
-export const navbar = {
-  baseWidth: 260,
-  dashboardWidth: 280,
-  dashboardCollapseWidth: 88,
-  dashboardItemRootHeight: 48,
-  dashboardItemSubHeight: 40,
-  dashboardItemHorizontalHeight: 32,
-}
-
-export const icon = {
-  navbarItem: 22,
-  navbarItemHorizontal: 20,
-}
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
-  height: header.mobileHeight,
+  height: headerStyles.mobileHeight,
   transition: theme.transitions.create(["height", "background-color"], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter,
   }),
   [theme.breakpoints.up("md")]: {
-    height: header.mainDesktopHeight,
+    height: headerStyles.mainDesktopHeight,
   },
 }))
 
@@ -54,9 +32,8 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
 }))
 
 export function Header() {
-  const isOffset = useOffsetTop(header.mainDesktopHeight)
+  const isOffset = useOffsetTop(headerStyles.mainDesktopHeight)
   const theme = useTheme()
-  const router = useRouter()
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: "transparent" }}>
@@ -65,7 +42,7 @@ export function Header() {
         sx={{
           ...(isOffset && {
             ...styles(theme).backgroundBlur(),
-            height: { md: header.mainDesktopHeight - 16 },
+            height: { md: headerStyles.mainDesktopHeight - 16 },
           }),
         }}
       >

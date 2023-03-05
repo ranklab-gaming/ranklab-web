@@ -28,3 +28,23 @@ export function styles(theme?: Theme) {
 export function createEmotionCache() {
   return createCache({ key: "css", prepend: true })
 }
+
+export const headerStyles = {
+  mobileHeight: 88,
+  mainDesktopHeight: 88,
+  dashboardDesktopHeight: 92,
+  dashboardDesktopOffsetHeight: 92 - 32,
+}
+
+export const navbarStyles = {
+  baseWidth: 260,
+  dashboardWidth: 280,
+  dashboardItemRootHeight: 48,
+  dashboardItemSubHeight: 40,
+  dashboardItemHorizontalHeight: 32,
+}
+
+export const iconStyles = {
+  navbarItem: 22,
+  navbarItemHorizontal: 20,
+}
