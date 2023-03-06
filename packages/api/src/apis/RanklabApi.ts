@@ -139,7 +139,7 @@ export interface PlayerReviewsUpdateRequest {
   playerUpdateReviewRequest: PlayerUpdateReviewRequest
 }
 
-export interface PlayerStripeBillingPortalLinksCreateRequest {
+export interface PlayerStripeBillingPortalSessionsCreateRequest {
   createBillingPortalSession: CreateBillingPortalSession
 }
 
@@ -1396,8 +1396,8 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
-  async playerStripeBillingPortalLinksCreateRaw(
-    requestParameters: PlayerStripeBillingPortalLinksCreateRequest,
+  async playerStripeBillingPortalSessionsCreateRaw(
+    requestParameters: PlayerStripeBillingPortalSessionsCreateRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<BillingPortalLink>> {
     if (
@@ -1406,7 +1406,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createBillingPortalSession",
-        "Required parameter requestParameters.createBillingPortalSession was null or undefined when calling playerStripeBillingPortalLinksCreate."
+        "Required parameter requestParameters.createBillingPortalSession was null or undefined when calling playerStripeBillingPortalSessionsCreate."
       )
     }
 
@@ -1432,11 +1432,11 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
-  async playerStripeBillingPortalLinksCreate(
-    requestParameters: PlayerStripeBillingPortalLinksCreateRequest,
+  async playerStripeBillingPortalSessionsCreate(
+    requestParameters: PlayerStripeBillingPortalSessionsCreateRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<BillingPortalLink> {
-    const response = await this.playerStripeBillingPortalLinksCreateRaw(
+    const response = await this.playerStripeBillingPortalSessionsCreateRaw(
       requestParameters,
       initOverrides
     )

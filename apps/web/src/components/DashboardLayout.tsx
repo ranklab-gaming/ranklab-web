@@ -28,7 +28,7 @@ interface Props {
   user: User
 }
 
-export default function DashboardLayout({
+export function DashboardLayout({
   children,
   title,
   user,

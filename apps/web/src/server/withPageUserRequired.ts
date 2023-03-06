@@ -10,7 +10,7 @@ import { createServerApi } from "@/api/server"
 import { User, userFromCoach, userFromPlayer } from "@/auth"
 import { getSessionUserType } from "./utils"
 
-export type PropsWithUser<P> = P & {
+export type PropsWithUser<P = {}> = P & {
   user: User
 }
 

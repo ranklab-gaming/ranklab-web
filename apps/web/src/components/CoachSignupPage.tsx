@@ -75,7 +75,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
       "There was a problem creating your profile. Please try again later.",
   })
 
-  const createAndRedirectToDashboard = async (data: FormValuesProps) => {
+  const createCoach = async (data: FormValuesProps) => {
     const session = await api.coachAccountCreate({
       createCoachRequest: {
         name: data.name,
@@ -101,7 +101,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
 
   return (
     <BasicLayout title="Signup to Ranklab as a Coach">
-      <form onSubmit={handleSubmit(createAndRedirectToDashboard)}>
+      <form onSubmit={handleSubmit(createCoach)}>
         <Stack spacing={3}>
           <Controller
             name="name"
