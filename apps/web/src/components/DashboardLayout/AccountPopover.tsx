@@ -19,17 +19,6 @@ export function DashboardLayoutAccountPopover() {
     setAnchor(null)
   }
 
-  const menuOptions = [
-    {
-      label: "Home",
-      linkTo: "/",
-    },
-    {
-      label: "Account",
-      linkTo: `/${user.type}/account`,
-    },
-  ]
-
   return (
     <>
       <IconButtonAnimate
@@ -66,28 +55,13 @@ export function DashboardLayoutAccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            {user.name}
-          </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+            Logged in as
+          </Typography>
+          <Typography variant="subtitle2" noWrap>
             {user.email}
           </Typography>
         </Box>
-        <Divider sx={{ borderStyle: "dashed" }} />
-        <Stack sx={{ p: 1 }}>
-          {menuOptions.map((option) => (
-            <NextLink
-              key={option.label}
-              href={option.linkTo}
-              passHref
-              legacyBehavior
-            >
-              <MenuItem key={option.label} onClick={handleClose}>
-                {option.label}
-              </MenuItem>
-            </NextLink>
-          ))}
-        </Stack>
         <Divider sx={{ borderStyle: "dashed" }} />
         <NextLink href="/logout" passHref legacyBehavior>
           <MenuItem sx={{ m: 1 }}>Logout</MenuItem>

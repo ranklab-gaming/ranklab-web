@@ -3,48 +3,9 @@ import { Box, Container, styled, Typography } from "@mui/material"
 import { DashboardLayoutHeader } from "./DashboardLayout/Header"
 import { DashboardLayoutNavbar } from "./DashboardLayout/Navbar"
 import { headerStyles, navbarStyles } from "@/styles"
-import { Iconify } from "@/components/Iconify"
 import { Page } from "@/components/Page"
 import { User } from "@/auth"
 import { UserProvider } from "@/contexts/UserContext"
-
-const icons = {
-  user: <Iconify icon={"mdi:account"} />,
-  dashboard: <Iconify icon={"mdi:view-dashboard"} />,
-  recordings: <Iconify icon={"mdi:video"} />,
-  upload: <Iconify icon={"mdi:plus"} />,
-  archive: <Iconify icon={"mdi:archive"} />,
-}
-
-export const navConfig = [
-  {
-    subheader: "",
-    items: [
-      {
-        title: "Upload VOD",
-        path: "/player/coaches",
-        icon: icons.upload,
-      },
-      { title: "Dashboard", path: "/player/dashboard", icon: icons.dashboard },
-      { title: "Archive", path: "/player/archive", icon: icons.archive },
-      {
-        title: "Recordings",
-        path: "/player/recordings",
-        icon: icons.recordings,
-      },
-    ],
-  },
-  {
-    subheader: "Settings",
-    items: [
-      {
-        title: "Account",
-        path: "/player/account",
-        icon: icons.user,
-      },
-    ],
-  },
-]
 
 const MainStyle = styled("main")(({ theme }) => ({
   flexGrow: 1,

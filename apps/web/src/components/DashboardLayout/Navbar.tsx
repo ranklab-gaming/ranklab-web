@@ -8,7 +8,9 @@ import { DashboardLayoutScrollbar } from "./Scrollbar"
 import { navbarStyles } from "@/styles"
 import NavbarAccount from "./NavbarAccount"
 import { DashboardLayoutNavSection } from "./NavSection"
-import { navConfig } from "../DashboardLayout"
+import NextLink from "next/link"
+import useUser from "@/hooks/useUser"
+import { Iconify } from "../Iconify"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -18,6 +20,14 @@ const RootStyle = styled("div")(({ theme }) => ({
     }),
   },
 }))
+
+const icons = {
+  user: <Iconify icon={"mdi:account"} />,
+  dashboard: <Iconify icon={"mdi:view-dashboard"} />,
+  recordings: <Iconify icon={"mdi:video"} />,
+  upload: <Iconify icon={"mdi:plus"} />,
+  archive: <Iconify icon={"mdi:archive"} />,
+}
 
 type Props = {
   isSidebarOpen: boolean
@@ -30,6 +40,49 @@ export function DashboardLayoutNavbar({
 }: Props) {
   const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
+  const user = useUser()
+
+  const navConfig =
+    user.type === "player"
+      ? [
+          {
+            subheader: "",
+            items: [
+              {
+                title: "Dashboard",
+                path: "/player/dashboard",
+                icon: icons.dashboard,
+              },
+              {
+                title: "Archive",
+                path: "/player/archive",
+                icon: icons.archive,
+              },
+              {
+                title: "Recordings",
+                path: "/player/recordings",
+                icon: icons.recordings,
+              },
+            ],
+          },
+        ]
+      : [
+          {
+            subheader: "",
+            items: [
+              {
+                title: "Dashboard",
+                path: "/coach/dashboard",
+                icon: icons.dashboard,
+              },
+              {
+                title: "Archive",
+                path: "/coach/archive",
+                icon: icons.archive,
+              },
+            ],
+          },
+        ]
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -62,7 +115,9 @@ export function DashboardLayoutNavbar({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Logo />
+          <NextLink href="/">
+            <Logo />
+          </NextLink>
         </Stack>
         <NavbarAccount />
       </Stack>

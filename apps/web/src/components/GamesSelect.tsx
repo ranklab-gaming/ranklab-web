@@ -28,7 +28,7 @@ export function GamesSelect({
   selectedGames,
   setGames,
   error,
-  helperText,
+  helperText = "Select games you play to get started",
 }: Props) {
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -53,7 +53,7 @@ export function GamesSelect({
             variant="subtitle1"
             color={error ? "error.main" : undefined}
           >
-            Games you play
+            Games
           </Typography>
           <Button
             variant="text"
