@@ -6,8 +6,9 @@ import { LandingPageFlow } from "./LandingPage/Flow"
 import { LandingPageHero } from "./LandingPage/Hero"
 import { LandingPageReview } from "./LandingPage/Review"
 import { Page } from "@/components/Page"
-import { useSnackbar } from "notistack"
 import { useEffect } from "react"
+import { useRouter } from "next/router"
+import { useSnackbar } from "notistack"
 
 const RootStyle = styled("div")({
   height: "100%",
@@ -19,25 +20,20 @@ const ContentStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-interface Props {
-  authError?: boolean
-}
-
-export function LandingPage({ authError }: Props) {
+export function LandingPage() {
+  const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    if (authError) {
+    if (router.query.error) {
       enqueueSnackbar(
-        "An error occurred during authentication. Please try again later.",
+        "An error occurred while logging in. Please try again later.",
         {
           variant: "error",
-          anchorOrigin: {
-            vertical: "top",
-            horizontal: "center",
-          },
         }
       )
+
+      router.push(router.pathname, router.pathname, { shallow: true })
     }
   })
 

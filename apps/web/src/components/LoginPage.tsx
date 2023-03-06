@@ -10,8 +10,7 @@ import {
   Link,
 } from "@mui/material"
 import { UserType } from "@ranklab/api"
-import { useSnackbar } from "notistack"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FormProvider, Controller } from "react-hook-form"
 import { api } from "@/api/client"
 import { Iconify } from "@/components/Iconify"
@@ -20,6 +19,8 @@ import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useForm } from "@/hooks/useForm"
 import { BasicLayout } from "@/components/BasicLayout"
+import { useLogin } from "@/hooks/useLogin"
+import { useSnackbar } from "notistack"
 
 type FormValuesProps = {
   email: string
@@ -45,7 +46,10 @@ export function LoginPage({ userType }: Props) {
 
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
+  const login = useLogin(userType)
   const { enqueueSnackbar } = useSnackbar()
+  const [shouldCheckSessionExpired, setShouldCheckSessionExpired] =
+    useState(false)
 
   const form = useForm<FormValuesProps>({
     resolver: yupResolver(CreateSessionSchema),
@@ -68,26 +72,27 @@ export function LoginPage({ userType }: Props) {
       createSessionRequest: { ...data, userType },
     })
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({ token: session.token }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    await login(session.token)
+  }
 
-    if (response.ok) {
-      const json = await response.json()
-      window.location.href = json.location
-    } else {
+  useEffect(() => {
+    setShouldCheckSessionExpired(true)
+  })
+
+  useEffect(() => {
+    if (!shouldCheckSessionExpired) return
+
+    const loginSessionExpired = localStorage.getItem("loginSessionExpired")
+
+    if (loginSessionExpired) {
+      localStorage.removeItem("loginSessionExpired")
+
       enqueueSnackbar(
-        "There was a problem logging in. Please try again later.",
+        "The session expired before you could login. Please try again.",
         { variant: "error" }
       )
-
-      router.push("/login")
     }
-  }
+  }, [shouldCheckSessionExpired])
 
   return (
     <BasicLayout title="Sign in to Ranklab">

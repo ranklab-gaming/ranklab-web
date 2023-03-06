@@ -14,13 +14,12 @@ import { FormProvider, Controller } from "react-hook-form"
 import { Iconify } from "@/components/Iconify"
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useSnackbar } from "notistack"
 import { api } from "@/api/client"
 import { GamesSelect } from "@/components/GamesSelect"
 import { useRouter } from "next/router"
 import { BasicLayout } from "@/components/BasicLayout"
-import { Page } from "@/components/Page"
 import { useForm } from "@/hooks/useForm"
+import { useLogin } from "@/hooks/useLogin"
 
 type FormValuesProps = {
   email: string
@@ -61,7 +60,7 @@ export function PlayerSignupPage({ games }: Props) {
 
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
-  const { enqueueSnackbar } = useSnackbar()
+  const login = useLogin("player")
 
   const form = useForm<FormValuesProps>({
     resolver: yupResolver(CreatePlayerSchema),
@@ -81,25 +80,7 @@ export function PlayerSignupPage({ games }: Props) {
       createPlayerRequest: data,
     })
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({ token: session.token }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (response.ok) {
-      const json = await response.json()
-      window.location.href = json.location
-    } else {
-      enqueueSnackbar(
-        "There was a problem logging in. Please try again later.",
-        { variant: "error" }
-      )
-
-      router.push("/login")
-    }
+    await login(session.token)
   }
 
   return (

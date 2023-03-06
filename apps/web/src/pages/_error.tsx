@@ -7,7 +7,6 @@ const Error = (props: ErrorProps) => {
 }
 
 Error.getInitialProps = async (ctx: NextPageContext) => {
-  console.error("Error: ", ctx.err?.message, ctx.err?.stack)
   await Sentry.captureUnderscoreErrorException(ctx)
   return NextError.getInitialProps(ctx)
 }

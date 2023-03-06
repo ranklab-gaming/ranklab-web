@@ -7,7 +7,7 @@ import {
 } from "@/config/server"
 import koa from "koa"
 import mount from "koa-mount"
-import Provider, { Configuration } from "oidc-provider"
+import Provider, { Configuration, errors } from "oidc-provider"
 import * as Sentry from "@sentry/nextjs"
 import { OidcRedisAdapter } from "@/oidc"
 
@@ -49,7 +49,7 @@ const config: Configuration = {
   },
   ttl: {
     Session: 24 * 60 * 60,
-    Interaction: 60,
+    Interaction: 30 * 60,
     AccessToken: 2 * 60 * 60,
     Grant: 24 * 60 * 60,
     IdToken: 2 * 60 * 60,
@@ -108,7 +108,16 @@ const config: Configuration = {
     Sentry.captureException(error)
     await Sentry.flush(2000)
     console.error("Error: ", error.message, error.stack)
-    ctx.redirect("/?error=Authentication")
+
+    if (error instanceof errors.OIDCProviderError) {
+      ctx.redirect(`/?error=${error.error}`)
+    }
+
+    if (error instanceof Error) {
+      ctx.redirect(`/?error=${error.name}`)
+    }
+
+    ctx.redirect(`/?error=${error}`)
   },
 }
 

@@ -1,6 +1,7 @@
 import { apiHost, authClientSecret, webHost } from "@/config/server"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
+import { errors } from "oidc-provider"
 import { oidcProvider } from "./oidc/[...path]"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
@@ -31,19 +32,27 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   grant.addResourceScope(webHost, "openid")
   const grantId = await grant.save()
 
-  const location = await oidcProvider.interactionResult(
-    req,
-    res,
-    {
-      login: {
-        accountId,
+  try {
+    const location = await oidcProvider.interactionResult(
+      req,
+      res,
+      {
+        login: {
+          accountId,
+        },
+        consent: {
+          grantId,
+        },
       },
-      consent: {
-        grantId,
-      },
-    },
-    { mergeWithLastSubmission: false }
-  )
+      { mergeWithLastSubmission: false }
+    )
 
-  return res.status(200).json({ location })
+    return res.status(200).json({ location })
+  } catch (error) {
+    if (error instanceof errors.SessionNotFound) {
+      return res.status(400).end()
+    }
+
+    throw error
+  }
 }

@@ -4,11 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { InputAdornment, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { useRouter } from "next/router"
-import { useSnackbar } from "notistack"
 import { Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
+import { useLogin } from "@/hooks/useLogin"
 
 interface Props {
   games: Game[]
@@ -51,8 +50,7 @@ export function CoachSignupPage({
   invitationToken,
 }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
-  const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
+  const login = useLogin("coach")
 
   const defaultValues = {
     bio: "",
@@ -90,25 +88,7 @@ export function CoachSignupPage({
       auth: { token: invitationToken },
     })
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({ token: session.token }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (response.ok) {
-      const json = await response.json()
-      window.location.href = json.location
-    } else {
-      enqueueSnackbar(
-        "There was a problem logging in. Please try again later.",
-        { variant: "error" }
-      )
-
-      router.push("/login")
-    }
+    await login(session.token)
   }
 
   const countries = availableCountries
