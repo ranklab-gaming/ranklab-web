@@ -1,16 +1,11 @@
-import { getParam } from "@/server/utils"
 import { useEffect, useState } from "react"
 import { authenticate } from "@/auth"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { GetServerSideProps } from "next"
+import { useParam } from "@/hooks/useParam"
 
-interface Props {
-  token: string
-}
-
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  const token = getParam(ctx, "token")
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerSession(ctx.req, ctx.res, authOptions)
 
   if (session) {
@@ -24,19 +19,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
     }
   }
 
-  if (!token) {
-    throw new Error("invitation token is missing")
-  }
-
   return {
-    props: {
-      token,
-    },
+    props: {},
   }
 }
 
-export default function ({ token }: Props) {
+export default function () {
   const [shouldAuthenticate, setShouldAuthenticate] = useState(false)
+  const token = useParam("token")
+
+  if (!token) {
+    throw new Error("token param is missing")
+  }
 
   useEffect(() => {
     setShouldAuthenticate(true)

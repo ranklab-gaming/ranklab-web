@@ -7,7 +7,7 @@ import { useState, useEffect } from "react"
 export const getServerSideProps = withSessionSsr(async (ctx) => {
   const returnUrl = getParam(ctx, "return_url") ?? undefined
 
-  ctx.req.session.returnUrl = returnUrl
+  ctx.req.session.postLogoutReturnUrl = returnUrl
   await ctx.req.session.save()
 
   return {

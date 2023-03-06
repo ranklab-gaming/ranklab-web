@@ -7,17 +7,13 @@ import { FunctionComponent } from "react"
 import { FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
-import { getParam } from "@/server/utils"
-import { GetServerSideProps } from "next"
 import { api } from "@/api/client"
 import { useForm } from "@/hooks/useForm"
+import { useRouter } from "next/router"
+import { useParam } from "@/hooks/useParam"
 
 type FormValuesProps = {
   email: string
-}
-
-interface Props {
-  userType: UserType
 }
 
 const ResetPasswordSchema = Yup.object().shape({
@@ -26,27 +22,14 @@ const ResetPasswordSchema = Yup.object().shape({
     .required("Email is required"),
 })
 
-export const getServerSideProps: GetServerSideProps<Props> = async function (
-  ctx
-) {
-  let userType = getParam(ctx, "user_type")
-
-  if (!["coach", "player"].includes(userType ?? "")) {
-    userType = "player"
-  }
-
-  return {
-    props: {
-      userType: userType as UserType,
-    },
-  }
-}
-
-const PasswordRequestResetPage: FunctionComponent<Props> = function ({
-  userType,
-}) {
+function PasswordRequestResetPage() {
   const defaultValues = { email: "" }
   const { enqueueSnackbar } = useSnackbar()
+
+  const userType = useParam("user_type", "player", [
+    "coach",
+    "player",
+  ]) as UserType
 
   const form = useForm<FormValuesProps>({
     resolver: yupResolver(ResetPasswordSchema),

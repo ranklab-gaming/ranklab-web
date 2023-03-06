@@ -8,11 +8,11 @@ import { Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
 import { useLogin } from "@/hooks/useLogin"
+import { useParam } from "@/hooks/useParam"
 
 interface Props {
   games: Game[]
   availableCountries: string[]
-  invitationToken: string
 }
 
 type FormValuesProps = {
@@ -44,13 +44,14 @@ const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
     ),
 })
 
-export function CoachSignupPage({
-  games,
-  availableCountries,
-  invitationToken,
-}: Props) {
+export function CoachSignupPage({ games, availableCountries }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
+  const invitationToken = useParam("invitation_token")
+
+  if (!invitationToken) {
+    throw new Error("invitation token param is missing")
+  }
 
   const defaultValues = {
     bio: "",

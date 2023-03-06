@@ -34,8 +34,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     res.status(response.status).json(value)
   } catch (e: unknown) {
     if (e instanceof ResponseError) {
-      res.status(e.response.status).json(await e.response.json())
-      return
+      return res.status(e.response.status).json(await e.response.json())
     }
 
     throw e

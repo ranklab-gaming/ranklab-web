@@ -110,11 +110,15 @@ const config: Configuration = {
     console.error("Error: ", error.message, error.stack)
 
     if (error instanceof errors.OIDCProviderError) {
-      ctx.redirect(`/?error=${error.error}`)
+      if (error instanceof errors.SessionNotFound) {
+        return ctx.redirect("/")
+      }
+
+      return ctx.redirect(`/?error=${error.error}`)
     }
 
     if (error instanceof Error) {
-      ctx.redirect(`/?error=${error.name}`)
+      return ctx.redirect(`/?error=${error.name}`)
     }
 
     ctx.redirect(`/?error=${error}`)
