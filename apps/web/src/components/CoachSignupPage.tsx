@@ -47,10 +47,10 @@ const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
 export function CoachSignupPage({ games, availableCountries }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
-  const invitationToken = useParam("invitation_token")
+  const invitationToken = useParam("token")
 
   if (!invitationToken) {
-    throw new Error("invitation token param is missing")
+    throw new Error("token param is missing")
   }
 
   const defaultValues = {

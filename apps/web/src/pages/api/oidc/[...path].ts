@@ -26,7 +26,7 @@ const config: Configuration = {
     url: (_ctx, interaction) => {
       const intent = interaction.params.intent
       const userType = interaction.params.user_type
-      const invitationToken = interaction.params.invitation_token
+      const invitationToken = interaction.params.token
 
       if (!["coach", "player"].includes(userType as string)) {
         throw new Error(`invalid user type: ${userType}`)
@@ -36,10 +36,7 @@ const config: Configuration = {
         throw new Error(`invalid intent: ${intent}`)
       }
 
-      const query = invitationToken
-        ? `?invitation_token=${invitationToken}`
-        : ""
-
+      const query = invitationToken ? `?token=${invitationToken}` : ""
       return `/${userType}/${intent}${query}`
     },
   },
@@ -54,7 +51,7 @@ const config: Configuration = {
     Grant: 24 * 60 * 60,
     IdToken: 2 * 60 * 60,
   },
-  extraParams: ["user_type", "intent", "invitation_token"],
+  extraParams: ["user_type", "intent", "token"],
   async findAccount(_ctx, id) {
     return {
       accountId: id,

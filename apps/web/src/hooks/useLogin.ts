@@ -16,6 +16,7 @@ export function useLogin(userType: UserType) {
     if (response.ok) {
       const json = await response.json()
       router.push(json.location)
+      return
     }
 
     if (response.status === 400) {

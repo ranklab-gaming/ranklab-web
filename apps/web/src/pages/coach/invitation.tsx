@@ -38,7 +38,7 @@ export default function () {
 
   useEffect(() => {
     if (shouldAuthenticate) {
-      authenticate("coach", "signup", { invitation_token: token })
+      authenticate("coach", "signup", { token })
     }
   }, [shouldAuthenticate])
 }
