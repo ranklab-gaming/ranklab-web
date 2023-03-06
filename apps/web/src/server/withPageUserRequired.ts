@@ -28,16 +28,7 @@ export function withPageUserRequired<P extends { [key: string]: any }>(
     const session = await getServerSession(ctx.req, ctx.res, authOptions)
     const api = await createServerApi(ctx)
 
-    if (!session) {
-      return {
-        redirect: {
-          destination: "/login?user_type=" + userType,
-          permanent: false,
-        },
-      }
-    }
-
-    if (userType !== getSessionUserType(session)) {
+    if (!session || userType !== getSessionUserType(session)) {
       return {
         redirect: {
           destination: "/login?user_type=" + userType,

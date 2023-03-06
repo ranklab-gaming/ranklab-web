@@ -9,9 +9,9 @@ import {
 } from "@mui/material"
 import { iconStyles, navbarStyles } from "@/styles"
 
-type IProps = LinkProps & ListItemButtonProps
+type BaseProps = LinkProps & ListItemButtonProps
 
-export interface DashboardLayoutListItemStyleProps extends IProps {
+export interface DashboardLayoutListItemStyleProps extends BaseProps {
   component?: ReactNode
   activeRoot?: boolean
   activeSub?: boolean
@@ -19,9 +19,13 @@ export interface DashboardLayoutListItemStyleProps extends IProps {
   roles?: string[]
 }
 
-export const DashboardLayoutListItemStyle = styled(
-  ListItemButton
-)<DashboardLayoutListItemStyleProps>(
+export const DashboardLayoutListItemStyle = styled(ListItemButton, {
+  shouldForwardProp: (prop) =>
+    prop !== "activeRoot" &&
+    prop !== "activeSub" &&
+    prop !== "subItem" &&
+    prop !== "open",
+})<DashboardLayoutListItemStyleProps>(
   ({ activeRoot, activeSub, subItem, theme }) => ({
     ...theme.typography.body2,
     position: "relative",

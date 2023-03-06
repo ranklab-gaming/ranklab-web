@@ -8,14 +8,18 @@ import {
 } from "./ListItemStyle"
 import { DashboardLayoutNavListProps } from "./NavList"
 import { Iconify } from "@/components/Iconify"
+import { forwardRef } from "react"
 
-function ListItem(props: DashboardLayoutListItemStyleProps) {
+const ListItem = forwardRef<
+  HTMLButtonElement & HTMLAnchorElement & HTMLDivElement,
+  DashboardLayoutListItemStyleProps
+>((props, ref) => {
   return (
-    <DashboardLayoutListItemStyle {...props}>
+    <DashboardLayoutListItemStyle {...props} ref={ref}>
       {props.children}
     </DashboardLayoutListItemStyle>
   )
-}
+})
 
 export type DashboardLayoutNavItemProps = {
   item: DashboardLayoutNavListProps

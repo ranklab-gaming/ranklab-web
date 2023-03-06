@@ -11,7 +11,9 @@ type RootStyleProps = {
   isOffset: boolean
 }
 
-const RootStyle = styled(AppBar)<RootStyleProps>(({ isOffset, theme }) => ({
+const RootStyle = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== "isOffset",
+})<RootStyleProps>(({ isOffset, theme }) => ({
   ...styles(theme).backgroundBlur(),
   boxShadow: "none",
   height: headerStyles.mobileHeight,
