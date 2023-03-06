@@ -7,8 +7,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import { createServerApi } from "@/api/server"
-import { decodeJwt } from "jose"
 import { User, userFromCoach, userFromPlayer } from "@/auth"
+import { getSessionUserType } from "./utils"
 
 export type PropsWithUser<P> = P & {
   user: User
@@ -37,15 +37,7 @@ export function withPageUserRequired<P extends { [key: string]: any }>(
       }
     }
 
-    const jwt = decodeJwt(session.accessToken)
-
-    if (!jwt.sub) {
-      throw new Error("sub is missing from jwt")
-    }
-
-    const sessionUserType = jwt.sub.split(":")[0]
-
-    if (userType !== sessionUserType) {
+    if (userType !== getSessionUserType(session)) {
       return {
         redirect: {
           destination: "/login?user_type=" + userType,

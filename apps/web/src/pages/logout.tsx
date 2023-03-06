@@ -1,24 +1,21 @@
+import { withSessionSsr } from "@/server/session"
 import { getParam } from "@/server/utils"
-import { GetServerSideProps } from "next"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 
-interface Props {
-  returnUrl: string | null
-}
+export const getServerSideProps = withSessionSsr(async (ctx) => {
+  const returnUrl = getParam(ctx, "return_url") ?? undefined
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const returnUrl = getParam(ctx, "return_url")
+  ctx.req.session.returnUrl = returnUrl
+  await ctx.req.session.save()
 
   return {
-    props: {
-      returnUrl,
-    },
+    props: {},
   }
-}
+})
 
-export default function ({ returnUrl }: Props) {
+export default function () {
   const router = useRouter()
   const [shouldLogout, setShouldLogout] = useState(false)
 
@@ -28,7 +25,7 @@ export default function ({ returnUrl }: Props) {
     router.push(
       "/api/oidc/session/end?client_id=web" +
         `&post_logout_redirect_uri=${encodeURIComponent(
-          returnUrl ?? window.location.origin
+          `${window.location.origin}/api/logout`
         )}`
     )
   }

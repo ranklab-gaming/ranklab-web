@@ -1,9 +1,9 @@
-import { GetServerSideProps } from "next"
 import { getParam } from "@/server/utils"
 import { useEffect, useState } from "react"
 import { authenticate } from "@/auth"
-import { getSession } from "next-auth/react"
-import { useRouter } from "next/router"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { GetServerSideProps } from "next"
 
 interface Props {
   token: string
@@ -11,6 +11,18 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const token = getParam(ctx, "token")
+  const session = await getServerSession(ctx.req, ctx.res, authOptions)
+
+  if (session) {
+    return {
+      redirect: {
+        destination: `/logout?user_type=coach&return_url=${encodeURIComponent(
+          ctx.req.url ?? "/"
+        )}`,
+        permanent: false,
+      },
+    }
+  }
 
   if (!token) {
     throw new Error("invitation token is missing")
@@ -24,27 +36,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 }
 
 export default function ({ token }: Props) {
-  const router = useRouter()
   const [shouldAuthenticate, setShouldAuthenticate] = useState(false)
 
-  const authenticateOrLogout = async () => {
-    const session = await getSession()
-
-    if (session) {
-      router.push(
-        `/logout?return_url=${encodeURIComponent(
-          window.location.pathname + window.location.search
-        )}`
-      )
-
-      return
-    }
-
-    setShouldAuthenticate(true)
-  }
-
   useEffect(() => {
-    authenticateOrLogout()
+    setShouldAuthenticate(true)
   })
 
   useEffect(() => {
