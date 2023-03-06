@@ -2,13 +2,7 @@ import { api } from "@/api/client"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import {
-  InputAdornment,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from "@mui/material"
+import { InputAdornment, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
@@ -113,7 +107,7 @@ export function CoachSignupPage({
         { variant: "error" }
       )
 
-      router.push("/")
+      router.push("/login")
     }
   }
 

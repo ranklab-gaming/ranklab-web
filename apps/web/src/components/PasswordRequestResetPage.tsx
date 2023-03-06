@@ -16,14 +16,6 @@ type FormValuesProps = {
   email: string
 }
 
-const ContentStyle = styled("div")(() => ({
-  maxWidth: "480px",
-  margin: "auto",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-}))
-
 interface Props {
   userType: UserType
 }
@@ -81,47 +73,37 @@ const PasswordRequestResetPage: FunctionComponent<Props> = function ({
 
   return (
     <BasicLayout title="Reset Your Password">
-      <ContentStyle>
-        <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
-              Reset your password
-            </Typography>
-          </Box>
-        </Stack>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={3} sx={{ maxWidth: 480 }}>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  error={!!error}
+                  helperText={error?.message}
+                  label="Email"
+                  type="email"
+                />
+              )}
+            />
+          </Stack>
 
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={3} sx={{ maxWidth: 480 }}>
-              <Controller
-                name="email"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!error}
-                    helperText={error?.message}
-                    label="Email"
-                    type="email"
-                  />
-                )}
-              />
-            </Stack>
-
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-              sx={{ maxWidth: 480, mt: 2 }}
-            >
-              Reset Password
-            </LoadingButton>
-          </form>
-        </FormProvider>
-      </ContentStyle>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            sx={{ maxWidth: 480, mt: 2 }}
+          >
+            Reset Password
+          </LoadingButton>
+        </form>
+      </FormProvider>
     </BasicLayout>
   )
 }

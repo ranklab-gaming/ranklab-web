@@ -8,7 +8,6 @@ import {
   IconButton,
   Box,
   Link,
-  styled,
 } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
@@ -86,7 +85,7 @@ export function LoginPage({ userType }: Props) {
         { variant: "error" }
       )
 
-      router.push("/")
+      router.push("/login")
     }
   }
 

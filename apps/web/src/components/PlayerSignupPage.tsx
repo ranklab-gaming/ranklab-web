@@ -16,7 +16,7 @@ import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useSnackbar } from "notistack"
 import { api } from "@/api/client"
-import { GamesSelect } from "./GamesSelect"
+import { GamesSelect } from "@/components/GamesSelect"
 import { useRouter } from "next/router"
 import { BasicLayout } from "@/components/BasicLayout"
 import { Page } from "@/components/Page"
@@ -98,7 +98,7 @@ export function PlayerSignupPage({ games }: Props) {
         { variant: "error" }
       )
 
-      router.push("/")
+      router.push("/login")
     }
   }
 

@@ -104,7 +104,7 @@ interface Props extends PopoverProps {
   disabledArrow?: boolean
 }
 
-export function DashboardLayoutMenuPopover({
+export function MenuPopover({
   children,
   arrow = "top-right",
   disabledArrow,

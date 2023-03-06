@@ -2,7 +2,7 @@ import { animateBounce } from "@/animate/bounce"
 import { Container, Typography, Button, Box, styled } from "@mui/material"
 import { m } from "framer-motion"
 import { BasicLayout } from "@/components/BasicLayout"
-import { MotionContainer } from "./MotionContainer"
+import { MotionContainer } from "@/components/MotionContainer"
 import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -15,7 +15,7 @@ const RootStyle = styled("div")(({ theme }) => ({
 
 export function NotFoundPage() {
   return (
-    <BasicLayout title="Not Found">
+    <BasicLayout title="Not Found" showTitle={false}>
       <RootStyle>
         <Container component={MotionContainer}>
           <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>

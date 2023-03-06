@@ -10,7 +10,7 @@ import {
 import { Game, Review, ReviewState } from "@ranklab/api"
 import React, { FunctionComponent, useState, MouseEvent } from "react"
 import NextLink from "next/link"
-import { Label } from "./Label"
+import { Label } from "@/components/Label"
 import { PaginatedResult } from "@/api"
 import { api } from "@/api/client"
 import useUser from "@/hooks/useUser"

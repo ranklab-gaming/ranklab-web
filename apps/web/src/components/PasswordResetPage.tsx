@@ -91,45 +91,36 @@ const PasswordResetPage: FunctionComponent<Props> = function ({
 
   return (
     <BasicLayout title="Reset Your Password">
-      <ContentStyle>
-        <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h4" gutterBottom>
-              Change your password
-            </Typography>
-          </Box>
-        </Stack>
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={3} sx={{ maxWidth: 480 }}>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    error={!!error}
-                    helperText={error?.message}
-                    label="Password"
-                    type="password"
-                  />
-                )}
-              />
-            </Stack>
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-              sx={{ maxWidth: 480, mt: 2 }}
-            >
-              Change Password
-            </LoadingButton>
-          </form>
-        </FormProvider>
-      </ContentStyle>
+      <FormProvider {...form}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={3} sx={{ maxWidth: 480 }}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  fullWidth
+                  error={!!error}
+                  helperText={error?.message}
+                  label="Password"
+                  type="password"
+                />
+              )}
+            />
+          </Stack>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            sx={{ maxWidth: 480, mt: 2 }}
+          >
+            Change Password
+          </LoadingButton>
+        </form>
+      </FormProvider>
     </BasicLayout>
   )
 }

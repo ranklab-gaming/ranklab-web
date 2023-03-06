@@ -3,7 +3,7 @@ import NextLink from "next/link"
 import { alpha } from "@mui/material/styles"
 import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
 import { DashboardLayoutAvatar } from "./Avatar"
-import { DashboardLayoutMenuPopover } from "./MenuPopover"
+import { MenuPopover } from "@/components/MenuPopover"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import useUser from "@/hooks/useUser"
 
@@ -51,7 +51,7 @@ export function DashboardLayoutAccountPopover() {
       >
         <DashboardLayoutAvatar />
       </IconButtonAnimate>
-      <DashboardLayoutMenuPopover
+      <MenuPopover
         open={Boolean(anchor)}
         anchorEl={anchor}
         onClose={handleClose}
@@ -92,7 +92,7 @@ export function DashboardLayoutAccountPopover() {
         <NextLink href="/logout" passHref legacyBehavior>
           <MenuItem sx={{ m: 1 }}>Logout</MenuItem>
         </NextLink>
-      </DashboardLayoutMenuPopover>
+      </MenuPopover>
     </>
   )
 }

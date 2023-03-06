@@ -3,8 +3,8 @@ import { Box, Stack, AppBar, Toolbar } from "@mui/material"
 import { headerStyles, navbarStyles, styles } from "@/styles"
 import { useOffsetTop } from "@/hooks/useOffsetTop"
 import useResponsive from "@/hooks/useResponsive"
-import { IconButtonAnimate } from "../IconButtonAnimate"
-import { Iconify } from "../Iconify"
+import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { Iconify } from "@/components/Iconify"
 import { DashboardLayoutAccountPopover } from "./AccountPopover"
 
 type RootStyleProps = {

@@ -8,9 +8,14 @@ import { Page } from "@/components/Page"
 
 interface Props {
   title: string
+  showTitle?: boolean
 }
 
-export function BasicLayout({ children, title }: PropsWithChildren<Props>) {
+export function BasicLayout({
+  children,
+  title,
+  showTitle = true,
+}: PropsWithChildren<Props>) {
   return (
     <Page title={title}>
       <Container
@@ -35,9 +40,11 @@ export function BasicLayout({ children, title }: PropsWithChildren<Props>) {
         <Box sx={{ flexGrow: 1 }} />
       </Container>
       <Container maxWidth="sm" sx={{ my: 8 }}>
-        <Typography variant="h3" component="h1" paragraph>
-          {title}
-        </Typography>
+        {showTitle && (
+          <Typography variant="h3" component="h1" paragraph>
+            {title}
+          </Typography>
+        )}
         {children}
       </Container>
       <Footer />

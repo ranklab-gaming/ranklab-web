@@ -19,7 +19,11 @@ const config: Configuration = {
       grant_types: ["refresh_token", "authorization_code"],
       token_endpoint_auth_method: "client_secret_post",
       redirect_uris: [`${webHost}/api/auth/callback/ranklab`],
-      post_logout_redirect_uris: [`${webHost}`, `${webHost}/coach/invitation`],
+      post_logout_redirect_uris: [
+        `${webHost}`,
+        `${webHost}/coach/invitation`,
+        `${webHost}/login`,
+      ],
     },
   ],
   interactions: {

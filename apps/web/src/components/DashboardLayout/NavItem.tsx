@@ -7,7 +7,7 @@ import {
   DashboardLayoutListItemStyleProps,
 } from "./ListItemStyle"
 import { DashboardLayoutNavListProps } from "./NavList"
-import { Iconify } from "../Iconify"
+import { Iconify } from "@/components/Iconify"
 
 function ListItem(props: DashboardLayoutListItemStyleProps) {
   return (

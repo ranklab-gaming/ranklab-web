@@ -1,7 +1,6 @@
 import { PaginatedResult } from "@/api"
 import { createServerApi } from "@/api/server"
-import DashboardLayout from "@/components/DashboardLayout"
-import { ReviewList } from "@/components/ReviewList"
+import { CoachDashboardPage } from "@/components/CoachDashboardPage"
 import {
   PropsWithUser,
   withPageUserRequired,
@@ -37,9 +36,5 @@ export default function DashboardPage({
   games,
   user,
 }: PropsWithUser<Props>) {
-  return (
-    <DashboardLayout title="Dashboard" user={user}>
-      <ReviewList reviews={reviews} games={games} />
-    </DashboardLayout>
-  )
+  return <CoachDashboardPage user={user} reviews={reviews} games={games} />
 }
