@@ -5,7 +5,7 @@ import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
 import { DashboardLayoutAvatar } from "./Avatar"
 import { MenuPopover } from "@/components/MenuPopover"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 
 export function DashboardLayoutAccountPopover() {
   const user = useUser()

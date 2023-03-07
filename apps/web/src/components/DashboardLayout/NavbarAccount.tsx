@@ -2,7 +2,7 @@ import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
 import { DashboardLayoutAvatar } from "./Avatar"
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -15,7 +15,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   }),
 }))
 
-export default function NavbarAccount() {
+export function NavbarAccount() {
   const user = useUser()
 
   return (

@@ -2,7 +2,7 @@ import { apiHost, authClientSecret, webHost } from "@/config/server"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
 import { errors } from "oidc-provider"
-import { oidcProvider } from "./oidc/[...path]"
+import { oidcProvider } from "@/pages/api/oidc/[...path]"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

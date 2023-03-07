@@ -1,11 +1,10 @@
-import { PaginatedResult } from "@/api"
 import { createServerApi } from "@/api/server"
 import { CoachDashboardPage } from "@/components/CoachDashboardPage"
 import { PropsWithUser, withUserSsr } from "@/auth/server"
-import { Game, Review } from "@ranklab/api"
+import { Game, PaginatedResultForReview } from "@ranklab/api"
 
 interface Props {
-  reviews: PaginatedResult<Review>
+  reviews: PaginatedResultForReview
   games: Game[]
 }
 

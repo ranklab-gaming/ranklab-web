@@ -1,7 +1,7 @@
 import { UserContext } from "@/contexts/UserContext"
 import { useContext } from "react"
 
-export default function usePlayer() {
+export function usePlayer() {
   const user = useContext(UserContext)
 
   if (!user || user.type !== "player") {

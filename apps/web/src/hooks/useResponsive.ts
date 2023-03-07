@@ -7,7 +7,7 @@ type Key = Breakpoint | number
 type Start = Breakpoint | number
 type End = Breakpoint | number
 
-export default function useResponsive(
+export function useResponsive(
   query: Query,
   key?: Key,
   start?: Start,

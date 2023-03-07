@@ -3,7 +3,7 @@ import {
   Avatar as MuiAvatar,
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 
 type AvatarColor =
   | "default"

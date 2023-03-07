@@ -1,6 +1,6 @@
 import { m, MotionProps } from "framer-motion"
 import { Box, BoxProps } from "@mui/material"
-import useResponsive from "@/hooks/useResponsive"
+import { useResponsive } from "@/hooks/useResponsive"
 import { animateContainer } from "@/animate/container"
 import { PropsWithChildren } from "react"
 

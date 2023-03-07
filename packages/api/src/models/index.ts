@@ -165,19 +165,19 @@ export interface Comment {
 /**
  *
  * @export
- * @interface CreateAccountLinkMutation
+ * @interface CreateAccountLinkRequest
  */
-export interface CreateAccountLinkMutation {
+export interface CreateAccountLinkRequest {
   /**
    *
    * @type {string}
-   * @memberof CreateAccountLinkMutation
+   * @memberof CreateAccountLinkRequest
    */
   refreshUrl: string
   /**
    *
    * @type {string}
-   * @memberof CreateAccountLinkMutation
+   * @memberof CreateAccountLinkRequest
    */
   returnUrl: string
 }
@@ -340,37 +340,37 @@ export interface CreateRecordingRequest {
 /**
  *
  * @export
- * @interface CreateReviewMutation
+ * @interface CreateReviewRequest
  */
-export interface CreateReviewMutation {
+export interface CreateReviewRequest {
   /**
    *
    * @type {string}
-   * @memberof CreateReviewMutation
+   * @memberof CreateReviewRequest
    */
   recordingId: string
   /**
    *
    * @type {string}
-   * @memberof CreateReviewMutation
+   * @memberof CreateReviewRequest
    */
   title: string
   /**
    *
    * @type {string}
-   * @memberof CreateReviewMutation
+   * @memberof CreateReviewRequest
    */
   notes: string
   /**
    *
    * @type {string}
-   * @memberof CreateReviewMutation
+   * @memberof CreateReviewRequest
    */
   gameId: string
   /**
    *
    * @type {string}
-   * @memberof CreateReviewMutation
+   * @memberof CreateReviewRequest
    */
   coachId: string
 }

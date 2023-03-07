@@ -41,14 +41,11 @@ export function DashboardLayoutNavSection({
 }: NavSectionProps) {
   return (
     <Box {...other}>
-      {navConfig.map((group) => (
-        <List key={group.subheader} disablePadding sx={{ px: 2 }}>
+      {navConfig.map((group, index) => (
+        <List key={index} disablePadding sx={{ px: 2 }}>
           <ListSubheaderStyle>{group.subheader}</ListSubheaderStyle>
-          {group.items.map((list) => (
-            <DashboardLayoutNavListRoot
-              key={list.title + list.path}
-              list={list}
-            />
+          {group.items.map((list, index) => (
+            <DashboardLayoutNavListRoot key={index} list={list} />
           ))}
         </List>
       ))}

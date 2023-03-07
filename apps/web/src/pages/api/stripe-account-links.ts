@@ -6,7 +6,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const api = await createServerApi({ req, res })
 
   const accountLink = await api.coachStripeAccountLinksCreate({
-    createAccountLinkMutation: {
+    createAccountLinkRequest: {
       refreshUrl: `${webHost}/api/stripe-account-links`,
       returnUrl: `${webHost}/coach/dashboard`,
     },

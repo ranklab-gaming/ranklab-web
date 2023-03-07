@@ -12,8 +12,8 @@ import { Game, PlayerGame } from "@ranklab/api"
 import { MenuPopover } from "@/components/MenuPopover"
 import { useRef, useState } from "react"
 import { breakpoints } from "@/theme/breakpoints"
-import { IconButtonAnimate } from "./IconButtonAnimate"
-import { Iconify } from "./Iconify"
+import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { Iconify } from "@/components/Iconify"
 
 interface Props {
   games: Game[]

@@ -20,14 +20,14 @@ import type {
   CoachInvitationParams,
   CoachUpdateReviewRequest,
   Comment,
-  CreateAccountLinkMutation,
+  CreateAccountLinkRequest,
   CreateBillingPortalSession,
   CreateCoachRequest,
   CreateCommentRequest,
   CreateLoginLink,
   CreatePlayerRequest,
   CreateRecordingRequest,
-  CreateReviewMutation,
+  CreateReviewRequest,
   CreateSessionRequest,
   CreateSessionResponse,
   Game,
@@ -89,7 +89,7 @@ export interface CoachReviewsUpdateRequest {
 }
 
 export interface CoachStripeAccountLinksCreateRequest {
-  createAccountLinkMutation: CreateAccountLinkMutation
+  createAccountLinkRequest: CreateAccountLinkRequest
 }
 
 export interface CoachStripeLoginLinksCreateRequest {
@@ -122,7 +122,7 @@ export interface PlayerRecordingsGetRequest {
 }
 
 export interface PlayerReviewsCreateRequest {
-  createReviewMutation: CreateReviewMutation
+  createReviewRequest: CreateReviewRequest
 }
 
 export interface PlayerReviewsGetRequest {
@@ -663,12 +663,12 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<AccountLink>> {
     if (
-      requestParameters.createAccountLinkMutation === null ||
-      requestParameters.createAccountLinkMutation === undefined
+      requestParameters.createAccountLinkRequest === null ||
+      requestParameters.createAccountLinkRequest === undefined
     ) {
       throw new runtime.RequiredError(
-        "createAccountLinkMutation",
-        "Required parameter requestParameters.createAccountLinkMutation was null or undefined when calling coachStripeAccountLinksCreate."
+        "createAccountLinkRequest",
+        "Required parameter requestParameters.createAccountLinkRequest was null or undefined when calling coachStripeAccountLinksCreate."
       )
     }
 
@@ -684,7 +684,7 @@ export class RanklabApi extends runtime.BaseAPI {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters.createAccountLinkMutation,
+        body: requestParameters.createAccountLinkRequest,
       },
       initOverrides
     )
@@ -1203,12 +1203,12 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<Review>> {
     if (
-      requestParameters.createReviewMutation === null ||
-      requestParameters.createReviewMutation === undefined
+      requestParameters.createReviewRequest === null ||
+      requestParameters.createReviewRequest === undefined
     ) {
       throw new runtime.RequiredError(
-        "createReviewMutation",
-        "Required parameter requestParameters.createReviewMutation was null or undefined when calling playerReviewsCreate."
+        "createReviewRequest",
+        "Required parameter requestParameters.createReviewRequest was null or undefined when calling playerReviewsCreate."
       )
     }
 
@@ -1224,7 +1224,7 @@ export class RanklabApi extends runtime.BaseAPI {
         method: "POST",
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters.createReviewMutation,
+        body: requestParameters.createReviewRequest,
       },
       initOverrides
     )

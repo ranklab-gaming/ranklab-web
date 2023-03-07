@@ -7,13 +7,17 @@ import {
   TableBody,
   TablePagination,
 } from "@mui/material"
-import { Game, Review, ReviewState } from "@ranklab/api"
+import {
+  Game,
+  PaginatedResultForReview,
+  Review,
+  ReviewState,
+} from "@ranklab/api"
 import React, { FunctionComponent, useState, MouseEvent } from "react"
 import NextLink from "next/link"
 import { Label } from "@/components/Label"
-import { PaginatedResult } from "@/api"
 import { api } from "@/api/client"
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,
@@ -64,7 +68,7 @@ const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
 }
 
 interface Props {
-  reviews: PaginatedResult<Review>
+  reviews: PaginatedResultForReview
   games: Game[]
   queryParams?: {
     archived: boolean

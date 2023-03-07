@@ -1,7 +1,7 @@
 import { UserContext } from "@/contexts/UserContext"
 import { useContext } from "react"
 
-export default function useUser() {
+export function useUser() {
   const user = useContext(UserContext)
 
   if (!user) {

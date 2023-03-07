@@ -1,5 +1,4 @@
-import { Coach, Player, UserType } from "@ranklab/api"
-import { signIn } from "next-auth/react"
+import { Coach, Player } from "@ranklab/api"
 
 interface CoachUser extends Coach {
   type: "coach"

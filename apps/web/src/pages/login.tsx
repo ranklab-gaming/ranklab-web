@@ -3,7 +3,7 @@ import { UserType } from "@ranklab/api"
 import { GetServerSideProps } from "next"
 import { getServerSession } from "next-auth"
 import { useState, useEffect } from "react"
-import { authOptions } from "./api/auth/[...nextauth]"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 
 interface Props {
   userType: UserType

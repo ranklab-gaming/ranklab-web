@@ -1,14 +1,13 @@
-import { PaginatedResult } from "@/api"
 import type { PropsWithUser } from "@/auth/server"
-import { Review, Game } from "@ranklab/api"
+import { Game, PaginatedResultForReview } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewList } from "@/components/ReviewList"
-import useCoach from "@/hooks/useCoach"
+import { useCoach } from "@/hooks/useCoach"
 import { Alert, Box, Button, Paper, Typography } from "@mui/material"
 import NextLink from "next/link"
 
 interface Props {
-  reviews: PaginatedResult<Review>
+  reviews: PaginatedResultForReview
   games: Game[]
 }
 
