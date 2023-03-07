@@ -45,10 +45,10 @@ const config: Configuration = {
     required: () => true,
   },
   ttl: {
-    Session: 24 * 60 * 60,
-    Interaction: 30 * 60,
+    Session: 14 * 24 * 60 * 60,
+    Interaction: 20 * 60,
     AccessToken: 2 * 60 * 60,
-    Grant: 24 * 60 * 60,
+    Grant: 2 * 60 * 60,
     IdToken: 2 * 60 * 60,
   },
   extraParams: ["user_type", "intent", "token"],
