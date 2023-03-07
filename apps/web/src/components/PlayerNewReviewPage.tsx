@@ -20,7 +20,7 @@ import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
 import { useForm } from "@/hooks/useForm"
 import { VideoPlayer } from "@/components/VideoPlayer"
-import { Paper } from "@mui/material"
+import { Editor } from "./Editor"
 
 type FormValuesProps = {
   title: string
@@ -139,14 +139,12 @@ export function PlayerNewReviewPage({
               name="notes"
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <></>
-                // <Editor
-                //   value={field.value}
-                //   onChange={field.onChange}
-                //   onBlur={field.onBlur}
-                //   error={Boolean(error)}
-                //   simple
-                // />
+                <Editor
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={Boolean(error)}
+                />
               )}
             />
             {Boolean(errors.notes) && (
@@ -163,6 +161,7 @@ export function PlayerNewReviewPage({
           variant="contained"
           loading={isSubmitting}
           disabled={isSubmitting}
+          sx={{ mt: 3 }}
         >
           Submit VOD for Review
         </LoadingButton>

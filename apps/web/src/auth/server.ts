@@ -1,5 +1,5 @@
 import { createServerApi } from "@/api/server"
-import { userFromCoach, userFromPlayer, User } from "@/auth"
+import { userFromCoach, userFromPlayer, User } from "../auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import {
