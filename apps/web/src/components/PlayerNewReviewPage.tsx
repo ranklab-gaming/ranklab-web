@@ -13,6 +13,7 @@ import {
   MenuItem,
   Typography,
   FormHelperText,
+  Box,
 } from "@mui/material"
 import { Game, Recording, PaginatedResultForCoach } from "@ranklab/api"
 import { useRouter } from "next/router"
@@ -73,7 +74,11 @@ export function PlayerNewReviewPage({
 
   const selectedCoachId = watch("coachId")
 
-  const selectedCoach = coaches.records.find(
+  const availableCoaches = coaches.records.filter((coach) =>
+    games.map((game) => game.id).includes(coach.gameId)
+  )
+
+  const selectedCoach = availableCoaches.find(
     (coach) => coach.id === selectedCoachId
   )
 
@@ -96,7 +101,7 @@ export function PlayerNewReviewPage({
   return (
     <DashboardLayout user={user} title="Request a Review">
       <form onSubmit={handleSubmit(createReview)}>
-        <Stack spacing={3}>
+        <Stack spacing={3} mt={4}>
           <Controller
             name="title"
             control={control}
@@ -105,74 +110,54 @@ export function PlayerNewReviewPage({
                 {...field}
                 label="Title"
                 error={Boolean(error)}
-                helperText={error?.message}
+                helperText={
+                  error
+                    ? error.message
+                    : "Write a short title to remember your review"
+                }
               />
-            )}
-          />
-          <Controller
-            name="gameId"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <FormControl fullWidth>
-                <InputLabel>Game</InputLabel>
-                <Select
-                  label="Game"
-                  onChange={field.onChange}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  error={Boolean(error)}
-                >
-                  {games.map((game) => (
-                    <MenuItem key={game.id} value={game.id}>
-                      {game.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
             )}
           />
           <Controller
             name="coachId"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <FormControl fullWidth>
-                <InputLabel>Coach</InputLabel>
-                <CoachesSelect
-                  onChange={field.onChange}
-                  value={field.value}
-                  onBlur={field.onBlur}
-                  error={Boolean(error)}
-                  coaches={coaches.records}
-                />
-              </FormControl>
+              <CoachesSelect
+                onChange={field.onChange}
+                value={field.value}
+                onBlur={field.onBlur}
+                error={Boolean(error)}
+                coaches={availableCoaches}
+                games={games}
+                helperText={
+                  error
+                    ? error.message
+                    : "The coach you want to assign the review to"
+                }
+              />
             )}
           />
-          <div>
-            <Typography
-              variant="subtitle2"
-              sx={{ color: "text.secondary" }}
-              gutterBottom
-            >
-              Notes
-            </Typography>
-            <Controller
-              name="notes"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <Editor
-                  value={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  error={Boolean(error)}
-                />
-              )}
-            />
-            {Boolean(errors.notes) && (
-              <FormHelperText error sx={{ px: 2, textTransform: "capitalize" }}>
-                {errors.notes?.message}
-              </FormHelperText>
-            )}
-          </div>
+          <Controller
+            name="notes"
+            control={control}
+            render={({ field, fieldState: { error } }) => {
+              return (
+                <Box>
+                  <Editor
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={Boolean(error)}
+                  />
+                  <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                    {error
+                      ? error.message
+                      : "Any notes you want to add for the coach"}
+                  </FormHelperText>
+                </Box>
+              )
+            }}
+          />
         </Stack>
         <LoadingButton
           color="info"

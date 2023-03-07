@@ -36,19 +36,16 @@ function getAvatarColor(name: string) {
 
 interface AvatarProps extends MuiAvatarProps {
   color?: AvatarColor
-  user?: User
+  user?: {
+    name: string
+  }
 }
 
-export function Avatar({
-  color = "default",
-  children,
-  user,
-  sx,
-  ...other
-}: AvatarProps) {
+export function Avatar({ children, user, sx, ...other }: AvatarProps) {
   const theme = useTheme()
   const { name } = user || useUser()
   const initial = getInitial(name)
+  const color = getAvatarColor(name)
 
   if (color === "default") {
     return (
