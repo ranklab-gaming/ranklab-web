@@ -1,10 +1,7 @@
 import { PaginatedResult } from "@/api"
 import { createServerApi } from "@/api/server"
 import { PlayerDashboardPage } from "@/components/PlayerDashboardPage"
-import {
-  PropsWithUser,
-  withPageUserRequired,
-} from "@/server/withPageUserRequired"
+import { PropsWithUser, withUserSsr } from "@/auth/server"
 import { Game, Review } from "@ranklab/api"
 
 interface Props {
@@ -12,7 +9,7 @@ interface Props {
   games: Game[]
 }
 
-export const getServerSideProps = withPageUserRequired<Props>(
+export const getServerSideProps = withUserSsr<Props>(
   "player",
   async function (ctx) {
     const api = await createServerApi(ctx)

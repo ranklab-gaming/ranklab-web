@@ -5,7 +5,7 @@ import { headerStyles, styles } from "@/styles"
 import { Logo } from "@/components/Logo"
 import { Label } from "@/components/Label"
 import { SplitButton } from "@/components/SplitButton"
-import { authenticate } from "@/auth"
+import { authenticate } from "@/auth/client"
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   height: headerStyles.mobileHeight,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { authenticate } from "@/auth"
+import { authenticate } from "@/auth/client"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { GetServerSideProps } from "next"

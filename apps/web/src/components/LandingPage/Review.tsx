@@ -3,7 +3,7 @@ import { Box, Grid, Button, Container, Typography } from "@mui/material"
 import { m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { authenticate } from "@/auth"
+import { authenticate } from "@/auth/client"
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(24, 0),

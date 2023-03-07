@@ -1,5 +1,5 @@
 import { PaginatedResult } from "@/api"
-import type { PropsWithUser } from "@/server/withPageUserRequired"
+import type { PropsWithUser } from "@/auth/server"
 import { Review, Game } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewList } from "@/components/ReviewList"

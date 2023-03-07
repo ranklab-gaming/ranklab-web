@@ -34,15 +34,3 @@ export function playerFromUser(user: User): Player {
 
   throw new Error("user is not a player")
 }
-
-export async function authenticate(
-  userType: UserType,
-  intent: "login" | "signup" = "login",
-  params: Record<string, string | null> = {}
-) {
-  return signIn(
-    "ranklab",
-    { callbackUrl: `/${userType}/dashboard` },
-    { user_type: userType, intent, ...params }
-  )
-}

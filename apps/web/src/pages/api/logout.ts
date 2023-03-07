@@ -1,16 +1,12 @@
 import { webHost } from "@/config/server"
-import { withSessionApiRoute } from "@/server/session"
+import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
 export default withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const returnUrl = req.session.postLogoutReturnUrl
-
-  if (!returnUrl) {
-    return res.redirect(307, "/")
-  }
+  const returnUrl = req.session.postLogoutReturnUrl ?? "/"
 
   req.session.postLogoutReturnUrl = undefined
   await req.session.save()

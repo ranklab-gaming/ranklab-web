@@ -1,6 +1,8 @@
 import { cookieSecret, webHost, authClientSecret } from "@/config/server"
 import NextAuth, { NextAuthOptions } from "next-auth"
 import * as Sentry from "@sentry/nextjs"
+import { UserType } from "@ranklab/api"
+import { decodeJwt } from "jose"
 
 export const authOptions: NextAuthOptions = {
   secret: cookieSecret,
@@ -19,11 +21,34 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string
+      session.accessToken = token.accessToken
+      session.userType = token.userType
+      session.payload = token.payload
+
       return session
     },
     async jwt({ token, account }) {
-      token.accessToken = account ? account.access_token : token.accessToken
+      if (account) {
+        if (!account.access_token) {
+          throw new Error("access_token is missing from account")
+        }
+
+        token.accessToken = account.access_token
+        token.payload = decodeJwt(token.accessToken)
+
+        if (!token.payload.sub) {
+          throw new Error("sub is missing from jwt")
+        }
+
+        const userType = token.payload.sub.split(":")[0]
+
+        if (!["coach", "player"].includes(userType)) {
+          throw new Error("invalid user type in jwt: " + token.payload.sub)
+        }
+
+        token.userType = userType as UserType
+      }
+
       return token
     },
   },

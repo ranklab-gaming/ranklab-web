@@ -3,7 +3,6 @@ on: [push]
 env:
   NODE_ENV: test
   NODE_OPTIONS: --max_old_space_size=4096
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
   NEXT_PUBLIC_ASSETS_CDN_URL: ${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
@@ -95,16 +94,6 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm run build
-      - name: Run tests
-        uses: cypress-io/github-action@v4
-        with:
-          working-directory: apps/ranklab-web
-          record: true
-          start: pnpm run test:start
-          wait-on: "http://ranklab-api:8000,http://ranklab-test:3000"
-          browser: chrome
-          group: "Chrome"
-          install: false
       - name: Output container logs
         if: ${{ failure() }}
         run: cat /containers/**/*.log

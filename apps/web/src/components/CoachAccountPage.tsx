@@ -14,7 +14,7 @@ import {
 import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
 import * as Yup from "yup"
-import { PropsWithUser } from "@/server/withPageUserRequired"
+import { PropsWithUser } from "@/auth/server"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useSnackbar } from "notistack"
 import NextLink from "next/link"

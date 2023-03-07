@@ -1,5 +1,4 @@
-import { authenticate } from "@/auth"
-import { getParam, getSessionUserType } from "@/server/utils"
+import { authenticate } from "@/auth/client"
 import { UserType } from "@ranklab/api"
 import { GetServerSideProps } from "next"
 import { getServerSession } from "next-auth"
@@ -11,14 +10,14 @@ interface Props {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  let userType = getParam(ctx, "user_type")
+  let userType = ctx.query.user_type as UserType
   const session = await getServerSession(ctx.req, ctx.res, authOptions)
 
-  if (!["coach", "player"].includes(userType ?? "")) {
+  if (!["coach", "player"].includes(userType)) {
     userType = "player"
   }
 
-  if (session && getSessionUserType(session) !== userType) {
+  if (session && session.userType !== userType) {
     return {
       redirect: {
         destination: `/logout?user_type=${userType}&return_url=${encodeURIComponent(

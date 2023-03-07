@@ -1,34 +1,22 @@
-import { withSessionSsr } from "@/server/session"
-import { getParam } from "@/server/utils"
-import { signOut } from "next-auth/react"
-import { useRouter } from "next/router"
+import { withSessionSsr } from "@/session"
+import { logout } from "@/auth/client"
 import { useState, useEffect } from "react"
 
-export const getServerSideProps = withSessionSsr(async (ctx) => {
-  const returnUrl = getParam(ctx, "return_url") ?? undefined
+export const getServerSideProps = withSessionSsr(
+  async ({ req: { session }, query: { return_url } }) => {
+    session.postLogoutReturnUrl =
+      typeof return_url === "string" ? return_url : "/"
 
-  ctx.req.session.postLogoutReturnUrl = returnUrl
-  await ctx.req.session.save()
+    await session.save()
 
-  return {
-    props: {},
+    return {
+      props: {},
+    }
   }
-})
+)
 
 export default function () {
-  const router = useRouter()
   const [shouldLogout, setShouldLogout] = useState(false)
-
-  const logout = async () => {
-    await signOut({ redirect: false })
-
-    router.push(
-      "/api/oidc/session/end?client_id=web" +
-        `&post_logout_redirect_uri=${encodeURIComponent(
-          `${window.location.origin}/api/logout`
-        )}`
-    )
-  }
 
   useEffect(() => {
     setShouldLogout(true)

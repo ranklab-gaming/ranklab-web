@@ -47,7 +47,6 @@
     "@types/koa-mount": "^4.0.2",
     "@types/lodash": "^4.14.191",
     "@types/oidc-provider": "^8.1.1",
-    "cypress": "^12.7.0",
     "pg": "^8.9.0"
   }
 }

@@ -7,7 +7,7 @@ import { FormProvider, Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
 import { api } from "@/api/client"
-import { authenticate } from "@/auth"
+import { authenticate } from "@/auth/client"
 import { useForm } from "@/hooks/useForm"
 import { useParam } from "@/hooks/useParam"
 
