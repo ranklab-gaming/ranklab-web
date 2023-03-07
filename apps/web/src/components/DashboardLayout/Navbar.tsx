@@ -25,7 +25,7 @@ const icons = {
   user: <Iconify icon={"mdi:account"} />,
   dashboard: <Iconify icon={"mdi:view-dashboard"} />,
   recordings: <Iconify icon={"mdi:video"} />,
-  upload: <Iconify icon={"mdi:plus"} />,
+  upload: <Iconify icon={"mdi:message-draw"} />,
   archive: <Iconify icon={"mdi:archive"} />,
 }
 
@@ -45,6 +45,16 @@ export function DashboardLayoutNavbar({
   const navConfig =
     user.type === "player"
       ? [
+          {
+            subheader: "",
+            items: [
+              {
+                title: "Request a Review",
+                path: "/player/reviews/new",
+                icon: icons.upload,
+              },
+            ],
+          },
           {
             subheader: "",
             items: [

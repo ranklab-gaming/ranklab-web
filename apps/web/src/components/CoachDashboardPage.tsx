@@ -4,7 +4,7 @@ import { Review, Game } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewList } from "@/components/ReviewList"
 import useCoach from "@/hooks/useCoach"
-import { Alert, Box, Button, Container, Paper, Typography } from "@mui/material"
+import { Alert, Box, Button, Paper, Typography } from "@mui/material"
 import NextLink from "next/link"
 
 interface Props {

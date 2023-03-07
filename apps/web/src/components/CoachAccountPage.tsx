@@ -15,10 +15,10 @@ import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
 import * as Yup from "yup"
 import { PropsWithUser } from "@/server/withPageUserRequired"
-import useCoach from "@/hooks/useCoach"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useSnackbar } from "notistack"
 import NextLink from "next/link"
+import { coachFromUser } from "@/auth"
 
 interface Props {
   games: Game[]
@@ -49,8 +49,8 @@ const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
     ),
 })
 
-function Content({ games }: Props) {
-  const coach = useCoach()
+export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
+  const coach = coachFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
 
   const defaultValues = {
@@ -88,129 +88,123 @@ function Content({ games }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(updateCoach)}>
-      <Stack spacing={3} my={4}>
-        <Controller
-          name="name"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Name"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
-        <Controller
-          name="email"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              type="email"
-              label="Email"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
-        <Controller
-          name="bio"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Bio"
-              error={Boolean(error)}
-              helperText={error?.message}
-            />
-          )}
-        />
-        <Controller
-          name="gameId"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              select
-              SelectProps={{ native: true }}
-              error={Boolean(error)}
-              helperText={error?.message}
-              label="Game"
-            >
-              {games.map((game) => (
-                <option key={game.id} value={game.id}>
-                  {game.name}
-                </option>
-              ))}
-            </TextField>
-          )}
-        />
-        <Controller
-          name="price"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              label="Price (per VOD)"
-              error={Boolean(error)}
-              helperText={error?.message}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">$</InputAdornment>
-                ),
-              }}
-            />
-          )}
-        />
-        <Paper>
-          <Stack spacing={2} p={2}>
-            <Typography variant="h5">Payment Details</Typography>
-            <Alert
-              severity="info"
-              sx={{ mb: 2 }}
-              action={
-                <NextLink
-                  href="/api/stripe-account-links"
-                  passHref
-                  legacyBehavior
-                >
-                  <Button
-                    color="info"
-                    size="small"
-                    variant="text"
-                    component="a"
-                  >
-                    OPEN ACCOUNT DASHBOARD
-                  </Button>
-                </NextLink>
-              }
-            >
-              We partner with Stripe to manage payments. You can update your
-              payment details using their account dashboard.
-            </Alert>
-          </Stack>
-        </Paper>
-      </Stack>
-      <LoadingButton
-        color="info"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-        disabled={isSubmitting}
-      >
-        Update Account
-      </LoadingButton>
-    </form>
-  )
-}
-
-export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
-  return (
     <DashboardLayout title="Account" user={user}>
-      <Content games={games} />
+      <form onSubmit={handleSubmit(updateCoach)}>
+        <Stack spacing={3} my={4}>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Name"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                type="email"
+                label="Email"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="bio"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Bio"
+                error={Boolean(error)}
+                helperText={error?.message}
+              />
+            )}
+          />
+          <Controller
+            name="gameId"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                select
+                SelectProps={{ native: true }}
+                error={Boolean(error)}
+                helperText={error?.message}
+                label="Game"
+              >
+                {games.map((game) => (
+                  <option key={game.id} value={game.id}>
+                    {game.name}
+                  </option>
+                ))}
+              </TextField>
+            )}
+          />
+          <Controller
+            name="price"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Price (per VOD)"
+                error={Boolean(error)}
+                helperText={error?.message}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">$</InputAdornment>
+                  ),
+                }}
+              />
+            )}
+          />
+          <Paper>
+            <Stack spacing={2} p={2}>
+              <Typography variant="h5">Payment Details</Typography>
+              <Alert
+                severity="info"
+                sx={{ mb: 2 }}
+                action={
+                  <NextLink
+                    href="/api/stripe-account-links"
+                    passHref
+                    legacyBehavior
+                  >
+                    <Button
+                      color="info"
+                      size="small"
+                      variant="text"
+                      component="a"
+                    >
+                      OPEN ACCOUNT DASHBOARD
+                    </Button>
+                  </NextLink>
+                }
+              >
+                We partner with Stripe to manage payments. You can update your
+                payment details using their account dashboard.
+              </Alert>
+            </Stack>
+          </Paper>
+        </Stack>
+        <LoadingButton
+          color="info"
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting}
+          disabled={isSubmitting}
+        >
+          Update Account
+        </LoadingButton>
+      </form>
     </DashboardLayout>
   )
 }
