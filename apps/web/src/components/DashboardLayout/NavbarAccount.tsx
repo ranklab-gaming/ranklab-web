@@ -1,7 +1,7 @@
 import NextLink from "next/link"
 import { styled } from "@mui/material/styles"
 import { Box, Link, Typography } from "@mui/material"
-import { DashboardLayoutAvatar } from "./Avatar"
+import { Avatar } from "@/components/Avatar"
 import { useUser } from "@/hooks/useUser"
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -22,7 +22,7 @@ export function NavbarAccount() {
     <NextLink href={`/${user.type}/account`} passHref legacyBehavior>
       <Link underline="none" color="inherit">
         <RootStyle>
-          <DashboardLayoutAvatar />
+          <Avatar />
           <Box
             sx={{
               ml: 2,

@@ -5,7 +5,6 @@ import { api } from "@/api/client"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
-  Grid,
   Stack,
   TextField,
   FormControl,
@@ -15,12 +14,12 @@ import {
   Typography,
   FormHelperText,
 } from "@mui/material"
-import { Game, Recording, Coach } from "@ranklab/api"
+import { Game, Recording, PaginatedResultForCoach } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
 import { useForm } from "@/hooks/useForm"
-import { VideoPlayer } from "@/components/VideoPlayer"
-import { Editor } from "./Editor"
+import { Editor } from "@/components/Editor"
+import { CoachesSelect } from "@/components/CoachesSelect"
 
 type FormValuesProps = {
   title: string
@@ -48,7 +47,7 @@ const defaultValues = {
 interface Props {
   games: Game[]
   recordings: Recording[]
-  coaches: Coach[]
+  coaches: PaginatedResultForCoach
 }
 
 export function PlayerNewReviewPage({
@@ -62,6 +61,7 @@ export function PlayerNewReviewPage({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
@@ -70,6 +70,12 @@ export function PlayerNewReviewPage({
     serverErrorMessage:
       "There was a problem submitting the request. Please try again later.",
   })
+
+  const selectedCoachId = watch("coachId")
+
+  const selectedCoach = coaches.records.find(
+    (coach) => coach.id === selectedCoachId
+  )
 
   const createReview = async function (values: FormValuesProps) {
     const review = await api.playerReviewsCreate({
@@ -88,7 +94,7 @@ export function PlayerNewReviewPage({
   }
 
   return (
-    <DashboardLayout user={user} title="New Review">
+    <DashboardLayout user={user} title="Request a Review">
       <form onSubmit={handleSubmit(createReview)}>
         <Stack spacing={3}>
           <Controller
@@ -116,14 +122,28 @@ export function PlayerNewReviewPage({
                   onBlur={field.onBlur}
                   error={Boolean(error)}
                 >
-                  <MenuItem value="">Select a Game</MenuItem>
-
                   {games.map((game) => (
                     <MenuItem key={game.id} value={game.id}>
                       {game.name}
                     </MenuItem>
                   ))}
                 </Select>
+              </FormControl>
+            )}
+          />
+          <Controller
+            name="coachId"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <FormControl fullWidth>
+                <InputLabel>Coach</InputLabel>
+                <CoachesSelect
+                  onChange={field.onChange}
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  error={Boolean(error)}
+                  coaches={coaches.records}
+                />
               </FormControl>
             )}
           />
@@ -163,7 +183,7 @@ export function PlayerNewReviewPage({
           disabled={isSubmitting}
           sx={{ mt: 3 }}
         >
-          Submit VOD for Review
+          Request a Review {selectedCoach ? `to ${selectedCoach.name}` : ""}
         </LoadingButton>
       </form>
     </DashboardLayout>

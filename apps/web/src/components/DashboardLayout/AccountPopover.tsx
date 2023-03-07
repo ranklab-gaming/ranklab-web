@@ -1,8 +1,8 @@
 import { useState, MouseEvent } from "react"
 import NextLink from "next/link"
 import { alpha } from "@mui/material/styles"
-import { Box, Divider, Typography, Stack, MenuItem } from "@mui/material"
-import { DashboardLayoutAvatar } from "./Avatar"
+import { Box, Divider, Typography, MenuItem } from "@mui/material"
+import { Avatar } from "@/components/Avatar"
 import { MenuPopover } from "@/components/MenuPopover"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { useUser } from "@/hooks/useUser"
@@ -38,7 +38,7 @@ export function DashboardLayoutAccountPopover() {
           }),
         }}
       >
-        <DashboardLayoutAvatar />
+        <Avatar />
       </IconButtonAnimate>
       <MenuPopover
         open={Boolean(anchor)}

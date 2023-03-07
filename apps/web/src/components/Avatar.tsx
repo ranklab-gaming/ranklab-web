@@ -4,6 +4,7 @@ import {
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
 import { useUser } from "@/hooks/useUser"
+import { User } from "@/auth"
 
 type AvatarColor =
   | "default"
@@ -20,30 +21,39 @@ const successName = ["K", "D", "Y", "B", "O", "4", "5"]
 const warningName = ["P", "E", "R", "S", "C", "U", "6", "7"]
 const errorName = ["V", "W", "X", "M", "Z"]
 
-function initial(name: string) {
+function getInitial(name: string) {
   return name && name.charAt(0).toUpperCase()
 }
 
 function getAvatarColor(name: string) {
-  if (primaryName.includes(initial(name))) return "primary"
-  if (infoName.includes(initial(name))) return "info"
-  if (successName.includes(initial(name))) return "success"
-  if (warningName.includes(initial(name))) return "warning"
-  if (errorName.includes(initial(name))) return "error"
+  if (primaryName.includes(getInitial(name))) return "primary"
+  if (infoName.includes(getInitial(name))) return "info"
+  if (successName.includes(getInitial(name))) return "success"
+  if (warningName.includes(getInitial(name))) return "warning"
+  if (errorName.includes(getInitial(name))) return "error"
   return "default"
 }
 
 interface AvatarProps extends MuiAvatarProps {
   color?: AvatarColor
+  user?: User
 }
 
-function Avatar({ color = "default", children, sx, ...other }: AvatarProps) {
+export function Avatar({
+  color = "default",
+  children,
+  user,
+  sx,
+  ...other
+}: AvatarProps) {
   const theme = useTheme()
+  const { name } = user || useUser()
+  const initial = getInitial(name)
 
   if (color === "default") {
     return (
       <MuiAvatar sx={sx} {...other}>
-        {children}
+        {initial}
       </MuiAvatar>
     )
   }
@@ -56,19 +66,11 @@ function Avatar({ color = "default", children, sx, ...other }: AvatarProps) {
         backgroundColor: theme.palette[color].main,
         ...sx,
       }}
+      alt={name}
+      color={getAvatarColor(name)}
       {...other}
     >
-      {children}
+      {initial}
     </MuiAvatar>
-  )
-}
-
-export function DashboardLayoutAvatar({ ...other }: AvatarProps) {
-  const { name } = useUser()
-
-  return (
-    <Avatar alt={name} color={getAvatarColor(name)} {...other}>
-      {initial(name)}
-    </Avatar>
   )
 }
