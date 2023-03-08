@@ -1,12 +1,11 @@
 import { createServerApi } from "@/api/server"
 import { PropsWithUser, withUserSsr } from "@/auth/server"
 import { PlayerNewReviewPage } from "@/components/PlayerNewReviewPage"
-import { Game, PaginatedResultForCoach, Recording } from "@ranklab/api"
+import { Coach, Recording } from "@ranklab/api"
 
 interface Props {
-  games: Game[]
   recordings: Recording[]
-  coaches: PaginatedResultForCoach
+  coaches: Coach[]
 }
 
 export const getServerSideProps = withUserSsr<Props>(
@@ -14,15 +13,13 @@ export const getServerSideProps = withUserSsr<Props>(
   async function (ctx) {
     const api = await createServerApi(ctx)
 
-    const [games, recordings, coaches] = await Promise.all([
-      api.gameList(),
+    const [recordings, coaches] = await Promise.all([
       api.playerRecordingsList(),
       api.playerCoachesList(),
     ])
 
     return {
       props: {
-        games,
         recordings,
         coaches,
       },
@@ -30,16 +27,10 @@ export const getServerSideProps = withUserSsr<Props>(
   }
 )
 
-export default function ({
-  user,
-  coaches,
-  games,
-  recordings,
-}: PropsWithUser<Props>) {
+export default function ({ user, coaches, recordings }: PropsWithUser<Props>) {
   return (
     <PlayerNewReviewPage
       user={user}
-      games={games}
       recordings={recordings}
       coaches={coaches}
     />

@@ -1,11 +1,15 @@
 import { api } from "@/api/client"
 import { BasicLayout } from "@/components/BasicLayout"
+import {
+  CoachAccountFields,
+  CoachAccountFieldsSchema,
+} from "@/components/CoachAccountFields"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { InputAdornment, Stack, TextField } from "@mui/material"
+import { MenuItem, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
@@ -15,27 +19,12 @@ interface Props {
   availableCountries: string[]
 }
 
-const FormSchema = yup.object({
-  bio: yup
-    .string()
-    .required("Bio is required")
-    .min(30, "Bio must be at least 30 characters"),
-  gameId: yup.string().required("Game is required"),
-  name: yup
-    .string()
-    .required("Name is required")
-    .min(2, "Name must be at least 2 characters"),
-  country: yup.string().required("Country is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().required("Password is required"),
-  price: yup
-    .string()
-    .required("Price is required")
-    .matches(
-      /^\d+\.?\d{0,2}$/,
-      "Price must be a number with no more than 2 decimal places"
-    ),
-})
+const FormSchema = CoachAccountFieldsSchema.concat(
+  yup.object({
+    country: yup.string().required("Country is required"),
+    password: yup.string().required("Password is required"),
+  })
+)
 
 type FormValues = yup.InferType<typeof FormSchema>
 
@@ -98,56 +87,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
     <BasicLayout title="Signup to Ranklab as a Coach">
       <form onSubmit={handleSubmit(createCoach)}>
         <Stack spacing={3}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Name"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="email"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                type="email"
-                label="Email"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="password"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                type="password"
-                label="Password"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="bio"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Bio"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
+          <CoachAccountFields control={control} games={games} />
           <Controller
             name="country"
             control={control}
@@ -155,54 +95,16 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
               <TextField
                 {...field}
                 select
-                SelectProps={{ native: true }}
                 error={Boolean(error)}
                 helperText={error?.message}
                 label="Country"
               >
                 {countries.map((country) => (
-                  <option key={country.value} value={country.value}>
+                  <MenuItem key={country.value} value={country.value}>
                     {country.label}
-                  </option>
+                  </MenuItem>
                 ))}
               </TextField>
-            )}
-          />
-          <Controller
-            name="gameId"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                select
-                SelectProps={{ native: true }}
-                error={Boolean(error)}
-                helperText={error?.message}
-                label="Game"
-              >
-                {games.map((game) => (
-                  <option key={game.id} value={game.id}>
-                    {game.name}
-                  </option>
-                ))}
-              </TextField>
-            )}
-          />
-          <Controller
-            name="price"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Price (per VOD)"
-                error={Boolean(error)}
-                helperText={error?.message}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
             )}
           />
           <LoadingButton

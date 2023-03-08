@@ -1,50 +1,25 @@
 import { api } from "@/api/client"
 import { coachFromUser } from "@/auth"
 import { PropsWithUser } from "@/auth/server"
+import {
+  CoachAccountFields,
+  CoachAccountFieldsSchema,
+} from "@/components/CoachAccountFields"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import {
-  Alert,
-  Button,
-  InputAdornment,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material"
+import { Alert, Button, Paper, Stack, Typography } from "@mui/material"
 import { Game } from "@ranklab/api"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
-import { Controller } from "react-hook-form"
 import * as yup from "yup"
 
 interface Props {
   games: Game[]
 }
 
-const FormSchema = yup.object({
-  bio: yup
-    .string()
-    .required("Bio is required")
-    .min(30, "Bio must be at least 30 characters"),
-  gameId: yup.string().required("Game is required"),
-  name: yup
-    .string()
-    .required("Name is required")
-    .min(2, "Name must be at least 2 characters"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  price: yup
-    .string()
-    .required("Price is required")
-    .matches(
-      /^\d+\.?\d{0,2}$/,
-      "Price must be a number with no more than 2 decimal places"
-    ),
-})
-
-type FormValues = yup.InferType<typeof FormSchema>
+type FormValues = yup.InferType<typeof CoachAccountFieldsSchema>
 
 export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const coach = coachFromUser(user)
@@ -64,7 +39,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver(CoachAccountFieldsSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",
@@ -88,80 +63,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     <DashboardLayout title="Account" user={user}>
       <form onSubmit={handleSubmit(updateCoach)}>
         <Stack spacing={3} my={4}>
-          <Controller
-            name="name"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Name"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="email"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                type="email"
-                label="Email"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="bio"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Bio"
-                error={Boolean(error)}
-                helperText={error?.message}
-              />
-            )}
-          />
-          <Controller
-            name="gameId"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                select
-                SelectProps={{ native: true }}
-                error={Boolean(error)}
-                helperText={error?.message}
-                label="Game"
-              >
-                {games.map((game) => (
-                  <option key={game.id} value={game.id}>
-                    {game.name}
-                  </option>
-                ))}
-              </TextField>
-            )}
-          />
-          <Controller
-            name="price"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                label="Price (per VOD)"
-                error={Boolean(error)}
-                helperText={error?.message}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-              />
-            )}
-          />
+          <CoachAccountFields control={control} games={games} />
           <Paper>
             <Stack spacing={2} p={2}>
               <Typography variant="h5">Payment Details</Typography>
