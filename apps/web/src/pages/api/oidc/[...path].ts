@@ -45,7 +45,7 @@ const config: Configuration = {
     required: () => true,
   },
   ttl: {
-    Session: Number.MAX_SAFE_INTEGER,
+    Session: 100 * 365 * 24 * 60 * 60,
     Interaction: 20 * 60,
     AccessToken: 2 * 60 * 60,
     Grant: 2 * 60 * 60,

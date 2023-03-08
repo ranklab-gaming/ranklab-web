@@ -5,9 +5,12 @@ import podiumGold from "@iconify/icons-mdi/podium-gold"
 import videoOutline from "@iconify/icons-mdi/video-outline"
 import { Icon } from "@iconify/react"
 import {
-  Box, Card,
-  Container, Grid, Typography,
-  useMediaQuery
+  Box,
+  Card,
+  Container,
+  Grid,
+  Typography,
+  useMediaQuery,
 } from "@mui/material"
 import { alpha, styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
@@ -119,7 +122,7 @@ export function LandingPageFlow() {
 
         <Grid container spacing={isDesktop ? 10 : 5}>
           {cards.map((card, index) => (
-            <Grid key={card.title} item xs={12} md={4}>
+            <Grid key={index} item xs={12} md={4}>
               <m.div variants={animateFade().inUp}>
                 <CardStyle
                   className={

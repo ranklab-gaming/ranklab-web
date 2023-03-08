@@ -43,8 +43,6 @@ export function EditorToolbar({ id }: EditorToolbarProps) {
         </div>
         <div className="ql-formats">
           <button type="button" className="ql-link" />
-          <button type="button" className="ql-image" />
-          <button type="button" className="ql-video" />
         </div>
         <div className="ql-formats">
           <button type="button" className="ql-clean" />

@@ -2,6 +2,8 @@ import { Box, BoxProps } from "@mui/material"
 import { alpha, styled } from "@mui/material/styles"
 import SimpleBarReact from "simplebar-react"
 
+import "simplebar/dist/simplebar.css"
+
 const RootStyle = styled("div")(() => ({
   flexGrow: 1,
   height: "100%",

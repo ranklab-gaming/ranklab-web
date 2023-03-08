@@ -41,8 +41,8 @@ export function DashboardLayoutNavListRoot({ list }: NavListRootProps) {
           onOpen={() => setOpen(!open)}
         />
         <List component="div" disablePadding>
-          {(list.children || []).map((item) => (
-            <NavListSub key={item.title + item.path} list={item} />
+          {(list.children || []).map((item, index) => (
+            <NavListSub key={index} list={item} />
           ))}
         </List>
       </>

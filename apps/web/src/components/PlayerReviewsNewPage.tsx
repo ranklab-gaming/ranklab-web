@@ -2,12 +2,15 @@ import { api } from "@/api/client"
 import { PropsWithUser } from "@/auth/server"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Editor } from "@/components/Editor"
+import FileUpload from "@/components/FileUpload"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Box, FormHelperText, MenuItem, Stack, TextField } from "@mui/material"
 import { Coach, Recording } from "@ranklab/api"
 import { useRouter } from "next/router"
+import { useCallback } from "react"
+import { useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
@@ -36,6 +39,35 @@ export function PlayerReviewsNewPage({
   recordings,
 }: PropsWithUser<Props>) {
   const router = useRouter()
+  const [files, setFiles] = useState<FileList | null>(null)
+  const [recording, setRecording] = useState<Recording | null>(null)
+
+  const handleDropFile = useCallback((files: FileList | null) => {
+    setFiles(files)
+  }, [])
+
+  let [upload, { progress, done, loading }] = useUpload(async ({ files }) => {
+    const file = files[0]
+
+    if (!file) {
+      return
+    }
+
+    const recording = await api.playerRecordingsCreate({
+      createRecordingRequest: { mimeType: file.type, size: file.size },
+    })
+
+    setRecording(recording)
+
+    return {
+      method: "PUT",
+      url: recording.uploadUrl,
+      body: file,
+      headers: {
+        "X-Amz-Acl": "public-read",
+      },
+    }
+  })
 
   const {
     control,
@@ -112,6 +144,14 @@ export function PlayerReviewsNewPage({
                 ))}
               </TextField>
             )}
+          />
+          <FileUpload
+            file={files?.[0] ?? null}
+            onDrop={(_, __, e) =>
+              handleDropFile(
+                "dataTransfer" in e ? e.dataTransfer?.files ?? null : null
+              )
+            }
           />
           <Controller
             name="notes"
