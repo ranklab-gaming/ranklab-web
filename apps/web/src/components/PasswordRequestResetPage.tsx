@@ -5,7 +5,7 @@ import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { FunctionComponent } from "react"
 import { FormProvider, Controller } from "react-hook-form"
-import * as Yup from "yup"
+import * as yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
 import { api } from "@/api/client"
 import { useForm } from "@/hooks/useForm"
@@ -16,8 +16,9 @@ type FormValuesProps = {
   email: string
 }
 
-const ResetPasswordSchema = Yup.object().shape({
-  email: Yup.string()
+const ResetPasswordSchema = yup.object({
+  email: yup
+    .string()
     .email("Email must be valid")
     .required("Email is required"),
 })

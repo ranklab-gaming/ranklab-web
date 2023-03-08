@@ -1,32 +1,23 @@
 import * as React from "react"
 import ListItemText from "@mui/material/ListItemText"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
 import Typography from "@mui/material/Typography"
-import {
-  Box,
-  Chip,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-} from "@mui/material"
+import { Chip, MenuItem, Stack, TextField } from "@mui/material"
 import { Coach, Game } from "@ranklab/api"
 import { Avatar } from "@/components/Avatar"
+import { ChangeEventHandler } from "react"
+import { formatPrice } from "@/utils/formatPrice"
 
 interface Props {
   coaches: Coach[]
-  onChange: React.ChangeEventHandler
+  onChange: ChangeEventHandler
   value: string
   onBlur: () => void
   error: boolean
   helperText?: string
-  games: Game[]
 }
 
 export function CoachesSelect({
   coaches,
-  games,
   error,
   onBlur,
   onChange,
@@ -55,10 +46,7 @@ export function CoachesSelect({
               primary={
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Typography variant="subtitle1">{coach.name}</Typography>
-                  <Chip
-                    label={games.find((g) => g.id === coach.gameId)?.name}
-                    size="small"
-                  />
+                  <Chip label={formatPrice(coach.price)} size="small" />
                 </Stack>
               }
               secondary={

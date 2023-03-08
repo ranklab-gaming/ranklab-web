@@ -20,7 +20,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-const Content: FunctionComponent<PropsWithChildren<{}>> = (props) => (
+const Content: FunctionComponent<PropsWithChildren> = (props) => (
   <Stack spacing={5} {...props} />
 )
 

@@ -33,7 +33,6 @@ import type {
   Game,
   LoginLink,
   OneTimeTokenParams,
-  PaginatedResultForCoach,
   PaginatedResultForReview,
   PaymentMethod,
   Player,
@@ -102,11 +101,6 @@ export interface PlayerAccountCreateRequest {
 
 export interface PlayerAccountUpdateRequest {
   updatePlayerRequest: UpdatePlayerRequest
-}
-
-export interface PlayerCoachesListRequest {
-  page?: number | null
-  q?: string | null
 }
 
 export interface PlayerCommentsListRequest {
@@ -979,18 +973,9 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async playerCoachesListRaw(
-    requestParameters: PlayerCoachesListRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<PaginatedResultForCoach>> {
+  ): Promise<runtime.ApiResponse<Array<Coach>>> {
     const queryParameters: any = {}
-
-    if (requestParameters.page !== undefined) {
-      queryParameters["page"] = requestParameters.page
-    }
-
-    if (requestParameters.q !== undefined) {
-      queryParameters["q"] = requestParameters.q
-    }
 
     const headerParameters: runtime.HTTPHeaders = {}
 
@@ -1010,13 +995,9 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async playerCoachesList(
-    requestParameters: PlayerCoachesListRequest = {},
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<PaginatedResultForCoach> {
-    const response = await this.playerCoachesListRaw(
-      requestParameters,
-      initOverrides
-    )
+  ): Promise<Array<Coach>> {
+    const response = await this.playerCoachesListRaw(initOverrides)
     return await response.value()
   }
 

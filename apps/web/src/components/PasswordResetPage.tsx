@@ -4,7 +4,7 @@ import { Stack, TextField } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { FormProvider, Controller } from "react-hook-form"
-import * as Yup from "yup"
+import * as yup from "yup"
 import { BasicLayout } from "@/components/BasicLayout"
 import { api } from "@/api/client"
 import { authenticate } from "@/auth/client"
@@ -15,8 +15,8 @@ type FormValuesProps = {
   password: string
 }
 
-const ResetPasswordSchema = Yup.object().shape({
-  password: Yup.string().required("Password is required"),
+const ResetPasswordSchema = yup.object({
+  password: yup.string().required("Password is required"),
 })
 
 function PasswordResetPage() {

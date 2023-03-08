@@ -313,10 +313,10 @@ export interface CreatePlayerRequest {
   password: string
   /**
    *
-   * @type {Array<PlayerGame>}
+   * @type {string}
    * @memberof CreatePlayerRequest
    */
-  games: Array<PlayerGame>
+  gameId: string
 }
 /**
  *
@@ -336,6 +336,24 @@ export interface CreateRecordingRequest {
    * @memberof CreateRecordingRequest
    */
   mimeType: string
+  /**
+   *
+   * @type {string}
+   * @memberof CreateRecordingRequest
+   */
+  title: string
+  /**
+   *
+   * @type {number}
+   * @memberof CreateRecordingRequest
+   */
+  skillLevel: number
+  /**
+   *
+   * @type {string}
+   * @memberof CreateRecordingRequest
+   */
+  gameId: string
 }
 /**
  *
@@ -354,19 +372,7 @@ export interface CreateReviewRequest {
    * @type {string}
    * @memberof CreateReviewRequest
    */
-  title: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateReviewRequest
-   */
   notes: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateReviewRequest
-   */
-  gameId: string
   /**
    *
    * @type {string}
@@ -472,43 +478,6 @@ export interface OneTimeTokenParams {
 /**
  *
  * @export
- * @interface PaginatedResultForCoach
- */
-export interface PaginatedResultForCoach {
-  /**
-   *
-   * @type {Array<Coach>}
-   * @memberof PaginatedResultForCoach
-   */
-  records: Array<Coach>
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForCoach
-   */
-  totalPages: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForCoach
-   */
-  perPage: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForCoach
-   */
-  page: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForCoach
-   */
-  count: number
-}
-/**
- *
- * @export
  * @interface PaginatedResultForReview
  */
 export interface PaginatedResultForReview {
@@ -594,29 +563,10 @@ export interface Player {
   email: string
   /**
    *
-   * @type {Array<PlayerGame>}
+   * @type {string}
    * @memberof Player
    */
-  games: Array<PlayerGame>
-}
-/**
- *
- * @export
- * @interface PlayerGame
- */
-export interface PlayerGame {
-  /**
-   *
-   * @type {string}
-   * @memberof PlayerGame
-   */
   gameId: string
-  /**
-   *
-   * @type {number}
-   * @memberof PlayerGame
-   */
-  skillLevel: number
 }
 /**
  *
@@ -920,10 +870,10 @@ export interface UpdatePlayerRequest {
   email: string
   /**
    *
-   * @type {Array<PlayerGame>}
+   * @type {string}
    * @memberof UpdatePlayerRequest
    */
-  games: Array<PlayerGame>
+  gameId: string
 }
 
 /**

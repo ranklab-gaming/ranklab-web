@@ -14,7 +14,7 @@ import { useEffect, useState } from "react"
 import { FormProvider, Controller } from "react-hook-form"
 import { api } from "@/api/client"
 import { Iconify } from "@/components/Iconify"
-import * as Yup from "yup"
+import * as yup from "yup"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useForm } from "@/hooks/useForm"
@@ -31,11 +31,12 @@ interface Props {
   userType: UserType
 }
 
-const CreateSessionSchema = Yup.object().shape({
-  email: Yup.string()
+const CreateSessionSchema = yup.object({
+  email: yup
+    .string()
     .email("Email must be valid")
     .required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: yup.string().required("Password is required"),
 })
 
 export function LoginPage({ userType }: Props) {

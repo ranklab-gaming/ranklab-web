@@ -13,7 +13,7 @@ import {
 } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
-import * as Yup from "yup"
+import * as yup from "yup"
 import { PropsWithUser } from "@/auth/server"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useSnackbar } from "notistack"
@@ -32,22 +32,29 @@ type FormValuesProps = {
   price: string
 }
 
-const FormSchema: Yup.Schema<FormValuesProps> = Yup.object().shape({
-  bio: Yup.string()
+const FormSchema: yup.Schema<FormValuesProps> = yup.object({
+  bio: yup
+    .string()
     .required("Bio is required")
     .min(30, "Bio must be at least 30 characters"),
-  gameId: Yup.string().required("Game is required"),
-  name: Yup.string()
+  gameId: yup.string().required("Game is required"),
+  name: yup
+    .string()
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  price: Yup.string()
+  email: yup.string().email("Invalid email").required("Email is required"),
+  price: yup
+    .string()
     .required("Price is required")
     .matches(
       /^\d+\.?\d{0,2}$/,
       "Price must be a number with no more than 2 decimal places"
     ),
 })
+
+interface Form extends yup.InferType<typeof FormSchema> {
+  __typename?: "Coach"
+}
 
 export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const coach = coachFromUser(user)
@@ -67,7 +74,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     formState: { isSubmitting },
   } = useForm<FormValuesProps>({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver<Form>(FormSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",

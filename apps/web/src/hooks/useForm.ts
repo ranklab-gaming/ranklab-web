@@ -27,7 +27,7 @@ type Error = {
     }
   | {
       code: "custom"
-      params: {}
+      params: Record<string, never>
     }
 )
 

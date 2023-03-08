@@ -7,12 +7,13 @@ import {
   IconButton,
   Box,
   Link,
+  MenuItem,
 } from "@mui/material"
-import { Game, PlayerGame } from "@ranklab/api"
+import { Game } from "@ranklab/api"
 import { useState } from "react"
 import { FormProvider, Controller } from "react-hook-form"
 import { Iconify } from "@/components/Iconify"
-import * as Yup from "yup"
+import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "@/api/client"
 import { GamesSelect } from "@/components/GamesSelect"
@@ -24,7 +25,8 @@ import { useLogin } from "@/hooks/useLogin"
 type FormValuesProps = {
   email: string
   password: string
-  games: PlayerGame[]
+  gameId: string
+  skillLevel: number
   name: string
 }
 
@@ -32,29 +34,26 @@ interface Props {
   games: Game[]
 }
 
-const CreatePlayerSchema = Yup.object().shape({
-  name: Yup.string()
-    .required("Name is required")
-    .min(2, "Name must be at least 2 characters"),
-  games: Yup.array()
-    .of(
-      Yup.object().shape({
-        gameId: Yup.string().required(),
-        skillLevel: Yup.number().required(),
-      })
-    )
-    .min(1, "At least one game is required"),
-  email: Yup.string()
+const CreatePlayerSchema = yup.object({
+  email: yup
+    .string()
     .email("Email must be valid")
     .required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: yup.string().required("Password is required"),
+  gameId: yup.string().required("Game is required"),
+  skillLevel: yup.number().required("Skill level is required"),
+  name: yup
+    .string()
+    .required("Name is required")
+    .min(2, "Name must be at least 2 characters"),
 })
 
 export function PlayerSignupPage({ games }: Props) {
   const defaultValues = {
     email: "",
     password: "",
-    games: [],
+    gameId: "",
+    skillLevel: 0,
     name: "",
   }
 
@@ -73,7 +72,11 @@ export function PlayerSignupPage({ games }: Props) {
     control,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = form
+
+  const gameId = watch("gameId")
+  const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
 
   const onSubmit = async (data: FormValuesProps) => {
     const session = await api.playerAccountCreate({
@@ -152,18 +155,41 @@ export function PlayerSignupPage({ games }: Props) {
               )}
             />
             <Controller
-              name="games"
+              name="gameId"
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <GamesSelect
                   games={games}
-                  selectedGames={field.value}
-                  setGames={field.onChange}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
                   error={Boolean(error)}
                   helperText={error?.message}
                 />
               )}
             />
+            {selectedGame && (
+              <Controller
+                name="skillLevel"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    select
+                    {...field}
+                    fullWidth
+                    error={Boolean(error)}
+                    helperText={error?.message}
+                    label="Skill Level"
+                  >
+                    {selectedGame.skillLevels.map((skillLevel) => (
+                      <MenuItem key={skillLevel.value} value={skillLevel.value}>
+                        {skillLevel.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
+              />
+            )}
           </Stack>
           <Box
             display="flex"
