@@ -5,11 +5,11 @@ import {
   nodeEnv,
   webHost,
 } from "@/config/server"
+import { OidcRedisAdapter } from "@/oidc"
+import * as Sentry from "@sentry/nextjs"
 import koa from "koa"
 import mount from "koa-mount"
 import Provider, { Configuration, errors } from "oidc-provider"
-import * as Sentry from "@sentry/nextjs"
-import { OidcRedisAdapter } from "@/oidc"
 
 const config: Configuration = {
   clients: [

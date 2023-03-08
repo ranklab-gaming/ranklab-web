@@ -1,30 +1,26 @@
+import { api } from "@/api/client"
+import { BasicLayout } from "@/components/BasicLayout"
+import { useForm } from "@/hooks/useForm"
+import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Stack, Typography, TextField, Box, styled } from "@mui/material"
+import { Stack, TextField } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
-import { FunctionComponent } from "react"
-import { FormProvider, Controller } from "react-hook-form"
+import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
-import { BasicLayout } from "@/components/BasicLayout"
-import { api } from "@/api/client"
-import { useForm } from "@/hooks/useForm"
-import { useRouter } from "next/router"
-import { useParam } from "@/hooks/useParam"
 
-type FormValuesProps = {
-  email: string
-}
-
-const ResetPasswordSchema = yup.object({
+const FormSchema = yup.object({
   email: yup
     .string()
     .email("Email must be valid")
     .required("Email is required"),
 })
 
+type FormValues = yup.InferType<typeof FormSchema>
+
 function PasswordRequestResetPage() {
-  const defaultValues = { email: "" }
+  const defaultValues: FormValues = { email: "" }
   const { enqueueSnackbar } = useSnackbar()
 
   const userType = useParam("user_type", "player", [
@@ -32,8 +28,8 @@ function PasswordRequestResetPage() {
     "player",
   ]) as UserType
 
-  const form = useForm<FormValuesProps>({
-    resolver: yupResolver(ResetPasswordSchema),
+  const form = useForm({
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem resetting your password. Please try again later.",
@@ -45,7 +41,7 @@ function PasswordRequestResetPage() {
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const onSubmit = async (data: FormValues) => {
     await api.sessionResetPassword({
       resetPasswordRequest: { ...data, userType },
     })

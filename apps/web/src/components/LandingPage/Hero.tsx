@@ -1,9 +1,9 @@
-import { m } from "framer-motion"
-import { styled } from "@mui/material/styles"
-import { Box, Stack, Container, Typography, Button } from "@mui/material"
-import { FunctionComponent, PropsWithChildren } from "react"
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
+import { Box, Button, Container, Stack, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { m } from "framer-motion"
+import { FunctionComponent, PropsWithChildren } from "react"
 import { LandingPageOverlay } from "./Overlay"
 
 const RootStyle = styled(m.div)(({ theme }) => ({

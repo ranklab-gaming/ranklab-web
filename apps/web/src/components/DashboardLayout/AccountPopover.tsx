@@ -1,11 +1,11 @@
-import { useState, MouseEvent } from "react"
-import NextLink from "next/link"
-import { alpha } from "@mui/material/styles"
-import { Box, Divider, Typography, MenuItem } from "@mui/material"
 import { Avatar } from "@/components/Avatar"
-import { MenuPopover } from "@/components/MenuPopover"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { MenuPopover } from "@/components/MenuPopover"
 import { useUser } from "@/hooks/useUser"
+import { Box, Divider, MenuItem, Typography } from "@mui/material"
+import { alpha } from "@mui/material/styles"
+import NextLink from "next/link"
+import { MouseEvent, useState } from "react"
 
 export function DashboardLayoutAccountPopover() {
   const user = useUser()

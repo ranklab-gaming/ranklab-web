@@ -1,9 +1,9 @@
 import { authenticate } from "@/auth/client"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import { GetServerSideProps } from "next"
 import { getServerSession } from "next-auth"
-import { useState, useEffect } from "react"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { useEffect, useState } from "react"
 
 interface Props {
   userType: UserType

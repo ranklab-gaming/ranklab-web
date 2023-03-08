@@ -1,37 +1,26 @@
+import { api } from "@/api/client"
+import { BasicLayout } from "@/components/BasicLayout"
+import { Iconify } from "@/components/Iconify"
+import { useForm } from "@/hooks/useForm"
+import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
-  Stack,
-  Typography,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Box,
-  Link,
+  Box, IconButton, InputAdornment, Link, Stack, TextField, Typography
 } from "@mui/material"
 import { UserType } from "@ranklab/api"
-import { useEffect, useState } from "react"
-import { FormProvider, Controller } from "react-hook-form"
-import { api } from "@/api/client"
-import { Iconify } from "@/components/Iconify"
-import * as yup from "yup"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useForm } from "@/hooks/useForm"
-import { BasicLayout } from "@/components/BasicLayout"
-import { useLogin } from "@/hooks/useLogin"
 import { useSnackbar } from "notistack"
-
-type FormValuesProps = {
-  email: string
-  password: string
-}
+import { useEffect, useState } from "react"
+import { Controller, FormProvider } from "react-hook-form"
+import * as yup from "yup"
 
 interface Props {
   userType: UserType
 }
 
-const CreateSessionSchema = yup.object({
+const FormSchema = yup.object({
   email: yup
     .string()
     .email("Email must be valid")
@@ -39,8 +28,10 @@ const CreateSessionSchema = yup.object({
   password: yup.string().required("Password is required"),
 })
 
+type FormValues = yup.InferType<typeof FormSchema>
+
 export function LoginPage({ userType }: Props) {
-  const defaultValues = {
+  const defaultValues: FormValues = {
     email: "",
     password: "",
   }
@@ -52,8 +43,8 @@ export function LoginPage({ userType }: Props) {
   const [shouldCheckSessionExpired, setShouldCheckSessionExpired] =
     useState(false)
 
-  const form = useForm<FormValuesProps>({
-    resolver: yupResolver(CreateSessionSchema),
+  const form = useForm({
+    resolver: yupResolver(FormSchema as any),
     serverErrorMessage:
       "There was a problem logging in. Please try again later.",
     errorMessages: {
@@ -68,7 +59,7 @@ export function LoginPage({ userType }: Props) {
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const onSubmit = async (data: FormValues) => {
     const session = await api.sessionCreate({
       createSessionRequest: { ...data, userType },
     })

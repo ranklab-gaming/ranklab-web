@@ -1,7 +1,7 @@
 import { createServerApi } from "@/api/server"
 import { PropsWithUser, withUserSsr } from "@/auth/server"
 import { PlayerNewReviewPage } from "@/components/PlayerNewReviewPage"
-import { Game, Recording, PaginatedResultForCoach } from "@ranklab/api"
+import { Game, PaginatedResultForCoach, Recording } from "@ranklab/api"
 
 interface Props {
   games: Game[]

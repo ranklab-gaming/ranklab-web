@@ -1,26 +1,24 @@
+import { api } from "@/api/client"
+import { authenticate } from "@/auth/client"
+import { BasicLayout } from "@/components/BasicLayout"
+import { useForm } from "@/hooks/useForm"
+import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
-import { FormProvider, Controller } from "react-hook-form"
+import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
-import { BasicLayout } from "@/components/BasicLayout"
-import { api } from "@/api/client"
-import { authenticate } from "@/auth/client"
-import { useForm } from "@/hooks/useForm"
-import { useParam } from "@/hooks/useParam"
 
-type FormValuesProps = {
-  password: string
-}
-
-const ResetPasswordSchema = yup.object({
+const FormSchema = yup.object({
   password: yup.string().required("Password is required"),
 })
 
+type FormValues = yup.InferType<typeof FormSchema>
+
 function PasswordResetPage() {
-  const defaultValues = { password: "" }
+  const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
 
   const userType = useParam("user_type", "player", [
@@ -34,8 +32,8 @@ function PasswordResetPage() {
     throw new Error("token param is missing")
   }
 
-  const form = useForm<FormValuesProps>({
-    resolver: yupResolver(ResetPasswordSchema),
+  const form = useForm({
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem resetting your password. Please try again later.",
@@ -47,7 +45,7 @@ function PasswordResetPage() {
     formState: { isSubmitting },
   } = form
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const onSubmit = async (data: FormValues) => {
     await api.sessionUpdatePassword({
       updatePasswordRequest: data,
       auth: { userType, token },

@@ -1,8 +1,8 @@
-import NextLink from "next/link"
-import { styled } from "@mui/material/styles"
-import { Box, Link, Typography } from "@mui/material"
 import { Avatar } from "@/components/Avatar"
 import { useUser } from "@/hooks/useUser"
+import { Box, Link, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",

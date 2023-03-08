@@ -1,8 +1,8 @@
+import { Box, BoxProps } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import dynamic from "next/dynamic"
 import { ReactNode, useId } from "react"
 import { ReactQuillProps } from "react-quill"
-import dynamic from "next/dynamic"
-import { styled } from "@mui/material/styles"
-import { Box, BoxProps } from "@mui/material"
 import { EditorToolbar } from "./Editor/EditorToolbar"
 
 import "react-quill/dist/quill.snow.css"

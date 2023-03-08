@@ -1,40 +1,26 @@
-import { LoadingButton } from "@mui/lab"
-import {
-  Stack,
-  Typography,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Box,
-  Link,
-  MenuItem,
-} from "@mui/material"
-import { Game } from "@ranklab/api"
-import { useState } from "react"
-import { FormProvider, Controller } from "react-hook-form"
-import { Iconify } from "@/components/Iconify"
-import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "@/api/client"
-import { GamesSelect } from "@/components/GamesSelect"
-import { useRouter } from "next/router"
 import { BasicLayout } from "@/components/BasicLayout"
+import { GamesSelect } from "@/components/GamesSelect"
+import { Iconify } from "@/components/Iconify"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
-
-type FormValuesProps = {
-  email: string
-  password: string
-  gameId: string
-  skillLevel: number
-  name: string
-}
+import { yupResolver } from "@hookform/resolvers/yup"
+import { LoadingButton } from "@mui/lab"
+import {
+  Box, IconButton, InputAdornment, Link,
+  MenuItem, Stack, TextField, Typography
+} from "@mui/material"
+import { Game } from "@ranklab/api"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import { Controller, FormProvider } from "react-hook-form"
+import * as yup from "yup"
 
 interface Props {
   games: Game[]
 }
 
-const CreatePlayerSchema = yup.object({
+const FormSchema = yup.object({
   email: yup
     .string()
     .email("Email must be valid")
@@ -48,8 +34,10 @@ const CreatePlayerSchema = yup.object({
     .min(2, "Name must be at least 2 characters"),
 })
 
+type FormValues = yup.InferType<typeof FormSchema>
+
 export function PlayerSignupPage({ games }: Props) {
-  const defaultValues = {
+  const defaultValues: FormValues = {
     email: "",
     password: "",
     gameId: "",
@@ -61,8 +49,8 @@ export function PlayerSignupPage({ games }: Props) {
   const router = useRouter()
   const login = useLogin("player")
 
-  const form = useForm<FormValuesProps>({
-    resolver: yupResolver(CreatePlayerSchema),
+  const form = useForm({
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem signin up. Please try again later.",
@@ -78,7 +66,7 @@ export function PlayerSignupPage({ games }: Props) {
   const gameId = watch("gameId")
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const onSubmit = async (data: FormValues) => {
     const session = await api.playerAccountCreate({
       createPlayerRequest: data,
     })

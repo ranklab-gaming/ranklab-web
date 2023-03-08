@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import { createServerApi } from "@/api/server"
 import { webHost } from "@/config/server"
+import { NextApiRequest, NextApiResponse } from "next"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const api = await createServerApi({ req, res })

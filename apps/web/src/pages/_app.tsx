@@ -1,11 +1,11 @@
-import { AppProps as NextAppProps } from "next/app"
-import Head from "next/head"
-import { ThemeProvider, CssBaseline } from "@mui/material"
-import { theme } from "@/theme/theme"
-import { createEmotionCache } from "@/styles"
-import { CacheProvider, EmotionCache } from "@emotion/react"
 import { MotionLazyContainer } from "@/components/MotionLazyContainer"
 import { NotistackProvider } from "@/components/NotistackProvider"
+import { createEmotionCache } from "@/styles"
+import { theme } from "@/theme/theme"
+import { CacheProvider, EmotionCache } from "@emotion/react"
+import { CssBaseline, ThemeProvider } from "@mui/material"
+import { AppProps as NextAppProps } from "next/app"
+import Head from "next/head"
 
 const clientSideEmotionCache = createEmotionCache()
 

@@ -1,6 +1,6 @@
+import { redisUrl } from "@/config/server"
 import Redis from "ioredis"
 import isEmpty from "lodash/isEmpty"
-import { redisUrl } from "@/config/server"
 
 const grantable = new Set([
   "AccessToken",

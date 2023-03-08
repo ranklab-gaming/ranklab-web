@@ -1,6 +1,6 @@
-import { ReactElement, useState } from "react"
+import { Collapse, List } from "@mui/material"
 import { useRouter } from "next/router"
-import { List, Collapse } from "@mui/material"
+import { ReactElement, useState } from "react"
 import {
   DashboardLayoutNavItemRoot,
   DashboardLayoutNavItemSub,

@@ -1,8 +1,8 @@
 import { animateBounce } from "@/animate/bounce"
-import { Container, Typography, Button, Box, styled } from "@mui/material"
-import { m } from "framer-motion"
 import { BasicLayout } from "@/components/BasicLayout"
 import { MotionContainer } from "@/components/MotionContainer"
+import { Box, Button, Container, styled, Typography } from "@mui/material"
+import { m } from "framer-motion"
 import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({

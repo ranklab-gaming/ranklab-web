@@ -1,11 +1,11 @@
-import { useState, PropsWithChildren } from "react"
+import { User } from "@/auth"
+import { Page } from "@/components/Page"
+import { UserProvider } from "@/contexts/UserContext"
+import { headerStyles, navbarStyles } from "@/styles"
 import { Box, Container, styled, Typography } from "@mui/material"
+import { PropsWithChildren, useState } from "react"
 import { DashboardLayoutHeader } from "./DashboardLayout/Header"
 import { DashboardLayoutNavbar } from "./DashboardLayout/Navbar"
-import { headerStyles, navbarStyles } from "@/styles"
-import { Page } from "@/components/Page"
-import { User } from "@/auth"
-import { UserProvider } from "@/contexts/UserContext"
 
 const MainStyle = styled("main")(({ theme }) => ({
   flexGrow: 1,

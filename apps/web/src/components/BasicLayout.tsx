@@ -1,10 +1,10 @@
-import { Box, Container, Typography } from "@mui/material"
-import { PropsWithChildren } from "react"
-import NextLink from "next/link"
-import { Logo } from "@/components/Logo"
-import { Label } from "@/components/Label"
 import { Footer } from "@/components/Footer"
+import { Label } from "@/components/Label"
+import { Logo } from "@/components/Logo"
 import { Page } from "@/components/Page"
+import { Box, Container, Typography } from "@mui/material"
+import NextLink from "next/link"
+import { PropsWithChildren } from "react"
 
 interface Props {
   title: string

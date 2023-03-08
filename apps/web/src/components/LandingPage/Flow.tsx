@@ -1,19 +1,16 @@
-import { alpha, useTheme, styled } from "@mui/material/styles"
-import {
-  Box,
-  Grid,
-  Card,
-  Container,
-  Typography,
-  useMediaQuery,
-} from "@mui/material"
-import { m } from "framer-motion"
-import videoOutline from "@iconify/icons-mdi/video-outline"
-import fileChartCheckOutline from "@iconify/icons-mdi/file-chart-check-outline"
-import podiumGold from "@iconify/icons-mdi/podium-gold"
-import { Icon } from "@iconify/react"
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
+import fileChartCheckOutline from "@iconify/icons-mdi/file-chart-check-outline"
+import podiumGold from "@iconify/icons-mdi/podium-gold"
+import videoOutline from "@iconify/icons-mdi/video-outline"
+import { Icon } from "@iconify/react"
+import {
+  Box, Card,
+  Container, Grid, Typography,
+  useMediaQuery
+} from "@mui/material"
+import { alpha, styled, useTheme } from "@mui/material/styles"
+import { m } from "framer-motion"
 
 const RootStyle = styled("div")(({ theme }) => ({
   paddingTop: theme.spacing(15),

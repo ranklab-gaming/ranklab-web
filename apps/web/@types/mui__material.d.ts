@@ -1,4 +1,4 @@
-import * as material from "@mui/material"
+import "@mui/material"
 
 declare module "@mui/material" {
   interface Color {

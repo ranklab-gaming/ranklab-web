@@ -1,10 +1,9 @@
-import { useTheme } from "@mui/material/styles"
+import { useUser } from "@/hooks/useUser"
 import {
   Avatar as MuiAvatar,
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
-import { useUser } from "@/hooks/useUser"
-import { User } from "@/auth"
+import { useTheme } from "@mui/material/styles"
 
 type AvatarColor =
   | "default"

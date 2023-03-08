@@ -1,7 +1,7 @@
-import { Game } from "@ranklab/api"
-import { GetServerSideProps } from "next"
 import { createServerApi } from "@/api/server"
 import { PlayerSignupPage } from "@/components/PlayerSignupPage"
+import { Game } from "@ranklab/api"
+import { GetServerSideProps } from "next"
 
 interface Props {
   games: Game[]

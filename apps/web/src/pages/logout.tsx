@@ -1,6 +1,6 @@
-import { withSessionSsr } from "@/session"
 import { logout } from "@/auth/client"
-import { useState, useEffect } from "react"
+import { withSessionSsr } from "@/session"
+import { useEffect, useState } from "react"
 
 export const getServerSideProps = withSessionSsr(
   async ({ req: { session }, query: { return_url } }) => {

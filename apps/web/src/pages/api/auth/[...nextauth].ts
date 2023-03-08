@@ -1,8 +1,8 @@
-import { cookieSecret, webHost, authClientSecret } from "@/config/server"
-import NextAuth, { NextAuthOptions } from "next-auth"
-import * as Sentry from "@sentry/nextjs"
+import { authClientSecret, cookieSecret, webHost } from "@/config/server"
 import { UserType } from "@ranklab/api"
+import * as Sentry from "@sentry/nextjs"
 import { decodeJwt } from "jose"
+import NextAuth, { NextAuthOptions } from "next-auth"
 
 export const authOptions: NextAuthOptions = {
   secret: cookieSecret,

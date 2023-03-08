@@ -1,23 +1,18 @@
+import { api } from "@/api/client"
+import { Label } from "@/components/Label"
+import { useUser } from "@/hooks/useUser"
 import {
-  Table,
-  TableContainer,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
-  TablePagination,
+  Table, TableBody, TableCell, TableContainer,
+  TableHead, TablePagination, TableRow
 } from "@mui/material"
 import {
   Game,
   PaginatedResultForReview,
   Review,
-  ReviewState,
+  ReviewState
 } from "@ranklab/api"
-import React, { FunctionComponent, useState, MouseEvent } from "react"
 import NextLink from "next/link"
-import { Label } from "@/components/Label"
-import { api } from "@/api/client"
-import { useUser } from "@/hooks/useUser"
+import { FunctionComponent, MouseEvent, useState } from "react"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,

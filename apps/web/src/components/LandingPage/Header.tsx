@@ -1,11 +1,11 @@
-import { styled, useTheme } from "@mui/material/styles"
-import { Box, AppBar, Toolbar, Container } from "@mui/material"
+import { authenticate } from "@/auth/client"
+import { Label } from "@/components/Label"
+import { Logo } from "@/components/Logo"
+import { SplitButton } from "@/components/SplitButton"
 import { useOffsetTop } from "@/hooks/useOffsetTop"
 import { headerStyles, styles } from "@/styles"
-import { Logo } from "@/components/Logo"
-import { Label } from "@/components/Label"
-import { SplitButton } from "@/components/SplitButton"
-import { authenticate } from "@/auth/client"
+import { AppBar, Box, Container, Toolbar } from "@mui/material"
+import { styled, useTheme } from "@mui/material/styles"
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   height: headerStyles.mobileHeight,

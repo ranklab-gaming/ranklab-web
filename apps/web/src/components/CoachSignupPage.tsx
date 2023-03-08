@@ -1,31 +1,21 @@
 import { api } from "@/api/client"
+import { BasicLayout } from "@/components/BasicLayout"
 import { useForm } from "@/hooks/useForm"
+import { useLogin } from "@/hooks/useLogin"
+import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { InputAdornment, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import { BasicLayout } from "@/components/BasicLayout"
-import { useLogin } from "@/hooks/useLogin"
-import { useParam } from "@/hooks/useParam"
 
 interface Props {
   games: Game[]
   availableCountries: string[]
 }
 
-type FormValuesProps = {
-  bio: string
-  gameId: string
-  name: string
-  country: string
-  email: string
-  password: string
-  price: string
-}
-
-const FormSchema: yup.Schema<FormValuesProps> = yup.object({
+const FormSchema = yup.object({
   bio: yup
     .string()
     .required("Bio is required")
@@ -47,6 +37,8 @@ const FormSchema: yup.Schema<FormValuesProps> = yup.object({
     ),
 })
 
+type FormValues = yup.InferType<typeof FormSchema>
+
 export function CoachSignupPage({ games, availableCountries }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
@@ -56,7 +48,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
     throw new Error("token param is missing")
   }
 
-  const defaultValues = {
+  const defaultValues: FormValues = {
     bio: "",
     gameId: games[0].id,
     name: "",
@@ -70,15 +62,15 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<FormValuesProps>({
+  } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem creating your profile. Please try again later.",
   })
 
-  const createCoach = async (data: FormValuesProps) => {
+  const createCoach = async (data: FormValues) => {
     const session = await api.coachAccountCreate({
       createCoachRequest: {
         name: data.name,

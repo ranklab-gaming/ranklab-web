@@ -1,13 +1,13 @@
 import { createServerApi } from "@/api/server"
-import { userFromCoach, userFromPlayer, User } from "../auth"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { UserType } from "@ranklab/api"
 import {
+  GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult,
-  GetServerSideProps,
 } from "next"
 import { getServerSession } from "next-auth"
+import { User, userFromCoach, userFromPlayer } from "../auth"
 
 export type PropsWithUser<P = {}> = P & {
   user: User

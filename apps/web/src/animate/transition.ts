@@ -1,4 +1,4 @@
-import { TransitionHover, TransitionEnter, TransitionExit } from "../animate"
+import { TransitionEnter, TransitionExit, TransitionHover } from "../animate"
 
 export const animateTransitionHover = (props?: TransitionHover) => {
   const duration = props?.duration || 0.32

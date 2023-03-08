@@ -1,9 +1,9 @@
-import { styled } from "@mui/material/styles"
-import { Box, Grid, Container, Typography, Button } from "@mui/material"
-import { m } from "framer-motion"
-import { MotionContainer } from "@/components/MotionContainer"
 import { animateFade } from "@/animate/fade"
 import { authenticate } from "@/auth/client"
+import { MotionContainer } from "@/components/MotionContainer"
+import { Box, Button, Container, Grid, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { m } from "framer-motion"
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(28, 0),

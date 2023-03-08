@@ -6,7 +6,7 @@ import {
   RanklabApi,
   RequestOpts,
 } from "@ranklab/api"
-import { transform, isArray, camelCase, isObject, snakeCase } from "lodash"
+import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
 import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "next-auth"
 

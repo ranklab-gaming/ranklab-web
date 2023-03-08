@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react"
 import { authenticate } from "@/auth/client"
-import { getServerSession } from "next-auth"
+import { useParam } from "@/hooks/useParam"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { GetServerSideProps } from "next"
-import { useParam } from "@/hooks/useParam"
+import { getServerSession } from "next-auth"
+import { useEffect, useState } from "react"
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getServerSession(ctx.req, ctx.res, authOptions)

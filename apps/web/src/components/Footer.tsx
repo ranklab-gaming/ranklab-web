@@ -1,14 +1,14 @@
-import NextLink from "next/link"
-import { styled } from "@mui/material/styles"
+import { Logo } from "@/components/Logo"
 import {
+  Container,
+  Divider,
   Grid,
   Link,
-  Divider,
-  Container,
-  Typography,
   Stack,
+  Typography,
 } from "@mui/material"
-import { Logo } from "@/components/Logo"
+import { styled } from "@mui/material/styles"
+import NextLink from "next/link"
 
 const links = [
   {

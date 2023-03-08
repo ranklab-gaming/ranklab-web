@@ -1,10 +1,10 @@
-import { styled } from "@mui/material/styles"
-import { Box, Stack, AppBar, Toolbar } from "@mui/material"
-import { headerStyles, navbarStyles, styles } from "@/styles"
-import { useOffsetTop } from "@/hooks/useOffsetTop"
-import { useResponsive } from "@/hooks/useResponsive"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Iconify } from "@/components/Iconify"
+import { useOffsetTop } from "@/hooks/useOffsetTop"
+import { useResponsive } from "@/hooks/useResponsive"
+import { headerStyles, navbarStyles, styles } from "@/styles"
+import { AppBar, Box, Stack, Toolbar } from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { DashboardLayoutAccountPopover } from "./AccountPopover"
 
 type RootStyleProps = {

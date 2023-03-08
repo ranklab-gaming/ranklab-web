@@ -1,4 +1,7 @@
 import { api } from "@/api/client"
+import { coachFromUser } from "@/auth"
+import { PropsWithUser } from "@/auth/server"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
@@ -12,27 +15,16 @@ import {
   Typography,
 } from "@mui/material"
 import { Game } from "@ranklab/api"
+import NextLink from "next/link"
+import { useSnackbar } from "notistack"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import { PropsWithUser } from "@/auth/server"
-import { DashboardLayout } from "@/components/DashboardLayout"
-import { useSnackbar } from "notistack"
-import NextLink from "next/link"
-import { coachFromUser } from "@/auth"
 
 interface Props {
   games: Game[]
 }
 
-type FormValuesProps = {
-  bio: string
-  gameId: string
-  name: string
-  email: string
-  price: string
-}
-
-const FormSchema: yup.Schema<FormValuesProps> = yup.object({
+const FormSchema = yup.object({
   bio: yup
     .string()
     .required("Bio is required")
@@ -52,15 +44,13 @@ const FormSchema: yup.Schema<FormValuesProps> = yup.object({
     ),
 })
 
-interface Form extends yup.InferType<typeof FormSchema> {
-  __typename?: "Coach"
-}
+type FormValues = yup.InferType<typeof FormSchema>
 
 export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const coach = coachFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
 
-  const defaultValues = {
+  const defaultValues: FormValues = {
     bio: coach.bio,
     gameId: coach.gameId,
     name: coach.name,
@@ -72,15 +62,15 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<FormValuesProps>({
+  } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<Form>(FormSchema),
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",
   })
 
-  const updateCoach = async (data: FormValuesProps) => {
+  const updateCoach = async (data: FormValues) => {
     await api.coachAccountUpdate({
       updateCoachRequest: {
         name: data.name,

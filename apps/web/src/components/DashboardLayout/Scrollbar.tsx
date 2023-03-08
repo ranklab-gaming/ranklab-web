@@ -1,6 +1,6 @@
-import SimpleBarReact from "simplebar-react"
-import { alpha, styled } from "@mui/material/styles"
 import { Box, BoxProps } from "@mui/material"
+import { alpha, styled } from "@mui/material/styles"
+import SimpleBarReact from "simplebar-react"
 
 const RootStyle = styled("div")(() => ({
   flexGrow: 1,

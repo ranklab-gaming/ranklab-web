@@ -1,6 +1,6 @@
 import { Theme } from "@mui/material/styles"
-import { PaletteColorType } from "../palette"
 import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from "../icons"
+import { PaletteColorType } from "../palette"
 
 export function Alert(theme: Theme) {
   const standardStyle = (color: PaletteColorType) => ({

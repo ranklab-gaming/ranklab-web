@@ -1,16 +1,15 @@
+import overwatch from "@/images/games/overwatch.svg"
+import valorant from "@/images/games/valorant.svg"
 import {
-  Stack,
-  MenuItem,
-  TextField,
   Avatar,
   ListItemAvatar,
   ListItemText,
+  MenuItem,
+  Stack,
+  TextField,
 } from "@mui/material"
 import { Game } from "@ranklab/api"
-import React from "react"
 import { ChangeEventHandler } from "react"
-import overwatch from "@/images/games/overwatch.svg"
-import valorant from "@/images/games/valorant.svg"
 
 interface Props {
   games: Game[]

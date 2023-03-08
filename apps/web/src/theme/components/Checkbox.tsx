@@ -1,7 +1,7 @@
 import { Theme } from "@mui/material/styles"
 import {
-  CheckboxIcon,
   CheckboxCheckedIcon,
+  CheckboxIcon,
   CheckboxIndeterminateIcon,
 } from "../icons"
 

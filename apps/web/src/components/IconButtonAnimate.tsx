@@ -1,5 +1,5 @@
-import { m } from "framer-motion"
 import { Box, IconButton, IconButtonProps } from "@mui/material"
+import { m } from "framer-motion"
 import { PropsWithChildren } from "react"
 
 interface AnimateWrapProp extends PropsWithChildren {

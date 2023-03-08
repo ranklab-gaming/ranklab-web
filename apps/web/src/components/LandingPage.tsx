@@ -1,14 +1,14 @@
-import { Box, Stack, styled } from "@mui/material"
-import { LandingPageHeader } from "./LandingPage/Header"
 import { Footer } from "@/components/Footer"
-import { LandingPageDashboard } from "./LandingPage/Dashboard"
-import { LandingPageFlow } from "./LandingPage/Flow"
-import { LandingPageHero } from "./LandingPage/Hero"
-import { LandingPageReview } from "./LandingPage/Review"
 import { Page } from "@/components/Page"
-import { useEffect } from "react"
+import { Box, Stack, styled } from "@mui/material"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
+import { useEffect } from "react"
+import { LandingPageDashboard } from "./LandingPage/Dashboard"
+import { LandingPageFlow } from "./LandingPage/Flow"
+import { LandingPageHeader } from "./LandingPage/Header"
+import { LandingPageHero } from "./LandingPage/Hero"
+import { LandingPageReview } from "./LandingPage/Review"
 
 const RootStyle = styled("div")({
   height: "100%",

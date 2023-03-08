@@ -1,4 +1,4 @@
-import * as ironSession from "iron-session"
+import "iron-session"
 
 declare module "iron-session" {
   interface IronSessionData {

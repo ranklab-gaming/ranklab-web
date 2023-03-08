@@ -1,11 +1,11 @@
-import { PropsWithChildren, useRef } from "react"
-import { IconifyIcon } from "@iconify/react"
-import { SnackbarProvider, SnackbarKey } from "notistack"
-import { alpha, useTheme } from "@mui/material/styles"
-import { Box, GlobalStyles } from "@mui/material"
-import { PaletteColorType } from "@/theme/palette"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Iconify } from "@/components/Iconify"
+import { PaletteColorType } from "@/theme/palette"
+import { IconifyIcon } from "@iconify/react"
+import { Box, GlobalStyles } from "@mui/material"
+import { alpha, useTheme } from "@mui/material/styles"
+import { SnackbarKey, SnackbarProvider } from "notistack"
+import { PropsWithChildren, useRef } from "react"
 
 function SnackbarStyles() {
   const theme = useTheme()

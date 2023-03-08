@@ -1,11 +1,10 @@
-import * as React from "react"
+import { Avatar } from "@/components/Avatar"
+import { formatPrice } from "@/utils/formatPrice"
+import { Chip, MenuItem, Stack, TextField } from "@mui/material"
 import ListItemText from "@mui/material/ListItemText"
 import Typography from "@mui/material/Typography"
-import { Chip, MenuItem, Stack, TextField } from "@mui/material"
-import { Coach, Game } from "@ranklab/api"
-import { Avatar } from "@/components/Avatar"
+import { Coach } from "@ranklab/api"
 import { ChangeEventHandler } from "react"
-import { formatPrice } from "@/utils/formatPrice"
 
 interface Props {
   coaches: Coach[]

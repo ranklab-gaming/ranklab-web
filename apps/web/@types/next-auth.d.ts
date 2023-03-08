@@ -1,6 +1,6 @@
 import { UserType } from "@ranklab/api"
 import { JWTPayload } from "jose"
-import * as nextAuth from "next-auth"
+import "next-auth"
 
 declare module "next-auth" {
   interface Session {

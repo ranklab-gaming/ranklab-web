@@ -1,14 +1,14 @@
+import { AppProps } from "@/pages/_app"
+import { createEmotionCache } from "@/styles"
+import createEmotionServer from "@emotion/server/create-instance"
 import NextDocument, {
-  Html,
+  DocumentContext,
+  DocumentProps,
   Head,
+  Html,
   Main,
   NextScript,
-  DocumentProps,
-  DocumentContext,
 } from "next/document"
-import createEmotionServer from "@emotion/server/create-instance"
-import { createEmotionCache } from "@/styles"
-import { AppProps } from "@/pages/_app"
 
 export default function Document({ styles }: DocumentProps) {
   return (

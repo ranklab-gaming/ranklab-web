@@ -1,15 +1,15 @@
-import { styled } from "@mui/material/styles"
 import {
-  List,
   Box,
-  ListSubheader as MuiListSubheader,
   BoxProps,
+  List,
+  ListSubheader as MuiListSubheader,
 } from "@mui/material"
+import { styled } from "@mui/material/styles"
+import { ComponentProps, FunctionComponent } from "react"
 import {
   DashboardLayoutNavListProps,
   DashboardLayoutNavListRoot,
 } from "./NavList"
-import { ComponentProps, FunctionComponent } from "react"
 
 interface NavSectionProps extends BoxProps {
   navConfig: {

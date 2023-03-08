@@ -1,6 +1,6 @@
-import { alpha, Theme, useTheme, styled } from "@mui/material/styles"
-import { BoxProps } from "@mui/material"
 import { PaletteColorType } from "@/theme/palette"
+import { BoxProps } from "@mui/material"
+import { alpha, styled, Theme, useTheme } from "@mui/material/styles"
 
 type LabelColor =
   | "default"

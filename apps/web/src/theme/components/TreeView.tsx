@@ -1,8 +1,8 @@
 import { Theme } from "@mui/material/styles"
 import {
   TreeViewCollapseIcon,
-  TreeViewExpandIcon,
   TreeViewEndIcon,
+  TreeViewExpandIcon,
 } from "../icons"
 
 export function TreeView(theme: Theme) {

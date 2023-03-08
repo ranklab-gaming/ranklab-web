@@ -1,30 +1,26 @@
-import { PropsWithUser } from "@/auth/server"
-import { DashboardLayout } from "./DashboardLayout"
-import * as yup from "yup"
 import { api } from "@/api/client"
+import { PropsWithUser } from "@/auth/server"
+import { CoachesSelect } from "@/components/CoachesSelect"
+import { Editor } from "@/components/Editor"
+import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Stack, TextField, FormHelperText, Box } from "@mui/material"
+import { Box, FormHelperText, Stack } from "@mui/material"
 import { Coach, Recording } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
-import { useForm } from "@/hooks/useForm"
-import { Editor } from "@/components/Editor"
-import { CoachesSelect } from "@/components/CoachesSelect"
+import * as yup from "yup"
+import { DashboardLayout } from "./DashboardLayout"
 
-type FormValuesProps = {
-  notes?: string
-  coachId: string
-  recordingId: string
-}
-
-const FormSchema: yup.Schema<FormValuesProps> = yup.object({
+const FormSchema = yup.object({
   coachId: yup.string().required("Coach is required"),
   recordingId: yup.string().required("Recording is required"),
   notes: yup.string(),
 })
 
-const defaultValues = {
+type FormValues = yup.InferType<typeof FormSchema>
+
+const defaultValues: FormValues = {
   coachId: "",
   recordingId: "",
 }
@@ -41,15 +37,15 @@ export function PlayerNewReviewPage({ coaches, user }: PropsWithUser<Props>) {
     control,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<FormValuesProps>({
+  } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
     serverErrorMessage:
       "There was a problem submitting the request. Please try again later.",
   })
 
-  const createReview = async function (values: FormValuesProps) {
+  const createReview = async function (values: FormValues) {
     const review = await api.playerReviewsCreate({
       createReviewRequest: {
         notes: values.notes ?? "",
