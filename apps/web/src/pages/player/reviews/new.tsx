@@ -1,6 +1,6 @@
 import { createServerApi } from "@/api/server"
 import { PropsWithUser, withUserSsr } from "@/auth/server"
-import { PlayerNewReviewPage } from "@/components/PlayerNewReviewPage"
+import { PlayerReviewsNewPage } from "@/components/PlayerReviewsNewPage"
 import { Coach, Recording } from "@ranklab/api"
 
 interface Props {
@@ -29,7 +29,7 @@ export const getServerSideProps = withUserSsr<Props>(
 
 export default function ({ user, coaches, recordings }: PropsWithUser<Props>) {
   return (
-    <PlayerNewReviewPage
+    <PlayerReviewsNewPage
       user={user}
       recordings={recordings}
       coaches={coaches}

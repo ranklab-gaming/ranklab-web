@@ -18,19 +18,38 @@ export const PlayerAccountFieldsSchema = yup.object().shape({
     .min(2, "Name must be at least 2 characters"),
 })
 
-type FormValues = yup.InferType<typeof PlayerAccountFieldsSchema>
+export const PlayerAccountFieldsSchemaWithoutPassword =
+  PlayerAccountFieldsSchema.omit(["password"])
 
-interface Props<TFormValues extends FormValues> {
+type FormValuesWithPassword = yup.InferType<typeof PlayerAccountFieldsSchema>
+
+type FormValuesWithoutPassword = yup.InferType<
+  typeof PlayerAccountFieldsSchemaWithoutPassword
+>
+
+type FormValues<TWithPassword extends boolean> = TWithPassword extends true
+  ? FormValuesWithPassword
+  : FormValuesWithoutPassword
+
+interface Props<
+  TWithPassword extends boolean,
+  TFormValues extends FormValues<TWithPassword>
+> {
   games: Game[]
   control: Control<TFormValues>
   watch: UseFormWatch<TFormValues>
+  showPasswordField?: TWithPassword
 }
 
-export function PlayerAccountFields<TFormValues extends FormValues>({
+export function PlayerAccountFields<
+  TWithPassword extends boolean,
+  TFormValues extends FormValues<TWithPassword>
+>({
   control,
   games,
   watch,
-}: Props<TFormValues>) {
+  showPasswordField = false as TWithPassword,
+}: Props<TWithPassword, TFormValues>) {
   const gameId = watch("gameId" as Path<TFormValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
 
@@ -64,20 +83,24 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
           />
         )}
       />
-      <Controller
-        name={"password" as Path<TFormValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            fullWidth
-            error={Boolean(error)}
-            helperText={error ? error.message : "The password you use to login"}
-            label="Password"
-            type="password"
-          />
-        )}
-      />
+      {showPasswordField && (
+        <Controller
+          name={"password" as Path<TFormValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              fullWidth
+              error={Boolean(error)}
+              helperText={
+                error ? error.message : "The password you use to login"
+              }
+              label="Password"
+              type="password"
+            />
+          )}
+        />
+      )}
       <Controller
         name={"gameId" as Path<TFormValues>}
         control={control}

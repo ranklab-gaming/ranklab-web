@@ -70,6 +70,7 @@ export function PlayerSignupPage({ games }: Props) {
               games={games}
               control={control}
               watch={watch}
+              showPasswordField
             />
           </Stack>
           <Box

@@ -317,6 +317,12 @@ export interface CreatePlayerRequest {
    * @memberof CreatePlayerRequest
    */
   gameId: string
+  /**
+   *
+   * @type {number}
+   * @memberof CreatePlayerRequest
+   */
+  skillLevel: number
 }
 /**
  *
@@ -567,6 +573,12 @@ export interface Player {
    * @memberof Player
    */
   gameId: string
+  /**
+   *
+   * @type {number}
+   * @memberof Player
+   */
+  skillLevel: number
 }
 /**
  *
@@ -874,6 +886,12 @@ export interface UpdatePlayerRequest {
    * @memberof UpdatePlayerRequest
    */
   gameId: string
+  /**
+   *
+   * @type {number}
+   * @memberof UpdatePlayerRequest
+   */
+  skillLevel: number
 }
 
 /**

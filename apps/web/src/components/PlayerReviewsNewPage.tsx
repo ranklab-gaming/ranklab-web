@@ -30,7 +30,7 @@ interface Props {
   coaches: Coach[]
 }
 
-export function PlayerNewReviewPage({ coaches, user }: PropsWithUser<Props>) {
+export function PlayerReviewsNewPage({ coaches, user }: PropsWithUser<Props>) {
   const router = useRouter()
 
   const {

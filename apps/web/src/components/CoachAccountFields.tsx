@@ -39,8 +39,8 @@ type FormValues<TWithPassword extends boolean> = TWithPassword extends true
   : FormValuesWithoutPassword
 
 interface Props<
-  TWithPassword extends boolean = false,
-  TFormValues extends FormValues<TWithPassword> = FormValues<TWithPassword>
+  TWithPassword extends boolean,
+  TFormValues extends FormValues<TWithPassword>
 > {
   games: Game[]
   control: Control<TFormValues>
@@ -48,8 +48,8 @@ interface Props<
 }
 
 export function CoachAccountFields<
-  TWithPassword extends boolean = false,
-  TFormValues extends FormValues<TWithPassword> = FormValues<TWithPassword>
+  TWithPassword extends boolean,
+  TFormValues extends FormValues<TWithPassword>
 >({
   control,
   games,
