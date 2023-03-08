@@ -63,7 +63,7 @@ function PasswordRequestResetPage() {
                 <TextField
                   {...field}
                   fullWidth
-                  error={!!error}
+                  error={Boolean(error)}
                   helperText={error?.message}
                   label="Email"
                   type="email"

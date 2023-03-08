@@ -111,7 +111,7 @@ export function LoginPage({ userType }: Props) {
                 <TextField
                   {...field}
                   fullWidth
-                  error={!!error}
+                  error={Boolean(error)}
                   helperText={error?.message}
                   label="Email"
                   type="email"
@@ -125,7 +125,7 @@ export function LoginPage({ userType }: Props) {
                 <TextField
                   {...field}
                   fullWidth
-                  error={!!error}
+                  error={Boolean(error)}
                   helperText={error?.message}
                   label="Password"
                   type={showPassword ? "text" : "password"}

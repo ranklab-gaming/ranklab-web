@@ -1,7 +1,5 @@
 import { api } from "@/api/client"
 import { BasicLayout } from "@/components/BasicLayout"
-import { GamesSelect } from "@/components/GamesSelect"
-import { Iconify } from "@/components/Iconify"
 import {
   PlayerAccountFields,
   PlayerAccountFieldsSchema,
@@ -10,20 +8,10 @@ import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import {
-  Box,
-  IconButton,
-  InputAdornment,
-  Link,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material"
+import { Box, Link, Stack, Typography } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { useRouter } from "next/router"
-import { useState } from "react"
-import { Controller, FormProvider } from "react-hook-form"
+import { FormProvider } from "react-hook-form"
 import * as yup from "yup"
 
 interface Props {
@@ -41,7 +29,6 @@ export function PlayerSignupPage({ games }: Props) {
     name: "",
   }
 
-  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const login = useLogin("player")
 
@@ -82,8 +69,6 @@ export function PlayerSignupPage({ games }: Props) {
             <PlayerAccountFields
               games={games}
               control={control}
-              showPassword={showPassword}
-              setShowPassword={setShowPassword}
               watch={watch}
             />
           </Stack>

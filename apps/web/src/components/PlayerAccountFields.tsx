@@ -1,6 +1,5 @@
 import { GamesSelect } from "@/components/GamesSelect"
-import { Iconify } from "@/components/Iconify"
-import { TextField, InputAdornment, IconButton, MenuItem } from "@mui/material"
+import { TextField, MenuItem } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
@@ -24,16 +23,12 @@ type FormValues = yup.InferType<typeof PlayerAccountFieldsSchema>
 interface Props<TFormValues extends FormValues> {
   games: Game[]
   control: Control<TFormValues>
-  showPassword: boolean
-  setShowPassword: (showPassword: boolean) => void
   watch: UseFormWatch<TFormValues>
 }
 
 export function PlayerAccountFields<TFormValues extends FormValues>({
   control,
   games,
-  showPassword,
-  setShowPassword,
   watch,
 }: Props<TFormValues>) {
   const gameId = watch("gameId" as Path<TFormValues>)
@@ -49,7 +44,9 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
             {...field}
             label="Name"
             error={Boolean(error)}
-            helperText={error?.message}
+            helperText={
+              error ? error.message : "This will appear on your profile"
+            }
           />
         )}
       />
@@ -60,8 +57,8 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
           <TextField
             {...field}
             fullWidth
-            error={!!error}
-            helperText={error?.message}
+            error={Boolean(error)}
+            helperText={error ? error.message : "The email you use to login"}
             label="Email"
             type="email"
           />
@@ -74,24 +71,10 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
           <TextField
             {...field}
             fullWidth
-            error={!!error}
-            helperText={error?.message}
+            error={Boolean(error)}
+            helperText={error ? error.message : "The password you use to login"}
             label="Password"
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    <Iconify
-                      icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
+            type="password"
           />
         )}
       />
@@ -105,7 +88,9 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
             onChange={field.onChange}
             onBlur={field.onBlur}
             error={Boolean(error)}
-            helperText={error?.message}
+            helperText={
+              error ? error.message : "The game you want to be coached in"
+            }
           />
         )}
       />
@@ -119,7 +104,9 @@ export function PlayerAccountFields<TFormValues extends FormValues>({
               {...field}
               fullWidth
               error={Boolean(error)}
-              helperText={error?.message}
+              helperText={
+                error ? error.message : "Your skill level in the game"
+              }
               label="Skill Level"
             >
               {selectedGame.skillLevels.map((skillLevel) => (

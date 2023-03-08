@@ -70,7 +70,7 @@ function PasswordResetPage() {
                 <TextField
                   {...field}
                   fullWidth
-                  error={!!error}
+                  error={Boolean(error)}
                   helperText={error?.message}
                   label="Password"
                   type="password"

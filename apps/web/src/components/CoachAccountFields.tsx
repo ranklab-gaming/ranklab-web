@@ -10,6 +10,7 @@ export const CoachAccountFieldsSchema = yup.object().shape({
     .required("Bio is required")
     .min(30, "Bio must be at least 30 characters"),
   gameId: yup.string().required("Game is required"),
+  password: yup.string().required("Password is required"),
   name: yup
     .string()
     .required("Name is required")
@@ -24,17 +25,36 @@ export const CoachAccountFieldsSchema = yup.object().shape({
     ),
 })
 
-type FormValues = yup.InferType<typeof CoachAccountFieldsSchema>
+export const CoachAccountFieldsSchemaWithoutPassword =
+  CoachAccountFieldsSchema.omit(["password"])
 
-interface Props<TFormValues extends FormValues> {
+type FormValuesWithPassword = yup.InferType<typeof CoachAccountFieldsSchema>
+
+type FormValuesWithoutPassword = yup.InferType<
+  typeof CoachAccountFieldsSchemaWithoutPassword
+>
+
+type FormValues<TWithPassword extends boolean> = TWithPassword extends true
+  ? FormValuesWithPassword
+  : FormValuesWithoutPassword
+
+interface Props<
+  TWithPassword extends boolean = false,
+  TFormValues extends FormValues<TWithPassword> = FormValues<TWithPassword>
+> {
   games: Game[]
   control: Control<TFormValues>
+  showPasswordField?: TWithPassword
 }
 
-export function CoachAccountFields<TFormValues extends FormValues>({
+export function CoachAccountFields<
+  TWithPassword extends boolean = false,
+  TFormValues extends FormValues<TWithPassword> = FormValues<TWithPassword>
+>({
   control,
   games,
-}: Props<TFormValues>) {
+  showPasswordField = false as TWithPassword,
+}: Props<TWithPassword, TFormValues>) {
   return (
     <>
       <Controller
@@ -66,6 +86,23 @@ export function CoachAccountFields<TFormValues extends FormValues>({
           />
         )}
       />
+      {showPasswordField && (
+        <Controller
+          name={"password" as Path<TFormValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              type="password"
+              label="Password"
+              error={Boolean(error)}
+              helperText={
+                error ? error.message : "The password you use to log in"
+              }
+            />
+          )}
+        />
+      )}
       <Controller
         name={"bio" as Path<TFormValues>}
         control={control}

@@ -3,7 +3,7 @@ import { coachFromUser } from "@/auth"
 import { PropsWithUser } from "@/auth/server"
 import {
   CoachAccountFields,
-  CoachAccountFieldsSchema,
+  CoachAccountFieldsSchemaWithoutPassword,
 } from "@/components/CoachAccountFields"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useForm } from "@/hooks/useForm"
@@ -19,7 +19,7 @@ interface Props {
   games: Game[]
 }
 
-type FormValues = yup.InferType<typeof CoachAccountFieldsSchema>
+type FormValues = yup.InferType<typeof CoachAccountFieldsSchemaWithoutPassword>
 
 export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const coach = coachFromUser(user)
@@ -39,7 +39,9 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(CoachAccountFieldsSchema),
+    resolver: yupResolver<yup.ObjectSchema<any>>(
+      CoachAccountFieldsSchemaWithoutPassword
+    ),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",
@@ -64,34 +66,24 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
       <form onSubmit={handleSubmit(updateCoach)}>
         <Stack spacing={3} my={4}>
           <CoachAccountFields control={control} games={games} />
-          <Paper>
-            <Stack spacing={2} p={2}>
-              <Typography variant="h5">Payment Details</Typography>
-              <Alert
-                severity="info"
-                sx={{ mb: 2 }}
-                action={
-                  <NextLink
-                    href="/api/stripe-account-links"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Button
-                      color="info"
-                      size="small"
-                      variant="text"
-                      component="a"
-                    >
-                      OPEN ACCOUNT DASHBOARD
-                    </Button>
-                  </NextLink>
-                }
+          <Alert
+            severity="info"
+            sx={{ mb: 2 }}
+            action={
+              <NextLink
+                href="/api/stripe-account-links"
+                passHref
+                legacyBehavior
               >
-                We partner with Stripe to manage payments. You can update your
-                payment details using their account dashboard.
-              </Alert>
-            </Stack>
-          </Paper>
+                <Button color="info" size="small" variant="text" component="a">
+                  OPEN ACCOUNT DASHBOARD
+                </Button>
+              </NextLink>
+            }
+          >
+            We partner with Stripe to manage payments. You can update your
+            payment details using their account dashboard.
+          </Alert>
         </Stack>
         <LoadingButton
           color="info"

@@ -22,7 +22,6 @@ interface Props {
 const FormSchema = CoachAccountFieldsSchema.concat(
   yup.object().shape({
     country: yup.string().required("Country is required"),
-    password: yup.string().required("Password is required"),
   })
 )
 
@@ -87,7 +86,11 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
     <BasicLayout title="Signup to Ranklab as a Coach">
       <form onSubmit={handleSubmit(createCoach)}>
         <Stack spacing={3}>
-          <CoachAccountFields control={control} games={games} />
+          <CoachAccountFields
+            control={control}
+            games={games}
+            showPasswordField
+          />
           <Controller
             name="country"
             control={control}
@@ -111,8 +114,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
             fullWidth
             color="info"
             size="large"
-            type="button"
-            onClick={() => {}}
+            type="submit"
             variant="contained"
             loading={isSubmitting}
             disabled={isSubmitting}
