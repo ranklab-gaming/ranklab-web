@@ -4,7 +4,7 @@ import { Game } from "@ranklab/api"
 import { Control, Controller, Path } from "react-hook-form"
 import * as yup from "yup"
 
-export const CoachAccountFieldsSchema = yup.object({
+export const CoachAccountFieldsSchema = yup.object().shape({
   bio: yup
     .string()
     .required("Bio is required")

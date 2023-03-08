@@ -20,7 +20,7 @@ interface Props {
 }
 
 const FormSchema = CoachAccountFieldsSchema.concat(
-  yup.object({
+  yup.object().shape({
     country: yup.string().required("Country is required"),
     password: yup.string().required("Password is required"),
   })
@@ -53,7 +53,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem creating your profile. Please try again later.",
@@ -96,7 +96,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
                 {...field}
                 select
                 error={Boolean(error)}
-                helperText={error?.message}
+                helperText={error ? error.message : "The country you live in"}
                 label="Country"
               >
                 {countries.map((country) => (
@@ -111,7 +111,8 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
             fullWidth
             color="info"
             size="large"
-            type="submit"
+            type="button"
+            onClick={() => {}}
             variant="contained"
             loading={isSubmitting}
             disabled={isSubmitting}

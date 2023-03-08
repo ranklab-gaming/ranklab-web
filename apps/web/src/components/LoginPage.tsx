@@ -6,7 +6,13 @@ import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
-  Box, IconButton, InputAdornment, Link, Stack, TextField, Typography
+  Box,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import NextLink from "next/link"
@@ -20,7 +26,7 @@ interface Props {
   userType: UserType
 }
 
-const FormSchema = yup.object({
+const FormSchema = yup.object().shape({
   email: yup
     .string()
     .email("Email must be valid")
@@ -44,7 +50,7 @@ export function LoginPage({ userType }: Props) {
     useState(false)
 
   const form = useForm({
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     serverErrorMessage:
       "There was a problem logging in. Please try again later.",
     errorMessages: {

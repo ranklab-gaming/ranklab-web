@@ -39,7 +39,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(CoachAccountFieldsSchema as any),
+    resolver: yupResolver<yup.ObjectSchema<any>>(CoachAccountFieldsSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",

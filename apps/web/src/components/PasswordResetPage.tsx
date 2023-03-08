@@ -11,7 +11,7 @@ import { useSnackbar } from "notistack"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
 
-const FormSchema = yup.object({
+const FormSchema = yup.object().shape({
   password: yup.string().required("Password is required"),
 })
 
@@ -33,7 +33,7 @@ function PasswordResetPage() {
   }
 
   const form = useForm({
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem resetting your password. Please try again later.",

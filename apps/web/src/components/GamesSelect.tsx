@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { ChangeEventHandler } from "react"
+import { ChangeEventHandler, forwardRef } from "react"
 
 interface Props {
   games: Game[]
@@ -25,14 +25,10 @@ const logos = {
   valorant,
 }
 
-export function GamesSelect({
-  games,
-  onChange,
-  value,
-  onBlur,
-  error,
-  helperText,
-}: Props) {
+export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
+  { games, onChange, value, onBlur, error, helperText }: Props,
+  ref
+) {
   return (
     <Stack spacing={1}>
       <TextField
@@ -43,6 +39,7 @@ export function GamesSelect({
         onBlur={onBlur}
         error={error}
         helperText={helperText}
+        ref={ref}
       >
         {games.map((game) => (
           <MenuItem key={game.id} value={game.id}>
@@ -60,4 +57,4 @@ export function GamesSelect({
       </TextField>
     </Stack>
   )
-}
+})

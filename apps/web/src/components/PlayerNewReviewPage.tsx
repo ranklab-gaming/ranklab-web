@@ -12,7 +12,7 @@ import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
 
-const FormSchema = yup.object({
+const FormSchema = yup.object().shape({
   coachId: yup.string().required("Coach is required"),
   recordingId: yup.string().required("Recording is required"),
   notes: yup.string(),
@@ -39,7 +39,7 @@ export function PlayerNewReviewPage({ coaches, user }: PropsWithUser<Props>) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem submitting the request. Please try again later.",
