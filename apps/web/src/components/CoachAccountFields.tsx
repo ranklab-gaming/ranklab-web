@@ -143,7 +143,9 @@ export function CoachAccountFields<
             {...field}
             label="Price"
             error={Boolean(error)}
-            helperText={error ? error.message : "The price you charge per VOD"}
+            helperText={
+              error ? error.message : "The price you charge per review"
+            }
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">$</InputAdornment>

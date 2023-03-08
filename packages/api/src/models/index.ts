@@ -659,6 +659,18 @@ export interface Recording {
    * @memberof Recording
    */
   reviewId?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Recording
+   */
+  title: string
+  /**
+   *
+   * @type {number}
+   * @memberof Recording
+   */
+  skillLevel: number
 }
 /**
  *

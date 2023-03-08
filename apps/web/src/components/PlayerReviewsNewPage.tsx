@@ -5,7 +5,7 @@ import { Editor } from "@/components/Editor"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Box, FormHelperText, Stack } from "@mui/material"
+import { Box, FormHelperText, MenuItem, Stack, TextField } from "@mui/material"
 import { Coach, Recording } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
@@ -22,7 +22,7 @@ type FormValues = yup.InferType<typeof FormSchema>
 
 const defaultValues: FormValues = {
   coachId: "",
-  recordingId: "",
+  recordingId: "UPLOAD_NEW_RECORDING",
 }
 
 interface Props {
@@ -30,7 +30,11 @@ interface Props {
   coaches: Coach[]
 }
 
-export function PlayerReviewsNewPage({ coaches, user }: PropsWithUser<Props>) {
+export function PlayerReviewsNewPage({
+  coaches,
+  user,
+  recordings,
+}: PropsWithUser<Props>) {
   const router = useRouter()
 
   const {
@@ -82,6 +86,34 @@ export function PlayerReviewsNewPage({ coaches, user }: PropsWithUser<Props>) {
             )}
           />
           <Controller
+            name="recordingId"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                select
+                label="Recording"
+                onChange={field.onChange}
+                value={field.value}
+                onBlur={field.onBlur}
+                error={Boolean(error)}
+                helperText={
+                  error
+                    ? error.message
+                    : "The recording you want to be reviewed"
+                }
+              >
+                <MenuItem value={defaultValues.recordingId}>
+                  Upload a new recording
+                </MenuItem>
+                {recordings.map((recording) => (
+                  <MenuItem key={recording.id} value={recording.id}>
+                    {recording.title}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+          <Controller
             name="notes"
             control={control}
             render={({ field, fieldState: { error } }) => {
@@ -112,7 +144,7 @@ export function PlayerReviewsNewPage({ coaches, user }: PropsWithUser<Props>) {
           disabled={isSubmitting}
           sx={{ mt: 3 }}
         >
-          Request a Review
+          Go to Checkout
         </LoadingButton>
       </form>
     </DashboardLayout>
