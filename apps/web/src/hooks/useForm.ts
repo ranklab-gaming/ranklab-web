@@ -86,12 +86,10 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       if (e.response.status === 422) {
         const errors = await e.response.json()
 
-        if ("error" in errors && !Array.isArray(errors.error)) {
+        if ("error" in errors && Array.isArray(errors.error)) {
+          setValidationErrors(form.setError, errors)
           return
         }
-
-        setValidationErrors(form.setError, errors)
-        return
       }
 
       if (props.errorMessages && e.response.status in props.errorMessages) {

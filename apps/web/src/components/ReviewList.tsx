@@ -2,14 +2,19 @@ import { api } from "@/api/client"
 import { Label } from "@/components/Label"
 import { useUser } from "@/hooks/useUser"
 import {
-  Table, TableBody, TableCell, TableContainer,
-  TableHead, TablePagination, TableRow
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
 } from "@mui/material"
 import {
   Game,
   PaginatedResultForReview,
   Review,
-  ReviewState
+  ReviewState,
 } from "@ranklab/api"
 import NextLink from "next/link"
 import { FunctionComponent, MouseEvent, useState } from "react"
@@ -105,32 +110,27 @@ export function ReviewList({
         </TableHead>
         <TableBody>
           {reviews.records.map((review) => (
-            <NextLink
-              href={`/${user.type}/reviews/${review.id}`}
-              key={review.id}
+            <TableRow
+              sx={{
+                cursor: "pointer",
+                "&:last-child td, &:last-child th": { border: 0 },
+                transition: (theme) =>
+                  theme.transitions.create("background-color", {
+                    duration: theme.transitions.duration.standard,
+                  }),
+                "&:hover": { backgroundColor: "primary.dark" },
+              }}
             >
-              <TableRow
-                sx={{
-                  cursor: "pointer",
-                  "&:last-child td, &:last-child th": { border: 0 },
-                  transition: (theme) =>
-                    theme.transitions.create("background-color", {
-                      duration: theme.transitions.duration.standard,
-                    }),
-                  "&:hover": { backgroundColor: "primary.dark" },
-                }}
-              >
-                <TableCell component="th" scope="row">
-                  {review.title}
-                </TableCell>
-                <TableCell align="right">
-                  {games.find((game) => game.id === review.gameId)!.name}
-                </TableCell>
-                <TableCell align="right">
-                  <Status reviewState={review.state} />
-                </TableCell>
-              </TableRow>
-            </NextLink>
+              <TableCell component="th" scope="row">
+                {review.title}
+              </TableCell>
+              <TableCell align="right">
+                {games.find((game) => game.id === review.gameId)!.name}
+              </TableCell>
+              <TableCell align="right">
+                <Status reviewState={review.state} />
+              </TableCell>
+            </TableRow>
           ))}
         </TableBody>
         {reviews.totalPages > 1 && (
