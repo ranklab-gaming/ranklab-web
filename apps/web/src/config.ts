@@ -2,7 +2,7 @@ export function requireEnv(name: string) {
   const value = process.env[name]
 
   if (!value) {
-    throw new Error(`Environment variable ${name} is required`)
+    throw new Error(`environment variable ${name} is required`)
   }
 
   return value
