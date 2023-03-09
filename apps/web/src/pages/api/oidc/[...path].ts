@@ -45,11 +45,11 @@ const config: Configuration = {
     required: () => true,
   },
   ttl: {
-    Session: 100 * 365 * 24 * 60 * 60,
-    Interaction: 20 * 60,
-    AccessToken: 2 * 60 * 60,
-    Grant: 2 * 60 * 60,
-    IdToken: 2 * 60 * 60,
+    Session: 14 * 24 * 60 * 60,
+    Interaction: 60 * 60,
+    AccessToken: 60 * 60,
+    Grant: 14 * 24 * 60 * 60,
+    IdToken: 60 * 60,
   },
   extraParams: ["user_type", "intent", "token"],
   async findAccount(_ctx, id) {
