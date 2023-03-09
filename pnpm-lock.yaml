@@ -26,6 +26,8 @@ importers:
       '@mui/material': ^5.11.11
       '@ranklab/api': workspace:*
       '@sentry/nextjs': ^7.39.0
+      '@stripe/react-stripe-js': ^1.16.5
+      '@stripe/stripe-js': ^1.48.0
       '@types/koa': ^2.13.5
       '@types/koa-mount': ^4.0.2
       '@types/lodash': ^4.14.191
@@ -65,6 +67,8 @@ importers:
       '@mui/material': 5.11.11_xqeqsl5kvjjtyxwyi3jhw3yuli
       '@ranklab/api': link:../../packages/api
       '@sentry/nextjs': 7.39.0_next@13.2.3+react@18.2.0
+      '@stripe/react-stripe-js': 1.16.5_weqjxr3p5t2q35nshpdpqrergy
+      '@stripe/stripe-js': 1.48.0
       '@zach.codes/use-upload': 1.0.1
       framer-motion: 10.0.1_biqbaboplfbrettd7655fr4n2y
       ioredis: 5.3.1
@@ -996,6 +1000,23 @@ packages:
   /@sindresorhus/is/5.3.0:
     resolution: {integrity: sha512-CX6t4SYQ37lzxicAqsBtxA3OseeoVrh9cSJ5PFYam0GksYlupRfy1A+Q4aYD3zvcfECLc0zO2u+ZnR2UYKvCrw==}
     engines: {node: '>=14.16'}
+    dev: false
+
+  /@stripe/react-stripe-js/1.16.5_weqjxr3p5t2q35nshpdpqrergy:
+    resolution: {integrity: sha512-lVPW3IfwdacyS22pP+nBB6/GNFRRhT/4jfgAK6T2guQmtzPwJV1DogiGGaBNhiKtSY18+yS8KlHSu+PvZNclvQ==}
+    peerDependencies:
+      '@stripe/stripe-js': ^1.44.1
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@stripe/stripe-js': 1.48.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@stripe/stripe-js/1.48.0:
+    resolution: {integrity: sha512-Kw2BRXk6z/wnTU9m2IJOhxJNrx9xzmpFSbk6D/Z0x6LJntMafiHeHFag2PvSF30O2quMb1UUdWsnZqGVDruZww==}
     dev: false
 
   /@swc/helpers/0.4.14:
