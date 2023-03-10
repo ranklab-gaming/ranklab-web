@@ -1,6 +1,6 @@
-import { api } from "@/api/client"
+import { api } from "@/api"
 import { playerFromUser } from "@/auth"
-import { PropsWithUser } from "@/auth/server"
+import { PropsWithUser } from "@/auth"
 import {
   PlayerAccountFields,
   PlayerAccountFieldsSchemaWithoutPassword,

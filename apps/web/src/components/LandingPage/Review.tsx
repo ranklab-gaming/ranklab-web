@@ -1,9 +1,10 @@
 import { animateFade } from "@/animate/fade"
-import { authenticate } from "@/auth/client"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Grid, Typography } from "@mui/material"
 import { alpha, styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
+import { useRouter } from "next/router"
+import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(24, 0),
@@ -64,6 +65,7 @@ const variantScreenRight = {
 
 export function LandingPageReview() {
   const theme = useTheme()
+  const router = useRouter()
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter
   const screenRightAnimate = variantScreenRight
@@ -106,16 +108,15 @@ export function LandingPageReview() {
                 </Typography>
               </m.div>
               <m.div variants={animateFade().inUp}>
-                <Button
-                  size="large"
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => {
-                    authenticate("player", "signup")
-                  }}
+                <NextLink
+                  href="/api/auth/signin?intent=signup"
+                  passHref
+                  legacyBehavior
                 >
-                  Get Started
-                </Button>
+                  <Button size="large" variant="outlined" color="primary">
+                    Get Started
+                  </Button>
+                </NextLink>
               </m.div>
             </ContentStyle>
           </Grid>

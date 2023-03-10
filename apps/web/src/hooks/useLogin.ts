@@ -5,7 +5,7 @@ export function useLogin(userType: UserType) {
   const router = useRouter()
 
   return async (token: string) => {
-    const response = await fetch("/api/login", {
+    const response = await fetch("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({ token }),
       headers: {
@@ -21,7 +21,7 @@ export function useLogin(userType: UserType) {
 
     if (response.status === 400) {
       localStorage.setItem("loginSessionExpired", "true")
-      router.push(`/login?user_type=${userType}`)
+      router.push(`/api/auth/signin?user_type=${userType}`)
       return
     }
 

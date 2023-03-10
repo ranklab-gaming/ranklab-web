@@ -1,5 +1,5 @@
-import { api } from "@/api/client"
-import { PropsWithUser } from "@/auth/server"
+import { api } from "@/api"
+import { PropsWithUser } from "@/auth"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Editor } from "@/components/Editor"
 import { RecordingForm } from "@/components/RecordingForm"

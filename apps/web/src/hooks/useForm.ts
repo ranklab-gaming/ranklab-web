@@ -1,5 +1,6 @@
 import { ResponseError } from "@ranklab/api"
 import { capitalize } from "lodash"
+import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import {
   FieldValues,
@@ -71,6 +72,7 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
 ): UseFormReturn<TFieldValues, TContext> {
   const form = baseUseForm(props)
   const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
 
   const submitHandler = async (
     data: TFieldValues,
@@ -90,6 +92,11 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
           setValidationErrors(form.setError, errors)
           return
         }
+      }
+
+      if (e.response.status === 401) {
+        router.push("/api/auth/signin")
+        return
       }
 
       if (props.errorMessages && e.response.status in props.errorMessages) {

@@ -14,8 +14,6 @@ const redisUrl = requireEnv("REDIS_URL", process.env.REDIS_URL)
 const cookieSecret = requireEnv("COOKIE_SECRET", process.env.COOKIE_SECRET)
 const nodeEnv = requireEnv("NODE_ENV", process.env.NODE_ENV)
 
-requireEnv("NEXTAUTH_URL", process.env.NEXTAUTH_URL)
-
 export {
   authJwks,
   authClientSecret,

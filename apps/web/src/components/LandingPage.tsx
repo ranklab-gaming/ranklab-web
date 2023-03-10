@@ -30,6 +30,10 @@ export function LandingPage() {
         "An error occurred while logging in. Please try again later.",
         {
           variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "center",
+          },
         }
       )
 

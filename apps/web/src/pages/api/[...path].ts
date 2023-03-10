@@ -1,11 +1,10 @@
 import { ServerApi } from "@/api/server"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { HTTPMethod, JSONApiResponse, ResponseError } from "@ranklab/api"
 import { NextApiRequest, NextApiResponse } from "next"
-import { getServerSession } from "next-auth"
+import { getServerSession } from "@/auth/session"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res)
   const token = session?.accessToken
   const api = new ServerApi(token)
   const { query, method, headers, body } = req

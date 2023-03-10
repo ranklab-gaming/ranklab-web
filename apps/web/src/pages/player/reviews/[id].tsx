@@ -1,6 +1,6 @@
 import { createServerApi } from "@/api/server"
-import { withUserSsr } from "@/auth/server"
-import { stripePublishableKey } from "@/config/client"
+import { withUserSsr } from "@/auth/page"
+import { stripePublishableKey } from "@/config"
 import { useTheme } from "@mui/material"
 import { Review } from "@ranklab/api"
 import { Elements } from "@stripe/react-stripe-js"

@@ -1,5 +1,4 @@
 import { apiHost } from "@/config/server"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import {
   Configuration,
   InitOverrideFunction,
@@ -8,7 +7,7 @@ import {
 } from "@ranklab/api"
 import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
 import { GetServerSidePropsContext } from "next"
-import { getServerSession } from "next-auth"
+import { getServerSession } from "@/auth/session"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
@@ -115,6 +114,6 @@ export async function createServerApi({
   req,
   res,
 }: Pick<GetServerSidePropsContext, "req" | "res">) {
-  const session = await getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res)
   return new ServerApi(session?.accessToken)
 }

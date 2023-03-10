@@ -1,4 +1,4 @@
-import { api } from "@/api/client"
+import { api } from "@/api"
 import { BasicLayout } from "@/components/BasicLayout"
 import { useForm } from "@/hooks/useForm"
 import { useParam } from "@/hooks/useParam"

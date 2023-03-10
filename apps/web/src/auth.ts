@@ -1,21 +1,17 @@
 import { Coach, Player } from "@ranklab/api"
 
-interface CoachUser extends Coach {
+export type User = CoachUser | PlayerUser
+
+export interface CoachUser extends Coach {
   type: "coach"
 }
 
-interface PlayerUser extends Player {
+export interface PlayerUser extends Player {
   type: "player"
 }
 
-export type User = CoachUser | PlayerUser
-
-export function userFromCoach(coach: Coach): CoachUser {
-  return { ...coach, type: "coach" }
-}
-
-export function userFromPlayer(player: Player): PlayerUser {
-  return { ...player, type: "player" }
+export type PropsWithUser<P = {}> = P & {
+  user: User
 }
 
 export function coachFromUser(user: User): Coach {

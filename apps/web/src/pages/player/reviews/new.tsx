@@ -1,5 +1,6 @@
 import { createServerApi } from "@/api/server"
-import { PropsWithUser, withUserSsr } from "@/auth/server"
+import { PropsWithUser } from "@/auth"
+import { withUserSsr } from "@/auth/page"
 import { PlayerReviewsNewPage } from "@/components/PlayerReviewsNewPage"
 import { Coach, Recording } from "@ranklab/api"
 

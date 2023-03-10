@@ -1,6 +1,5 @@
-import { api } from "@/api/client"
-import { coachFromUser } from "@/auth"
-import { PropsWithUser } from "@/auth/server"
+import { api } from "@/api"
+import { coachFromUser, PropsWithUser } from "@/auth"
 import {
   CoachAccountFields,
   CoachAccountFieldsSchemaWithoutPassword,
@@ -9,7 +8,7 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Alert, Button, Paper, Stack, Typography } from "@mui/material"
+import { Alert, Button, Stack } from "@mui/material"
 import { Game } from "@ranklab/api"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"

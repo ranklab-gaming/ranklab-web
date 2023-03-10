@@ -1,5 +1,4 @@
-import { api } from "@/api/client"
-import { authenticate } from "@/auth/client"
+import { api } from "@/api"
 import { BasicLayout } from "@/components/BasicLayout"
 import { useForm } from "@/hooks/useForm"
 import { useParam } from "@/hooks/useParam"
@@ -7,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
 import { UserType } from "@ranklab/api"
+import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
@@ -20,6 +20,7 @@ type FormValues = yup.InferType<typeof FormSchema>
 function PasswordResetPage() {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
 
   const userType = useParam("user_type", "player", [
     "coach",
@@ -55,7 +56,7 @@ function PasswordResetPage() {
       variant: "success",
     })
 
-    await authenticate(userType)
+    router.push(`/api/auth/signin?user_type=${userType}`)
   }
 
   return (

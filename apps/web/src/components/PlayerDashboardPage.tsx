@@ -1,4 +1,4 @@
-import type { PropsWithUser } from "@/auth/server"
+import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewList } from "@/components/ReviewList"
 import { Box, Button, Paper, Typography } from "@mui/material"

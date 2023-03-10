@@ -1,4 +1,4 @@
-import { api } from "@/api/client"
+import { api } from "@/api"
 import { Label } from "@/components/Label"
 import { useUser } from "@/hooks/useUser"
 import {

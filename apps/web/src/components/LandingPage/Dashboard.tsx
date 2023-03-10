@@ -1,9 +1,10 @@
 import { animateFade } from "@/animate/fade"
-import { authenticate } from "@/auth/client"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Grid, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
+import { useRouter } from "next/router"
+import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(28, 0),
@@ -26,6 +27,8 @@ const ContentStyle = styled("div")(({ theme }) => ({
 }))
 
 export function LandingPageDashboard() {
+  const router = useRouter()
+
   return (
     <RootStyle>
       <Container
@@ -76,16 +79,15 @@ export function LandingPageDashboard() {
                 </Typography>
               </m.div>
               <m.div variants={animateFade().inUp}>
-                <Button
-                  size="large"
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => {
-                    authenticate("player", "signup")
-                  }}
+                <NextLink
+                  href="/auth/signin?intent=signup"
+                  passHref
+                  legacyBehavior
                 >
-                  Get Started
-                </Button>
+                  <Button size="large" variant="outlined" color="primary">
+                    Get Started
+                  </Button>
+                </NextLink>
               </m.div>
             </ContentStyle>
           </Grid>

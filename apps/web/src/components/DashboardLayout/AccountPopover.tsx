@@ -63,7 +63,7 @@ export function DashboardLayoutAccountPopover() {
           </Typography>
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
-        <NextLink href="/logout" passHref legacyBehavior>
+        <NextLink href="/api/auth/logout" passHref legacyBehavior>
           <MenuItem sx={{ m: 1 }}>Logout</MenuItem>
         </NextLink>
       </MenuPopover>

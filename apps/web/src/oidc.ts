@@ -1,136 +1,147 @@
-import { redisUrl } from "@/config/server"
-import Redis from "ioredis"
-import isEmpty from "lodash/isEmpty"
+import {
+  authClientSecret,
+  webHost,
+  cookieSecret,
+  authJwks,
+} from "@/config/server"
+import { OidcRedisAdapter } from "@/oidc/redisAdapter"
+import Provider, { Configuration, errors } from "oidc-provider"
+import * as Sentry from "@sentry/nextjs"
 
-const grantable = new Set([
-  "AccessToken",
-  "AuthorizationCode",
-  "RefreshToken",
-  "DeviceCode",
-  "BackchannelAuthenticationRequest",
-])
+let provider: Provider | null = null
 
-const consumable = new Set([
-  "AuthorizationCode",
-  "RefreshToken",
-  "DeviceCode",
-  "BackchannelAuthenticationRequest",
-])
-
-function grantKeyFor(id: string) {
-  return `grant:${id}`
-}
-
-function userCodeKeyFor(userCode: string) {
-  return `userCode:${userCode}`
-}
-
-function uidKeyFor(uid: string) {
-  return `uid:${uid}`
-}
-
-export class OidcRedisAdapter {
-  name: string
-  client: Redis
-
-  constructor(name: string) {
-    this.client = new Redis(redisUrl)
-    this.name = name
+export function getOidcProvider() {
+  if (provider) {
+    return provider
   }
 
-  async upsert(id: string, payload: any, expiresIn: number) {
-    const key = this.key(id)
-    const multi = this.client.multi()
+  const config: Configuration = {
+    clients: [
+      {
+        client_id: "web",
+        client_secret: authClientSecret,
+        grant_types: ["refresh_token", "authorization_code"],
+        token_endpoint_auth_method: "client_secret_post",
+        redirect_uris: [`${webHost}/api/auth/callback`],
+        post_logout_redirect_uris: [`${webHost}/api/auth/post-logout`],
+      },
+    ],
+    interactions: {
+      url: (_ctx, interaction) => {
+        const intent = interaction.params.intent ?? "login"
+        const userType = interaction.params.user_type ?? "player"
+        const invitationToken = interaction.params.token
 
-    if (consumable.has(this.name)) {
-      multi.hmset(key, { payload: JSON.stringify(payload) })
-    } else {
-      multi.set(key, JSON.stringify(payload))
-    }
+        if (!["coach", "player"].includes(userType as string)) {
+          throw new Error(`invalid user type: ${userType}`)
+        }
 
-    if (expiresIn) {
-      multi.expire(key, expiresIn)
-    }
+        if (!["login", "signup"].includes(intent as string)) {
+          throw new Error(`invalid intent: ${intent}`)
+        }
 
-    if (grantable.has(this.name) && payload.grantId) {
-      const grantKey = grantKeyFor(payload.grantId)
-      multi.rpush(grantKey, key)
-
-      const ttl = await this.client.ttl(grantKey)
-
-      if (expiresIn > ttl) {
-        multi.expire(grantKey, expiresIn)
+        const query = invitationToken ? `?token=${invitationToken}` : ""
+        return `/${userType}/${intent}${query}`
+      },
+    },
+    pkce: {
+      methods: ["S256"],
+      required: () => true,
+    },
+    ttl: {
+      Session: 14 * 24 * 60 * 60,
+      Interaction: 60 * 60,
+      AccessToken: 60 * 60,
+      Grant: 14 * 24 * 60 * 60,
+      IdToken: 60 * 60,
+      RefreshToken: 14 * 24 * 60 * 60,
+    },
+    issueRefreshToken: () => true,
+    rotateRefreshToken: () => true,
+    extraParams: ["user_type", "intent", "token"],
+    async findAccount(_ctx, id) {
+      return {
+        accountId: id,
+        claims: () => ({ sub: id }),
       }
-    }
+    },
+    cookies: {
+      keys: [cookieSecret],
+    },
+    claims: {
+      openid: ["sub"],
+    },
+    features: {
+      devInteractions: { enabled: false },
+      revocation: { enabled: true },
+      rpInitiatedLogout: {
+        enabled: true,
+        logoutSource(ctx, form) {
+          ctx.body = `
+              <!DOCTYPE html>
+                <head>
+                  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                  <meta charset="utf-8">
+                  <title>Logout Request</title>
+                  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                </head>
+                <body>
+                  <div style="display: none">
+                    ${form}
+                    <button autofocus type="submit" form="op.logoutForm" value="yes" name="logout" />
+                    <script>document.forms["op.logoutForm"].logout.click()</script>
+                  </div>
+                </body>
+              </html>
+            `
+        },
+      },
+      resourceIndicators: {
+        enabled: true,
+        defaultResource: () => webHost,
+        useGrantedResource: () => true,
+        getResourceServerInfo: () => ({
+          scope: "openid",
+          accessTokenFormat: "jwt",
+        }),
+      },
+    },
+    jwks: authJwks,
+    adapter: OidcRedisAdapter,
+    renderError: async (ctx, _, error) => {
+      Sentry.captureException(error)
+      await Sentry.flush(2000)
+      console.error("Error: ", error.message, error.stack)
 
-    if (payload.userCode) {
-      const userCodeKey = userCodeKeyFor(payload.userCode)
-      multi.set(userCodeKey, id)
-      multi.expire(userCodeKey, expiresIn)
-    }
+      if (error instanceof errors.OIDCProviderError) {
+        if (error instanceof errors.SessionNotFound) {
+          return ctx.redirect("/")
+        }
 
-    if (payload.uid) {
-      const uidKey = uidKeyFor(payload.uid)
-      multi.set(uidKey, id)
-      multi.expire(uidKey, expiresIn)
-    }
+        return ctx.redirect(`/?error=${error.error}`)
+      }
 
-    await multi.exec()
+      if (error instanceof Error) {
+        return ctx.redirect(`/?error=${error.name}`)
+      }
+
+      ctx.redirect(`/?error=${error}`)
+    },
   }
 
-  async find(id: string) {
-    const data = consumable.has(this.name)
-      ? await this.client.hgetall(this.key(id))
-      : await this.client.get(this.key(id))
+  provider = new Provider(webHost, config)
 
-    if (isEmpty(data)) {
-      return undefined
-    }
+  provider.on("interaction.started", (ctx) => {
+    const cookieHeader = ctx.res.getHeader("set-cookie")
+    const cookies = Array.isArray(cookieHeader) ? cookieHeader : [cookieHeader]
 
-    if (typeof data === "string") {
-      return JSON.parse(data)
-    }
-
-    const { payload, ...rest } = data as any
-
-    return {
-      ...rest,
-      ...JSON.parse(payload),
-    }
-  }
-
-  async findByUid(uid: string) {
-    const id = await this.client.get(uidKeyFor(uid))
-    return this.find(id!)
-  }
-
-  async findByUserCode(userCode: string) {
-    const id = await this.client.get(userCodeKeyFor(userCode))
-    return this.find(id!)
-  }
-
-  async destroy(id: string) {
-    const key = this.key(id)
-    await this.client.del(key)
-  }
-
-  async revokeByGrantId(grantId: string) {
-    const multi = this.client.multi()
-    const tokens = await this.client.lrange(grantKeyFor(grantId), 0, -1)
-    tokens.forEach((token) => multi.del(token))
-    multi.del(grantKeyFor(grantId))
-    await multi.exec()
-  }
-
-  async consume(id: string) {
-    await this.client.hset(
-      this.key(id),
-      "consumed",
-      Math.floor(Date.now() / 1000)
+    ctx.res.setHeader(
+      "set-cookie",
+      cookies.map((cookie) => {
+        return String(cookie).replace(/path=.*;/g, "path=/;")
+      })
     )
-  }
+  })
 
-  key(id: string) {
-    return `${this.name}:${id}`
-  }
+  return provider
 }
