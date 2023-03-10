@@ -1,4 +1,5 @@
 import { Iconify } from "@/components/Iconify"
+import { formatBytes } from "@/utils/formatBytes"
 import {
   Box,
   FormControl,
@@ -16,11 +17,17 @@ interface Props {
   onChange: (file?: File) => void
 }
 
+function formatName(file?: File) {
+  if (!file) return null
+  return `${file.name} (${formatBytes(file.size)}))`
+}
+
 export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
   { error, helperText, onChange, value },
   ref
 ) {
   const id = useId().slice(1, -1)
+  const name = formatName(value)
 
   return (
     <Box sx={{ width: "100%" }} ref={ref}>
@@ -43,7 +50,7 @@ export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
         )}
         <OutlinedInput
           type="text"
-          value={value?.name ?? ""}
+          value={value ? `${value.name} (${formatBytes(value.size)})` : ""}
           sx={{ pointerEvents: "none" }}
           error={error}
           endAdornment={

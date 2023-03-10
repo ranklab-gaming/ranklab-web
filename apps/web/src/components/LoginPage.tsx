@@ -82,7 +82,7 @@ export function LoginPage({ userType }: Props) {
 
     const loginSessionExpired = localStorage.getItem("loginSessionExpired")
 
-    if (loginSessionExpired) {
+    if (loginSessionExpired === "true") {
       localStorage.removeItem("loginSessionExpired")
 
       enqueueSnackbar(

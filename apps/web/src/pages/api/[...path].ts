@@ -2,8 +2,12 @@ import { ServerApi } from "@/api/server"
 import { HTTPMethod, JSONApiResponse, ResponseError } from "@ranklab/api"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "@/auth/session"
+import { withSessionApiRoute } from "@/session"
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+const api = withSessionApiRoute(async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const session = await getServerSession(req, res)
   const token = session?.accessToken
   const api = new ServerApi(token)
@@ -38,4 +42,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
 
     throw e
   }
-}
+})
+
+export default api

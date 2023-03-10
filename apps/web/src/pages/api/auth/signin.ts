@@ -13,6 +13,7 @@ const signin = withSessionApiRoute(async function (
   const codeChallenge = generators.codeChallenge(codeVerifier)
 
   req.session.codeVerifier = codeVerifier
+  req.session.returnUrl = req.query.return_url as string
   await req.session.save()
 
   const url = client.authorizationUrl({

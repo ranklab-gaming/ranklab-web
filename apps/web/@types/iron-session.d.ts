@@ -5,6 +5,6 @@ declare module "iron-session" {
     accessToken?: string
     refreshToken?: string
     codeVerifier?: string
-    postLogoutReturnUrl?: string
+    returnUrl?: string
   }
 }

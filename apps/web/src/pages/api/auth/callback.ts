@@ -10,6 +10,7 @@ const callback = withSessionApiRoute(async function (
   const client = await getAuthClient()
   const params = client.callbackParams(req)
   const codeVerifier = req.session.codeVerifier
+  const returnUrl = req.session.returnUrl
 
   const tokenSet = await client.callback(
     `${webHost}/api/auth/callback`,
@@ -35,9 +36,10 @@ const callback = withSessionApiRoute(async function (
   }
 
   delete req.session.codeVerifier
+  delete req.session.returnUrl
   await req.session.save()
 
-  res.redirect(307, `/${session.userType}/dashboard`).end()
+  res.redirect(307, returnUrl ?? `/${session.userType}/dashboard`).end()
 })
 
 export default callback

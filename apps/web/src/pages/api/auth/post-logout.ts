@@ -6,9 +6,9 @@ export default withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const returnUrl = req.session.postLogoutReturnUrl ?? "/"
+  const returnUrl = req.session.returnUrl ?? "/"
 
-  delete req.session.postLogoutReturnUrl
+  delete req.session.returnUrl
   await req.session.save()
 
   res.redirect(307, `${webHost}${returnUrl}`).end()

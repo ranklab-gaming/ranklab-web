@@ -31,11 +31,12 @@ export function withUserSsr<P extends { [key: string]: any }>(
     ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
       const session = await getServerSession(ctx.req, ctx.res)
       const api = await createServerApi(ctx)
+      const returnUrl = encodeURIComponent(ctx.resolvedUrl)
 
       if (!session) {
         return {
           redirect: {
-            destination: `/api/auth/signin?user_type=${userType}`,
+            destination: `/api/auth/signin?user_type=${userType}&return_url=${returnUrl}`,
             permanent: false,
           },
         }
@@ -44,7 +45,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
       if (session.userType !== userType) {
         return {
           redirect: {
-            destination: `/api/auth/logout?return_url=${ctx.resolvedUrl}`,
+            destination: `/api/auth/logout?return_url=${returnUrl}`,
             permanent: false,
           },
         }

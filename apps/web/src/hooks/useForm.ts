@@ -1,7 +1,10 @@
+import { UserContext } from "@/contexts/UserContext"
+import { useUser } from "@/hooks/useUser"
 import { ResponseError } from "@ranklab/api"
 import { capitalize } from "lodash"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
+import { useContext } from "react"
 import {
   FieldValues,
   Path,
@@ -73,6 +76,7 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
   const form = baseUseForm(props)
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
+  const user = useContext(UserContext)
 
   const submitHandler = async (
     data: TFieldValues,
@@ -95,7 +99,13 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       }
 
       if (e.response.status === 401) {
-        router.push("/api/auth/signin")
+        router.push(
+          `/api/auth/signin?${new URLSearchParams({
+            return_url: router.asPath,
+            user_type: user?.type ?? "player",
+          })}`
+        )
+
         return
       }
 

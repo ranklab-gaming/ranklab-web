@@ -8,7 +8,7 @@ const logout = withSessionApiRoute(async function (
   res: NextApiResponse
 ) {
   await destroyServerSession(req)
-  req.session.postLogoutReturnUrl = (req.query.return_url as string) ?? "/"
+  req.session.returnUrl = req.query.return_url as string
   await req.session.save()
 
   res
