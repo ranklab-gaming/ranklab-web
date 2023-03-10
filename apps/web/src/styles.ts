@@ -12,9 +12,9 @@ export function styles(theme?: Theme) {
 
   return {
     backgroundBlur: (props?: BackgroundBlurProps) => {
-      const color = props?.color || palette?.background.default || "#000000"
-      const blur = props?.blur || 6
-      const opacity = props?.opacity || 0.8
+      const color = props?.color ?? palette?.background.default ?? "#000000"
+      const blur = props?.blur ?? 6
+      const opacity = props?.opacity ?? 0.8
 
       return {
         backdropFilter: `blur(${blur}px)`,

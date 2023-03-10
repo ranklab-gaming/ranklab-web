@@ -3,7 +3,10 @@ import { Box, Link, ListItemText, Tooltip, Typography } from "@mui/material"
 import NextLink from "next/link"
 import { forwardRef } from "react"
 import {
-  DashboardLayoutListItemStyle, DashboardLayoutListItemStyleProps, ListItemIconStyle, ListItemTextStyle
+  DashboardLayoutListItemStyle,
+  DashboardLayoutListItemStyleProps,
+  ListItemIconStyle,
+  ListItemTextStyle,
 } from "./ListItemStyle"
 import { DashboardLayoutNavListProps } from "./NavList"
 
@@ -42,7 +45,7 @@ export function DashboardLayoutNavItemRoot({
         disableTypography
         primary={title}
         secondary={
-          <Tooltip title={caption || ""} arrow>
+          <Tooltip title={caption ?? ""} arrow>
             <Typography
               noWrap
               variant="caption"
@@ -107,7 +110,7 @@ export function DashboardLayoutNavItemSub({
         disableTypography
         primary={title}
         secondary={
-          <Tooltip title={caption || ""} arrow>
+          <Tooltip title={caption ?? ""} arrow>
             <Typography
               noWrap
               variant="caption"

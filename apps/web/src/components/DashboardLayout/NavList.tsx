@@ -41,7 +41,7 @@ export function DashboardLayoutNavListRoot({ list }: NavListRootProps) {
           onOpen={() => setOpen(!open)}
         />
         <List component="div" disablePadding>
-          {(list.children || []).map((item, index) => (
+          {(list.children ?? []).map((item, index) => (
             <NavListSub key={index} list={item} />
           ))}
         </List>
@@ -73,7 +73,7 @@ function NavListSub({ list }: NavListSubProps) {
         />
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 3 }}>
-            {(list.children || []).map((item) => (
+            {(list.children ?? []).map((item) => (
               <DashboardLayoutNavItemSub
                 key={item.title + item.path}
                 item={item}

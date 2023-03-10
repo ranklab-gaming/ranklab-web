@@ -1,5 +1,4 @@
 import { UserContext } from "@/contexts/UserContext"
-import { useUser } from "@/hooks/useUser"
 import { ResponseError } from "@ranklab/api"
 import { capitalize } from "lodash"
 import { useRouter } from "next/router"

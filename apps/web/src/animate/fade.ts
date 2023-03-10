@@ -2,7 +2,7 @@ import { Variants } from "../animate"
 import { animateTransitionEnter, animateTransitionExit } from "./transition"
 
 export const animateFade = (props?: Variants) => {
-  const distance = props?.distance || 120
+  const distance = props?.distance ?? 120
   const durationIn = props?.durationIn
   const durationOut = props?.durationOut
   const easeIn = props?.easeIn

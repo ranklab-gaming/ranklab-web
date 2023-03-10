@@ -2,7 +2,7 @@ import { Variants } from "../animate"
 import { animateTransitionEnter, animateTransitionExit } from "./transition"
 
 export const animateSlide = (props?: Variants) => {
-  const distance = props?.distance || 160
+  const distance = props?.distance ?? 160
   const durationIn = props?.durationIn
   const durationOut = props?.durationOut
   const easeIn = props?.easeIn

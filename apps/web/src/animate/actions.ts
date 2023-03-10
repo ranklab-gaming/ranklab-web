@@ -1,5 +1,5 @@
 export const animateHover = (scale?: number) => ({
   hover: {
-    scale: scale || 1.1,
+    scale: scale ?? 1.1,
   },
 })

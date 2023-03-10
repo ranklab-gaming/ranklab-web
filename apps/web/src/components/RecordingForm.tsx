@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Button, LinearProgress, Paper, Stack, TextField } from "@mui/material"
+import { LinearProgress, Paper, Stack, TextField } from "@mui/material"
 import { Recording } from "@ranklab/api"
 import { useForm } from "@/hooks/useForm"
 import * as yup from "yup"

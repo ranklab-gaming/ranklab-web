@@ -1,9 +1,9 @@
 import { Background } from "../animate"
 
 export const animateBackgroundColor = (props?: Background) => {
-  const colors = props?.colors || ["#19dcea", "#b22cff"]
-  const duration = props?.duration || 5
-  const ease = props?.ease || "linear"
+  const colors = props?.colors ?? ["#19dcea", "#b22cff"]
+  const duration = props?.duration ?? 5
+  const ease = props?.ease ?? "linear"
 
   return {
     animate: {
@@ -14,8 +14,8 @@ export const animateBackgroundColor = (props?: Background) => {
 }
 
 export const animateBackgroundKenburns = (props?: Background) => {
-  const duration = props?.duration || 5
-  const ease = props?.ease || "easeOut"
+  const duration = props?.duration ?? 5
+  const ease = props?.ease ?? "easeOut"
 
   return {
     top: {
@@ -56,9 +56,9 @@ export const animateBackgroundKenburns = (props?: Background) => {
 }
 
 export const animateBackgroundPan = (props?: Background) => {
-  const colors = props?.colors || ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab"]
-  const duration = props?.duration || 5
-  const ease = props?.ease || "linear"
+  const colors = props?.colors ?? ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab"]
+  const duration = props?.duration ?? 5
+  const ease = props?.ease ?? "linear"
   const gradient = (deg: number) => `linear-gradient(${deg}deg, ${colors})`
 
   return {

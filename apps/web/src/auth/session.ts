@@ -1,7 +1,7 @@
 import { authClientSecret, webHost } from "@/config/server"
 import { UserType } from "@ranklab/api"
 import { IncomingMessage, ServerResponse } from "http"
-import { decodeJwt, JWTPayload } from "jose"
+import { decodeJwt } from "jose"
 import { Client, Issuer } from "openid-client"
 
 let issuer: Issuer<Client> | null = null

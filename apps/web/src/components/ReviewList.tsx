@@ -16,7 +16,6 @@ import {
   Review,
   ReviewState,
 } from "@ranklab/api"
-import NextLink from "next/link"
 import { FunctionComponent, MouseEvent, useState } from "react"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
@@ -88,7 +87,7 @@ export function ReviewList({
     _event: MouseEvent<HTMLButtonElement> | null,
     page: number
   ) => {
-    const requestParams = { page: page + 1, ...(queryParams || {}) }
+    const requestParams = { page: page + 1, ...(queryParams ?? {}) }
 
     const result = await (user.type === "player"
       ? api.playerReviewsList(requestParams)

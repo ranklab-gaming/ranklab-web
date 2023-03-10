@@ -42,7 +42,7 @@ interface AvatarProps extends MuiAvatarProps {
 
 export function Avatar({ children, user, sx, ...other }: AvatarProps) {
   const theme = useTheme()
-  const { name } = user || useUser()
+  const { name } = user ?? useUser()
   const initial = getInitial(name)
   const color = getAvatarColor(name)
 
