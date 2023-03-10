@@ -36,6 +36,7 @@ importers:
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
       '@zach.codes/use-upload': ^1.0.1
+      date-fns: ^2.29.3
       framer-motion: ^10.0.1
       ioredis: ^5.3.1
       iron-session: ^6.3.1
@@ -70,6 +71,7 @@ importers:
       '@stripe/react-stripe-js': 1.16.5_weqjxr3p5t2q35nshpdpqrergy
       '@stripe/stripe-js': 1.48.0
       '@zach.codes/use-upload': 1.0.1
+      date-fns: 2.29.3
       framer-motion: 10.0.1_biqbaboplfbrettd7655fr4n2y
       ioredis: 5.3.1
       iron-session: 6.3.1_koa@2.14.1+next@13.2.3
@@ -1549,7 +1551,6 @@ packages:
   /date-fns/2.29.3:
     resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
     engines: {node: '>=0.11'}
-    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}

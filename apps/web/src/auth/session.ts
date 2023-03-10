@@ -96,7 +96,9 @@ export async function getServerSession(
       await destroyServerSession(req)
 
       res
-        .writeHead(302, { Location: `/api/auth/login?${session.userType}` })
+        .writeHead(302, {
+          Location: `/api/auth/login?user_type=${session.userType}`,
+        })
         .end()
 
       return null

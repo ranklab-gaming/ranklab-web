@@ -16,9 +16,9 @@ export function PlayerDashboardPage({
 }: PropsWithUser<Props>) {
   return (
     <DashboardLayout user={user} title="Dashboard">
-      <Paper>
-        <Box p={2}>
-          {reviews.count === 0 ? (
+      {reviews.count === 0 ? (
+        <Paper>
+          <Box p={2}>
             <Box textAlign="center" p={8}>
               <Typography variant="h3" component="h1" gutterBottom>
                 No Reviews Yet
@@ -35,11 +35,11 @@ export function PlayerDashboardPage({
                 Request a Review
               </Button>
             </Box>
-          ) : (
-            <ReviewList reviews={reviews} games={games} />
-          )}
-        </Box>
-      </Paper>
+          </Box>
+        </Paper>
+      ) : (
+        <ReviewList reviews={reviews} games={games} />
+      )}
     </DashboardLayout>
   )
 }

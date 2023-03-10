@@ -756,7 +756,19 @@ export interface Review {
    * @type {string}
    * @memberof Review
    */
+  createdAt: string
+  /**
+   *
+   * @type {string}
+   * @memberof Review
+   */
   stripeClientSecret?: string | null
+  /**
+   *
+   * @type {Coach}
+   * @memberof Review
+   */
+  coach?: Coach | null
 }
 
 /**

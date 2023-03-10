@@ -1,7 +1,16 @@
 import { api } from "@/api"
+import { GameIcon } from "@/components/GameIcon"
 import { Label } from "@/components/Label"
 import { useUser } from "@/hooks/useUser"
+import { formatDate } from "@/utils/formatDate"
 import {
+  Card,
+  CardActionArea,
+  CardContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -9,6 +18,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Typography,
 } from "@mui/material"
 import {
   Game,
@@ -98,50 +108,41 @@ export function ReviewList({
   }
 
   return (
-    <TableContainer>
-      <Table sx={{ minWidth: 650 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Game</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {reviews.records.map((review) => (
-            <TableRow
-              sx={{
-                cursor: "pointer",
-                "&:last-child td, &:last-child th": { border: 0 },
-                transition: (theme) =>
-                  theme.transitions.create("background-color", {
-                    duration: theme.transitions.duration.standard,
-                  }),
-                "&:hover": { backgroundColor: "primary.dark" },
-              }}
-            >
-              <TableCell component="th" scope="row">
-                {review.title}
-              </TableCell>
-              <TableCell align="right">
-                {games.find((game) => game.id === review.gameId)!.name}
-              </TableCell>
-              <TableCell align="right">
-                <Status reviewState={review.state} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        {reviews.totalPages > 1 && (
-          <TablePagination
-            rowsPerPage={reviews.perPage}
-            rowsPerPageOptions={[]}
-            count={reviews.count}
-            page={page - 1}
-            onPageChange={onPageChange}
-          />
-        )}
-      </Table>
-    </TableContainer>
+    <>
+      <List>
+        {reviews.records.map((review) => (
+          <ListItem key={review.id}>
+            <Card sx={{ width: "100%" }}>
+              <CardActionArea>
+                <CardContent>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <GameIcon
+                      game={games.find((g) => g.id === review.gameId)!}
+                    />
+                    <Stack spacing={2} flexGrow={1}>
+                      <Typography variant="h6">{review.title}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Review by {review.coach?.name} submitted on{" "}
+                        {formatDate(review.createdAt)}
+                      </Typography>
+                    </Stack>
+                    <Status reviewState={review.state} />
+                  </Stack>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </ListItem>
+        ))}
+      </List>
+      {reviews.totalPages > 1 && (
+        <TablePagination
+          rowsPerPage={reviews.perPage}
+          rowsPerPageOptions={[]}
+          count={reviews.count}
+          page={page - 1}
+          onPageChange={onPageChange}
+        />
+      )}
+    </>
   )
 }

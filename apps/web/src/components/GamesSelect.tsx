@@ -1,5 +1,4 @@
-import overwatch from "@/images/games/overwatch.svg"
-import valorant from "@/images/games/valorant.svg"
+import { GameIcon } from "@/components/GameIcon"
 import {
   Avatar,
   ListItemAvatar,
@@ -18,11 +17,6 @@ interface Props {
   onBlur: () => void
   error: boolean
   helperText?: string
-}
-
-const logos = {
-  overwatch,
-  valorant,
 }
 
 export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
@@ -45,10 +39,7 @@ export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
           <MenuItem key={game.id} value={game.id}>
             <Stack direction="row" alignItems="center">
               <ListItemAvatar>
-                <Avatar
-                  alt={game.name}
-                  src={logos[game.id as keyof typeof logos].src}
-                />
+                <GameIcon game={game} />
               </ListItemAvatar>
               <ListItemText primary={game.name} />
             </Stack>

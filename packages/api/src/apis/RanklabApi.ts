@@ -13,7 +13,7 @@
  */
 
 import * as runtime from "../runtime"
-import {
+import type {
   AccountLink,
   BillingPortalLink,
   Coach,
