@@ -3,9 +3,11 @@ import { NotistackProvider } from "@/components/NotistackProvider"
 import { createEmotionCache } from "@/styles"
 import { theme } from "@/theme/theme"
 import { CacheProvider, EmotionCache } from "@emotion/react"
-import { CssBaseline, ThemeProvider } from "@mui/material"
+import { CssBaseline, Link, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
+import CookieConsent from "react-cookie-consent"
+import NextLink from "next/link"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -50,6 +52,37 @@ export default function App({
             <NotistackProvider>
               <CssBaseline />
               <Component {...pageProps} />
+              <CookieConsent
+                style={{
+                  backgroundColor: theme.palette.background.neutral,
+                  fontFamily: theme.typography.fontFamily,
+                }}
+                buttonStyle={{
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.text.primary,
+                  fontFamily: theme.typography.fontFamily,
+                  fontWeight: theme.typography.fontWeightBold,
+                }}
+              >
+                This website uses essential cookies in order to function
+                correctly. By using this website you agree to our{" "}
+                <NextLink
+                  href="https://www.iubenda.com/privacy-policy/88772361"
+                  passHref
+                  legacyBehavior
+                >
+                  <Link>privacy policy</Link>
+                </NextLink>{" "}
+                and{" "}
+                <NextLink
+                  href="https://www.iubenda.com/terms-and-conditions/88772361"
+                  passHref
+                  legacyBehavior
+                >
+                  <Link>terms of service</Link>
+                </NextLink>
+                .
+              </CookieConsent>
             </NotistackProvider>
           </MotionLazyContainer>
         </ThemeProvider>
