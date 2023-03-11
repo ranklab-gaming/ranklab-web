@@ -8,20 +8,23 @@ const coachInvitation = withSessionApiRoute(async function (req, res) {
 
   const session = await getServerSession(req, res)
 
-  const signUpUrl = encodeURIComponent(
-    `/api/auth/signin?${new URLSearchParams({
-      user_type: "coach",
-      intent: "signup",
-      token: req.query.token as string,
-    })}`
-  )
+  const signUpUrl = `/api/auth/signin?${new URLSearchParams({
+    user_type: "coach",
+    intent: "signup",
+    token: req.query.token as string,
+  })}`
 
   if (!session) {
     return res.redirect(307, signUpUrl).end()
   }
 
   if (session.userType !== "coach") {
-    res.redirect(307, `/api/auth/logout?return_url=${signUpUrl}`).end()
+    res
+      .redirect(
+        307,
+        `/api/auth/logout?return_url=${encodeURIComponent(signUpUrl)}`
+      )
+      .end()
   }
 })
 

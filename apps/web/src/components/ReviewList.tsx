@@ -121,7 +121,7 @@ export function ReviewList({
                       <Stack spacing={2} flexGrow={1}>
                         <Typography variant="h6">{review.title}</Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Review by {review.coach?.name} submitted on{" "}
+                          Review by {review.coach?.name} requested on{" "}
                           {formatDate(review.createdAt)}
                         </Typography>
                       </Stack>

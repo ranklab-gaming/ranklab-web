@@ -109,13 +109,13 @@ export function getOidcProvider() {
     jwks: authJwks,
     adapter: OidcRedisAdapter,
     renderError: async (ctx, _, error) => {
+      console.error(error)
       Sentry.captureException(error)
       await Sentry.flush(2000)
-      console.error("Error: ", error.message, error.stack)
 
       if (error instanceof errors.OIDCProviderError) {
         if (error instanceof errors.SessionNotFound) {
-          return ctx.redirect("/")
+          return ctx.redirect("/api/auth/logout")
         }
 
         return ctx.redirect(`/?error=${error.error}`)

@@ -1,8 +1,12 @@
 import { createServerApi } from "@/api/server"
 import { webHost } from "@/config/server"
+import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+const stripeAccountLinks = withSessionApiRoute(async function (
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const api = await createServerApi({ req, res })
 
   const accountLink = await api.coachStripeAccountLinksCreate({
@@ -13,4 +17,6 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   })
 
   res.redirect(307, accountLink.url)
-}
+})
+
+export default stripeAccountLinks

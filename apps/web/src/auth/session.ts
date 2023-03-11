@@ -91,7 +91,7 @@ export async function getServerSession(
       await req.session.save()
 
       return sessionFromToken(tokenSet.access_token)
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(e)
       await destroyServerSession(req)
 

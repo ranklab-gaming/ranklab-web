@@ -50,11 +50,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     )
 
     return res.status(200).json({ location })
-  } catch (error) {
-    if (error instanceof errors.SessionNotFound) {
+  } catch (e: unknown) {
+    if (e instanceof errors.SessionNotFound) {
       return res.status(400).end()
     }
 
-    throw error
+    throw e
   }
 }
