@@ -59,8 +59,12 @@ export function RecordingForm({ onUploadDone }: Props) {
   const [upload, { progress, loading, done }] = useUpload(async ({ files }) => {
     const file = files[0]
 
-    if (!file || !recording?.uploadUrl) {
-      throw new Error("file or upload url is missing")
+    if (!file) {
+      throw new Error("file is missing")
+    }
+
+    if (!recording?.uploadUrl) {
+      throw new Error("upload url is missing")
     }
 
     return {

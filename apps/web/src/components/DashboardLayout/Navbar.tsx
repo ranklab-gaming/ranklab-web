@@ -10,7 +10,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { NavbarAccount } from "./NavbarAccount"
 import { DashboardLayoutNavSection } from "./NavSection"
-import { DashboardLayoutScrollbar } from "./Scrollbar"
+import { Scrollbar } from "@/components/Scrollbar"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -101,7 +101,7 @@ export function DashboardLayoutNavbar({
   }, [pathname])
 
   const renderContent = (
-    <DashboardLayoutScrollbar
+    <Scrollbar
       sx={{
         height: 1,
         "& .simplebar-content": {
@@ -133,7 +133,7 @@ export function DashboardLayoutNavbar({
       </Stack>
       <DashboardLayoutNavSection navConfig={navConfig} />
       <Box sx={{ flexGrow: 1 }} />
-    </DashboardLayoutScrollbar>
+    </Scrollbar>
   )
 
   return (
