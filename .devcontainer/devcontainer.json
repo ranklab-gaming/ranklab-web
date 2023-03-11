@@ -1,6 +1,7 @@
 {
   "name": "Ranklab Web",
   "postCreateCommand": "./bin/setup",
+  "postStartCommand": "rm -rf /tmp/turbod",
   "dockerComposeFile": "docker-compose.yml",
   "service": "ranklab-web",
   "shutdownAction": "stopCompose",
