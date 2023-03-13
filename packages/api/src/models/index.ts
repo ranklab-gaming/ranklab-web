@@ -652,13 +652,7 @@ export interface Recording {
    * @type {string}
    * @memberof Recording
    */
-  reviewTitle?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Recording
-   */
-  reviewId?: string | null
+  gameId: string
   /**
    *
    * @type {string}
@@ -720,25 +714,13 @@ export interface Review {
    * @type {string}
    * @memberof Review
    */
-  title: string
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
   recordingId: string
   /**
    *
-   * @type {string}
+   * @type {Recording}
    * @memberof Review
    */
-  gameId: string
-  /**
-   *
-   * @type {number}
-   * @memberof Review
-   */
-  skillLevel: number
+  recording?: Recording | null
   /**
    *
    * @type {string}

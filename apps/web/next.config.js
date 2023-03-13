@@ -4,6 +4,9 @@ const { withSentryConfig } = require("@sentry/nextjs")
 const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
+  images: {
+    domains: ["minimal-assets-api-dev.vercel.app"],
+  },
 }
 
 module.exports = withSentryConfig(

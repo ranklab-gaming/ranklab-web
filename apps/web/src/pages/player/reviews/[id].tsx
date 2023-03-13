@@ -2,10 +2,11 @@ import { createServerApi } from "@/api/server"
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerReviewsShowPage } from "@/components/PlayerReviewsShowPage"
-import { Review } from "@ranklab/api"
+import { PaymentMethod, Review } from "@ranklab/api"
 
 interface Props {
   review: Review
+  paymentMethods: PaymentMethod[]
 }
 
 export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
@@ -13,13 +14,29 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
   const api = await createServerApi(ctx)
   const review = await api.playerReviewsGet({ id })
 
+  const paymentMethods =
+    review.state === "AwaitingPayment"
+      ? await api.playerStripePaymentMethodsList()
+      : []
+
   return {
     props: {
       review,
+      paymentMethods,
     },
   }
 })
 
-export default function ({ review, user }: PropsWithUser<Props>) {
-  return <PlayerReviewsShowPage review={review} user={user} />
+export default function ({
+  review,
+  user,
+  paymentMethods,
+}: PropsWithUser<Props>) {
+  return (
+    <PlayerReviewsShowPage
+      review={review}
+      user={user}
+      paymentMethods={paymentMethods}
+    />
+  )
 }

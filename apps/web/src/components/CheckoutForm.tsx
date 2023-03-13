@@ -1,215 +1,352 @@
-import { Review } from "@ranklab/api"
-import * as Yup from "yup"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup"
-import { Grid } from "@mui/material"
+import { stripePublishableKey, uploadsCdnUrl } from "@/config"
+import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
-import { CheckoutFormSummary } from "./CheckoutForm/Summary"
-import { CheckoutFormPaymentMethods } from "./CheckoutForm/PaymentMethods"
+import {
+  Alert,
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material"
+import { PaymentMethod, Review } from "@ranklab/api"
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+import Image from "next/image"
+import { useRouter } from "next/router"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import * as yup from "yup"
+import visaLogo from "@/images/cards/visa.png"
+import mastercardLogo from "@/images/cards/mastercard.png"
+import americanExpressLogo from "@/images/cards/americanExpress.png"
+import dinersClubLogo from "@/images/cards/dinersClub.png"
+import discoverLogo from "@/images/cards/discover.png"
+import jcbLogo from "@/images/cards/jcb.png"
+
+import { camelCase } from "lodash"
+import { Iconify } from "@/components/Iconify"
+
+const cardLogos = {
+  amex: americanExpressLogo,
+  diners: dinersClubLogo,
+  discover: discoverLogo,
+  jcb: jcbLogo,
+  mastercard: mastercardLogo,
+  visa: visaLogo,
+}
+
+const stripePromise = loadStripe(stripePublishableKey)
 
 interface Props {
   review: Review
+  paymentMethods: PaymentMethod[]
 }
 
-export type PaymentType = "paypal" | "credit_card" | "cash"
+const FormSchema = yup.object().shape({
+  paymentMethodId: yup.string().required("Payment method is required"),
+  savePaymentMethod: yup.boolean(),
+})
 
-export type ProductStatus = "sale" | "new" | ""
+type FormValues = yup.InferType<typeof FormSchema>
 
-export type ProductInventoryType = "in_stock" | "out_of_stock" | "low_stock"
+const newPaymentMethod = "NEW_PAYMENT_METHOD"
 
-export type ProductCategory = "Accessories" | "Apparel" | "Shoes" | string
+function Content({ review, paymentMethods }: Props) {
+  const coach = review.coach
+  const recording = review.recording
+  const theme = useTheme()
 
-export type ProductGender = "Men" | "Women" | "Kids" | string
-
-export type OnCreateBilling = (address: BillingAddress) => void
-
-export type ProductRating = {
-  name: string
-  starCount: number
-  reviewCount: number
-}
-
-export type ProductReview = {
-  id: string
-  name: string
-  avatarUrl: string
-  comment: string
-  rating: number
-  isPurchased: boolean
-  helpful: number
-  postedAt: Date | string | number
-}
-
-export type Product = {
-  id: string
-  cover: string
-  images: string[]
-  name: string
-  price: number
-  code: string
-  sku: string
-  tags: string[]
-  priceSale: number | null
-  totalRating: number
-  totalReview: number
-  ratings: ProductRating[]
-  reviews: ProductReview[]
-  colors: string[]
-  status: ProductStatus
-  inventoryType: ProductInventoryType
-  sizes: string[]
-  available: number
-  description: string
-  sold: number
-  createdAt: Date | string | number
-  category: ProductCategory
-  gender: ProductGender
-}
-
-export type CartItem = {
-  id: string
-  name: string
-  cover: string
-  available: number
-  price: number
-  color: string
-  size: string
-  quantity: number
-  subtotal: number
-}
-
-export type BillingAddress = {
-  receiver: string
-  phone: string
-  fullAddress: string
-  addressType: string
-  isDefault: boolean
-}
-
-export type ProductState = {
-  isLoading: boolean
-  error: Error | string | null
-  products: Product[]
-  product: Product | null
-  sortBy: string | null
-  filters: {
-    gender: string[]
-    category: string
-    colors: string[]
-    priceRange: string
-    rating: string
-  }
-  checkout: {
-    activeStep: number
-    cart: CartItem[]
-    subtotal: number
-    total: number
-    discount: number
-    shipping: number
-    billing: BillingAddress | null
-  }
-}
-
-export type ProductFilter = {
-  gender: string[]
-  category: string
-  colors: string[]
-  priceRange: string
-  rating: string
-}
-
-export type DeliveryOption = {
-  value: number
-  title: string
-  description: string
-}
-
-export type PaymentOption = {
-  value: PaymentType
-  title: string
-  description: string
-  icons: string[]
-}
-
-export type CardOption = {
-  value: string
-  label: string
-}
-
-const PAYMENT_OPTIONS: PaymentOption[] = [
-  {
-    value: "credit_card",
-    title: "Credit / Debit Card",
-    description: "We support Mastercard, Visa, Discover and Stripe.",
-    icons: [
-      "https://minimal-assets-api-dev.vercel.app/assets/icons/ic_mastercard.svg",
-      "https://minimal-assets-api-dev.vercel.app/assets/icons/ic_visa.svg",
-    ],
-  },
-]
-
-const CARDS_OPTIONS: CardOption[] = [
-  { value: "ViSa1", label: "**** **** **** 1212 - Jimmy Holland" },
-  { value: "ViSa2", label: "**** **** **** 2424 - Shawn Stokes" },
-  { value: "MasterCard", label: "**** **** **** 4545 - Cole Armstrong" },
-]
-
-type FormValuesProps = {
-  payment: string
-}
-
-export function CheckoutForm(props: Props) {
-  const { total, discount, subtotal, shipping } = {
-    total: 0,
-    discount: 0,
-    subtotal: 0,
-    shipping: 0,
+  if (!coach) {
+    throw new Error("coach is missing")
   }
 
-  const PaymentSchema = Yup.object().shape({
-    payment: Yup.string().required("Payment is required!"),
+  if (!recording) {
+    throw new Error("recording is missing")
+  }
+
+  const summary = [
+    {
+      label: "Recording",
+      value: recording.title,
+    },
+    {
+      label: "Coach",
+      value: coach.name,
+    },
+    {
+      label: "Price",
+      value: formatPrice(coach.price),
+    },
+    {
+      label: "VAT (if applicable)",
+      value: formatPrice(0),
+    },
+    {
+      label: "Total",
+      value: formatPrice(coach.price),
+    },
+  ]
+
+  const stripe = useStripe()
+  const elements = useElements()
+  const router = useRouter()
+
+  const [errorMessage, setErrorMessage] = useState<string | undefined | null>(
+    null
+  )
+
+  const [isLoading, setIsLoading] = useState(false)
+
+  const submitPayment = async ({
+    savePaymentMethod,
+    paymentMethodId,
+  }: FormValues) => {
+    if (!stripe || !elements) {
+      throw new Error("stripe is not initialized")
+    }
+
+    if (!review.stripeClientSecret) {
+      throw new Error("stripeClientSecret is missing")
+    }
+
+    setIsLoading(true)
+
+    const { error } = await (paymentMethodId === newPaymentMethod
+      ? stripe.confirmPayment({
+          elements,
+          confirmParams: {
+            return_url: `${window.location.origin}/${router.asPath}`,
+            save_payment_method: savePaymentMethod,
+          },
+        })
+      : stripe.confirmCardPayment(review.stripeClientSecret, {
+          payment_method: paymentMethodId,
+        }))
+
+    if (error) {
+      setErrorMessage(error.message)
+      setIsLoading(false)
+    }
+  }
+
+  const { control, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: {
+      paymentMethodId: paymentMethods[0]?.id || newPaymentMethod,
+      savePaymentMethod: false,
+    },
   })
 
-  const defaultValues = {
-    payment: "",
-  }
-
-  const methods = useForm<FormValuesProps>({
-    resolver: yupResolver<Yup.ObjectSchema<any>>(PaymentSchema),
-    defaultValues,
-  })
-
-  const {
-    formState: { isSubmitting },
-  } = methods
+  const paymentMethodId = watch("paymentMethodId")
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={8}>
-        <CheckoutFormPaymentMethods
-          cardOptions={CARDS_OPTIONS}
-          paymentOptions={PAYMENT_OPTIONS}
-        />
-      </Grid>
+    <form onSubmit={handleSubmit(submitPayment)}>
+      <Paper>
+        <Stack spacing={2} p={3}>
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
-      <Grid item xs={12} md={4}>
-        <CheckoutFormSummary
-          enableEdit
-          total={total}
-          subtotal={subtotal}
-          discount={discount}
-          shipping={shipping}
-        />
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-        >
-          Complete Order
-        </LoadingButton>
-      </Grid>
-    </Grid>
+          {paymentMethods.length > 0 && (
+            <Controller
+              name="paymentMethodId"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <FormControl fullWidth>
+                  <InputLabel>Payment Method</InputLabel>
+                  <Select
+                    label="Payment Methods"
+                    onChange={field.onChange}
+                    value={field.value}
+                    onBlur={field.onBlur}
+                    error={Boolean(error)}
+                    placeholder="Use a different payment method"
+                  >
+                    {paymentMethods.map((paymentMethod) => {
+                      const cardIcon =
+                        cardLogos[
+                          camelCase(
+                            paymentMethod.brand
+                          ) as keyof typeof cardLogos
+                        ]
+
+                      return (
+                        <MenuItem
+                          key={paymentMethod.id}
+                          value={paymentMethod.id}
+                        >
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            alignItems="center"
+                          >
+                            {cardIcon ? (
+                              <Image
+                                src={cardIcon}
+                                alt={paymentMethod.brand}
+                                width={50}
+                                height={30}
+                                style={{
+                                  objectFit: "contain",
+                                }}
+                              />
+                            ) : (
+                              <Iconify
+                                icon="eva:credit-card-fill"
+                                fontSize="30px"
+                              />
+                            )}
+                            <Typography variant="body1">
+                              **** **** **** {paymentMethod.last4}
+                            </Typography>
+                          </Stack>
+                        </MenuItem>
+                      )
+                    })}
+
+                    <MenuItem value={newPaymentMethod}>
+                      Use a different payment method
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            />
+          )}
+          {paymentMethodId === newPaymentMethod && (
+            <>
+              <PaymentElement />
+              <Controller
+                name="savePaymentMethod"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
+                    }
+                    label="Save this card for future purchases"
+                  />
+                )}
+              />
+            </>
+          )}
+          <Grid container>
+            <Grid item xs={12} md={6}>
+              <Box
+                borderRadius={theme.shape.borderRadius / 4}
+                overflow="hidden"
+                display="flex"
+                justifyContent="center"
+                mr={2}
+              >
+                <video
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "400px",
+                  }}
+                >
+                  <source
+                    src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                    type={recording.mimeType}
+                  />
+                </video>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Stack spacing={2}>
+                {summary.map((item, index) => {
+                  const isLast = index === summary.length - 1
+
+                  return (
+                    <Paper
+                      elevation={2}
+                      key={index}
+                      sx={{ backgroundColor: isLast ? "divider" : undefined }}
+                    >
+                      <Stack
+                        spacing={1}
+                        p={2}
+                        direction="row"
+                        alignItems="center"
+                      >
+                        <Typography
+                          variant="body2"
+                          color="text.body"
+                          fontWeight="bold"
+                          mr="auto"
+                        >
+                          {item.label}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.body"
+                          fontWeight={isLast ? "bold" : "normal"}
+                        >
+                          {item.value}
+                        </Typography>
+                      </Stack>
+                    </Paper>
+                  )
+                })}
+                <LoadingButton
+                  variant="contained"
+                  size="large"
+                  type="submit"
+                  loading={isLoading}
+                  disabled={isLoading}
+                >
+                  Pay {formatPrice(coach.price)}
+                </LoadingButton>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Stack>
+      </Paper>
+    </form>
+  )
+}
+
+export function CheckoutForm({ review, paymentMethods }: Props) {
+  const theme = useTheme()
+
+  if (!review.stripeClientSecret) {
+    throw new Error("stripeClientSecret is missing")
+  }
+
+  return (
+    <Elements
+      stripe={stripePromise}
+      options={{
+        clientSecret: review.stripeClientSecret,
+        appearance: {
+          theme: "night",
+          variables: {
+            colorPrimary: theme.palette.primary.main,
+            colorBackground: theme.palette.background.paper,
+            colorText: theme.palette.text.primary,
+            colorDanger: theme.palette.error.main,
+            fontFamily: "Ideal Sans, system-ui, sans-serif",
+            spacingUnit: "4px",
+            borderRadius: "4px",
+          },
+        },
+      }}
+    >
+      <Content review={review} paymentMethods={paymentMethods} />
+    </Elements>
   )
 }

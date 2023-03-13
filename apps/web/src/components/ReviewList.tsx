@@ -104,35 +104,49 @@ export function ReviewList({
   return (
     <>
       <List>
-        {reviews.records.map((review) => (
-          <ListItem key={review.id}>
-            <Card sx={{ width: "100%" }}>
-              <NextLink
-                href={`/${user.type}/reviews/${review.id}`}
-                passHref
-                legacyBehavior
-              >
-                <CardActionArea>
-                  <CardContent>
-                    <Stack direction="row" spacing={2} alignItems="center">
-                      <GameIcon
-                        game={games.find((g) => g.id === review.gameId)!}
-                      />
-                      <Stack spacing={2} flexGrow={1}>
-                        <Typography variant="h6">{review.title}</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Review by {review.coach?.name} requested on{" "}
-                          {formatDate(review.createdAt)}
-                        </Typography>
+        {reviews.records.map((review) => {
+          const { recording, coach } = review
+
+          if (!recording) {
+            throw new Error("review is missing recording")
+          }
+
+          if (!coach) {
+            throw new Error("review is missing coach")
+          }
+
+          return (
+            <ListItem key={review.id}>
+              <Card sx={{ width: "100%" }}>
+                <NextLink
+                  href={`/${user.type}/reviews/${review.id}`}
+                  passHref
+                  legacyBehavior
+                >
+                  <CardActionArea>
+                    <CardContent>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <GameIcon
+                          game={games.find((g) => g.id === recording.gameId)!}
+                        />
+                        <Stack spacing={2} flexGrow={1}>
+                          <Typography variant="h6">
+                            {recording.title}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Review by {coach.name} requested on{" "}
+                            {formatDate(review.createdAt)}
+                          </Typography>
+                        </Stack>
+                        <Status reviewState={review.state} />
                       </Stack>
-                      <Status reviewState={review.state} />
-                    </Stack>
-                  </CardContent>
-                </CardActionArea>
-              </NextLink>
-            </Card>
-          </ListItem>
-        ))}
+                    </CardContent>
+                  </CardActionArea>
+                </NextLink>
+              </Card>
+            </ListItem>
+          )
+        })}
       </List>
       {reviews.totalPages > 1 && (
         <TablePagination

@@ -156,7 +156,7 @@ export function PlayerReviewsNewPage(props: PropsWithUser<Props>) {
           />
         </Stack>
         <LoadingButton
-          color="info"
+          color="primary"
           size="large"
           type="submit"
           variant="contained"
@@ -164,7 +164,7 @@ export function PlayerReviewsNewPage(props: PropsWithUser<Props>) {
           disabled={isSubmitting}
           sx={{ mt: 3 }}
         >
-          Go to Checkout
+          Continue to Checkout
         </LoadingButton>
       </form>
     </DashboardLayout>

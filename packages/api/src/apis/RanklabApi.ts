@@ -69,10 +69,6 @@ export interface CoachCommentsUpdateRequest {
   updateCommentRequest: UpdateCommentRequest
 }
 
-export interface CoachRecordingsGetRequest {
-  id: string
-}
-
 export interface CoachReviewsGetRequest {
   id: string
 }
@@ -449,52 +445,6 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Comment> {
     const response = await this.coachCommentsUpdateRaw(
-      requestParameters,
-      initOverrides
-    )
-    return await response.value()
-  }
-
-  /**
-   */
-  async coachRecordingsGetRaw(
-    requestParameters: CoachRecordingsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Recording>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling coachRecordingsGet."
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/coach/recordings/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async coachRecordingsGet(
-    requestParameters: CoachRecordingsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Recording> {
-    const response = await this.coachRecordingsGetRaw(
       requestParameters,
       initOverrides
     )

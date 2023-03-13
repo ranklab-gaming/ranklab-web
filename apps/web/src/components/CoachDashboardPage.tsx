@@ -37,22 +37,19 @@ function Content({ reviews, games }: Props) {
             information to start receiving payouts.
           </Alert>
         )}
-        <Paper>
-          <Box p={2}>
-            {reviews.count === 0 ? (
-              <Box textAlign="center" p={8}>
-                <Typography variant="h3" component="h1" gutterBottom>
-                  No Reviews Yet
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Once a player requests a review from you, it will appear here.
-                </Typography>
-              </Box>
-            ) : (
-              <ReviewList reviews={reviews} games={games} />
-            )}
+
+        {reviews.count === 0 ? (
+          <Box textAlign="center" p={8}>
+            <Typography variant="h3" component="h1" gutterBottom>
+              No Reviews Yet
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Once a player requests a review from you, it will appear here.
+            </Typography>
           </Box>
-        </Paper>
+        ) : (
+          <ReviewList reviews={reviews} games={games} />
+        )}
       </>
     )
   }

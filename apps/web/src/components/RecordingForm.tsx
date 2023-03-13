@@ -158,7 +158,7 @@ export function RecordingForm({ onUploadDone }: Props) {
           />
         )}
         <LoadingButton
-          color="info"
+          color="primary"
           size="large"
           type="button"
           variant="outlined"

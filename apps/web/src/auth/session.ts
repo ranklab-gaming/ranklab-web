@@ -97,7 +97,7 @@ export async function getServerSession(
 
       res
         .writeHead(302, {
-          Location: `/api/auth/login?user_type=${session.userType}`,
+          Location: `/api/auth/signin?user_type=${session.userType}`,
         })
         .end()
 
