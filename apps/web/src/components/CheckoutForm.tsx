@@ -4,11 +4,15 @@ import { LoadingButton } from "@mui/lab"
 import {
   Alert,
   Box,
+  Card,
+  CardContent,
+  CardHeader,
   Checkbox,
   FormControl,
   FormControlLabel,
   Grid,
   InputLabel,
+  Link,
   MenuItem,
   Paper,
   Select,
@@ -38,6 +42,7 @@ import jcbLogo from "@/images/cards/jcb.png"
 
 import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
+import { Avatar } from "@/components/Avatar"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -79,12 +84,12 @@ function Content({ review, paymentMethods }: Props) {
 
   const summary = [
     {
-      label: "Recording",
-      value: recording.title,
-    },
-    {
       label: "Coach",
       value: coach.name,
+    },
+    {
+      label: "Recording",
+      value: recording.title,
     },
     {
       label: "Price",
@@ -153,168 +158,198 @@ function Content({ review, paymentMethods }: Props) {
 
   return (
     <form onSubmit={handleSubmit(submitPayment)}>
-      <Paper>
-        <Stack spacing={2} p={3}>
-          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+      <Paper sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={8}>
+            <Stack spacing={2}>
+              <Card>
+                <CardHeader title="Payment method" />
+                <CardContent>
+                  <Stack spacing={2}>
+                    {errorMessage && (
+                      <Alert severity="error">{errorMessage}</Alert>
+                    )}
+                    {paymentMethods.length > 0 && (
+                      <Controller
+                        name="paymentMethodId"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                          <FormControl fullWidth>
+                            <Select
+                              onChange={field.onChange}
+                              value={field.value}
+                              onBlur={field.onBlur}
+                              error={Boolean(error)}
+                              placeholder="Use a new payment method"
+                            >
+                              {paymentMethods.map((paymentMethod) => {
+                                const cardIcon =
+                                  cardLogos[
+                                    camelCase(
+                                      paymentMethod.brand
+                                    ) as keyof typeof cardLogos
+                                  ]
 
-          {paymentMethods.length > 0 && (
-            <Controller
-              name="paymentMethodId"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <FormControl fullWidth>
-                  <InputLabel>Payment Method</InputLabel>
-                  <Select
-                    label="Payment Methods"
-                    onChange={field.onChange}
-                    value={field.value}
-                    onBlur={field.onBlur}
-                    error={Boolean(error)}
-                    placeholder="Use a different payment method"
-                  >
-                    {paymentMethods.map((paymentMethod) => {
-                      const cardIcon =
-                        cardLogos[
-                          camelCase(
-                            paymentMethod.brand
-                          ) as keyof typeof cardLogos
-                        ]
+                                return (
+                                  <MenuItem
+                                    key={paymentMethod.id}
+                                    value={paymentMethod.id}
+                                  >
+                                    <Stack
+                                      direction="row"
+                                      spacing={2}
+                                      alignItems="center"
+                                    >
+                                      {cardIcon ? (
+                                        <Image
+                                          src={cardIcon}
+                                          alt={paymentMethod.brand}
+                                          width={50}
+                                          height={30}
+                                          style={{
+                                            objectFit: "contain",
+                                          }}
+                                        />
+                                      ) : (
+                                        <Iconify
+                                          icon="eva:credit-card-fill"
+                                          fontSize="30px"
+                                        />
+                                      )}
+                                      <Typography variant="body1">
+                                        **** **** **** {paymentMethod.last4}
+                                      </Typography>
+                                    </Stack>
+                                  </MenuItem>
+                                )
+                              })}
 
-                      return (
-                        <MenuItem
-                          key={paymentMethod.id}
-                          value={paymentMethod.id}
-                        >
-                          <Stack
-                            direction="row"
-                            spacing={2}
-                            alignItems="center"
-                          >
-                            {cardIcon ? (
-                              <Image
-                                src={cardIcon}
-                                alt={paymentMethod.brand}
-                                width={50}
-                                height={30}
-                                style={{
-                                  objectFit: "contain",
-                                }}
-                              />
-                            ) : (
-                              <Iconify
-                                icon="eva:credit-card-fill"
-                                fontSize="30px"
-                              />
-                            )}
-                            <Typography variant="body1">
-                              **** **** **** {paymentMethod.last4}
-                            </Typography>
-                          </Stack>
-                        </MenuItem>
-                      )
-                    })}
-
-                    <MenuItem value={newPaymentMethod}>
-                      Use a different payment method
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-          )}
-          {paymentMethodId === newPaymentMethod && (
-            <>
-              <PaymentElement />
-              <Controller
-                name="savePaymentMethod"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={field.value}
-                        onChange={field.onChange}
-                        onBlur={field.onBlur}
+                              <MenuItem value={newPaymentMethod}>
+                                Add a new payment method
+                              </MenuItem>
+                            </Select>
+                          </FormControl>
+                        )}
                       />
-                    }
-                    label="Save this card for future purchases"
-                  />
-                )}
-              />
-            </>
-          )}
-          <Grid container>
-            <Grid item xs={12} md={6}>
-              <Box
-                borderRadius={theme.shape.borderRadius / 4}
-                overflow="hidden"
-                display="flex"
-                justifyContent="center"
-                mr={2}
-              >
-                <video
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "400px",
-                  }}
-                >
-                  <source
-                    src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                    type={recording.mimeType}
-                  />
-                </video>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Stack spacing={2}>
-                {summary.map((item, index) => {
-                  const isLast = index === summary.length - 1
-
-                  return (
-                    <Paper
-                      elevation={2}
-                      key={index}
-                      sx={{ backgroundColor: isLast ? "divider" : undefined }}
-                    >
-                      <Stack
-                        spacing={1}
-                        p={2}
-                        direction="row"
-                        alignItems="center"
-                      >
-                        <Typography
-                          variant="body2"
-                          color="text.body"
-                          fontWeight="bold"
-                          mr="auto"
-                        >
-                          {item.label}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.body"
-                          fontWeight={isLast ? "bold" : "normal"}
-                        >
-                          {item.value}
-                        </Typography>
-                      </Stack>
-                    </Paper>
-                  )
-                })}
-                <LoadingButton
-                  variant="contained"
-                  size="large"
-                  type="submit"
-                  loading={isLoading}
-                  disabled={isLoading}
-                >
-                  Pay {formatPrice(coach.price)}
-                </LoadingButton>
-              </Stack>
-            </Grid>
+                    )}
+                    {paymentMethodId === newPaymentMethod && (
+                      <>
+                        <PaymentElement />
+                        <Controller
+                          name="savePaymentMethod"
+                          control={control}
+                          render={({ field }) => (
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={field.value}
+                                  onChange={field.onChange}
+                                  onBlur={field.onBlur}
+                                />
+                              }
+                              label="Save this card for future purchases"
+                            />
+                          )}
+                        />
+                      </>
+                    )}
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader title="Recording Preview" />
+                <CardContent>
+                  <video
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                    }}
+                    controls
+                  >
+                    <source
+                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                      type={recording.mimeType}
+                    />
+                  </video>
+                </CardContent>
+              </Card>
+            </Stack>
           </Grid>
-        </Stack>
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardContent>
+                <Stack spacing={2}>
+                  <LoadingButton
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    loading={isLoading}
+                    disabled={isLoading}
+                  >
+                    Pay {formatPrice(coach.price)}
+                  </LoadingButton>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    textAlign="center"
+                  >
+                    By placing your order, you agree to our{" "}
+                    <Link href="/terms">Terms of Service</Link> and{" "}
+                    <Link href="/privacy">Privacy Policy</Link>.
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader title="Order Summary" />
+              <CardContent>
+                <Stack spacing={2}>
+                  {summary.map((item, index) => {
+                    const isLast = index === summary.length - 1
+
+                    return (
+                      <Paper
+                        elevation={2}
+                        key={index}
+                        sx={{
+                          backgroundColor: isLast
+                            ? theme.palette.grey[900]
+                            : theme.palette.grey[800],
+                        }}
+                      >
+                        <Stack
+                          spacing={1}
+                          p={2}
+                          direction="row"
+                          alignItems="center"
+                        >
+                          <Typography
+                            variant={isLast ? "body2" : "caption"}
+                            color={isLast ? "primary" : "text.body"}
+                            fontWeight="bold"
+                            mr="auto"
+                          >
+                            {item.label}
+                          </Typography>
+                          <Typography
+                            variant={isLast ? "body2" : "caption"}
+                            color={isLast ? "primary" : "text.body"}
+                            fontWeight={isLast ? "bold" : "normal"}
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                          >
+                            {item.value}
+                          </Typography>
+                        </Stack>
+                      </Paper>
+                    )
+                  })}
+                  <Box flexGrow={1} />
+                </Stack>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       </Paper>
     </form>
   )

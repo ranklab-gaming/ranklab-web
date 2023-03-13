@@ -116,7 +116,7 @@ export function ReviewList({
           }
 
           return (
-            <ListItem key={review.id}>
+            <ListItem key={review.id} sx={{ p: 0, m: 0, mb: 2 }}>
               <Card sx={{ width: "100%" }}>
                 <NextLink
                   href={`/${user.type}/reviews/${review.id}`}
