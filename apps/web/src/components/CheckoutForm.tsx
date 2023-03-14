@@ -84,14 +84,6 @@ function Content({ review, paymentMethods }: Props) {
 
   const summary = [
     {
-      label: "Coach",
-      value: coach.name,
-    },
-    {
-      label: "Recording",
-      value: recording.title,
-    },
-    {
       label: "Price",
       value: formatPrice(coach.price),
     },
@@ -257,97 +249,163 @@ function Content({ review, paymentMethods }: Props) {
                 </CardContent>
               </Card>
               <Card>
-                <CardHeader title="Recording Preview" />
+                <CardHeader title="Your Order" />
                 <CardContent>
-                  <video
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                    }}
-                    controls
-                  >
-                    <source
-                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                      type={recording.mimeType}
-                    />
-                  </video>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <video
+                        style={{
+                          objectFit: "cover",
+                          width: "100%",
+                        }}
+                        controls
+                      >
+                        <source
+                          src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                          type={recording.mimeType}
+                        />
+                      </video>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Stack spacing={2}>
+                        <Paper elevation={1} sx={{ p: 2 }}>
+                          <Stack direction="row" spacing={2}>
+                            <Typography
+                              variant="caption"
+                              marginRight="auto"
+                              fontWeight="bold"
+                            >
+                              Recording
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              textOverflow="ellipsis"
+                              overflow="hidden"
+                            >
+                              {recording.title}
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                        <Paper elevation={1} sx={{ p: 2 }}>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            alignItems="center"
+                          >
+                            <Typography
+                              variant="caption"
+                              marginRight="auto"
+                              fontWeight="bold"
+                            >
+                              Coach
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              textOverflow="ellipsis"
+                              overflow="hidden"
+                            >
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                              >
+                                <Avatar
+                                  user={coach}
+                                  sx={{
+                                    width: "30px",
+                                    height: "30px",
+                                    fontSize: theme.typography.caption.fontSize,
+                                  }}
+                                />
+                                <Typography variant="caption">
+                                  {coach.name}
+                                </Typography>
+                              </Stack>
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                      </Stack>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
             </Stack>
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card>
-              <CardContent>
-                <Stack spacing={2}>
-                  <LoadingButton
-                    variant="contained"
-                    size="large"
-                    type="submit"
-                    loading={isLoading}
-                    disabled={isLoading}
-                  >
-                    Pay {formatPrice(coach.price)}
-                  </LoadingButton>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    textAlign="center"
-                  >
-                    By placing your order, you agree to our{" "}
-                    <Link href="/terms">Terms of Service</Link> and{" "}
-                    <Link href="/privacy">Privacy Policy</Link>.
-                  </Typography>
-                </Stack>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader title="Order Summary" />
-              <CardContent>
-                <Stack spacing={2}>
-                  {summary.map((item, index) => {
-                    const isLast = index === summary.length - 1
+            <Stack spacing={2}>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2}>
+                    <LoadingButton
+                      variant="contained"
+                      size="large"
+                      type="submit"
+                      loading={isLoading}
+                      disabled={isLoading}
+                    >
+                      Pay {formatPrice(coach.price)}
+                    </LoadingButton>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      textAlign="center"
+                    >
+                      By placing your order, you agree to our{" "}
+                      <Link href="/terms">Terms of Service</Link> and{" "}
+                      <Link href="/privacy">Privacy Policy</Link>.
+                    </Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader title="Order Summary" />
+                <CardContent>
+                  <Stack spacing={2}>
+                    {summary.map((item, index) => {
+                      const isLast = index === summary.length - 1
 
-                    return (
-                      <Paper
-                        elevation={2}
-                        key={index}
-                        sx={{
-                          backgroundColor: isLast
-                            ? theme.palette.grey[900]
-                            : theme.palette.grey[800],
-                        }}
-                      >
-                        <Stack
-                          spacing={1}
-                          p={2}
-                          direction="row"
-                          alignItems="center"
+                      return (
+                        <Paper
+                          elevation={2}
+                          key={index}
+                          sx={{
+                            backgroundColor: isLast
+                              ? theme.palette.grey[900]
+                              : theme.palette.grey[800],
+                          }}
                         >
-                          <Typography
-                            variant={isLast ? "body2" : "caption"}
-                            color={isLast ? "primary" : "text.body"}
-                            fontWeight="bold"
-                            mr="auto"
+                          <Stack
+                            spacing={1}
+                            p={2}
+                            direction="row"
+                            alignItems="center"
                           >
-                            {item.label}
-                          </Typography>
-                          <Typography
-                            variant={isLast ? "body2" : "caption"}
-                            color={isLast ? "primary" : "text.body"}
-                            fontWeight={isLast ? "bold" : "normal"}
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                          >
-                            {item.value}
-                          </Typography>
-                        </Stack>
-                      </Paper>
-                    )
-                  })}
-                  <Box flexGrow={1} />
-                </Stack>
-              </CardContent>
-            </Card>
+                            <Typography
+                              variant={isLast ? "body2" : "caption"}
+                              color={isLast ? "primary" : "text.body"}
+                              fontWeight="bold"
+                              mr="auto"
+                            >
+                              {item.label}
+                            </Typography>
+                            <Typography
+                              variant={isLast ? "body2" : "caption"}
+                              color={isLast ? "primary" : "text.body"}
+                              fontWeight={isLast ? "bold" : "normal"}
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                            >
+                              {item.value}
+                            </Typography>
+                          </Stack>
+                        </Paper>
+                      )
+                    })}
+                    <Box flexGrow={1} />
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Stack>
           </Grid>
         </Grid>
       </Paper>
