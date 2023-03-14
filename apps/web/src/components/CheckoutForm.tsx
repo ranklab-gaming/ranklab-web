@@ -305,7 +305,7 @@ function Content({ review, paymentMethods, games }: Props) {
                           <Paper key={index} elevation={1} sx={{ p: 2 }}>
                             <Stack direction="row" alignItems="center">
                               <Typography
-                                variant="body2"
+                                variant="body1"
                                 marginRight="auto"
                                 fontWeight="bold"
                               >
@@ -335,6 +335,7 @@ function Content({ review, paymentMethods, games }: Props) {
                       type="submit"
                       loading={isLoading}
                       disabled={isLoading}
+                      sx={{ fontSize: "1.2rem" }}
                     >
                       Pay {formatPrice(coach.price)}
                     </LoadingButton>
@@ -344,11 +345,16 @@ function Content({ review, paymentMethods, games }: Props) {
                       textAlign="center"
                     >
                       By placing your order, you agree to our{" "}
-                      <Link href="/terms">Terms of Service</Link> and{" "}
-                      <Link href="/privacy">Privacy Policy</Link>. If the coach
-                      does not review your recording within 5 days, or you
-                      decide to cancel the order, the money you pay now will get
-                      refunded automatically.
+                      <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link href="https://www.iubenda.com/privacy-policy/88772361">
+                        Privacy Policy
+                      </Link>
+                      . If the coach does not review your recording within 5
+                      days, or you decide to cancel the order, the money you pay
+                      now will get refunded automatically.
                     </Typography>
                   </Stack>
                 </CardContent>
@@ -368,7 +374,7 @@ function Content({ review, paymentMethods, games }: Props) {
                             alignItems="center"
                           >
                             <Typography
-                              variant={isLast ? "body1" : "body2"}
+                              variant="body1"
                               color={isLast ? "primary" : "text.body"}
                               fontWeight="bold"
                               mr="auto"
@@ -376,7 +382,7 @@ function Content({ review, paymentMethods, games }: Props) {
                               {item.label}
                             </Typography>
                             <Typography
-                              variant={isLast ? "body1" : "body2"}
+                              variant="body1"
                               color={isLast ? "primary" : "text.body"}
                               fontWeight={isLast ? "bold" : "normal"}
                               overflow="hidden"

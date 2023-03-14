@@ -85,7 +85,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
           </Alert>
         </Stack>
         <LoadingButton
-          color="info"
+          color="primary"
           size="large"
           type="submit"
           variant="contained"

@@ -112,7 +112,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
           />
           <LoadingButton
             fullWidth
-            color="info"
+            color="primary"
             size="large"
             type="submit"
             variant="contained"
