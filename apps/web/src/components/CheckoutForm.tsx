@@ -131,12 +131,14 @@ function Content({ review, paymentMethods, games }: Props) {
         })
       : stripe.confirmCardPayment(review.stripeClientSecret, {
           payment_method: paymentMethodId,
+          return_url: `${window.location.origin}/${router.asPath}`,
         }))
 
     if (error) {
       setErrorMessage(error.message)
-      setIsLoading(false)
     }
+
+    setIsLoading(false)
   }
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
@@ -299,7 +301,7 @@ function Content({ review, paymentMethods, games }: Props) {
                     </video>
                   </Grid>
                   <Grid item xs={12} md={5}>
-                    <Stack spacing={3}>
+                    <Stack spacing={1}>
                       {details.map((detail, index) => (
                         <Paper key={index} elevation={1} sx={{ p: 2 }}>
                           <Stack direction="row" alignItems="center">
@@ -310,7 +312,7 @@ function Content({ review, paymentMethods, games }: Props) {
                             >
                               {detail.label}
                             </Typography>
-                            <Chip label={detail.value} />
+                            <Chip label={detail.value} size="small" />
                           </Stack>
                         </Paper>
                       ))}
@@ -359,7 +361,7 @@ function Content({ review, paymentMethods, games }: Props) {
             <Card>
               <CardHeader title="Order Summary" />
               <CardContent>
-                <Stack spacing={2}>
+                <Stack spacing={1}>
                   {summary.map((item, index) => {
                     const isLast = index === summary.length - 1
 
@@ -368,21 +370,18 @@ function Content({ review, paymentMethods, games }: Props) {
                         <Stack spacing={1} direction="row" alignItems="center">
                           <Typography
                             variant="body1"
-                            color={isLast ? "primary" : "text.body"}
                             fontWeight="bold"
                             mr="auto"
                           >
                             {item.label}
                           </Typography>
-                          <Typography
-                            variant="body1"
-                            color={isLast ? "primary" : "text.body"}
-                            fontWeight={isLast ? "bold" : "normal"}
-                            overflow="hidden"
-                            textOverflow="ellipsis"
-                          >
-                            {item.value}
-                          </Typography>
+                          <Chip
+                            label={item.value}
+                            sx={{
+                              fontWeight: isLast ? "bold" : undefined,
+                            }}
+                            size={isLast ? "medium" : "small"}
+                          />
                         </Stack>
                       </Paper>
                     )
