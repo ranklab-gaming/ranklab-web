@@ -68,7 +68,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
       },
     })
 
-    router.push(url)
+    await router.push(url)
   }
 
   return (
@@ -95,7 +95,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
           </Alert>
         </Stack>
         <LoadingButton
-          color="info"
+          color="primary"
           size="large"
           type="submit"
           variant="contained"

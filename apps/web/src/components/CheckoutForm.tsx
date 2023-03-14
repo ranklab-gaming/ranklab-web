@@ -139,6 +139,8 @@ function Content({ review, paymentMethods, games }: Props) {
 
     if (error) {
       setErrorMessage(error.message)
+    } else {
+      await router.reload()
     }
 
     setIsLoading(false)

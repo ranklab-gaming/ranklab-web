@@ -56,7 +56,7 @@ function PasswordResetPage() {
       variant: "success",
     })
 
-    router.push(`/api/auth/signin?user_type=${userType}`)
+    await router.push(`/api/auth/signin?user_type=${userType}`)
   }
 
   return (

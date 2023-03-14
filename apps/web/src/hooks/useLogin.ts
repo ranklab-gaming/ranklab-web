@@ -15,13 +15,13 @@ export function useLogin(userType: UserType) {
 
     if (response.ok) {
       const json = await response.json()
-      router.push(json.location)
+      await router.push(json.location)
       return
     }
 
     if (response.status === 400) {
       localStorage.setItem("loginSessionExpired", "true")
-      router.push(`/api/auth/signin?user_type=${userType}`)
+      await router.push(`/api/auth/signin?user_type=${userType}`)
       return
     }
 

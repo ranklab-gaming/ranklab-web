@@ -71,7 +71,7 @@ export function PlayerReviewsNewPage(props: PropsWithUser<Props>) {
     })
 
     if (review) {
-      router.push(`/player/reviews/[id]`, review.id)
+      await router.push(`/player/reviews/[id]`, review.id)
     }
   }
 
