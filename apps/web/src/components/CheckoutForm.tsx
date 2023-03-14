@@ -286,6 +286,7 @@ function Content({ review, paymentMethods }: Props) {
                             </Typography>
                           </Stack>
                         </Paper>
+
                         <Paper elevation={1} sx={{ p: 2 }}>
                           <Stack
                             direction="row"
