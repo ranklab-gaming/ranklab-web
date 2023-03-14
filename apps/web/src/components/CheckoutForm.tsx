@@ -3,6 +3,7 @@ import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
   Alert,
+  AppBar,
   Box,
   Card,
   CardContent,
@@ -42,7 +43,8 @@ import discoverLogo from "@/images/cards/discover.png"
 import jcbLogo from "@/images/cards/jcb.png"
 import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
-import { GameIcon } from "@/components/GameIcon"
+import Sticky from "react-stickynode"
+import { useResponsive } from "@/hooks/useResponsive"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -164,24 +166,7 @@ function Content({ review, paymentMethods, games }: Props) {
     throw new Error("skillLevel is missing")
   }
 
-  const details = [
-    {
-      label: "Coach",
-      value: coach.name,
-    },
-    {
-      label: "Recording",
-      value: recording.title,
-    },
-    {
-      label: "Game",
-      value: game.name,
-    },
-    {
-      label: "Skill Level",
-      value: skillLevel.name,
-    },
-  ]
+  const isDesktop = useResponsive("up", "sm")
 
   return (
     <form onSubmit={handleSubmit(submitPayment)}>
@@ -303,7 +288,10 @@ function Content({ review, paymentMethods, games }: Props) {
                     />
                   </video>
                   <Paper
-                    sx={{ p: 2, backgroundColor: theme.palette.grey[900] }}
+                    sx={{
+                      p: 2,
+                      backgroundColor: theme.palette.grey[900],
+                    }}
                     elevation={1}
                   >
                     <Stack spacing={2} direction="row" alignItems="center">
@@ -320,74 +308,82 @@ function Content({ review, paymentMethods, games }: Props) {
           </Stack>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Stack spacing={2}>
-            <Card>
-              <CardContent>
-                <Stack spacing={2}>
-                  <LoadingButton
-                    variant="contained"
-                    size="large"
-                    type="submit"
-                    loading={isLoading}
-                    disabled={isLoading}
-                    sx={{ fontSize: "1.2rem" }}
-                  >
-                    Pay {formatPrice(coach.price)}
-                  </LoadingButton>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    textAlign="center"
-                  >
-                    By placing your order, you agree to our{" "}
-                    <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
-                      Terms of Service
-                    </Link>{" "}
-                    and{" "}
-                    <Link href="https://www.iubenda.com/privacy-policy/88772361">
-                      Privacy Policy
-                    </Link>
-                    . If the coach does not review your recording within 5 days,
-                    or you decide to cancel the order, the money you pay now
-                    will get refunded automatically.
-                  </Typography>
-                </Stack>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader title="Order Summary" />
-              <CardContent>
-                <Stack spacing={1}>
-                  {summary.map((item, index) => {
-                    const isLast = index === summary.length - 1
+          <Sticky enabled={isDesktop} top={70}>
+            <Stack spacing={2}>
+              <Card>
+                <CardContent>
+                  <Stack spacing={2}>
+                    <LoadingButton
+                      variant="contained"
+                      size="large"
+                      type="submit"
+                      loading={isLoading}
+                      disabled={isLoading}
+                      sx={{ fontSize: "1.2rem" }}
+                    >
+                      Pay {formatPrice(coach.price)}
+                    </LoadingButton>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      textAlign="center"
+                    >
+                      By placing your order, you agree to our{" "}
+                      <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link href="https://www.iubenda.com/privacy-policy/88772361">
+                        Privacy Policy
+                      </Link>
+                      . If the coach does not review your recording within 5
+                      days, or you decide to cancel the order, the money you pay
+                      now will get refunded automatically.
+                    </Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader title="Order Summary" />
+                <CardContent>
+                  <Stack spacing={1}>
+                    {summary.map((item, index) => {
+                      const isLast = index === summary.length - 1
 
-                    return (
-                      <Paper key={index} sx={{ p: 2 }} elevation={1}>
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          <Typography
-                            variant={isLast ? "body1" : "body2"}
-                            fontWeight="bold"
-                            mr="auto"
-                            color={isLast ? "text.primary" : "text.secondary"}
+                      return (
+                        <Paper key={index} sx={{ p: 2 }} elevation={1}>
+                          <Stack
+                            spacing={1}
+                            direction="row"
+                            alignItems="center"
                           >
-                            {item.label}
-                          </Typography>
-                          <Chip
-                            label={item.value}
-                            size={isLast ? "medium" : "small"}
-                            sx={{
-                              color: isLast ? "text.primary" : "text.secondary",
-                            }}
-                          />
-                        </Stack>
-                      </Paper>
-                    )
-                  })}
-                  <Box flexGrow={1} />
-                </Stack>
-              </CardContent>
-            </Card>
-          </Stack>
+                            <Typography
+                              variant={isLast ? "body1" : "body2"}
+                              fontWeight="bold"
+                              mr="auto"
+                              color={isLast ? "text.primary" : "text.secondary"}
+                            >
+                              {item.label}
+                            </Typography>
+                            <Chip
+                              label={item.value}
+                              size={isLast ? "medium" : "small"}
+                              sx={{
+                                color: isLast
+                                  ? "text.primary"
+                                  : "text.secondary",
+                              }}
+                            />
+                          </Stack>
+                        </Paper>
+                      )
+                    })}
+                    <Box flexGrow={1} />
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Stack>
+          </Sticky>
         </Grid>
       </Grid>
     </form>
