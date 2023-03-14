@@ -184,222 +184,214 @@ function Content({ review, paymentMethods, games }: Props) {
     <form onSubmit={handleSubmit(submitPayment)}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
-          <Paper sx={{ p: 2 }}>
-            <Stack spacing={2}>
-              <Card>
-                <CardHeader title="Payment method" />
-                <CardContent>
-                  <Stack spacing={2}>
-                    {errorMessage && (
-                      <Alert severity="error">{errorMessage}</Alert>
-                    )}
-                    {paymentMethods.length > 0 && (
-                      <Controller
-                        name="paymentMethodId"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <FormControl fullWidth>
-                            <Select
-                              onChange={field.onChange}
-                              value={field.value}
-                              onBlur={field.onBlur}
-                              error={Boolean(error)}
-                              placeholder="Use a new payment method"
-                            >
-                              {paymentMethods.map((paymentMethod) => {
-                                const cardIcon =
-                                  cardLogos[
-                                    camelCase(
-                                      paymentMethod.brand
-                                    ) as keyof typeof cardLogos
-                                  ]
+          <Stack spacing={2}>
+            <Card>
+              <CardHeader title="Payment method" />
+              <CardContent>
+                <Stack spacing={2}>
+                  {errorMessage && (
+                    <Alert severity="error">{errorMessage}</Alert>
+                  )}
+                  {paymentMethods.length > 0 && (
+                    <Controller
+                      name="paymentMethodId"
+                      control={control}
+                      render={({ field, fieldState: { error } }) => (
+                        <FormControl fullWidth>
+                          <Select
+                            onChange={field.onChange}
+                            value={field.value}
+                            onBlur={field.onBlur}
+                            error={Boolean(error)}
+                            placeholder="Use a new payment method"
+                          >
+                            {paymentMethods.map((paymentMethod) => {
+                              const cardIcon =
+                                cardLogos[
+                                  camelCase(
+                                    paymentMethod.brand
+                                  ) as keyof typeof cardLogos
+                                ]
 
-                                return (
-                                  <MenuItem
-                                    key={paymentMethod.id}
-                                    value={paymentMethod.id}
+                              return (
+                                <MenuItem
+                                  key={paymentMethod.id}
+                                  value={paymentMethod.id}
+                                >
+                                  <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    alignItems="center"
                                   >
-                                    <Stack
-                                      direction="row"
-                                      spacing={2}
-                                      alignItems="center"
-                                    >
-                                      {cardIcon ? (
-                                        <Image
-                                          src={cardIcon}
-                                          alt={paymentMethod.brand}
-                                          width={50}
-                                          height={30}
-                                          style={{
-                                            objectFit: "contain",
-                                          }}
-                                        />
-                                      ) : (
-                                        <Iconify
-                                          icon="eva:credit-card-fill"
-                                          fontSize="30px"
-                                        />
-                                      )}
-                                      <Typography variant="body1">
-                                        **** **** **** {paymentMethod.last4}
-                                      </Typography>
-                                    </Stack>
-                                  </MenuItem>
-                                )
-                              })}
+                                    {cardIcon ? (
+                                      <Image
+                                        src={cardIcon}
+                                        alt={paymentMethod.brand}
+                                        width={50}
+                                        height={30}
+                                        style={{
+                                          objectFit: "contain",
+                                        }}
+                                      />
+                                    ) : (
+                                      <Iconify
+                                        icon="eva:credit-card-fill"
+                                        fontSize="30px"
+                                      />
+                                    )}
+                                    <Typography variant="body1">
+                                      **** **** **** {paymentMethod.last4}
+                                    </Typography>
+                                  </Stack>
+                                </MenuItem>
+                              )
+                            })}
 
-                              <MenuItem value={newPaymentMethod}>
-                                Add a new payment method
-                              </MenuItem>
-                            </Select>
-                          </FormControl>
+                            <MenuItem value={newPaymentMethod}>
+                              Add a new payment method
+                            </MenuItem>
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                  )}
+                  {paymentMethodId === newPaymentMethod && (
+                    <>
+                      <PaymentElement />
+                      <Controller
+                        name="savePaymentMethod"
+                        control={control}
+                        render={({ field }) => (
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                checked={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                              />
+                            }
+                            label="Save this card for future purchases"
+                          />
                         )}
                       />
-                    )}
-                    {paymentMethodId === newPaymentMethod && (
-                      <>
-                        <PaymentElement />
-                        <Controller
-                          name="savePaymentMethod"
-                          control={control}
-                          render={({ field }) => (
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  checked={field.value}
-                                  onChange={field.onChange}
-                                  onBlur={field.onBlur}
-                                />
-                              }
-                              label="Save this card for future purchases"
-                            />
-                          )}
-                        />
-                      </>
-                    )}
-                  </Stack>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader title="Order Details" />
-                <CardContent>
-                  <Grid container spacing={2}>
-                    <Grid item xs={12} md={7}>
-                      <video
-                        style={{
-                          objectFit: "cover",
-                          width: "100%",
-                          height: "100%",
-                        }}
-                        controls
-                      >
-                        <source
-                          src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                          type={recording.mimeType}
-                        />
-                      </video>
-                    </Grid>
-                    <Grid item xs={12} md={5}>
-                      <Stack spacing={3}>
-                        {details.map((detail, index) => (
-                          <Paper key={index} elevation={1} sx={{ p: 2 }}>
-                            <Stack direction="row" alignItems="center">
-                              <Typography
-                                variant="body1"
-                                marginRight="auto"
-                                fontWeight="bold"
-                              >
-                                {detail.label}
-                              </Typography>
-                              <Chip label={detail.value} />
-                            </Stack>
-                          </Paper>
-                        ))}
-                      </Stack>
-                    </Grid>
+                    </>
+                  )}
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader title="Order Details" />
+              <CardContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={7}>
+                    <video
+                      style={{
+                        objectFit: "cover",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      controls
+                    >
+                      <source
+                        src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                        type={recording.mimeType}
+                      />
+                    </video>
                   </Grid>
-                </CardContent>
-              </Card>
-            </Stack>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 2 }}>
-            <Stack spacing={2}>
-              <Card>
-                <CardContent>
-                  <Stack spacing={2}>
-                    <LoadingButton
-                      variant="contained"
-                      size="large"
-                      type="submit"
-                      loading={isLoading}
-                      disabled={isLoading}
-                      sx={{ fontSize: "1.2rem" }}
-                    >
-                      Pay {formatPrice(coach.price)}
-                    </LoadingButton>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      textAlign="center"
-                    >
-                      By placing your order, you agree to our{" "}
-                      <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link href="https://www.iubenda.com/privacy-policy/88772361">
-                        Privacy Policy
-                      </Link>
-                      . If the coach does not review your recording within 5
-                      days, or you decide to cancel the order, the money you pay
-                      now will get refunded automatically.
-                    </Typography>
-                  </Stack>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader title="Order Summary" />
-                <CardContent>
-                  <Stack spacing={2}>
-                    {summary.map((item, index) => {
-                      const isLast = index === summary.length - 1
-
-                      return (
-                        <Paper key={index} sx={{ p: 2 }} elevation={1}>
-                          <Stack
-                            spacing={1}
-                            direction="row"
-                            alignItems="center"
-                          >
+                  <Grid item xs={12} md={5}>
+                    <Stack spacing={3}>
+                      {details.map((detail, index) => (
+                        <Paper key={index} elevation={1} sx={{ p: 2 }}>
+                          <Stack direction="row" alignItems="center">
                             <Typography
                               variant="body1"
-                              color={isLast ? "primary" : "text.body"}
+                              marginRight="auto"
                               fontWeight="bold"
-                              mr="auto"
                             >
-                              {item.label}
+                              {detail.label}
                             </Typography>
-                            <Typography
-                              variant="body1"
-                              color={isLast ? "primary" : "text.body"}
-                              fontWeight={isLast ? "bold" : "normal"}
-                              overflow="hidden"
-                              textOverflow="ellipsis"
-                            >
-                              {item.value}
-                            </Typography>
+                            <Chip label={detail.value} />
                           </Stack>
                         </Paper>
-                      )
-                    })}
-                    <Box flexGrow={1} />
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Stack>
-          </Paper>
+                      ))}
+                    </Stack>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Stack spacing={2}>
+            <Card>
+              <CardContent>
+                <Stack spacing={2}>
+                  <LoadingButton
+                    variant="contained"
+                    size="large"
+                    type="submit"
+                    loading={isLoading}
+                    disabled={isLoading}
+                    sx={{ fontSize: "1.2rem" }}
+                  >
+                    Pay {formatPrice(coach.price)}
+                  </LoadingButton>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    textAlign="center"
+                  >
+                    By placing your order, you agree to our{" "}
+                    <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
+                      Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="https://www.iubenda.com/privacy-policy/88772361">
+                      Privacy Policy
+                    </Link>
+                    . If the coach does not review your recording within 5 days,
+                    or you decide to cancel the order, the money you pay now
+                    will get refunded automatically.
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader title="Order Summary" />
+              <CardContent>
+                <Stack spacing={2}>
+                  {summary.map((item, index) => {
+                    const isLast = index === summary.length - 1
+
+                    return (
+                      <Paper key={index} sx={{ p: 2 }} elevation={1}>
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <Typography
+                            variant="body1"
+                            color={isLast ? "primary" : "text.body"}
+                            fontWeight="bold"
+                            mr="auto"
+                          >
+                            {item.label}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            color={isLast ? "primary" : "text.body"}
+                            fontWeight={isLast ? "bold" : "normal"}
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                          >
+                            {item.value}
+                          </Typography>
+                        </Stack>
+                      </Paper>
+                    )
+                  })}
+                  <Box flexGrow={1} />
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
         </Grid>
       </Grid>
     </form>
