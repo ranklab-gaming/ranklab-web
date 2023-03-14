@@ -4,6 +4,7 @@ import {
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
+import { forwardRef } from "react"
 
 type AvatarColor =
   | "default"
@@ -40,7 +41,10 @@ interface AvatarProps extends MuiAvatarProps {
   }
 }
 
-export function Avatar({ children, user, sx, ...other }: AvatarProps) {
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
+  { children, user, sx, ...other }: AvatarProps,
+  ref
+) {
   const theme = useTheme()
   const { name } = user ?? useUser()
   const initial = getInitial(name)
@@ -48,7 +52,7 @@ export function Avatar({ children, user, sx, ...other }: AvatarProps) {
 
   if (color === "default") {
     return (
-      <MuiAvatar sx={sx} {...other}>
+      <MuiAvatar sx={sx} {...other} ref={ref}>
         {initial}
       </MuiAvatar>
     )
@@ -64,9 +68,10 @@ export function Avatar({ children, user, sx, ...other }: AvatarProps) {
       }}
       alt={name}
       color={getAvatarColor(name)}
+      ref={ref}
       {...other}
     >
       {initial}
     </MuiAvatar>
   )
-}
+})
