@@ -21,6 +21,7 @@ import {
 } from "@ranklab/api"
 import { FunctionComponent, MouseEvent, useState } from "react"
 import NextLink from "next/link"
+import { Chip } from "@mui/material"
 
 const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
   reviewState,
@@ -115,6 +116,20 @@ export function ReviewList({
             throw new Error("review is missing coach")
           }
 
+          const game = games.find((g) => g.id === recording.gameId)
+
+          if (!game) {
+            throw new Error("review is missing game")
+          }
+
+          const skillLevel = game.skillLevels.find(
+            (s) => s.value === recording.skillLevel
+          )
+
+          if (!skillLevel) {
+            throw new Error("review is missing skill level")
+          }
+
           return (
             <ListItem key={review.id} sx={{ p: 0, m: 0, mb: 2 }}>
               <Card sx={{ width: "100%" }}>
@@ -126,13 +141,19 @@ export function ReviewList({
                   <CardActionArea>
                     <CardContent>
                       <Stack direction="row" spacing={2} alignItems="center">
-                        <GameIcon
-                          game={games.find((g) => g.id === recording.gameId)!}
-                        />
+                        <GameIcon game={game} />
                         <Stack spacing={2} flexGrow={1}>
-                          <Typography variant="h6">
-                            {recording.title}
-                          </Typography>
+                          <Stack
+                            spacing={1}
+                            direction="row"
+                            alignItems="center"
+                          >
+                            <Typography variant="h6">
+                              {recording.title}
+                            </Typography>
+                            <Chip label={skillLevel.name} size="small" />
+                          </Stack>
+
                           <Typography variant="body2" color="text.secondary">
                             Review by {coach.name} requested on{" "}
                             {formatDate(review.createdAt)}

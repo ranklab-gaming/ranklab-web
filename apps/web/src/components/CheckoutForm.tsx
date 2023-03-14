@@ -42,6 +42,7 @@ import discoverLogo from "@/images/cards/discover.png"
 import jcbLogo from "@/images/cards/jcb.png"
 import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
+import { GameIcon } from "@/components/GameIcon"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -282,43 +283,38 @@ function Content({ review, paymentMethods, games }: Props) {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader title="Order Details" />
+              <CardHeader
+                title="Order Details"
+                subheader={`Review by ${coach.name}`}
+              />
               <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={7}>
-                    <video
-                      style={{
-                        objectFit: "cover",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                      controls
-                    >
-                      <source
-                        src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                        type={recording.mimeType}
-                      />
-                    </video>
-                  </Grid>
-                  <Grid item xs={12} md={5}>
-                    <Stack spacing={1}>
-                      {details.map((detail, index) => (
-                        <Paper key={index} elevation={1} sx={{ p: 2 }}>
-                          <Stack direction="row" alignItems="center">
-                            <Typography
-                              variant="body1"
-                              marginRight="auto"
-                              fontWeight="bold"
-                            >
-                              {detail.label}
-                            </Typography>
-                            <Chip label={detail.value} size="small" />
-                          </Stack>
-                        </Paper>
-                      ))}
+                <Stack spacing={2}>
+                  <video
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    controls
+                  >
+                    <source
+                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                      type={recording.mimeType}
+                    />
+                  </video>
+                  <Paper
+                    sx={{ p: 2, backgroundColor: theme.palette.grey[900] }}
+                    elevation={1}
+                  >
+                    <Stack spacing={2} direction="row" alignItems="center">
+                      <Typography variant="caption">
+                        {recording.title}
+                      </Typography>
+                      <Chip label={skillLevel.name} size="small" />
+                      <Chip label={game.name} size="small" />
                     </Stack>
-                  </Grid>
-                </Grid>
+                  </Paper>
+                </Stack>
               </CardContent>
             </Card>
           </Stack>
@@ -369,18 +365,19 @@ function Content({ review, paymentMethods, games }: Props) {
                       <Paper key={index} sx={{ p: 2 }} elevation={1}>
                         <Stack spacing={1} direction="row" alignItems="center">
                           <Typography
-                            variant="body1"
+                            variant={isLast ? "body1" : "body2"}
                             fontWeight="bold"
                             mr="auto"
+                            color={isLast ? "text.primary" : "text.secondary"}
                           >
                             {item.label}
                           </Typography>
                           <Chip
                             label={item.value}
-                            sx={{
-                              fontWeight: isLast ? "bold" : undefined,
-                            }}
                             size={isLast ? "medium" : "small"}
+                            sx={{
+                              color: isLast ? "text.primary" : "text.secondary",
+                            }}
                           />
                         </Stack>
                       </Paper>
