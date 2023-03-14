@@ -591,7 +591,13 @@ export interface PlayerUpdateReviewRequest {
    * @type {boolean}
    * @memberof PlayerUpdateReviewRequest
    */
-  accepted: boolean
+  accepted?: boolean | null
+  /**
+   *
+   * @type {boolean}
+   * @memberof PlayerUpdateReviewRequest
+   */
+  cancelled?: boolean | null
 }
 /**
  *

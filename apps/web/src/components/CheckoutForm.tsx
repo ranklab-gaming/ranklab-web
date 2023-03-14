@@ -274,19 +274,6 @@ function Content({ review, paymentMethods, games }: Props) {
               />
               <CardContent>
                 <Stack spacing={2}>
-                  <video
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    controls
-                  >
-                    <source
-                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                      type={recording.mimeType}
-                    />
-                  </video>
                   <Paper
                     sx={{
                       p: 2,
@@ -302,6 +289,19 @@ function Content({ review, paymentMethods, games }: Props) {
                       <Chip label={game.name} size="small" />
                     </Stack>
                   </Paper>
+                  <video
+                    style={{
+                      objectFit: "cover",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    controls
+                  >
+                    <source
+                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                      type={recording.mimeType}
+                    />
+                  </video>
                 </Stack>
               </CardContent>
             </Card>
@@ -323,23 +323,32 @@ function Content({ review, paymentMethods, games }: Props) {
                     >
                       Pay {formatPrice(coach.price)}
                     </LoadingButton>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      textAlign="center"
-                    >
-                      By placing your order, you agree to our{" "}
-                      <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
-                        Terms of Service
-                      </Link>{" "}
-                      and{" "}
-                      <Link href="https://www.iubenda.com/privacy-policy/88772361">
-                        Privacy Policy
-                      </Link>
-                      . If the coach does not review your recording within 5
-                      days, or you decide to cancel the order, the money you pay
-                      now will get refunded automatically.
-                    </Typography>
+                    <Stack spacing={1}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        textAlign="center"
+                      >
+                        By placing your order, you agree to our{" "}
+                        <Link href="https://www.iubenda.com/terms-and-conditions/88772361">
+                          Terms of Service
+                        </Link>{" "}
+                        and{" "}
+                        <Link href="https://www.iubenda.com/privacy-policy/88772361">
+                          Privacy Policy
+                        </Link>
+                        .
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        textAlign="center"
+                      >
+                        If the coach does not review your recording within 5
+                        days, or you decide to cancel the order, the money you
+                        pay now will get refunded automatically.
+                      </Typography>
+                    </Stack>
                   </Stack>
                 </CardContent>
               </Card>
