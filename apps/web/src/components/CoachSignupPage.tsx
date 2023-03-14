@@ -38,7 +38,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
 
   const defaultValues: FormValues = {
     bio: "",
-    gameId: games[0].id,
+    gameId: "",
     name: "",
     country: "US",
     email: "",
