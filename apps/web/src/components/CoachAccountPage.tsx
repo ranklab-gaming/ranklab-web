@@ -80,8 +80,8 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
               </NextLink>
             }
           >
-            We partner with Stripe to manage payments. You can update your
-            payment details using their account dashboard.
+            We partner with Stripe to handle transactions. You can update your
+            personal details using their dashboard.
           </Alert>
         </Stack>
         <LoadingButton

@@ -8,7 +8,6 @@ import { styled } from "@mui/material/styles"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { NavbarAccount } from "./NavbarAccount"
 import { DashboardLayoutNavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 
@@ -73,6 +72,11 @@ export function DashboardLayoutNavbar({
                 path: "/player/recordings",
                 icon: icons.recordings,
               },
+              {
+                title: "Account",
+                path: "/player/account",
+                icon: icons.user,
+              },
             ],
           },
         ]
@@ -89,6 +93,11 @@ export function DashboardLayoutNavbar({
                 title: "Archive",
                 path: "/coach/archive",
                 icon: icons.archive,
+              },
+              {
+                title: "Account",
+                path: "/coach/account",
+                icon: icons.user,
               },
             ],
           },
@@ -129,7 +138,6 @@ export function DashboardLayoutNavbar({
             <Logo />
           </NextLink>
         </Stack>
-        <NavbarAccount />
       </Stack>
       <DashboardLayoutNavSection navConfig={navConfig} />
       <Box sx={{ flexGrow: 1 }} />
