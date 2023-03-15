@@ -39,7 +39,7 @@ export function LandingPage() {
 
       router.push(router.pathname, router.pathname, { shallow: true })
     }
-  })
+  }, [])
 
   return (
     <Page title="Be the better gamer">

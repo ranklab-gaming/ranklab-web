@@ -8,11 +8,16 @@ const stripeAccountLinks = withSessionApiRoute(async function (
   res: NextApiResponse
 ) {
   const api = await createServerApi({ req, res })
+  const returnUrl = req.query.return_url as string | undefined
+
+  if (!returnUrl) {
+    return res.status(400).end()
+  }
 
   const accountLink = await api.coachStripeAccountLinksCreate({
     createAccountLinkRequest: {
-      refreshUrl: `${webHost}/api/stripe-account-links`,
-      returnUrl: req.headers.referer ?? `${webHost}/coach/dashboard`,
+      refreshUrl: `${webHost}/api/stripe-account-links?return_url=${returnUrl}`,
+      returnUrl: `${webHost}${returnUrl}`,
     },
   })
 

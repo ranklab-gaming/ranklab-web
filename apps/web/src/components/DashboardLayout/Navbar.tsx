@@ -72,6 +72,11 @@ export function DashboardLayoutNavbar({
                 path: "/player/recordings",
                 icon: icons.recordings,
               },
+            ],
+          },
+          {
+            subheader: "",
+            items: [
               {
                 title: "Account",
                 path: "/player/account",
@@ -94,6 +99,11 @@ export function DashboardLayoutNavbar({
                 path: "/coach/archive",
                 icon: icons.archive,
               },
+            ],
+          },
+          {
+            subheader: "",
+            items: [
               {
                 title: "Account",
                 path: "/coach/account",

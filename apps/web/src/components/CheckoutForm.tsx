@@ -108,7 +108,7 @@ function Content({ review, paymentMethods, games }: Props) {
     null
   )
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const submitPayment = async ({
     savePaymentMethod,
@@ -122,7 +122,7 @@ function Content({ review, paymentMethods, games }: Props) {
       throw new Error("stripeClientSecret is missing")
     }
 
-    setIsLoading(true)
+    setLoading(true)
 
     const { error } = await (paymentMethodId === newPaymentMethod
       ? stripe.confirmPayment({
@@ -143,7 +143,7 @@ function Content({ review, paymentMethods, games }: Props) {
       await router.reload()
     }
 
-    setIsLoading(false)
+    setLoading(false)
   }
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
@@ -319,8 +319,8 @@ function Content({ review, paymentMethods, games }: Props) {
                       variant="contained"
                       size="large"
                       type="submit"
-                      loading={isLoading}
-                      disabled={isLoading}
+                      loading={loading}
+                      disabled={loading}
                       sx={{ fontSize: "1.2rem" }}
                     >
                       Pay {formatPrice(coach.price)}

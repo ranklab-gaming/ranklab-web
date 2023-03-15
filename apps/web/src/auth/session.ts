@@ -75,7 +75,7 @@ export async function getServerSession(
     return null
   }
 
-  if ((session.payload.exp ?? 0) < Date.now()) {
+  if ((session.payload.exp ?? 0) * 1000 < Date.now()) {
     const client = await getAuthClient()
     const refreshToken = req.session?.refreshToken
 

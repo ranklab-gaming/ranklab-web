@@ -30,7 +30,7 @@ const api = withSessionApiRoute(async function (
         referer: headers.referer,
         origin: headers.origin,
       } as Record<string, string>,
-      body,
+      body: ["GET", "HEAD"].includes(method as string) ? undefined : body,
     })
 
     const value = await new JSONApiResponse(response).value()

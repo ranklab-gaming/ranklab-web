@@ -75,7 +75,7 @@ export function LoginPage({ userType }: Props) {
 
   useEffect(() => {
     setShouldCheckSessionExpired(true)
-  })
+  }, [])
 
   useEffect(() => {
     if (!shouldCheckSessionExpired) return
