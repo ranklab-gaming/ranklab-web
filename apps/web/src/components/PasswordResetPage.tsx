@@ -17,7 +17,11 @@ const FormSchema = yup.object().shape({
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-function PasswordResetPage() {
+interface Props {
+  token: string
+}
+
+function PasswordResetPage({ token }: Props) {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
@@ -26,12 +30,6 @@ function PasswordResetPage() {
     "coach",
     "player",
   ]) as UserType
-
-  const token = useParam("token")
-
-  if (!token) {
-    throw new Error("token param is missing")
-  }
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),

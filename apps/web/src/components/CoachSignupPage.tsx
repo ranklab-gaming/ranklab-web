@@ -6,7 +6,6 @@ import {
 } from "@/components/CoachAccountFields"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
-import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { MenuItem, Stack, TextField } from "@mui/material"
@@ -17,6 +16,7 @@ import * as yup from "yup"
 interface Props {
   games: Game[]
   availableCountries: string[]
+  token: string
 }
 
 const FormSchema = CoachAccountFieldsSchema.concat(
@@ -27,14 +27,9 @@ const FormSchema = CoachAccountFieldsSchema.concat(
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export function CoachSignupPage({ games, availableCountries }: Props) {
+export function CoachSignupPage({ games, availableCountries, token }: Props) {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
-  const invitationToken = useParam("token")
-
-  if (!invitationToken) {
-    throw new Error("token param is missing")
-  }
 
   const defaultValues: FormValues = {
     bio: "",
@@ -69,7 +64,7 @@ export function CoachSignupPage({ games, availableCountries }: Props) {
         password: data.password,
         price: Number(data.price) * 100,
       },
-      auth: { token: invitationToken },
+      auth: { token },
     })
 
     await login(session.token)
