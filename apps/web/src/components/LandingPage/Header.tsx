@@ -67,7 +67,12 @@ export function LandingPageHeader() {
               router.push("/api/auth/signin")
             }}
             handleMenuItemClick={() => {
-              router.push("/api/auth/signin?user_type=coach")
+              router.push({
+                pathname: "/api/auth/signin",
+                query: {
+                  user_type: "coach",
+                },
+              })
             }}
           />
         </Container>

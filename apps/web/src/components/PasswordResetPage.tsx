@@ -54,7 +54,12 @@ function PasswordResetPage({ token }: Props) {
       variant: "success",
     })
 
-    await router.push(`/api/auth/signin?user_type=${userType}`)
+    await router.push({
+      pathname: "/api/auth/signin",
+      query: {
+        user_type: userType,
+      },
+    })
   }
 
   return (

@@ -171,6 +171,7 @@ export function ReviewList({
       </List>
       {reviews.totalPages > 1 && (
         <TablePagination
+          component="div"
           rowsPerPage={reviews.perPage}
           rowsPerPageOptions={[]}
           count={reviews.count}

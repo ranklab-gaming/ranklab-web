@@ -21,7 +21,14 @@ export function useLogin(userType: UserType) {
 
     if (response.status === 400) {
       localStorage.setItem("loginSessionExpired", "true")
-      await router.push(`/api/auth/signin?user_type=${userType}`)
+
+      await router.push({
+        pathname: "/api/auth/signin",
+        query: {
+          user_type: userType,
+        },
+      })
+
       return
     }
 

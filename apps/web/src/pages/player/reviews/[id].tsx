@@ -2,7 +2,7 @@ import { createServerApi } from "@/api/server"
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerReviewsShowPage } from "@/components/PlayerReviewsShowPage"
-import { PaymentMethod, Review } from "@ranklab/api"
+import { Game, PaymentMethod, Review } from "@ranklab/api"
 
 interface Props {
   review: Review

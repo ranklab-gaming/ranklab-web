@@ -98,12 +98,13 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       }
 
       if (e.response.status === 401) {
-        await router.push(
-          `/api/auth/signin?${new URLSearchParams({
+        await router.push({
+          pathname: "/api/auth/signin",
+          query: {
             return_url: router.asPath,
             user_type: user?.type ?? "player",
-          })}`
-        )
+          },
+        })
 
         return
       }

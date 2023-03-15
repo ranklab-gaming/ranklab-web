@@ -26,12 +26,14 @@ const MainStyle = styled("main")(({ theme }) => ({
 interface Props {
   title: string
   user: User
+  showTitle?: boolean
 }
 
 export function DashboardLayout({
   children,
   title,
   user,
+  showTitle = true,
 }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
 
@@ -52,7 +54,7 @@ export function DashboardLayout({
           <MainStyle>
             <Container maxWidth="xl">
               <Typography variant="h3" component="h1" paragraph>
-                {title}
+                {showTitle ? title : undefined}
               </Typography>
               {children}
             </Container>

@@ -68,7 +68,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
       },
     })
 
-    await router.push(url)
+    window.location.href = url
   }
 
   return (

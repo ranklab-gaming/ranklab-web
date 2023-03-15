@@ -10,6 +10,7 @@ import {
   CardHeader,
   Checkbox,
   Chip,
+  Container,
   Divider,
   FormControl,
   FormControlLabel,
@@ -45,6 +46,7 @@ import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
 import Sticky from "react-stickynode"
 import { useResponsive } from "@/hooks/useResponsive"
+import { PlayerReviewsNewStepper } from "@/components/PlayerReviewsNewStepper"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -270,32 +272,41 @@ function Content({ review, paymentMethods, games }: Props) {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader
-                title="Order Details"
-                subheader={`Review by ${coach.name}`}
-              />
+              <CardHeader title={`Review by ${coach.name}`} />
               <CardContent>
                 <Stack spacing={2}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      backgroundColor: theme.palette.grey[900],
-                    }}
-                    elevation={1}
-                  >
-                    <Stack spacing={2} direction="row" alignItems="center">
-                      <Typography variant="caption">
-                        {recording.title}
+                  <Paper sx={{ p: 2 }} elevation={1}>
+                    <Stack spacing={2}>
+                      <Typography variant="caption" fontWeight="bold">
+                        Recording
                       </Typography>
-                      <Chip label={skillLevel.name} size="small" />
-                      <Chip label={game.name} size="small" />
+                      <Stack spacing={2} direction="row" alignItems="center">
+                        <Typography variant="body2">
+                          {recording.title}
+                        </Typography>
+                        <Chip label={skillLevel.name} size="small" />
+                        <Chip label={game.name} size="small" />
+                      </Stack>
                     </Stack>
                   </Paper>
+                  {review.notes && (
+                    <Paper sx={{ p: 2 }} elevation={1}>
+                      <Stack spacing={2}>
+                        <Typography variant="caption" fontWeight="bold">
+                          Notes for {coach.name}
+                        </Typography>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: review.notes }}
+                        />
+                      </Stack>
+                    </Paper>
+                  )}
                   <video
                     style={{
                       objectFit: "cover",
                       width: "100%",
                       height: "100%",
+                      maxHeight: 600,
                     }}
                     controls
                   >
