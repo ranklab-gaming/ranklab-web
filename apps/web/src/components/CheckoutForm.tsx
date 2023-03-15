@@ -3,15 +3,12 @@ import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
   Alert,
-  AppBar,
   Box,
   Card,
   CardContent,
   CardHeader,
   Checkbox,
   Chip,
-  Container,
-  Divider,
   FormControl,
   FormControlLabel,
   Grid,
@@ -33,7 +30,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import * as yup from "yup"
 import visaLogo from "@/images/cards/visa.png"
@@ -46,7 +43,6 @@ import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
 import Sticky from "react-stickynode"
 import { useResponsive } from "@/hooks/useResponsive"
-import { PlayerReviewsNewStepper } from "@/components/PlayerReviewsNewStepper"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -77,7 +73,6 @@ const newPaymentMethod = "NEW_PAYMENT_METHOD"
 function Content({ review, paymentMethods, games }: Props) {
   const coach = review.coach
   const recording = review.recording
-  const theme = useTheme()
 
   if (!coach) {
     throw new Error("coach is missing")

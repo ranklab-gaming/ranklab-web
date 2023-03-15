@@ -61,7 +61,7 @@ export function PlayerReviewsNewCoachPage({
       title="Request a Review | Select a Coach"
       showTitle={false}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Card>
           <CardContent>
             <Box p={3}>
@@ -87,7 +87,8 @@ export function PlayerReviewsNewCoachPage({
                     )}
                   />
                 </Stack>
-                <Box textAlign="right">
+                <Stack direction="row">
+                  <Box sx={{ flexGrow: 1 }} />
                   <LoadingButton
                     color="primary"
                     size="large"
@@ -98,7 +99,7 @@ export function PlayerReviewsNewCoachPage({
                   >
                     Next
                   </LoadingButton>
-                </Box>
+                </Stack>
               </form>
             </Box>
           </CardContent>

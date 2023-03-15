@@ -7,16 +7,19 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
   FormHelperText,
+  Link,
   Stack,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
+import NextLink from "next/link"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -70,7 +73,7 @@ export function PlayerReviewsNewDetailsPage({
       title="Request a Review | Add Notes"
       showTitle={false}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Card>
           <CardContent>
             <Box p={3}>
@@ -99,7 +102,17 @@ export function PlayerReviewsNewDetailsPage({
                     }}
                   />
                 </Stack>
-                <Box textAlign="right">
+                <Stack direction="row">
+                  <NextLink
+                    href={`/player/reviews/new/recording?coach_id=${coachId}`}
+                    passHref
+                    legacyBehavior
+                  >
+                    <Button variant="text" component={Link} sx={{ mt: 3 }}>
+                      Go back
+                    </Button>
+                  </NextLink>
+                  <Box sx={{ flexGrow: 1 }} />
                   <LoadingButton
                     color="primary"
                     size="large"
@@ -111,7 +124,7 @@ export function PlayerReviewsNewDetailsPage({
                   >
                     Proceed to Checkout
                   </LoadingButton>
-                </Box>
+                </Stack>
               </form>
             </Box>
           </CardContent>

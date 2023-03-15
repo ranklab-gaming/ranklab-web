@@ -2,7 +2,14 @@ import { User } from "@/auth"
 import { Page } from "@/components/Page"
 import { UserProvider } from "@/contexts/UserContext"
 import { headerStyles, navbarStyles } from "@/styles"
-import { Box, Container, styled, Typography } from "@mui/material"
+import {
+  Box,
+  Container,
+  Paper,
+  styled,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { PropsWithChildren, useState } from "react"
 import { DashboardLayoutHeader } from "./DashboardLayout/Header"
 import { DashboardLayoutNavbar } from "./DashboardLayout/Navbar"
@@ -36,6 +43,7 @@ export function DashboardLayout({
   showTitle = true,
 }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const theme = useTheme()
 
   return (
     <UserProvider user={user}>
@@ -53,9 +61,19 @@ export function DashboardLayout({
           />
           <MainStyle>
             <Container maxWidth="xl">
-              <Typography variant="h3" component="h1" paragraph>
-                {showTitle ? title : undefined}
-              </Typography>
+              {showTitle ? (
+                <Paper
+                  sx={{
+                    mb: 1,
+                    backgroundColor: theme.palette.grey[900],
+                  }}
+                  elevation={1}
+                >
+                  <Typography variant="h3" component="h1" paragraph p={2}>
+                    {title}
+                  </Typography>
+                </Paper>
+              ) : undefined}
               {children}
             </Container>
           </MainStyle>

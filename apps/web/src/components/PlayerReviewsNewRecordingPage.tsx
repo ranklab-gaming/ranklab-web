@@ -7,10 +7,12 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
   LinearProgress,
+  Link,
   MenuItem,
   Stack,
   TextField,
@@ -22,48 +24,38 @@ import { useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
+import NextLink from "next/link"
 
 const newRecordingId = "NEW_RECORDING"
 
 const FormSchema = yup.object().shape({
   recordingId: yup.string().required("Recording is required"),
-  newRecording: yup
-    .object()
-    .shape({
-      title: yup.string().when("recordingId", {
-        is: () => newRecordingId,
-        then: () => yup.string().required("Title is required") as any,
-        otherwise: () => yup.string().optional() as any,
-      }),
-      video: yup.mixed().when("recordingId", {
-        is: () => newRecordingId,
-        then: () =>
-          yup
-            .mixed()
-            .test(
-              "required",
-              "Video is required",
-              (value) => value && value instanceof File && value.size > 0
-            ) as any,
-        otherwise: () => yup.mixed().optional() as any,
-      }),
-    })
-    .required("New recording is required"),
+  newRecordingTitle: yup.string().when("recordingId", {
+    is: newRecordingId,
+    then: () => yup.string().required("Title is required"),
+  }),
+  newRecordingVideo: yup.mixed().when("recordingId", {
+    is: newRecordingId,
+    then: () =>
+      yup
+        .mixed()
+        .test(
+          "required",
+          "Video is required",
+          (value) => value && value instanceof File && value.size > 0
+        ),
+  }),
 })
 
 interface FormValues {
   recordingId: string
-  newRecording: {
-    title: string
-    video?: File
-  }
+  newRecordingTitle: string
+  newRecordingVideo?: File
 }
 
 const defaultValues: FormValues = {
   recordingId: newRecordingId,
-  newRecording: {
-    title: "",
-  },
+  newRecordingTitle: "",
 }
 
 interface Props {
@@ -91,8 +83,8 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
   })
 
   const recordingId = watch("recordingId")
-  const newRecordingVideo = watch("newRecording.video")
-  const newRecordingTitle = watch("newRecording.title")
+  const newRecordingVideo = watch("newRecordingVideo")
+  const newRecordingTitle = watch("newRecordingTitle")
 
   const [
     upload,
@@ -124,15 +116,15 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
 
   const goToNextStep = async function (values: FormValues) {
     if (values.recordingId === newRecordingId) {
-      if (!values.newRecording.video) {
+      if (!values.newRecordingVideo) {
         throw new Error("new recording video is missing")
       }
 
       const recording = await api.playerRecordingsCreate({
         createRecordingRequest: {
-          mimeType: values.newRecording.video.type,
-          size: values.newRecording.video.size,
-          title: values.newRecording.title,
+          mimeType: values.newRecordingVideo.type,
+          size: values.newRecordingVideo.size,
+          title: values.newRecordingTitle,
           skillLevel: player.skillLevel,
           gameId: player.gameId,
         },
@@ -181,7 +173,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
       title="Request a Review | Select a Recording"
       showTitle={false}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Card>
           <CardContent>
             <Box p={3}>
@@ -219,7 +211,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                   {recordingId === newRecordingId && (
                     <Stack spacing={3}>
                       <Controller
-                        name="newRecording.video"
+                        name="newRecordingVideo"
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <VideoFileSelect
@@ -227,7 +219,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                             onChange={(file) => {
                               if (!newRecordingTitle && file) {
                                 setValue(
-                                  "newRecording.title",
+                                  "newRecordingTitle",
                                   file.name.split(".")[0],
                                   {
                                     shouldDirty: true,
@@ -247,7 +239,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                         )}
                       />
                       <Controller
-                        name="newRecording.title"
+                        name="newRecordingTitle"
                         control={control}
                         render={({ field, fieldState: { error } }) => (
                           <TextField
@@ -272,7 +264,17 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                     />
                   )}
                 </Stack>
-                <Box textAlign="right">
+                <Stack direction="row">
+                  <NextLink
+                    href="/player/reviews/new/coach"
+                    passHref
+                    legacyBehavior
+                  >
+                    <Button variant="text" component={Link} sx={{ mt: 3 }}>
+                      Go back
+                    </Button>
+                  </NextLink>
+                  <Box sx={{ flexGrow: 1 }} />
                   <LoadingButton
                     color="primary"
                     size="large"
@@ -284,7 +286,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                   >
                     Next
                   </LoadingButton>
-                </Box>
+                </Stack>
               </form>
             </Box>
           </CardContent>

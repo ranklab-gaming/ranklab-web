@@ -23,7 +23,7 @@ export function PlayerReviewsShowPage({
   return (
     <DashboardLayout
       user={user}
-      title={isCheckout ? "Checkout" : review.recording.title}
+      title={isCheckout ? "Review Checkout" : review.recording.title}
     >
       {isCheckout ? (
         <CheckoutForm
