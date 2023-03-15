@@ -270,32 +270,6 @@ function Content({ review, paymentMethods, games }: Props) {
               <CardHeader title={`Review by ${coach.name}`} />
               <CardContent>
                 <Stack spacing={2}>
-                  <Paper sx={{ p: 2 }} elevation={1}>
-                    <Stack spacing={2}>
-                      <Typography variant="caption" fontWeight="bold">
-                        Recording
-                      </Typography>
-                      <Stack spacing={2} direction="row" alignItems="center">
-                        <Typography variant="body2">
-                          {recording.title}
-                        </Typography>
-                        <Chip label={skillLevel.name} size="small" />
-                        <Chip label={game.name} size="small" />
-                      </Stack>
-                    </Stack>
-                  </Paper>
-                  {review.notes && (
-                    <Paper sx={{ p: 2 }} elevation={1}>
-                      <Stack spacing={2}>
-                        <Typography variant="caption" fontWeight="bold">
-                          Notes for {coach.name}
-                        </Typography>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: review.notes }}
-                        />
-                      </Stack>
-                    </Paper>
-                  )}
                   <video
                     style={{
                       objectFit: "cover",
@@ -310,6 +284,34 @@ function Content({ review, paymentMethods, games }: Props) {
                       type={recording.mimeType}
                     />
                   </video>
+                  <Paper sx={{ p: 2 }} elevation={1}>
+                    <Stack spacing={2}>
+                      <Typography variant="caption" fontWeight="bold">
+                        Recording
+                      </Typography>
+                      <Stack spacing={2} direction="row">
+                        <Typography variant="body1" mr="auto">
+                          {recording.title}
+                        </Typography>
+                        <Stack spacing={2} direction="row">
+                          <Chip label={skillLevel.name} size="small" />
+                          <Chip label={game.name} size="small" />
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  </Paper>
+                  {review.notes && (
+                    <Paper sx={{ p: 2 }} elevation={1}>
+                      <Stack spacing={2}>
+                        <Typography variant="caption" fontWeight="bold">
+                          Notes for the coach
+                        </Typography>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: review.notes }}
+                        />
+                      </Stack>
+                    </Paper>
+                  )}
                 </Stack>
               </CardContent>
             </Card>
