@@ -11,9 +11,10 @@ interface UsePollingOptions<T> {
 }
 
 export function usePolling<T>(options: UsePollingOptions<T>) {
+  const initialRetries = options.retries ?? 3
   const [polling, setPolling] = useState(false)
   const [result, setResult] = useState<T>(options.initialResult)
-  const [retries, setRetries] = useState(options.retries ?? 3)
+  const [retries, setRetries] = useState(initialRetries)
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout>()
 
   function clearTimeoutHandle() {
@@ -34,6 +35,7 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
   useEffect(() => {
     if (!polling) {
       clearTimeoutHandle()
+      setRetries(initialRetries)
       return
     }
 

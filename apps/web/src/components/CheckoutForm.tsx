@@ -27,10 +27,10 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
+import { loadStripe, Stripe } from "@stripe/stripe-js"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import * as yup from "yup"
 import visaLogo from "@/images/cards/visa.png"
@@ -76,6 +76,7 @@ const newPaymentMethod = "NEW_PAYMENT_METHOD"
 function Content({ review, paymentMethods, games }: Props) {
   const coach = review.coach
   const recording = review.recording
+  const stripeClientSecret = review.stripeClientSecret
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -83,6 +84,10 @@ function Content({ review, paymentMethods, games }: Props) {
 
   if (!recording) {
     throw new Error("recording is missing")
+  }
+
+  if (!stripeClientSecret) {
+    throw new Error("stripeClientSecret is missing")
   }
 
   const summary = [
@@ -108,13 +113,11 @@ function Content({ review, paymentMethods, games }: Props) {
 
   const { setPolling, polling } = usePolling({
     initialResult: review,
-    retries: 5,
-    interval: 2000,
     condition(result: Review) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
-      router.reload()
+      router.push(router.pathname, router.pathname, { shallow: true })
     },
     onRetriesExceeded() {
       enqueueSnackbar(
@@ -128,6 +131,41 @@ function Content({ review, paymentMethods, games }: Props) {
       return api.playerReviewsGet({ id: review.id })
     },
   })
+
+  const fetchPaymentIntent = async (stripe: Stripe) => {
+    setLoading(true)
+
+    const { paymentIntent, error } = await stripe.retrievePaymentIntent(
+      stripeClientSecret
+    )
+
+    setLoading(false)
+
+    if (error) {
+      enqueueSnackbar(
+        `An error occurred while processing your payment: ${error.message}`,
+        {
+          variant: "error",
+        }
+      )
+    }
+
+    if (!paymentIntent) {
+      throw new Error("paymentIntent is missing")
+    }
+
+    if (paymentIntent.status === "processing") {
+      setPolling(true)
+    }
+  }
+
+  useEffect(() => {
+    if (!stripe || !elements) {
+      return
+    }
+
+    fetchPaymentIntent(stripe)
+  }, [stripe, elements])
 
   const submitPayment = async ({
     savePaymentMethod,
