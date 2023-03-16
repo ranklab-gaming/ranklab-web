@@ -1,4 +1,3 @@
-import { createServerApi } from "@/api/server"
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerReviewsNewCoachPage } from "@/components/PlayerReviewsNewCoachPage"
@@ -11,6 +10,7 @@ interface Props {
 export const getServerSideProps = withUserSsr<Props>(
   "player",
   async function (ctx) {
+    const { createServerApi } = await import("@/api/server")
     const api = await createServerApi(ctx)
     const coaches = await api.playerCoachesList()
 

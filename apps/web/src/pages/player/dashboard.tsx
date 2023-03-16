@@ -1,4 +1,3 @@
-import { createServerApi } from "@/api/server"
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerDashboardPage } from "@/components/PlayerDashboardPage"
@@ -12,6 +11,7 @@ interface Props {
 export const getServerSideProps = withUserSsr<Props>(
   "player",
   async function (ctx) {
+    const { createServerApi } = await import("@/api/server")
     const api = await createServerApi(ctx)
 
     const [reviews, games] = await Promise.all([

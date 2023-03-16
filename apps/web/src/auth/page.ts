@@ -1,11 +1,9 @@
-import { createServerApi } from "@/api/server"
 import { Coach, Player, UserType } from "@ranklab/api"
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next"
-import { getServerSession } from "./session"
 import { CoachUser, PlayerUser, PropsWithUser } from "@/auth"
 import { withSessionSsr } from "@/session"
 
@@ -29,6 +27,8 @@ export function withUserSsr<P extends { [key: string]: any }>(
     async (
       ctx: GetServerSidePropsContext
     ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
+      const { getServerSession } = await import("./session")
+      const { createServerApi } = await import("@/api/server")
       const session = await getServerSession(ctx.req, ctx.res)
       const api = await createServerApi(ctx)
       const returnUrl = encodeURIComponent(ctx.resolvedUrl)
