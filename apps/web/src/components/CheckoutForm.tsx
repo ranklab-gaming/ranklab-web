@@ -9,6 +9,7 @@ import {
   CardHeader,
   Checkbox,
   Chip,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   Grid,
@@ -27,10 +28,10 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
+import { loadStripe, Stripe } from "@stripe/stripe-js"
 import Image from "next/image"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import * as yup from "yup"
 import visaLogo from "@/images/cards/visa.png"
@@ -76,6 +77,7 @@ const newPaymentMethod = "NEW_PAYMENT_METHOD"
 function Content({ review, paymentMethods, games }: Props) {
   const coach = review.coach
   const recording = review.recording
+  const stripeClientSecret = review.stripeClientSecret
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -83,6 +85,10 @@ function Content({ review, paymentMethods, games }: Props) {
 
   if (!recording) {
     throw new Error("recording is missing")
+  }
+
+  if (!stripeClientSecret) {
+    throw new Error("stripeClientSecret is missing")
   }
 
   const summary = [
@@ -103,18 +109,18 @@ function Content({ review, paymentMethods, games }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
 
   const { setPolling, polling } = usePolling({
     initialResult: review,
-    retries: 5,
-    interval: 2000,
+    retries: 30,
     condition(result: Review) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
-      router.reload()
+      setLoading(true)
+      router.replace(`/player/reviews/${review.id}`)
     },
     onRetriesExceeded() {
       enqueueSnackbar(
@@ -143,17 +149,19 @@ function Content({ review, paymentMethods, games }: Props) {
 
     setLoading(true)
 
+    const returnUrl = `${window.location.origin}/${router.asPath}?payment=true`
+
     const { error } = await (paymentMethodId === newPaymentMethod
       ? stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: `${window.location.origin}/${router.asPath}`,
+            return_url: returnUrl,
             save_payment_method: savePaymentMethod,
           },
         })
       : stripe.confirmCardPayment(review.stripeClientSecret, {
           payment_method: paymentMethodId,
-          return_url: `${window.location.origin}/${router.asPath}`,
+          return_url: returnUrl,
         }))
 
     if (error) {
@@ -168,6 +176,14 @@ function Content({ review, paymentMethods, games }: Props) {
     setLoading(false)
     setPolling(true)
   }
+
+  useEffect(() => {
+    if (router.query.payment === "true") {
+      setPolling(true)
+    }
+
+    setLoading(false)
+  }, [])
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
@@ -192,6 +208,22 @@ function Content({ review, paymentMethods, games }: Props) {
   }
 
   const isDesktop = useResponsive("up", "sm")
+
+  if (router.query.payment === "true") {
+    return (
+      <Paper>
+        <Box textAlign="center" p={8}>
+          <Typography variant="h3" component="h1" gutterBottom>
+            Your Order Is Being Processed
+          </Typography>
+          <CircularProgress />
+          <Typography variant="body1" gutterBottom>
+            Please wait...
+          </Typography>
+        </Box>
+      </Paper>
+    )
+  }
 
   return (
     <form onSubmit={handleSubmit(submitPayment)}>
