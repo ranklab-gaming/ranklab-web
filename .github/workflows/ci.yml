@@ -2,11 +2,6 @@ name: Test and Deploy
 on: [push]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  NEXT_PUBLIC_ASSETS_CDN_URL: ${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
-  NEXT_PUBLIC_UPLOADS_CDN_URL: ${{ secrets.NEXT_PUBLIC_UPLOADS_CDN_URL }}
-  NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.RANKLAB_SENTRY_DSN }}
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   build:
@@ -109,6 +104,11 @@ jobs:
       cluster-name: ${{ secrets.ECS_CLUSTER_NAME }}
       service-name: ${{ secrets.ECS_SERVICE_NAME }}
       NODE_ENV: production
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      NEXT_PUBLIC_ASSETS_CDN_URL: ${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
+      NEXT_PUBLIC_UPLOADS_CDN_URL: ${{ secrets.NEXT_PUBLIC_UPLOADS_CDN_URL }}
+      NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.RANKLAB_SENTRY_DSN }}
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
     if: github.ref == 'refs/heads/master'
     needs: test
     steps:
