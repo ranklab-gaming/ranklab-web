@@ -46,7 +46,7 @@ importers:
       koa-mount: 4.0.0
       lodash: 4.17.21
       next: 13.2.4
-      notistack: 2.0.8
+      notistack: 3.0.1
       oidc-provider: 8.1.1
       openid-client: 5.4.0
       react: 18.2.0
@@ -84,7 +84,7 @@ importers:
       koa-mount: 4.0.0
       lodash: 4.17.21
       next: 13.2.4_biqbaboplfbrettd7655fr4n2y
-      notistack: 2.0.8_l373ulu4ptjllna27wowrldyqm
+      notistack: 3.0.1_biqbaboplfbrettd7655fr4n2y
       oidc-provider: 8.1.1
       openid-client: 5.4.0
       react: 18.2.0
@@ -1872,6 +1872,12 @@ packages:
       once: 1.4.0
     dev: false
 
+  /goober/2.1.12:
+    resolution: {integrity: sha512-yXHAvO08FU1JgTXX6Zn6sYCUFfB/OJSX8HHjDSgerZHZmFKAb08cykp5LBw5QnmyMcZyPRMqkdyHUSSzge788Q==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dev: false
+
   /got/12.5.3:
     resolution: {integrity: sha512-8wKnb9MGU8IPGRIo+/ukTy9XLJBwDiCpIf5TVzQ9Cpol50eMTpBq2GAuDsuDIz7hTYmZgMgC1e9ydr6kSDWs3w==}
     engines: {node: '>=14.16'}
@@ -2496,27 +2502,19 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /notistack/2.0.8_l373ulu4ptjllna27wowrldyqm:
-    resolution: {integrity: sha512-/IY14wkFp5qjPgKNvAdfL5Jp6q90+MjgKTPh4c81r/lW70KeuX6b9pE/4f8L4FG31cNudbN9siiFS5ql1aSLRw==}
+  /notistack/3.0.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-ntVZXXgSQH5WYfyU+3HfcXuKaapzAJ8fBLQ/G618rn3yvSzEbnOB8ZSOwhX+dAORy/lw+GC2N061JA0+gYWTVA==}
+    engines: {node: '>=12.0.0', npm: '>=6.0.0'}
     peerDependencies:
-      '@emotion/react': ^11.4.1
-      '@emotion/styled': ^11.3.0
-      '@mui/material': ^5.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    peerDependenciesMeta:
-      '@emotion/react':
-        optional: true
-      '@emotion/styled':
-        optional: true
     dependencies:
-      '@emotion/react': 11.10.6_pmekkgnqduwlme35zpnqhenc34
-      '@emotion/styled': 11.10.6_oouaibmszuch5k64ms7uxp2aia
-      '@mui/material': 5.11.13_xqeqsl5kvjjtyxwyi3jhw3yuli
       clsx: 1.2.1
-      hoist-non-react-statics: 3.3.2
+      goober: 2.1.12
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
     dev: false
 
   /object-assign/4.1.1:
