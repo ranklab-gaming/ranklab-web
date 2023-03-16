@@ -44,6 +44,8 @@ import { Iconify } from "@/components/Iconify"
 import Sticky from "react-stickynode"
 import { useResponsive } from "@/hooks/useResponsive"
 import { useSnackbar } from "notistack"
+import { usePolling } from "@/hooks/usePolling"
+import { api } from "@/api"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -104,6 +106,29 @@ function Content({ review, paymentMethods, games }: Props) {
   const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
+  const { setPolling, polling } = usePolling({
+    initialResult: review,
+    retries: 5,
+    interval: 2000,
+    condition(result: Review) {
+      return result.state !== "AwaitingPayment"
+    },
+    onCondition() {
+      router.reload()
+    },
+    onRetriesExceeded() {
+      enqueueSnackbar(
+        "An error occurred while processing your payment. Please try again later.",
+        {
+          variant: "error",
+        }
+      )
+    },
+    poll() {
+      return api.playerReviewsGet({ id: review.id })
+    },
+  })
+
   const submitPayment = async ({
     savePaymentMethod,
     paymentMethodId,
@@ -138,11 +163,10 @@ function Content({ review, paymentMethods, games }: Props) {
           variant: "error",
         }
       )
-    } else {
-      await router.reload()
     }
 
     setLoading(false)
+    setPolling(true)
   }
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
@@ -324,8 +348,8 @@ function Content({ review, paymentMethods, games }: Props) {
                       variant="contained"
                       size="large"
                       type="submit"
-                      loading={loading}
-                      disabled={loading}
+                      loading={loading || polling}
+                      disabled={loading || polling}
                       sx={{ fontSize: "1.2rem" }}
                     >
                       Pay {formatPrice(coach.price)}

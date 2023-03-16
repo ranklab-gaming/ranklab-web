@@ -138,7 +138,7 @@ export function getOidcProvider() {
     ctx.res.setHeader(
       "set-cookie",
       cookies.map((cookie) => {
-        return String(cookie).replace(/path=.*;/g, "path=/;")
+        return String(cookie).replace(/path=.*?;/g, "path=/;")
       })
     )
   })
