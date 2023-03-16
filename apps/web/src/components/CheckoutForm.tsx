@@ -72,12 +72,17 @@ const FormSchema = yup.object().shape({
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-const newPaymentMethod = "NEW_PAYMENT_METHOD"
+const newPaymentMethodId = "NEW_PAYMENT_METHOD"
 
 function Content({ review, paymentMethods, games }: Props) {
   const coach = review.coach
   const recording = review.recording
   const stripeClientSecret = review.stripeClientSecret
+  const stripe = useStripe()
+  const elements = useElements()
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const { enqueueSnackbar } = useSnackbar()
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -90,6 +95,22 @@ function Content({ review, paymentMethods, games }: Props) {
   if (!stripeClientSecret) {
     throw new Error("stripeClientSecret is missing")
   }
+
+  const game = games.find((game) => game.id === recording.gameId)
+
+  if (!game) {
+    throw new Error("game is missing")
+  }
+
+  const skillLevel = game.skillLevels.find(
+    (skillLevel) => skillLevel.value === recording.skillLevel
+  )
+
+  if (!skillLevel) {
+    throw new Error("skillLevel is missing")
+  }
+
+  const isDesktop = useResponsive("up", "sm")
 
   const summary = [
     {
@@ -106,29 +127,14 @@ function Content({ review, paymentMethods, games }: Props) {
     },
   ]
 
-  const stripe = useStripe()
-  const elements = useElements()
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const { enqueueSnackbar } = useSnackbar()
-
   const { setPolling, polling } = usePolling({
     initialResult: review,
-    retries: 30,
+    retries: -1,
     condition(result: Review) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
-      setLoading(true)
       router.replace(`/player/reviews/${review.id}`)
-    },
-    onRetriesExceeded() {
-      enqueueSnackbar(
-        "An error occurred while processing your payment. Please try again later.",
-        {
-          variant: "error",
-        }
-      )
     },
     poll() {
       return api.playerReviewsGet({ id: review.id })
@@ -151,7 +157,7 @@ function Content({ review, paymentMethods, games }: Props) {
 
     const returnUrl = `${window.location.origin}/${router.asPath}?payment=true`
 
-    const { error } = await (paymentMethodId === newPaymentMethod
+    const { error } = await (paymentMethodId === newPaymentMethodId
       ? stripe.confirmPayment({
           elements,
           confirmParams: {
@@ -165,51 +171,56 @@ function Content({ review, paymentMethods, games }: Props) {
         }))
 
     if (error) {
+      setLoading(false)
+
       enqueueSnackbar(
         `An error occurred while processing your payment: ${error.message}`,
         {
           variant: "error",
         }
       )
+
+      return
     }
 
-    setLoading(false)
     setPolling(true)
   }
 
   useEffect(() => {
-    if (router.query.payment === "true") {
+    if (!stripe || !elements) {
+      return
+    }
+
+    const fetchPaymentIntent = async () => {
+      const { paymentIntent, error } = await stripe.retrievePaymentIntent(
+        stripeClientSecret
+      )
+
+      if (error) {
+        throw error
+      }
+
+      if (paymentIntent.status === "requires_payment_method") {
+        setLoading(false)
+        return
+      }
+
       setPolling(true)
     }
 
-    setLoading(false)
-  }, [])
+    fetchPaymentIntent()
+  }, [stripe, elements])
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
-      paymentMethodId: paymentMethods[0]?.id || newPaymentMethod,
+      paymentMethodId: paymentMethods[0]?.id || newPaymentMethodId,
       savePaymentMethod: false,
     },
   })
 
   const paymentMethodId = watch("paymentMethodId")
-  const game = games.find((game) => game.id === recording.gameId)
 
-  if (!game) {
-    throw new Error("game is missing")
-  }
-
-  const skillLevel = game.skillLevels.find(
-    (skillLevel) => skillLevel.value === recording.skillLevel
-  )
-
-  if (!skillLevel) {
-    throw new Error("skillLevel is missing")
-  }
-
-  const isDesktop = useResponsive("up", "sm")
-
-  if (router.query.payment === "true") {
+  if (router.query.payment === "true" && loading) {
     return (
       <Paper>
         <Box textAlign="center" p={8}>
@@ -289,7 +300,7 @@ function Content({ review, paymentMethods, games }: Props) {
                               )
                             })}
 
-                            <MenuItem value={newPaymentMethod}>
+                            <MenuItem value={newPaymentMethodId}>
                               Add a new payment method
                             </MenuItem>
                           </Select>
@@ -297,7 +308,7 @@ function Content({ review, paymentMethods, games }: Props) {
                       )}
                     />
                   )}
-                  {paymentMethodId === newPaymentMethod && (
+                  {paymentMethodId === newPaymentMethodId && (
                     <>
                       <PaymentElement />
                       <Controller

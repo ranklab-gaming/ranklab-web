@@ -37,7 +37,7 @@ export function LandingPage() {
         }
       )
 
-      router.push(router.pathname, router.pathname, { shallow: true })
+      router.push("/", undefined, { shallow: true })
     }
   }, [])
 
