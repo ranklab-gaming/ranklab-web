@@ -14,7 +14,7 @@
     "@emotion/server": "11.10.0",
     "@emotion/styled": "11.10.6",
     "@hookform/resolvers": "2.9.11",
-    "@iconify/icons-mdi": "1.2.42",
+    "@iconify/icons-mdi": "1.2.44",
     "@iconify/react": "4.1.0",
     "@mui/icons-material": "5.11.11",
     "@mui/lab": "5.0.0-alpha.123",
