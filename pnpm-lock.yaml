@@ -19,7 +19,7 @@ importers:
       '@emotion/server': 11.10.0
       '@emotion/styled': 11.10.6
       '@hookform/resolvers': 2.9.11
-      '@iconify/icons-mdi': 1.2.42
+      '@iconify/icons-mdi': 1.2.44
       '@iconify/react': 4.1.0
       '@mui/icons-material': 5.11.11
       '@mui/lab': 5.0.0-alpha.123
@@ -65,7 +65,7 @@ importers:
       '@emotion/server': 11.10.0
       '@emotion/styled': 11.10.6_oouaibmszuch5k64ms7uxp2aia
       '@hookform/resolvers': 2.9.11_react-hook-form@7.43.5
-      '@iconify/icons-mdi': 1.2.42
+      '@iconify/icons-mdi': 1.2.44
       '@iconify/react': 4.1.0_react@18.2.0
       '@mui/icons-material': 5.11.11_4lyzeezzeeal3x6jtb4ni26w7u
       '@mui/lab': 5.0.0-alpha.123_ugjihivlx7hzkcasxdumj5y3om
@@ -315,8 +315,8 @@ packages:
       react-hook-form: 7.43.5_react@18.2.0
     dev: false
 
-  /@iconify/icons-mdi/1.2.42:
-    resolution: {integrity: sha512-DbIzhtgZG8wyu6kNTUlIAEm8eixVPw+FZ4c7s0kfnCrUrdeBMsBx+UG7i5JBs93XgQf4IZUW+H/hvC2TYVHQcw==}
+  /@iconify/icons-mdi/1.2.44:
+    resolution: {integrity: sha512-j1hw1Ar1EMz74Ehg1BwQ5h69gO++9GZqJYye2huvl9jPgvXqlNmwAFWOVZQ3EoLTfoAwcp8awfQh3FcMvaqyuA==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false
