@@ -6,6 +6,7 @@ import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -25,6 +26,7 @@ import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
+import { useSnackbar } from "notistack"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -69,6 +71,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
   const [recordings, setRecordings] = useState<Recording[]>(props.recordings)
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
+  const { enqueueSnackbar } = useSnackbar()
 
   const {
     control,
@@ -88,7 +91,12 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
 
   const [
     upload,
-    { progress: uploadProgress, loading: uploading, done: uploadDone },
+    {
+      progress: uploadProgress,
+      loading: uploading,
+      done: uploadDone,
+      error: uploadError,
+    },
   ] = useUpload(async ({ files }) => {
     const file = files[0]
 
@@ -166,6 +174,19 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
       },
     })
   }, [newRecording])
+
+  useEffect(() => {
+    if (!uploadError) {
+      return
+    }
+
+    enqueueSnackbar(
+      "An error occurred while uploading your video. Please try again.",
+      {
+        variant: "error",
+      }
+    )
+  }, [uploadError])
 
   return (
     <DashboardLayout

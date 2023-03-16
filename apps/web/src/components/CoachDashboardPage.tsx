@@ -13,8 +13,9 @@ import {
 import { Coach, Game, PaginatedResultForReview } from "@ranklab/api"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { api } from "@/api"
+import { usePolling } from "@/hooks/usePolling"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -22,37 +23,31 @@ interface Props {
 }
 
 function Content({ reviews, games }: Props) {
-  const initialCoach = useCoach()
   const router = useRouter()
-  const [coach, setCoach] = useState<Coach>(initialCoach)
-  const [loading, setLoading] = useState(false)
-  const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout>()
 
-  const onboarding = router.query.onboarding === "true"
-
-  async function pollForCoach(retries = 3) {
-    if (retries === 0 || (coach.reviewsEnabled && coach.payoutsEnabled)) {
-      setLoading(false)
-      setTimeoutHandle(undefined)
+  const {
+    polling,
+    setPolling,
+    result: coach,
+  } = usePolling({
+    initialResult: useCoach(),
+    condition(result: Coach) {
+      return result.reviewsEnabled && result.payoutsEnabled
+    },
+    onCondition() {
       router.replace("/coach/dashboard")
-      return
-    }
-
-    setLoading(true)
-    const newCoach = await api.coachAccountGet()
-    setCoach(newCoach)
-    setTimeoutHandle(setTimeout(() => pollForCoach(retries - 1), 1000))
-  }
+    },
+    onRetriesExceeded() {
+      router.replace("/coach/dashboard")
+    },
+    poll() {
+      return api.coachAccountGet()
+    },
+  })
 
   useEffect(() => {
-    if (onboarding) {
-      pollForCoach()
-    }
-
-    return () => {
-      if (timeoutHandle) {
-        clearTimeout(timeoutHandle)
-      }
+    if (router.query.onboarding === "true") {
+      setPolling(true)
     }
   }, [])
 
@@ -77,7 +72,7 @@ function Content({ reviews, games }: Props) {
               </NextLink>
             }
           >
-            {loading && <CircularProgress />}
+            {polling && <CircularProgress />}
             You have completed onboarding, but you need to submit additional
             information to start receiving payouts.
           </Alert>
@@ -104,7 +99,7 @@ function Content({ reviews, games }: Props) {
   return (
     <Paper>
       <Box p={8} textAlign="center">
-        {loading && <CircularProgress />}
+        {polling && <CircularProgress />}
         <Typography variant="h3" component="h1" gutterBottom>
           Onboarding Required
         </Typography>

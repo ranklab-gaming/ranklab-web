@@ -43,6 +43,7 @@ import { camelCase } from "lodash"
 import { Iconify } from "@/components/Iconify"
 import Sticky from "react-stickynode"
 import { useResponsive } from "@/hooks/useResponsive"
+import { useSnackbar } from "notistack"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -100,12 +101,8 @@ function Content({ review, paymentMethods, games }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
-
-  const [errorMessage, setErrorMessage] = useState<string | undefined | null>(
-    null
-  )
-
   const [loading, setLoading] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
 
   const submitPayment = async ({
     savePaymentMethod,
@@ -135,7 +132,12 @@ function Content({ review, paymentMethods, games }: Props) {
         }))
 
     if (error) {
-      setErrorMessage(error.message)
+      enqueueSnackbar(
+        `An error occurred while processing your payment: ${error.message}`,
+        {
+          variant: "error",
+        }
+      )
     } else {
       await router.reload()
     }
@@ -176,9 +178,6 @@ function Content({ review, paymentMethods, games }: Props) {
               <CardHeader title="Payment method" />
               <CardContent>
                 <Stack spacing={2}>
-                  {errorMessage && (
-                    <Alert severity="error">{errorMessage}</Alert>
-                  )}
                   {paymentMethods.length > 0 && (
                     <Controller
                       name="paymentMethodId"
@@ -286,9 +285,7 @@ function Content({ review, paymentMethods, games }: Props) {
                   </video>
                   <Paper sx={{ p: 2 }} elevation={1}>
                     <Stack spacing={2}>
-                      <Typography variant="caption" fontWeight="bold">
-                        Recording
-                      </Typography>
+                      <Typography variant="overline">Recording</Typography>
                       <Stack spacing={2} direction="row">
                         <Typography variant="body1" mr="auto">
                           {recording.title}
@@ -303,7 +300,7 @@ function Content({ review, paymentMethods, games }: Props) {
                   {review.notes && (
                     <Paper sx={{ p: 2 }} elevation={1}>
                       <Stack spacing={2}>
-                        <Typography variant="caption" fontWeight="bold">
+                        <Typography variant="overline">
                           Notes for the coach
                         </Typography>
                         <div
