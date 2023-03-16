@@ -21,7 +21,7 @@
     "@mui/material": "5.11.11",
     "@ranklab/api": "workspace:*",
     "@sentry/nextjs": "7.39.0",
-    "@stripe/react-stripe-js": "1.16.5",
+    "@stripe/react-stripe-js": "2.0.0",
     "@stripe/stripe-js": "1.48.0",
     "@zach.codes/use-upload": "1.0.1",
     "date-fns": "2.29.3",
