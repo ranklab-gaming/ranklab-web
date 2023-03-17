@@ -134,6 +134,14 @@ function Content({ review, paymentMethods, games }: Props) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
+      enqueueSnackbar(
+        `Your payment was successful! ${coach.name} will be reviewing your VOD shortly.`,
+        {
+          autoHideDuration: 5000,
+          variant: "success",
+        }
+      )
+
       router.replace(`/player/reviews/${review.id}`)
     },
     poll() {
