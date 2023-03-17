@@ -12,6 +12,17 @@ interface Props {
 export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const id = ctx.query.id as string
+  const payment = ctx.query.payment as string
+
+  if (payment) {
+    return {
+      redirect: {
+        destination: `/player/reviews/${id}`,
+        permanent: false,
+      },
+    }
+  }
+
   const api = await createServerApi(ctx)
   const review = await api.playerReviewsGet({ id })
 

@@ -23,6 +23,7 @@ import {
 } from "@mui/material"
 import { Game, PaymentMethod, Review } from "@ranklab/api"
 import {
+  AddressElement,
   Elements,
   PaymentElement,
   useElements,
@@ -318,7 +319,21 @@ function Content({ review, paymentMethods, games }: Props) {
                   )}
                   {paymentMethodId === newPaymentMethodId && (
                     <>
-                      <PaymentElement />
+                      <PaymentElement
+                        options={{
+                          fields: {
+                            billingDetails: "never",
+                          },
+                        }}
+                      />
+                      <AddressElement
+                        options={{
+                          mode: "billing",
+                        }}
+                        onChange={(event) => {
+                          console.log(event.value.address)
+                        }}
+                      />
                       <Controller
                         name="savePaymentMethod"
                         control={control}
