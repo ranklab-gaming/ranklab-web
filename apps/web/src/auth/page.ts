@@ -1,4 +1,4 @@
-import { Coach, Player, UserType } from "@ranklab/api"
+import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
@@ -56,7 +56,19 @@ export function withUserSsr<P extends { [key: string]: any }>(
           ? userFromCoach(await api.coachAccountGet())
           : userFromPlayer(await api.playerAccountGet())
 
-      const res = await getServerSideProps({ ...ctx, user })
+      let res
+
+      try {
+        res = await getServerSideProps({ ...ctx, user })
+      } catch (e) {
+        if (!(e instanceof ResponseError) || e.response.status !== 404) {
+          throw e
+        }
+
+        return {
+          notFound: true,
+        }
+      }
 
       if ("redirect" in res || "notFound" in res) {
         return res
