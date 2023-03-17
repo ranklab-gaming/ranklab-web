@@ -1,6 +1,5 @@
 import { GameIcon } from "@/components/GameIcon"
 import {
-  Avatar,
   ListItemAvatar,
   ListItemText,
   MenuItem,

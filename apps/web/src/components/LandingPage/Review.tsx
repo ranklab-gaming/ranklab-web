@@ -65,7 +65,6 @@ const variantScreenRight = {
 
 export function LandingPageReview() {
   const theme = useTheme()
-  const router = useRouter()
   const screenLeftAnimate = variantScreenLeft
   const screenCenterAnimate = variantScreenCenter
   const screenRightAnimate = variantScreenRight

@@ -24,7 +24,6 @@ type FormValues = yup.InferType<typeof PlayerAccountFieldsSchemaWithoutPassword>
 export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
 
   const defaultValues: FormValues = {
     gameId: player.gameId,

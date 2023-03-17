@@ -1,6 +1,6 @@
 import { Theme } from "@mui/material/styles"
 
-export function LoadingButton(_theme: Theme) {
+export function LoadingButton() {
   return {
     MuiLoadingButton: {
       styleOverrides: {

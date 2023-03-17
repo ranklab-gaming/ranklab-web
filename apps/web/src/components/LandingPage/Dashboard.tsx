@@ -27,8 +27,6 @@ const ContentStyle = styled("div")(({ theme }) => ({
 }))
 
 export function LandingPageDashboard() {
-  const router = useRouter()
-
   return (
     <RootStyle>
       <Container

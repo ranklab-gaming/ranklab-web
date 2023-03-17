@@ -2,7 +2,6 @@ import { stripePublishableKey, uploadsCdnUrl } from "@/config"
 import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
-  Alert,
   Box,
   Card,
   CardContent,
@@ -29,7 +28,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js"
-import { loadStripe, Stripe } from "@stripe/stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -48,6 +47,7 @@ import { useResponsive } from "@/hooks/useResponsive"
 import { useSnackbar } from "notistack"
 import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
+import { usePlayer } from "@/hooks/usePlayer"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -84,6 +84,7 @@ function Content({ review, paymentMethods, games }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
+  const player = usePlayer()
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -136,7 +137,7 @@ function Content({ review, paymentMethods, games }: Props) {
     },
     onCondition() {
       enqueueSnackbar(
-        `Your payment was successful! ${coach.name} will be reviewing your VOD shortly.`,
+        `Your payment was successful! ${coach.name} will be reviewing your recording shortly.`,
         {
           autoHideDuration: 5000,
           variant: "success",
@@ -165,19 +166,47 @@ function Content({ review, paymentMethods, games }: Props) {
     setLoading(true)
 
     const returnUrl = `${window.location.origin}/${router.asPath}?payment=true`
+    const addressElement = elements.getElement(AddressElement)
 
-    const { error } = await (paymentMethodId === newPaymentMethodId
-      ? stripe.confirmPayment({
-          elements,
-          confirmParams: {
-            return_url: returnUrl,
-            save_payment_method: savePaymentMethod,
-          },
-        })
-      : stripe.confirmCardPayment(review.stripeClientSecret, {
-          payment_method: paymentMethodId,
+    if (!addressElement) {
+      throw new Error("addressElement is missing")
+    }
+
+    let response
+
+    if (paymentMethodId === newPaymentMethodId) {
+      const { address, name, phone } = (await addressElement.getValue()).value
+
+      response = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
           return_url: returnUrl,
-        }))
+          save_payment_method: savePaymentMethod,
+          payment_method_data: {
+            billing_details: {
+              address: {
+                city: address.city,
+                country: address.country,
+                line1: address.line1,
+                line2: address.line2 ?? undefined,
+                postal_code: address.postal_code,
+                state: address.state,
+              },
+              name,
+              phone,
+              email: player.email,
+            },
+          },
+        },
+      })
+    } else {
+      response = await stripe.confirmCardPayment(review.stripeClientSecret, {
+        payment_method: paymentMethodId,
+        return_url: returnUrl,
+      })
+    }
+
+    const { error } = response
 
     if (error) {
       setLoading(false)
@@ -196,29 +225,10 @@ function Content({ review, paymentMethods, games }: Props) {
   }
 
   useEffect(() => {
-    if (!stripe || !elements) {
-      return
-    }
-
-    const fetchPaymentIntent = async () => {
-      const { paymentIntent, error } = await stripe.retrievePaymentIntent(
-        stripeClientSecret
-      )
-
-      if (error) {
-        throw error
-      }
-
-      if (paymentIntent.status === "requires_payment_method") {
-        setLoading(false)
-        return
-      }
-
+    if (router.query.payment === "true") {
       setPolling(true)
     }
-
-    fetchPaymentIntent()
-  }, [stripe, elements])
+  }, [])
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
@@ -229,7 +239,7 @@ function Content({ review, paymentMethods, games }: Props) {
 
   const paymentMethodId = watch("paymentMethodId")
 
-  if (router.query.payment === "true" && loading) {
+  if (router.query.payment === "true" && polling) {
     return (
       <Paper>
         <Box textAlign="center" p={8}>
