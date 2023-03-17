@@ -61,13 +61,26 @@ export function withUserSsr<P extends { [key: string]: any }>(
       try {
         res = await getServerSideProps({ ...ctx, user })
       } catch (e) {
-        if (!(e instanceof ResponseError) || e.response.status !== 404) {
+        if (!(e instanceof ResponseError)) {
           throw e
         }
 
-        return {
-          notFound: true,
+        if (e.response.status === 404) {
+          return {
+            notFound: true,
+          }
         }
+
+        if (e.response.status >= 500) {
+          return {
+            redirect: {
+              destination: `/500?error=${e.message}`,
+              permanent: false,
+            },
+          }
+        }
+
+        throw e
       }
 
       if ("redirect" in res || "notFound" in res) {

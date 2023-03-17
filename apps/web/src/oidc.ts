@@ -118,14 +118,14 @@ export function getOidcProvider() {
           return ctx.redirect("/api/auth/logout")
         }
 
-        return ctx.redirect(`/?error=${error.error}`)
+        return ctx.redirect(`/500?error=${error.error}`)
       }
 
       if (error instanceof Error) {
-        return ctx.redirect(`/?error=${error.name}`)
+        return ctx.redirect(`/500?error=${error.name}`)
       }
 
-      ctx.redirect(`/?error=${error}`)
+      ctx.redirect(`/500?error=${error}`)
     },
   }
 
