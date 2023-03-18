@@ -26,6 +26,7 @@ import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
+import { setReview } from "@/utils/localStorage"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -61,12 +62,11 @@ const defaultValues: FormValues = {
 
 interface Props {
   recordings: Recording[]
-  coachId: string
 }
 
 export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
   const router = useRouter()
-  const { user, coachId } = props
+  const { user } = props
   const [recordings, setRecordings] = useState<Recording[]>(props.recordings)
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
@@ -142,13 +142,11 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
       return
     }
 
-    await router.push({
-      pathname: "/player/reviews/new/details",
-      query: {
-        recording_id: values.recordingId,
-        coach_id: coachId,
-      },
+    setReview({
+      recordingId: values.recordingId,
     })
+
+    await router.push("/player/reviews/new/coach")
   }
 
   useEffect(() => {
@@ -190,14 +188,14 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
   return (
     <DashboardLayout
       user={user}
-      title="Request a Review | Select a Recording"
+      title="Request a Review | Choose a Recording"
       showTitle={false}
     >
       <Container maxWidth="lg">
         <Card>
           <CardContent>
             <Box p={3}>
-              <PlayerReviewsNewStepper activeStep={1} />
+              <PlayerReviewsNewStepper activeStep={0} />
               <form onSubmit={handleSubmit(goToNextStep)}>
                 <Stack spacing={3} mt={4}>
                   <Controller
@@ -285,13 +283,9 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                   )}
                 </Stack>
                 <Stack direction="row">
-                  <NextLink
-                    href="/player/reviews/new/coach"
-                    passHref
-                    legacyBehavior
-                  >
+                  <NextLink href="/player/dashboard" passHref legacyBehavior>
                     <Button variant="text" component={Link} sx={{ mt: 3 }}>
-                      Go back
+                      Cancel
                     </Button>
                   </NextLink>
                   <Box sx={{ flexGrow: 1 }} />
@@ -304,7 +298,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
                     disabled={isSubmitting || uploading}
                     sx={{ mt: 3 }}
                   >
-                    Next
+                    Continue
                   </LoadingButton>
                 </Stack>
               </form>

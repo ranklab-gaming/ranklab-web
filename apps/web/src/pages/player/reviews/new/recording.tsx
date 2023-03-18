@@ -5,7 +5,6 @@ import { Recording } from "@ranklab/api"
 
 interface Props {
   recordings: Recording[]
-  coachId: string
 }
 
 export const getServerSideProps = withUserSsr<Props>(
@@ -15,30 +14,14 @@ export const getServerSideProps = withUserSsr<Props>(
     const api = await createServerApi(ctx)
     const recordings = await api.playerRecordingsList()
 
-    if (!ctx.query.coach_id) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      }
-    }
-
     return {
       props: {
         recordings,
-        coachId: ctx.query.coach_id as string,
       },
     }
   }
 )
 
-export default function ({ user, recordings, coachId }: PropsWithUser<Props>) {
-  return (
-    <PlayerReviewsNewRecordingPage
-      recordings={recordings}
-      user={user}
-      coachId={coachId}
-    />
-  )
+export default function ({ user, recordings }: PropsWithUser<Props>) {
+  return <PlayerReviewsNewRecordingPage recordings={recordings} user={user} />
 }

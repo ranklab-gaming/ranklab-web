@@ -23,5 +23,5 @@ export const getServerSideProps = withUserSsr<Props>(
 )
 
 export default function ({ user, coaches }: PropsWithUser<Props>) {
-  return <PlayerReviewsNewCoachPage coaches={coaches} user={user} />
+  return <PlayerReviewsNewCoachPage user={user} coaches={coaches} />
 }

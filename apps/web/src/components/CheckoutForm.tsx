@@ -1,4 +1,4 @@
-import { stripePublishableKey, uploadsCdnUrl } from "@/config"
+import { uploadsCdnUrl } from "@/config"
 import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
@@ -18,17 +18,9 @@ import {
   Select,
   Stack,
   Typography,
-  useTheme,
 } from "@mui/material"
 import { Game, PaymentMethod, Review } from "@ranklab/api"
-import {
-  AddressElement,
-  Elements,
-  PaymentElement,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js"
-import { loadStripe } from "@stripe/stripe-js"
+import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -47,7 +39,7 @@ import { useResponsive } from "@/hooks/useResponsive"
 import { useSnackbar } from "notistack"
 import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
-import { usePlayer } from "@/hooks/usePlayer"
+import { StripeElements } from "@/components/StripeElements"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -57,8 +49,6 @@ const cardLogos = {
   mastercard: mastercardLogo,
   visa: visaLogo,
 }
-
-const stripePromise = loadStripe(stripePublishableKey)
 
 interface Props {
   review: Review
@@ -82,9 +72,8 @@ function Content({ review, paymentMethods, games }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const player = usePlayer()
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -113,6 +102,7 @@ function Content({ review, paymentMethods, games }: Props) {
   }
 
   const isDesktop = useResponsive("up", "sm")
+  const tax = review.tax ?? 0
 
   const summary = [
     {
@@ -121,11 +111,11 @@ function Content({ review, paymentMethods, games }: Props) {
     },
     {
       label: "Tax",
-      value: formatPrice(0),
+      value: formatPrice(tax),
     },
     {
       label: "Total",
-      value: formatPrice(coach.price),
+      value: formatPrice(coach.price + tax),
     },
   ]
 
@@ -166,37 +156,15 @@ function Content({ review, paymentMethods, games }: Props) {
     setLoading(true)
 
     const returnUrl = `${window.location.origin}/${router.asPath}?payment=true`
-    const addressElement = elements.getElement(AddressElement)
-
-    if (!addressElement) {
-      throw new Error("addressElement is missing")
-    }
 
     let response
 
     if (paymentMethodId === newPaymentMethodId) {
-      const { address, name, phone } = (await addressElement.getValue()).value
-
       response = await stripe.confirmPayment({
         elements,
         confirmParams: {
           return_url: returnUrl,
           save_payment_method: savePaymentMethod,
-          payment_method_data: {
-            billing_details: {
-              address: {
-                city: address.city,
-                country: address.country,
-                line1: address.line1,
-                line2: address.line2 ?? undefined,
-                postal_code: address.postal_code,
-                state: address.state,
-              },
-              name,
-              phone,
-              email: player.email,
-            },
-          },
         },
       })
     } else {
@@ -329,21 +297,7 @@ function Content({ review, paymentMethods, games }: Props) {
                   )}
                   {paymentMethodId === newPaymentMethodId && (
                     <>
-                      <PaymentElement
-                        options={{
-                          fields: {
-                            billingDetails: "never",
-                          },
-                        }}
-                      />
-                      <AddressElement
-                        options={{
-                          mode: "billing",
-                        }}
-                        onChange={(event) => {
-                          console.log(event.value.address)
-                        }}
-                      />
+                      <PaymentElement />
                       <Controller
                         name="savePaymentMethod"
                         control={control}
@@ -507,32 +461,13 @@ function Content({ review, paymentMethods, games }: Props) {
 }
 
 export function CheckoutForm(props: Props) {
-  const theme = useTheme()
-
   if (!props.review.stripeClientSecret) {
     throw new Error("stripeClientSecret is missing")
   }
 
   return (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        clientSecret: props.review.stripeClientSecret,
-        appearance: {
-          theme: "night",
-          variables: {
-            colorPrimary: theme.palette.primary.main,
-            colorBackground: theme.palette.background.paper,
-            colorText: theme.palette.text.primary,
-            colorDanger: theme.palette.error.main,
-            fontFamily: "Ideal Sans, system-ui, sans-serif",
-            spacingUnit: "4px",
-            borderRadius: "4px",
-          },
-        },
-      }}
-    >
+    <StripeElements clientSecret={props.review.stripeClientSecret}>
       <Content {...props} />
-    </Elements>
+    </StripeElements>
   )
 }

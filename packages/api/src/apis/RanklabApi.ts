@@ -41,6 +41,7 @@ import type {
   ResetPasswordRequest,
   Review,
   StatusResponse,
+  UpdateBillingDetailsRequest,
   UpdateCoachRequest,
   UpdateCommentRequest,
   UpdatePasswordRequest,
@@ -115,6 +116,10 @@ export interface PlayerReviewsCreateRequest {
   createReviewRequest: CreateReviewRequest
 }
 
+export interface PlayerReviewsDeleteRequest {
+  id: string
+}
+
 export interface PlayerReviewsGetRequest {
   id: string
 }
@@ -127,6 +132,10 @@ export interface PlayerReviewsListRequest {
 export interface PlayerReviewsUpdateRequest {
   id: string
   playerUpdateReviewRequest: PlayerUpdateReviewRequest
+}
+
+export interface PlayerStripeBillingDetailsUpdateRequest {
+  updateBillingDetailsRequest: UpdateBillingDetailsRequest
 }
 
 export interface PlayerStripeBillingPortalSessionsCreateRequest {
@@ -1178,6 +1187,52 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
+  async playerReviewsDeleteRaw(
+    requestParameters: PlayerReviewsDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling playerReviewsDelete."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/player/reviews/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerReviewsDelete(
+    requestParameters: PlayerReviewsDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.playerReviewsDeleteRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
   async playerReviewsGetRaw(
     requestParameters: PlayerReviewsGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
@@ -1319,6 +1374,55 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Review> {
     const response = await this.playerReviewsUpdateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async playerStripeBillingDetailsUpdateRaw(
+    requestParameters: PlayerStripeBillingDetailsUpdateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (
+      requestParameters.updateBillingDetailsRequest === null ||
+      requestParameters.updateBillingDetailsRequest === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "updateBillingDetailsRequest",
+        "Required parameter requestParameters.updateBillingDetailsRequest was null or undefined when calling playerStripeBillingDetailsUpdate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/player/stripe-billing-details`,
+        method: "PUT",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.updateBillingDetailsRequest,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerStripeBillingDetailsUpdate(
+    requestParameters: PlayerStripeBillingDetailsUpdateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.playerStripeBillingDetailsUpdateRaw(
       requestParameters,
       initOverrides
     )

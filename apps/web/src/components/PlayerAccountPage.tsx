@@ -13,7 +13,6 @@ import { Alert, Button, Stack } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import * as yup from "yup"
-import { useRouter } from "next/router"
 
 interface Props {
   games: Game[]

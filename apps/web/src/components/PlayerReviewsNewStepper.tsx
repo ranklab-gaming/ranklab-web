@@ -57,10 +57,10 @@ function ColorlibStepIcon(props: StepIconProps) {
   const { active, completed, className } = props
 
   const icons: { [index: string]: React.ReactElement } = {
-    1: <Iconify icon="eva:person-outline" />,
-    2: <Iconify icon="eva:video-outline" />,
-    3: <Iconify icon="eva:edit-outline" />,
-    4: <Iconify icon="eva:shopping-bag-outline" />,
+    1: <Iconify icon="eva:video-outline" />,
+    2: <Iconify icon="eva:person-outline" />,
+    3: <Iconify icon="eva:credit-card-outline" />,
+    4: <Iconify icon="eva:shopping-cart-outline" />,
   }
 
   return (
@@ -73,7 +73,12 @@ function ColorlibStepIcon(props: StepIconProps) {
   )
 }
 
-const steps = ["Select a Coach", "Select a Recording", "Add Notes", "Checkout"]
+const steps = [
+  "Choose a Recording",
+  "Choose a Coach",
+  "Billing Details",
+  "Checkout",
+]
 
 interface Props {
   activeStep: number

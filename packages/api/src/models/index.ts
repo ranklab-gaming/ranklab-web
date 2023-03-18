@@ -16,6 +16,49 @@ export interface AccountLink {
 /**
  *
  * @export
+ * @interface Address
+ */
+export interface Address {
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  city?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  country?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  line1?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  line2?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  postalCode?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Address
+   */
+  state?: string | null
+}
+/**
+ *
+ * @export
  * @interface BillingPortalLink
  */
 export interface BillingPortalLink {
@@ -753,6 +796,12 @@ export interface Review {
   stripeClientSecret?: string | null
   /**
    *
+   * @type {number}
+   * @memberof Review
+   */
+  tax?: number | null
+  /**
+   *
    * @type {Coach}
    * @memberof Review
    */
@@ -804,6 +853,19 @@ export interface StatusResponse {
    * @memberof StatusResponse
    */
   status: string
+}
+/**
+ *
+ * @export
+ * @interface UpdateBillingDetailsRequest
+ */
+export interface UpdateBillingDetailsRequest {
+  /**
+   *
+   * @type {Address}
+   * @memberof UpdateBillingDetailsRequest
+   */
+  address: Address
 }
 /**
  *
