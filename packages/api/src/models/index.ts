@@ -59,6 +59,31 @@ export interface Address {
 /**
  *
  * @export
+ * @interface BillingDetails
+ */
+export interface BillingDetails {
+  /**
+   *
+   * @type {Address}
+   * @memberof BillingDetails
+   */
+  address?: Address | null
+  /**
+   *
+   * @type {string}
+   * @memberof BillingDetails
+   */
+  name?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof BillingDetails
+   */
+  phone?: string | null
+}
+/**
+ *
+ * @export
  * @interface BillingPortalLink
  */
 export interface BillingPortalLink {
@@ -853,19 +878,6 @@ export interface StatusResponse {
    * @memberof StatusResponse
    */
   status: string
-}
-/**
- *
- * @export
- * @interface UpdateBillingDetailsRequest
- */
-export interface UpdateBillingDetailsRequest {
-  /**
-   *
-   * @type {Address}
-   * @memberof UpdateBillingDetailsRequest
-   */
-  address: Address
 }
 /**
  *

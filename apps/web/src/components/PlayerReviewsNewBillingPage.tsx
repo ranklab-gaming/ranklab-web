@@ -19,8 +19,13 @@ import { getReview } from "@/utils/localStorage"
 import { AddressElement, useElements } from "@stripe/react-stripe-js"
 import { useForm } from "@/hooks/useForm"
 import { StripeElements } from "@/components/StripeElements"
+import { BillingDetails } from "@ranklab/api"
 
-function Content() {
+interface Props {
+  billingDetails: BillingDetails
+}
+
+function Content({ billingDetails }: Props) {
   const router = useRouter()
   const review = getReview()
   const elements = useElements()
@@ -61,9 +66,7 @@ function Content() {
     }
 
     await api.playerStripeBillingDetailsUpdate({
-      updateBillingDetailsRequest: {
-        address: address.value.address,
-      },
+      billingDetails: address.value,
     })
 
     const newReview = await api.playerReviewsCreate({
@@ -79,11 +82,47 @@ function Content() {
         <Box p={3}>
           <PlayerReviewsNewStepper activeStep={2} />
           <form onSubmit={handleSubmit(goToNextStep)}>
-            <AddressElement
-              options={{
-                mode: "billing",
-              }}
-            />
+            <Box p={8}>
+              <AddressElement
+                options={{
+                  mode: "billing",
+                  defaultValues: {
+                    name: billingDetails.name,
+                    phone: billingDetails.phone,
+                    address: {
+                      line1: billingDetails.address?.line1,
+                      line2: billingDetails.address?.line2,
+                      city: billingDetails.address?.city,
+                      state: billingDetails.address?.state,
+                      postal_code: billingDetails.address?.postalCode,
+                      country: billingDetails.address?.country ?? "US",
+                    },
+                  },
+                  contacts:
+                    billingDetails.address &&
+                    billingDetails.address.city &&
+                    billingDetails.address.line1 &&
+                    billingDetails.address.postalCode &&
+                    billingDetails.address.state &&
+                    billingDetails.name
+                      ? [
+                          {
+                            address: {
+                              line1: billingDetails.address.line1,
+                              line2: billingDetails.address.line2 ?? undefined,
+                              city: billingDetails.address.city,
+                              state: billingDetails.address.state,
+                              postal_code: billingDetails.address.postalCode,
+                              country: billingDetails.address.country ?? "US",
+                            },
+                            name: billingDetails.name,
+                            phone: billingDetails.phone ?? undefined,
+                          },
+                        ]
+                      : undefined,
+                }}
+              />
+            </Box>
             <Stack direction="row">
               <NextLink
                 href="/player/reviews/new/coach"
@@ -114,7 +153,10 @@ function Content() {
   )
 }
 
-export function PlayerReviewsNewBillingPage({ user }: PropsWithUser) {
+export function PlayerReviewsNewBillingPage({
+  user,
+  ...props
+}: PropsWithUser<Props>) {
   return (
     <DashboardLayout
       user={user}
@@ -123,7 +165,7 @@ export function PlayerReviewsNewBillingPage({ user }: PropsWithUser) {
     >
       <Container maxWidth="lg">
         <StripeElements>
-          <Content />
+          <Content {...props} />
         </StripeElements>
       </Container>
     </DashboardLayout>

@@ -11,8 +11,12 @@ export const defaultReview: Review = {
 }
 
 export function getReview(): Review {
+  if (typeof localStorage === "undefined") {
+    return defaultReview
+  }
+
   return JSON.parse(
-    JSON.stringify(localStorage.getItem("review") || defaultReview)
+    localStorage.getItem("review") || JSON.stringify(defaultReview)
   )
 }
 

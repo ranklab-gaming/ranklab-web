@@ -1,4 +1,4 @@
-import { setReview } from "@/utils/localStorage"
+import { defaultReview, setReview } from "@/utils/localStorage"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
@@ -7,6 +7,7 @@ export default function () {
 
   useEffect(() => {
     setReview({
+      ...defaultReview,
       coachId: (router.query.coach_id as string) ?? "",
     })
 

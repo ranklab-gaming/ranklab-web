@@ -15,6 +15,7 @@
 import * as runtime from "../runtime"
 import type {
   AccountLink,
+  BillingDetails,
   BillingPortalLink,
   Coach,
   CoachInvitationParams,
@@ -41,7 +42,6 @@ import type {
   ResetPasswordRequest,
   Review,
   StatusResponse,
-  UpdateBillingDetailsRequest,
   UpdateCoachRequest,
   UpdateCommentRequest,
   UpdatePasswordRequest,
@@ -135,7 +135,7 @@ export interface PlayerReviewsUpdateRequest {
 }
 
 export interface PlayerStripeBillingDetailsUpdateRequest {
-  updateBillingDetailsRequest: UpdateBillingDetailsRequest
+  billingDetails: BillingDetails
 }
 
 export interface PlayerStripeBillingPortalSessionsCreateRequest {
@@ -1382,17 +1382,48 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
+  async playerStripeBillingDetailsGetRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<BillingDetails>> {
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/player/stripe-billing-details`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerStripeBillingDetailsGet(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<BillingDetails> {
+    const response = await this.playerStripeBillingDetailsGetRaw(initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
   async playerStripeBillingDetailsUpdateRaw(
     requestParameters: PlayerStripeBillingDetailsUpdateRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (
-      requestParameters.updateBillingDetailsRequest === null ||
-      requestParameters.updateBillingDetailsRequest === undefined
+      requestParameters.billingDetails === null ||
+      requestParameters.billingDetails === undefined
     ) {
       throw new runtime.RequiredError(
-        "updateBillingDetailsRequest",
-        "Required parameter requestParameters.updateBillingDetailsRequest was null or undefined when calling playerStripeBillingDetailsUpdate."
+        "billingDetails",
+        "Required parameter requestParameters.billingDetails was null or undefined when calling playerStripeBillingDetailsUpdate."
       )
     }
 
@@ -1408,7 +1439,7 @@ export class RanklabApi extends runtime.BaseAPI {
         method: "PUT",
         headers: headerParameters,
         query: queryParameters,
-        body: requestParameters.updateBillingDetailsRequest,
+        body: requestParameters.billingDetails,
       },
       initOverrides
     )

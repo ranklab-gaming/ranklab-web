@@ -9,3 +9,4 @@ TS_POST_PROCESS_FILE="pnpm exec prettier --write" pnpm exec openapi-generator-cl
   -c ./openapi.config.json
 
 pnpm install --filter ./packages/api
+pnpm run build --filter ./packages/api
