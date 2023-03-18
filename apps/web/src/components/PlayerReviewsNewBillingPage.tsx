@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  CircularProgress,
   Container,
   Link,
   Stack,
@@ -14,12 +15,12 @@ import {
 import { useRouter } from "next/router"
 import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
-import { useEffect } from "react"
-import { getReview } from "@/utils/localStorage"
 import { AddressElement, useElements } from "@stripe/react-stripe-js"
 import { useForm } from "@/hooks/useForm"
 import { StripeElements } from "@/components/StripeElements"
 import { BillingDetails } from "@ranklab/api"
+import { useReview } from "@/hooks/useReview"
+import { useState } from "react"
 
 interface Props {
   billingDetails: BillingDetails
@@ -27,23 +28,9 @@ interface Props {
 
 function Content({ billingDetails }: Props) {
   const router = useRouter()
-  const review = getReview()
+  const [review] = useReview()
   const elements = useElements()
-
-  useEffect(() => {
-    if (!review.recordingId) {
-      router.push("/player/reviews/new/recording")
-      return
-    }
-
-    if (!review.coachId) {
-      router.push("/player/reviews/new/coach")
-    }
-  }, [])
-
-  if (!review.recordingId || !review.coachId) {
-    return null
-  }
+  const [loading, setLoading] = useState(true)
 
   const {
     handleSubmit,
@@ -55,6 +42,10 @@ function Content({ billingDetails }: Props) {
   })
 
   const goToNextStep = async function () {
+    if (!review) {
+      throw new Error("review is missing")
+    }
+
     const address = await elements?.getElement("address")?.getValue()
 
     if (!address) {
@@ -82,8 +73,14 @@ function Content({ billingDetails }: Props) {
         <Box p={3}>
           <PlayerReviewsNewStepper activeStep={2} />
           <form onSubmit={handleSubmit(goToNextStep)}>
-            <Box p={8}>
+            <Box p={6}>
+              {loading && (
+                <Stack alignItems="center" my={3}>
+                  <CircularProgress />
+                </Stack>
+              )}
               <AddressElement
+                onReady={() => setLoading(false)}
                 options={{
                   mode: "billing",
                   defaultValues: {

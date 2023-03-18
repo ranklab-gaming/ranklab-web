@@ -22,7 +22,7 @@ import NextLink from "next/link"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Coach } from "@ranklab/api"
 import { useEffect } from "react"
-import { getReview, setReview } from "@/utils/localStorage"
+import { useReview } from "@/hooks/useReview"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -38,31 +38,32 @@ interface Props {
   coaches: Coach[]
 }
 
+const defaultValues: FormValues = {
+  coachId: "",
+  notes: "",
+}
+
 export function PlayerReviewsNewCoachPage({
   user,
   coaches,
 }: PropsWithUser<Props>) {
   const router = useRouter()
-  const review = getReview()
+  const [review, setReview] = useReview()
 
   useEffect(() => {
-    if (!review.recordingId) {
-      router.push("/player/reviews/new/recording")
+    if (review.coachId) {
+      setValue("coachId", review.coachId)
     }
-  }, [])
 
-  if (!review.recordingId) {
-    return null
-  }
-
-  const defaultValues: FormValues = {
-    coachId: review.coachId,
-    notes: review.notes,
-  }
+    if (review.notes) {
+      setValue("notes", review.notes)
+    }
+  }, [review])
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",

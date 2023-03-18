@@ -26,7 +26,7 @@ import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
-import { setReview } from "@/utils/localStorage"
+import { useReview } from "@/hooks/useReview"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -49,15 +49,15 @@ const FormSchema = yup.object().shape({
   }),
 })
 
+const defaultValues: FormValues = {
+  recordingId: newRecordingId,
+  newRecordingTitle: "",
+}
+
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
   newRecordingVideo?: File
-}
-
-const defaultValues: FormValues = {
-  recordingId: newRecordingId,
-  newRecordingTitle: "",
 }
 
 interface Props {
@@ -71,6 +71,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
+  const [review, setReview] = useReview()
 
   const {
     control,
@@ -83,6 +84,12 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
+
+  useEffect(() => {
+    if (review.recordingId) {
+      setValue("recordingId", review.recordingId)
+    }
+  }, [review])
 
   const recordingId = watch("recordingId")
   const newRecordingVideo = watch("newRecordingVideo")

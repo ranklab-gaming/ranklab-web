@@ -1,9 +1,19 @@
-import { defaultReview, setReview } from "@/utils/localStorage"
+import { PropsWithUser } from "@/auth"
+import { withUserSsr } from "@/auth/page"
+import { DashboardLayout } from "@/components/DashboardLayout"
+import { defaultReview, useReview } from "@/hooks/useReview"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
-export default function () {
+export const getServerSideProps = withUserSsr("player", async function (ctx) {
+  return {
+    props: {},
+  }
+})
+
+export default function ({ user }: PropsWithUser) {
   const router = useRouter()
+  const [_, setReview] = useReview()
 
   useEffect(() => {
     setReview({
@@ -14,5 +24,7 @@ export default function () {
     router.push("/player/reviews/new/recording")
   }, [])
 
-  return null
+  return (
+    <DashboardLayout user={user} showTitle={false} title="Request a Review" />
+  )
 }
