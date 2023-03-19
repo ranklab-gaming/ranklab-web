@@ -21,8 +21,7 @@ import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Coach } from "@ranklab/api"
-import { useEffect } from "react"
-import { useReview } from "@/hooks/useReview"
+import { saveReview } from "@/api/session"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -36,34 +35,26 @@ interface FormValues {
 
 interface Props {
   coaches: Coach[]
-}
-
-const defaultValues: FormValues = {
-  coachId: "",
-  notes: "",
+  coachId?: string
+  notes?: string
 }
 
 export function PlayerReviewsNewCoachPage({
   user,
   coaches,
+  coachId,
+  notes,
 }: PropsWithUser<Props>) {
   const router = useRouter()
-  const [review, setReview] = useReview()
 
-  useEffect(() => {
-    if (review.coachId) {
-      setValue("coachId", review.coachId)
-    }
-
-    if (review.notes) {
-      setValue("notes", review.notes)
-    }
-  }, [review])
+  const defaultValues: FormValues = {
+    coachId: coachId ?? "",
+    notes: notes ?? "",
+  }
 
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
@@ -72,7 +63,7 @@ export function PlayerReviewsNewCoachPage({
   })
 
   const goToNextStep = async function (values: FormValues) {
-    setReview({
+    await saveReview({
       coachId: values.coachId,
       notes: values.notes,
     })

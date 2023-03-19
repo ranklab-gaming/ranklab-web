@@ -26,7 +26,7 @@ import * as yup from "yup"
 import { DashboardLayout } from "./DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
-import { useReview } from "@/hooks/useReview"
+import { saveReview } from "@/api/session"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -49,11 +49,6 @@ const FormSchema = yup.object().shape({
   }),
 })
 
-const defaultValues: FormValues = {
-  recordingId: newRecordingId,
-  newRecordingTitle: "",
-}
-
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
@@ -62,16 +57,24 @@ interface FormValues {
 
 interface Props {
   recordings: Recording[]
+  recordingId?: string
 }
 
-export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
+export function PlayerReviewsNewRecordingPage({
+  recordings: initialRecordings,
+  user,
+  recordingId: initialRecordingId,
+}: PropsWithUser<Props>) {
   const router = useRouter()
-  const { user } = props
-  const [recordings, setRecordings] = useState<Recording[]>(props.recordings)
+  const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
-  const [review, setReview] = useReview()
+
+  const defaultValues: FormValues = {
+    recordingId: initialRecordingId ?? newRecordingId,
+    newRecordingTitle: "",
+  }
 
   const {
     control,
@@ -84,12 +87,6 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
-
-  useEffect(() => {
-    if (review.recordingId) {
-      setValue("recordingId", review.recordingId)
-    }
-  }, [review])
 
   const recordingId = watch("recordingId")
   const newRecordingVideo = watch("newRecordingVideo")
@@ -149,7 +146,7 @@ export function PlayerReviewsNewRecordingPage(props: PropsWithUser<Props>) {
       return
     }
 
-    setReview({
+    await saveReview({
       recordingId: values.recordingId,
     })
 

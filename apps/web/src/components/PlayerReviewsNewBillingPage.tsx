@@ -19,16 +19,16 @@ import { AddressElement, useElements } from "@stripe/react-stripe-js"
 import { useForm } from "@/hooks/useForm"
 import { StripeElements } from "@/components/StripeElements"
 import { BillingDetails } from "@ranklab/api"
-import { useReview } from "@/hooks/useReview"
 import { useState } from "react"
+import { SessionReview } from "@/session"
 
 interface Props {
   billingDetails: BillingDetails
+  review: SessionReview
 }
 
-function Content({ billingDetails }: Props) {
+function Content({ billingDetails, review }: Props) {
   const router = useRouter()
-  const [review] = useReview()
   const elements = useElements()
   const [loading, setLoading] = useState(true)
 
@@ -42,10 +42,6 @@ function Content({ billingDetails }: Props) {
   })
 
   const goToNextStep = async function () {
-    if (!review) {
-      throw new Error("review is missing")
-    }
-
     const address = await elements?.getElement("address")?.getValue()
 
     if (!address) {
@@ -60,8 +56,14 @@ function Content({ billingDetails }: Props) {
       billingDetails: address.value,
     })
 
+    const { recordingId, coachId, notes } = review
+
     const newReview = await api.playerReviewsCreate({
-      createReviewRequest: review,
+      createReviewRequest: {
+        coachId: coachId ?? "",
+        recordingId: recordingId ?? "",
+        notes: notes ?? "",
+      },
     })
 
     await router.push(`/player/reviews/${newReview.id}`)
@@ -73,7 +75,7 @@ function Content({ billingDetails }: Props) {
         <Box p={3}>
           <PlayerReviewsNewStepper activeStep={2} />
           <form onSubmit={handleSubmit(goToNextStep)}>
-            <Box p={6}>
+            <Box mt={3}>
               {loading && (
                 <Stack alignItems="center" my={3}>
                   <CircularProgress />
@@ -85,7 +87,6 @@ function Content({ billingDetails }: Props) {
                   mode: "billing",
                   defaultValues: {
                     name: billingDetails.name,
-                    phone: billingDetails.phone,
                     address: {
                       line1: billingDetails.address?.line1,
                       line2: billingDetails.address?.line2,
@@ -97,23 +98,21 @@ function Content({ billingDetails }: Props) {
                   },
                   contacts:
                     billingDetails.address &&
-                    billingDetails.address.city &&
-                    billingDetails.address.line1 &&
-                    billingDetails.address.postalCode &&
-                    billingDetails.address.state &&
-                    billingDetails.name
+                    billingDetails.name &&
+                    billingDetails.address.country &&
+                    billingDetails.address.line1
                       ? [
                           {
                             address: {
                               line1: billingDetails.address.line1,
                               line2: billingDetails.address.line2 ?? undefined,
-                              city: billingDetails.address.city,
-                              state: billingDetails.address.state,
-                              postal_code: billingDetails.address.postalCode,
-                              country: billingDetails.address.country ?? "US",
+                              city: billingDetails.address.city ?? "",
+                              state: billingDetails.address.state ?? "",
+                              postal_code:
+                                billingDetails.address.postalCode ?? "",
+                              country: billingDetails.address.country,
                             },
                             name: billingDetails.name,
-                            phone: billingDetails.phone ?? undefined,
                           },
                         ]
                       : undefined,

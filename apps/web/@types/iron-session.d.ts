@@ -1,4 +1,5 @@
 import "iron-session"
+import { SessionReview } from "@/session"
 
 declare module "iron-session" {
   interface IronSessionData {
@@ -6,5 +7,6 @@ declare module "iron-session" {
     refreshToken?: string
     codeVerifier?: string
     returnUrl?: string
+    review?: SessionReview
   }
 }

@@ -2,6 +2,12 @@ import { IronSessionOptions } from "iron-session"
 import { withIronSessionApiRoute, withIronSessionSsr } from "iron-session/next"
 import { GetServerSideProps, NextApiHandler } from "next"
 
+export interface SessionReview {
+  recordingId?: string
+  coachId?: string
+  notes?: string
+}
+
 async function getSessionOptions(): Promise<IronSessionOptions> {
   const { cookieSecret, nodeEnv } = await import("@/config/server")
 

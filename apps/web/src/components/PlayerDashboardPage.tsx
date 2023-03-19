@@ -29,7 +29,7 @@ export function PlayerDashboardPage({
               <Button
                 variant="contained"
                 color="primary"
-                href="/player/reviews/new"
+                href="/api/new-review"
                 sx={{ mt: 2 }}
               >
                 Request a Review

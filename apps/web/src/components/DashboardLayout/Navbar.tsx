@@ -49,7 +49,7 @@ export function DashboardLayoutNavbar({
             items: [
               {
                 title: "Request a Review",
-                path: "/player/reviews/new",
+                path: "/api/new-review",
                 icon: icons.upload,
               },
             ],
