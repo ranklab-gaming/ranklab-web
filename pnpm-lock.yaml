@@ -5,11 +5,11 @@ importers:
   .:
     specifiers:
       '@openapitools/openapi-generator-cli': 2.5.2
-      prettier: 2.8.4
+      prettier: 2.8.5
       turbo: 1.8.3
     devDependencies:
       '@openapitools/openapi-generator-cli': 2.5.2
-      prettier: 2.8.4
+      prettier: 2.8.5
       turbo: 1.8.3
 
   apps/web:
@@ -2716,8 +2716,8 @@ packages:
       tunnel-agent: 0.6.0
     dev: false
 
-  /prettier/2.8.4:
-    resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
+  /prettier/2.8.5:
+    resolution: {integrity: sha512-3gzuxrHbKUePRBB4ZeU08VNkUcqEHaUaouNt0m7LGP4Hti/NuB07C7PPTM/LkWqXoJYJn2McEo5+kxPNrtQkLQ==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
