@@ -135,7 +135,7 @@ function Content({ billingDetails, review }: Props) {
                 type="submit"
                 variant="contained"
                 loading={isSubmitting}
-                disabled={isSubmitting}
+                disabled={isSubmitting || loading}
                 sx={{ mt: 3 }}
               >
                 Proceed to Checkout
