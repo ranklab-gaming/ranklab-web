@@ -37,8 +37,11 @@ function Content({ billingDetails, review }: Props) {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
+    errorMessages: {
+      422: "The billing details are incorrect. Please insert a valid address and try again.",
+    },
     serverErrorMessage:
-      "The billing details are incorrect. Please insert a valid address and try again.",
+      "An error occurred while updating your details. Please try again later.",
   })
 
   const goToNextStep = async function () {
