@@ -52,9 +52,11 @@ function Content({ billingDetails, review }: Props) {
       return
     }
 
-    await api.playerStripeBillingDetailsUpdate({
-      billingDetails: address.value,
-    })
+    if (address.isNewAddress) {
+      await api.playerStripeBillingDetailsUpdate({
+        billingDetails: address.value,
+      })
+    }
 
     const { recordingId, coachId, notes } = review
 
@@ -77,7 +79,7 @@ function Content({ billingDetails, review }: Props) {
           <form onSubmit={handleSubmit(goToNextStep)}>
             <Box mt={3}>
               {loading && (
-                <Stack alignItems="center" my={3}>
+                <Stack alignItems="center" py={4}>
                   <CircularProgress />
                 </Stack>
               )}
@@ -85,31 +87,25 @@ function Content({ billingDetails, review }: Props) {
                 onReady={() => setLoading(false)}
                 options={{
                   mode: "billing",
-                  defaultValues: {
-                    name: billingDetails.name,
-                    address: {
-                      line1: billingDetails.address?.line1,
-                      line2: billingDetails.address?.line2,
-                      city: billingDetails.address?.city,
-                      state: billingDetails.address?.state,
-                      postal_code: billingDetails.address?.postalCode,
-                      country: billingDetails.address?.country ?? "US",
-                    },
+                  autocomplete: {
+                    mode: "google_maps_api",
+                    apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
                   },
                   contacts:
                     billingDetails.address &&
                     billingDetails.name &&
                     billingDetails.address.country &&
-                    billingDetails.address.line1
+                    billingDetails.address.line1 &&
+                    billingDetails.address.city &&
+                    billingDetails.address.postalCode
                       ? [
                           {
                             address: {
                               line1: billingDetails.address.line1,
                               line2: billingDetails.address.line2 ?? undefined,
-                              city: billingDetails.address.city ?? "",
+                              city: billingDetails.address.city,
                               state: billingDetails.address.state ?? "",
-                              postal_code:
-                                billingDetails.address.postalCode ?? "",
+                              postal_code: billingDetails.address.postalCode,
                               country: billingDetails.address.country,
                             },
                             name: billingDetails.name,
