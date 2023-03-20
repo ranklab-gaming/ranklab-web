@@ -39,7 +39,7 @@ importers:
       '@zach.codes/use-upload': 1.0.1
       csstype: ^3.1.1
       date-fns: 2.29.3
-      framer-motion: 10.6.0
+      framer-motion: 10.6.1
       ioredis: 5.3.1
       iron-session: 6.3.1
       jose: 4.13.1
@@ -78,7 +78,7 @@ importers:
       '@zach.codes/use-upload': 1.0.1
       csstype: 3.1.1
       date-fns: 2.29.3
-      framer-motion: 10.6.0_biqbaboplfbrettd7655fr4n2y
+      framer-motion: 10.6.1_biqbaboplfbrettd7655fr4n2y
       ioredis: 5.3.1
       iron-session: 6.3.1_koa@2.14.1+next@13.2.4
       jose: 4.13.1
@@ -1793,8 +1793,8 @@ packages:
     engines: {node: '>= 14.17'}
     dev: false
 
-  /framer-motion/10.6.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-RkZe8iBhdWNs1y2HfYh4WlM9Co11/Vu+JCSQzmLaP5alM3QbBiue6OkeXygfxsRDp4yCar95ExoHE0CZQNyuVQ==}
+  /framer-motion/10.6.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-e1o4JKJ98/pfUkYkze+23A+r5SW6JujDSAEzIKWq6jsrVIE+QSwpu4U7L8+maOXcTnfAZlI930MfpvA/+zaa5g==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
