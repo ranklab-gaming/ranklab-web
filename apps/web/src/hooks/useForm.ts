@@ -29,6 +29,10 @@ type Error = {
       }
     }
   | {
+      code: "uniqueness"
+      params: Record<string, never>
+    }
+  | {
       code: "custom"
       params: Record<string, never>
     }
@@ -40,6 +44,8 @@ function errorMessageFromError<T>(field: Path<T>, error: Error) {
       return `${capitalize(field)} must be at least ${
         error.params.min
       } characters long`
+    case "uniqueness":
+      return `${capitalize(field)} is already taken`
   }
 
   return `${capitalize(field)} is invalid`
@@ -91,7 +97,7 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       if (e.response.status === 422) {
         const errors = await e.response.json()
 
-        if ("error" in errors && Array.isArray(errors.error)) {
+        if (!Array.isArray(errors) && typeof errors === "object") {
           setValidationErrors(form.setError, errors)
           return
         }
