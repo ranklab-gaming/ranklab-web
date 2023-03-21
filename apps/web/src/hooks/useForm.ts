@@ -97,7 +97,7 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       if (e.response.status === 422) {
         const errors = await e.response.json()
 
-        if (!Array.isArray(errors) && typeof errors === "object") {
+        if (!Array.isArray(errors) && typeof errors === "object" && !('error' in errors)) {
           setValidationErrors(form.setError, errors)
           return
         }
