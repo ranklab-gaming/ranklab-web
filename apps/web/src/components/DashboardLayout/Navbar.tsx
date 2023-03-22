@@ -21,11 +21,11 @@ const RootStyle = styled("div")(({ theme }) => ({
 }))
 
 const icons = {
-  user: <Iconify icon={"mdi:account"} />,
-  dashboard: <Iconify icon={"mdi:view-dashboard"} />,
-  recordings: <Iconify icon={"mdi:video"} />,
-  upload: <Iconify icon={"mdi:message-draw"} />,
-  archive: <Iconify icon={"mdi:archive"} />,
+  user: <Iconify icon="eva:person-outline" />,
+  dashboard: <Iconify icon="eva:grid-outline" />,
+  recordings: <Iconify icon="eva:video-outline" />,
+  archive: <Iconify icon="eva:archive-outline" />,
+  review: <Iconify icon="eva:plus-square-outline" />,
 }
 
 type Props = {
@@ -50,7 +50,7 @@ export function DashboardLayoutNavbar({
               {
                 title: "Request a Review",
                 path: "/api/new-review",
-                icon: icons.upload,
+                icon: icons.review,
               },
             ],
           },

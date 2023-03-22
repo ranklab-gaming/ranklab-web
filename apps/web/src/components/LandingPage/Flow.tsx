@@ -1,8 +1,8 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import fileChartCheckOutline from "@iconify/icons-mdi/file-chart-check-outline"
-import podiumGold from "@iconify/icons-mdi/podium-gold"
-import videoOutline from "@iconify/icons-mdi/video-outline"
+import fileChartCheckOutline from "@iconify/icons-eva/message-square-outline"
+import podiumGold from "@iconify/icons-eva/trending-up-outline"
+import videoOutline from "@iconify/icons-eva/video-outline"
 import { Icon } from "@iconify/react"
 import {
   Box,
