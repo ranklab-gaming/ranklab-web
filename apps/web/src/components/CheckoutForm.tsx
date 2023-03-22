@@ -155,7 +155,7 @@ function Content({ review, paymentMethods, games }: Props) {
 
     setLoading(true)
 
-    const returnUrl = `${window.location.origin}/${router.asPath}?payment=true`
+    const returnUrl = `${window.location.origin}/${router.asPath}?payment_redirect=true`
 
     let response
 
@@ -193,8 +193,19 @@ function Content({ review, paymentMethods, games }: Props) {
   }
 
   useEffect(() => {
-    if (router.query.payment === "true") {
-      setPolling(true)
+    if (router.query.payment_redirect === "true") {
+      if (router.query.redirect_status === "succeeded") {
+        setPolling(true)
+      } else {
+        enqueueSnackbar(
+          "An error occurred while processing your payment. Please try again.",
+          {
+            variant: "error",
+          }
+        )
+
+        router.replace(`/player/reviews/${review.id}`)
+      }
     }
   }, [])
 
@@ -207,7 +218,7 @@ function Content({ review, paymentMethods, games }: Props) {
 
   const paymentMethodId = watch("paymentMethodId")
 
-  if (router.query.payment === "true" && polling) {
+  if (router.query.payment_redirect === "true") {
     return (
       <Paper>
         <Box textAlign="center" p={8}>
