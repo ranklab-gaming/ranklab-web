@@ -2,14 +2,26 @@
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**"]
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**"
+      ]
     },
     "test": {
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": [
+        "dist/**",
+        "build/**"
+      ]
     },
     "dev": {
-      "dependsOn": ["@ranklab/api#build"],
+      "dependsOn": [
+        "@ranklab/api#build"
+      ],
       "cache": false,
       "persistent": true
     },
