@@ -100,7 +100,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
           <Tab
             disableRipple
             label="General"
-            icon={<Iconify icon="eva:person-outline" />}
+            icon={<Iconify icon="eva:settings-outline" />}
             value="account"
           />
           <Tab
