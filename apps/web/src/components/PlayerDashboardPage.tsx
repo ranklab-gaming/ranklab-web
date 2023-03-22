@@ -1,5 +1,6 @@
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
+import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
@@ -15,11 +16,12 @@ export function PlayerDashboardPage({
   user,
 }: PropsWithUser<Props>) {
   return (
-    <DashboardLayout user={user} title="Dashboard">
+    <DashboardLayout user={user} title="Dashboard" showTitle={false}>
       {reviews.count === 0 ? (
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
+              <Iconify icon="eva:grid-outline" width={40} height={40} />
               <Typography variant="h3" component="h1" gutterBottom>
                 No Reviews Yet
               </Typography>
@@ -31,6 +33,7 @@ export function PlayerDashboardPage({
                 color="primary"
                 href="/api/new-review"
                 sx={{ mt: 2 }}
+                size="large"
               >
                 Request a Review
               </Button>

@@ -53,6 +53,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
         skillLevel: data.skillLevel,
         gameId: data.gameId,
         email: data.email,
+        emailsEnabled: true,
       },
     })
 
@@ -73,7 +74,6 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
     <DashboardLayout title="Account" user={user}>
       <form onSubmit={handleSubmit(updatePlayer)}>
         <Stack spacing={3} my={4}>
-          <PlayerAccountFields control={control} games={games} watch={watch} />
           <Alert
             severity="info"
             sx={{ mb: 2 }}
@@ -91,6 +91,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
             We partner with Stripe to manage payments. You can update your
             payment details using their customer portal.
           </Alert>
+          <PlayerAccountFields control={control} games={games} watch={watch} />
         </Stack>
         <LoadingButton
           color="primary"

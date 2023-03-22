@@ -154,6 +154,12 @@ export interface Coach {
    * @memberof Coach
    */
   payoutsEnabled: boolean
+  /**
+   *
+   * @type {boolean}
+   * @memberof Coach
+   */
+  emailsEnabled: boolean
 }
 /**
  *
@@ -647,6 +653,12 @@ export interface Player {
    * @memberof Player
    */
   skillLevel: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof Player
+   */
+  emailsEnabled: boolean
 }
 /**
  *
@@ -915,6 +927,12 @@ export interface UpdateCoachRequest {
    * @memberof UpdateCoachRequest
    */
   price: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof UpdateCoachRequest
+   */
+  emailsEnabled: boolean
 }
 /**
  *
@@ -978,6 +996,12 @@ export interface UpdatePlayerRequest {
    * @memberof UpdatePlayerRequest
    */
   skillLevel: number
+  /**
+   *
+   * @type {boolean}
+   * @memberof UpdatePlayerRequest
+   */
+  emailsEnabled: boolean
 }
 
 /**
