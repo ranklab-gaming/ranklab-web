@@ -16,6 +16,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { api } from "@/api"
 import { usePolling } from "@/hooks/usePolling"
+import { Iconify } from "@/components/Iconify"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -46,7 +47,7 @@ function Content({ reviews, games }: Props) {
   })
 
   useEffect(() => {
-    if (router.query.onboarding === "true") {
+    if (router.query.onboarding_redirect === "true") {
       setPolling(true)
     }
   }, [])
@@ -61,7 +62,7 @@ function Content({ reviews, games }: Props) {
             action={
               <NextLink
                 href={`/api/stripe-account-links?${new URLSearchParams({
-                  return_url: "/coach/dashboard?onboarding=true",
+                  return_url: "/coach/dashboard?onboarding_redirect=true",
                 })}`}
                 passHref
                 legacyBehavior
@@ -99,7 +100,11 @@ function Content({ reviews, games }: Props) {
   return (
     <Paper>
       <Box p={8} textAlign="center">
-        {polling && <CircularProgress />}
+        {polling ? (
+          <CircularProgress />
+        ) : (
+          <Iconify icon="eva:alert-triangle-outline" width={40} height={40} />
+        )}
         <Typography variant="h3" component="h1" gutterBottom>
           Onboarding Required
         </Typography>
@@ -109,7 +114,7 @@ function Content({ reviews, games }: Props) {
         </Typography>
         <NextLink
           href={`/api/stripe-account-links?${new URLSearchParams({
-            return_url: "/coach/dashboard?onboarding=true",
+            return_url: "/coach/dashboard?onboarding_redirect=true",
           })}`}
           passHref
           legacyBehavior
@@ -119,6 +124,7 @@ function Content({ reviews, games }: Props) {
             color="primary"
             component="a"
             sx={{ mt: 2 }}
+            size="large"
           >
             Start onboarding
           </Button>
@@ -134,7 +140,7 @@ export function CoachDashboardPage({
   user,
 }: PropsWithUser<Props>) {
   return (
-    <DashboardLayout user={user} title="Dashboard">
+    <DashboardLayout user={user} title="Dashboard" showTitle={false}>
       <Content reviews={reviews} games={games} />
     </DashboardLayout>
   )

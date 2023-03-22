@@ -12,6 +12,7 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  LinearProgress,
   Link,
   MenuItem,
   Paper,
@@ -222,13 +223,14 @@ function Content({ review, paymentMethods, games }: Props) {
     return (
       <Paper>
         <Box textAlign="center" p={8}>
+          <Iconify icon="eva:credit-card-outline" width={40} height={40} />
           <Typography variant="h3" component="h1" gutterBottom>
             Your Order Is Being Processed
           </Typography>
-          <CircularProgress />
           <Typography variant="body1" gutterBottom>
             Please wait...
           </Typography>
+          <LinearProgress sx={{ width: 200, display: "inline-block" }} />
         </Box>
       </Paper>
     )
