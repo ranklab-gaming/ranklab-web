@@ -1,7 +1,6 @@
 import { uploadsCdnUrl } from "@/config"
 import { formatDate } from "@/utils/formatDate"
 import {
-  Box,
   Button,
   Dialog,
   DialogContent,
@@ -31,11 +30,13 @@ export function RecordingList({ recordings, games }: Props) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Game</TableCell>
-            <TableCell>Skill Level</TableCell>
-            <TableCell>Date Uploaded</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell width={300}>Title</TableCell>
+            <TableCell align="center">Game</TableCell>
+            <TableCell align="center">Skill Level</TableCell>
+            <TableCell align="center">Date Uploaded</TableCell>
+            <TableCell align="right" width={300}>
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -56,12 +57,14 @@ export function RecordingList({ recordings, games }: Props) {
 
             return (
               <TableRow key={recording.id}>
-                <TableCell>{recording.title}</TableCell>
-                <TableCell>{game.name}</TableCell>
-                <TableCell>{skillLevel.name}</TableCell>
-                <TableCell>{formatDate(recording.createdAt)}</TableCell>
-                <TableCell>
-                  <Stack direction="row" spacing={1}>
+                <TableCell width={300}>{recording.title}</TableCell>
+                <TableCell align="center">{game.name}</TableCell>
+                <TableCell align="center">{skillLevel.name}</TableCell>
+                <TableCell align="center">
+                  {formatDate(recording.createdAt)}
+                </TableCell>
+                <TableCell align="right" width={300}>
+                  <Stack direction="row" spacing={1} justifyContent="end">
                     <Button
                       variant="outlined"
                       color="primary"
