@@ -22,7 +22,7 @@
     "@ranklab/api": "workspace:*",
     "@sentry/nextjs": "7.44.2",
     "@stripe/react-stripe-js": "2.0.0",
-    "@stripe/stripe-js": "1.50.0",
+    "@stripe/stripe-js": "1.51.0",
     "@zach.codes/use-upload": "1.0.1",
     "csstype": "^3.1.1",
     "date-fns": "2.29.3",
