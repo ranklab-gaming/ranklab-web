@@ -1,9 +1,8 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Grid, Typography } from "@mui/material"
+import { Button, Container, Grid, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { useRouter } from "next/router"
 import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({

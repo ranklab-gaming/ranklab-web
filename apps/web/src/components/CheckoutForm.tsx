@@ -8,7 +8,6 @@ import {
   CardHeader,
   Checkbox,
   Chip,
-  CircularProgress,
   FormControl,
   FormControlLabel,
   Grid,

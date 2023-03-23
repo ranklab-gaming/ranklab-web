@@ -1,9 +1,8 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Grid, Typography } from "@mui/material"
-import { alpha, styled, useTheme } from "@mui/material/styles"
+import { Button, Container, Grid, Typography } from "@mui/material"
+import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { useRouter } from "next/router"
 import NextLink from "next/link"
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -21,54 +20,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-const ScreenStyle = styled(m.div)(({ theme }) => ({
-  paddingRight: 2,
-  paddingBottom: 1,
-  maxWidth: 160,
-  borderRadius: 8,
-  backgroundColor: theme.palette.grey[800],
-  [theme.breakpoints.up("sm")]: {
-    maxWidth: 320,
-    paddingRight: 4,
-    borderRadius: 12,
-  },
-  "& img": {
-    borderRadius: 8,
-    [theme.breakpoints.up("sm")]: {
-      borderRadius: 12,
-    },
-  },
-}))
-
-const common = {
-  scaleX: 0.86,
-  skewY: 8,
-  skewX: 0,
-  scaleY: 1,
-  translateX: 0,
-  translateY: 0,
-  opacity: 0,
-}
-
-const variantScreenLeft = {
-  initial: common,
-  animate: { ...common, translateX: "-50%", translateY: 40, opacity: 1 },
-}
-const variantScreenCenter = {
-  initial: common,
-  animate: { ...common, opacity: 1 },
-}
-const variantScreenRight = {
-  initial: common,
-  animate: { ...common, translateX: "50%", translateY: -40, opacity: 1 },
-}
-
 export function LandingPageReview() {
-  const theme = useTheme()
-  const screenLeftAnimate = variantScreenLeft
-  const screenCenterAnimate = variantScreenCenter
-  const screenRightAnimate = variantScreenRight
-
   return (
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>
