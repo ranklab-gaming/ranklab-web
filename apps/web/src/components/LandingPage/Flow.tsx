@@ -66,8 +66,8 @@ const CardStyle = styled(Card)(({ theme }) => {
 })
 
 const CardIconStyle = styled("div")(({ theme }) => ({
-  width: 40,
-  height: 40,
+  width: 80,
+  height: 80,
   margin: "auto",
   marginBottom: theme.spacing(10),
 }))
@@ -81,15 +81,15 @@ export function LandingPageFlow() {
       icon: videoOutline,
       title: "Record",
       description:
-        "Download our recorder and record your gameplay. You can also upload your own videos.",
-      color: theme.palette.primary.main,
+        "Record your gameplay and upload it to our platform. We recommend using Xbox Game Bar or OBS Studio.",
+      color: theme.palette.error.main,
     },
     {
       icon: fileChartCheckOutline,
       title: "Get feedback",
       description:
         "Get a detailed analysis of your gameplay by one of our coaches with the help of comments and drawings second by second.",
-      color: theme.palette.secondary.main,
+      color: theme.palette.info.main,
     },
     {
       icon: podiumGold,
@@ -104,17 +104,8 @@ export function LandingPageFlow() {
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
-          <m.div variants={animateFade().inUp}>
-            <Typography
-              component="p"
-              variant="overline"
-              sx={{ mb: 2, color: "text.secondary", textAlign: "center" }}
-            >
-              Ranklab for players
-            </Typography>
-          </m.div>
           <m.div variants={animateFade().inDown}>
-            <Typography variant="h2" sx={{ textAlign: "center" }}>
+            <Typography variant="h1" sx={{ textAlign: "center" }}>
               How it works
             </Typography>
           </m.div>
@@ -145,7 +136,7 @@ export function LandingPageFlow() {
                       }}
                     />
                   </CardIconStyle>
-                  <Typography variant="h5" paragraph>
+                  <Typography variant="h3" paragraph>
                     {card.title}
                   </Typography>
                   <Typography sx={{ color: "common.white" }}>

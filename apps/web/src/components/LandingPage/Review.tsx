@@ -81,16 +81,7 @@ export function LandingPageReview() {
           >
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
-                <Typography
-                  component="p"
-                  variant="overline"
-                  sx={{ mb: 2, color: "text.secondary" }}
-                >
-                  Your Gameplay Reviewed
-                </Typography>
-              </m.div>
-              <m.div variants={animateFade().inUp}>
-                <Typography variant="h2" sx={{ mb: 3 }}>
+                <Typography variant="h1" sx={{ mb: 3 }}>
                   Key moments <br />
                   analyzed.
                 </Typography>

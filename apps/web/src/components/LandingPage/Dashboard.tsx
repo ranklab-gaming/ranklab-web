@@ -43,16 +43,7 @@ export function LandingPageDashboard() {
           <Grid item xs={12} md={4}>
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
-                <Typography
-                  component="p"
-                  variant="overline"
-                  sx={{ mb: 2, color: "text.disabled", display: "block" }}
-                >
-                  Your Dashboard
-                </Typography>
-              </m.div>
-              <m.div variants={animateFade().inUp}>
-                <Typography variant="h2" sx={{ mb: 3, color: "common.white" }}>
+                <Typography variant="h1" sx={{ mb: 3, color: "common.white" }}>
                   Your reviews in one place.
                 </Typography>
               </m.div>
