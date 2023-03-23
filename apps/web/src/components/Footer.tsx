@@ -1,4 +1,3 @@
-import { Logo } from "@/components/Logo"
 import {
   Container,
   Divider,
@@ -12,23 +11,23 @@ import NextLink from "next/link"
 
 const links = [
   {
-    headline: "Ranklab Ltd",
-    children: [
-      { name: "About us", href: "/" },
-      { name: "Contact us", href: "/" },
-      { name: "FAQs", href: "/" },
-    ],
-  },
-  {
     headline: "Legal",
     children: [
-      { name: "Terms and Conditions", href: "/terms-and-conditions" },
-      { name: "Privacy Policy", href: "/" },
+      {
+        name: "Terms and Conditions",
+        href: "https://www.iubenda.com/terms-and-conditions/88772361",
+      },
+      {
+        name: "Privacy Policy",
+        href: "https://www.iubenda.com/privacy-policy/88772361",
+      },
     ],
   },
   {
-    headline: "Contact",
-    children: [{ name: "support@ranklab.gg", href: "/" }],
+    headline: "Contact Us",
+    children: [
+      { name: "support@ranklab.gg", href: "mailto:support@ranklab.gg" },
+    ],
   },
 ]
 
@@ -43,21 +42,36 @@ export function Footer() {
   return (
     <RootStyle>
       <Divider />
-      <Container sx={{ pt: 10 }}>
+      <Container sx={{ py: 10 }}>
         <Grid
           container
-          justifyContent={{ xs: "center", md: "space-between" }}
+          alignItems="center"
+          justifyContent="center"
           sx={{ textAlign: { xs: "center", md: "left" } }}
         >
-          <Grid item xs={12} sx={{ mb: 3 }}>
-            <Logo sx={{ width: "20px", mx: { xs: "auto", md: "inherit" } }} />
-          </Grid>
           <Grid item xs={12} md={7}>
             <Stack
               spacing={5}
               direction={{ xs: "column", md: "row" }}
               justifyContent="space-between"
             >
+              <Stack spacing={2}>
+                <Typography component="p" variant="overline">
+                  Ranklab
+                </Typography>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  sx={{
+                    fontSize: 13,
+                    textAlign: { xs: "center", md: "left" },
+                  }}
+                >
+                  Copyright © {currentYear} Ranklab Ltd.
+                  <br />
+                  All rights reserved.
+                </Typography>
+              </Stack>
               {links.map((list, index) => (
                 <Stack key={index} spacing={2}>
                   <Typography component="p" variant="overline">
@@ -84,20 +98,6 @@ export function Footer() {
             </Stack>
           </Grid>
         </Grid>
-        <Typography
-          component="p"
-          variant="body2"
-          sx={{
-            mt: 10,
-            pb: 5,
-            fontSize: 13,
-            textAlign: { xs: "center", md: "left" },
-          }}
-        >
-          Copyright © {currentYear} Ranklab Ltd.
-          <br />
-          All rights reserved.
-        </Typography>
       </Container>
     </RootStyle>
   )

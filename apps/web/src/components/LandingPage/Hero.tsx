@@ -1,10 +1,12 @@
 import { animateFade } from "@/animate/fade"
+import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { FunctionComponent, PropsWithChildren } from "react"
 import { LandingPageOverlay } from "./Overlay"
+import NextLink from "next/link"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -26,7 +28,7 @@ const Content: FunctionComponent<PropsWithChildren> = (props) => (
 
 const ContentStyle = styled(Content)(({ theme }) => ({
   zIndex: 10,
-  maxWidth: 620,
+  maxWidth: 920,
   margin: "auto",
   textAlign: "center",
   position: "relative",
@@ -45,19 +47,15 @@ const HeroOverlayStyle = styled(m.div)({
   position: "absolute",
 })
 
-const HeroImgStyle = styled(m.img)(({ theme }) => ({
+const HeroImgStyle = styled(Logo)(() => ({
   top: 0,
-  right: 0,
-  bottom: 0,
+  right: "20%",
   zIndex: 8,
-  width: "100%",
+  width: "800px",
+  height: "auto",
   margin: "auto",
   position: "absolute",
-  [theme.breakpoints.up("lg")]: {
-    right: "8%",
-    width: "auto",
-    height: "48vh",
-  },
+  filter: "grayscale(100%)",
 }))
 
 export function LandingPageHero() {
@@ -67,15 +65,22 @@ export function LandingPageHero() {
         <HeroOverlayStyle variants={animateFade().in}>
           <LandingPageOverlay />
         </HeroOverlayStyle>
+        <m.div variants={animateFade().in}>
+          <HeroImgStyle />
+        </m.div>
         <Container maxWidth="lg" component={MotionContainer}>
           <ContentStyle>
             <m.div variants={animateFade().inRight}>
-              <Typography variant="h1" sx={{ color: "common.white" }}>
-                Be the better gamer <br /> with
+              <Typography
+                variant="h1"
+                sx={{ color: "common.white", fontSize: 60 }}
+              >
+                Up your game <br />
+                with
                 <Typography
                   component="span"
                   variant="h1"
-                  sx={{ color: "primary.main" }}
+                  sx={{ fontSize: 60, color: "primary.main" }}
                 >
                   &nbsp;Ranklab
                 </Typography>
@@ -84,20 +89,26 @@ export function LandingPageHero() {
             </m.div>
 
             <m.div variants={animateFade().inRight}>
-              <Typography sx={{ color: "common.white" }}>
+              <Typography sx={{ color: "common.white" }} variant="h4">
                 Get your gameplay analyzed by experienced coaches.
               </Typography>
             </m.div>
             <m.div variants={animateFade().inRight}>
               <Stack spacing={3} direction="row" alignItems="center">
-                <Button
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {}}
+                <NextLink
+                  href="/api/auth/signin?intent=signup"
+                  passHref
+                  legacyBehavior
                 >
-                  Get Started
-                </Button>
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    sx={{ fontSize: 24, p: 4 }}
+                  >
+                    Get Started
+                  </Button>
+                </NextLink>
               </Stack>
             </m.div>
           </ContentStyle>
