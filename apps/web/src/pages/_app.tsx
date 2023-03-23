@@ -54,7 +54,7 @@ export default function App({
               <Component {...pageProps} />
               <CookieConsent
                 style={{
-                  backgroundColor: theme.palette.background.neutral,
+                  backgroundColor: theme.palette.background.paper,
                   fontFamily: theme.typography.fontFamily,
                 }}
                 buttonStyle={{
