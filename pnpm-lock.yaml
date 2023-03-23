@@ -26,7 +26,7 @@ importers:
       '@mui/material': 5.11.14
       '@ranklab/api': workspace:*
       '@sentry/nextjs': 7.44.2
-      '@stripe/react-stripe-js': 2.0.0
+      '@stripe/react-stripe-js': 2.1.0
       '@stripe/stripe-js': 1.51.0
       '@types/koa': 2.13.5
       '@types/koa-mount': 4.0.2
@@ -73,7 +73,7 @@ importers:
       '@mui/material': 5.11.14_xqeqsl5kvjjtyxwyi3jhw3yuli
       '@ranklab/api': link:../../packages/api
       '@sentry/nextjs': 7.44.2_next@13.2.4+react@18.2.0
-      '@stripe/react-stripe-js': 2.0.0_q5fkzhr5x3hoi42cpajswykicm
+      '@stripe/react-stripe-js': 2.1.0_q5fkzhr5x3hoi42cpajswykicm
       '@stripe/stripe-js': 1.51.0
       '@zach.codes/use-upload': 1.0.1
       csstype: 3.1.1
@@ -1019,8 +1019,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: false
 
-  /@stripe/react-stripe-js/2.0.0_q5fkzhr5x3hoi42cpajswykicm:
-    resolution: {integrity: sha512-JEzZlVdJaU9g3sZIcgCUXfHqvmDGF2pBqDVWxTJLAhSBNARp5kyFEoTFQzeCdPwrq3D4ZMJVgc6i6mbUgiXsgQ==}
+  /@stripe/react-stripe-js/2.1.0_q5fkzhr5x3hoi42cpajswykicm:
+    resolution: {integrity: sha512-Zb6Ycrj5QuhYkvtlvvLzo+cysUyA6wkx3zWHQ7uVnHRYRM/n1jtQD6VGBrdmptC8e8PJN6L091gBCyB5P0FqmA==}
     peerDependencies:
       '@stripe/stripe-js': ^1.44.1
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
