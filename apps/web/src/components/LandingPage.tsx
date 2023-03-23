@@ -42,7 +42,7 @@ export function LandingPage() {
   }, [])
 
   return (
-    <Page title="Be the better gamer">
+    <Page title="Up your game">
       <Stack>
         <LandingPageHeader />
         <RootStyle>
