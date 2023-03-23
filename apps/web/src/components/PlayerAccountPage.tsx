@@ -101,7 +101,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
           loading={isSubmitting}
           disabled={isSubmitting}
         >
-          Update Account
+          Save Changes
         </LoadingButton>
       </form>
     </DashboardLayout>

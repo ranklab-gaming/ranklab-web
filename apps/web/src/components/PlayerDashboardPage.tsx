@@ -21,7 +21,7 @@ export function PlayerDashboardPage({
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
-              <Iconify icon="eva:grid-outline" width={40} height={40} />
+              <Iconify icon="eva:list-outline" width={40} height={40} />
               <Typography variant="h3" component="h1" gutterBottom>
                 No Reviews Yet
               </Typography>
