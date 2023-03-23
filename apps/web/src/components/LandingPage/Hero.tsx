@@ -67,11 +67,6 @@ export function LandingPageHero() {
         <HeroOverlayStyle variants={animateFade().in}>
           <LandingPageOverlay />
         </HeroOverlayStyle>
-        <HeroImgStyle
-          alt="hero"
-          src="https://t3.ftcdn.net/jpg/03/17/05/78/360_F_317057838_MxXfPuA518C0XNjT1GPzcdo0YXPR8YcL.jpg"
-          variants={animateFade().inUp}
-        />
         <Container maxWidth="lg" component={MotionContainer}>
           <ContentStyle>
             <m.div variants={animateFade().inRight}>
@@ -90,8 +85,7 @@ export function LandingPageHero() {
 
             <m.div variants={animateFade().inRight}>
               <Typography sx={{ color: "common.white" }}>
-                Get your gameplay analyzed by experienced coaches quickly and
-                without fuss.
+                Get your gameplay analyzed by experienced coaches.
               </Typography>
             </m.div>
             <m.div variants={animateFade().inRight}>

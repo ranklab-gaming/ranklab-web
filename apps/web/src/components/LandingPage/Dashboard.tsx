@@ -34,20 +34,6 @@ export function LandingPageDashboard() {
         sx={{ position: "relative" }}
         component={MotionContainer}
       >
-        <Box
-          component="img"
-          alt="image shape"
-          src="https://picsum.photos/seed/imageshape/800/600"
-          sx={{
-            top: 0,
-            right: 0,
-            bottom: 0,
-            my: "auto",
-            position: "absolute",
-            filter: "grayscale(1) opacity(48%)",
-            display: { xs: "none", md: "block" },
-          }}
-        />
         <Grid
           container
           spacing={5}

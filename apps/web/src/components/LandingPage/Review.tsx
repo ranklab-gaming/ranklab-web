@@ -72,7 +72,7 @@ export function LandingPageReview() {
   return (
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>
-        <Grid container spacing={5} justifyContent="center">
+        <Grid container spacing={5} justifyContent="space-between">
           <Grid
             item
             xs={12}
@@ -119,48 +119,13 @@ export function LandingPageReview() {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={8} dir="ltr">
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                position: "relative",
-                justifyContent: "center",
-              }}
-            >
-              {[...Array(3)].map((_, index) => (
-                <ScreenStyle
-                  key={index}
-                  transition={{ duration: 0.72, ease: "easeOut" }}
-                  variants={{
-                    ...(index === 0 && screenLeftAnimate),
-                    ...(index === 1 && screenCenterAnimate),
-                    ...(index === 2 && screenRightAnimate),
-                  }}
-                  sx={{
-                    boxShadow: `80px -40px 80px ${alpha(
-                      theme.palette.common.black,
-                      0.48
-                    )}`,
-                    ...(index === 0 && {
-                      zIndex: 3,
-                      position: "absolute",
-                    }),
-                    ...(index === 1 && { zIndex: 2 }),
-                    ...(index === 2 && {
-                      zIndex: 1,
-                      position: "absolute",
-                      boxShadow: "none",
-                    }),
-                  }}
-                >
-                  <img
-                    alt={`screen ${index + 1}`}
-                    src={`https://picsum.photos/seed/screen${index}/800/600`}
-                  />
-                </ScreenStyle>
-              ))}
-            </Box>
+          <Grid item xs={12} md={7} sx={{ position: "relative" }}>
+            <m.div variants={animateFade().inUp}>
+              <img
+                alt="light mode"
+                src="https://picsum.photos/seed/lightmode/800/600"
+              />
+            </m.div>
           </Grid>
         </Grid>
       </Container>
