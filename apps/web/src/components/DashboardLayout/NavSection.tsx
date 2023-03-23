@@ -5,7 +5,7 @@ import {
   ListSubheader as MuiListSubheader,
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { ComponentProps, FunctionComponent } from "react"
+import { ComponentProps } from "react"
 import {
   DashboardLayoutNavListProps,
   DashboardLayoutNavListRoot,
@@ -20,7 +20,7 @@ interface NavSectionProps extends BoxProps {
 
 type ListSubheaderProps = ComponentProps<typeof MuiListSubheader>
 
-const ListSubheader: FunctionComponent<ListSubheaderProps> = (props) => (
+const ListSubheader = (props: ListSubheaderProps) => (
   <MuiListSubheader disableSticky disableGutters {...props} />
 )
 

@@ -10,32 +10,33 @@ interface Props {
   games: Game[]
 }
 
-export function PlayerDashboardPage({
+export function PlayerArchivePage({
   reviews,
   games,
   user,
 }: PropsWithUser<Props>) {
   return (
-    <DashboardLayout user={user} title="Dashboard">
+    <DashboardLayout user={user} title="Archive">
       {reviews.count === 0 ? (
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
-              <Iconify icon="eva:list-outline" width={40} height={40} />
+              <Iconify icon="eva:archive-outline" width={40} height={40} />
               <Typography variant="h3" component="h1" gutterBottom>
                 No Reviews Yet
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Once you request a review from a coach, it will appear here.
+                Once you accept a review after it has been completed, it will
+                appear here.
               </Typography>
               <Button
                 variant="contained"
                 color="primary"
-                href="/api/new-review"
+                href="/player/dashboard"
                 sx={{ mt: 2 }}
                 size="large"
               >
-                Request a Review
+                Go to Dashboard
               </Button>
             </Box>
           </Box>

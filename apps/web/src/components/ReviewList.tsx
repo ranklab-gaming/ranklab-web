@@ -19,13 +19,11 @@ import {
   Review,
   ReviewState,
 } from "@ranklab/api"
-import { FunctionComponent, MouseEvent, useState } from "react"
+import { MouseEvent, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
 
-const Status: FunctionComponent<{ reviewState: Review["state"] }> = function ({
-  reviewState,
-}) {
+const Status = function ({ reviewState }: { reviewState: Review["state"] }) {
   const color = (() => {
     switch (reviewState) {
       case ReviewState.AwaitingPayment:

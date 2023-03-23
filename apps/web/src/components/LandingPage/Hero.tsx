@@ -4,7 +4,7 @@ import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { FunctionComponent, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 import { LandingPageOverlay } from "./Overlay"
 import NextLink from "next/link"
 
@@ -22,9 +22,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-const Content: FunctionComponent<PropsWithChildren> = (props) => (
-  <Stack spacing={5} {...props} />
-)
+const Content = (props: PropsWithChildren) => <Stack spacing={5} {...props} />
 
 const ContentStyle = styled(Content)(({ theme }) => ({
   zIndex: 10,

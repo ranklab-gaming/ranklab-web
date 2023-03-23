@@ -140,7 +140,7 @@ export function CoachDashboardPage({
   user,
 }: PropsWithUser<Props>) {
   return (
-    <DashboardLayout user={user} title="Dashboard" showTitle={false}>
+    <DashboardLayout user={user} title="Dashboard">
       <Content reviews={reviews} games={games} />
     </DashboardLayout>
   )
