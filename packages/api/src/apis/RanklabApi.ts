@@ -34,7 +34,6 @@ import type {
   Game,
   LoginLink,
   OneTimeTokenParams,
-  PaginatedResultForRecording,
   PaginatedResultForReview,
   PaymentMethod,
   Player,
@@ -111,10 +110,6 @@ export interface PlayerRecordingsCreateRequest {
 
 export interface PlayerRecordingsGetRequest {
   id: string
-}
-
-export interface PlayerRecordingsListRequest {
-  page?: number | null
 }
 
 export interface PlayerReviewsCreateRequest {
@@ -1113,14 +1108,9 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async playerRecordingsListRaw(
-    requestParameters: PlayerRecordingsListRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<PaginatedResultForRecording>> {
+  ): Promise<runtime.ApiResponse<Array<Recording>>> {
     const queryParameters: any = {}
-
-    if (requestParameters.page !== undefined) {
-      queryParameters["page"] = requestParameters.page
-    }
 
     const headerParameters: runtime.HTTPHeaders = {}
 
@@ -1140,13 +1130,9 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async playerRecordingsList(
-    requestParameters: PlayerRecordingsListRequest = {},
     initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<PaginatedResultForRecording> {
-    const response = await this.playerRecordingsListRaw(
-      requestParameters,
-      initOverrides
-    )
+  ): Promise<Array<Recording>> {
+    const response = await this.playerRecordingsListRaw(initOverrides)
     return await response.value()
   }
 

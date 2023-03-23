@@ -1,6 +1,6 @@
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
-import { PlayerArchivePage } from "@/components/PlayerArchivePage"
+import { CoachArchivePage } from "@/components/CoachArchivePage"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
 
 interface Props {
@@ -8,10 +8,10 @@ interface Props {
   games: Game[]
 }
 
-export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
+export const getServerSideProps = withUserSsr<Props>("coach", async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx)
-  const reviews = await api.playerReviewsList({ archived: true })
+  const reviews = await api.coachReviewsList({ archived: true })
   const games = await api.gameList()
 
   return {
@@ -23,5 +23,5 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
 })
 
 export default function ({ reviews, user, games }: PropsWithUser<Props>) {
-  return <PlayerArchivePage reviews={reviews} user={user} games={games} />
+  return <CoachArchivePage reviews={reviews} user={user} games={games} />
 }

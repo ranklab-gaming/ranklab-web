@@ -558,43 +558,6 @@ export interface OneTimeTokenParams {
 /**
  *
  * @export
- * @interface PaginatedResultForRecording
- */
-export interface PaginatedResultForRecording {
-  /**
-   *
-   * @type {Array<Recording>}
-   * @memberof PaginatedResultForRecording
-   */
-  records: Array<Recording>
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForRecording
-   */
-  totalPages: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForRecording
-   */
-  perPage: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForRecording
-   */
-  page: number
-  /**
-   *
-   * @type {number}
-   * @memberof PaginatedResultForRecording
-   */
-  count: number
-}
-/**
- *
- * @export
  * @interface PaginatedResultForReview
  */
 export interface PaginatedResultForReview {
