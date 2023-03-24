@@ -17,7 +17,7 @@ export function PlayerRecordingsPage({
 }: PropsWithUser<Props>) {
   return (
     <DashboardLayout user={user} title="Recordings">
-      {recordings.count === 0 ? (
+      {recordings.length === 0 ? (
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
