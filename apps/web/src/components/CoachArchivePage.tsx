@@ -30,7 +30,7 @@ export function CoachArchivePage({
                 will appear here.
               </Typography>
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 href="/coach/dashboard"
                 sx={{ mt: 2 }}

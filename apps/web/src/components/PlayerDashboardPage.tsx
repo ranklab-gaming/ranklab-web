@@ -29,7 +29,7 @@ export function PlayerDashboardPage({
                 Once you request a review from a coach, it will appear here.
               </Typography>
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 href="/api/new-review"
                 sx={{ mt: 2 }}

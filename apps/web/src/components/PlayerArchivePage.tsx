@@ -30,7 +30,7 @@ export function PlayerArchivePage({
                 appear here.
               </Typography>
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 href="/player/dashboard"
                 sx={{ mt: 2 }}

@@ -120,7 +120,7 @@ function Content({ reviews, games }: Props) {
           legacyBehavior
         >
           <Button
-            variant="contained"
+            variant="outlined"
             color="primary"
             component="a"
             sx={{ mt: 2 }}

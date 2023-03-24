@@ -29,7 +29,7 @@ export function PlayerRecordingsPage({
                 Once you upload a recording of your games, it will appear here.
               </Typography>
               <Button
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 href="/player/dashboard"
                 sx={{ mt: 2 }}
