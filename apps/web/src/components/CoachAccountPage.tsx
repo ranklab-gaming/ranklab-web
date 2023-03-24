@@ -25,6 +25,7 @@ import {
 } from "@mui/material"
 import { Game } from "@ranklab/api"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import { useState } from "react"
 import { Controller } from "react-hook-form"
@@ -47,7 +48,8 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const coach = coachFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
-  const [tab, setTab] = useState("account")
+  const router = useRouter()
+  const [tab, setTab] = useState(router.query.tab ?? "account")
 
   const defaultValues: FormValues = {
     bio: coach.bio,
@@ -177,8 +179,8 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
                         />
                       </FormGroup>
                       <FormHelperText>
-                        When enabled, we will send you emails when new
-                        recordings are available for review.
+                        When enabled, we will send you emails when new players
+                        submit and accept reviews.
                       </FormHelperText>
                     </FormControl>
                   )}
