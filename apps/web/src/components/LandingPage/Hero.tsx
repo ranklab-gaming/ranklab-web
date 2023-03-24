@@ -102,7 +102,7 @@ export function LandingPageHero() {
                     size="large"
                     variant="contained"
                     color="primary"
-                    sx={{ fontSize: 24, p: 4 }}
+                    sx={{ fontSize: 22, p: 4 }}
                   >
                     Get Started
                   </Button>
