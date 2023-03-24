@@ -58,7 +58,7 @@ export function LandingPageDashboard() {
                   passHref
                   legacyBehavior
                 >
-                  <Button size="large" variant="outlined" color="primary">
+                  <Button size="large" variant="contained" color="primary">
                     Get Started
                   </Button>
                 </NextLink>

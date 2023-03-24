@@ -100,7 +100,7 @@ export function LandingPageHero() {
                 >
                   <Button
                     size="large"
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     sx={{ fontSize: 22, p: 4 }}
                   >
