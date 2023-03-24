@@ -78,7 +78,7 @@ export function CoachSignupPage({ games, availableCountries, token }: Props) {
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <BasicLayout title="Signup to Ranklab as a Coach">
+    <BasicLayout title="Sign up to Ranklab as a Coach">
       <form onSubmit={handleSubmit(createCoach)}>
         <Stack spacing={3}>
           <CoachAccountFields

@@ -55,7 +55,7 @@ export function PlayerSignupPage({ games }: Props) {
   }
 
   return (
-    <BasicLayout title="Signup to Ranklab">
+    <BasicLayout title="Sign up to Ranklab">
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography sx={{ color: "text.secondary" }}>
