@@ -14,6 +14,7 @@ const newReview = withSessionApiRoute(async function (req, res) {
 
   req.session.review = {
     recordingId: req.query.recording_id as string,
+    coachId: req.query.coach_id as string,
   }
 
   await req.session.save()
