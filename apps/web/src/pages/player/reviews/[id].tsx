@@ -22,11 +22,7 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
       : []
 
   const games = await api.gameList()
-
-  const comments =
-    review.state === "Published" || review.state === "Accepted"
-      ? await api.playerCommentsList({ reviewId: id })
-      : []
+  const comments = await api.playerCommentsList({ reviewId: id })
 
   return {
     props: {

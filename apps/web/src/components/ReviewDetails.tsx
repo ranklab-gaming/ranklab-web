@@ -4,6 +4,9 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
+  CardContent,
+  CardHeader,
   Chip,
   Grid,
   Paper,
@@ -12,16 +15,6 @@ import {
   useTheme,
 } from "@mui/material"
 import { uploadsCdnUrl } from "@/config"
-import {
-  Timeline,
-  TimelineItem,
-  TimelineOppositeContent,
-  TimelineSeparator,
-  TimelineDot,
-  TimelineConnector,
-  TimelineContent,
-  LoadingButton,
-} from "@mui/lab"
 import { useResponsive } from "@/hooks/useResponsive"
 import Sticky from "react-stickynode"
 import { ReviewState } from "@/components/ReviewState"
@@ -30,6 +23,10 @@ import NextLink from "next/link"
 import { useState } from "react"
 import { api } from "@/api"
 import { useSnackbar } from "notistack"
+import { LoadingButton } from "@mui/lab"
+import { formatDuration } from "@/utils/formatDuration"
+import { m } from "framer-motion"
+import { animateFade } from "@/animate/fade"
 
 interface Props {
   review: Review
@@ -47,6 +44,7 @@ export function ReviewDetails({
   const [accepting, setAccepting] = useState(false)
   const [review, setReview] = useState(initialReview)
   const { enqueueSnackbar } = useSnackbar()
+  const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
 
   const recording = review.recording
 
@@ -142,16 +140,44 @@ export function ReviewDetails({
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
           <Sticky enabled={isDesktop} top={70}>
-            <Paper sx={{ backgroundColor: theme.palette.common.black }}>
-              <video
-                src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                controls
-                style={{
-                  width: "100%",
-                  objectFit: "contain",
-                  height: "70vh",
-                }}
-              />
+            <Paper
+              sx={{
+                backgroundColor: theme.palette.common.black,
+              }}
+            >
+              <Box
+                height="70vh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Box position="relative">
+                  <video
+                    src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                    controls
+                    style={{
+                      width: "100%",
+                    }}
+                  />
+                  {selectedComment && selectedComment.drawing && (
+                    <Box
+                      position="absolute"
+                      top={0}
+                      left={0}
+                      component={m.div}
+                      variants={animateFade().in}
+                      initial="initial"
+                      animate="animate"
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: selectedComment.drawing,
+                        }}
+                      />
+                    </Box>
+                  )}
+                </Box>
+              </Box>
             </Paper>
           </Sticky>
         </Grid>
@@ -189,22 +215,76 @@ export function ReviewDetails({
             )}
           {review.state === State.Accepted ||
             (review.state === State.Published && (
-              <Timeline>
-                {comments.map((comment) => (
-                  <Card sx={{ p: 2 }}>
-                    <TimelineItem>
-                      <TimelineOppositeContent color="textSecondary">
-                        09:30 am
-                      </TimelineOppositeContent>
-                      <TimelineSeparator>
-                        <TimelineDot />
-                        <TimelineConnector />
-                      </TimelineSeparator>
-                      <TimelineContent>Eat</TimelineContent>
-                    </TimelineItem>
-                  </Card>
-                ))}
-              </Timeline>
+              <Card sx={{ height: "100%" }}>
+                <CardHeader title={`Review By ${coach.name}`} />
+                <CardContent>
+                  <Stack spacing={2}>
+                    {comments.map((comment) => (
+                      <Card>
+                        <CardActionArea
+                          onClick={() => {
+                            setSelectedComment(
+                              selectedComment === comment ? null : comment
+                            )
+                          }}
+                        >
+                          <CardContent>
+                            <Stack spacing={2}>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
+                              >
+                                <Typography
+                                  variant="h5"
+                                  component="h2"
+                                  mr="auto"
+                                >
+                                  {formatDuration(comment.videoTimestamp)}
+                                </Typography>
+                                {comment.body && (
+                                  <Iconify
+                                    icon="eva:message-square-outline"
+                                    width={24}
+                                    height={24}
+                                  />
+                                )}
+                                {comment.drawing && (
+                                  <Iconify
+                                    icon="eva:brush-outline"
+                                    width={24}
+                                    height={24}
+                                  />
+                                )}
+                              </Stack>
+                              {selectedComment === comment && comment.body && (
+                                <Typography
+                                  variant="body1"
+                                  component={m.div}
+                                  variants={{
+                                    initial: {
+                                      opacity: 0,
+                                      height: 0,
+                                    },
+                                    animate: {
+                                      opacity: 1,
+                                      height: "auto",
+                                    },
+                                  }}
+                                  initial="initial"
+                                  animate="animate"
+                                >
+                                  {comment.body}
+                                </Typography>
+                              )}
+                            </Stack>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    ))}
+                  </Stack>
+                </CardContent>
+              </Card>
             ))}
         </Grid>
       </Grid>
