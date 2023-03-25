@@ -349,20 +349,22 @@ function Content({ review, paymentMethods, games }: Props) {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader title={`Review By ${coach.name}`} />
+              <CardHeader title={recording.title} />
               <CardContent>
                 <Stack spacing={2}>
-                  <Paper sx={{ p: 2 }} elevation={1}>
+                  <Stack spacing={2} direction="row">
+                    <Typography
+                      variant="caption"
+                      mr="auto"
+                      color="text.secondary"
+                    >
+                      Review By {coach.name}
+                    </Typography>
                     <Stack spacing={2} direction="row">
-                      <Typography variant="body1" mr="auto">
-                        {recording.title}
-                      </Typography>
-                      <Stack spacing={2} direction="row">
-                        <Chip label={skillLevel.name} size="small" />
-                        <Chip label={game.name} size="small" />
-                      </Stack>
+                      <Chip label={skillLevel.name} size="small" />
+                      <Chip label={game.name} size="small" />
                     </Stack>
-                  </Paper>
+                  </Stack>
                   <video
                     style={{
                       objectFit: "cover",
