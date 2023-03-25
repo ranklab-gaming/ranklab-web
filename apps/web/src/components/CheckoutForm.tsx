@@ -3,11 +3,17 @@ import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Checkbox,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   FormControlLabel,
   Grid,
@@ -18,6 +24,7 @@ import {
   Select,
   Stack,
   Typography,
+  useTheme,
 } from "@mui/material"
 import { Game, PaymentMethod, Review } from "@ranklab/api"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
@@ -74,6 +81,15 @@ function Content({ review, paymentMethods, games }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const theme = useTheme()
+
+  const deleteReview = async () => {
+    setDeleting(true)
+    await api.playerReviewsDelete({ id: review.id })
+    await router.push("/player/dashboard")
+  }
 
   if (!coach) {
     throw new Error("coach is missing")
@@ -378,6 +394,56 @@ function Content({ review, paymentMethods, games }: Props) {
                 </Stack>
               </CardContent>
             </Card>
+            <Paper
+              sx={{
+                mb: 1,
+                backgroundColor: theme.palette.grey[900],
+              }}
+              elevation={1}
+            >
+              <Stack direction="row" alignItems="center" p={2}>
+                <Typography variant="body2" mr="auto" color="text.secondary">
+                  If you created this order by mistake, you can delete this
+                  review and get a full refund.
+                </Typography>
+                <Box>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => setShowDeleteDialog(true)}
+                  >
+                    Delete Review
+                  </Button>
+                  <Dialog
+                    open={showDeleteDialog}
+                    onClose={() => setShowDeleteDialog(false)}
+                    fullWidth
+                  >
+                    <DialogTitle>Really delete this review?</DialogTitle>
+                    <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                      <DialogContentText>
+                        This action cannot be undone.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={() => setShowDeleteDialog(false)}>
+                        Cancel
+                      </Button>
+                      <LoadingButton
+                        onClick={() => deleteReview()}
+                        autoFocus
+                        disabled={deleting}
+                        loading={deleting}
+                        color="primary"
+                        variant="contained"
+                      >
+                        Delete
+                      </LoadingButton>
+                    </DialogActions>
+                  </Dialog>
+                </Box>
+              </Stack>
+            </Paper>
           </Stack>
         </Grid>
         <Grid item xs={12} md={4}>
@@ -418,8 +484,8 @@ function Content({ review, paymentMethods, games }: Props) {
                         textAlign="center"
                       >
                         If the coach does not review your recording within 5
-                        days, or you decide to cancel the order, the money you
-                        pay now will get refunded automatically.
+                        days, the money you pay now will get refunded
+                        automatically.
                       </Typography>
                     </Stack>
                   </Stack>

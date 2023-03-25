@@ -28,7 +28,7 @@ export function ReviewState({ state }: ReviewStateProps) {
       case State.AwaitingPayment:
         return "Awaiting Payment"
       case State.AwaitingReview:
-        return "In Queue for Review"
+        return "Waiting for Review"
       case State.Draft:
         return "Under Review"
       case State.Published:

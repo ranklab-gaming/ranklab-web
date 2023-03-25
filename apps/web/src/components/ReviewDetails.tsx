@@ -1,6 +1,14 @@
 import { Review, Comment, ReviewState as State } from "@ranklab/api"
 import { AwaitingPayment } from "@/components/ReviewDetails/AwaitingPayment"
-import { Card, Grid, Paper, Stack, Typography, useTheme } from "@mui/material"
+import {
+  Box,
+  Card,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { uploadsCdnUrl } from "@/config"
 import {
   Timeline,
@@ -26,10 +34,6 @@ export function ReviewDetails({ review, comments }: Props) {
   const isDesktop = useResponsive("up", "sm")
   const theme = useTheme()
 
-  if (review.state === State.AwaitingPayment) {
-    return <AwaitingPayment review={review} />
-  }
-
   const recording = review.recording
 
   if (!recording) throw new Error("recording is missing")
@@ -53,26 +57,38 @@ export function ReviewDetails({ review, comments }: Props) {
       <Grid container spacing={2}>
         <Grid item md={8} xs={12}>
           <Sticky enabled={isDesktop} top={70}>
-            <video
-              src={`${uploadsCdnUrl}/${recording.videoKey}`}
-              controls
-              style={{ maxWidth: "100%", objectFit: "contain" }}
-            />
+            <Paper sx={{ backgroundColor: theme.palette.common.black }}>
+              <video
+                src={`${uploadsCdnUrl}/${recording.videoKey}`}
+                controls
+                style={{
+                  width: "100%",
+                  objectFit: "contain",
+                  height: "70vh",
+                }}
+              />
+            </Paper>
           </Sticky>
         </Grid>
         <Grid item md={4} xs={12} minHeight="70vh">
           {review.state === State.AwaitingReview && (
             <Paper
               sx={{
-                p: 2,
+                p: 4,
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Stack spacing={2} sx={{ textAlign: "center" }}>
-                <Iconify icon="mdi:clock-outline" fontSize={64} />
+              <Stack spacing={3} sx={{ textAlign: "center" }}>
+                <Box height={64}>
+                  <Iconify
+                    icon="eva:message-square-outline"
+                    width={64}
+                    height={64}
+                  />
+                </Box>
                 <Typography variant="h3">
                   Your coach has been notified of your request and will begin
                   reviewing shortly.

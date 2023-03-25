@@ -16,6 +16,7 @@ import {
 import { Review } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { useState } from "react"
+import NextLink from "next/link"
 
 export interface AwaitingPaymentProps {
   review: Review
@@ -33,69 +34,67 @@ export function AwaitingPayment({ review }: AwaitingPaymentProps) {
   }
 
   return (
-    <Paper>
-      <Box p={2}>
-        <Box textAlign="center" p={8}>
-          <Iconify icon="eva:archive-outline" width={40} height={40} />
-          <Typography variant="h3" component="h1" gutterBottom>
-            Awaiting Payment
-          </Typography>
-
-          <Typography variant="body1" gutterBottom>
-            You can either go to checkout to complete the payment, or delete
-            this review permanently.
-          </Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{ mt: 2, alignItems: "center", justifyContent: "center" }}
-          >
-            <Button
-              variant="outlined"
-              color="primary"
-              href="/coach/dashboard"
-              size="large"
-            >
+    <Paper
+      sx={{
+        p: 2,
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Stack spacing={3} sx={{ textAlign: "center" }}>
+        <Box height={64}>
+          <Iconify icon="eva:credit-card-outline" width={64} height={64} />
+        </Box>
+        <Typography variant="h3">
+          This review is awaiting payment. Please complete your payment to
+          continue.
+        </Typography>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ alignItems: "center", justifyContent: "center" }}
+        >
+          <NextLink href={`/player/reviews/${review.id}`} passHref>
+            <Button variant="outlined" color="primary">
               Go to Checkout
             </Button>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => setShowDeleteDialog(true)}
-              size="large"
-            >
-              Delete Review
-            </Button>
-            <Dialog
-              open={showDeleteDialog}
-              onClose={() => setShowDeleteDialog(false)}
-              fullWidth
-            >
-              <DialogTitle>Really delete this review?</DialogTitle>
-              <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
-                <DialogContentText>
-                  This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setShowDeleteDialog(false)}>
-                  Cancel
-                </Button>
-                <LoadingButton
-                  onClick={() => deleteReview()}
-                  autoFocus
-                  disabled={deleting}
-                  loading={deleting}
-                  color="primary"
-                  variant="contained"
-                >
-                  Delete
-                </LoadingButton>
-              </DialogActions>
-            </Dialog>
-          </Stack>
-        </Box>
-      </Box>
+          </NextLink>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => setShowDeleteDialog(true)}
+          >
+            Delete Review
+          </Button>
+          <Dialog
+            open={showDeleteDialog}
+            onClose={() => setShowDeleteDialog(false)}
+            fullWidth
+          >
+            <DialogTitle>Really delete this review?</DialogTitle>
+            <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+              <DialogContentText>
+                This action cannot be undone.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowDeleteDialog(false)}>Cancel</Button>
+              <LoadingButton
+                onClick={() => deleteReview()}
+                autoFocus
+                disabled={deleting}
+                loading={deleting}
+                color="primary"
+                variant="contained"
+              >
+                Delete
+              </LoadingButton>
+            </DialogActions>
+          </Dialog>
+        </Stack>
+      </Stack>
     </Paper>
   )
 }
