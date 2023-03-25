@@ -8,6 +8,11 @@ import {
   CardContent,
   CardHeader,
   Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   Paper,
   Stack,
@@ -45,6 +50,8 @@ export function ReviewDetails({
   const [review, setReview] = useState(initialReview)
   const { enqueueSnackbar } = useSnackbar()
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
+  const [showCancelDialog, setShowCancelDialog] = useState(false)
+  const [cancelling, setCancelling] = useState(false)
 
   const recording = review.recording
 
@@ -80,6 +87,26 @@ export function ReviewDetails({
 
     setReview(updatedReview)
     setAccepting(false)
+    setShowCancelDialog(false)
+  }
+
+  const cancelReview = async () => {
+    setCancelling(true)
+
+    const updatedReview = await api.playerReviewsUpdate({
+      id: review.id,
+      playerUpdateReviewRequest: {
+        cancelled: true,
+      },
+    })
+
+    enqueueSnackbar("Review cancelled successfully.", {
+      variant: "success",
+    })
+
+    setShowCancelDialog(false)
+    setCancelling(false)
+    setReview(updatedReview)
   }
 
   return (
@@ -210,6 +237,45 @@ export function ReviewDetails({
                       ? "This review has been refunded. You can request a new one from your dashboard."
                       : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
                   </Typography>
+                  {review.state === State.AwaitingReview && (
+                    <Box>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => setShowCancelDialog(true)}
+                      >
+                        Cancel Review
+                      </Button>
+                      <Dialog
+                        open={showCancelDialog}
+                        onClose={() => setShowCancelDialog(false)}
+                        fullWidth
+                      >
+                        <DialogTitle>Really cancel this review?</DialogTitle>
+                        <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                          <DialogContentText>
+                            This action cannot be undone. The review will be
+                            cancelled and you will be refunded the full amount.
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={() => setShowCancelDialog(false)}>
+                            Go Back
+                          </Button>
+                          <LoadingButton
+                            onClick={() => cancelReview()}
+                            autoFocus
+                            disabled={cancelling}
+                            loading={cancelling}
+                            color="primary"
+                            variant="contained"
+                          >
+                            Cancel
+                          </LoadingButton>
+                        </DialogActions>
+                      </Dialog>
+                    </Box>
+                  )}
                 </Stack>
               </Paper>
             )}

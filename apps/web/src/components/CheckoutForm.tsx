@@ -421,7 +421,7 @@ function Content({ review, paymentMethods, games }: Props) {
               </DialogContent>
               <DialogActions>
                 <Button onClick={() => setShowDeleteDialog(false)}>
-                  Cancel
+                  Go Back
                 </Button>
                 <LoadingButton
                   onClick={() => deleteReview()}
