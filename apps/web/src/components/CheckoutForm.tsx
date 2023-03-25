@@ -404,7 +404,7 @@ function Content({ review, paymentMethods, games }: Props) {
               <Stack direction="row" alignItems="center" p={2}>
                 <Typography variant="body2" mr="auto" color="text.secondary">
                   If you created this order by mistake, you can delete this
-                  review and get a full refund.
+                  review so that it doesn't appear in your dashboard.
                 </Typography>
                 <Box>
                   <Button
