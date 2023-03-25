@@ -19,25 +19,50 @@ import {
   TimelineDot,
   TimelineConnector,
   TimelineContent,
+  LoadingButton,
 } from "@mui/lab"
 import { useResponsive } from "@/hooks/useResponsive"
 import Sticky from "react-stickynode"
 import { ReviewState } from "@/components/ReviewState"
 import { Iconify } from "@/components/Iconify"
 import NextLink from "next/link"
+import { useState } from "react"
+import { api } from "@/api"
+import { useSnackbar } from "notistack"
 
 interface Props {
   review: Review
   comments: Comment[]
 }
 
-export function ReviewDetails({ review, comments }: Props) {
+export function ReviewDetails({ review: initialReview, comments }: Props) {
   const isDesktop = useResponsive("up", "sm")
   const theme = useTheme()
+  const [accepting, setAccepting] = useState(false)
+  const [review, setReview] = useState(initialReview)
+  const { enqueueSnackbar } = useSnackbar()
 
   const recording = review.recording
 
   if (!recording) throw new Error("recording is missing")
+
+  const acceptReview = async () => {
+    setAccepting(true)
+
+    const updatedReview = await api.playerReviewsUpdate({
+      id: review.id,
+      playerUpdateReviewRequest: {
+        accepted: true,
+      },
+    })
+
+    enqueueSnackbar("Review accepted successfully. Thanks!", {
+      variant: "success",
+    })
+
+    setReview(updatedReview)
+    setAccepting(false)
+  }
 
   return (
     <>
@@ -55,7 +80,7 @@ export function ReviewDetails({ review, comments }: Props) {
           <ReviewState state={review.state} />
         </Stack>
       </Paper>
-      {review.state !== State.Published && (
+      {review.state === State.Published && (
         <Alert
           severity="success"
           sx={{ mb: 2 }}
@@ -75,9 +100,16 @@ export function ReviewDetails({ review, comments }: Props) {
                   CONTACT SUPPORT
                 </Button>
               </NextLink>
-              <Button size="small" variant="text" color="success">
+              <LoadingButton
+                size="small"
+                variant="text"
+                color="success"
+                onClick={() => acceptReview()}
+                loading={accepting}
+                disabled={accepting}
+              >
                 ACCEPT REVIEW
-              </Button>
+              </LoadingButton>
             </Stack>
           }
         >
