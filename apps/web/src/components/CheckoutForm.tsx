@@ -349,7 +349,7 @@ function Content({ review, paymentMethods, games }: Props) {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader title={`Review by ${coach.name}`} />
+              <CardHeader title={`Review By ${coach.name}`} />
               <CardContent>
                 <Stack spacing={2}>
                   <Paper sx={{ p: 2 }} elevation={1}>
@@ -377,21 +377,17 @@ function Content({ review, paymentMethods, games }: Props) {
                       type={recording.mimeType}
                     />
                   </video>
-                  {review.notes && (
-                    <Paper sx={{ p: 2 }} elevation={1}>
-                      <Stack spacing={2}>
-                        <Typography variant="overline">
-                          Notes for the coach
-                        </Typography>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: review.notes }}
-                        />
-                      </Stack>
-                    </Paper>
-                  )}
                 </Stack>
               </CardContent>
             </Card>
+            {review.notes && (
+              <Card>
+                <CardHeader title="Notes For The Coach" />
+                <CardContent>
+                  <div dangerouslySetInnerHTML={{ __html: review.notes }} />
+                </CardContent>
+              </Card>
+            )}
             <Alert
               severity="info"
               sx={{ mb: 2, backgroundColor: theme.palette.grey[800] }}

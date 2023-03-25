@@ -36,7 +36,7 @@ export function PlayerReviewsShowPage({
           games={games}
         />
       ) : (
-        <ReviewDetails review={review} comments={comments} />
+        <ReviewDetails review={review} comments={comments} games={games} />
       )}
     </DashboardLayout>
   )

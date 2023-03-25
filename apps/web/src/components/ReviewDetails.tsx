@@ -1,9 +1,10 @@
-import { Review, Comment, ReviewState as State } from "@ranklab/api"
+import { Review, Comment, ReviewState as State, Game } from "@ranklab/api"
 import {
   Alert,
   Box,
   Button,
   Card,
+  Chip,
   Grid,
   Paper,
   Stack,
@@ -33,9 +34,14 @@ import { useSnackbar } from "notistack"
 interface Props {
   review: Review
   comments: Comment[]
+  games: Game[]
 }
 
-export function ReviewDetails({ review: initialReview, comments }: Props) {
+export function ReviewDetails({
+  review: initialReview,
+  comments,
+  games,
+}: Props) {
   const isDesktop = useResponsive("up", "sm")
   const theme = useTheme()
   const [accepting, setAccepting] = useState(false)
@@ -45,6 +51,16 @@ export function ReviewDetails({ review: initialReview, comments }: Props) {
   const recording = review.recording
 
   if (!recording) throw new Error("recording is missing")
+
+  const game = games.find((g) => g.id === recording.gameId)
+
+  if (!game) throw new Error("game is missing")
+
+  const skillLevel = game.skillLevels.find(
+    (sl) => sl.value === recording.skillLevel
+  )
+
+  if (!skillLevel) throw new Error("skillLevel is missing")
 
   const acceptReview = async () => {
     setAccepting(true)
@@ -77,6 +93,8 @@ export function ReviewDetails({ review: initialReview, comments }: Props) {
           <Typography variant="h3" component="h1" paragraph mb={0}>
             {recording.title}
           </Typography>
+          <Chip label={skillLevel.name} />
+          <Chip label={game.name} />
           <ReviewState state={review.state} />
         </Stack>
       </Paper>

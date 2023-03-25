@@ -105,7 +105,7 @@ export function ReviewList({
                             {formatDate(review.createdAt)}
                           </Typography>
                         </Stack>
-                        <ReviewState state={review.state} />
+                        <ReviewState state={review.state} size="small" />
                       </Stack>
                     </CardContent>
                   </CardActionArea>

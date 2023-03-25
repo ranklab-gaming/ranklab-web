@@ -1,11 +1,12 @@
-import { Label } from "@/components/Label"
+import { Chip } from "@mui/material"
 import { ReviewState as State } from "@ranklab/api"
 
 export interface ReviewStateProps {
   state: State
+  size?: "small" | "medium"
 }
 
-export function ReviewState({ state }: ReviewStateProps) {
+export function ReviewState({ state, size }: ReviewStateProps) {
   const color = (() => {
     switch (state) {
       case State.AwaitingPayment:
@@ -41,12 +42,12 @@ export function ReviewState({ state }: ReviewStateProps) {
   })()
 
   return (
-    <Label
+    <Chip
       variant="filled"
       color={color}
       sx={{ textTransform: "capitalize", mx: "auto" }}
-    >
-      {label}
-    </Label>
+      label={label}
+      size={size}
+    />
   )
 }
