@@ -20,7 +20,7 @@
     "@mui/lab": "5.0.0-alpha.124",
     "@mui/material": "5.11.14",
     "@ranklab/api": "workspace:*",
-    "@sentry/nextjs": "7.44.2",
+    "@sentry/nextjs": "7.45.0",
     "@stripe/react-stripe-js": "2.1.0",
     "@stripe/stripe-js": "1.52.0",
     "@zach.codes/use-upload": "1.0.1",
