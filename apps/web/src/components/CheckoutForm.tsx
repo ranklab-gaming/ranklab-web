@@ -397,7 +397,7 @@ function Content({ review, paymentMethods, games }: Props) {
               sx={{ mb: 2, backgroundColor: theme.palette.grey[800] }}
               action={
                 <Button
-                  sx={{ color: theme.palette.text.secondary }}
+                  sx={{ color: theme.palette.info.lighter }}
                   size="small"
                   variant="text"
                   onClick={() => setShowDeleteDialog(true)}
