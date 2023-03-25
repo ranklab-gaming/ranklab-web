@@ -62,6 +62,10 @@ export function ReviewDetails({
 
   if (!skillLevel) throw new Error("skillLevel is missing")
 
+  const coach = review.coach
+
+  if (!coach) throw new Error("coach is missing")
+
   const acceptReview = async () => {
     setAccepting(true)
 
@@ -131,8 +135,8 @@ export function ReviewDetails({
             </Stack>
           }
         >
-          Are you happy with this review? If so, please accept it to so that
-          your coach can receive payment.
+          Are you happy with this review? If so, please accept it to so that{" "}
+          {coach.name} can receive payment.
         </Alert>
       )}
       <Grid container spacing={2}>
@@ -178,7 +182,7 @@ export function ReviewDetails({
                   <Typography variant="h3">
                     {review.state === State.Refunded
                       ? "This review has been refunded. You can request a new one from your dashboard."
-                      : "Your coach has been notified of your request and will begin reviewing shortly."}
+                      : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
                   </Typography>
                 </Stack>
               </Paper>
