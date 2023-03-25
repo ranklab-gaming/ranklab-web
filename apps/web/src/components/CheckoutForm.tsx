@@ -2,6 +2,7 @@ import { uploadsCdnUrl } from "@/config"
 import { formatPrice } from "@/utils/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -366,16 +367,13 @@ function Content({ review, paymentMethods, games }: Props) {
                     />
                   </video>
                   <Paper sx={{ p: 2 }} elevation={1}>
-                    <Stack spacing={2}>
-                      <Typography variant="overline">Recording</Typography>
+                    <Stack spacing={2} direction="row">
+                      <Typography variant="body1" mr="auto">
+                        {recording.title}
+                      </Typography>
                       <Stack spacing={2} direction="row">
-                        <Typography variant="body1" mr="auto">
-                          {recording.title}
-                        </Typography>
-                        <Stack spacing={2} direction="row">
-                          <Chip label={skillLevel.name} size="small" />
-                          <Chip label={game.name} size="small" />
-                        </Stack>
+                        <Chip label={skillLevel.name} size="small" />
+                        <Chip label={game.name} size="small" />
                       </Stack>
                     </Stack>
                   </Paper>
@@ -394,56 +392,51 @@ function Content({ review, paymentMethods, games }: Props) {
                 </Stack>
               </CardContent>
             </Card>
-            <Paper
-              sx={{
-                mb: 1,
-                backgroundColor: theme.palette.grey[900],
-              }}
-              elevation={1}
+            <Alert
+              severity="info"
+              sx={{ mb: 2, backgroundColor: theme.palette.grey[800] }}
+              action={
+                <Button
+                  sx={{ color: theme.palette.text.secondary }}
+                  size="small"
+                  variant="text"
+                  onClick={() => setShowDeleteDialog(true)}
+                >
+                  DELETE REVIEW
+                </Button>
+              }
             >
-              <Stack direction="row" alignItems="center" p={2}>
-                <Typography variant="body2" mr="auto" color="text.secondary">
-                  If you created this order by mistake, you can delete this
-                  review so that it doesn't appear in your dashboard.
-                </Typography>
-                <Box>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={() => setShowDeleteDialog(true)}
-                  >
-                    Delete Review
-                  </Button>
-                  <Dialog
-                    open={showDeleteDialog}
-                    onClose={() => setShowDeleteDialog(false)}
-                    fullWidth
-                  >
-                    <DialogTitle>Really delete this review?</DialogTitle>
-                    <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
-                      <DialogContentText>
-                        This action cannot be undone.
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={() => setShowDeleteDialog(false)}>
-                        Cancel
-                      </Button>
-                      <LoadingButton
-                        onClick={() => deleteReview()}
-                        autoFocus
-                        disabled={deleting}
-                        loading={deleting}
-                        color="primary"
-                        variant="contained"
-                      >
-                        Delete
-                      </LoadingButton>
-                    </DialogActions>
-                  </Dialog>
-                </Box>
-              </Stack>
-            </Paper>
+              If you created this order by mistake, you can delete this review
+              to remove it from your dashboard.
+            </Alert>
+            <Dialog
+              open={showDeleteDialog}
+              onClose={() => setShowDeleteDialog(false)}
+              fullWidth
+            >
+              <DialogTitle>Really delete this review?</DialogTitle>
+              <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                <DialogContentText>
+                  This action cannot be undone. Your order will be cancelled and
+                  the review will be deleted from your dashboard.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setShowDeleteDialog(false)}>
+                  Cancel
+                </Button>
+                <LoadingButton
+                  onClick={() => deleteReview()}
+                  autoFocus
+                  disabled={deleting}
+                  loading={deleting}
+                  color="primary"
+                  variant="contained"
+                >
+                  Delete
+                </LoadingButton>
+              </DialogActions>
+            </Dialog>
           </Stack>
         </Grid>
         <Grid item xs={12} md={4}>
