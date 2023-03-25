@@ -8,6 +8,10 @@ const coachInvitation = withSessionApiRoute(async function (req, res) {
 
   const session = await getServerSession(req, res)
 
+  if (res.writableEnded) {
+    return
+  }
+
   const signUpUrl = `/api/auth/signin?${new URLSearchParams({
     user_type: "coach",
     intent: "signup",

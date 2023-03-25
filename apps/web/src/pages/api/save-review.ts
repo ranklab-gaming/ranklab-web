@@ -4,6 +4,10 @@ import { withSessionApiRoute } from "@/session"
 const saveReview = withSessionApiRoute(async function (req, res) {
   const session = await getServerSession(req, res)
 
+  if (res.writableEnded) {
+    return
+  }
+
   if (!session || session.userType !== "player") {
     return res.status(401).end()
   }

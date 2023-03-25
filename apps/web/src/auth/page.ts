@@ -60,7 +60,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
 
       try {
         res = await getServerSideProps({ ...ctx, user })
-      } catch (e) {
+      } catch (e: unknown) {
         if (!(e instanceof ResponseError)) {
           throw e
         }

@@ -2,7 +2,7 @@ import { authClientSecret, webHost } from "@/config/server"
 import { UserType } from "@ranklab/api"
 import { IncomingMessage, ServerResponse } from "http"
 import { decodeJwt } from "jose"
-import { Client, Issuer } from "openid-client"
+import { Client, Issuer, errors } from "openid-client"
 
 let issuer: Issuer<Client> | null = null
 let client: Client | null = null
@@ -92,16 +92,24 @@ export async function getServerSession(
 
       return sessionFromToken(tokenSet.access_token)
     } catch (e: unknown) {
-      console.error(e)
-      await destroyServerSession(req)
+      if (e instanceof errors.OPError) {
+        if (e.error === "invalid_grant") {
+          await destroyServerSession(req)
 
-      res
-        .writeHead(302, {
-          Location: `/api/auth/signin?user_type=${session.userType}`,
-        })
-        .end()
+          res
+            .writeHead(302, {
+              Location: `/api/auth/signin?${new URLSearchParams({
+                user_type: session.userType,
+                return_url: req.url ?? "/",
+              })}`,
+            })
+            .end()
+        }
 
-      return null
+        return null
+      }
+
+      throw e
     }
   }
 
