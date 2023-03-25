@@ -49,7 +49,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
   const router = useRouter()
-  const [tab, setTab] = useState(router.query.tab ?? "account")
+  const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
 
   const defaultValues: FormValues = {
     bio: coach.bio,

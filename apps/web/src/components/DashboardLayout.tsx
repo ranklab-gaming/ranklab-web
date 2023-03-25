@@ -11,8 +11,8 @@ import {
   useTheme,
 } from "@mui/material"
 import { PropsWithChildren, useState } from "react"
-import { DashboardLayoutHeader } from "./DashboardLayout/Header"
-import { DashboardLayoutNavbar } from "./DashboardLayout/Navbar"
+import { Header } from "./DashboardLayout/Header"
+import { Navbar } from "./DashboardLayout/Navbar"
 
 const MainStyle = styled("main")(({ theme }) => ({
   flexGrow: 1,
@@ -54,8 +54,8 @@ export function DashboardLayout({
             minHeight: { lg: 1 },
           }}
         >
-          <DashboardLayoutHeader onOpenSidebar={() => setSidebarOpen(true)} />
-          <DashboardLayoutNavbar
+          <Header onOpenSidebar={() => setSidebarOpen(true)} />
+          <Navbar
             isSidebarOpen={isSidebarOpen}
             onCloseSidebar={() => setSidebarOpen(false)}
           />

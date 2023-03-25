@@ -1,6 +1,5 @@
 import { api } from "@/api"
 import { GameIcon } from "@/components/GameIcon"
-import { Label } from "@/components/Label"
 import { useUser } from "@/hooks/useUser"
 import { formatDate } from "@/utils/formatDate"
 import {
@@ -13,61 +12,11 @@ import {
   TablePagination,
   Typography,
 } from "@mui/material"
-import {
-  Game,
-  PaginatedResultForReview,
-  Review,
-  ReviewState,
-} from "@ranklab/api"
+import { Game, PaginatedResultForReview } from "@ranklab/api"
 import { MouseEvent, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
-
-const Status = function ({ reviewState }: { reviewState: Review["state"] }) {
-  const color = (() => {
-    switch (reviewState) {
-      case ReviewState.AwaitingPayment:
-        return "warning"
-      case ReviewState.AwaitingReview:
-        return "info"
-      case ReviewState.Draft:
-        return "info"
-      case ReviewState.Published:
-        return "success"
-      case ReviewState.Accepted:
-        return "success"
-      case ReviewState.Refunded:
-        return "error"
-    }
-  })()
-
-  const label = (() => {
-    switch (reviewState) {
-      case ReviewState.AwaitingPayment:
-        return "Awaiting Payment"
-      case ReviewState.AwaitingReview:
-        return "In Queue for Review"
-      case ReviewState.Draft:
-        return "Under Review"
-      case ReviewState.Published:
-        return "Reviewed"
-      case ReviewState.Accepted:
-        return "Accepted"
-      case ReviewState.Refunded:
-        return "Refunded"
-    }
-  })()
-
-  return (
-    <Label
-      variant="filled"
-      color={color}
-      sx={{ textTransform: "capitalize", mx: "auto" }}
-    >
-      {label}
-    </Label>
-  )
-}
+import { ReviewState } from "@/components/ReviewState"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -151,13 +100,12 @@ export function ReviewList({
                             </Typography>
                             <Chip label={skillLevel.name} size="small" />
                           </Stack>
-
                           <Typography variant="body2" color="text.secondary">
                             Review by {coach.name} requested on{" "}
                             {formatDate(review.createdAt)}
                           </Typography>
                         </Stack>
-                        <Status reviewState={review.state} />
+                        <ReviewState state={review.state} />
                       </Stack>
                     </CardContent>
                   </CardActionArea>

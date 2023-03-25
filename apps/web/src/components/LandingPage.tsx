@@ -4,11 +4,11 @@ import { Box, Stack, styled } from "@mui/material"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import { useEffect } from "react"
-import { LandingPageDashboard } from "./LandingPage/Dashboard"
-import { LandingPageFlow } from "./LandingPage/Flow"
-import { LandingPageHeader } from "./LandingPage/Header"
-import { LandingPageHero } from "./LandingPage/Hero"
-import { LandingPageReview } from "./LandingPage/Review"
+import { Dashboard } from "./LandingPage/Dashboard"
+import { Flow } from "./LandingPage/Flow"
+import { Header } from "./LandingPage/Header"
+import { Hero } from "./LandingPage/Hero"
+import { Review } from "./LandingPage/Review"
 
 const RootStyle = styled("div")({
   height: "100%",
@@ -44,13 +44,13 @@ export function LandingPage() {
   return (
     <Page title="Up your game">
       <Stack>
-        <LandingPageHeader />
+        <Header />
         <RootStyle>
-          <LandingPageHero />
+          <Hero />
           <ContentStyle>
-            <LandingPageFlow />
-            <LandingPageReview />
-            <LandingPageDashboard />
+            <Flow />
+            <Review />
+            <Dashboard />
           </ContentStyle>
         </RootStyle>
         <Box sx={{ flexGrow: 1, height: 1 }} />

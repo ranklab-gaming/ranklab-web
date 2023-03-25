@@ -1,12 +1,9 @@
 import { Collapse, List } from "@mui/material"
 import { useRouter } from "next/router"
 import { ReactElement, useState } from "react"
-import {
-  DashboardLayoutNavItemRoot,
-  DashboardLayoutNavItemSub,
-} from "./NavItem"
+import { NavItemRoot, NavItemSub } from "./NavItem"
 
-export type DashboardLayoutNavListProps = {
+export type NavListProps = {
   title: string
   path: string
   icon?: ReactElement
@@ -22,10 +19,10 @@ export type DashboardLayoutNavListProps = {
 }
 
 type NavListRootProps = {
-  list: DashboardLayoutNavListProps
+  list: NavListProps
 }
 
-export function DashboardLayoutNavListRoot({ list }: NavListRootProps) {
+export function NavListRoot({ list }: NavListRootProps) {
   const { pathname } = useRouter()
   const active = list.path === pathname
   const [open, setOpen] = useState(active)
@@ -34,7 +31,7 @@ export function DashboardLayoutNavListRoot({ list }: NavListRootProps) {
   if (hasChildren) {
     return (
       <>
-        <DashboardLayoutNavItemRoot
+        <NavItemRoot
           item={list}
           active={active}
           open={open}
@@ -49,11 +46,11 @@ export function DashboardLayoutNavListRoot({ list }: NavListRootProps) {
     )
   }
 
-  return <DashboardLayoutNavItemRoot item={list} active={active} />
+  return <NavItemRoot item={list} active={active} />
 }
 
 type NavListSubProps = {
-  list: DashboardLayoutNavListProps
+  list: NavListProps
 }
 
 function NavListSub({ list }: NavListSubProps) {
@@ -65,7 +62,7 @@ function NavListSub({ list }: NavListSubProps) {
   if (hasChildren) {
     return (
       <>
-        <DashboardLayoutNavItemSub
+        <NavItemSub
           item={list}
           onOpen={() => setOpen(!open)}
           open={open}
@@ -74,7 +71,7 @@ function NavListSub({ list }: NavListSubProps) {
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 3 }}>
             {(list.children ?? []).map((item) => (
-              <DashboardLayoutNavItemSub
+              <NavItemSub
                 key={item.title + item.path}
                 item={item}
                 active={item.path === pathname}
@@ -86,5 +83,5 @@ function NavListSub({ list }: NavListSubProps) {
     )
   }
 
-  return <DashboardLayoutNavItemSub item={list} active={active} />
+  return <NavItemSub item={list} active={active} />
 }

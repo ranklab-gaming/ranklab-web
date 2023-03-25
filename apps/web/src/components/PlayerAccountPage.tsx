@@ -48,7 +48,7 @@ export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const [tab, setTab] = useState(router.query.tab ?? "account")
+  const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
 
   const defaultValues: FormValues = {
     gameId: player.gameId,

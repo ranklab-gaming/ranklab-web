@@ -1,12 +1,13 @@
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerReviewsShowPage } from "@/components/PlayerReviewsShowPage"
-import { Game, PaymentMethod, Review } from "@ranklab/api"
+import { Game, PaymentMethod, Review, Comment } from "@ranklab/api"
 
 interface Props {
   review: Review
   paymentMethods: PaymentMethod[]
   games: Game[]
+  comments: Comment[]
 }
 
 export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
@@ -22,11 +23,17 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
 
   const games = review.state === "AwaitingPayment" ? await api.gameList() : []
 
+  const comments =
+    review.state === "Published"
+      ? await api.playerCommentsList({ reviewId: id })
+      : []
+
   return {
     props: {
       review,
       paymentMethods,
       games,
+      comments,
     },
   }
 })
@@ -36,6 +43,7 @@ export default function ({
   user,
   paymentMethods,
   games,
+  comments,
 }: PropsWithUser<Props>) {
   return (
     <PlayerReviewsShowPage
@@ -43,6 +51,7 @@ export default function ({
       user={user}
       paymentMethods={paymentMethods}
       games={games}
+      comments={comments}
     />
   )
 }

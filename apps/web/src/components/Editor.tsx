@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles"
 import dynamic from "next/dynamic"
 import { ReactNode, useId } from "react"
 import { ReactQuillProps } from "react-quill"
-import { EditorToolbar } from "./Editor/EditorToolbar"
+import { Toolbar } from "./Editor/Toolbar"
 
 import "react-quill/dist/quill.snow.css"
 
@@ -120,7 +120,7 @@ export function Editor({
           ...sx,
         }}
       >
-        <EditorToolbar id={id} />
+        <Toolbar id={id} />
         <ReactQuill
           value={value}
           onChange={onChange}

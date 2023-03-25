@@ -6,15 +6,12 @@ import {
 } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { ComponentProps } from "react"
-import {
-  DashboardLayoutNavListProps,
-  DashboardLayoutNavListRoot,
-} from "./NavList"
+import { NavListProps, NavListRoot } from "./NavList"
 
 interface NavSectionProps extends BoxProps {
   navConfig: {
     subheader: string
-    items: DashboardLayoutNavListProps[]
+    items: NavListProps[]
   }[]
 }
 
@@ -35,17 +32,14 @@ export const ListSubheaderStyle = styled(ListSubheader)(({ theme }) => ({
   }),
 }))
 
-export function DashboardLayoutNavSection({
-  navConfig,
-  ...other
-}: NavSectionProps) {
+export function NavSection({ navConfig, ...other }: NavSectionProps) {
   return (
     <Box {...other}>
       {navConfig.map((group, index) => (
         <List key={index} disablePadding sx={{ px: 2 }}>
           <ListSubheaderStyle>{group.subheader}</ListSubheaderStyle>
           {group.items.map((list, index) => (
-            <DashboardLayoutNavListRoot key={index} list={list} />
+            <NavListRoot key={index} list={list} />
           ))}
         </List>
       ))}

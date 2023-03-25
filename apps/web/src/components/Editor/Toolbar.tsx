@@ -1,6 +1,6 @@
-import { EditorToolbarStyle } from "./EditorToolbarStyle"
+import { ToolbarStyle } from "./ToolbarStyle"
 
-const HEADINGS = [
+const headings = [
   "Heading 1",
   "Heading 2",
   "Heading 3",
@@ -9,17 +9,17 @@ const HEADINGS = [
   "Heading 6",
 ]
 
-interface EditorToolbarProps {
+interface ToolbarProps {
   id: string
 }
 
-export function EditorToolbar({ id }: EditorToolbarProps) {
+export function Toolbar({ id }: ToolbarProps) {
   return (
-    <EditorToolbarStyle>
+    <ToolbarStyle>
       <div id={id}>
         <div className="ql-formats">
           <select className="ql-header" defaultValue="">
-            {HEADINGS.map((heading, index) => (
+            {headings.map((heading, index) => (
               <option key={heading} value={index + 1}>
                 {heading}
               </option>
@@ -48,6 +48,6 @@ export function EditorToolbar({ id }: EditorToolbarProps) {
           <button type="button" className="ql-clean" />
         </div>
       </div>
-    </EditorToolbarStyle>
+    </ToolbarStyle>
   )
 }

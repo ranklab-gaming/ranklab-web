@@ -20,7 +20,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-export function LandingPageReview() {
+export function Review() {
   return (
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>

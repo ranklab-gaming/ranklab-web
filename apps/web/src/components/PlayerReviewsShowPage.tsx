@@ -3,11 +3,13 @@ import { CheckoutForm } from "@/components/CheckoutForm"
 import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review } from "@ranklab/api"
 import { DashboardLayout } from "./DashboardLayout"
+import { Comment } from "@ranklab/api"
 
 interface Props {
   review: Review
   paymentMethods: PaymentMethod[]
   games: Game[]
+  comments: Comment[]
 }
 
 export function PlayerReviewsShowPage({
@@ -15,6 +17,7 @@ export function PlayerReviewsShowPage({
   review,
   paymentMethods,
   games,
+  comments,
 }: PropsWithUser<Props>) {
   const isCheckout = review.state === "AwaitingPayment"
 
@@ -24,6 +27,7 @@ export function PlayerReviewsShowPage({
     <DashboardLayout
       user={user}
       title={isCheckout ? "Checkout" : review.recording.title}
+      showTitle={isCheckout}
     >
       {isCheckout ? (
         <CheckoutForm
@@ -32,7 +36,7 @@ export function PlayerReviewsShowPage({
           games={games}
         />
       ) : (
-        <ReviewDetails review={review} />
+        <ReviewDetails review={review} comments={comments} />
       )}
     </DashboardLayout>
   )

@@ -3,26 +3,26 @@ import { Box, Link, ListItemText, Tooltip, Typography } from "@mui/material"
 import NextLink from "next/link"
 import { forwardRef } from "react"
 import {
-  DashboardLayoutListItemStyle,
-  DashboardLayoutListItemStyleProps,
+  ListItemStyle,
+  ListItemStyleProps,
   ListItemIconStyle,
   ListItemTextStyle,
 } from "./ListItemStyle"
-import { DashboardLayoutNavListProps } from "./NavList"
+import { NavListProps } from "./NavList"
 
 const ListItem = forwardRef<
   HTMLButtonElement & HTMLAnchorElement & HTMLDivElement,
-  DashboardLayoutListItemStyleProps
+  ListItemStyleProps
 >((props, ref) => {
   return (
-    <DashboardLayoutListItemStyle {...props} ref={ref}>
+    <ListItemStyle {...props} ref={ref}>
       {props.children}
-    </DashboardLayoutListItemStyle>
+    </ListItemStyle>
   )
 })
 
-export type DashboardLayoutNavItemProps = {
-  item: DashboardLayoutNavListProps
+export type NavItemProps = {
+  item: NavListProps
   active?: boolean | undefined
   open?: boolean
   onOpen?: VoidFunction
@@ -30,12 +30,12 @@ export type DashboardLayoutNavItemProps = {
   onMouseLeave?: VoidFunction
 }
 
-export function DashboardLayoutNavItemRoot({
+export function NavItemRoot({
   item,
   open = false,
   active,
   onOpen,
-}: DashboardLayoutNavItemProps) {
+}: NavItemProps) {
   const { title, path, icon, info, children, disabled, caption, roles } = item
 
   const renderContent = (
@@ -95,12 +95,12 @@ export function DashboardLayoutNavItemRoot({
   )
 }
 
-export function DashboardLayoutNavItemSub({
+export function NavItemSub({
   item,
   open = false,
   active = false,
   onOpen,
-}: DashboardLayoutNavItemProps) {
+}: NavItemProps) {
   const { title, path, info, children, disabled, caption, roles } = item
 
   const renderContent = (

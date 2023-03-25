@@ -5,7 +5,7 @@ import { useResponsive } from "@/hooks/useResponsive"
 import { headerStyles, navbarStyles, styles } from "@/styles"
 import { AppBar, Box, Stack, Toolbar } from "@mui/material"
 import { styled } from "@mui/material/styles"
-import { DashboardLayoutAccountPopover } from "./AccountPopover"
+import { AccountPopover } from "./AccountPopover"
 
 type RootStyleProps = {
   isOffset: boolean
@@ -34,7 +34,7 @@ type Props = {
   onOpenSidebar: VoidFunction
 }
 
-export function DashboardLayoutHeader({ onOpenSidebar }: Props) {
+export function Header({ onOpenSidebar }: Props) {
   const isOffset = useOffsetTop(headerStyles.dashboardDesktopHeight)
   const isDesktop = useResponsive("up", "lg")
 
@@ -60,7 +60,7 @@ export function DashboardLayoutHeader({ onOpenSidebar }: Props) {
           alignItems="center"
           spacing={{ xs: 0.5, sm: 1.5 }}
         >
-          <DashboardLayoutAccountPopover />
+          <AccountPopover />
         </Stack>
       </Toolbar>
     </RootStyle>

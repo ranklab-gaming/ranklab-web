@@ -8,7 +8,7 @@ import { styled } from "@mui/material/styles"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { DashboardLayoutNavSection } from "./NavSection"
+import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 
 const RootStyle = styled("div")(({ theme }) => ({
@@ -33,10 +33,7 @@ type Props = {
   onCloseSidebar: VoidFunction
 }
 
-export function DashboardLayoutNavbar({
-  isSidebarOpen,
-  onCloseSidebar,
-}: Props) {
+export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
   const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
@@ -149,7 +146,7 @@ export function DashboardLayoutNavbar({
           </NextLink>
         </Stack>
       </Stack>
-      <DashboardLayoutNavSection navConfig={navConfig} />
+      <NavSection navConfig={navConfig} />
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   )
