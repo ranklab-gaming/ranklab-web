@@ -4,6 +4,7 @@ import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
+import NextLink from "next/link"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -29,15 +30,17 @@ export function CoachArchivePage({
                 Once you complete a review and the player has accepted it, it
                 will appear here.
               </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                href="/coach/dashboard"
-                sx={{ mt: 2 }}
-                size="large"
-              >
-                Go to Dashboard
-              </Button>
+              <NextLink href="/coach/dashboard" passHref legacyBehavior>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  size="large"
+                  component="a"
+                >
+                  Go to Dashboard
+                </Button>
+              </NextLink>
             </Box>
           </Box>
         </Paper>

@@ -29,7 +29,7 @@ export function NotFoundPage() {
               you’ve mistyped the URL? Be sure to check your spelling.
             </Typography>
             <NextLink href="/" passHref legacyBehavior>
-              <Button size="large" variant="contained">
+              <Button size="large" variant="contained" component="a">
                 Go to Home
               </Button>
             </NextLink>

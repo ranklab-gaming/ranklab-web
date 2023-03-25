@@ -14,6 +14,7 @@ import {
 } from "@mui/material"
 import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
+import NextLink from "next/link"
 
 interface Props {
   recordings: Recording[]
@@ -65,14 +66,20 @@ export function RecordingList({ recordings, games }: Props) {
                 </TableCell>
                 <TableCell align="right" width={300}>
                   <Stack direction="row" spacing={1} justifyContent="end">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
+                    <NextLink
                       href={`/api/new-review?recording_id=${recording.id}`}
+                      passHref
+                      legacyBehavior
                     >
-                      Request a Review
-                    </Button>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        component="a"
+                      >
+                        Request a Review
+                      </Button>
+                    </NextLink>
                     <Button
                       variant="outlined"
                       color="secondary"

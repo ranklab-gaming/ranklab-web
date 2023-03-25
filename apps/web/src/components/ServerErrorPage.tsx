@@ -39,7 +39,7 @@ export function ServerErrorPage() {
             </Typography>
 
             <NextLink href="/" passHref legacyBehavior>
-              <Button size="large" variant="contained">
+              <Button size="large" variant="contained" component="a">
                 Go to Home
               </Button>
             </NextLink>

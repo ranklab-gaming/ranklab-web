@@ -67,7 +67,12 @@ function Content({ reviews, games }: Props) {
                 passHref
                 legacyBehavior
               >
-                <Button color="warning" size="small" variant="text">
+                <Button
+                  color="warning"
+                  size="small"
+                  variant="text"
+                  component="a"
+                >
                   SUBMIT DETAILS
                 </Button>
               </NextLink>

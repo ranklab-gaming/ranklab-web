@@ -55,7 +55,12 @@ export function Review() {
                   passHref
                   legacyBehavior
                 >
-                  <Button size="large" variant="contained" color="primary">
+                  <Button
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    component="a"
+                  >
                     Get Started
                   </Button>
                 </NextLink>

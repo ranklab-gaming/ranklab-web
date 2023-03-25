@@ -103,6 +103,7 @@ export function Hero() {
                     variant="outlined"
                     color="primary"
                     sx={{ fontSize: 22, p: 4 }}
+                    component="a"
                   >
                     Get Started
                   </Button>

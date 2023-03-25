@@ -4,6 +4,7 @@ import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
+import NextLink from "next/link"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -28,15 +29,17 @@ export function PlayerDashboardPage({
               <Typography variant="body1" gutterBottom>
                 Once you request a review from a coach, it will appear here.
               </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                href="/api/new-review"
-                sx={{ mt: 2 }}
-                size="large"
-              >
-                Request a Review
-              </Button>
+              <NextLink href="/api/new-review" passHref legacyBehavior>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  size="large"
+                  component="a"
+                >
+                  Request a Review
+                </Button>
+              </NextLink>
             </Box>
           </Box>
         </Paper>
