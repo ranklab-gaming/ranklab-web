@@ -61,6 +61,10 @@ export interface CoachCommentsCreateRequest {
   createCommentRequest: CreateCommentRequest
 }
 
+export interface CoachCommentsDeleteRequest {
+  id: string
+}
+
 export interface CoachCommentsListRequest {
   reviewId: string
 }
@@ -345,6 +349,52 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Comment> {
     const response = await this.coachCommentsCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachCommentsDeleteRaw(
+    requestParameters: CoachCommentsDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling coachCommentsDelete."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/comments/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachCommentsDelete(
+    requestParameters: CoachCommentsDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.coachCommentsDeleteRaw(
       requestParameters,
       initOverrides
     )
