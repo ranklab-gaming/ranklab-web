@@ -1,5 +1,4 @@
 import { Iconify } from "@/components/Iconify"
-import coach from "@/pages/player/reviews/new/coach"
 import { LoadingButton } from "@mui/lab"
 import {
   Paper,
@@ -42,6 +41,11 @@ export function CommentListComponent({
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const coach = review.coach
+
+  if (!coach) {
+    throw new Error("coach is missing")
+  }
 
   const cancelReview = async () => {
     setCancelling(true)
@@ -90,7 +94,7 @@ export function CommentListComponent({
           </Box>
           <Typography variant="h3">
             {review.state === ReviewState.Refunded
-              ? "This review has been refunded. You can request a new one from the Recordings page."
+              ? "This review has been refunded. You can request a new one for the same recording."
               : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
           </Typography>
           {review.state === ReviewState.AwaitingReview && (

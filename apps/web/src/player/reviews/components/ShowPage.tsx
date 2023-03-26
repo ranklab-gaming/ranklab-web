@@ -9,7 +9,6 @@ import { CommentListComponent } from "@/player/reviews/components/ShowPage/Comme
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
-import coach from "@/pages/player/reviews/new/coach"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import NextLink from "next/link"
@@ -35,6 +34,12 @@ export function PlayerReviewsShowPage({
   const { enqueueSnackbar } = useSnackbar()
 
   if (!review.recording) throw new Error("recording is missing")
+
+  const coach = review.coach
+
+  if (!coach) {
+    throw new Error("coach is missing")
+  }
 
   const acceptReview = async () => {
     setAccepting(true)
