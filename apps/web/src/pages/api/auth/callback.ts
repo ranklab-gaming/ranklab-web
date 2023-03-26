@@ -1,3 +1,4 @@
+import { assertProp } from "@/assert"
 import { getAuthClient, sessionFromToken } from "@/auth/session"
 import { webHost } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
@@ -18,21 +19,16 @@ const callback = withSessionApiRoute(async function (
     { code_verifier: codeVerifier }
   )
 
-  if (!tokenSet.access_token) {
-    throw new Error("access token is missing")
-  }
+  const accessToken = assertProp(tokenSet, "access_token")
+  const refreshToken = assertProp(tokenSet, "refresh_token")
 
-  if (!tokenSet.refresh_token) {
-    throw new Error("refresh token is missing")
-  }
+  req.session.accessToken = accessToken
+  req.session.refreshToken = refreshToken
 
-  req.session.accessToken = tokenSet.access_token
-  req.session.refreshToken = tokenSet.refresh_token
-
-  const session = sessionFromToken(tokenSet.access_token)
+  const session = sessionFromToken(accessToken)
 
   if (!session) {
-    throw new Error("session is missing")
+    throw new Error("session is invalid after callback")
   }
 
   delete req.session.codeVerifier

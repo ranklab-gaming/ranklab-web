@@ -1,5 +1,5 @@
 import { Avatar } from "@/components/Avatar"
-import { formatPrice } from "@/utils/formatPrice"
+import { formatPrice } from "@/helpers/formatPrice"
 import { Chip, MenuItem, Stack, TextField } from "@mui/material"
 import ListItemText from "@mui/material/ListItemText"
 import Typography from "@mui/material/Typography"

@@ -17,13 +17,14 @@ import {
   Box,
 } from "@mui/material"
 import { Review, ReviewState } from "@ranklab/api"
-import { formatDuration } from "@/utils/formatDuration"
+import { formatDuration } from "@/helpers/formatDuration"
 import { m } from "framer-motion"
 import { ReviewDetailsCommentListComponentProps } from "@/components/ReviewDetails"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { Comment } from "@ranklab/api"
 import { api } from "@/api"
+import { assertProp } from "@/assert"
 
 interface Props extends ReviewDetailsCommentListComponentProps {
   setSelectedComment: (comment: Comment | null) => void
@@ -41,11 +42,7 @@ export function CommentListComponent({
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const coach = review.coach
-
-  if (!coach) {
-    throw new Error("coach is missing")
-  }
+  const coach = assertProp(review, "coach")
 
   const cancelReview = async () => {
     setCancelling(true)

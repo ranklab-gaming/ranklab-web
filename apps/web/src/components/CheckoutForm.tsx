@@ -1,5 +1,5 @@
 import { uploadsCdnUrl } from "@/config"
-import { formatPrice } from "@/utils/formatPrice"
+import { formatPrice } from "@/helpers/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
   Alert,
@@ -48,6 +48,7 @@ import { useSnackbar } from "notistack"
 import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
 import { StripeElements } from "@/components/StripeElements"
+import { assertFind, assertProp } from "@/assert"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -74,9 +75,6 @@ type FormValues = yup.InferType<typeof FormSchema>
 const newPaymentMethodId = "NEW_PAYMENT_METHOD"
 
 function Content({ review, paymentMethods, games }: Props) {
-  const coach = review.coach
-  const recording = review.recording
-  const stripeClientSecret = review.stripeClientSecret
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
@@ -92,31 +90,15 @@ function Content({ review, paymentMethods, games }: Props) {
     await router.push("/player/dashboard")
   }
 
-  if (!coach) {
-    throw new Error("coach is missing")
-  }
+  const coach = assertProp(review, "coach")
+  const recording = assertProp(review, "recording")
+  const stripeClientSecret = assertProp(review, "stripeClientSecret")
+  const game = assertFind(games, (g) => g.id === recording.gameId)
 
-  if (!recording) {
-    throw new Error("recording is missing")
-  }
-
-  if (!stripeClientSecret) {
-    throw new Error("stripeClientSecret is missing")
-  }
-
-  const game = games.find((game) => game.id === recording.gameId)
-
-  if (!game) {
-    throw new Error("game is missing")
-  }
-
-  const skillLevel = game.skillLevels.find(
-    (skillLevel) => skillLevel.value === recording.skillLevel
+  const skillLevel = assertFind(
+    game.skillLevels,
+    (sl) => sl.value === recording.skillLevel
   )
-
-  if (!skillLevel) {
-    throw new Error("skillLevel is missing")
-  }
 
   const isDesktop = useResponsive("up", "sm")
   const tax = review.tax ?? 0
@@ -166,10 +148,6 @@ function Content({ review, paymentMethods, games }: Props) {
       throw new Error("stripe is not initialized")
     }
 
-    if (!review.stripeClientSecret) {
-      throw new Error("stripeClientSecret is missing")
-    }
-
     setLoading(true)
 
     const returnUrl = `${window.location.origin}/${router.asPath}?payment_redirect=true`
@@ -185,7 +163,7 @@ function Content({ review, paymentMethods, games }: Props) {
         },
       })
     } else {
-      response = await stripe.confirmCardPayment(review.stripeClientSecret, {
+      response = await stripe.confirmCardPayment(stripeClientSecret, {
         payment_method: paymentMethodId,
         return_url: returnUrl,
       })
@@ -530,12 +508,10 @@ function Content({ review, paymentMethods, games }: Props) {
 }
 
 export function CheckoutForm(props: Props) {
-  if (!props.review.stripeClientSecret) {
-    throw new Error("stripeClientSecret is missing")
-  }
+  const clientSecret = assertProp(props.review, "stripeClientSecret")
 
   return (
-    <StripeElements clientSecret={props.review.stripeClientSecret}>
+    <StripeElements clientSecret={clientSecret}>
       <Content {...props} />
     </StripeElements>
   )

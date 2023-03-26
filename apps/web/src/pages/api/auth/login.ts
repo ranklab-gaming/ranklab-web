@@ -1,3 +1,4 @@
+import { assertProp } from "@/assert"
 import { apiHost, authClientSecret, webHost } from "@/config/server"
 import { getOidcProvider } from "@/oidc"
 import { jwtVerify } from "jose"
@@ -9,9 +10,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).end()
   }
 
-  const {
-    payload: { sub: accountId },
-  } = await jwtVerify(
+  const { payload } = await jwtVerify(
     req.body.token,
     new TextEncoder().encode(authClientSecret),
     {
@@ -19,16 +18,9 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     }
   )
 
-  if (!accountId) {
-    throw new Error("sub is missing from jwt payload")
-  }
-
+  const accountId = assertProp(payload, "sub")
   const oidcProvider = getOidcProvider()
-
-  const grant = new oidcProvider.Grant({
-    accountId,
-    clientId: "web",
-  })
+  const grant = new oidcProvider.Grant({ accountId, clientId: "web" })
 
   grant.addOIDCScope("openid offline_access")
   grant.addResourceScope(webHost, "openid offline_access")

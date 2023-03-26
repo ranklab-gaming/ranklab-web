@@ -13,6 +13,7 @@ import { useResponsive } from "@/hooks/useResponsive"
 import Sticky from "react-stickynode"
 import { ReviewState } from "@/components/ReviewState"
 import { PropsWithChildren } from "react"
+import { assertFind, assertProp } from "@/assert"
 
 export interface ReviewDetailsVideoComponentProps {
   src: string
@@ -43,23 +44,13 @@ export function ReviewDetails({
 }: PropsWithChildren<Props>) {
   const isDesktop = useResponsive("up", "sm")
   const theme = useTheme()
-  const recording = review.recording
+  const recording = assertProp(review, "recording")
+  const game = assertFind(games, (g) => g.id === recording.gameId)
 
-  if (!recording) throw new Error("recording is missing")
-
-  const game = games.find((g) => g.id === recording.gameId)
-
-  if (!game) throw new Error("game is missing")
-
-  const skillLevel = game.skillLevels.find(
+  const skillLevel = assertFind(
+    game.skillLevels,
     (sl) => sl.value === recording.skillLevel
   )
-
-  if (!skillLevel) throw new Error("skillLevel is missing")
-
-  const coach = review.coach
-
-  if (!coach) throw new Error("coach is missing")
 
   return (
     <>

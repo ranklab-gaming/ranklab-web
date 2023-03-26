@@ -27,6 +27,7 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
 import { saveReview } from "@/api/session"
+import { assertProp } from "@/assert"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -101,23 +102,12 @@ export function PlayerReviewsNewRecordingPage({
       error: uploadError,
     },
   ] = useUpload(async ({ files }) => {
-    const file = files[0]
-
-    if (!file) {
-      throw new Error("file is missing")
-    }
-
-    if (!newRecording) {
-      throw new Error("new recording is missing")
-    }
-
-    if (!newRecording.uploadUrl) {
-      throw new Error("upload url is missing")
-    }
+    const file = assertProp(files, 0)
+    const uploadUrl = assertProp(newRecording, "uploadUrl")
 
     return {
       method: "PUT",
-      url: newRecording.uploadUrl,
+      url: uploadUrl,
       body: file,
       headers: {
         "X-Amz-Acl": "public-read",
@@ -127,14 +117,12 @@ export function PlayerReviewsNewRecordingPage({
 
   const goToNextStep = async function (values: FormValues) {
     if (values.recordingId === newRecordingId) {
-      if (!values.newRecordingVideo) {
-        throw new Error("new recording video is missing")
-      }
+      const newRecordingVideo = assertProp(values, "newRecordingVideo")
 
       const recording = await api.playerRecordingsCreate({
         createRecordingRequest: {
-          mimeType: values.newRecordingVideo.type,
-          size: values.newRecordingVideo.size,
+          mimeType: newRecordingVideo.type,
+          size: newRecordingVideo.size,
           title: values.newRecordingTitle,
           skillLevel: player.skillLevel,
           gameId: player.gameId,

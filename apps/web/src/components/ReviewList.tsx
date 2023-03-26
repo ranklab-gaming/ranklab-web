@@ -1,7 +1,7 @@
 import { api } from "@/api"
 import { GameIcon } from "@/components/GameIcon"
 import { useUser } from "@/hooks/useUser"
-import { formatDate } from "@/utils/formatDate"
+import { formatDate } from "@/helpers/formatDate"
 import {
   Card,
   CardActionArea,
@@ -17,6 +17,7 @@ import { MouseEvent, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
 import { ReviewState } from "@/components/ReviewState"
+import { assertFind, assertProp } from "@/assert"
 
 interface Props {
   reviews: PaginatedResultForReview
@@ -53,29 +54,14 @@ export function ReviewList({
     <>
       <List>
         {reviews.records.map((review) => {
-          const { recording, coach } = review
+          const recording = assertProp(review, "recording")
+          const coach = assertProp(review, "coach")
+          const game = assertFind(games, (g) => g.id === recording.gameId)
 
-          if (!recording) {
-            throw new Error("review is missing recording")
-          }
-
-          if (!coach) {
-            throw new Error("review is missing coach")
-          }
-
-          const game = games.find((g) => g.id === recording.gameId)
-
-          if (!game) {
-            throw new Error("review is missing game")
-          }
-
-          const skillLevel = game.skillLevels.find(
-            (s) => s.value === recording.skillLevel
+          const skillLevel = assertFind(
+            game.skillLevels,
+            (sl) => sl.value === recording.skillLevel
           )
-
-          if (!skillLevel) {
-            throw new Error("review is missing skill level")
-          }
 
           return (
             <ListItem key={review.id} sx={{ p: 0, m: 0, mb: 2 }}>

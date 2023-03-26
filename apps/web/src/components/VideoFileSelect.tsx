@@ -1,5 +1,5 @@
 import { Iconify } from "@/components/Iconify"
-import { formatBytes } from "@/utils/formatBytes"
+import { formatBytes } from "@/helpers/formatBytes"
 import {
   Box,
   FormControl,

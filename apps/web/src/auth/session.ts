@@ -1,3 +1,4 @@
+import { assertProp } from "@/assert"
 import { authClientSecret, webHost } from "@/config/server"
 import { UserType } from "@ranklab/api"
 import { IncomingMessage, ServerResponse } from "http"
@@ -39,12 +40,8 @@ export function sessionFromToken(token?: string) {
   }
 
   const payload = decodeJwt(token)
-
-  if (!payload.sub) {
-    throw new Error("sub is missing from JWT")
-  }
-
-  const userType = payload.sub.split(":")[0]
+  const sub = assertProp(payload, "sub")
+  const userType = sub.split(":")[0]
 
   if (!["coach", "player"].includes(userType)) {
     throw new Error(`invalid user type: ${userType}`)
@@ -77,11 +74,7 @@ export async function getServerSession(
 
   if ((session.payload.exp ?? 0) * 1000 < Date.now()) {
     const client = await getAuthClient()
-    const refreshToken = req.session?.refreshToken
-
-    if (!refreshToken) {
-      throw new Error("refresh token is missing")
-    }
+    const refreshToken = assertProp(req.session, "refreshToken")
 
     try {
       const tokenSet = await client.refresh(refreshToken)

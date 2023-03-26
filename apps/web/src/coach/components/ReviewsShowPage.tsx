@@ -1,3 +1,4 @@
+import { assertProp } from "@/assert"
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewDetails } from "@/components/ReviewDetails"
@@ -15,14 +16,10 @@ export function CoachReviewsShowPage({
   comments,
   games,
 }: PropsWithUser<Props>) {
-  if (!review.recording) throw new Error("recording is missing")
+  const recording = assertProp(review, "recording")
 
   return (
-    <DashboardLayout
-      user={user}
-      title={review.recording.title}
-      showTitle={false}
-    >
+    <DashboardLayout user={user} title={recording.title} showTitle={false}>
       <ReviewDetails
         review={review}
         comments={comments}

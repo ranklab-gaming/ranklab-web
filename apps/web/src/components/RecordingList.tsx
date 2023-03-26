@@ -1,5 +1,5 @@
 import { uploadsCdnUrl } from "@/config"
-import { formatDate } from "@/utils/formatDate"
+import { formatDate } from "@/helpers/formatDate"
 import {
   Button,
   Dialog,
@@ -15,6 +15,7 @@ import {
 import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
 import NextLink from "next/link"
+import { assertFind } from "@/assert"
 
 interface Props {
   recordings: Recording[]
@@ -42,19 +43,12 @@ export function RecordingList({ recordings, games }: Props) {
         </TableHead>
         <TableBody>
           {recordings.map((recording) => {
-            const game = games.find((g) => g.id === recording.gameId)
+            const game = assertFind(games, (g) => g.id === recording.gameId)
 
-            if (!game) {
-              throw new Error("recording is missing game")
-            }
-
-            const skillLevel = game.skillLevels.find(
-              (s) => s.value === recording.skillLevel
+            const skillLevel = assertFind(
+              game.skillLevels,
+              (sl) => sl.value === recording.skillLevel
             )
-
-            if (!skillLevel) {
-              throw new Error("recording is missing skill level")
-            }
 
             return (
               <TableRow key={recording.id}>

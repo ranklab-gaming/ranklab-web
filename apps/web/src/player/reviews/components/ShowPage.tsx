@@ -12,6 +12,7 @@ import { api } from "@/api"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import NextLink from "next/link"
+import { assertProp } from "@/assert"
 
 interface Props {
   review: Review
@@ -32,14 +33,8 @@ export function PlayerReviewsShowPage({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-
-  if (!review.recording) throw new Error("recording is missing")
-
-  const coach = review.coach
-
-  if (!coach) {
-    throw new Error("coach is missing")
-  }
+  const recording = assertProp(review, "recording")
+  const coach = assertProp(review, "coach")
 
   const acceptReview = async () => {
     setAccepting(true)
@@ -62,7 +57,7 @@ export function PlayerReviewsShowPage({
   return (
     <DashboardLayout
       user={user}
-      title={isCheckout ? "Checkout" : review.recording.title}
+      title={isCheckout ? "Checkout" : recording.title}
       showTitle={isCheckout}
     >
       {isCheckout ? (
