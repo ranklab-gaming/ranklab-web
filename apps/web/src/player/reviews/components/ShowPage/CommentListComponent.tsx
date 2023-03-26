@@ -90,7 +90,7 @@ export function CommentListComponent({
           </Box>
           <Typography variant="h3">
             {review.state === ReviewState.Refunded
-              ? "This review has been refunded. You can request a new one from your dashboard."
+              ? "This review has been refunded. You can request a new one from the Recordings page."
               : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
           </Typography>
           {review.state === ReviewState.AwaitingReview && (
