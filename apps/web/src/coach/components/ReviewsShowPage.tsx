@@ -23,7 +23,13 @@ export function CoachReviewsShowPage({
       title={review.recording.title}
       showTitle={false}
     >
-      <ReviewDetails review={review} comments={comments} games={games} />
+      <ReviewDetails
+        review={review}
+        comments={comments}
+        games={games}
+        VideoComponent={(props) => <></>}
+        CommentListComponent={(props) => <></>}
+      />
     </DashboardLayout>
   )
 }
