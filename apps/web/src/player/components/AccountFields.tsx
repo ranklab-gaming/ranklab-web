@@ -4,7 +4,7 @@ import { Game } from "@ranklab/api"
 import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
 
-export const PlayerAccountFieldsSchema = yup.object().shape({
+export const AccountFieldsSchema = yup.object().shape({
   email: yup
     .string()
     .email("Email must be valid")
@@ -18,13 +18,14 @@ export const PlayerAccountFieldsSchema = yup.object().shape({
     .min(2, "Name must be at least 2 characters"),
 })
 
-export const PlayerAccountFieldsSchemaWithoutPassword =
-  PlayerAccountFieldsSchema.omit(["password"])
+export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
+  "password",
+])
 
-type FormValuesWithPassword = yup.InferType<typeof PlayerAccountFieldsSchema>
+type FormValuesWithPassword = yup.InferType<typeof AccountFieldsSchema>
 
 type FormValuesWithoutPassword = yup.InferType<
-  typeof PlayerAccountFieldsSchemaWithoutPassword
+  typeof AccountFieldsSchemaWithoutPassword
 >
 
 type FormValues<TWithPassword extends boolean> = TWithPassword extends true
@@ -41,7 +42,7 @@ interface Props<
   showPasswordField?: TWithPassword
 }
 
-export function PlayerAccountFields<
+export function AccountFields<
   TWithPassword extends boolean,
   TFormValues extends FormValues<TWithPassword>
 >({

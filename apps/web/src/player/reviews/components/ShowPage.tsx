@@ -2,7 +2,7 @@ import { PropsWithUser } from "@/auth"
 import { CheckoutForm } from "@/components/CheckoutForm"
 import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review } from "@ranklab/api"
-import { DashboardLayout } from "./DashboardLayout"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import { Comment } from "@ranklab/api"
 
 interface Props {

@@ -1,6 +1,6 @@
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
-import { PlayerDashboardPage } from "@/components/PlayerDashboardPage"
+import { PlayerDashboardPage } from "@/player/components/DashboardPage"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
 
 interface Props {

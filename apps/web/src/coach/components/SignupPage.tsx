@@ -1,9 +1,6 @@
 import { api } from "@/api"
 import { BasicLayout } from "@/components/BasicLayout"
-import {
-  CoachAccountFields,
-  CoachAccountFieldsSchema,
-} from "@/components/CoachAccountFields"
+import { AccountFields, AccountFieldsSchema } from "./AccountFields"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -19,7 +16,7 @@ interface Props {
   token: string
 }
 
-const FormSchema = CoachAccountFieldsSchema.concat(
+const FormSchema = AccountFieldsSchema.concat(
   yup.object().shape({
     country: yup.string().required("Country is required"),
   })
@@ -81,11 +78,7 @@ export function CoachSignupPage({ games, availableCountries, token }: Props) {
     <BasicLayout title="Sign up to Ranklab as a Coach">
       <form onSubmit={handleSubmit(createCoach)}>
         <Stack spacing={3}>
-          <CoachAccountFields
-            control={control}
-            games={games}
-            showPasswordField
-          />
+          <AccountFields control={control} games={games} showPasswordField />
           <Controller
             name="country"
             control={control}

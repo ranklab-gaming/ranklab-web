@@ -4,7 +4,7 @@ import { Game } from "@ranklab/api"
 import { Control, Controller, Path } from "react-hook-form"
 import * as yup from "yup"
 
-export const CoachAccountFieldsSchema = yup.object().shape({
+export const AccountFieldsSchema = yup.object().shape({
   bio: yup
     .string()
     .required("Bio is required")
@@ -25,13 +25,14 @@ export const CoachAccountFieldsSchema = yup.object().shape({
     ),
 })
 
-export const CoachAccountFieldsSchemaWithoutPassword =
-  CoachAccountFieldsSchema.omit(["password"])
+export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
+  "password",
+])
 
-type FormValuesWithPassword = yup.InferType<typeof CoachAccountFieldsSchema>
+type FormValuesWithPassword = yup.InferType<typeof AccountFieldsSchema>
 
 type FormValuesWithoutPassword = yup.InferType<
-  typeof CoachAccountFieldsSchemaWithoutPassword
+  typeof AccountFieldsSchemaWithoutPassword
 >
 
 type FormValues<TWithPassword extends boolean> = TWithPassword extends true
@@ -47,7 +48,7 @@ interface Props<
   showPasswordField?: TWithPassword
 }
 
-export function CoachAccountFields<
+export function AccountFields<
   TWithPassword extends boolean,
   TFormValues extends FormValues<TWithPassword>
 >({

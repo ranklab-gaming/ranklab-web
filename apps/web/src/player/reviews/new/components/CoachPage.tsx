@@ -1,6 +1,6 @@
 import { PropsWithUser } from "@/auth"
 import { Editor } from "@/components/Editor"
-import { PlayerReviewsNewStepper } from "@/components/PlayerReviewsNewStepper"
+import { Stepper } from "./Stepper"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
@@ -17,7 +17,7 @@ import {
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import { DashboardLayout } from "./DashboardLayout"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Coach } from "@ranklab/api"
@@ -81,7 +81,7 @@ export function PlayerReviewsNewCoachPage({
         <Card>
           <CardContent>
             <Box p={3}>
-              <PlayerReviewsNewStepper activeStep={1} />
+              <Stepper activeStep={1} />
               <form onSubmit={handleSubmit(goToNextStep)}>
                 <Stack spacing={3} mt={4}>
                   <Controller

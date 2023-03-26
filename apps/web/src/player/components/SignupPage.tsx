@@ -1,9 +1,6 @@
 import { api } from "@/api"
 import { BasicLayout } from "@/components/BasicLayout"
-import {
-  PlayerAccountFields,
-  PlayerAccountFieldsSchema,
-} from "@/components/PlayerAccountFields"
+import { AccountFields, AccountFieldsSchema } from "./AccountFields"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -18,7 +15,7 @@ interface Props {
   games: Game[]
 }
 
-type FormValues = yup.InferType<typeof PlayerAccountFieldsSchema>
+type FormValues = yup.InferType<typeof AccountFieldsSchema>
 
 export function PlayerSignupPage({ games }: Props) {
   const defaultValues: FormValues = {
@@ -33,7 +30,7 @@ export function PlayerSignupPage({ games }: Props) {
   const login = useLogin("player")
 
   const form = useForm({
-    resolver: yupResolver<yup.ObjectSchema<any>>(PlayerAccountFieldsSchema),
+    resolver: yupResolver<yup.ObjectSchema<any>>(AccountFieldsSchema),
     defaultValues,
     serverErrorMessage:
       "There was a problem signin up. Please try again later.",
@@ -66,7 +63,7 @@ export function PlayerSignupPage({ games }: Props) {
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={3}>
-            <PlayerAccountFields
+            <AccountFields
               games={games}
               control={control}
               watch={watch}

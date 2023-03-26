@@ -1,4 +1,4 @@
-import { PlayerSignupPage } from "@/components/PlayerSignupPage"
+import { PlayerSignupPage } from "@/player/components/SignupPage"
 import { Game } from "@ranklab/api"
 import { GetServerSideProps } from "next"
 

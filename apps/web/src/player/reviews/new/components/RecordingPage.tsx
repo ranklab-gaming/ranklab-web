@@ -1,6 +1,6 @@
 import { api } from "@/api"
 import { playerFromUser, PropsWithUser } from "@/auth"
-import { PlayerReviewsNewStepper } from "@/components/PlayerReviewsNewStepper"
+import { Stepper } from "./Stepper"
 import { VideoFileSelect } from "@/components/VideoFileSelect"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -23,7 +23,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import { DashboardLayout } from "./DashboardLayout"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
 import { saveReview } from "@/api/session"
@@ -199,7 +199,7 @@ export function PlayerReviewsNewRecordingPage({
         <Card>
           <CardContent>
             <Box p={3}>
-              <PlayerReviewsNewStepper activeStep={0} />
+              <Stepper activeStep={0} />
               <form onSubmit={handleSubmit(goToNextStep)}>
                 <Stack spacing={3} mt={4}>
                   <Controller

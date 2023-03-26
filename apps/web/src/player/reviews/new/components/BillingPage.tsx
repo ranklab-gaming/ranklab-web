@@ -1,6 +1,6 @@
 import { api } from "@/api"
 import { PropsWithUser } from "@/auth"
-import { PlayerReviewsNewStepper } from "@/components/PlayerReviewsNewStepper"
+import { Stepper } from "./Stepper"
 import { LoadingButton } from "@mui/lab"
 import {
   Box,
@@ -13,7 +13,7 @@ import {
   Stack,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { DashboardLayout } from "./DashboardLayout"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { AddressElement, useElements } from "@stripe/react-stripe-js"
 import { useForm } from "@/hooks/useForm"
@@ -78,7 +78,7 @@ function Content({ billingDetails, review }: Props) {
     <Card>
       <CardContent>
         <Box p={3}>
-          <PlayerReviewsNewStepper activeStep={2} />
+          <Stepper activeStep={2} />
           <form onSubmit={handleSubmit(goToNextStep)}>
             <Box mt={3}>
               {loading && (

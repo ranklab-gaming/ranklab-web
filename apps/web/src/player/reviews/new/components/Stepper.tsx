@@ -4,7 +4,7 @@ import {
   stepConnectorClasses,
   StepIconProps,
   Stack,
-  Stepper,
+  Stepper as MuiStepper,
   Step,
   StepLabel,
   styled,
@@ -84,10 +84,10 @@ interface Props {
   activeStep: number
 }
 
-export function PlayerReviewsNewStepper({ activeStep }: Props) {
+export function Stepper({ activeStep }: Props) {
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
-      <Stepper
+      <MuiStepper
         alternativeLabel
         activeStep={activeStep}
         connector={<ColorlibConnector />}
@@ -97,7 +97,7 @@ export function PlayerReviewsNewStepper({ activeStep }: Props) {
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
+      </MuiStepper>
     </Stack>
   )
 }

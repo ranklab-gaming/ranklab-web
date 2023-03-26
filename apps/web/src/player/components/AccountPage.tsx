@@ -1,11 +1,11 @@
 import { api } from "@/api"
-import { coachFromUser, PropsWithUser } from "@/auth"
+import { playerFromUser } from "@/auth"
+import { PropsWithUser } from "@/auth"
 import {
-  CoachAccountFields,
-  CoachAccountFieldsSchemaWithoutPassword,
-} from "@/components/CoachAccountFields"
+  AccountFields,
+  AccountFieldsSchemaWithoutPassword,
+} from "./AccountFields"
 import { DashboardLayout } from "@/components/DashboardLayout"
-import { Iconify } from "@/components/Iconify"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton, TabContext, TabPanel } from "@mui/lab"
@@ -21,15 +21,15 @@ import {
   Switch,
   Tab,
   Tabs,
-  useTheme,
 } from "@mui/material"
 import { Game } from "@ranklab/api"
-import NextLink from "next/link"
-import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
-import { useState } from "react"
-import { Controller } from "react-hook-form"
 import * as yup from "yup"
+import { useState } from "react"
+import { theme } from "@/theme/theme"
+import { Controller } from "react-hook-form"
+import { Iconify } from "@/components/Iconify"
+import { useRouter } from "next/router"
 
 interface Props {
   games: Game[]
@@ -40,53 +40,61 @@ const FormSchema = yup
   .shape({
     emailsEnabled: yup.boolean().required(),
   })
-  .concat(CoachAccountFieldsSchemaWithoutPassword)
+  .concat(AccountFieldsSchemaWithoutPassword)
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
-  const coach = coachFromUser(user)
+export function PlayerAccountPage({ games, user }: PropsWithUser<Props>) {
+  const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
-  const theme = useTheme()
   const router = useRouter()
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
 
   const defaultValues: FormValues = {
-    bio: coach.bio,
-    gameId: coach.gameId,
-    name: coach.name,
-    email: coach.email,
-    price: (coach.price / 100).toFixed(2),
-    emailsEnabled: coach.emailsEnabled,
+    gameId: player.gameId,
+    skillLevel: player.skillLevel,
+    name: player.name,
+    email: player.email,
+    emailsEnabled: player.emailsEnabled,
   }
 
   const {
     control,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver<yup.ObjectSchema<any>>(
-      CoachAccountFieldsSchemaWithoutPassword
+      AccountFieldsSchemaWithoutPassword
     ),
     defaultValues,
     serverErrorMessage:
       "There was a problem updating your account. Please try again later.",
   })
 
-  const updateCoach = async (data: FormValues) => {
-    await api.coachAccountUpdate({
-      updateCoachRequest: {
+  const updatePlayer = async (data: FormValues) => {
+    await api.playerAccountUpdate({
+      updatePlayerRequest: {
         name: data.name,
-        bio: data.bio,
+        skillLevel: data.skillLevel,
         gameId: data.gameId,
         email: data.email,
-        price: Number(data.price) * 100,
         emailsEnabled: data.emailsEnabled,
       },
     })
 
     enqueueSnackbar("Account updated successfully", { variant: "success" })
+  }
+
+  const openCustomerPortal = async () => {
+    const { url } = await api.playerStripeBillingPortalSessionsCreate({
+      createBillingPortalSession: {
+        returnUrl: window.location.href,
+      },
+    })
+
+    window.location.href = url
   }
 
   return (
@@ -113,33 +121,26 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
           />
         </Tabs>
         <TabPanel value="account">
-          <form onSubmit={handleSubmit(updateCoach)}>
+          <form onSubmit={handleSubmit(updatePlayer)}>
             <Stack spacing={3} my={4}>
               <Alert
                 severity="info"
+                sx={{ mb: 2 }}
                 action={
-                  <NextLink
-                    href={`/api/stripe-account-links?${new URLSearchParams({
-                      return_url: "/coach/account",
-                    })}`}
-                    passHref
-                    legacyBehavior
+                  <Button
+                    color="info"
+                    size="small"
+                    variant="text"
+                    onClick={openCustomerPortal}
                   >
-                    <Button
-                      color="info"
-                      variant="text"
-                      size="small"
-                      component="a"
-                    >
-                      OPEN ACCOUNT DASHBOARD
-                    </Button>
-                  </NextLink>
+                    OPEN CUSTOMER PORTAL
+                  </Button>
                 }
               >
-                We partner with Stripe to handle transactions. You can update
-                your personal details using their dashboard.
+                We partner with Stripe to manage payments. You can update your
+                payment details using their customer portal.
               </Alert>
-              <CoachAccountFields control={control} games={games} />
+              <AccountFields control={control} games={games} watch={watch} />
             </Stack>
             <LoadingButton
               color="primary"
@@ -153,9 +154,8 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
             </LoadingButton>
           </form>
         </TabPanel>
-
         <TabPanel value="notifications">
-          <form onSubmit={handleSubmit(updateCoach)}>
+          <form onSubmit={handleSubmit(updatePlayer)}>
             <Stack spacing={3} my={4}>
               <Box
                 sx={{
@@ -179,8 +179,8 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
                         />
                       </FormGroup>
                       <FormHelperText>
-                        When enabled, we will send you emails when new players
-                        submit and accept reviews.
+                        When enabled, we will send you emails when there are
+                        events related to your reviews.
                       </FormHelperText>
                     </FormControl>
                   )}
