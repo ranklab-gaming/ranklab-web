@@ -129,14 +129,30 @@ export function GuideDialog({ open, onClose }: Props) {
             </Stack>
           </TabPanel>
           <TabPanel value="mac">
-            <Typography variant="body1" mt={2}>
-              Our Mac guide is coming soon.
-            </Typography>
+            <Stack
+              spacing={2}
+              minHeight={600}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Iconify icon="mdi:apple" fontSize={96} />
+              <Typography variant="body1" mt={2}>
+                Our Mac guide is coming soon.
+              </Typography>
+            </Stack>
           </TabPanel>
           <TabPanel value="linux">
-            <Typography variant="body1" mt={2}>
-              Our Linux guide is coming soon.
-            </Typography>
+            <Stack
+              spacing={2}
+              minHeight={600}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Iconify icon="mdi:linux" fontSize={96} />
+              <Typography variant="body1" mt={2}>
+                Our Linux guide is coming soon.
+              </Typography>
+            </Stack>
           </TabPanel>
         </TabContext>
       </DialogContent>

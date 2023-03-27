@@ -266,7 +266,7 @@ export function PlayerReviewsNewRecordingPage({
                                     Not sure how to record your gameplay? Check
                                     out {""}
                                     <Link
-                                      color="secondary.light"
+                                      color="info.main"
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()

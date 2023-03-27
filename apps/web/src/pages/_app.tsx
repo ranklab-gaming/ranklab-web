@@ -52,8 +52,7 @@ export default function App({
           <MotionLazyContainer>
             <NotistackProvider>
               <CssBaseline />
-              <NextNProgress />
-
+              <NextNProgress color={theme.palette.secondary.main} />
               <Component {...pageProps} />
               <CookieConsent
                 style={{

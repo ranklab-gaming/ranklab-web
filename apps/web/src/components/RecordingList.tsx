@@ -3,6 +3,7 @@ import { formatDate } from "@/helpers/formatDate"
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
@@ -69,7 +70,7 @@ export function RecordingList({ recordings, games }: Props) {
                       size="small"
                       onClick={() => setSelectedRecording(recording)}
                     >
-                      View
+                      Preview
                     </Button>
                     <NextLink
                       href={`/player/reviews/new?recording_id=${recording.id}`}
@@ -110,6 +111,14 @@ export function RecordingList({ recordings, games }: Props) {
                               />
                             </video>
                           </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={() => setSelectedRecording(null)}
+                              color="primary"
+                            >
+                              Close
+                            </Button>
+                          </DialogActions>
                         </>
                       )}
                     </Dialog>
