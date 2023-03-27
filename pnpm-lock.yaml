@@ -50,6 +50,7 @@ importers:
       koa-mount: 4.0.0
       lodash: 4.17.21
       next: 13.2.4
+      nextjs-progressbar: ^0.0.16
       notistack: 3.0.1
       oidc-provider: 8.1.1
       openid-client: 5.4.0
@@ -89,6 +90,7 @@ importers:
       koa-mount: 4.0.0
       lodash: 4.17.21
       next: 13.2.4_biqbaboplfbrettd7655fr4n2y
+      nextjs-progressbar: 0.0.16_next@13.2.4+react@18.2.0
       notistack: 3.0.1_owo25xnefcwdq3zjgtohz6dbju
       oidc-provider: 8.1.1
       openid-client: 5.4.0
@@ -1229,6 +1231,10 @@ packages:
 
   /@types/node/18.15.10:
     resolution: {integrity: sha512-9avDaQJczATcXgfmMAW3MIWArOO7A+m90vuCFLr8AotWf8igO/mRoYukrk2cqZVtv38tHs33retzHEilM7FpeQ==}
+
+  /@types/nprogress/0.2.0:
+    resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: false
 
   /@types/oidc-provider/8.1.1:
     resolution: {integrity: sha512-mfcUrWDZ+/TWUfKZBV6uE+zzZYVUZ5QI8eQQsAf6PTfimKnlpcduWiypKhcnEOBepAJI4Ho+mKAkCNXrNJGOgg==}
@@ -3066,6 +3072,19 @@ packages:
       - babel-plugin-macros
     dev: false
 
+  /nextjs-progressbar/0.0.16_next@13.2.4+react@18.2.0:
+    resolution: {integrity: sha512-GV0fD38EMD3vSDCmkq+tObmoup6QA91a6a9MxGuhJZuRk/9TNsrHGnIQQQ/sggkMkXuT4fBgF6jRjFwScDT3zA==}
+    peerDependencies:
+      next: '>= 6.0.0'
+      react: '>= 16.0.0'
+    dependencies:
+      '@types/nprogress': 0.2.0
+      next: 13.2.4_biqbaboplfbrettd7655fr4n2y
+      nprogress: 0.2.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /node-abi/3.33.0:
     resolution: {integrity: sha512-7GGVawqyHF4pfd0YFybhv/eM9JwTtPqx0mAanQ146O3FlSh3pA24zf9IRQTOsfTSqXTNzPSP5iagAJ94jjuVog==}
     engines: {node: '>=10'}
@@ -3106,6 +3125,10 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:
       - csstype
+    dev: false
+
+  /nprogress/0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
     dev: false
 
   /object-assign/4.1.1:

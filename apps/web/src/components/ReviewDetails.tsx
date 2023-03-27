@@ -48,8 +48,8 @@ export function ReviewDetails({
         }}
         elevation={1}
       >
-        <Stack spacing={1} p={2}>
-          <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" p={2} alignItems="center">
+          <Stack direction="row" alignItems="center" spacing={2} mr="auto">
             <Typography variant="h3" component="h1" paragraph mb={0}>
               {title}
             </Typography>

@@ -115,7 +115,7 @@ export function CommentListComponent({
             <Box>
               <Button
                 variant="outlined"
-                color="error"
+                color="primary"
                 onClick={() => setShowCancelDialog(true)}
               >
                 Cancel Review
@@ -144,7 +144,7 @@ export function CommentListComponent({
                     color="primary"
                     variant="contained"
                   >
-                    Proceed
+                    Cancel Review
                   </LoadingButton>
                 </DialogActions>
               </Dialog>
@@ -188,7 +188,7 @@ export function CommentListComponent({
                       <Typography variant="body2">
                         {formatDuration(comment.videoTimestamp)}
                       </Typography>
-                      <AnimatePresence>
+                      <AnimatePresence initial={false}>
                         {selectedComment !== comment && comment.body && (
                           <Typography
                             variant="body2"

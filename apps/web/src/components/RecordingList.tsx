@@ -66,7 +66,7 @@ export function RecordingList({ recordings, games }: Props) {
                       legacyBehavior
                     >
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         color="primary"
                         size="small"
                         component="a"
@@ -75,8 +75,8 @@ export function RecordingList({ recordings, games }: Props) {
                       </Button>
                     </NextLink>
                     <Button
-                      variant="contained"
-                      color="secondary"
+                      variant="outlined"
+                      color="info"
                       size="small"
                       onClick={() => setSelectedRecording(recording)}
                     >

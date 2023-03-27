@@ -8,6 +8,7 @@ import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
+import NextNProgress from "nextjs-progressbar"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -51,6 +52,8 @@ export default function App({
           <MotionLazyContainer>
             <NotistackProvider>
               <CssBaseline />
+              <NextNProgress />
+
               <Component {...pageProps} />
               <CookieConsent
                 style={{
