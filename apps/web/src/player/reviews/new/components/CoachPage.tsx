@@ -21,7 +21,7 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { CoachesSelect } from "@/components/CoachesSelect"
 import { Coach } from "@ranklab/api"
-import { saveReview } from "@/api/session"
+import { updateReview } from "@/api/session"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -63,7 +63,7 @@ export function PlayerReviewsNewCoachPage({
   })
 
   const goToNextStep = async function (values: FormValues) {
-    await saveReview({
+    await updateReview({
       coachId: values.coachId,
       notes: values.notes,
     })

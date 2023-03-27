@@ -17,7 +17,7 @@ async function createReview(
   res.redirect(307, "/player/reviews/new/recording").end()
 }
 
-async function saveReview(req: NextApiRequest, res: NextApiResponse) {
+async function updateReview(req: NextApiRequest, res: NextApiResponse) {
   req.session.review = {
     ...req.session.review,
     ...req.body,
@@ -28,7 +28,7 @@ async function saveReview(req: NextApiRequest, res: NextApiResponse) {
   res.status(200).end()
 }
 
-const createOrSaveReview = withSessionApiRoute(async function (req, res) {
+const createOrUpdateReview = withSessionApiRoute(async function (req, res) {
   const session = await getServerSession(req)
 
   if (!session || session.userType !== "player") {
@@ -44,10 +44,10 @@ const createOrSaveReview = withSessionApiRoute(async function (req, res) {
   }
 
   if (req.method === "PUT") {
-    return saveReview(req, res)
+    return updateReview(req, res)
   }
 
   return res.status(405).end()
 })
 
-export default createOrSaveReview
+export default createOrUpdateReview

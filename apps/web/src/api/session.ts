@@ -1,6 +1,6 @@
 import { SessionReview } from "@/session"
 
-export async function saveReview(review: SessionReview) {
+export async function updateReview(review: SessionReview) {
   await fetch("/api/review", {
     method: "PUT",
     headers: {

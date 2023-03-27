@@ -29,7 +29,7 @@ import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
-import { saveReview } from "@/api/session"
+import { updateReview } from "@/api/session"
 import { assertProp } from "@/assert"
 import { uploadsCdnUrl } from "@/config"
 import { GuideDialog } from "./RecordingPage/GuideDialog"
@@ -146,7 +146,7 @@ export function PlayerReviewsNewRecordingPage({
       return
     }
 
-    await saveReview({
+    await updateReview({
       recordingId: values.recordingId,
     })
 
