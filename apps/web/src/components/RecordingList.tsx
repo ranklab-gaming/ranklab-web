@@ -12,11 +12,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  useTheme,
 } from "@mui/material"
 import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
-import NextLink from "next/link"
 import { assertFind } from "@/assert"
 import { useCreateReview } from "@/hooks/useCreateReview"
 

@@ -5,7 +5,6 @@ import { ReviewList } from "@/components/ReviewList"
 import { useCreateReview } from "@/hooks/useCreateReview"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
-import NextLink from "next/link"
 
 interface Props {
   reviews: PaginatedResultForReview

@@ -11,7 +11,6 @@ import {
   DialogContentText,
   DialogActions,
   Card,
-  CardHeader,
   CardContent,
   CardActionArea,
   Box,
@@ -24,7 +23,6 @@ import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
-import NextLink from "next/link"
 import { useCreateReview } from "@/hooks/useCreateReview"
 
 interface Props {
