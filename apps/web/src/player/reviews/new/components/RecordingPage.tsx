@@ -19,6 +19,7 @@ import {
   LinearProgress,
   Link,
   MenuItem,
+  Paper,
   Stack,
   Tab,
   Tabs,
@@ -444,11 +445,11 @@ export function PlayerReviewsNewRecordingPage({
                   )}
                 </Stack>
                 {selectedRecording && (
-                  <Box
-                    mt={4}
+                  <Paper
+                    elevation={4}
                     sx={{
+                      mt: 2,
                       backgroundColor: theme.palette.grey[900],
-                      borderRadius: 1,
                     }}
                   >
                     <video
@@ -462,7 +463,7 @@ export function PlayerReviewsNewRecordingPage({
                         type={selectedRecording.mimeType}
                       />
                     </video>
-                  </Box>
+                  </Paper>
                 )}
                 <Stack direction="row">
                   <NextLink href="/player/dashboard" passHref legacyBehavior>

@@ -76,7 +76,7 @@ export function ReviewDetails({
           <Sticky enabled={isDesktop} top={70}>
             <Paper
               sx={{
-                backgroundColor: theme.palette.grey[900],
+                backgroundColor: theme.palette.common.black,
               }}
             >
               <Box

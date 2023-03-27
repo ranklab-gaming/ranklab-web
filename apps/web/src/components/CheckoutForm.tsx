@@ -125,15 +125,7 @@ function Content({ review, paymentMethods, games }: Props) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
-      enqueueSnackbar(
-        `Your payment was successful! ${coach.name} will be reviewing your recording shortly.`,
-        {
-          autoHideDuration: 5000,
-          variant: "success",
-        }
-      )
-
-      router.replace(`/player/reviews/${review.id}`)
+      router.push(`/player/reviews/${review.id}`)
     },
     poll() {
       return api.playerReviewsGet({ id: review.id })
@@ -219,12 +211,12 @@ function Content({ review, paymentMethods, games }: Props) {
         <Box textAlign="center" p={8}>
           <Iconify icon="eva:credit-card-outline" width={40} height={40} />
           <Typography variant="h3" component="h1" gutterBottom>
-            Your Order Is Being Processed
+            Processing Payment...
           </Typography>
-          <Typography variant="body1" gutterBottom>
-            Please wait...
-          </Typography>
-          <LinearProgress sx={{ width: 200, display: "inline-block" }} />
+          <LinearProgress
+            sx={{ width: 200, display: "inline-block" }}
+            color="info"
+          />
         </Box>
       </Paper>
     )
