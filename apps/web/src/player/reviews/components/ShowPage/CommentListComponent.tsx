@@ -25,6 +25,7 @@ import { useSnackbar } from "notistack"
 import { Comment } from "@ranklab/api"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
+import NextLink from "next/link"
 
 interface Props extends ReviewDetailsCommentListComponentProps {
   setSelectedComment: (comment: Comment | null) => void
@@ -43,6 +44,7 @@ export function CommentListComponent({
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const coach = assertProp(review, "coach")
+  const recording = assertProp(review, "recording")
 
   const cancelReview = async () => {
     setCancelling(true)
@@ -91,14 +93,27 @@ export function CommentListComponent({
           </Box>
           <Typography variant="h3">
             {review.state === ReviewState.Refunded
-              ? "This review has been refunded. You can request a new one for the same recording."
+              ? "This review has been refunded. If you wish, you can request a new one for the same recording."
               : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
           </Typography>
+          {review.state === ReviewState.Refunded && (
+            <Box>
+              <NextLink
+                href={`/api/new-review?recording_id=${recording.id}`}
+                passHref
+                legacyBehavior
+              >
+                <Button variant="outlined" color="primary">
+                  Request a New Review
+                </Button>
+              </NextLink>
+            </Box>
+          )}
           {review.state === ReviewState.AwaitingReview && (
             <Box>
               <Button
                 variant="outlined"
-                color="primary"
+                color="error"
                 onClick={() => setShowCancelDialog(true)}
               >
                 Cancel Review
@@ -127,7 +142,7 @@ export function CommentListComponent({
                     color="primary"
                     variant="contained"
                   >
-                    Cancel
+                    Proceed
                   </LoadingButton>
                 </DialogActions>
               </Dialog>

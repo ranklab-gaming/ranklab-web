@@ -401,7 +401,7 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
                   color="primary"
                   variant="contained"
                 >
-                  Delete
+                  Proceed
                 </LoadingButton>
               </DialogActions>
             </Dialog>
