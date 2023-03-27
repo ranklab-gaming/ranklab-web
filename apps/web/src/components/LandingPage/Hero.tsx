@@ -2,7 +2,7 @@ import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
-import { styled } from "@mui/material/styles"
+import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren } from "react"
 import { Overlay } from "./Overlay"
@@ -57,6 +57,8 @@ const HeroImgStyle = styled(Logo)(() => ({
 }))
 
 export function Hero() {
+  const theme = useTheme()
+
   return (
     <>
       <RootStyle initial="initial" animate="animate">
@@ -100,10 +102,18 @@ export function Hero() {
                 >
                   <Button
                     size="large"
-                    variant="outlined"
-                    color="primary"
-                    sx={{ fontSize: 22, p: 4 }}
-                    component="a"
+                    variant="text"
+                    sx={{
+                      fontSize: 22,
+                      p: 4,
+                      color: "common.white",
+                      transition: "all 0.25s",
+                      backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                      boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+                      "&:hover": {
+                        filter: "brightness(1.3)",
+                      },
+                    }}
                   >
                     Get Started
                   </Button>
