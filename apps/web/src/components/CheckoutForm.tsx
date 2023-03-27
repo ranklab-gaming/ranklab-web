@@ -126,6 +126,10 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
+      enqueueSnackbar("Payment successful. Thank you!", {
+        variant: "success",
+      })
+
       router.push({
         pathname: "/player/reviews/[id]",
         query: { id: review.id },
