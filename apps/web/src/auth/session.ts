@@ -1,7 +1,7 @@
 import { assertProp } from "@/assert"
 import { authClientSecret, webHost } from "@/config/server"
 import { UserType } from "@ranklab/api"
-import { IncomingMessage, ServerResponse } from "http"
+import { IncomingMessage } from "http"
 import { decodeJwt } from "jose"
 import { Client, Issuer, errors } from "openid-client"
 

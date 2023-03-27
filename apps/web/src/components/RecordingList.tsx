@@ -11,6 +11,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  useTheme,
 } from "@mui/material"
 import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
@@ -26,6 +27,8 @@ export function RecordingList({ recordings, games }: Props) {
   const [selectedRecording, setSelectedRecording] = useState<Recording | null>(
     null
   )
+
+  const theme = useTheme()
 
   return (
     <>
@@ -60,6 +63,14 @@ export function RecordingList({ recordings, games }: Props) {
                 </TableCell>
                 <TableCell align="right" width={300}>
                   <Stack direction="row" spacing={1} justifyContent="end">
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      onClick={() => setSelectedRecording(recording)}
+                    >
+                      View
+                    </Button>
                     <NextLink
                       href={`/player/reviews/new?recording_id=${recording.id}`}
                       passHref
@@ -74,14 +85,6 @@ export function RecordingList({ recordings, games }: Props) {
                         Request a Review
                       </Button>
                     </NextLink>
-                    <Button
-                      variant="outlined"
-                      color="info"
-                      size="small"
-                      onClick={() => setSelectedRecording(recording)}
-                    >
-                      View
-                    </Button>
                     <Dialog
                       onClose={() => setSelectedRecording(null)}
                       open={Boolean(selectedRecording)}

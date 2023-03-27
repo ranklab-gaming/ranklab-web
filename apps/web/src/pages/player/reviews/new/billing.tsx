@@ -11,7 +11,7 @@ interface Props {
 
 export const getServerSideProps = withUserSsr("player", async function (ctx) {
   const { createServerApi } = await import("@/api/server")
-  const api = await createServerApi(ctx)
+  const api = await createServerApi(ctx.req)
   const billingDetails = await api.playerStripeBillingDetailsGet()
   const review = ctx.req.session.review
 

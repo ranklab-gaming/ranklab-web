@@ -14,7 +14,7 @@ const stripeAccountLinks = withSessionApiRoute(async function (
     return res.status(401).end()
   }
 
-  const api = await createServerApi({ req, res })
+  const api = await createServerApi(req)
   const returnUrl = req.query.return_url as string | undefined
 
   if (!returnUrl) {

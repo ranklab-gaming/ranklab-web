@@ -8,7 +8,7 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const { createServerApi } = await import("@/api/server")
-  const api = await createServerApi(ctx)
+  const api = await createServerApi(ctx.req)
   const games = await api.gameList()
 
   return {

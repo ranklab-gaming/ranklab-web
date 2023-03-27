@@ -110,10 +110,7 @@ export class ServerApi extends RanklabApi {
   }
 }
 
-export async function createServerApi({
-  req,
-  res,
-}: Pick<GetServerSidePropsContext, "req" | "res">) {
+export async function createServerApi(req: GetServerSidePropsContext["req"]) {
   const session = await getServerSession(req)
   return new ServerApi(session?.accessToken)
 }

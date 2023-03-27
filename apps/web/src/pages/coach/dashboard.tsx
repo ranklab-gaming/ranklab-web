@@ -12,7 +12,7 @@ export const getServerSideProps = withUserSsr<Props>(
   "coach",
   async function (ctx) {
     const { createServerApi } = await import("@/api/server")
-    const api = await createServerApi(ctx)
+    const api = await createServerApi(ctx.req)
 
     const [reviews, games] = await Promise.all([
       api.coachReviewsList({}),

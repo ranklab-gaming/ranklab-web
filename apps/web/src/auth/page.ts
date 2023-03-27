@@ -30,7 +30,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
       const { getServerSession } = await import("./session")
       const { createServerApi } = await import("@/api/server")
       const session = await getServerSession(ctx.req)
-      const api = await createServerApi(ctx)
+      const api = await createServerApi(ctx.req)
       const returnUrl = encodeURIComponent(ctx.resolvedUrl)
 
       if (!session) {

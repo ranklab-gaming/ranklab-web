@@ -12,7 +12,7 @@ export const getServerSideProps = withUserSsr<Props>(
   "player",
   async function (ctx) {
     const { createServerApi } = await import("@/api/server")
-    const api = await createServerApi(ctx)
+    const api = await createServerApi(ctx.req)
     const recordings = await api.playerRecordingsList()
     const review = ctx.req.session.review
 
