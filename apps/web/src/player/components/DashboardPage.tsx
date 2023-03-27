@@ -34,7 +34,6 @@ export function PlayerDashboardPage({
                   variant="outlined"
                   color="primary"
                   sx={{ mt: 2 }}
-                  size="large"
                   component="a"
                 >
                   Request a Review

@@ -36,7 +36,6 @@ export function PlayerArchivePage({
                   color="primary"
                   component="a"
                   sx={{ mt: 2 }}
-                  size="large"
                 >
                   Go to Dashboard
                 </Button>

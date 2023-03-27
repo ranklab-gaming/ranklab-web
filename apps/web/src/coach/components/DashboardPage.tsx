@@ -129,7 +129,6 @@ function Content({ reviews, games }: Props) {
             color="primary"
             component="a"
             sx={{ mt: 2 }}
-            size="large"
           >
             Start onboarding
           </Button>

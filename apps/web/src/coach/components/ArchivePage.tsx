@@ -35,7 +35,6 @@ export function CoachArchivePage({
                   variant="outlined"
                   color="primary"
                   sx={{ mt: 2 }}
-                  size="large"
                   component="a"
                 >
                   Go to Dashboard
