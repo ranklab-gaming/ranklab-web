@@ -69,7 +69,7 @@ export function RecordingList({ recordings, games }: Props) {
                       size="small"
                       onClick={() => setSelectedRecording(recording)}
                     >
-                      Preview
+                      View Video
                     </Button>
 
                     <Button
