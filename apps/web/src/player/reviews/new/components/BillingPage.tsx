@@ -71,7 +71,10 @@ function Content({ billingDetails, review }: Props) {
       },
     })
 
-    await router.push(`/player/reviews/${newReview.id}`)
+    await router.push({
+      pathname: "/player/reviews/[id]",
+      query: { id: newReview.id },
+    })
   }
 
   return (

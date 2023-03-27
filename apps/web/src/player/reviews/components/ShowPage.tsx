@@ -65,6 +65,7 @@ export function PlayerReviewsShowPage({
           review={review}
           paymentMethods={paymentMethods}
           games={games}
+          setReview={setReview}
         />
       ) : (
         <ReviewDetails

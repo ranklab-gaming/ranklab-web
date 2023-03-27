@@ -37,7 +37,7 @@ export function LandingPage() {
         }
       )
 
-      router.push("/", undefined, { shallow: true })
+      router.replace("/")
     }
   }, [])
 

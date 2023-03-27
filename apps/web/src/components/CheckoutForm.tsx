@@ -63,6 +63,7 @@ interface Props {
   review: Review
   paymentMethods: PaymentMethod[]
   games: Game[]
+  setReview: (review: Review) => void
 }
 
 const FormSchema = yup.object().shape({
@@ -74,7 +75,7 @@ type FormValues = yup.InferType<typeof FormSchema>
 
 const newPaymentMethodId = "NEW_PAYMENT_METHOD"
 
-function Content({ review, paymentMethods, games }: Props) {
+function Content({ review, paymentMethods, games, setReview }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
@@ -125,10 +126,15 @@ function Content({ review, paymentMethods, games }: Props) {
       return result.state !== "AwaitingPayment"
     },
     onCondition() {
-      router.push(`/player/reviews/${review.id}`)
+      router.push({
+        pathname: "/player/reviews/[id]",
+        query: { id: review.id },
+      })
     },
-    poll() {
-      return api.playerReviewsGet({ id: review.id })
+    async poll() {
+      const updatedReview = await api.playerReviewsGet({ id: review.id })
+      setReview(updatedReview)
+      return updatedReview
     },
   })
 
@@ -215,7 +221,7 @@ function Content({ review, paymentMethods, games }: Props) {
           </Typography>
           <LinearProgress
             sx={{ width: 200, display: "inline-block" }}
-            color="info"
+            color="secondary"
           />
         </Box>
       </Paper>
