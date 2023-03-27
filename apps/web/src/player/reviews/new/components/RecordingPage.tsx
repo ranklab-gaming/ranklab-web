@@ -15,6 +15,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
   LinearProgress,
   Link,
   MenuItem,
@@ -363,27 +364,90 @@ export function PlayerReviewsNewRecordingPage({
                                             following the steps below.
                                           </Typography>
                                           <Stack spacing={2} mt={2}>
-                                            <NextImage
-                                              src={windowsStep1}
-                                              width={728}
-                                              quality={100}
-                                              height={438}
-                                              alt="Xbox Game Bar Step 1"
-                                            />
-                                            <NextImage
-                                              src={windowsStep2}
-                                              width={728}
-                                              quality={100}
-                                              height={503}
-                                              alt="Xbox Game Bar Step 2"
-                                            />
-                                            <NextImage
-                                              src={windowsStep3}
-                                              width={728}
-                                              quality={100}
-                                              height={503}
-                                              alt="Xbox Game Bar Step 3"
-                                            />
+                                            <Paper
+                                              sx={{
+                                                p: 2,
+                                                backgroundColor:
+                                                  theme.palette.grey[900],
+                                              }}
+                                            >
+                                              <Grid container spacing={2}>
+                                                <Grid item xs={8}>
+                                                  <NextImage
+                                                    src={windowsStep1}
+                                                    width={728}
+                                                    quality={100}
+                                                    height={438}
+                                                    alt="Xbox Game Bar Step 1"
+                                                  />
+                                                </Grid>
+                                                <Grid item xs={4}>
+                                                  <Typography
+                                                    variant="caption"
+                                                    gutterBottom
+                                                  >
+                                                    1. Search "Settings" in the
+                                                    Windows search bar.
+                                                  </Typography>
+                                                </Grid>
+                                              </Grid>
+                                            </Paper>
+                                            <Paper
+                                              sx={{
+                                                p: 2,
+                                                backgroundColor:
+                                                  theme.palette.grey[900],
+                                              }}
+                                            >
+                                              <Grid container spacing={2}>
+                                                <Grid item xs={8}>
+                                                  <NextImage
+                                                    src={windowsStep2}
+                                                    width={728}
+                                                    quality={100}
+                                                    height={503}
+                                                    alt="Xbox Game Bar Step 2"
+                                                  />
+                                                </Grid>
+                                                <Grid item xs={4}>
+                                                  <Typography
+                                                    variant="caption"
+                                                    gutterBottom
+                                                  >
+                                                    2. Choose "Captures" from
+                                                    the "Gaming" section.
+                                                  </Typography>
+                                                </Grid>
+                                              </Grid>
+                                            </Paper>
+                                            <Paper
+                                              sx={{
+                                                p: 2,
+                                                backgroundColor:
+                                                  theme.palette.grey[900],
+                                              }}
+                                            >
+                                              <Grid container spacing={2}>
+                                                <Grid item xs={8}>
+                                                  <NextImage
+                                                    src={windowsStep3}
+                                                    width={728}
+                                                    quality={100}
+                                                    height={503}
+                                                    alt="Xbox Game Bar Step 3"
+                                                  />
+                                                </Grid>
+                                                <Grid item xs={4}>
+                                                  <Typography
+                                                    variant="caption"
+                                                    gutterBottom
+                                                  >
+                                                    3. Adjust Xbox Game Bar
+                                                    settings.
+                                                  </Typography>
+                                                </Grid>
+                                              </Grid>
+                                            </Paper>
                                           </Stack>
                                         </TabPanel>
                                         <TabPanel value="mac">
