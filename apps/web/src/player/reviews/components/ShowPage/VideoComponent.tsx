@@ -1,11 +1,11 @@
 import { animateFade } from "@/animate/fade"
-import { ReviewDetailsVideoComponentProps } from "@/components/ReviewDetails"
 import { Box } from "@mui/material"
 import { Comment } from "@ranklab/api"
 import { m } from "framer-motion"
 
-interface Props extends ReviewDetailsVideoComponentProps {
+interface Props {
   selectedComment: Comment | null
+  src: string
 }
 
 export function VideoComponent({ src, selectedComment }: Props) {

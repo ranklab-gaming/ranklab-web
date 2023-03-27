@@ -8,38 +8,25 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { uploadsCdnUrl } from "@/config"
 import { useResponsive } from "@/hooks/useResponsive"
-import Sticky from "react-stickynode"
 import { ReviewState } from "@/components/ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
-
-export interface ReviewDetailsVideoComponentProps {
-  src: string
-}
-
-export interface ReviewDetailsCommentListComponentProps {
-  comments: Comment[]
-  review: Review
-}
 
 interface Props {
   review: Review
   comments: Comment[]
   games: Game[]
-  VideoComponent: (props: ReviewDetailsVideoComponentProps) => JSX.Element
-  CommentListComponent: (
-    props: ReviewDetailsCommentListComponentProps
-  ) => JSX.Element
+  videoElement: JSX.Element
+  commentListElement: JSX.Element
 }
 
 export function ReviewDetails({
   review,
   comments,
   games,
-  VideoComponent,
-  CommentListComponent,
+  videoElement,
+  commentListElement,
   children,
 }: PropsWithChildren<Props>) {
   const isDesktop = useResponsive("up", "sm")
@@ -74,44 +61,38 @@ export function ReviewDetails({
       {children}
       <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
-          <Sticky enabled={isDesktop} top={70}>
-            <Paper
-              elevation={4}
-              sx={{
-                backgroundColor: theme.palette.common.black,
-                overflow: "hidden",
-              }}
+          <Paper
+            elevation={4}
+            sx={{
+              backgroundColor: theme.palette.common.black,
+              overflow: "hidden",
+            }}
+          >
+            <Box
+              height="70vh"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
             >
-              <Box
-                height="70vh"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box position="relative">
-                  <VideoComponent
-                    src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                  />
-                </Box>
-              </Box>
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={2}
-                p={2}
-                borderTop={`1px dashed ${theme.palette.grey[900]}`}
-              >
-                <Typography variant="caption" mb={0}>
-                  {recording.title}
-                </Typography>
-                <Chip label={skillLevel.name} size="small" />
-                <Chip label={game.name} size="small" />
-              </Stack>
-            </Paper>
-          </Sticky>
+              <Box position="relative">{videoElement}</Box>
+            </Box>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={2}
+              p={2}
+              borderTop={`1px dashed ${theme.palette.grey[900]}`}
+            >
+              <Typography variant="caption" mb={0}>
+                {recording.title}
+              </Typography>
+              <Chip label={skillLevel.name} size="small" />
+              <Chip label={game.name} size="small" />
+            </Stack>
+          </Paper>
         </Grid>
         <Grid item md={4} xs={12} minHeight="70vh">
-          <CommentListComponent review={review} comments={comments} />
+          {commentListElement}
         </Grid>
       </Grid>
     </>

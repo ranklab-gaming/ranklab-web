@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import NextLink from "next/link"
 import { assertProp } from "@/assert"
+import { uploadsCdnUrl } from "@/config"
 
 interface Props {
   review: Review
@@ -72,22 +73,26 @@ export function PlayerReviewsShowPage({
           review={review}
           comments={comments}
           games={games}
-          VideoComponent={(props) => (
-            <VideoComponent {...props} selectedComment={selectedComment} />
-          )}
-          CommentListComponent={(props) => (
-            <CommentListComponent
-              {...props}
+          videoElement={
+            <VideoComponent
               selectedComment={selectedComment}
+              src={`${uploadsCdnUrl}/${recording.videoKey}`}
+            />
+          }
+          commentListElement={
+            <CommentListComponent
+              review={review}
+              comments={comments}
               setSelectedComment={setSelectedComment}
+              selectedComment={selectedComment}
               setReview={setReview}
             />
-          )}
+          }
         >
           {review.state === ReviewState.Published && (
             <Alert
               severity="success"
-              sx={{ mb: 2 }}
+              sx={{ mb: 1 }}
               action={
                 <Stack direction="row" spacing={2}>
                   <NextLink

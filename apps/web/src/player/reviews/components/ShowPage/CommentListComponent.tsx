@@ -15,19 +15,20 @@ import {
   CardContent,
   CardActionArea,
   Box,
+  useTheme,
 } from "@mui/material"
-import { Review, ReviewState } from "@ranklab/api"
+import { Review, ReviewState, Comment } from "@ranklab/api"
 import { formatDuration } from "@/helpers/formatDuration"
-import { m } from "framer-motion"
-import { ReviewDetailsCommentListComponentProps } from "@/components/ReviewDetails"
+import { AnimatePresence, m } from "framer-motion"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
-import { Comment } from "@ranklab/api"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
 import NextLink from "next/link"
 
-interface Props extends ReviewDetailsCommentListComponentProps {
+interface Props {
+  review: Review
+  comments: Comment[]
   setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
   setReview: (review: Review) => void
@@ -43,6 +44,7 @@ export function CommentListComponent({
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const theme = useTheme()
   const coach = assertProp(review, "coach")
   const recording = assertProp(review, "recording")
 
@@ -159,7 +161,20 @@ export function CommentListComponent({
       <CardContent>
         <Stack spacing={2}>
           {comments.map((comment) => (
-            <Card>
+            <Card
+              key={comment.id}
+              component={m.div}
+              initial="initial"
+              animate={selectedComment === comment ? "selected" : "initial"}
+              variants={{
+                initial: {
+                  backgroundColor: theme.palette.background.paper,
+                },
+                selected: {
+                  backgroundColor: theme.palette.secondary.main,
+                },
+              }}
+            >
               <CardActionArea
                 onClick={() => {
                   setSelectedComment(
@@ -170,44 +185,88 @@ export function CommentListComponent({
                 <CardContent>
                   <Stack spacing={2}>
                     <Stack direction="row" alignItems="center" spacing={2}>
-                      <Typography variant="h5" component="h2" mr="auto">
+                      <Typography variant="body2">
                         {formatDuration(comment.videoTimestamp)}
                       </Typography>
-                      {comment.body && (
-                        <Iconify
-                          icon="eva:message-square-outline"
-                          width={24}
-                          height={24}
-                        />
-                      )}
-                      {comment.drawing && (
-                        <Iconify
-                          icon="eva:brush-outline"
-                          width={24}
-                          height={24}
-                        />
-                      )}
+                      <AnimatePresence>
+                        {selectedComment !== comment && comment.body && (
+                          <Typography
+                            variant="body2"
+                            noWrap
+                            textOverflow="ellipsis"
+                            overflow="hidden"
+                            component={m.div}
+                            key="body"
+                            variants={{
+                              initial: {
+                                opacity: 0,
+                                width: 0,
+                              },
+                              animate: {
+                                opacity: 1,
+                                width: "auto",
+                              },
+                              exit: {
+                                width: 0,
+                                padding: 0,
+                                margin: 0,
+                              },
+                            }}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                          >
+                            {comment.body}
+                          </Typography>
+                        )}
+                      </AnimatePresence>
+                      <Box>
+                        {comment.body && (
+                          <Iconify
+                            icon="eva:message-square-outline"
+                            width={24}
+                            height={24}
+                          />
+                        )}
+                        {comment.drawing && (
+                          <Iconify
+                            icon="eva:brush-outline"
+                            width={24}
+                            height={24}
+                          />
+                        )}
+                      </Box>
                     </Stack>
-                    {selectedComment === comment && comment.body && (
-                      <Typography
-                        variant="body1"
-                        component={m.div}
-                        variants={{
-                          initial: {
-                            opacity: 0,
-                            height: 0,
-                          },
-                          animate: {
-                            opacity: 1,
-                            height: "auto",
-                          },
-                        }}
-                        initial="initial"
-                        animate="animate"
-                      >
-                        {comment.body}
-                      </Typography>
-                    )}
+                    <AnimatePresence>
+                      {selectedComment === comment && comment.body && (
+                        <Typography
+                          variant="body1"
+                          key="body"
+                          component={m.div}
+                          variants={{
+                            initial: {
+                              opacity: 0,
+                              height: 0,
+                            },
+                            animate: {
+                              opacity: 1,
+                              height: "auto",
+                            },
+                            exit: {
+                              height: 0,
+                              padding: 0,
+                              margin: 0,
+                              opacity: 0,
+                            },
+                          }}
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
+                        >
+                          {comment.body}
+                        </Typography>
+                      )}
+                    </AnimatePresence>
                   </Stack>
                 </CardContent>
               </CardActionArea>
