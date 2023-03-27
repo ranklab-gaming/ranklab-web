@@ -4,25 +4,18 @@ import { Stepper } from "./Stepper"
 import { VideoFileSelect } from "@/components/VideoFileSelect"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { LoadingButton, TabContext, TabPanel } from "@mui/lab"
+import { LoadingButton } from "@mui/lab"
 import {
   Box,
   Button,
   Card,
   CardContent,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
   LinearProgress,
   Link,
   MenuItem,
   Paper,
   Stack,
-  Tab,
-  Tabs,
   TextField,
   Typography,
   useTheme,
@@ -39,11 +32,7 @@ import { useSnackbar } from "notistack"
 import { saveReview } from "@/api/session"
 import { assertProp } from "@/assert"
 import { uploadsCdnUrl } from "@/config"
-import { Iconify } from "@/components/Iconify"
-import NextImage from "next/image"
-import windowsStep1 from "@/images/recording-guide/windows-1.png"
-import windowsStep2 from "@/images/recording-guide/windows-2.png"
-import windowsStep3 from "@/images/recording-guide/windows-3.png"
+import { GuideDialog } from "./RecordingPage/GuideDialog"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -88,8 +77,7 @@ export function PlayerReviewsNewRecordingPage({
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
-  const [recordingDialogOpen, setRecordingDialogOpen] = useState(false)
-  const [recordingDialogTab, setRecordingDialogTab] = useState("windows")
+  const [guideDialogOpen, setGuideDialogOpen] = useState(false)
 
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
@@ -282,199 +270,17 @@ export function PlayerReviewsNewRecordingPage({
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
-                                        setRecordingDialogOpen(true)
+                                        setGuideDialogOpen(true)
                                       }}
                                     >
                                       our guide
                                     </Link>
                                     .
                                   </Typography>
-                                  <Dialog
-                                    open={recordingDialogOpen}
-                                    fullWidth
-                                    maxWidth="lg"
-                                    onClose={() =>
-                                      setRecordingDialogOpen(false)
-                                    }
-                                  >
-                                    <DialogTitle>
-                                      How to Record Your Gameplay
-                                    </DialogTitle>
-                                    <DialogContent>
-                                      <TabContext value={recordingDialogTab}>
-                                        <Tabs
-                                          allowScrollButtonsMobile
-                                          variant="scrollable"
-                                          scrollButtons="auto"
-                                          value={recordingDialogTab}
-                                          onChange={(_, value) =>
-                                            setRecordingDialogTab(value)
-                                          }
-                                        >
-                                          <Tab
-                                            disableRipple
-                                            label="Windows"
-                                            icon={
-                                              <Iconify icon="mdi:windows" />
-                                            }
-                                            value="windows"
-                                          />
-                                          <Tab
-                                            disableRipple
-                                            label="Mac"
-                                            icon={<Iconify icon="mdi:apple" />}
-                                            value="mac"
-                                          />
-                                          <Tab
-                                            disableRipple
-                                            label="Linux"
-                                            icon={<Iconify icon="mdi:linux" />}
-                                            value="linux"
-                                          />
-                                        </Tabs>
-                                        <TabPanel value="windows">
-                                          <Typography
-                                            variant="body1"
-                                            mt={2}
-                                            gutterBottom
-                                          >
-                                            To record your gameplay on Windows,
-                                            we recommend using Xbox Game Bar.
-                                            You can open it by pressing{" "}
-                                            <Iconify icon="mdi:windows" /> + G.
-                                            If you want to start recording
-                                            immediately without opening the Game
-                                            Bar, you can press{" "}
-                                            <Iconify icon="mdi:windows" /> + Alt
-                                            + R.
-                                          </Typography>
-                                          <Typography
-                                            variant="body1"
-                                            gutterBottom
-                                          >
-                                            We recommend using the 30 FPS and
-                                            Standard video quality settings or
-                                            anything lower than that. This will
-                                            ensure that your video is not too
-                                            large to upload.
-                                          </Typography>
-                                          <Typography variant="body1">
-                                            You can find the configuration
-                                            options for Xbox Game Bar by
-                                            following the steps below.
-                                          </Typography>
-                                          <Stack spacing={2} mt={2}>
-                                            <Paper
-                                              sx={{
-                                                p: 2,
-                                                backgroundColor:
-                                                  theme.palette.grey[900],
-                                              }}
-                                            >
-                                              <Grid container spacing={2}>
-                                                <Grid item xs={8}>
-                                                  <NextImage
-                                                    src={windowsStep1}
-                                                    width={728}
-                                                    quality={100}
-                                                    height={438}
-                                                    alt="Xbox Game Bar Step 1"
-                                                  />
-                                                </Grid>
-                                                <Grid item xs={4}>
-                                                  <Typography
-                                                    variant="caption"
-                                                    gutterBottom
-                                                  >
-                                                    1. Search "Settings" in the
-                                                    Windows search bar.
-                                                  </Typography>
-                                                </Grid>
-                                              </Grid>
-                                            </Paper>
-                                            <Paper
-                                              sx={{
-                                                p: 2,
-                                                backgroundColor:
-                                                  theme.palette.grey[900],
-                                              }}
-                                            >
-                                              <Grid container spacing={2}>
-                                                <Grid item xs={8}>
-                                                  <NextImage
-                                                    src={windowsStep2}
-                                                    width={728}
-                                                    quality={100}
-                                                    height={503}
-                                                    alt="Xbox Game Bar Step 2"
-                                                  />
-                                                </Grid>
-                                                <Grid item xs={4}>
-                                                  <Typography
-                                                    variant="caption"
-                                                    gutterBottom
-                                                  >
-                                                    2. Choose "Captures" from
-                                                    the "Gaming" section.
-                                                  </Typography>
-                                                </Grid>
-                                              </Grid>
-                                            </Paper>
-                                            <Paper
-                                              sx={{
-                                                p: 2,
-                                                backgroundColor:
-                                                  theme.palette.grey[900],
-                                              }}
-                                            >
-                                              <Grid container spacing={2}>
-                                                <Grid item xs={8}>
-                                                  <NextImage
-                                                    src={windowsStep3}
-                                                    width={728}
-                                                    quality={100}
-                                                    height={503}
-                                                    alt="Xbox Game Bar Step 3"
-                                                  />
-                                                </Grid>
-                                                <Grid item xs={4}>
-                                                  <Typography
-                                                    variant="caption"
-                                                    gutterBottom
-                                                  >
-                                                    3. Adjust Xbox Game Bar
-                                                    settings.
-                                                  </Typography>
-                                                </Grid>
-                                              </Grid>
-                                            </Paper>
-                                          </Stack>
-                                        </TabPanel>
-                                        <TabPanel value="mac">
-                                          <Typography variant="body1" mt={2}>
-                                            Our Mac guide is coming soon. Stay
-                                            tuned!
-                                          </Typography>
-                                        </TabPanel>
-                                        <TabPanel value="linux">
-                                          <Typography variant="body1" mt={2}>
-                                            Our Linux guide is coming soon. Stay
-                                            tuned!
-                                          </Typography>
-                                        </TabPanel>
-                                      </TabContext>
-                                    </DialogContent>
-                                    <DialogActions>
-                                      <Button
-                                        onClick={() =>
-                                          setRecordingDialogOpen(false)
-                                        }
-                                        color="primary"
-                                      >
-                                        Close
-                                      </Button>
-                                    </DialogActions>
-                                  </Dialog>
+                                  <GuideDialog
+                                    open={guideDialogOpen}
+                                    onClose={() => setGuideDialogOpen(false)}
+                                  />
                                 </>
                               )
                             }

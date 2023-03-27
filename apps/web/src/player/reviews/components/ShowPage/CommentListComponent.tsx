@@ -155,7 +155,7 @@ export function CommentListComponent({
 
   return (
     <Card sx={{ height: "100%" }}>
-      <CardHeader title={`Review By ${coach.name}`} />
+      <CardHeader title="Comments" />
       <CardContent>
         <Stack spacing={2}>
           {comments.map((comment) => (

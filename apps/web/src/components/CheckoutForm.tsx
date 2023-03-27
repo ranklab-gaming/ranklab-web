@@ -329,9 +329,7 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
               <CardContent>
                 <Stack spacing={2}>
                   <Stack spacing={2} direction="row">
-                    <Typography variant="body2" color="text.secondary">
-                      {recording.title}
-                    </Typography>
+                    <Typography variant="caption">{recording.title}</Typography>
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
