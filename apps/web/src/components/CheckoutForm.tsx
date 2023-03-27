@@ -327,21 +327,15 @@ function Content({ review, paymentMethods, games }: Props) {
               </CardContent>
             </Card>
             <Card>
-              <CardHeader title={recording.title} />
+              <CardHeader title={`Review By ${coach.name}`} />
               <CardContent>
                 <Stack spacing={2}>
                   <Stack spacing={2} direction="row">
-                    <Typography
-                      variant="caption"
-                      mr="auto"
-                      color="text.secondary"
-                    >
-                      Review By {coach.name}
+                    <Typography variant="body2" color="text.secondary">
+                      {recording.title}
                     </Typography>
-                    <Stack spacing={2} direction="row">
-                      <Chip label={skillLevel.name} size="small" />
-                      <Chip label={game.name} size="small" />
-                    </Stack>
+                    <Chip label={skillLevel.name} size="small" />
+                    <Chip label={game.name} size="small" />
                   </Stack>
                   <video
                     style={{
@@ -362,7 +356,7 @@ function Content({ review, paymentMethods, games }: Props) {
             </Card>
             {review.notes && (
               <Card>
-                <CardHeader title="Notes For The Coach" />
+                <CardHeader title={`Notes For ${coach.name}`} />
                 <CardContent>
                   <div dangerouslySetInnerHTML={{ __html: review.notes }} />
                 </CardContent>
