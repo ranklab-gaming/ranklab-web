@@ -8,31 +8,30 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { useResponsive } from "@/hooks/useResponsive"
 import { ReviewState } from "@/components/ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
+import { formatDate } from "@/helpers/formatDate"
 
 interface Props {
   review: Review
   comments: Comment[]
   games: Game[]
+  title: string
   videoElement: JSX.Element
   commentListElement: JSX.Element
 }
 
 export function ReviewDetails({
   review,
-  comments,
   games,
   videoElement,
   commentListElement,
+  title,
   children,
 }: PropsWithChildren<Props>) {
-  const isDesktop = useResponsive("up", "sm")
   const theme = useTheme()
   const recording = assertProp(review, "recording")
-  const coach = assertProp(review, "coach")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
   const skillLevel = assertFind(
@@ -52,10 +51,13 @@ export function ReviewDetails({
         <Stack spacing={1} p={2}>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="h3" component="h1" paragraph mb={0}>
-              Review By {coach.name}
+              {title}
             </Typography>
             <ReviewState state={review.state} />
           </Stack>
+          <Typography variant="body2" color="text.secondary">
+            Requested on {formatDate(review.createdAt)}
+          </Typography>
         </Stack>
       </Paper>
       {children}

@@ -55,8 +55,11 @@ export function ReviewList({
       <List>
         {reviews.records.map((review) => {
           const recording = assertProp(review, "recording")
-          const coach = assertProp(review, "coach")
           const game = assertFind(games, (g) => g.id === recording.gameId)
+          const reviewUser =
+            user.type === "player"
+              ? assertProp(review, "coach")
+              : assertProp(review, "player")
 
           const skillLevel = assertFind(
             game.skillLevels,
@@ -87,8 +90,10 @@ export function ReviewList({
                             <Chip label={skillLevel.name} size="small" />
                           </Stack>
                           <Typography variant="body2" color="text.secondary">
-                            Review by {coach.name} requested on{" "}
-                            {formatDate(review.createdAt)}
+                            {user.type === "player"
+                              ? `Review by ${reviewUser.name}`
+                              : `Review for ${reviewUser.name}`}{" "}
+                            requested on {formatDate(review.createdAt)}
                           </Typography>
                         </Stack>
                         <ReviewState state={review.state} size="small" />

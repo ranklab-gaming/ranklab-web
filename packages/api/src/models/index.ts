@@ -843,6 +843,12 @@ export interface Review {
    * @memberof Review
    */
   coach?: Coach | null
+  /**
+   *
+   * @type {Player}
+   * @memberof Review
+   */
+  player?: Player | null
 }
 
 /**

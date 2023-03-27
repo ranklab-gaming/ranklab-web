@@ -73,6 +73,7 @@ export function PlayerReviewsShowPage({
           review={review}
           comments={comments}
           games={games}
+          title={`Review By ${coach.name}`}
           videoElement={
             <VideoComponent
               selectedComment={selectedComment}

@@ -16,6 +16,7 @@ export function CoachReviewsShowPage({
   comments,
   games,
 }: PropsWithUser<Props>) {
+  const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
 
   return (
@@ -24,8 +25,9 @@ export function CoachReviewsShowPage({
         review={review}
         comments={comments}
         games={games}
-        VideoComponent={(props) => <></>}
-        CommentListComponent={(props) => <></>}
+        title={`Review For ${player.name}`}
+        videoElement={<></>}
+        commentListElement={<></>}
       />
     </DashboardLayout>
   )
