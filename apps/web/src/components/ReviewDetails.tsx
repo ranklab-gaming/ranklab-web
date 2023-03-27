@@ -72,19 +72,21 @@ export function ReviewDetails({
         </Stack>
       </Paper>
       {children}
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
           <Sticky enabled={isDesktop} top={70}>
             <Paper
               elevation={4}
-              sx={{ backgroundColor: theme.palette.grey[900] }}
+              sx={{
+                backgroundColor: theme.palette.common.black,
+                overflow: "hidden",
+              }}
             >
               <Box
                 height="70vh"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                bgcolor="common.black"
               >
                 <Box position="relative">
                   <VideoComponent
@@ -92,7 +94,13 @@ export function ReviewDetails({
                   />
                 </Box>
               </Box>
-              <Stack direction="row" alignItems="center" spacing={2} p={2}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={2}
+                p={2}
+                borderTop={`1px dashed ${theme.palette.grey[900]}`}
+              >
                 <Typography variant="caption" mb={0}>
                   {recording.title}
                 </Typography>

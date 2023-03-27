@@ -328,7 +328,7 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
               <CardHeader title={`Review By ${coach.name}`} />
               <CardContent>
                 <Stack spacing={2}>
-                  <Stack spacing={2} direction="row">
+                  <Stack spacing={2} direction="row" alignItems="center">
                     <Typography variant="caption">{recording.title}</Typography>
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />

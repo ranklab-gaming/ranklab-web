@@ -19,6 +19,7 @@ import NextImage from "next/image"
 import windowsStep1 from "@/images/recording-guide/windows-1.png"
 import windowsStep2 from "@/images/recording-guide/windows-2.png"
 import windowsStep3 from "@/images/recording-guide/windows-3.png"
+import windowsStep4 from "@/images/recording-guide/windows-4.png"
 
 interface Props {
   open: boolean
@@ -32,11 +33,15 @@ const windowsSteps = [
   },
   {
     image: windowsStep2,
-    description: `Choose "Captures" from the "Gaming" section`,
+    description: `Choose "Gaming" from the sidebar`,
   },
   {
     image: windowsStep3,
-    description: "Adjust Xbox Game Bar settings.",
+    description: `Choose "Captures"`,
+  },
+  {
+    image: windowsStep4,
+    description: `Adjust Xbox Game Bar settings`,
   },
 ]
 
@@ -115,7 +120,7 @@ export function GuideDialog({ open, onClose }: Props) {
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="caption" gutterBottom>
-                        {index + 1}. {step.description}
+                        {index + 1}. {step.description}.
                       </Typography>
                     </Grid>
                   </Grid>
