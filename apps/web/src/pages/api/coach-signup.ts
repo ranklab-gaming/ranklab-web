@@ -1,16 +1,12 @@
 import { getServerSession } from "@/auth/session"
 import { withSessionApiRoute } from "@/session"
 
-const coachInvitation = withSessionApiRoute(async function (req, res) {
+const coachSignup = withSessionApiRoute(async function (req, res) {
   if (!req.query.token) {
     return res.status(401).end()
   }
 
-  const session = await getServerSession(req, res)
-
-  if (res.writableEnded) {
-    return
-  }
+  const session = await getServerSession(req)
 
   const signUpUrl = `/api/auth/signin?${new URLSearchParams({
     user_type: "coach",
@@ -32,4 +28,4 @@ const coachInvitation = withSessionApiRoute(async function (req, res) {
   }
 })
 
-export default coachInvitation
+export default coachSignup

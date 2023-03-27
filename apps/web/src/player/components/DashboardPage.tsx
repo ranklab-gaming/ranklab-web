@@ -29,7 +29,7 @@ export function PlayerDashboardPage({
               <Typography variant="body1" gutterBottom>
                 Once you request a review from a coach, it will appear here.
               </Typography>
-              <NextLink href="/api/new-review" passHref legacyBehavior>
+              <NextLink href="/player/reviews/new" passHref legacyBehavior>
                 <Button
                   variant="outlined"
                   color="primary"

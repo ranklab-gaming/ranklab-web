@@ -8,12 +8,7 @@ const api = withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getServerSession(req, res)
-
-  if (res.writableEnded) {
-    return
-  }
-
+  const session = await getServerSession(req)
   const token = session?.accessToken
   const api = new ServerApi(token)
   const { query, method, headers, body } = req

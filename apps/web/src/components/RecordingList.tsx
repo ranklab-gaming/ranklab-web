@@ -61,7 +61,7 @@ export function RecordingList({ recordings, games }: Props) {
                 <TableCell align="right" width={300}>
                   <Stack direction="row" spacing={1} justifyContent="end">
                     <NextLink
-                      href={`/api/new-review?recording_id=${recording.id}`}
+                      href={`/player/reviews/new?recording_id=${recording.id}`}
                       passHref
                       legacyBehavior
                     >

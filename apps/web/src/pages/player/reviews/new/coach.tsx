@@ -20,7 +20,7 @@ export const getServerSideProps = withUserSsr<Props>(
     if (!review || !review.recordingId) {
       return {
         redirect: {
-          destination: "/api/new-review",
+          destination: "/player/reviews/new",
           permanent: false,
         },
       }

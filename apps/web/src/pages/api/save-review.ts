@@ -2,11 +2,11 @@ import { getServerSession } from "@/auth/session"
 import { withSessionApiRoute } from "@/session"
 
 const saveReview = withSessionApiRoute(async function (req, res) {
-  const session = await getServerSession(req, res)
-
-  if (res.writableEnded) {
-    return
+  if (req.method !== "POST") {
+    return res.status(405).end()
   }
+
+  const session = await getServerSession(req)
 
   if (!session || session.userType !== "player") {
     return res.status(401).end()
@@ -30,7 +30,7 @@ const saveReview = withSessionApiRoute(async function (req, res) {
 
   await req.session.save()
 
-  res.redirect(307, "/player/reviews/new/recording").end()
+  res.status(200).end()
 })
 
 export default saveReview

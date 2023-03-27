@@ -101,7 +101,7 @@ export function CommentListComponent({
           {review.state === ReviewState.Refunded && (
             <Box>
               <NextLink
-                href={`/api/new-review?recording_id=${recording.id}`}
+                href={`/player/reviews/new?recording_id=${recording.id}`}
                 passHref
                 legacyBehavior
               >

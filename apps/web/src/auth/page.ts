@@ -29,7 +29,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
     ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
       const { getServerSession } = await import("./session")
       const { createServerApi } = await import("@/api/server")
-      const session = await getServerSession(ctx.req, ctx.res)
+      const session = await getServerSession(ctx.req)
       const api = await createServerApi(ctx)
       const returnUrl = encodeURIComponent(ctx.resolvedUrl)
 

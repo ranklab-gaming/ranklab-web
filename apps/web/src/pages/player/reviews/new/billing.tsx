@@ -18,7 +18,7 @@ export const getServerSideProps = withUserSsr("player", async function (ctx) {
   if (!review || !review.recordingId || !review.coachId) {
     return {
       redirect: {
-        destination: "/api/new-review",
+        destination: "/player/reviews/new",
         permanent: false,
       },
     }

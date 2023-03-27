@@ -61,10 +61,7 @@ export async function destroyServerSession(req: IncomingMessage) {
   await req.session.save()
 }
 
-export async function getServerSession(
-  req: IncomingMessage,
-  res: ServerResponse<IncomingMessage>
-) {
+export async function getServerSession(req: IncomingMessage) {
   const accessToken = req.session?.accessToken
   const session = sessionFromToken(accessToken)
 
@@ -88,18 +85,8 @@ export async function getServerSession(
       if (e instanceof errors.OPError) {
         if (e.error === "invalid_grant") {
           await destroyServerSession(req)
-
-          res
-            .writeHead(302, {
-              Location: `/api/auth/signin?${new URLSearchParams({
-                user_type: session.userType,
-                return_url: req.url ?? "/",
-              })}`,
-            })
-            .end()
+          return null
         }
-
-        return null
       }
 
       throw e

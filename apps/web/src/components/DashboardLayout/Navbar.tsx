@@ -46,7 +46,7 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
             items: [
               {
                 title: "Request a Review",
-                path: "/api/new-review",
+                path: "/player/reviews/new",
                 icon: icons.review,
               },
             ],

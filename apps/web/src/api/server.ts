@@ -114,6 +114,6 @@ export async function createServerApi({
   req,
   res,
 }: Pick<GetServerSidePropsContext, "req" | "res">) {
-  const session = await getServerSession(req, res)
+  const session = await getServerSession(req)
   return new ServerApi(session?.accessToken)
 }
