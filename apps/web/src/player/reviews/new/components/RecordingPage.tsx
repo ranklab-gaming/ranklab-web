@@ -4,18 +4,27 @@ import { Stepper } from "./Stepper"
 import { VideoFileSelect } from "@/components/VideoFileSelect"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { LoadingButton } from "@mui/lab"
+import { LoadingButton, TabContext, TabPanel } from "@mui/lab"
 import {
   Box,
   Button,
   Card,
   CardContent,
+  CardHeader,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   LinearProgress,
   Link,
   MenuItem,
   Stack,
+  Tab,
+  Tabs,
   TextField,
+  Typography,
+  useTheme,
 } from "@mui/material"
 import { Recording } from "@ranklab/api"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
@@ -28,6 +37,12 @@ import NextLink from "next/link"
 import { useSnackbar } from "notistack"
 import { saveReview } from "@/api/session"
 import { assertProp } from "@/assert"
+import { uploadsCdnUrl } from "@/config"
+import { Iconify } from "@/components/Iconify"
+import NextImage from "next/image"
+import windowsStep1 from "@/images/recording-guide/windows-1.png"
+import windowsStep2 from "@/images/recording-guide/windows-2.png"
+import windowsStep3 from "@/images/recording-guide/windows-3.png"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -71,6 +86,9 @@ export function PlayerReviewsNewRecordingPage({
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
+  const theme = useTheme()
+  const [recordingDialogOpen, setRecordingDialogOpen] = useState(false)
+  const [recordingDialogTab, setRecordingDialogTab] = useState("windows")
 
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
@@ -92,6 +110,11 @@ export function PlayerReviewsNewRecordingPage({
   const recordingId = watch("recordingId")
   const newRecordingVideo = watch("newRecordingVideo")
   const newRecordingTitle = watch("newRecordingTitle")
+
+  const selectedRecording =
+    recordingId === newRecordingId
+      ? null
+      : recordings.find((r) => r.id === recordingId)
 
   const [
     upload,
@@ -243,7 +266,153 @@ export function PlayerReviewsNewRecordingPage({
                             }}
                             error={Boolean(error)}
                             helperText={
-                              error ? error.message : "The video file to upload"
+                              error ? (
+                                error.message
+                              ) : (
+                                <>
+                                  <Typography
+                                    variant="caption"
+                                    color="textSecondary"
+                                  >
+                                    Not sure how to record your gameplay? Check
+                                    out {""}
+                                    <Link
+                                      color="info.main"
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setRecordingDialogOpen(true)
+                                      }}
+                                    >
+                                      our guide
+                                    </Link>
+                                    .
+                                  </Typography>
+                                  <Dialog
+                                    open={recordingDialogOpen}
+                                    fullWidth
+                                    maxWidth="lg"
+                                    onClose={() =>
+                                      setRecordingDialogOpen(false)
+                                    }
+                                  >
+                                    <DialogTitle>
+                                      How to Record Your Gameplay
+                                    </DialogTitle>
+                                    <DialogContent>
+                                      <TabContext value={recordingDialogTab}>
+                                        <Tabs
+                                          allowScrollButtonsMobile
+                                          variant="scrollable"
+                                          scrollButtons="auto"
+                                          value={recordingDialogTab}
+                                          onChange={(_, value) =>
+                                            setRecordingDialogTab(value)
+                                          }
+                                        >
+                                          <Tab
+                                            disableRipple
+                                            label="Windows"
+                                            icon={
+                                              <Iconify icon="mdi:windows" />
+                                            }
+                                            value="windows"
+                                          />
+                                          <Tab
+                                            disableRipple
+                                            label="Mac"
+                                            icon={<Iconify icon="mdi:apple" />}
+                                            value="mac"
+                                          />
+                                          <Tab
+                                            disableRipple
+                                            label="Linux"
+                                            icon={<Iconify icon="mdi:linux" />}
+                                            value="linux"
+                                          />
+                                        </Tabs>
+                                        <TabPanel value="windows">
+                                          <Typography
+                                            variant="body1"
+                                            mt={2}
+                                            gutterBottom
+                                          >
+                                            To record your gameplay on Windows,
+                                            we recommend using Xbox Game Bar.
+                                            You can open it by pressing{" "}
+                                            <Iconify icon="mdi:windows" /> + G.
+                                            If you want to start recording
+                                            immediately without opening the Game
+                                            Bar, you can press{" "}
+                                            <Iconify icon="mdi:windows" /> + Alt
+                                            + R.
+                                          </Typography>
+                                          <Typography
+                                            variant="body1"
+                                            gutterBottom
+                                          >
+                                            We recommend using the 30 FPS and
+                                            Standard video quality settings or
+                                            anything lower than that. This will
+                                            ensure that your video is not too
+                                            large to upload.
+                                          </Typography>
+                                          <Typography variant="body1">
+                                            You can find the configuration
+                                            options for Xbox Game Bar by
+                                            following the steps below.
+                                          </Typography>
+                                          <Stack spacing={2} mt={2}>
+                                            <NextImage
+                                              src={windowsStep1}
+                                              width={728}
+                                              quality={100}
+                                              height={438}
+                                              alt="Xbox Game Bar Step 1"
+                                            />
+                                            <NextImage
+                                              src={windowsStep2}
+                                              width={728}
+                                              quality={100}
+                                              height={503}
+                                              alt="Xbox Game Bar Step 2"
+                                            />
+                                            <NextImage
+                                              src={windowsStep3}
+                                              width={728}
+                                              quality={100}
+                                              height={503}
+                                              alt="Xbox Game Bar Step 3"
+                                            />
+                                          </Stack>
+                                        </TabPanel>
+                                        <TabPanel value="mac">
+                                          <Typography variant="body1" mt={2}>
+                                            Our Mac guide is coming soon. Stay
+                                            tuned!
+                                          </Typography>
+                                        </TabPanel>
+                                        <TabPanel value="linux">
+                                          <Typography variant="body1" mt={2}>
+                                            Our Linux guide is coming soon. Stay
+                                            tuned!
+                                          </Typography>
+                                        </TabPanel>
+                                      </TabContext>
+                                    </DialogContent>
+                                    <DialogActions>
+                                      <Button
+                                        onClick={() =>
+                                          setRecordingDialogOpen(false)
+                                        }
+                                        color="primary"
+                                      >
+                                        Close
+                                      </Button>
+                                    </DialogActions>
+                                  </Dialog>
+                                </>
+                              )
                             }
                           />
                         )}
@@ -274,6 +443,27 @@ export function PlayerReviewsNewRecordingPage({
                     />
                   )}
                 </Stack>
+                {selectedRecording && (
+                  <Box
+                    mt={4}
+                    sx={{
+                      backgroundColor: theme.palette.grey[900],
+                      borderRadius: 1,
+                    }}
+                  >
+                    <video
+                      height="400"
+                      width="100%"
+                      controls
+                      key={selectedRecording.id}
+                    >
+                      <source
+                        src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
+                        type={selectedRecording.mimeType}
+                      />
+                    </video>
+                  </Box>
+                )}
                 <Stack direction="row">
                   <NextLink href="/player/dashboard" passHref legacyBehavior>
                     <Button variant="text" component={Link} sx={{ mt: 3 }}>
