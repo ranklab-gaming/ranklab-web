@@ -32,13 +32,11 @@ const createOrSaveReview = withSessionApiRoute(async function (req, res) {
   const session = await getServerSession(req)
 
   if (!session || session.userType !== "player") {
-    if (req.method === "POST") {
-      return res.status(401).end()
-    }
-
     if (req.method === "GET") {
       return res.redirect(307, "/api/auth/signin").end()
     }
+
+    return res.status(401).end()
   }
 
   if (req.method === "POST" || req.method === "GET") {
