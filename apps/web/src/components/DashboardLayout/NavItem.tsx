@@ -36,7 +36,7 @@ export function NavItemRoot({
   active,
   onOpen,
 }: NavItemProps) {
-  const { title, path, icon, info, children, disabled, caption, roles } = item
+  const { title, icon, info, children, disabled, caption, roles } = item
 
   const renderContent = (
     <>
@@ -75,10 +75,10 @@ export function NavItemRoot({
     )
   }
 
-  return path.startsWith("http") ? (
+  return "path" in item && item.path.startsWith("http") ? (
     <ListItem
       component={<Link />}
-      href={path}
+      href={item.path}
       target="_blank"
       rel="noopener"
       disabled={disabled}
@@ -86,12 +86,21 @@ export function NavItemRoot({
     >
       {renderContent}
     </ListItem>
-  ) : (
-    <NextLink href={path} passHref legacyBehavior>
+  ) : "path" in item ? (
+    <NextLink href={item.path} passHref legacyBehavior>
       <ListItem activeRoot={active} disabled={disabled} roles={roles}>
         {renderContent}
       </ListItem>
     </NextLink>
+  ) : (
+    <ListItem
+      onClick={item.action}
+      activeRoot={active}
+      disabled={disabled}
+      roles={roles}
+    >
+      {renderContent}
+    </ListItem>
   )
 }
 
@@ -101,7 +110,7 @@ export function NavItemSub({
   active = false,
   onOpen,
 }: NavItemProps) {
-  const { title, path, info, children, disabled, caption, roles } = item
+  const { title, info, children, disabled, caption, roles } = item
 
   const renderContent = (
     <>
@@ -141,10 +150,10 @@ export function NavItemSub({
     )
   }
 
-  return path.startsWith("http") ? (
+  return "path" in item && item.path.startsWith("http") ? (
     <ListItem
       component={<Link />}
-      href={path}
+      href={item.path}
       target="_blank"
       rel="noopener"
       subItem
@@ -153,12 +162,22 @@ export function NavItemSub({
     >
       {renderContent}
     </ListItem>
-  ) : (
-    <NextLink href={path} passHref legacyBehavior>
+  ) : "path" in item ? (
+    <NextLink href={item.path} passHref legacyBehavior>
       <ListItem activeSub={active} subItem disabled={disabled} roles={roles}>
         {renderContent}
       </ListItem>
     </NextLink>
+  ) : (
+    <ListItem
+      onClick={item.action}
+      activeSub={active}
+      subItem
+      disabled={disabled}
+      roles={roles}
+    >
+      {renderContent}
+    </ListItem>
   )
 }
 

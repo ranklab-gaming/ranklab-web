@@ -119,7 +119,7 @@ export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
                 severity="info"
                 action={
                   <NextLink
-                    href={`/api/stripe-account-links?${new URLSearchParams({
+                    href={`/api/stripe-account-link?${new URLSearchParams({
                       return_url: "/coach/account",
                     })}`}
                     passHref

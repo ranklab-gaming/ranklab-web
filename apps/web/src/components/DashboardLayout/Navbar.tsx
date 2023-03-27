@@ -10,6 +10,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
+import { useCreateReview } from "@/hooks/useCreateReview"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -37,6 +38,8 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
   const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
+  const router = useRouter()
+  const createReview = useCreateReview()
 
   const navConfig =
     user.type === "player"
@@ -46,7 +49,8 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
             items: [
               {
                 title: "Request a Review",
-                path: "/player/reviews/new",
+                action: () => createReview(),
+                active: router.pathname.startsWith("/player/reviews/new/"),
                 icon: icons.review,
               },
             ],

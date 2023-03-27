@@ -18,6 +18,7 @@ import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
 import NextLink from "next/link"
 import { assertFind } from "@/assert"
+import { useCreateReview } from "@/hooks/useCreateReview"
 
 interface Props {
   recordings: Recording[]
@@ -29,7 +30,7 @@ export function RecordingList({ recordings, games }: Props) {
     null
   )
 
-  const theme = useTheme()
+  const createReview = useCreateReview()
 
   return (
     <>
@@ -72,20 +73,18 @@ export function RecordingList({ recordings, games }: Props) {
                     >
                       Preview
                     </Button>
-                    <NextLink
-                      href={`/player/reviews/new?recording_id=${recording.id}`}
-                      passHref
-                      legacyBehavior
+
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      component="a"
+                      onClick={() =>
+                        createReview({ recordingId: recording.id })
+                      }
                     >
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        component="a"
-                      >
-                        Request a Review
-                      </Button>
-                    </NextLink>
+                      Request a Review
+                    </Button>
                     <Dialog
                       onClose={() => setSelectedRecording(null)}
                       open={Boolean(selectedRecording)}

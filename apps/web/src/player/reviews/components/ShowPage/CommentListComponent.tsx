@@ -25,6 +25,7 @@ import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
 import NextLink from "next/link"
+import { useCreateReview } from "@/hooks/useCreateReview"
 
 interface Props {
   review: Review
@@ -45,6 +46,7 @@ export function CommentListComponent({
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
+  const createReview = useCreateReview()
   const coach = assertProp(review, "coach")
   const recording = assertProp(review, "recording")
 
@@ -100,15 +102,17 @@ export function CommentListComponent({
           </Typography>
           {review.state === ReviewState.Refunded && (
             <Box>
-              <NextLink
-                href={`/player/reviews/new?recording_id=${recording.id}`}
-                passHref
-                legacyBehavior
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() =>
+                  createReview({
+                    recordingId: recording.id,
+                  })
+                }
               >
-                <Button variant="outlined" color="primary">
-                  Request a New Review
-                </Button>
-              </NextLink>
+                Request a New Review
+              </Button>
             </Box>
           )}
           {review.state === ReviewState.AwaitingReview && (

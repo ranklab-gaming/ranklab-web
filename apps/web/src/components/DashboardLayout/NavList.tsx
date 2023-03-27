@@ -5,7 +5,6 @@ import { NavItemRoot, NavItemSub } from "./NavItem"
 
 export type NavListProps = {
   title: string
-  path: string
   icon?: ReactElement
   info?: ReactElement
   caption?: string
@@ -16,7 +15,15 @@ export type NavListProps = {
     path: string
     children?: { title: string; path: string }[]
   }[]
-}
+} & (
+  | {
+      path: string
+    }
+  | {
+      action: () => void
+      active?: boolean
+    }
+)
 
 type NavListRootProps = {
   list: NavListProps
@@ -24,7 +31,11 @@ type NavListRootProps = {
 
 export function NavListRoot({ list }: NavListRootProps) {
   const { pathname } = useRouter()
-  const active = list.path === pathname
+
+  const active =
+    ("path" in list && list.path === pathname) ||
+    ("active" in list && list.active)
+
   const [open, setOpen] = useState(active)
   const hasChildren = list.children
 
@@ -55,7 +66,11 @@ type NavListSubProps = {
 
 function NavListSub({ list }: NavListSubProps) {
   const { pathname } = useRouter()
-  const active = list.path === pathname
+
+  const active =
+    ("path" in list && list.path === pathname) ||
+    ("active" in list && list.active)
+
   const [open, setOpen] = useState(active)
   const hasChildren = list.children
 

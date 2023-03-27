@@ -61,7 +61,7 @@ function Content({ reviews, games }: Props) {
             sx={{ mb: 2 }}
             action={
               <NextLink
-                href={`/api/stripe-account-links?${new URLSearchParams({
+                href={`/api/stripe-account-link?${new URLSearchParams({
                   return_url: "/coach/dashboard?onboarding_redirect=true",
                 })}`}
                 passHref
@@ -118,7 +118,7 @@ function Content({ reviews, games }: Props) {
           accepting reviews.
         </Typography>
         <NextLink
-          href={`/api/stripe-account-links?${new URLSearchParams({
+          href={`/api/stripe-account-link?${new URLSearchParams({
             return_url: "/coach/dashboard?onboarding_redirect=true",
           })}`}
           passHref

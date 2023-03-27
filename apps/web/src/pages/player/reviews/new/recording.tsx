@@ -19,7 +19,7 @@ export const getServerSideProps = withUserSsr<Props>(
     if (!review) {
       return {
         redirect: {
-          destination: "/player/reviews/new",
+          destination: "/player/dashboard",
           permanent: false,
         },
       }
