@@ -109,7 +109,7 @@ export function Hero() {
                       color: "common.white",
                       transition: "all 0.25s",
                       backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                      boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+                      boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
                       "&:hover": {
                         filter: "brightness(1.3)",
                       },
