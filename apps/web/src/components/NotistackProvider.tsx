@@ -65,14 +65,17 @@ export const NotistackProvider = ({ children }: PropsWithChildren) => {
         variant="success"
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         iconVariant={{
-          info: <SnackbarIcon icon="eva:info-fill" color="info" />,
+          info: <SnackbarIcon icon="eva:info-outline" color="info" />,
           success: (
-            <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="success" />
+            <SnackbarIcon
+              icon="eva:checkmark-circle-2-outline"
+              color="success"
+            />
           ),
           warning: (
-            <SnackbarIcon icon="eva:alert-triangle-fill" color="warning" />
+            <SnackbarIcon icon="eva:alert-triangle-outline" color="warning" />
           ),
-          error: <SnackbarIcon icon="eva:alert-circle-fill" color="error" />,
+          error: <SnackbarIcon icon="eva:alert-circle-outline" color="error" />,
         }}
         action={(key) => (
           <IconButtonAnimate
@@ -80,7 +83,7 @@ export const NotistackProvider = ({ children }: PropsWithChildren) => {
             onClick={onClose(key)}
             sx={{ p: 0.5 }}
           >
-            <Iconify icon="eva:close-fill" />
+            <Iconify icon="eva:close-outline" />
           </IconButtonAnimate>
         )}
       >

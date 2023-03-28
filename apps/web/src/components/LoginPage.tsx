@@ -138,7 +138,9 @@ export const LoginPage = ({ userType }: Props) => {
                         >
                           <Iconify
                             icon={
-                              showPassword ? "eva:eye-fill" : "eva:eye-off-fill"
+                              showPassword
+                                ? "eva:eye-outline"
+                                : "eva:eye-off-outline"
                             }
                           />
                         </IconButton>

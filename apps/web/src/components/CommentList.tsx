@@ -26,7 +26,7 @@ export const CommentList = ({
   setCurrentTime,
 }: Props) => {
   return (
-    <Card sx={{ height: "100%", position: "relative" }}>
+    <Card>
       <CardContent>
         <Stack spacing={2}>
           {comments.map((comment) => (
@@ -79,6 +79,7 @@ export const CommentList = ({
                             }}
                             initial="initial"
                             animate="animate"
+                            flexGrow={1}
                           >
                             {comment.body}
                           </Typography>

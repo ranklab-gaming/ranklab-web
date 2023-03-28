@@ -13,6 +13,9 @@ import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
 import Sticky from "react-stickynode"
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { Iconify } from "@/components/Iconify"
 
 interface Props {
   review: Review
@@ -31,6 +34,7 @@ export const ReviewDetails = ({
   children,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
+  const fullScreenHandle = useFullScreenHandle()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
@@ -40,7 +44,7 @@ export const ReviewDetails = ({
   )
 
   return (
-    <>
+    <FullScreen handle={fullScreenHandle}>
       <Paper
         sx={{
           mb: 1,
@@ -48,7 +52,7 @@ export const ReviewDetails = ({
         }}
         elevation={1}
       >
-        <Stack direction="row" p={2} alignItems="center">
+        <Stack direction="row" p={2} alignItems="center" spacing={2}>
           <Stack direction="row" alignItems="center" spacing={2} mr="auto">
             <Typography variant="h3" component="h1" paragraph mb={0}>
               {title}
@@ -58,6 +62,16 @@ export const ReviewDetails = ({
           <Typography variant="body2" color="text.secondary">
             Requested on {formatDate(review.createdAt)}
           </Typography>
+          <IconButtonAnimate
+            onClick={
+              fullScreenHandle.active
+                ? fullScreenHandle.exit
+                : fullScreenHandle.enter
+            }
+            sx={{ p: 1 }}
+          >
+            <Iconify icon="eva:expand-outline" />
+          </IconButtonAnimate>
         </Stack>
       </Paper>
       {children}
@@ -103,10 +117,17 @@ export const ReviewDetails = ({
             </Paper>
           </Sticky>
         </Grid>
-        <Grid item md={4} xs={12} minHeight="70vh">
+        <Grid
+          item
+          md={4}
+          xs={12}
+          minHeight="70vh"
+          overflow={fullScreenHandle.active ? "auto" : undefined}
+          height={fullScreenHandle.active ? "100vh" : undefined}
+        >
           {commentListElement}
         </Grid>
       </Grid>
-    </>
+    </FullScreen>
   )
 }

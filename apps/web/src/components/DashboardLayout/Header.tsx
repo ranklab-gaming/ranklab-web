@@ -51,7 +51,7 @@ export const Header = ({ onOpenSidebar }: Props) => {
             onClick={onOpenSidebar}
             sx={{ mr: 1, color: "text.primary" }}
           >
-            <Iconify icon="eva:menu-2-fill" />
+            <Iconify icon="eva:menu-2-outline" />
           </IconButtonAnimate>
         )}
         <Box sx={{ flexGrow: 1 }} />
