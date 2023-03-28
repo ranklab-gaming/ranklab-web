@@ -1,5 +1,5 @@
-import { Footer } from "@/components/Footer"
-import { Page } from "@/components/Page"
+import { Footer } from "./Footer"
+import { Page } from "./Page"
 import { Box, Stack, styled } from "@mui/material"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"

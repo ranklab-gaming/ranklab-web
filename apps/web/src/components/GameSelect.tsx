@@ -1,4 +1,4 @@
-import { GameIcon } from "@/components/GameIcon"
+import { GameIcon } from "./GameIcon"
 import {
   ListItemAvatar,
   ListItemText,

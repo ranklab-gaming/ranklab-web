@@ -1,22 +1,21 @@
 import { animateFade } from "@/animate/fade"
+import { VideoPlayer } from "@/components/VideoPlayer"
+import { uploadsCdnUrl } from "@/config"
 import { Box } from "@mui/material"
-import { Comment } from "@ranklab/api"
+import { Comment, Recording as ApiRecording } from "@ranklab/api"
 import { m } from "framer-motion"
 
 interface Props {
   selectedComment: Comment | null
-  src: string
+  recording: ApiRecording
 }
 
-export const Video = ({ src, selectedComment }: Props) => {
+export const Recording = ({ recording, selectedComment }: Props) => {
   return (
     <>
-      <video
-        src={src}
-        controls
-        style={{
-          width: "100%",
-        }}
+      <VideoPlayer
+        src={`${uploadsCdnUrl}/${recording.videoKey}`}
+        type={recording.mimeType}
       />
       {selectedComment && selectedComment.drawing ? (
         <Box

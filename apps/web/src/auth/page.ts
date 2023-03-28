@@ -4,7 +4,7 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next"
-import { CoachUser, PlayerUser, PropsWithUser } from "@/auth"
+import { CoachUser, PlayerUser, PropsWithUser } from "../auth"
 import { withSessionSsr } from "@/session"
 
 function userFromCoach(coach: Coach): CoachUser {

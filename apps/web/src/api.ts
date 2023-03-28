@@ -1,5 +1,5 @@
 import { Configuration, RanklabApi } from "@ranklab/api"
-import { SessionReview } from "@/session"
+import { SessionReview } from "./session"
 
 function sessionReviewRequest(
   method: "PUT" | "POST",

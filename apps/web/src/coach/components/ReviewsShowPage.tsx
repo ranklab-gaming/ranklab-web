@@ -3,9 +3,8 @@ import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewDetails } from "@/components/ReviewDetails"
 import { Comment, Game, Review } from "@ranklab/api"
-import { Video } from "./ReviewsShowPage/Video"
+import { Recording } from "./ReviewsShowPage/Recording"
 import { CommentList } from "./ReviewsShowPage/CommentList"
-import { uploadsCdnUrl } from "@/config"
 import { useState } from "react"
 
 interface Props {
@@ -32,7 +31,7 @@ export const CoachReviewsShowPage = ({
         review={review}
         games={games}
         title={`Review For ${player.name}`}
-        videoElement={<Video src={`${uploadsCdnUrl}/${recording.videoKey}`} />}
+        recordingElement={<Recording recording={recording} />}
         commentListElement={
           <CommentList
             comments={comments}

@@ -1,5 +1,5 @@
 import { User } from "@/auth"
-import { Page } from "@/components/Page"
+import { Page } from "./Page"
 import { UserProvider } from "@/contexts/UserContext"
 import { headerStyles, navbarStyles } from "@/styles"
 import {

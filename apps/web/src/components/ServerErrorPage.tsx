@@ -1,6 +1,6 @@
 import { animateBounce } from "@/animate/bounce"
-import { BasicLayout } from "@/components/BasicLayout"
-import { MotionContainer } from "@/components/MotionContainer"
+import { BasicLayout } from "./BasicLayout"
+import { MotionContainer } from "./MotionContainer"
 import { Box, Button, Container, styled, Typography } from "@mui/material"
 import { m } from "framer-motion"
 import NextLink from "next/link"

@@ -4,8 +4,8 @@ import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review, ReviewState } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Comment } from "@ranklab/api"
-import { Video } from "@/player/reviews/components/ShowPage/Video"
-import { CommentList } from "@/player/reviews/components/ShowPage/CommentList"
+import { Recording } from "./ShowPage/Recording"
+import { CommentList } from "./ShowPage/CommentList"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
@@ -13,7 +13,6 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import NextLink from "next/link"
 import { assertProp } from "@/assert"
-import { uploadsCdnUrl } from "@/config"
 
 interface Props {
   review: Review
@@ -73,10 +72,10 @@ export const PlayerReviewsShowPage = ({
           review={review}
           games={games}
           title={`Review By ${coach.name}`}
-          videoElement={
-            <Video
+          recordingElement={
+            <Recording
               selectedComment={selectedComment}
-              src={`${uploadsCdnUrl}/${recording.videoKey}`}
+              recording={recording}
             />
           }
           commentListElement={

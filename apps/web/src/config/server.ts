@@ -1,4 +1,4 @@
-import { requireEnv } from "@/config"
+import { requireEnv } from "../config"
 
 const rawAuthJwks = requireEnv("AUTH_JWKS", process.env.AUTH_JWKS)
 const authJwks = JSON.parse(Buffer.from(rawAuthJwks, "base64").toString("utf8"))

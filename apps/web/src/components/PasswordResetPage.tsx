@@ -1,5 +1,5 @@
 import { api } from "@/api"
-import { BasicLayout } from "@/components/BasicLayout"
+import { BasicLayout } from "./BasicLayout"
 import { useForm } from "@/hooks/useForm"
 import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"

@@ -1,5 +1,5 @@
 import { api } from "@/api"
-import { GameIcon } from "@/components/GameIcon"
+import { GameIcon } from "./GameIcon"
 import { useUser } from "@/hooks/useUser"
 import { formatDate } from "@/helpers/formatDate"
 import {
@@ -16,7 +16,7 @@ import { Game, PaginatedResultForReview } from "@ranklab/api"
 import { MouseEvent, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
-import { ReviewState } from "@/components/ReviewState"
+import { ReviewState } from "./ReviewState"
 import { assertFind, assertProp } from "@/assert"
 
 interface Props {

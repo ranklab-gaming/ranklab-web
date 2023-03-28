@@ -1,5 +1,5 @@
-import { IconButtonAnimate } from "@/components/IconButtonAnimate"
-import { Iconify } from "@/components/Iconify"
+import { IconButtonAnimate } from "./IconButtonAnimate"
+import { Iconify } from "./Iconify"
 import { PaletteColorType } from "@/theme/palette"
 import { IconifyIcon } from "@iconify/react"
 import { Box, GlobalStyles } from "@mui/material"

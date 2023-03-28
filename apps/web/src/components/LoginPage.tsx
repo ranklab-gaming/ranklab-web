@@ -1,6 +1,6 @@
 import { api } from "@/api"
-import { BasicLayout } from "@/components/BasicLayout"
-import { Iconify } from "@/components/Iconify"
+import { BasicLayout } from "./BasicLayout"
+import { Iconify } from "./Iconify"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"

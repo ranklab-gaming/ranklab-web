@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { ReviewState } from "@/components/ReviewState"
+import { ReviewState } from "./ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
@@ -17,14 +17,14 @@ interface Props {
   review: Review
   games: Game[]
   title: string
-  videoElement: JSX.Element
+  recordingElement: JSX.Element
   commentListElement: JSX.Element
 }
 
 export const ReviewDetails = ({
   review,
   games,
-  videoElement,
+  recordingElement,
   commentListElement,
   title,
   children,
@@ -77,7 +77,7 @@ export const ReviewDetails = ({
               alignItems="center"
               justifyContent="center"
             >
-              <Box position="relative">{videoElement}</Box>
+              <Box position="relative">{recordingElement}</Box>
             </Box>
           </Paper>
           <Paper
