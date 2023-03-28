@@ -24,6 +24,7 @@ export const CoachReviewsShowPage = ({
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
+  const [currentTime, setCurrentTime] = useState(0)
 
   return (
     <DashboardLayout user={user} title={recording.title} showTitle={false}>
@@ -31,7 +32,14 @@ export const CoachReviewsShowPage = ({
         review={review}
         games={games}
         title={`Review For ${player.name}`}
-        recordingElement={<Recording recording={recording} />}
+        recordingElement={
+          <Recording
+            recording={recording}
+            currentTime={currentTime}
+            setCurrentTime={setCurrentTime}
+            setSelectedComment={setSelectedComment}
+          />
+        }
         commentListElement={
           <CommentList
             comments={comments}
@@ -40,6 +48,7 @@ export const CoachReviewsShowPage = ({
             setSelectedComment={setSelectedComment}
             setReview={setReview}
             setComments={setComments}
+            setCurrentTime={setCurrentTime}
           />
         }
       />

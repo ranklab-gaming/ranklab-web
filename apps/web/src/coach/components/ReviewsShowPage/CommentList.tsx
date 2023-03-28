@@ -1,21 +1,11 @@
 import { Iconify } from "@/components/Iconify"
 import { LoadingButton } from "@mui/lab"
-import {
-  Paper,
-  Stack,
-  Typography,
-  Card,
-  CardContent,
-  CardActionArea,
-  Box,
-  useTheme,
-} from "@mui/material"
+import { Paper, Stack, Typography, Box } from "@mui/material"
 import { Review, ReviewState, Comment } from "@ranklab/api"
-import { formatDuration } from "@/helpers/formatDuration"
-import { AnimatePresence, m } from "framer-motion"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
+import { CommentList as BaseCommentList } from "@/components/CommentList"
 
 interface Props {
   review: Review
@@ -23,8 +13,8 @@ interface Props {
   setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
   setReview: (review: Review) => void
-  // eslint-disable-next-line react/no-unused-prop-types
   setComments: (comments: Comment[]) => void
+  setCurrentTime: (time: number) => void
 }
 
 export const CommentList = ({
@@ -33,10 +23,15 @@ export const CommentList = ({
   setSelectedComment,
   selectedComment,
   setReview,
+  setComments,
+  setCurrentTime,
 }: Props) => {
   const [starting, setStarting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const theme = useTheme()
+
+  if (!setComments) {
+    return null
+  }
 
   const startReview = async () => {
     setStarting(true)
@@ -72,8 +67,8 @@ export const CommentList = ({
             <Iconify icon="eva:message-square-outline" width={64} height={64} />
           </Box>
           <Typography variant="h3">
-            This review hasn&apos;t started yet. Mark it as started to start
-            working on it.
+            This review hasn&apos;t started yet. Mark it as started to add
+            comments and drawings to it.
           </Typography>
           <Box>
             <LoadingButton
@@ -92,123 +87,11 @@ export const CommentList = ({
   }
 
   return (
-    <Card sx={{ height: "100%" }}>
-      <CardContent>
-        <Stack spacing={2}>
-          {comments.map((comment) => (
-            <Card
-              key={comment.id}
-              component={m.div}
-              initial="initial"
-              animate={selectedComment === comment ? "selected" : "initial"}
-              variants={{
-                initial: {
-                  backgroundColor: theme.palette.background.paper,
-                },
-                selected: {
-                  backgroundColor: theme.palette.secondary.main,
-                },
-              }}
-            >
-              <CardActionArea
-                onClick={() => {
-                  setSelectedComment(
-                    selectedComment === comment ? null : comment
-                  )
-                }}
-              >
-                <CardContent>
-                  <Stack spacing={2}>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Typography variant="body2">
-                        {formatDuration(comment.videoTimestamp)}
-                      </Typography>
-                      <AnimatePresence initial={false}>
-                        {selectedComment !== comment && comment.body ? (
-                          <Typography
-                            variant="body2"
-                            noWrap
-                            textOverflow="ellipsis"
-                            overflow="hidden"
-                            component={m.div}
-                            key="body"
-                            variants={{
-                              initial: {
-                                opacity: 0,
-                                width: 0,
-                              },
-                              animate: {
-                                opacity: 1,
-                                width: "auto",
-                              },
-                              exit: {
-                                width: 0,
-                                padding: 0,
-                                margin: 0,
-                              },
-                            }}
-                            initial="initial"
-                            animate="animate"
-                            exit="exit"
-                          >
-                            {comment.body}
-                          </Typography>
-                        ) : null}
-                      </AnimatePresence>
-                      <Box>
-                        {comment.body ? (
-                          <Iconify
-                            icon="eva:message-square-outline"
-                            width={24}
-                            height={24}
-                          />
-                        ) : null}
-                        {comment.drawing ? (
-                          <Iconify
-                            icon="eva:brush-outline"
-                            width={24}
-                            height={24}
-                          />
-                        ) : null}
-                      </Box>
-                    </Stack>
-                    <AnimatePresence>
-                      {selectedComment === comment && comment.body ? (
-                        <Typography
-                          variant="body1"
-                          key="body"
-                          component={m.div}
-                          variants={{
-                            initial: {
-                              opacity: 0,
-                              height: 0,
-                            },
-                            animate: {
-                              opacity: 1,
-                              height: "auto",
-                            },
-                            exit: {
-                              height: 0,
-                              padding: 0,
-                              margin: 0,
-                              opacity: 0,
-                            },
-                          }}
-                          initial="initial"
-                          animate="animate"
-                          exit="exit"
-                        >
-                          {comment.body}
-                        </Typography>
-                      ) : null}
-                    </AnimatePresence>
-                  </Stack>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          ))}
-        </Stack>
-      </CardContent>
-    </Card>
+    <BaseCommentList
+      comments={comments}
+      selectedComment={selectedComment}
+      setSelectedComment={setSelectedComment}
+      setCurrentTime={setCurrentTime}
+    />
   )
 }

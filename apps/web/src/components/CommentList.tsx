@@ -16,12 +16,14 @@ interface Props {
   comments: Comment[]
   selectedComment: Comment | null
   setSelectedComment: (comment: Comment | null) => void
+  setCurrentTime: (time: number) => void
 }
 
 export const CommentList = ({
   comments,
   selectedComment,
   setSelectedComment,
+  setCurrentTime,
 }: Props) => {
   return (
     <Card sx={{ height: "100%", position: "relative" }}>
@@ -44,9 +46,12 @@ export const CommentList = ({
             >
               <CardActionArea
                 onClick={() => {
-                  setSelectedComment(
-                    selectedComment === comment ? null : comment
-                  )
+                  if (selectedComment === comment) {
+                    setSelectedComment(null)
+                  } else {
+                    setCurrentTime(comment.videoTimestamp)
+                    setSelectedComment(comment)
+                  }
                 }}
               >
                 <CardContent>

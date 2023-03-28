@@ -33,6 +33,7 @@ export const PlayerReviewsShowPage = ({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const [currentTime, setCurrentTime] = useState(0)
   const recording = assertProp(review, "recording")
   const coach = assertProp(review, "coach")
 
@@ -76,6 +77,9 @@ export const PlayerReviewsShowPage = ({
             <Recording
               selectedComment={selectedComment}
               recording={recording}
+              currentTime={currentTime}
+              setCurrentTime={setCurrentTime}
+              setSelectedComment={setSelectedComment}
             />
           }
           commentListElement={
@@ -85,6 +89,7 @@ export const PlayerReviewsShowPage = ({
               setSelectedComment={setSelectedComment}
               selectedComment={selectedComment}
               setReview={setReview}
+              setCurrentTime={setCurrentTime}
             />
           }
         >

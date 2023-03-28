@@ -274,9 +274,10 @@ export const PlayerReviewsNewRecordingPage = ({
                                     color="textSecondary"
                                   >
                                     Not sure how to record your gameplay? Check
-                                    out
+                                    out{" "}
                                     <Link
-                                      color="primary.main"
+                                      color="secondary.main"
+                                      fontWeight="bold"
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()

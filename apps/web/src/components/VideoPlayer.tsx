@@ -1,56 +1,48 @@
-import { forwardRef, SyntheticEvent, useImperativeHandle, useRef } from "react"
+import { useEffect, useRef } from "react"
 
 interface VideoPlayerProps {
   src: string
   type: string
+  time?: number
   onTimeUpdate?: (seconds: number) => void
-  onPlay?: () => void
   controls?: boolean
 }
 
-export interface VideoPlayerRef {
-  seekTo: (seconds: number) => void
-}
+export const VideoPlayer = ({
+  src,
+  type,
+  onTimeUpdate,
+  time,
+  controls = true,
+}: VideoPlayerProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const seeking = useRef(false)
 
-export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ src, type, onTimeUpdate, onPlay, controls = true }, ref) => {
-    const seeking = useRef(false)
+  useEffect(() => {
+    if (time !== undefined && videoRef.current) {
+      seeking.current = true
+      videoRef.current.pause()
+      videoRef.current.currentTime = time
+    }
+  }, [time, videoRef, seeking])
 
-    const handleTimeUpdate = (e: SyntheticEvent<HTMLVideoElement>) => {
-      if (seeking.current) {
-        seeking.current = false
-        return
-      }
-
-      if (videoRef.current?.paused) {
-        onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
-      }
+  const handleTimeUpdate = () => {
+    if (seeking.current) {
+      seeking.current = false
+      return
     }
 
-    const videoRef = useRef<HTMLVideoElement>(null)
-
-    useImperativeHandle(ref, () => ({
-      seekTo: (seconds: number) => {
-        if (videoRef.current) {
-          seeking.current = true
-          videoRef.current.pause()
-          videoRef.current.currentTime = seconds
-        }
-      },
-    }))
-
-    return (
-      <video
-        controls={controls}
-        width="100%"
-        onTimeUpdate={handleTimeUpdate}
-        ref={videoRef}
-        onPlay={() => onPlay?.()}
-      >
-        <source src={src} type={type} />
-      </video>
-    )
+    onTimeUpdate?.(videoRef.current?.currentTime ?? 0)
   }
-)
 
-VideoPlayer.displayName = "VideoPlayer"
+  return (
+    <video
+      controls={controls}
+      width="100%"
+      onTimeUpdate={handleTimeUpdate}
+      ref={videoRef}
+    >
+      <source src={src} type={type} />
+    </video>
+  )
+}

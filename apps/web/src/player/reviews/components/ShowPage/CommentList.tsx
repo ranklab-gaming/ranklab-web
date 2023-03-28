@@ -26,6 +26,7 @@ interface Props {
   setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
   setReview: (review: Review) => void
+  setCurrentTime: (time: number) => void
 }
 
 interface ActionMessageProps {
@@ -157,6 +158,7 @@ export const CommentList = ({
   setSelectedComment,
   selectedComment,
   setReview,
+  setCurrentTime,
 }: Props) => {
   if (
     review.state === ReviewState.Accepted ||
@@ -167,6 +169,7 @@ export const CommentList = ({
         comments={comments}
         setSelectedComment={setSelectedComment}
         selectedComment={selectedComment}
+        setCurrentTime={setCurrentTime}
       />
     )
   }
