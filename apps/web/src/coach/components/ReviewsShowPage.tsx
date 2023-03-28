@@ -36,7 +36,6 @@ export const CoachReviewsShowPage = ({
           <Recording
             recording={recording}
             currentTime={currentTime}
-            setCurrentTime={setCurrentTime}
             setSelectedComment={setSelectedComment}
           />
         }

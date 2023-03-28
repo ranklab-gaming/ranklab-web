@@ -7,7 +7,6 @@ import { m } from "framer-motion"
 
 interface Props {
   selectedComment: Comment | null
-  setCurrentTime: (time: number) => void
   setSelectedComment: (comment: Comment | null) => void
   currentTime: number
   recording: ApiRecording
@@ -16,7 +15,6 @@ interface Props {
 export const Recording = ({
   recording,
   selectedComment,
-  setCurrentTime,
   currentTime,
   setSelectedComment,
 }: Props) => {
@@ -25,9 +23,8 @@ export const Recording = ({
       <VideoPlayer
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
         type={recording.mimeType}
-        onTimeUpdate={(time) => {
+        onTimeUpdate={() => {
           setSelectedComment(null)
-          setCurrentTime(time)
         }}
         time={currentTime}
       />

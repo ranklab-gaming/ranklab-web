@@ -32,6 +32,10 @@ export const VideoPlayer = ({
       return
     }
 
+    if (videoRef.current?.paused) {
+      return
+    }
+
     onTimeUpdate?.(videoRef.current?.currentTime ?? 0)
   }
 

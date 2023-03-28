@@ -63,7 +63,7 @@ export const ReviewDetails = ({
       {children}
       <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
-          <Sticky top={64} innerZ={100}>
+          <Sticky top={64}>
             <Paper
               elevation={4}
               sx={{

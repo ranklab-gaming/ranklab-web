@@ -78,7 +78,6 @@ export const PlayerReviewsShowPage = ({
               selectedComment={selectedComment}
               recording={recording}
               currentTime={currentTime}
-              setCurrentTime={setCurrentTime}
               setSelectedComment={setSelectedComment}
             />
           }
@@ -110,7 +109,7 @@ export const PlayerReviewsShowPage = ({
                       color="success"
                       component="a"
                     >
-                      CONTACT SUPPORT
+                      REQUEST REFUND
                     </Button>
                   </NextLink>
                   <LoadingButton

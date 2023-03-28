@@ -58,6 +58,9 @@ importers:
       '@stripe/stripe-js':
         specifier: 1.52.0
         version: 1.52.0
+      '@svg-drawing/react':
+        specifier: 5.0.1-beta.0
+        version: 5.0.1-beta.0(react@18.2.0)
       '@zach.codes/use-upload':
         specifier: 1.0.1
         version: 1.0.1
@@ -1179,6 +1182,40 @@ packages:
 
   /@stripe/stripe-js@1.52.0:
     resolution: {integrity: sha512-Ja2VlaTf3kM5tN4Y0sC8T3ibZAnfGUU/QzMAlk/G+Adz2fF1ycTabtSkdSuVP4/adXox8NkPPV4Xndx/EP4fMg==}
+    dev: false
+
+  /@svg-drawing/animation@5.0.1-beta.0:
+    resolution: {integrity: sha512-YCdrrvO+pQStcLAiMUycXGyKVmuXYxOcAl4gSdPNUiasubJxkGLDc5IwOjGHQvxDDZ27GmfezQtRWIsmD53JmA==}
+    requiresBuild: true
+    optionalDependencies:
+      '@svg-drawing/core': 5.0.1-beta.0
+    dev: false
+    optional: true
+
+  /@svg-drawing/core@5.0.1-beta.0:
+    resolution: {integrity: sha512-KyNiiGUpeZPGh8QxtEW381K9+sa+b9E6QRUzaC2ugyrMuXKraHWqu9d/mF5WKgBt5t2yEGRTOf2nMvSHb7D3jQ==}
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@svg-drawing/img-trace@5.0.1-beta.0:
+    resolution: {integrity: sha512-tJVs47YFsLgRi/1cbCryPsUMqV0pfhPK8vtzZ5w5Hi/VgREZSCWXymzChE+ZDcCobFtA8tUXOForawZ0ZpeM5g==}
+    requiresBuild: true
+    optionalDependencies:
+      '@svg-drawing/animation': 5.0.1-beta.0
+      '@svg-drawing/core': 5.0.1-beta.0
+    dev: false
+    optional: true
+
+  /@svg-drawing/react@5.0.1-beta.0(react@18.2.0):
+    resolution: {integrity: sha512-I/xKiw4LEU61QwUv1I2T2PJKE3dcYFSY/EjQLRDgAqICgGZJE8TcuvJdr1m0uXVIzLwTgO9+RCY09BHlbzoijg==}
+    peerDependencies:
+      react: '>= 16.8.0'
+    dependencies:
+      react: 18.2.0
+    optionalDependencies:
+      '@svg-drawing/core': 5.0.1-beta.0
+      '@svg-drawing/img-trace': 5.0.1-beta.0
     dev: false
 
   /@swc/helpers@0.4.14:
