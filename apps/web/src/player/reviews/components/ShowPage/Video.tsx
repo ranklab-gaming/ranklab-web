@@ -8,7 +8,7 @@ interface Props {
   src: string
 }
 
-export function VideoComponent({ src, selectedComment }: Props) {
+export function Video({ src, selectedComment }: Props) {
   return (
     <>
       <video

@@ -68,6 +68,8 @@ export function ReviewDetails({
             sx={{
               backgroundColor: theme.palette.common.black,
               overflow: "hidden",
+              borderBottomLeftRadius: 0,
+              borderBottomRightRadius: 0,
             }}
           >
             <Box
@@ -78,13 +80,19 @@ export function ReviewDetails({
             >
               <Box position="relative">{videoElement}</Box>
             </Box>
-            <Stack
-              direction="row"
-              alignItems="center"
-              spacing={2}
-              p={2}
-              borderTop={`1px dashed ${theme.palette.grey[900]}`}
-            >
+          </Paper>
+          <Paper
+            elevation={4}
+            sx={{
+              borderTop: `1px dashed ${theme.palette.grey[900]}`,
+              bgcolor: theme.palette.common.black,
+              backgroundColor: theme.palette.common.black,
+              overflow: "hidden",
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={2} p={2}>
               <Typography variant="caption" mb={0}>
                 {recording.title}
               </Typography>

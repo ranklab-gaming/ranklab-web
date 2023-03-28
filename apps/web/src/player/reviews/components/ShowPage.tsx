@@ -4,8 +4,8 @@ import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review, ReviewState } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Comment } from "@ranklab/api"
-import { VideoComponent } from "@/player/reviews/components/ShowPage/VideoComponent"
-import { CommentListComponent } from "@/player/reviews/components/ShowPage/CommentListComponent"
+import { Video } from "@/player/reviews/components/ShowPage/Video"
+import { CommentList } from "@/player/reviews/components/ShowPage/CommentList"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
@@ -75,13 +75,13 @@ export function PlayerReviewsShowPage({
           games={games}
           title={`Review By ${coach.name}`}
           videoElement={
-            <VideoComponent
+            <Video
               selectedComment={selectedComment}
               src={`${uploadsCdnUrl}/${recording.videoKey}`}
             />
           }
           commentListElement={
-            <CommentListComponent
+            <CommentList
               review={review}
               comments={comments}
               setSelectedComment={setSelectedComment}

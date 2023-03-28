@@ -33,7 +33,7 @@ interface Props {
   setReview: (review: Review) => void
 }
 
-export function CommentListComponent({
+export function CommentList({
   review,
   comments,
   setSelectedComment,
@@ -96,6 +96,8 @@ export function CommentListComponent({
           <Typography variant="h3">
             {review.state === ReviewState.Refunded
               ? "This review has been refunded. If you wish, you can request a new one for the same recording."
+              : review.state === ReviewState.Draft
+              ? `${coach.name} has started reviewing your recording. You will be notified when it is complete.`
               : `${coach.name} has been notified of your request and will begin reviewing shortly.`}
           </Typography>
           {review.state === ReviewState.Refunded && (
