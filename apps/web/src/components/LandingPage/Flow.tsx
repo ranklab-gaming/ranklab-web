@@ -119,7 +119,7 @@ export const Flow = () => {
                   className={
                     (index === 0 && "cardLeft") ||
                     (index === 1 && "cardCenter") ||
-                  ""
+                    ""
                   }
                 >
                   <CardIconStyle>

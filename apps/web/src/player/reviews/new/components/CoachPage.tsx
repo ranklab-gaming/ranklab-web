@@ -19,9 +19,9 @@ import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
-import { CoachesSelect } from "@/components/CoachesSelect"
+import { CoachesSelect } from "@/player/components/CoachesSelect"
 import { Coach } from "@ranklab/api"
-import { updateReview } from "@/api/session"
+import { updateSessionReview } from "@/api"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -63,7 +63,7 @@ export const PlayerReviewsNewCoachPage = ({
   })
 
   const goToNextStep = async function (values: FormValues) {
-    await updateReview({
+    await updateSessionReview({
       coachId: values.coachId,
       notes: values.notes,
     })

@@ -19,7 +19,7 @@ const FormSchema = yup.object().shape({
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-const PasswordRequestResetPage = () => {
+export const PasswordRequestResetPage = () => {
   const defaultValues: FormValues = { email: "" }
   const { enqueueSnackbar } = useSnackbar()
 
@@ -87,5 +87,3 @@ const PasswordRequestResetPage = () => {
     </BasicLayout>
   )
 }
-
-export default PasswordRequestResetPage

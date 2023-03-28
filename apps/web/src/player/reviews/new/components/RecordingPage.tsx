@@ -1,7 +1,7 @@
 import { api } from "@/api"
 import { playerFromUser, PropsWithUser } from "@/auth"
 import { Stepper } from "./Stepper"
-import { VideoFileSelect } from "@/components/VideoFileSelect"
+import { VideoFileSelect } from "@/player/components/VideoFileSelect"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
@@ -29,7 +29,7 @@ import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { useSnackbar } from "notistack"
-import { updateReview } from "@/api/session"
+import { updateSessionReview } from "@/api"
 import { assertProp } from "@/assert"
 import { uploadsCdnUrl } from "@/config"
 import { GuideDialog } from "./RecordingPage/GuideDialog"
@@ -147,7 +147,7 @@ export const PlayerReviewsNewRecordingPage = ({
         return
       }
 
-      await updateReview({
+      await updateSessionReview({
         recordingId: values.recordingId,
       })
 
@@ -292,7 +292,7 @@ export const PlayerReviewsNewRecordingPage = ({
                                     onClose={() => setGuideDialogOpen(false)}
                                   />
                                 </>
-                            )
+                              )
                             }
                           />
                         )}

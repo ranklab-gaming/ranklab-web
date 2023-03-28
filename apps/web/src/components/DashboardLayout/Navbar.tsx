@@ -10,7 +10,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
-import { useCreateReview } from "@/hooks/useCreateReview"
+import { useCreateReview } from "@/player/hooks/useCreateReview"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -165,7 +165,7 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
     >
       {!isDesktop && (
         <Drawer
-          open={isSidebarOpen}
+          open={sidebarOpen}
           onClose={onCloseSidebar}
           PaperProps={{ sx: { width: navbarStyles.dashboardWidth } }}
         >

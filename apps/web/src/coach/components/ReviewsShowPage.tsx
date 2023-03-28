@@ -30,7 +30,6 @@ export const CoachReviewsShowPage = ({
     <DashboardLayout user={user} title={recording.title} showTitle={false}>
       <ReviewDetails
         review={review}
-        comments={comments}
         games={games}
         title={`Review For ${player.name}`}
         videoElement={<Video src={`${uploadsCdnUrl}/${recording.videoKey}`} />}

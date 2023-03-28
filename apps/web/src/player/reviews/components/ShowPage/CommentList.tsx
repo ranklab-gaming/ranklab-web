@@ -23,7 +23,7 @@ import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
-import { useCreateReview } from "@/hooks/useCreateReview"
+import { useCreateReview } from "@/player/hooks/useCreateReview"
 
 interface Props {
   review: Review

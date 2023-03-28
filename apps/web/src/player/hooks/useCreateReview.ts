@@ -1,3 +1,4 @@
+import { createSessionReview } from "@/api"
 import { SessionReview } from "@/session"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
@@ -7,14 +8,7 @@ export function useCreateReview() {
   const { enqueueSnackbar } = useSnackbar()
 
   return async function (review?: Partial<SessionReview>) {
-    const response = await fetch("/api/review", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(review ?? {}),
-      credentials: "include",
-    })
+    const response = await createSessionReview(review)
 
     if (response.ok) {
       const json = await response.json()

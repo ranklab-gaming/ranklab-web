@@ -16,7 +16,7 @@ import {
 import { Game, Recording } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
-import { useCreateReview } from "@/hooks/useCreateReview"
+import { useCreateReview } from "@/player/hooks/useCreateReview"
 
 interface Props {
   recordings: Recording[]

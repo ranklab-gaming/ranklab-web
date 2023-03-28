@@ -1,5 +1,5 @@
 import { PropsWithUser } from "@/auth"
-import { CheckoutForm } from "@/components/CheckoutForm"
+import { CheckoutForm } from "@/player/components/CheckoutForm"
 import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review, ReviewState } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
@@ -71,7 +71,6 @@ export const PlayerReviewsShowPage = ({
       ) : (
         <ReviewDetails
           review={review}
-          comments={comments}
           games={games}
           title={`Review By ${coach.name}`}
           videoElement={

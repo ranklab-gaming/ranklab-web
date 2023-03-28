@@ -1,7 +1,7 @@
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Iconify } from "@/components/Iconify"
-import { RecordingList } from "@/components/RecordingList"
+import { RecordingList } from "./RecordingList"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"

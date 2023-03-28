@@ -1,7 +1,7 @@
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewList } from "@/components/ReviewList"
-import { useCoach } from "@/hooks/useCoach"
+import { useCoach } from "@/coach/hooks/useCoach"
 import {
   Alert,
   Box,

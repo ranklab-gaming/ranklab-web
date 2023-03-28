@@ -1,5 +1,5 @@
 import { uploadsCdnUrl } from "@/config"
-import { formatPrice } from "@/helpers/formatPrice"
+import { formatPrice } from "@/player/helpers/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
   Alert,
@@ -47,7 +47,7 @@ import { useResponsive } from "@/hooks/useResponsive"
 import { useSnackbar } from "notistack"
 import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
-import { StripeElements } from "@/components/StripeElements"
+import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
 
 const cardLogos = {

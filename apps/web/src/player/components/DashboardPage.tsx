@@ -2,7 +2,7 @@ import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
-import { useCreateReview } from "@/hooks/useCreateReview"
+import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
 

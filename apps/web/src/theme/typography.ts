@@ -10,7 +10,7 @@ const font = Roboto({
   preload: false,
 })
 
-const typography = {
+export const typography = {
   fontFamily: font.style.fontFamily,
   fontWeightRegular: 400,
   fontWeightMedium: 600,
@@ -81,5 +81,3 @@ const typography = {
     textTransform: "capitalize",
   },
 } as const
-
-export default typography

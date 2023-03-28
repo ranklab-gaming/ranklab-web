@@ -21,7 +21,7 @@ interface Props {
   token: string
 }
 
-const PasswordResetPage = ({ token }: Props) => {
+export const PasswordResetPage = ({ token }: Props) => {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
@@ -97,5 +97,3 @@ const PasswordResetPage = ({ token }: Props) => {
     </BasicLayout>
   )
 }
-
-export default PasswordResetPage

@@ -1,4 +1,4 @@
-import PasswordResetPage from "@/components/PasswordResetPage"
+import { PasswordResetPage } from "@/components/PasswordResetPage"
 import { GetServerSideProps } from "next"
 
 interface Props {

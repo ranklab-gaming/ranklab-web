@@ -75,24 +75,32 @@ export const NavItemRoot = ({
     )
   }
 
-  return "path" in item && item.path.startsWith("http") ? (
-    <ListItem
-      component={<Link />}
-      href={item.path}
-      target="_blank"
-      rel="noopener"
-      disabled={disabled}
-      roles={roles}
-    >
-      {renderContent}
-    </ListItem>
-  ) : "path" in item ? (
-    <NextLink href={item.path} passHref legacyBehavior>
-      <ListItem activeRoot={active} disabled={disabled} roles={roles}>
-        {renderContent}
-      </ListItem>
-    </NextLink>
-  ) : (
+  if ("path" in item) {
+    if (item.path.startsWith("http")) {
+      return (
+        <ListItem
+          component={<Link />}
+          href={item.path}
+          target="_blank"
+          rel="noopener"
+          disabled={disabled}
+          roles={roles}
+        >
+          {renderContent}
+        </ListItem>
+      )
+    }
+
+    return (
+      <NextLink href={item.path} passHref legacyBehavior>
+        <ListItem activeRoot={active} disabled={disabled} roles={roles}>
+          {renderContent}
+        </ListItem>
+      </NextLink>
+    )
+  }
+
+  return (
     <ListItem
       onClick={item.action}
       activeRoot={active}
@@ -150,25 +158,33 @@ export const NavItemSub = ({
     )
   }
 
-  return "path" in item && item.path.startsWith("http") ? (
-    <ListItem
-      component={<Link />}
-      href={item.path}
-      target="_blank"
-      rel="noopener"
-      subItem
-      disabled={disabled}
-      roles={roles}
-    >
-      {renderContent}
-    </ListItem>
-  ) : "path" in item ? (
-    <NextLink href={item.path} passHref legacyBehavior>
-      <ListItem activeSub={active} subItem disabled={disabled} roles={roles}>
-        {renderContent}
-      </ListItem>
-    </NextLink>
-  ) : (
+  if ("path" in item) {
+    if (item.path.startsWith("http")) {
+      return (
+        <ListItem
+          component={<Link />}
+          href={item.path}
+          target="_blank"
+          rel="noopener"
+          subItem
+          disabled={disabled}
+          roles={roles}
+        >
+          {renderContent}
+        </ListItem>
+      )
+    }
+
+    return (
+      <NextLink href={item.path} passHref legacyBehavior>
+        <ListItem activeSub={active} subItem disabled={disabled} roles={roles}>
+          {renderContent}
+        </ListItem>
+      </NextLink>
+    )
+  }
+
+  return (
     <ListItem
       onClick={item.action}
       activeSub={active}

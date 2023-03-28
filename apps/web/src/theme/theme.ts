@@ -3,7 +3,7 @@ import { breakpoints } from "./breakpoints"
 import { createComponentOverrides } from "./components"
 import { palette } from "./palette"
 import { customShadows, shadows } from "./shadows"
-import typography from "./typography"
+import { typography } from "./typography"
 
 export const theme = createTheme({
   palette,
