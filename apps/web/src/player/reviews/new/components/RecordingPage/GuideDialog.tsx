@@ -16,10 +16,10 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import NextImage from "next/image"
-import windowsStep1 from "@/images/recording-guide/windows-1.png"
-import windowsStep2 from "@/images/recording-guide/windows-2.png"
-import windowsStep3 from "@/images/recording-guide/windows-3.png"
-import windowsStep4 from "@/images/recording-guide/windows-4.png"
+import windowsStep1 from "@/images/recordingGuide/windows1.png"
+import windowsStep2 from "@/images/recordingGuide/windows2.png"
+import windowsStep3 from "@/images/recordingGuide/windows3.png"
+import windowsStep4 from "@/images/recordingGuide/windows4.png"
 
 interface Props {
   open: boolean

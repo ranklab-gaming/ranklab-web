@@ -19,7 +19,7 @@ import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
-import { CoachesSelect } from "@/player/components/CoachesSelect"
+import { CoachSelect } from "@/player/components/CoachSelect"
 import { Coach } from "@ranklab/api"
 import { updateSessionReview } from "@/api"
 
@@ -88,7 +88,7 @@ export const PlayerReviewsNewCoachPage = ({
                     name="coachId"
                     control={control}
                     render={({ field, fieldState: { error } }) => (
-                      <CoachesSelect
+                      <CoachSelect
                         onChange={field.onChange}
                         value={field.value}
                         onBlur={field.onBlur}

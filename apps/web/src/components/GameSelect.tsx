@@ -18,7 +18,7 @@ interface Props {
   helperText?: string
 }
 
-export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
+export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
   { games, onChange, value, onBlur, error, helperText }: Props,
   ref
 ) {
@@ -49,4 +49,4 @@ export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
   )
 })
 
-GamesSelect.displayName = "GamesSelect"
+GameSelect.displayName = "GameSelect"

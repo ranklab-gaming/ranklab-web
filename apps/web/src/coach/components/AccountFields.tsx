@@ -1,4 +1,4 @@
-import { GamesSelect } from "@/components/GamesSelect"
+import { GameSelect } from "@/components/GameSelect"
 import { TextField, InputAdornment } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Control, Controller, Path } from "react-hook-form"
@@ -126,7 +126,7 @@ export const AccountFields = <
         name={"gameId" as Path<TFormValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <GamesSelect
+          <GameSelect
             {...field}
             games={games}
             error={Boolean(error)}

@@ -15,7 +15,7 @@ interface Props {
   helperText?: string
 }
 
-export const CoachesSelect = ({
+export const CoachSelect = ({
   coaches,
   error,
   onBlur,
