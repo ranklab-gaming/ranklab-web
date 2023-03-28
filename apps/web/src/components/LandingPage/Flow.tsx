@@ -72,7 +72,7 @@ const CardIconStyle = styled("div")(({ theme }) => ({
   marginBottom: theme.spacing(10),
 }))
 
-export function Flow() {
+export const Flow = () => {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up("lg"))
 
@@ -119,7 +119,7 @@ export function Flow() {
                   className={
                     (index === 0 && "cardLeft") ||
                     (index === 1 && "cardCenter") ||
-                    ""
+                  ""
                   }
                 >
                   <CardIconStyle>

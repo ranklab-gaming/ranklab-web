@@ -27,7 +27,7 @@ interface Props {
   review: SessionReview
 }
 
-function Content({ billingDetails, review }: Props) {
+const Content = ({ billingDetails, review }: Props) => {
   const router = useRouter()
   const elements = useElements()
   const [loading, setLoading] = useState(true)
@@ -84,11 +84,11 @@ function Content({ billingDetails, review }: Props) {
           <Stepper activeStep={2} />
           <form onSubmit={handleSubmit(goToNextStep)}>
             <Box mt={3}>
-              {loading && (
+              {loading ? (
                 <Stack alignItems="center" py={4}>
                   <CircularProgress />
                 </Stack>
-              )}
+              ) : null}
               <AddressElement
                 onReady={() => setLoading(false)}
                 options={{
@@ -151,10 +151,10 @@ function Content({ billingDetails, review }: Props) {
   )
 }
 
-export function PlayerReviewsNewBillingPage({
+export const PlayerReviewsNewBillingPage = ({
   user,
   ...props
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   return (
     <DashboardLayout
       user={user}

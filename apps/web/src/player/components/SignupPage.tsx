@@ -17,7 +17,7 @@ interface Props {
 
 type FormValues = yup.InferType<typeof AccountFieldsSchema>
 
-export function PlayerSignupPage({ games }: Props) {
+export const PlayerSignupPage = ({ games }: Props) => {
   const defaultValues: FormValues = {
     email: "",
     password: "",

@@ -7,7 +7,7 @@ import { alpha } from "@mui/material/styles"
 import NextLink from "next/link"
 import { MouseEvent, useState } from "react"
 
-export function AccountPopover() {
+export const AccountPopover = () => {
   const user = useUser()
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
 

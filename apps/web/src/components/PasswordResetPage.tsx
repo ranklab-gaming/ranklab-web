@@ -21,7 +21,7 @@ interface Props {
   token: string
 }
 
-function PasswordResetPage({ token }: Props) {
+const PasswordResetPage = ({ token }: Props) => {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()

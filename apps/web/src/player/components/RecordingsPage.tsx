@@ -11,11 +11,11 @@ interface Props {
   games: Game[]
 }
 
-export function PlayerRecordingsPage({
+export const PlayerRecordingsPage = ({
   recordings,
   games,
   user,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   return (
     <DashboardLayout user={user} title="Recordings">
       {recordings.length === 0 ? (

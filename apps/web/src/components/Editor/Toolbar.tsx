@@ -13,7 +13,7 @@ interface ToolbarProps {
   id: string
 }
 
-export function Toolbar({ id }: ToolbarProps) {
+export const Toolbar = ({ id }: ToolbarProps) => {
   return (
     <ToolbarStyle>
       <div id={id}>

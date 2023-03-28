@@ -53,7 +53,7 @@ const ColorlibStepIconRoot = styled("div")<{
   }),
 }))
 
-function ColorlibStepIcon(props: StepIconProps) {
+const ColorlibStepIcon = (props: StepIconProps) => {
   const { active, completed, className } = props
 
   const icons: { [index: string]: React.ReactElement } = {
@@ -84,7 +84,7 @@ interface Props {
   activeStep: number
 }
 
-export function Stepper({ activeStep }: Props) {
+export const Stepper = ({ activeStep }: Props) => {
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
       <MuiStepper

@@ -14,12 +14,12 @@ interface Props {
   comments: Comment[]
 }
 
-export function CoachReviewsShowPage({
+export const CoachReviewsShowPage = ({
   review: initialReview,
   user,
   comments: initialComments,
   games,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   const [review, setReview] = useState(initialReview)
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const player = assertProp(review, "player")

@@ -26,3 +26,5 @@ export const GameIcon = forwardRef<HTMLDivElement, Props>(function (
     />
   )
 })
+
+GameIcon.displayName = "GameIcon"

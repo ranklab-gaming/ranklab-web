@@ -27,11 +27,11 @@ interface Props {
   }
 }
 
-export function ReviewList({
+export const ReviewList = ({
   reviews: initialReviews,
   games,
   queryParams,
-}: Props) {
+}: Props) => {
   const [page, setPage] = useState(initialReviews.page)
   const [reviews, setReviews] = useState(initialReviews)
   const user = useUser()

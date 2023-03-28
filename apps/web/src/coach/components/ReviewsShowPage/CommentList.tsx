@@ -4,12 +4,6 @@ import {
   Paper,
   Stack,
   Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   Card,
   CardContent,
   CardActionArea,
@@ -22,8 +16,6 @@ import { AnimatePresence, m } from "framer-motion"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
-import { assertProp } from "@/assert"
-import { useCreateReview } from "@/hooks/useCreateReview"
 
 interface Props {
   review: Review
@@ -31,23 +23,20 @@ interface Props {
   setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
   setReview: (review: Review) => void
+  // eslint-disable-next-line react/no-unused-prop-types
   setComments: (comments: Comment[]) => void
 }
 
-export function CommentList({
+export const CommentList = ({
   review,
   comments,
   setSelectedComment,
   selectedComment,
   setReview,
-  setComments,
-}: Props) {
-  const [showCancelDialog, setShowCancelDialog] = useState(false)
+}: Props) => {
   const [taking, setTaking] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
-  const createReview = useCreateReview()
-  const recording = assertProp(review, "recording")
 
   const takeReview = async () => {
     setTaking(true)
@@ -83,8 +72,8 @@ export function CommentList({
             <Iconify icon="eva:message-square-outline" width={64} height={64} />
           </Box>
           <Typography variant="h3">
-            This review hasn't been taken yet. Mark it as taken to start working
-            on it.
+            This review hasn&apos;t been taken yet. Mark it as taken to start
+            working on it.
           </Typography>
           <Box>
             <LoadingButton
@@ -135,7 +124,7 @@ export function CommentList({
                         {formatDuration(comment.videoTimestamp)}
                       </Typography>
                       <AnimatePresence initial={false}>
-                        {selectedComment !== comment && comment.body && (
+                        {selectedComment !== comment && comment.body ? (
                           <Typography
                             variant="body2"
                             noWrap
@@ -164,27 +153,27 @@ export function CommentList({
                           >
                             {comment.body}
                           </Typography>
-                        )}
+                        ) : null}
                       </AnimatePresence>
                       <Box>
-                        {comment.body && (
+                        {comment.body ? (
                           <Iconify
                             icon="eva:message-square-outline"
                             width={24}
                             height={24}
                           />
-                        )}
-                        {comment.drawing && (
+                        ) : null}
+                        {comment.drawing ? (
                           <Iconify
                             icon="eva:brush-outline"
                             width={24}
                             height={24}
                           />
-                        )}
+                        ) : null}
                       </Box>
                     </Stack>
                     <AnimatePresence>
-                      {selectedComment === comment && comment.body && (
+                      {selectedComment === comment && comment.body ? (
                         <Typography
                           variant="body1"
                           key="body"
@@ -211,7 +200,7 @@ export function CommentList({
                         >
                           {comment.body}
                         </Typography>
-                      )}
+                      ) : null}
                     </AnimatePresence>
                   </Stack>
                 </CardContent>

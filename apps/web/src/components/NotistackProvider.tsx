@@ -7,7 +7,7 @@ import { alpha, useTheme } from "@mui/material/styles"
 import { SnackbarKey, SnackbarProvider } from "notistack"
 import { PropsWithChildren, useRef } from "react"
 
-function SnackbarStyles() {
+const SnackbarStyles = () => {
   const theme = useTheme()
 
   return (
@@ -46,7 +46,7 @@ function SnackbarStyles() {
   )
 }
 
-export function NotistackProvider({ children }: PropsWithChildren) {
+export const NotistackProvider = ({ children }: PropsWithChildren) => {
   const notistackRef = useRef<any>(null)
 
   const onClose = (key: SnackbarKey) => () => {
@@ -65,17 +65,14 @@ export function NotistackProvider({ children }: PropsWithChildren) {
         variant="success"
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         iconVariant={{
-          info: <SnackbarIcon icon={"eva:info-fill"} color="info" />,
+          info: <SnackbarIcon icon="eva:info-fill" color="info" />,
           success: (
-            <SnackbarIcon
-              icon={"eva:checkmark-circle-2-fill"}
-              color="success"
-            />
+            <SnackbarIcon icon="eva:checkmark-circle-2-fill" color="success" />
           ),
           warning: (
-            <SnackbarIcon icon={"eva:alert-triangle-fill"} color="warning" />
+            <SnackbarIcon icon="eva:alert-triangle-fill" color="warning" />
           ),
-          error: <SnackbarIcon icon={"eva:alert-circle-fill"} color="error" />,
+          error: <SnackbarIcon icon="eva:alert-circle-fill" color="error" />,
         }}
         action={(key) => (
           <IconButtonAnimate
@@ -83,7 +80,7 @@ export function NotistackProvider({ children }: PropsWithChildren) {
             onClick={onClose(key)}
             sx={{ p: 0.5 }}
           >
-            <Iconify icon={"eva:close-fill"} />
+            <Iconify icon="eva:close-fill" />
           </IconButtonAnimate>
         )}
       >
@@ -98,7 +95,7 @@ type SnackbarIconProps = {
   color: PaletteColorType
 }
 
-function SnackbarIcon({ icon, color }: SnackbarIconProps) {
+const SnackbarIcon = ({ icon, color }: SnackbarIconProps) => {
   return (
     <Box
       component="span"

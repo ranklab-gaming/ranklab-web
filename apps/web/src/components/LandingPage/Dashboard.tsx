@@ -25,7 +25,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   },
 }))
 
-export function Dashboard() {
+export const Dashboard = () => {
   return (
     <RootStyle>
       <Container
@@ -72,6 +72,7 @@ export function Dashboard() {
           </Grid>
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
+              {/*eslint-disable-next-line @next/next/no-img-element*/}
               <img
                 alt="light mode"
                 src="https://picsum.photos/seed/lightmode/800/600"

@@ -8,12 +8,12 @@ interface Props extends PropsWithChildren<BoxProps & MotionProps> {
   action?: boolean
 }
 
-export function MotionContainer({
+export const MotionContainer = ({
   animate,
   action = false,
   children,
   ...other
-}: Props) {
+}: Props) => {
   if (action) {
     return (
       <Box

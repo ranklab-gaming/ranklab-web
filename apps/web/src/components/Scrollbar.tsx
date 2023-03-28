@@ -31,7 +31,7 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
   },
 }))
 
-export function Scrollbar({ children, sx }: BoxProps) {
+export const Scrollbar = ({ children, sx }: BoxProps) => {
   const userAgent =
     typeof navigator === "undefined" ? "SSR" : navigator.userAgent
 

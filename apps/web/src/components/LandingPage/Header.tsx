@@ -31,7 +31,7 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
   boxShadow: theme.customShadows.z8,
 }))
 
-export function Header() {
+export const Header = () => {
   const isOffset = useOffsetTop(headerStyles.mainDesktopHeight)
   const theme = useTheme()
   const router = useRouter()
@@ -77,7 +77,7 @@ export function Header() {
           />
         </Container>
       </ToolbarStyle>
-      {isOffset && <ToolbarShadowStyle />}
+      {isOffset ? <ToolbarShadowStyle /> : null}
     </AppBar>
   )
 }

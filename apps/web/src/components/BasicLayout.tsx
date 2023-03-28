@@ -11,11 +11,11 @@ interface Props {
   showTitle?: boolean
 }
 
-export function BasicLayout({
+export const BasicLayout = ({
   children,
   title,
   showTitle = true,
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) => {
   return (
     <Page title={title}>
       <Container
@@ -40,11 +40,11 @@ export function BasicLayout({
         <Box sx={{ flexGrow: 1 }} />
       </Container>
       <Container maxWidth="sm" sx={{ my: 8 }}>
-        {showTitle && (
+        {showTitle ? (
           <Typography variant="h3" component="h1" paragraph>
             {title}
           </Typography>
-        )}
+        ) : null}
         {children}
       </Container>
       <Footer />

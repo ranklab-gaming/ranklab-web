@@ -6,6 +6,6 @@ interface Props extends BoxProps {
   icon: IconifyIcon | string
 }
 
-export function Iconify({ icon, sx, ...other }: Props) {
+export const Iconify = ({ icon, sx, ...other }: Props) => {
   return <Box component={Icon} icon={icon} sx={{ ...sx }} {...other} />
 }

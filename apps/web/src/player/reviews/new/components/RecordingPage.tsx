@@ -23,7 +23,7 @@ import {
 import { Recording } from "@ranklab/api"
 import { useUpload } from "@zach.codes/use-upload/lib/react"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
@@ -66,11 +66,11 @@ interface Props {
   recordingId?: string
 }
 
-export function PlayerReviewsNewRecordingPage({
+export const PlayerReviewsNewRecordingPage = ({
   recordings: initialRecordings,
   user,
   recordingId: initialRecordingId,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   const router = useRouter()
   const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
   const [newRecording, setNewRecording] = useState<Recording | null>(null)
@@ -127,31 +127,34 @@ export function PlayerReviewsNewRecordingPage({
     }
   })
 
-  const goToNextStep = async function (values: FormValues) {
-    if (values.recordingId === newRecordingId) {
-      const newRecordingVideo = assertProp(values, "newRecordingVideo")
+  const goToNextStep = useCallback(
+    async function (values: FormValues) {
+      if (values.recordingId === newRecordingId) {
+        const newRecordingVideo = assertProp(values, "newRecordingVideo")
 
-      const recording = await api.playerRecordingsCreate({
-        createRecordingRequest: {
-          mimeType: newRecordingVideo.type,
-          size: newRecordingVideo.size,
-          title: values.newRecordingTitle,
-          skillLevel: player.skillLevel,
-          gameId: player.gameId,
-        },
+        const recording = await api.playerRecordingsCreate({
+          createRecordingRequest: {
+            mimeType: newRecordingVideo.type,
+            size: newRecordingVideo.size,
+            title: values.newRecordingTitle,
+            skillLevel: player.skillLevel,
+            gameId: player.gameId,
+          },
+        })
+
+        setNewRecording(recording)
+
+        return
+      }
+
+      await updateReview({
+        recordingId: values.recordingId,
       })
 
-      setNewRecording(recording)
-
-      return
-    }
-
-    await updateReview({
-      recordingId: values.recordingId,
-    })
-
-    await router.push("/player/reviews/new/coach")
-  }
+      await router.push("/player/reviews/new/coach")
+    },
+    [player.gameId, player.skillLevel, router]
+  )
 
   useEffect(() => {
     if (!uploadDone || !newRecording) {
@@ -161,7 +164,14 @@ export function PlayerReviewsNewRecordingPage({
     setRecordings([...recordings, newRecording])
     setValue("recordingId", newRecording.id)
     handleSubmit(goToNextStep)()
-  }, [uploadDone])
+  }, [
+    goToNextStep,
+    handleSubmit,
+    newRecording,
+    recordings,
+    setValue,
+    uploadDone,
+  ])
 
   useEffect(() => {
     if (!newRecordingVideo || !newRecording) {
@@ -174,7 +184,7 @@ export function PlayerReviewsNewRecordingPage({
         item: () => newRecordingVideo,
       },
     })
-  }, [newRecording])
+  }, [newRecording, newRecordingVideo, upload])
 
   useEffect(() => {
     if (!uploadError) {
@@ -187,7 +197,7 @@ export function PlayerReviewsNewRecordingPage({
         variant: "error",
       }
     )
-  }, [uploadError])
+  }, [enqueueSnackbar, uploadError])
 
   return (
     <DashboardLayout
@@ -264,7 +274,7 @@ export function PlayerReviewsNewRecordingPage({
                                     color="textSecondary"
                                   >
                                     Not sure how to record your gameplay? Check
-                                    out {""}
+                                    out
                                     <Link
                                       color="primary.main"
                                       onClick={(e) => {
@@ -282,7 +292,7 @@ export function PlayerReviewsNewRecordingPage({
                                     onClose={() => setGuideDialogOpen(false)}
                                   />
                                 </>
-                              )
+                            )
                             }
                           />
                         )}
@@ -305,15 +315,15 @@ export function PlayerReviewsNewRecordingPage({
                       />
                     </Stack>
                   )}
-                  {uploading && (
+                  {uploading ? (
                     <LinearProgress
                       variant="determinate"
                       value={uploadProgress ?? 0}
                       color="info"
                     />
-                  )}
+                  ) : null}
                 </Stack>
-                {selectedRecording && (
+                {selectedRecording ? (
                   <Paper
                     elevation={4}
                     sx={{
@@ -333,7 +343,7 @@ export function PlayerReviewsNewRecordingPage({
                       />
                     </video>
                   </Paper>
-                )}
+                ) : null}
                 <Stack direction="row">
                   <NextLink href="/player/dashboard" passHref legacyBehavior>
                     <Button variant="text" component={Link} sx={{ mt: 3 }}>

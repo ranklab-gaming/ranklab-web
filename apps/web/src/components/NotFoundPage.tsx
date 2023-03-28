@@ -13,7 +13,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   paddingBottom: theme.spacing(10),
 }))
 
-export function NotFoundPage() {
+export const NotFoundPage = () => {
   return (
     <BasicLayout title="Not Found" showTitle={false}>
       <RootStyle>

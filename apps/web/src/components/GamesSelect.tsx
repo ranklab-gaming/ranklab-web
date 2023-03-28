@@ -48,3 +48,5 @@ export const GamesSelect = forwardRef<HTMLDivElement, Props>(function (
     </Stack>
   )
 })
+
+GamesSelect.displayName = "GamesSelect"

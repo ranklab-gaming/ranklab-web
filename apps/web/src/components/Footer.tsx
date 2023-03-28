@@ -36,7 +36,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-export function Footer() {
+export const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   return (

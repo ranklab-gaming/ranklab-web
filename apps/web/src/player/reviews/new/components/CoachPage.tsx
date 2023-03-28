@@ -39,12 +39,12 @@ interface Props {
   notes?: string
 }
 
-export function PlayerReviewsNewCoachPage({
+export const PlayerReviewsNewCoachPage = ({
   user,
   coaches,
   coachId,
   notes,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   const router = useRouter()
 
   const defaultValues: FormValues = {

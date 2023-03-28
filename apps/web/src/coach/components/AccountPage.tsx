@@ -44,7 +44,7 @@ const FormSchema = yup
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export function CoachAccountPage({ games, user }: PropsWithUser<Props>) {
+export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const coach = coachFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()

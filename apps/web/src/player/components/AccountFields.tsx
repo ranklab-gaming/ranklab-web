@@ -42,7 +42,7 @@ interface Props<
   showPasswordField?: TWithPassword
 }
 
-export function AccountFields<
+export const AccountFields = <
   TWithPassword extends boolean,
   TFormValues extends FormValues<TWithPassword>
 >({
@@ -50,7 +50,7 @@ export function AccountFields<
   games,
   watch,
   showPasswordField = false as TWithPassword,
-}: Props<TWithPassword, TFormValues>) {
+}: Props<TWithPassword, TFormValues>) => {
   const gameId = watch("gameId" as Path<TFormValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
 
@@ -84,7 +84,7 @@ export function AccountFields<
           />
         )}
       />
-      {showPasswordField && (
+      {showPasswordField ? (
         <Controller
           name={"password" as Path<TFormValues>}
           control={control}
@@ -101,7 +101,7 @@ export function AccountFields<
             />
           )}
         />
-      )}
+      ) : null}
       <Controller
         name={"gameId" as Path<TFormValues>}
         control={control}
@@ -118,7 +118,7 @@ export function AccountFields<
           />
         )}
       />
-      {selectedGame && (
+      {selectedGame ? (
         <Controller
           name={"skillLevel" as Path<TFormValues>}
           control={control}
@@ -141,7 +141,7 @@ export function AccountFields<
             </TextField>
           )}
         />
-      )}
+      ) : null}
     </>
   )
 }

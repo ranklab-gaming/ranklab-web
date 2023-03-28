@@ -104,13 +104,13 @@ interface Props extends PopoverProps {
   disabledArrow?: boolean
 }
 
-export function MenuPopover({
+export const MenuPopover = ({
   children,
   arrow = "top-right",
   disabledArrow,
   sx,
   ...other
-}: Props) {
+}: Props) => {
   return (
     <Popover
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}

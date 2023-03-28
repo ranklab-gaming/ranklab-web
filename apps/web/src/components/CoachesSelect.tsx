@@ -15,14 +15,14 @@ interface Props {
   helperText?: string
 }
 
-export function CoachesSelect({
+export const CoachesSelect = ({
   coaches,
   error,
   onBlur,
   onChange,
   helperText,
   value,
-}: Props) {
+}: Props) => {
   return (
     <TextField
       select

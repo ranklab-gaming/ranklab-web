@@ -42,11 +42,12 @@ interface AvatarProps extends MuiAvatarProps {
 }
 
 export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
-  { user, sx, ...other }: AvatarProps,
+  { user: initialUser, sx, ...other }: AvatarProps,
   ref
 ) {
   const theme = useTheme()
-  const { name } = user ?? useUser()
+  const user = useUser()
+  const { name } = initialUser ?? user
   const initial = getInitial(name)
   const color = getAvatarColor(name)
 

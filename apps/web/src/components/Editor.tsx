@@ -85,7 +85,7 @@ export interface Props extends ReactQuillProps {
   placeholder?: string
 }
 
-export function Editor({
+export const Editor = ({
   error,
   value,
   onChange,
@@ -93,7 +93,7 @@ export function Editor({
   helperText,
   sx,
   ...other
-}: Props) {
+}: Props) => {
   const id = `editor-${useId().slice(1, -1)}`
 
   const modules = {

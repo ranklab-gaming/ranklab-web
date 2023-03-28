@@ -101,12 +101,22 @@ export class OidcRedisAdapter {
 
   async findByUid(uid: string) {
     const id = await this.client.get(uidKeyFor(uid))
-    return this.find(id!)
+
+    if (!id) {
+      return undefined
+    }
+
+    return this.find(id)
   }
 
   async findByUserCode(userCode: string) {
     const id = await this.client.get(userCodeKeyFor(userCode))
-    return this.find(id!)
+
+    if (!id) {
+      return undefined
+    }
+
+    return this.find(id)
   }
 
   async destroy(id: string) {

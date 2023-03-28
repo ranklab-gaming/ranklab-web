@@ -8,11 +8,11 @@ interface Props extends PropsWithChildren<BoxProps & MotionProps> {
   disableAnimatedMobile?: boolean
 }
 
-export function MotionViewport({
+export const MotionViewport = ({
   children,
   disableAnimatedMobile = true,
   ...other
-}: Props) {
+}: Props) => {
   const isDesktop = useResponsive("up", "sm")
 
   if (!isDesktop && disableAnimatedMobile) {

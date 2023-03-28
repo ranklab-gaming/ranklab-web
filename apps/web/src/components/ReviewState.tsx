@@ -6,7 +6,7 @@ export interface ReviewStateProps {
   size?: "small" | "medium"
 }
 
-export function ReviewState({ state, size }: ReviewStateProps) {
+export const ReviewState = ({ state, size }: ReviewStateProps) => {
   const color = (() => {
     switch (state) {
       case State.AwaitingPayment:

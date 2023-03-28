@@ -33,13 +33,13 @@ interface Props {
   setReview: (review: Review) => void
 }
 
-export function CommentList({
+export const CommentList = ({
   review,
   comments,
   setSelectedComment,
   selectedComment,
   setReview,
-}: Props) {
+}: Props) => {
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -192,7 +192,7 @@ export function CommentList({
                         {formatDuration(comment.videoTimestamp)}
                       </Typography>
                       <AnimatePresence initial={false}>
-                        {selectedComment !== comment && comment.body && (
+                        {selectedComment !== comment && comment.body ? (
                           <Typography
                             variant="body2"
                             noWrap
@@ -221,27 +221,27 @@ export function CommentList({
                           >
                             {comment.body}
                           </Typography>
-                        )}
+                        ) : null}
                       </AnimatePresence>
                       <Box>
-                        {comment.body && (
+                        {comment.body ? (
                           <Iconify
                             icon="eva:message-square-outline"
                             width={24}
                             height={24}
                           />
-                        )}
-                        {comment.drawing && (
+                        ) : null}
+                        {comment.drawing ? (
                           <Iconify
                             icon="eva:brush-outline"
                             width={24}
                             height={24}
                           />
-                        )}
+                        ) : null}
                       </Box>
                     </Stack>
                     <AnimatePresence>
-                      {selectedComment === comment && comment.body && (
+                      {selectedComment === comment && comment.body ? (
                         <Typography
                           variant="body1"
                           key="body"
@@ -268,7 +268,7 @@ export function CommentList({
                         >
                           {comment.body}
                         </Typography>
-                      )}
+                      ) : null}
                     </AnimatePresence>
                   </Stack>
                 </CardContent>

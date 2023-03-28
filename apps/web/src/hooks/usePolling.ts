@@ -17,22 +17,22 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
   const [retries, setRetries] = useState(initialRetries)
   const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout>()
 
-  function clearTimeoutHandle() {
-    if (timeoutHandle) {
-      clearTimeout(timeoutHandle)
-      setTimeoutHandle(undefined)
-    }
-  }
-
-  async function poll() {
-    setResult(await options.poll())
-
-    setTimeoutHandle(
-      setTimeout(() => setRetries(retries - 1), options.interval ?? 1000)
-    )
-  }
-
   useEffect(() => {
+    function clearTimeoutHandle() {
+      if (timeoutHandle) {
+        clearTimeout(timeoutHandle)
+        setTimeoutHandle(undefined)
+      }
+    }
+
+    async function poll() {
+      setResult(await options.poll())
+
+      setTimeoutHandle(
+        setTimeout(() => setRetries(retries - 1), options.interval ?? 1000)
+      )
+    }
+
     if (!polling) {
       clearTimeoutHandle()
       setRetries(initialRetries)
@@ -54,7 +54,7 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
     poll()
 
     return clearTimeoutHandle
-  }, [retries, polling])
+  }, [retries, polling, options, result, initialRetries, timeoutHandle])
 
   return {
     polling,

@@ -8,7 +8,7 @@ interface Props {
   src: string
 }
 
-export function Video({ src, selectedComment }: Props) {
+export const Video = ({ src, selectedComment }: Props) => {
   return (
     <>
       <video
@@ -18,7 +18,7 @@ export function Video({ src, selectedComment }: Props) {
           width: "100%",
         }}
       />
-      {selectedComment && selectedComment.drawing && (
+      {selectedComment && selectedComment.drawing ? (
         <Box
           position="absolute"
           top={0}
@@ -34,7 +34,7 @@ export function Video({ src, selectedComment }: Props) {
             }}
           />
         </Box>
-      )}
+      ) : null}
     </>
   )
 }

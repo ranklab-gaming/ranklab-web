@@ -49,6 +49,7 @@
     "yup": "1.0.2"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^13.2.4",
     "@types/koa": "2.13.6",
     "@types/koa-mount": "4.0.2",
     "@types/lodash": "4.14.192",
@@ -60,6 +61,8 @@
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
     "eslint": "^8.36.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "typescript": "5.0.2"
   }
 }

@@ -36,7 +36,7 @@ const FormSchema = yup.object().shape({
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export function LoginPage({ userType }: Props) {
+export const LoginPage = ({ userType }: Props) => {
   const defaultValues: FormValues = {
     email: "",
     password: "",
@@ -90,7 +90,7 @@ export function LoginPage({ userType }: Props) {
         { variant: "error" }
       )
     }
-  }, [shouldCheckSessionExpired])
+  }, [enqueueSnackbar, shouldCheckSessionExpired])
 
   return (
     <BasicLayout title="Sign in to Ranklab">
@@ -178,7 +178,7 @@ export function LoginPage({ userType }: Props) {
       {userType === "player" && (
         <Box display="flex" alignItems="center" mt={3}>
           <Typography variant="body2" sx={{ mr: 1 }}>
-            Don't have an account?
+            Don&apos;t have an account?
           </Typography>
 
           <Link

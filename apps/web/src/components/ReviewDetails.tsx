@@ -1,4 +1,4 @@
-import { Review, Comment, Game } from "@ranklab/api"
+import { Review, Game } from "@ranklab/api"
 import {
   Box,
   Chip,
@@ -15,21 +15,20 @@ import { formatDate } from "@/helpers/formatDate"
 
 interface Props {
   review: Review
-  comments: Comment[]
   games: Game[]
   title: string
   videoElement: JSX.Element
   commentListElement: JSX.Element
 }
 
-export function ReviewDetails({
+export const ReviewDetails = ({
   review,
   games,
   videoElement,
   commentListElement,
   title,
   children,
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)

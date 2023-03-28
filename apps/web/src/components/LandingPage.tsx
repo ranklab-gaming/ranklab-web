@@ -20,7 +20,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-export function LandingPage() {
+export const LandingPage = () => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -39,7 +39,7 @@ export function LandingPage() {
 
       router.replace("/")
     }
-  }, [])
+  }, [enqueueSnackbar, router])
 
   return (
     <Page title="Up your game">

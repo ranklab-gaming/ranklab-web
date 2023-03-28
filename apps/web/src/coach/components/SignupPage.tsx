@@ -24,7 +24,11 @@ const FormSchema = AccountFieldsSchema.concat(
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export function CoachSignupPage({ games, availableCountries, token }: Props) {
+export const CoachSignupPage = ({
+  games,
+  availableCountries,
+  token,
+}: Props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
 

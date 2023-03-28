@@ -21,7 +21,7 @@ const largeVariant = {
   tap: { scale: 0.99 },
 }
 
-function AnimateWrap({ size, children }: AnimateWrapProp) {
+const AnimateWrap = ({ size, children }: AnimateWrapProp) => {
   const isSmall = size === "small"
   const isLarge = size === "large"
 
@@ -42,11 +42,11 @@ function AnimateWrap({ size, children }: AnimateWrapProp) {
   )
 }
 
-export function IconButtonAnimate({
+export const IconButtonAnimate = ({
   children,
   size = "medium",
   ...other
-}: IconButtonProps) {
+}: IconButtonProps) => {
   return (
     <AnimateWrap size={size}>
       <IconButton size={size} {...other}>

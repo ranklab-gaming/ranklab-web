@@ -2,16 +2,14 @@ interface Props {
   src: string
 }
 
-export function Video({ src }: Props) {
+export const Video = ({ src }: Props) => {
   return (
-    <>
-      <video
-        src={src}
-        controls
-        style={{
-          width: "100%",
-        }}
-      />
-    </>
+    <video
+      src={src}
+      controls
+      style={{
+        width: "100%",
+      }}
+    />
   )
 }

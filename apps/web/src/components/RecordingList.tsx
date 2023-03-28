@@ -23,7 +23,7 @@ interface Props {
   games: Game[]
 }
 
-export function RecordingList({ recordings, games }: Props) {
+export const RecordingList = ({ recordings, games }: Props) => {
   const [selectedRecording, setSelectedRecording] = useState<Recording | null>(
     null
   )
@@ -31,101 +31,97 @@ export function RecordingList({ recordings, games }: Props) {
   const createReview = useCreateReview()
 
   return (
-    <>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell width={300}>Title</TableCell>
-            <TableCell align="center">Game</TableCell>
-            <TableCell align="center">Skill Level</TableCell>
-            <TableCell align="center">Date Uploaded</TableCell>
-            <TableCell align="right" width={300}>
-              Actions
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {recordings.map((recording) => {
-            const game = assertFind(games, (g) => g.id === recording.gameId)
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell width={300}>Title</TableCell>
+          <TableCell align="center">Game</TableCell>
+          <TableCell align="center">Skill Level</TableCell>
+          <TableCell align="center">Date Uploaded</TableCell>
+          <TableCell align="right" width={300}>
+            Actions
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {recordings.map((recording) => {
+          const game = assertFind(games, (g) => g.id === recording.gameId)
 
-            const skillLevel = assertFind(
-              game.skillLevels,
-              (sl) => sl.value === recording.skillLevel
-            )
+          const skillLevel = assertFind(
+            game.skillLevels,
+            (sl) => sl.value === recording.skillLevel
+          )
 
-            return (
-              <TableRow key={recording.id}>
-                <TableCell width={300}>{recording.title}</TableCell>
-                <TableCell align="center">{game.name}</TableCell>
-                <TableCell align="center">{skillLevel.name}</TableCell>
-                <TableCell align="center">
-                  {formatDate(recording.createdAt)}
-                </TableCell>
-                <TableCell align="right" width={300}>
-                  <Stack direction="row" spacing={1} justifyContent="end">
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      size="small"
-                      onClick={() => setSelectedRecording(recording)}
-                    >
-                      View Video
-                    </Button>
+          return (
+            <TableRow key={recording.id}>
+              <TableCell width={300}>{recording.title}</TableCell>
+              <TableCell align="center">{game.name}</TableCell>
+              <TableCell align="center">{skillLevel.name}</TableCell>
+              <TableCell align="center">
+                {formatDate(recording.createdAt)}
+              </TableCell>
+              <TableCell align="right" width={300}>
+                <Stack direction="row" spacing={1} justifyContent="end">
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="small"
+                    onClick={() => setSelectedRecording(recording)}
+                  >
+                    View Video
+                  </Button>
 
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      component="a"
-                      onClick={() =>
-                        createReview({ recordingId: recording.id })
-                      }
-                    >
-                      Request a Review
-                    </Button>
-                    <Dialog
-                      onClose={() => setSelectedRecording(null)}
-                      open={Boolean(selectedRecording)}
-                      fullWidth
-                      maxWidth="lg"
-                    >
-                      {selectedRecording && (
-                        <>
-                          <DialogTitle>{selectedRecording.title}</DialogTitle>
-                          <DialogContent sx={{ mt: 2 }}>
-                            <video
-                              style={{
-                                objectFit: "cover",
-                                width: "100%",
-                                height: "100%",
-                                maxHeight: 600,
-                              }}
-                              controls
-                            >
-                              <source
-                                src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
-                                type={selectedRecording.mimeType}
-                              />
-                            </video>
-                          </DialogContent>
-                          <DialogActions>
-                            <Button
-                              onClick={() => setSelectedRecording(null)}
-                              color="primary"
-                            >
-                              Close
-                            </Button>
-                          </DialogActions>
-                        </>
-                      )}
-                    </Dialog>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    </>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    component="a"
+                    onClick={() => createReview({ recordingId: recording.id })}
+                  >
+                    Request a Review
+                  </Button>
+                  <Dialog
+                    onClose={() => setSelectedRecording(null)}
+                    open={Boolean(selectedRecording)}
+                    fullWidth
+                    maxWidth="lg"
+                  >
+                    {selectedRecording ? (
+                      <>
+                        <DialogTitle>{selectedRecording.title}</DialogTitle>
+                        <DialogContent sx={{ mt: 2 }}>
+                          <video
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                              maxHeight: 600,
+                            }}
+                            controls
+                          >
+                            <source
+                              src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
+                              type={selectedRecording.mimeType}
+                            />
+                          </video>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={() => setSelectedRecording(null)}
+                            color="primary"
+                          >
+                            Close
+                          </Button>
+                        </DialogActions>
+                      </>
+                    ) : null}
+                  </Dialog>
+                </Stack>
+              </TableCell>
+            </TableRow>
+          )
+        })}
+      </TableBody>
+    </Table>
   )
 }

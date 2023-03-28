@@ -57,10 +57,12 @@ export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
             </InputAdornment>
           }
         />
-        {helperText && (
+        {helperText ? (
           <FormHelperText error={error}>{helperText}</FormHelperText>
-        )}
+        ) : null}
       </FormControl>
     </Box>
   )
 })
+
+VideoFileSelect.displayName = "VideoFileSelect"

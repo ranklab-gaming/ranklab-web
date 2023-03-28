@@ -32,7 +32,7 @@ export const ListSubheaderStyle = styled(ListSubheader)(({ theme }) => ({
   }),
 }))
 
-export function NavSection({ navConfig, ...other }: NavSectionProps) {
+export const NavSection = ({ navConfig, ...other }: NavSectionProps) => {
   return (
     <Box {...other}>
       {navConfig.map((group, index) => (

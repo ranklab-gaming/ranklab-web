@@ -21,26 +21,26 @@ const ListItem = forwardRef<
   )
 })
 
+ListItem.displayName = "ListItem"
+
 export type NavItemProps = {
   item: NavListProps
   active?: boolean | undefined
   open?: boolean
   onOpen?: VoidFunction
-  onMouseEnter?: VoidFunction
-  onMouseLeave?: VoidFunction
 }
 
-export function NavItemRoot({
+export const NavItemRoot = ({
   item,
   open = false,
   active,
   onOpen,
-}: NavItemProps) {
+}: NavItemProps) => {
   const { title, icon, info, children, disabled, caption, roles } = item
 
   const renderContent = (
     <>
-      {icon && <ListItemIconStyle>{icon}</ListItemIconStyle>}
+      {icon ? <ListItemIconStyle>{icon}</ListItemIconStyle> : null}
       <ListItemTextStyle
         disableTypography
         primary={title}
@@ -57,8 +57,8 @@ export function NavItemRoot({
           </Tooltip>
         }
       />
-      {info && info}
-      {children && <ArrowIcon open={open} />}
+      {info ? info : null}
+      {children ? <ArrowIcon open={open} /> : null}
     </>
   )
 
@@ -104,12 +104,12 @@ export function NavItemRoot({
   )
 }
 
-export function NavItemSub({
+export const NavItemSub = ({
   item,
   open = false,
   active = false,
   onOpen,
-}: NavItemProps) {
+}: NavItemProps) => {
   const { title, info, children, disabled, caption, roles } = item
 
   const renderContent = (
@@ -131,8 +131,8 @@ export function NavItemSub({
           </Tooltip>
         }
       />
-      {info && info}
-      {children && <ArrowIcon open={open} />}
+      {info ? info : null}
+      {children ? <ArrowIcon open={open} /> : null}
     </>
   )
 
@@ -185,7 +185,7 @@ type DotIconProps = {
   active: boolean
 }
 
-export function DotIcon({ active }: DotIconProps) {
+export const DotIcon = ({ active }: DotIconProps) => {
   return (
     <ListItemIconStyle>
       <Box
@@ -213,7 +213,7 @@ type ArrowIconProps = {
   open: boolean
 }
 
-function ArrowIcon({ open }: ArrowIconProps) {
+const ArrowIcon = ({ open }: ArrowIconProps) => {
   return (
     <Iconify
       icon={open ? "eva:arrow-ios-downward-fill" : "eva:arrow-ios-forward-fill"}

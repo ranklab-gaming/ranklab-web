@@ -45,7 +45,7 @@ const windowsSteps = [
   },
 ]
 
-export function GuideDialog({ open, onClose }: Props) {
+export const GuideDialog = ({ open, onClose }: Props) => {
   const [recordingDialogTab, setRecordingDialogTab] = useState("windows")
 
   return (

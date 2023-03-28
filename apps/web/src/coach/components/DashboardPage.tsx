@@ -23,7 +23,7 @@ interface Props {
   games: Game[]
 }
 
-function Content({ reviews, games }: Props) {
+const Content = ({ reviews, games }: Props) => {
   const router = useRouter()
 
   const {
@@ -50,7 +50,7 @@ function Content({ reviews, games }: Props) {
     if (router.query.onboarding_redirect === "true") {
       setPolling(true)
     }
-  }, [])
+  }, [router.query.onboarding_redirect, setPolling])
 
   if (coach.reviewsEnabled) {
     return (
@@ -78,7 +78,7 @@ function Content({ reviews, games }: Props) {
               </NextLink>
             }
           >
-            {polling && <CircularProgress />}
+            {polling ? <CircularProgress /> : null}
             You have completed onboarding, but you need to submit additional
             information to start receiving payouts.
           </Alert>
@@ -138,11 +138,11 @@ function Content({ reviews, games }: Props) {
   )
 }
 
-export function CoachDashboardPage({
+export const CoachDashboardPage = ({
   reviews,
   games,
   user,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   return (
     <DashboardLayout user={user} title="Dashboard">
       <Content reviews={reviews} games={games} />

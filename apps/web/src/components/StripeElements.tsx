@@ -10,10 +10,10 @@ interface Props {
   clientSecret?: string
 }
 
-export function StripeElements({
+export const StripeElements = ({
   children,
   clientSecret,
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<Props>) => {
   const theme = useTheme()
 
   return (

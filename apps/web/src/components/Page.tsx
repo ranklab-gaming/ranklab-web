@@ -5,7 +5,7 @@ interface PageProps extends PropsWithChildren {
   title?: string
 }
 
-export function Page({ children, title }: PageProps) {
+export const Page = ({ children, title }: PageProps) => {
   return (
     <>
       <Head>

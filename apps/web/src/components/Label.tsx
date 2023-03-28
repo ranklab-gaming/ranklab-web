@@ -81,12 +81,12 @@ interface LabelProps extends BoxProps {
   variant?: LabelVariant
 }
 
-export function Label({
+export const Label = ({
   color = "default",
   variant = "ghost",
   children,
   sx,
-}: LabelProps) {
+}: LabelProps) => {
   const theme = useTheme()
 
   return (

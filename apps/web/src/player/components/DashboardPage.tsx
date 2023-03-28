@@ -11,11 +11,11 @@ interface Props {
   games: Game[]
 }
 
-export function PlayerDashboardPage({
+export const PlayerDashboardPage = ({
   reviews,
   games,
   user,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   const createReview = useCreateReview()
 
   return (

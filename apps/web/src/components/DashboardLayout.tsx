@@ -36,13 +36,13 @@ interface Props {
   showTitle?: boolean
 }
 
-export function DashboardLayout({
+export const DashboardLayout = ({
   children,
   title,
   user,
   showTitle = true,
-}: PropsWithChildren<Props>) {
-  const [isSidebarOpen, setSidebarOpen] = useState(false)
+}: PropsWithChildren<Props>) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
 
   return (
@@ -56,7 +56,7 @@ export function DashboardLayout({
         >
           <Header onOpenSidebar={() => setSidebarOpen(true)} />
           <Navbar
-            isSidebarOpen={isSidebarOpen}
+            sidebarOpen={sidebarOpen}
             onCloseSidebar={() => setSidebarOpen(false)}
           />
           <MainStyle>

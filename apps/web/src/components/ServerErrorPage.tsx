@@ -14,7 +14,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   paddingBottom: theme.spacing(10),
 }))
 
-export function ServerErrorPage() {
+export const ServerErrorPage = () => {
   const router = useRouter()
   const error = router.query.error as string
 
@@ -31,11 +31,11 @@ export function ServerErrorPage() {
             <Typography sx={{ color: "text.secondary", my: { xs: 5, sm: 10 } }}>
               We are sorry but our server encountered an internal error. Please
               try again later.
-              {error && (
+              {error ? (
                 <Box component="pre" sx={{ my: 3 }}>
                   Error: {error}
                 </Box>
-              )}
+              ) : null}
             </Typography>
 
             <NextLink href="/" passHref legacyBehavior>

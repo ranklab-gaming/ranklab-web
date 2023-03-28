@@ -56,7 +56,7 @@ const HeroImgStyle = styled(Logo)(() => ({
   filter: "grayscale(100%)",
 }))
 
-export function Hero() {
+export const Hero = () => {
   const theme = useTheme()
 
   return (

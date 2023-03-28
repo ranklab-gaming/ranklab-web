@@ -22,13 +22,13 @@ interface Props {
   comments: Comment[]
 }
 
-export function PlayerReviewsShowPage({
+export const PlayerReviewsShowPage = ({
   user,
   review: initialReview,
   paymentMethods,
   games,
   comments,
-}: PropsWithUser<Props>) {
+}: PropsWithUser<Props>) => {
   const [review, setReview] = useState(initialReview)
   const isCheckout = review.state === "AwaitingPayment"
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)

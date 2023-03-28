@@ -30,11 +30,11 @@ const icons = {
 }
 
 type Props = {
-  isSidebarOpen: boolean
+  sidebarOpen: boolean
   onCloseSidebar: VoidFunction
 }
 
-export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
+export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
   const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
@@ -115,10 +115,10 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
         ]
 
   useEffect(() => {
-    if (isSidebarOpen) {
+    if (sidebarOpen) {
       onCloseSidebar()
     }
-  }, [pathname])
+  }, [onCloseSidebar, pathname, sidebarOpen])
 
   const renderContent = (
     <Scrollbar
@@ -172,7 +172,7 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
           {renderContent}
         </Drawer>
       )}
-      {isDesktop && (
+      {isDesktop ? (
         <Drawer
           open
           variant="persistent"
@@ -190,7 +190,7 @@ export function Navbar({ isSidebarOpen, onCloseSidebar }: Props) {
         >
           {renderContent}
         </Drawer>
-      )}
+      ) : null}
     </RootStyle>
   )
 }

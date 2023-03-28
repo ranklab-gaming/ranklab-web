@@ -29,7 +29,7 @@ type NavListRootProps = {
   list: NavListProps
 }
 
-export function NavListRoot({ list }: NavListRootProps) {
+export const NavListRoot = ({ list }: NavListRootProps) => {
   const { pathname } = useRouter()
 
   const active =
@@ -64,7 +64,7 @@ type NavListSubProps = {
   list: NavListProps
 }
 
-function NavListSub({ list }: NavListSubProps) {
+const NavListSub = ({ list }: NavListSubProps) => {
   const { pathname } = useRouter()
 
   const active =

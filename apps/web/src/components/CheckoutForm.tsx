@@ -75,7 +75,7 @@ type FormValues = yup.InferType<typeof FormSchema>
 
 const newPaymentMethodId = "NEW_PAYMENT_METHOD"
 
-function Content({ review, paymentMethods, games, setReview }: Props) {
+const Content = ({ review, paymentMethods, games, setReview }: Props) => {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
@@ -204,7 +204,7 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
         router.replace(`/player/reviews/${review.id}`)
       }
     }
-  }, [])
+  }, [enqueueSnackbar, review.id, router, setPolling])
 
   const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
@@ -354,14 +354,14 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
                 </Stack>
               </CardContent>
             </Card>
-            {review.notes && (
+            {review.notes ? (
               <Card>
                 <CardHeader title={`Notes For ${coach.name}`} />
                 <CardContent>
                   <div dangerouslySetInnerHTML={{ __html: review.notes }} />
                 </CardContent>
               </Card>
-            )}
+            ) : null}
             <Alert
               severity="info"
               sx={{ mb: 2, backgroundColor: theme.palette.grey[800] }}
@@ -501,7 +501,7 @@ function Content({ review, paymentMethods, games, setReview }: Props) {
   )
 }
 
-export function CheckoutForm(props: Props) {
+export const CheckoutForm = (props: Props) => {
   const clientSecret = assertProp(props.review, "stripeClientSecret")
 
   return (

@@ -1,6 +1,6 @@
 import { Box, BoxProps } from "@mui/material"
 
-export function Overlay(props: BoxProps) {
+export const Overlay = (props: BoxProps) => {
   return (
     <Box {...props}>
       <svg

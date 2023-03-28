@@ -7,6 +7,6 @@ interface UserProviderProps extends PropsWithChildren {
 
 export const UserContext = createContext<User | null | undefined>(null)
 
-export function UserProvider({ children, user }: UserProviderProps) {
+export const UserProvider = ({ children, user }: UserProviderProps) => {
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>
 }

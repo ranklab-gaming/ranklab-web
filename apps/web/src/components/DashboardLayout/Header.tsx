@@ -34,7 +34,7 @@ type Props = {
   onOpenSidebar: VoidFunction
 }
 
-export function Header({ onOpenSidebar }: Props) {
+export const Header = ({ onOpenSidebar }: Props) => {
   const isOffset = useOffsetTop(headerStyles.dashboardDesktopHeight)
   const isDesktop = useResponsive("up", "lg")
 

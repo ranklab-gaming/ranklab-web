@@ -27,13 +27,13 @@ interface Props {
     | "warning"
 }
 
-export function SplitButton({
+export const SplitButton = ({
   handleClick,
   options,
   handleMenuItemClick,
   variant,
   color,
-}: Props) {
+}: Props) => {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLDivElement>(null)
 

@@ -48,14 +48,14 @@ interface Props<
   showPasswordField?: TWithPassword
 }
 
-export function AccountFields<
+export const AccountFields = <
   TWithPassword extends boolean,
   TFormValues extends FormValues<TWithPassword>
 >({
   control,
   games,
   showPasswordField = false as TWithPassword,
-}: Props<TWithPassword, TFormValues>) {
+}: Props<TWithPassword, TFormValues>) => {
   return (
     <>
       <Controller
@@ -87,7 +87,7 @@ export function AccountFields<
           />
         )}
       />
-      {showPasswordField && (
+      {showPasswordField ? (
         <Controller
           name={"password" as Path<TFormValues>}
           control={control}
@@ -103,7 +103,7 @@ export function AccountFields<
             />
           )}
         />
-      )}
+      ) : null}
       <Controller
         name={"bio" as Path<TFormValues>}
         control={control}
