@@ -191,7 +191,7 @@ export interface CoachUpdateReviewRequest {
    * @type {boolean}
    * @memberof CoachUpdateReviewRequest
    */
-  taken?: boolean | null
+  started?: boolean | null
 }
 /**
  *

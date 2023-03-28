@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface UsePollingOptions<T> {
   interval?: number
@@ -14,28 +14,29 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
   const initialRetries = options.retries ?? 3
   const [polling, setPolling] = useState(false)
   const [result, setResult] = useState<T>(options.initialResult)
-  const [retries, setRetries] = useState(initialRetries)
-  const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout>()
+  const retries = useRef(initialRetries)
+  const timeoutHandle = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
     function clearTimeoutHandle() {
-      if (timeoutHandle) {
-        clearTimeout(timeoutHandle)
-        setTimeoutHandle(undefined)
+      if (timeoutHandle.current) {
+        clearTimeout(timeoutHandle.current)
+        timeoutHandle.current = undefined
       }
     }
 
     async function poll() {
       setResult(await options.poll())
 
-      setTimeoutHandle(
-        setTimeout(() => setRetries(retries - 1), options.interval ?? 1000)
+      timeoutHandle.current = setTimeout(
+        () => (retries.current = retries.current - 1),
+        options.interval ?? 1000
       )
     }
 
     if (!polling) {
       clearTimeoutHandle()
-      setRetries(initialRetries)
+      retries.current = initialRetries
       return
     }
 
@@ -45,7 +46,7 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
       return
     }
 
-    if (retries === 0) {
+    if (retries.current === 0) {
       setPolling(false)
       options.onRetriesExceeded?.()
       return
@@ -54,7 +55,7 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
     poll()
 
     return clearTimeoutHandle
-  }, [retries, polling, options, result, initialRetries, timeoutHandle])
+  }, [polling, options, result, initialRetries])
 
   return {
     polling,

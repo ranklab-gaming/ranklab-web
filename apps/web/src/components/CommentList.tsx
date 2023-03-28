@@ -1,98 +1,30 @@
 import { Iconify } from "@/components/Iconify"
-import { LoadingButton } from "@mui/lab"
+import { formatDuration } from "@/helpers/formatDuration"
+import { theme } from "@/theme/theme"
 import {
-  Paper,
-  Stack,
-  Typography,
   Card,
   CardContent,
+  Stack,
   CardActionArea,
+  Typography,
   Box,
-  useTheme,
 } from "@mui/material"
-import { Review, ReviewState, Comment } from "@ranklab/api"
-import { formatDuration } from "@/helpers/formatDuration"
-import { AnimatePresence, m } from "framer-motion"
-import { useState } from "react"
-import { useSnackbar } from "notistack"
-import { api } from "@/api"
+import { Comment } from "@ranklab/api"
+import { m, AnimatePresence } from "framer-motion"
 
 interface Props {
-  review: Review
   comments: Comment[]
-  setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
-  setReview: (review: Review) => void
-  // eslint-disable-next-line react/no-unused-prop-types
-  setComments: (comments: Comment[]) => void
+  setSelectedComment: (comment: Comment | null) => void
 }
 
 export const CommentList = ({
-  review,
   comments,
-  setSelectedComment,
   selectedComment,
-  setReview,
+  setSelectedComment,
 }: Props) => {
-  const [starting, setStarting] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
-  const theme = useTheme()
-
-  const startReview = async () => {
-    setStarting(true)
-
-    const updatedReview = await api.coachReviewsUpdate({
-      id: review.id,
-      coachUpdateReviewRequest: {
-        started: true,
-      },
-    })
-
-    enqueueSnackbar("Review marked successfully as started.", {
-      variant: "success",
-    })
-
-    setStarting(false)
-    setReview(updatedReview)
-  }
-
-  if (review.state === ReviewState.AwaitingReview) {
-    return (
-      <Paper
-        sx={{
-          p: 4,
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Stack spacing={3} sx={{ textAlign: "center" }}>
-          <Box height={64}>
-            <Iconify icon="eva:message-square-outline" width={64} height={64} />
-          </Box>
-          <Typography variant="h3">
-            This review hasn&apos;t started yet. Mark it as started to start
-            working on it.
-          </Typography>
-          <Box>
-            <LoadingButton
-              variant="outlined"
-              color="primary"
-              onClick={() => startReview()}
-              loading={starting}
-              disabled={starting}
-            >
-              Start Review
-            </LoadingButton>
-          </Box>
-        </Stack>
-      </Paper>
-    )
-  }
-
   return (
-    <Card sx={{ height: "100%" }}>
+    <Card sx={{ height: "100%", position: "relative" }}>
       <CardContent>
         <Stack spacing={2}>
           {comments.map((comment) => (
@@ -135,25 +67,19 @@ export const CommentList = ({
                             variants={{
                               initial: {
                                 opacity: 0,
-                                width: 0,
                               },
                               animate: {
                                 opacity: 1,
-                                width: "auto",
-                              },
-                              exit: {
-                                width: 0,
-                                padding: 0,
-                                margin: 0,
                               },
                             }}
                             initial="initial"
                             animate="animate"
-                            exit="exit"
                           >
                             {comment.body}
                           </Typography>
-                        ) : null}
+                        ) : (
+                          <Box flexGrow={1} />
+                        )}
                       </AnimatePresence>
                       <Box>
                         {comment.body ? (
