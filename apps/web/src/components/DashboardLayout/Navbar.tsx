@@ -44,74 +44,59 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
   const navConfig =
     user.type === "player"
       ? [
-          {
-            subheader: "",
-            items: [
-              {
-                title: "Request a Review",
-                action: () => createReview(),
-                active: router.pathname.startsWith("/player/reviews/new/"),
-                icon: icons.review,
-              },
-            ],
-          },
-          {
-            subheader: "",
-            items: [
-              {
-                title: "Dashboard",
-                path: "/player/dashboard",
-                icon: icons.dashboard,
-              },
-              {
-                title: "Archive",
-                path: "/player/archive",
-                icon: icons.archive,
-              },
-              {
-                title: "Recordings",
-                path: "/player/recordings",
-                icon: icons.recordings,
-              },
-            ],
-          },
-          {
-            subheader: "",
-            items: [
-              {
-                title: "Account",
-                path: "/player/account",
-                icon: icons.user,
-              },
-            ],
-          },
+          [
+            {
+              title: "Request a Review",
+              action: () => createReview(),
+              active: router.pathname.startsWith("/player/reviews/new/"),
+              icon: icons.review,
+            },
+          ],
+          [
+            {
+              title: "Dashboard",
+              path: "/player/dashboard",
+              icon: icons.dashboard,
+            },
+            {
+              title: "Archive",
+              path: "/player/archive",
+              icon: icons.archive,
+            },
+            {
+              title: "Recordings",
+              path: "/player/recordings",
+              icon: icons.recordings,
+            },
+          ],
+          [
+            {
+              title: "Account",
+              path: "/player/account",
+              icon: icons.user,
+            },
+          ],
         ]
       : [
-          {
-            subheader: "",
-            items: [
-              {
-                title: "Dashboard",
-                path: "/coach/dashboard",
-                icon: icons.dashboard,
-              },
-              {
-                title: "Archive",
-                path: "/coach/archive",
-                icon: icons.archive,
-              },
-            ],
-          },
-          {
-            subheader: "",
-            items: [
-              {
-                title: "Account",
-                path: "/coach/account",
-                icon: icons.user,
-              },
-            ],
-          },
+          [
+            {
+              title: "Dashboard",
+              path: "/coach/dashboard",
+              icon: icons.dashboard,
+            },
+            {
+              title: "Archive",
+              path: "/coach/archive",
+              icon: icons.archive,
+            },
+          ],
+          [
+            {
+              title: "Account",
+              path: "/coach/account",
+              icon: icons.user,
+            },
+          ],
         ]
 
   useEffect(() => {

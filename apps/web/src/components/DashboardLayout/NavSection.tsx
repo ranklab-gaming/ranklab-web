@@ -9,10 +9,7 @@ import { ComponentProps } from "react"
 import { NavListProps, NavListRoot } from "./NavList"
 
 interface NavSectionProps extends BoxProps {
-  navConfig: {
-    subheader: string
-    items: NavListProps[]
-  }[]
+  navConfig: NavListProps[][]
 }
 
 type ListSubheaderProps = ComponentProps<typeof MuiListSubheader>
@@ -36,9 +33,8 @@ export const NavSection = ({ navConfig, ...other }: NavSectionProps) => {
   return (
     <Box {...other}>
       {navConfig.map((group, index) => (
-        <List key={index} disablePadding sx={{ px: 2 }}>
-          <ListSubheaderStyle>{group.subheader}</ListSubheaderStyle>
-          {group.items.map((list, index) => (
+        <List key={index} disablePadding sx={{ p: 2 }}>
+          {group.map((list, index) => (
             <NavListRoot key={index} list={list} />
           ))}
         </List>

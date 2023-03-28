@@ -1,5 +1,4 @@
-import { Iconify } from "@/components/Iconify"
-import { Box, Link, ListItemText, Tooltip, Typography } from "@mui/material"
+import { Box, Link, ListItemText } from "@mui/material"
 import NextLink from "next/link"
 import { forwardRef } from "react"
 import {
@@ -26,54 +25,17 @@ ListItem.displayName = "ListItem"
 export type NavItemProps = {
   item: NavListProps
   active?: boolean | undefined
-  open?: boolean
-  onOpen?: VoidFunction
 }
 
-export const NavItemRoot = ({
-  item,
-  open = false,
-  active,
-  onOpen,
-}: NavItemProps) => {
-  const { title, icon, info, children, disabled, caption, roles } = item
+export const NavItemRoot = ({ item, active }: NavItemProps) => {
+  const { title, icon } = item
 
   const renderContent = (
     <>
       {icon ? <ListItemIconStyle>{icon}</ListItemIconStyle> : null}
-      <ListItemTextStyle
-        disableTypography
-        primary={title}
-        secondary={
-          <Tooltip title={caption ?? ""} arrow>
-            <Typography
-              noWrap
-              variant="caption"
-              component="div"
-              sx={{ textTransform: "initial", color: "text.secondary" }}
-            >
-              {caption}
-            </Typography>
-          </Tooltip>
-        }
-      />
-      {info ? info : null}
-      {children ? <ArrowIcon open={open} /> : null}
+      <ListItemTextStyle disableTypography primary={title} />
     </>
   )
-
-  if (children) {
-    return (
-      <ListItem
-        onClick={onOpen}
-        activeRoot={active}
-        disabled={disabled}
-        roles={roles}
-      >
-        {renderContent}
-      </ListItem>
-    )
-  }
 
   if ("path" in item) {
     if (item.path.startsWith("http")) {
@@ -83,8 +45,6 @@ export const NavItemRoot = ({
           href={item.path}
           target="_blank"
           rel="noopener"
-          disabled={disabled}
-          roles={roles}
         >
           {renderContent}
         </ListItem>
@@ -93,70 +53,27 @@ export const NavItemRoot = ({
 
     return (
       <NextLink href={item.path} passHref legacyBehavior>
-        <ListItem activeRoot={active} disabled={disabled} roles={roles}>
-          {renderContent}
-        </ListItem>
+        <ListItem activeRoot={active}>{renderContent}</ListItem>
       </NextLink>
     )
   }
 
   return (
-    <ListItem
-      onClick={item.action}
-      activeRoot={active}
-      disabled={disabled}
-      roles={roles}
-    >
+    <ListItem onClick={item.action} activeRoot={active}>
       {renderContent}
     </ListItem>
   )
 }
 
-export const NavItemSub = ({
-  item,
-  open = false,
-  active = false,
-  onOpen,
-}: NavItemProps) => {
-  const { title, info, children, disabled, caption, roles } = item
+export const NavItemSub = ({ item, active = false }: NavItemProps) => {
+  const { title } = item
 
   const renderContent = (
     <>
       <DotIcon active={active} />
-      <ListItemText
-        disableTypography
-        primary={title}
-        secondary={
-          <Tooltip title={caption ?? ""} arrow>
-            <Typography
-              noWrap
-              variant="caption"
-              component="div"
-              sx={{ textTransform: "initial", color: "text.secondary" }}
-            >
-              {caption}
-            </Typography>
-          </Tooltip>
-        }
-      />
-      {info ? info : null}
-      {children ? <ArrowIcon open={open} /> : null}
+      <ListItemText disableTypography primary={title} />
     </>
   )
-
-  if (children) {
-    return (
-      <ListItem
-        onClick={onOpen}
-        activeSub={active}
-        subItem
-        disabled={disabled}
-        roles={roles}
-      >
-        {renderContent}
-      </ListItem>
-    )
-  }
 
   if ("path" in item) {
     if (item.path.startsWith("http")) {
@@ -167,8 +84,6 @@ export const NavItemSub = ({
           target="_blank"
           rel="noopener"
           subItem
-          disabled={disabled}
-          roles={roles}
         >
           {renderContent}
         </ListItem>
@@ -177,7 +92,7 @@ export const NavItemSub = ({
 
     return (
       <NextLink href={item.path} passHref legacyBehavior>
-        <ListItem activeSub={active} subItem disabled={disabled} roles={roles}>
+        <ListItem activeSub={active} subItem>
           {renderContent}
         </ListItem>
       </NextLink>
@@ -185,13 +100,7 @@ export const NavItemSub = ({
   }
 
   return (
-    <ListItem
-      onClick={item.action}
-      activeSub={active}
-      subItem
-      disabled={disabled}
-      roles={roles}
-    >
+    <ListItem onClick={item.action} activeSub={active} subItem>
       {renderContent}
     </ListItem>
   )
@@ -222,18 +131,5 @@ export const DotIcon = ({ active }: DotIconProps) => {
         }}
       />
     </ListItemIconStyle>
-  )
-}
-
-type ArrowIconProps = {
-  open: boolean
-}
-
-const ArrowIcon = ({ open }: ArrowIconProps) => {
-  return (
-    <Iconify
-      icon={open ? "eva:arrow-ios-downward-fill" : "eva:arrow-ios-forward-fill"}
-      sx={{ width: 16, height: 16, ml: 1 }}
-    />
   )
 }
