@@ -23,10 +23,9 @@ import { CommentList as BaseCommentList } from "@/components/CommentList"
 interface Props {
   review: Review
   comments: Comment[]
-  setSelectedComment: (comment: Comment | null) => void
   selectedComment: Comment | null
-  setReview: (review: Review) => void
-  setCurrentTime: (time: number) => void
+  onCommentSelect: (comment: Comment | null) => void
+  onReviewChange: (review: Review) => void
 }
 
 interface ActionMessageProps {
@@ -64,10 +63,10 @@ const ActionMessage = ({ review }: ActionMessageProps) => {
 
 interface ActionButtonProps {
   review: Review
-  setReview: (review: Review) => void
+  onReviewChange: (review: Review) => void
 }
 
-const ActionButton = ({ review, setReview }: ActionButtonProps) => {
+const ActionButton = ({ review, onReviewChange }: ActionButtonProps) => {
   const createReview = useCreateReview()
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const [cancelling, setCancelling] = useState(false)
@@ -90,7 +89,7 @@ const ActionButton = ({ review, setReview }: ActionButtonProps) => {
 
     setShowCancelDialog(false)
     setCancelling(false)
-    setReview(updatedReview)
+    onReviewChange(updatedReview)
   }
 
   if (review.state === ReviewState.Refunded) {
@@ -155,10 +154,9 @@ const ActionButton = ({ review, setReview }: ActionButtonProps) => {
 export const CommentList = ({
   review,
   comments,
-  setSelectedComment,
   selectedComment,
-  setReview,
-  setCurrentTime,
+  onCommentSelect,
+  onReviewChange,
 }: Props) => {
   if (
     review.state === ReviewState.Accepted ||
@@ -167,9 +165,8 @@ export const CommentList = ({
     return (
       <BaseCommentList
         comments={comments}
-        setSelectedComment={setSelectedComment}
+        onCommentSelect={onCommentSelect}
         selectedComment={selectedComment}
-        setCurrentTime={setCurrentTime}
       />
     )
   }
@@ -200,7 +197,7 @@ export const CommentList = ({
           <ActionMessage review={review} />
         </Typography>
         <Box>
-          <ActionButton review={review} setReview={setReview} />
+          <ActionButton review={review} onReviewChange={onReviewChange} />
         </Box>
       </Stack>
     </Paper>

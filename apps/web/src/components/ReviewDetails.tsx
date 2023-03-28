@@ -123,7 +123,7 @@ export const ReviewDetails = ({
           xs={12}
           minHeight="70vh"
           overflow={fullScreenHandle.active ? "auto" : undefined}
-          height={fullScreenHandle.active ? "100vh" : undefined}
+          height={fullScreenHandle.active ? "calc(100vh - 80px)" : undefined}
         >
           {commentListElement}
         </Grid>

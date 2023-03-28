@@ -6,13 +6,14 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import { Comment } from "@ranklab/api"
 import { Recording } from "./ShowPage/Recording"
 import { CommentList } from "./ShowPage/CommentList"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import NextLink from "next/link"
 import { assertProp } from "@/assert"
+import { VideoPlayerRef } from "@/components/VideoPlayer"
 
 interface Props {
   review: Review
@@ -33,7 +34,7 @@ export const PlayerReviewsShowPage = ({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const [currentTime, setCurrentTime] = useState(0)
+  const videoRef = useRef<VideoPlayerRef>(null)
   const recording = assertProp(review, "recording")
   const coach = assertProp(review, "coach")
 
@@ -77,18 +78,23 @@ export const PlayerReviewsShowPage = ({
             <Recording
               selectedComment={selectedComment}
               recording={recording}
-              currentTime={currentTime}
-              setSelectedComment={setSelectedComment}
+              videoRef={videoRef}
+              onTimeUpdate={() => setSelectedComment(null)}
             />
           }
           commentListElement={
             <CommentList
               review={review}
               comments={comments}
-              setSelectedComment={setSelectedComment}
               selectedComment={selectedComment}
-              setReview={setReview}
-              setCurrentTime={setCurrentTime}
+              onCommentSelect={(comment) => {
+                setSelectedComment(comment)
+
+                if (comment) {
+                  videoRef.current?.seekTo(comment.videoTimestamp)
+                }
+              }}
+              onReviewChange={setReview}
             />
           }
         >

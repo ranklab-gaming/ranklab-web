@@ -5,7 +5,8 @@ import { ReviewDetails } from "@/components/ReviewDetails"
 import { Comment, Game, Review } from "@ranklab/api"
 import { Recording } from "./ReviewsShowPage/Recording"
 import { CommentList } from "./ReviewsShowPage/CommentList"
-import { useState } from "react"
+import { useRef, useState } from "react"
+import { VideoPlayerRef } from "@/components/VideoPlayer"
 
 interface Props {
   review: Review
@@ -24,7 +25,7 @@ export const CoachReviewsShowPage = ({
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
-  const [currentTime, setCurrentTime] = useState(0)
+  const videoRef = useRef<VideoPlayerRef>(null)
 
   return (
     <DashboardLayout user={user} title={recording.title} showTitle={false}>
@@ -35,8 +36,7 @@ export const CoachReviewsShowPage = ({
         recordingElement={
           <Recording
             recording={recording}
-            currentTime={currentTime}
-            setSelectedComment={setSelectedComment}
+            onTimeUpdate={() => setSelectedComment(null)}
           />
         }
         commentListElement={
@@ -44,10 +44,15 @@ export const CoachReviewsShowPage = ({
             comments={comments}
             review={review}
             selectedComment={selectedComment}
-            setSelectedComment={setSelectedComment}
-            setReview={setReview}
-            setComments={setComments}
-            setCurrentTime={setCurrentTime}
+            onCommentSelect={(comment) => {
+              setSelectedComment(comment)
+
+              if (comment) {
+                videoRef.current?.seekTo(comment.videoTimestamp)
+              }
+            }}
+            onCommentsChange={setComments}
+            onReviewChange={setReview}
           />
         }
       />

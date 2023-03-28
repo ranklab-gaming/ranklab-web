@@ -1,5 +1,5 @@
 import { animateFade } from "@/animate/fade"
-import { VideoPlayer } from "@/components/VideoPlayer"
+import { VideoPlayer, VideoPlayerRef } from "@/components/VideoPlayer"
 import { uploadsCdnUrl } from "@/config"
 import { Box } from "@mui/material"
 import { Comment, Recording as ApiRecording } from "@ranklab/api"
@@ -7,26 +7,24 @@ import { m } from "framer-motion"
 
 interface Props {
   selectedComment: Comment | null
-  setSelectedComment: (comment: Comment | null) => void
-  currentTime: number
   recording: ApiRecording
+  onTimeUpdate: (time: number) => void
+  videoRef: React.RefObject<VideoPlayerRef>
 }
 
 export const Recording = ({
   recording,
   selectedComment,
-  currentTime,
-  setSelectedComment,
+  onTimeUpdate,
+  videoRef,
 }: Props) => {
   return (
     <>
       <VideoPlayer
+        ref={videoRef}
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
         type={recording.mimeType}
-        onTimeUpdate={() => {
-          setSelectedComment(null)
-        }}
-        time={currentTime}
+        onTimeUpdate={onTimeUpdate}
       />
       {selectedComment && selectedComment.drawing ? (
         <Box

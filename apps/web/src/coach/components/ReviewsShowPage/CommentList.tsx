@@ -10,28 +10,23 @@ import { CommentList as BaseCommentList } from "@/components/CommentList"
 interface Props {
   review: Review
   comments: Comment[]
-  setSelectedComment: (comment: Comment | null) => void
+  onCommentSelect: (comment: Comment | null) => void
   selectedComment: Comment | null
-  setReview: (review: Review) => void
-  setComments: (comments: Comment[]) => void
-  setCurrentTime: (time: number) => void
+  onReviewChange: (review: Review) => void
+  onCommentsChange: (comments: Comment[]) => void
 }
 
 export const CommentList = ({
   review,
   comments,
-  setSelectedComment,
+  onCommentSelect,
   selectedComment,
-  setReview,
-  setComments,
-  setCurrentTime,
+  onReviewChange,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onCommentsChange,
 }: Props) => {
   const [starting, setStarting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-
-  if (!setComments) {
-    return null
-  }
 
   const startReview = async () => {
     setStarting(true)
@@ -48,7 +43,7 @@ export const CommentList = ({
     })
 
     setStarting(false)
-    setReview(updatedReview)
+    onReviewChange(updatedReview)
   }
 
   if (review.state === ReviewState.AwaitingReview) {
@@ -90,8 +85,7 @@ export const CommentList = ({
     <BaseCommentList
       comments={comments}
       selectedComment={selectedComment}
-      setSelectedComment={setSelectedComment}
-      setCurrentTime={setCurrentTime}
+      onCommentSelect={onCommentSelect}
     />
   )
 }

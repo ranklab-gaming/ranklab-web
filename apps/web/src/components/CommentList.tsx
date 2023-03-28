@@ -15,15 +15,13 @@ import { m, AnimatePresence } from "framer-motion"
 interface Props {
   comments: Comment[]
   selectedComment: Comment | null
-  setSelectedComment: (comment: Comment | null) => void
-  setCurrentTime: (time: number) => void
+  onCommentSelect: (comment: Comment | null) => void
 }
 
 export const CommentList = ({
   comments,
   selectedComment,
-  setSelectedComment,
-  setCurrentTime,
+  onCommentSelect,
 }: Props) => {
   return (
     <Card>
@@ -47,10 +45,9 @@ export const CommentList = ({
               <CardActionArea
                 onClick={() => {
                   if (selectedComment === comment) {
-                    setSelectedComment(null)
+                    onCommentSelect(null)
                   } else {
-                    setCurrentTime(comment.videoTimestamp)
-                    setSelectedComment(comment)
+                    onCommentSelect(comment)
                   }
                 }}
               >
