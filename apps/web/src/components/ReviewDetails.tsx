@@ -12,6 +12,7 @@ import { ReviewState } from "./ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
+import Sticky from "react-stickynode"
 
 interface Props {
   review: Review
@@ -62,43 +63,45 @@ export const ReviewDetails = ({
       {children}
       <Grid container spacing={1}>
         <Grid item md={8} xs={12}>
-          <Paper
-            elevation={4}
-            sx={{
-              backgroundColor: theme.palette.common.black,
-              overflow: "hidden",
-              borderBottomLeftRadius: 0,
-              borderBottomRightRadius: 0,
-            }}
-          >
-            <Box
-              height="70vh"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
+          <Sticky top={64} innerZ={100}>
+            <Paper
+              elevation={4}
+              sx={{
+                backgroundColor: theme.palette.common.black,
+                overflow: "hidden",
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+              }}
             >
-              <Box position="relative">{recordingElement}</Box>
-            </Box>
-          </Paper>
-          <Paper
-            elevation={4}
-            sx={{
-              borderTop: `1px dashed ${theme.palette.grey[900]}`,
-              bgcolor: theme.palette.common.black,
-              backgroundColor: theme.palette.common.black,
-              overflow: "hidden",
-              borderTopLeftRadius: 0,
-              borderTopRightRadius: 0,
-            }}
-          >
-            <Stack direction="row" alignItems="center" spacing={2} p={2}>
-              <Typography variant="caption" mb={0}>
-                {recording.title}
-              </Typography>
-              <Chip label={skillLevel.name} size="small" />
-              <Chip label={game.name} size="small" />
-            </Stack>
-          </Paper>
+              <Box
+                height="70vh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Box position="relative">{recordingElement}</Box>
+              </Box>
+            </Paper>
+            <Paper
+              elevation={4}
+              sx={{
+                borderTop: `1px dashed ${theme.palette.grey[900]}`,
+                bgcolor: theme.palette.common.black,
+                backgroundColor: theme.palette.common.black,
+                overflow: "hidden",
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+              }}
+            >
+              <Stack direction="row" alignItems="center" spacing={2} p={2}>
+                <Typography variant="caption" mb={0}>
+                  {recording.title}
+                </Typography>
+                <Chip label={skillLevel.name} size="small" />
+                <Chip label={game.name} size="small" />
+              </Stack>
+            </Paper>
+          </Sticky>
         </Grid>
         <Grid item md={4} xs={12} minHeight="70vh">
           {commentListElement}

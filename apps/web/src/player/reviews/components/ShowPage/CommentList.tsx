@@ -203,25 +203,19 @@ export const CommentList = ({
                             variants={{
                               initial: {
                                 opacity: 0,
-                                width: 0,
                               },
                               animate: {
                                 opacity: 1,
-                                width: "auto",
-                              },
-                              exit: {
-                                width: 0,
-                                padding: 0,
-                                margin: 0,
                               },
                             }}
                             initial="initial"
                             animate="animate"
-                            exit="exit"
                           >
                             {comment.body}
                           </Typography>
-                        ) : null}
+                        ) : (
+                          <Box flexGrow={1} />
+                        )}
                       </AnimatePresence>
                       <Box>
                         {comment.body ? (
