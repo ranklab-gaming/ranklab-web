@@ -235,6 +235,12 @@ export interface Comment {
    * @memberof Comment
    */
   drawing: string
+  /**
+   *
+   * @type {string}
+   * @memberof Comment
+   */
+  preview: string
 }
 /**
  *

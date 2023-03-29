@@ -205,7 +205,7 @@ export const CommentList = ({
                           {formatDuration(comment.videoTimestamp)}
                         </Typography>
                         <AnimatePresence initial={false}>
-                          {selectedComment !== comment && comment.body ? (
+                          {selectedComment !== comment ? (
                             <Typography
                               variant="body2"
                               noWrap
@@ -225,7 +225,7 @@ export const CommentList = ({
                               animate="animate"
                               flexGrow={1}
                             >
-                              {comment.body}
+                              {comment.preview}
                             </Typography>
                           ) : (
                             <Box flexGrow={1} />
@@ -244,7 +244,7 @@ export const CommentList = ({
                         </Box>
                       </Stack>
                       <AnimatePresence>
-                        {selectedComment === comment && comment.body ? (
+                        {selectedComment === comment ? (
                           <Typography
                             variant="body1"
                             key="body"
@@ -269,7 +269,9 @@ export const CommentList = ({
                             animate="animate"
                             exit="exit"
                           >
-                            {comment.body}
+                            <div
+                              dangerouslySetInnerHTML={{ __html: comment.body }}
+                            />
                           </Typography>
                         ) : null}
                       </AnimatePresence>

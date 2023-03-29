@@ -23,15 +23,19 @@ interface Props {
   title: string
   recordingElement: JSX.Element
   commentListElement: JSX.Element
+  recordingHeaderElement?: JSX.Element
+  editing?: boolean
 }
 
 export const ReviewDetails = ({
   review,
   games,
   recordingElement,
+  recordingHeaderElement,
   commentListElement,
   title,
   children,
+  editing,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const fullScreenHandle = useFullScreenHandle()
@@ -76,7 +80,12 @@ export const ReviewDetails = ({
       </Paper>
       {children}
       <Grid container spacing={1}>
-        <Grid item md={8} xs={12}>
+        <Grid
+          item
+          md={editing ? 6 : 8}
+          xs={12}
+          sx={{ transition: "all 0.3s ease" }}
+        >
           <Sticky top={64}>
             <Paper
               elevation={4}
@@ -87,6 +96,7 @@ export const ReviewDetails = ({
                 borderBottomRightRadius: 0,
               }}
             >
+              {recordingHeaderElement}
               <Box
                 height="70vh"
                 display="flex"
@@ -119,7 +129,8 @@ export const ReviewDetails = ({
         </Grid>
         <Grid
           item
-          md={4}
+          md={editing ? 6 : 4}
+          sx={{ transition: "all 0.3s ease" }}
           xs={12}
           minHeight="70vh"
           overflow={fullScreenHandle.active ? "auto" : undefined}

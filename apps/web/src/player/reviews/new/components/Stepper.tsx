@@ -9,6 +9,7 @@ import {
   StepLabel,
   styled,
 } from "@mui/material"
+import { ReactElement } from "react"
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -56,7 +57,7 @@ const ColorlibStepIconRoot = styled("div")<{
 const ColorlibStepIcon = (props: StepIconProps) => {
   const { active, completed, className } = props
 
-  const icons: { [index: string]: React.ReactElement } = {
+  const icons: { [index: string]: ReactElement } = {
     1: <Iconify icon="eva:video-outline" />,
     2: <Iconify icon="eva:person-outline" />,
     3: <Iconify icon="eva:credit-card-outline" />,

@@ -1,5 +1,5 @@
-import { Box, BoxProps } from "@mui/material"
-import { styled } from "@mui/material/styles"
+import { Box } from "@mui/material"
+import { styled, SxProps } from "@mui/material/styles"
 import dynamic from "next/dynamic"
 import { ReactNode, useId } from "react"
 import { ReactQuillProps } from "react-quill"
@@ -81,7 +81,7 @@ export interface Props extends ReactQuillProps {
   error?: boolean
   simple?: boolean
   helperText?: ReactNode
-  sx?: BoxProps
+  sx?: SxProps
   placeholder?: string
 }
 

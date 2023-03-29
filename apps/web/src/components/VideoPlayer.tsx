@@ -12,6 +12,7 @@ interface VideoPlayerProps {
 
 export interface VideoPlayerRef {
   seekTo: (seconds: number) => void
+  pause: () => void
 }
 
 export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
@@ -21,6 +22,7 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
   ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
     const seeking = useRef(false)
+    const pausing = useRef(false)
 
     useImperativeHandle(ref, () => ({
       seekTo: (seconds: number) => {
@@ -28,6 +30,12 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           seeking.current = true
           videoRef.current.pause()
           videoRef.current.currentTime = seconds
+        }
+      },
+      pause: () => {
+        if (videoRef.current) {
+          pausing.current = true
+          videoRef.current.pause()
         }
       },
     }))
@@ -41,6 +49,11 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           onPlay?.(Math.floor(e.currentTarget.currentTime))
         }}
         onPause={(e) => {
+          if (pausing.current) {
+            pausing.current = false
+            return
+          }
+
           onPause?.(Math.floor(e.currentTarget.currentTime))
         }}
         onSeeked={(e) => {

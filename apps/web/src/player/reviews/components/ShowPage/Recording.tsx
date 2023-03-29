@@ -4,11 +4,12 @@ import { uploadsCdnUrl } from "@/config"
 import { Box } from "@mui/material"
 import { Comment, Recording as ApiRecording } from "@ranklab/api"
 import { m } from "framer-motion"
+import { RefObject } from "react"
 
 interface Props {
   selectedComment: Comment | null
   recording: ApiRecording
-  videoRef: React.RefObject<VideoPlayerRef>
+  videoRef: RefObject<VideoPlayerRef>
   onPlay: () => void
   onSeeked: () => void
 }
