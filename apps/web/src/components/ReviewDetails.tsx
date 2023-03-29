@@ -16,6 +16,7 @@ import Sticky from "react-stickynode"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Iconify } from "@/components/Iconify"
+import { useUser } from "@/hooks/useUser"
 
 interface Props {
   review: Review
@@ -23,22 +24,19 @@ interface Props {
   title: string
   recordingElement: JSX.Element
   commentListElement: JSX.Element
-  recordingHeaderElement?: JSX.Element
-  editing?: boolean
 }
 
 export const ReviewDetails = ({
   review,
   games,
   recordingElement,
-  recordingHeaderElement,
   commentListElement,
   title,
   children,
-  editing,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const fullScreenHandle = useFullScreenHandle()
+  const user = useUser()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
@@ -82,7 +80,7 @@ export const ReviewDetails = ({
       <Grid container spacing={1}>
         <Grid
           item
-          md={editing ? 6 : 8}
+          md={user.type === "coach" ? 7 : 8}
           xs={12}
           sx={{ transition: "all 0.3s ease" }}
         >
@@ -96,15 +94,7 @@ export const ReviewDetails = ({
                 borderBottomRightRadius: 0,
               }}
             >
-              {recordingHeaderElement}
-              <Box
-                height="70vh"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box position="relative">{recordingElement}</Box>
-              </Box>
+              {recordingElement}
             </Paper>
             <Paper
               elevation={4}
@@ -129,7 +119,7 @@ export const ReviewDetails = ({
         </Grid>
         <Grid
           item
-          md={editing ? 6 : 4}
+          md={user.type === "coach" ? 5 : 4}
           sx={{ transition: "all 0.3s ease" }}
           xs={12}
           minHeight="70vh"

@@ -22,33 +22,40 @@ export const Recording = ({
   onSeeked,
 }: Props) => {
   return (
-    <>
-      <VideoPlayer
-        ref={videoRef}
-        src={`${uploadsCdnUrl}/${recording.videoKey}`}
-        type={recording.mimeType}
-        onPlay={onPlay}
-        onSeeked={onSeeked}
-      />
-      {selectedComment && selectedComment.drawing ? (
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          component={m.div}
-          variants={animateFade().in}
-          initial="initial"
-          animate="animate"
-          width="100%"
-          height="100%"
-        >
-          <div
-            dangerouslySetInnerHTML={{
-              __html: selectedComment.drawing,
-            }}
-          />
-        </Box>
-      ) : null}
-    </>
+    <Box
+      height="70vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Box position="relative">
+        <VideoPlayer
+          ref={videoRef}
+          src={`${uploadsCdnUrl}/${recording.videoKey}`}
+          type={recording.mimeType}
+          onPlay={onPlay}
+          onSeeked={onSeeked}
+        />
+        {selectedComment && selectedComment.drawing ? (
+          <Box
+            position="absolute"
+            top={0}
+            left={0}
+            component={m.div}
+            variants={animateFade().in}
+            initial="initial"
+            animate="animate"
+            width="100%"
+            height="100%"
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: selectedComment.drawing,
+              }}
+            />
+          </Box>
+        ) : null}
+      </Box>
+    </Box>
   )
 }

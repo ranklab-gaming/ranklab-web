@@ -24,6 +24,7 @@ import { Editor } from "@/components/Editor"
 import { animateFade } from "@/animate/fade"
 import Sticky from "react-stickynode"
 import { CommentFormValues } from "@/coach/components/ReviewsShowPage"
+import { animateSlide } from "@/animate/slide"
 
 interface Props {
   review: Review
@@ -78,7 +79,7 @@ export const CommentList = ({
   }
 
   const saveComment = async (values: CommentFormValues) => {
-    let comment
+    let comment: Comment
 
     if (!selectedComment) {
       comment = await api.coachCommentsCreate({
@@ -109,7 +110,10 @@ export const CommentList = ({
     onStopEditing()
 
     onCommentsChange(
-      [comment, ...comments].sort((a, b) => a.videoTimestamp - b.videoTimestamp)
+      (selectedComment
+        ? comments.map((c) => (c.id === comment.id ? comment : c))
+        : [comment, ...comments]
+      ).sort((a, b) => a.videoTimestamp - b.videoTimestamp)
     )
   }
 
@@ -156,7 +160,7 @@ export const CommentList = ({
       <CardContent>
         <Stack spacing={2}>
           <Sticky top={80} innerZ={10}>
-            <AnimatePresence presenceAffectsLayout mode="popLayout">
+            <AnimatePresence presenceAffectsLayout>
               {editing ? (
                 <Card
                   component={m.div}
@@ -165,7 +169,18 @@ export const CommentList = ({
                   exit="exit"
                   key="body"
                   variant="outlined"
-                  variants={animateFade().in}
+                  variants={{
+                    initial: {
+                      height: 0,
+                    },
+                    animate: {
+                      height: "auto",
+                    },
+                    exit: {
+                      height: 0,
+                    },
+                  }}
+                  sx={{ zIndex: 10 }}
                 >
                   <CardContent>
                     <Stack spacing={2}>
@@ -241,18 +256,20 @@ export const CommentList = ({
               ) : null}
             </AnimatePresence>
             {!editing ? (
-              <Button
-                onClick={() => {
-                  setSelectedComment(null)
-                  onStartEditing()
-                }}
-                variant="outlined"
-                size="large"
-                color="primary"
-                fullWidth
-              >
-                Add Comment at {formatDuration(videoTimestamp)}
-              </Button>
+              <Paper>
+                <Button
+                  onClick={() => {
+                    setSelectedComment(null)
+                    onStartEditing()
+                  }}
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  fullWidth
+                >
+                  Add Comment at {formatDuration(videoTimestamp)}
+                </Button>
+              </Paper>
             ) : null}
           </Sticky>
           {comments.map((comment) => {
