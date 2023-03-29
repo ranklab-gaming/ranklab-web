@@ -12,6 +12,11 @@ import {
   Tooltip,
   Button,
   FormHelperText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material"
 import { Review, ReviewState, Comment } from "@ranklab/api"
 import { useState } from "react"
@@ -56,7 +61,28 @@ export const CommentList = ({
   const [starting, setStarting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
-  const drawing = watch("drawing")
+  const [deleting, setDeleting] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+
+  const deleteComment = async () => {
+    setShowDeleteDialog(false)
+
+    if (!selectedComment) return
+
+    setDeleting(true)
+
+    await api.coachCommentsDelete({
+      id: selectedComment.id,
+    })
+
+    enqueueSnackbar("Comment deleted successfully.", {
+      variant: "success",
+    })
+
+    setDeleting(false)
+    onStopEditing()
+    onCommentsChange(comments.filter((c) => c.id !== selectedComment.id))
+  }
 
   const startReview = async () => {
     setStarting(true)
@@ -163,21 +189,54 @@ export const CommentList = ({
                 <CardContent>
                   <Stack spacing={2}>
                     <Stack direction="row" alignItems="center" spacing={2}>
-                      <Typography variant="body2">
+                      <Typography variant="body2" mr="auto">
                         {formatDuration(videoTimestamp)}
                       </Typography>
-
-                      <Box>
-                        {drawing ? (
-                          <Tooltip title="Drawing">
-                            <Iconify
-                              icon="mdi:gesture"
-                              width={24}
-                              height={24}
-                            />
-                          </Tooltip>
-                        ) : null}
-                      </Box>
+                      {selectedComment ? (
+                        <Box>
+                          <LoadingButton
+                            onClick={() => setShowDeleteDialog(true)}
+                            size="small"
+                            color="error"
+                            loading={deleting}
+                            disabled={deleting}
+                          >
+                            Delete
+                          </LoadingButton>
+                          <Dialog
+                            open={showDeleteDialog}
+                            onClose={() => setShowDeleteDialog(false)}
+                            fullWidth
+                          >
+                            <DialogTitle>
+                              Really delete this comment?
+                            </DialogTitle>
+                            <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                              <DialogContentText>
+                                This action cannot be undone. Your comment will
+                                be permanently deleted.
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button
+                                onClick={() => setShowDeleteDialog(false)}
+                              >
+                                Go Back
+                              </Button>
+                              <LoadingButton
+                                onClick={deleteComment}
+                                autoFocus
+                                disabled={deleting}
+                                loading={deleting}
+                                color="primary"
+                                variant="contained"
+                              >
+                                Delete
+                              </LoadingButton>
+                            </DialogActions>
+                          </Dialog>
+                        </Box>
+                      ) : null}
                     </Stack>
                     <form onSubmit={handleSubmit(saveComment)}>
                       <Stack spacing={2}>
