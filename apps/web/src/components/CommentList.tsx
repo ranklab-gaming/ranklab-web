@@ -8,6 +8,7 @@ import {
   CardActionArea,
   Typography,
   Box,
+  Tooltip,
 } from "@mui/material"
 import { Comment } from "@ranklab/api"
 import { m, AnimatePresence } from "framer-motion"
@@ -85,19 +86,14 @@ export const CommentList = ({
                         )}
                       </AnimatePresence>
                       <Box>
-                        {comment.body ? (
-                          <Iconify
-                            icon="eva:message-square-outline"
-                            width={24}
-                            height={24}
-                          />
-                        ) : null}
                         {comment.drawing ? (
-                          <Iconify
-                            icon="eva:brush-outline"
-                            width={24}
-                            height={24}
-                          />
+                          <Tooltip title="Drawing">
+                            <Iconify
+                              icon="mdi:gesture"
+                              width={24}
+                              height={24}
+                            />
+                          </Tooltip>
                         ) : null}
                       </Box>
                     </Stack>
