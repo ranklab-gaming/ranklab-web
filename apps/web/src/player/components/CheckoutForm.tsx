@@ -396,7 +396,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                   Go Back
                 </Button>
                 <LoadingButton
-                  onClick={() => deleteReview()}
+                  onClick={deleteReview}
                   autoFocus
                   disabled={deleting}
                   loading={deleting}

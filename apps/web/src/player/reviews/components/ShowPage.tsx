@@ -79,7 +79,8 @@ export const PlayerReviewsShowPage = ({
               selectedComment={selectedComment}
               recording={recording}
               videoRef={videoRef}
-              onTimeUpdate={() => setSelectedComment(null)}
+              onPlay={() => setSelectedComment(null)}
+              onSeeked={() => setSelectedComment(null)}
             />
           }
           commentListElement={
@@ -122,7 +123,7 @@ export const PlayerReviewsShowPage = ({
                     size="small"
                     variant="text"
                     color="success"
-                    onClick={() => acceptReview()}
+                    onClick={acceptReview}
                     loading={accepting}
                     disabled={accepting}
                   >

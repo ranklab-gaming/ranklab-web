@@ -69,8 +69,6 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       AccountFieldsSchemaWithoutPassword
     ),
     defaultValues,
-    serverErrorMessage:
-      "There was a problem updating your account. Please try again later.",
   })
 
   const updatePlayer = async (data: FormValues) => {

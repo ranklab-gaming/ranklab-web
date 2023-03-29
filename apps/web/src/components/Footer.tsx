@@ -57,7 +57,7 @@ export const Footer = () => {
             >
               <Stack spacing={2}>
                 <Typography component="p" variant="overline">
-                  Ranklab
+                  Copyright
                 </Typography>
                 <Typography
                   component="p"

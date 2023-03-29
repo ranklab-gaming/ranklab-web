@@ -11,6 +11,11 @@ import {
   DialogContentText,
   DialogActions,
   Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Tooltip,
+  useTheme,
 } from "@mui/material"
 import { Review, ReviewState, Comment } from "@ranklab/api"
 import { useState } from "react"
@@ -18,7 +23,8 @@ import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
-import { CommentList as BaseCommentList } from "@/components/CommentList"
+import { m, AnimatePresence } from "framer-motion"
+import { formatDuration } from "@/helpers/formatDuration"
 
 interface Props {
   review: Review
@@ -133,7 +139,7 @@ const ActionButton = ({ review, onReviewChange }: ActionButtonProps) => {
           <DialogActions>
             <Button onClick={() => setShowCancelDialog(false)}>Go Back</Button>
             <LoadingButton
-              onClick={() => cancelReview()}
+              onClick={cancelReview}
               autoFocus
               disabled={cancelling}
               loading={cancelling}
@@ -158,16 +164,123 @@ export const CommentList = ({
   onCommentSelect,
   onReviewChange,
 }: Props) => {
+  const theme = useTheme()
+
   if (
     review.state === ReviewState.Accepted ||
     review.state === ReviewState.Published
   ) {
     return (
-      <BaseCommentList
-        comments={comments}
-        onCommentSelect={onCommentSelect}
-        selectedComment={selectedComment}
-      />
+      <Card sx={{ minHeight: "100%" }}>
+        <CardContent>
+          <Stack spacing={2}>
+            {comments.map((comment) => (
+              <Card
+                key={comment.id}
+                component={m.div}
+                initial="initial"
+                animate={selectedComment === comment ? "selected" : "initial"}
+                variants={{
+                  initial: {
+                    backgroundColor: theme.palette.background.paper,
+                  },
+                  selected: {
+                    backgroundColor: theme.palette.secondary.main,
+                  },
+                }}
+              >
+                <CardActionArea
+                  onClick={() => {
+                    if (selectedComment === comment) {
+                      onCommentSelect(null)
+                    } else {
+                      onCommentSelect(comment)
+                    }
+                  }}
+                >
+                  <CardContent>
+                    <Stack spacing={2}>
+                      <Stack direction="row" alignItems="center" spacing={2}>
+                        <Typography variant="body2">
+                          {formatDuration(comment.videoTimestamp)}
+                        </Typography>
+                        <AnimatePresence initial={false}>
+                          {selectedComment !== comment && comment.body ? (
+                            <Typography
+                              variant="body2"
+                              noWrap
+                              textOverflow="ellipsis"
+                              overflow="hidden"
+                              component={m.div}
+                              key="body"
+                              variants={{
+                                initial: {
+                                  opacity: 0,
+                                },
+                                animate: {
+                                  opacity: 1,
+                                },
+                              }}
+                              initial="initial"
+                              animate="animate"
+                              flexGrow={1}
+                            >
+                              {comment.body}
+                            </Typography>
+                          ) : (
+                            <Box flexGrow={1} />
+                          )}
+                        </AnimatePresence>
+                        <Box>
+                          {comment.drawing ? (
+                            <Tooltip title="Drawing">
+                              <Iconify
+                                icon="mdi:gesture"
+                                width={24}
+                                height={24}
+                              />
+                            </Tooltip>
+                          ) : null}
+                        </Box>
+                      </Stack>
+                      <AnimatePresence>
+                        {selectedComment === comment && comment.body ? (
+                          <Typography
+                            variant="body1"
+                            key="body"
+                            component={m.div}
+                            variants={{
+                              initial: {
+                                opacity: 0,
+                                height: 0,
+                              },
+                              animate: {
+                                opacity: 1,
+                                height: "auto",
+                              },
+                              exit: {
+                                height: 0,
+                                padding: 0,
+                                margin: 0,
+                                opacity: 0,
+                              },
+                            }}
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                          >
+                            {comment.body}
+                          </Typography>
+                        ) : null}
+                      </AnimatePresence>
+                    </Stack>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            ))}
+          </Stack>
+        </CardContent>
+      </Card>
     )
   }
 

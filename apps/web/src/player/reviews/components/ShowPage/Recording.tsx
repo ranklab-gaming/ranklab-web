@@ -8,15 +8,17 @@ import { m } from "framer-motion"
 interface Props {
   selectedComment: Comment | null
   recording: ApiRecording
-  onTimeUpdate: (time: number) => void
   videoRef: React.RefObject<VideoPlayerRef>
+  onPlay: () => void
+  onSeeked: () => void
 }
 
 export const Recording = ({
   recording,
   selectedComment,
-  onTimeUpdate,
   videoRef,
+  onPlay,
+  onSeeked,
 }: Props) => {
   return (
     <>
@@ -24,7 +26,8 @@ export const Recording = ({
         ref={videoRef}
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
         type={recording.mimeType}
-        onTimeUpdate={onTimeUpdate}
+        onPlay={onPlay}
+        onSeeked={onSeeked}
       />
       {selectedComment && selectedComment.drawing ? (
         <Box

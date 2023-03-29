@@ -69,7 +69,6 @@ function setValidationErrors<T extends FieldValues>(
 
 interface UseFormProps<TFieldValues extends FieldValues, TContext = any>
   extends BaseUseFormProps<TFieldValues, TContext> {
-  serverErrorMessage?: string
   errorMessages?: {
     [key: number]: string
   }
@@ -128,8 +127,7 @@ export function useForm<TFieldValues extends FieldValues, TContext = any>(
       }
 
       enqueueSnackbar(
-        props.serverErrorMessage ??
-          "An unexpected server error occurred, please try again later.",
+        "An unexpected server error occurred, please try again later.",
         {
           variant: "error",
         }

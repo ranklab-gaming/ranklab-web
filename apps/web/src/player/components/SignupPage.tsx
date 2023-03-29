@@ -32,8 +32,6 @@ export const PlayerSignupPage = ({ games }: Props) => {
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(AccountFieldsSchema),
     defaultValues,
-    serverErrorMessage:
-      "There was a problem signin up. Please try again later.",
   })
 
   const {

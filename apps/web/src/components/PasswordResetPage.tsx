@@ -34,8 +34,6 @@ export const PasswordResetPage = ({ token }: Props) => {
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
-    serverErrorMessage:
-      "There was a problem resetting your password. Please try again later.",
   })
 
   const {

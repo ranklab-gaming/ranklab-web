@@ -40,8 +40,6 @@ const Content = ({ billingDetails, review }: Props) => {
     errorMessages: {
       422: "The billing details are incorrect. Please insert a valid address and try again.",
     },
-    serverErrorMessage:
-      "An error occurred while updating your details. Please try again later.",
   })
 
   const goToNextStep = async function () {

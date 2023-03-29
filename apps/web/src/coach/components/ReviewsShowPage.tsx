@@ -25,6 +25,7 @@ export const CoachReviewsShowPage = ({
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
+  const [videoTimestamp, setVideoTimestamp] = useState(0)
   const videoRef = useRef<VideoPlayerRef>(null)
 
   return (
@@ -36,7 +37,10 @@ export const CoachReviewsShowPage = ({
         recordingElement={
           <Recording
             recording={recording}
-            onTimeUpdate={() => setSelectedComment(null)}
+            onTimeUpdate={(time) => {
+              setVideoTimestamp(time)
+              setSelectedComment(null)
+            }}
           />
         }
         commentListElement={
@@ -44,6 +48,7 @@ export const CoachReviewsShowPage = ({
             comments={comments}
             review={review}
             selectedComment={selectedComment}
+            videoTimestamp={videoTimestamp}
             onCommentSelect={(comment) => {
               setSelectedComment(comment)
 

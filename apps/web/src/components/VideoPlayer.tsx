@@ -1,11 +1,13 @@
-import { forwardRef, SyntheticEvent, useImperativeHandle, useRef } from "react"
+import { forwardRef, useImperativeHandle, useRef } from "react"
 
 interface VideoPlayerProps {
   src: string
   type: string
   onTimeUpdate?: (seconds: number) => void
-  onPlay?: () => void
   controls?: boolean
+  onPlay?: (seconds: number) => void
+  onPause?: (seconds: number) => void
+  onSeeked?: (seconds: number) => void
 }
 
 export interface VideoPlayerRef {
@@ -13,21 +15,12 @@ export interface VideoPlayerRef {
 }
 
 export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
-  ({ src, type, onTimeUpdate, onPlay, controls = true }, ref) => {
-    const seeking = useRef(false)
-
-    const handleTimeUpdate = (e: SyntheticEvent<HTMLVideoElement>) => {
-      if (seeking.current) {
-        seeking.current = false
-        return
-      }
-
-      if (!videoRef.current?.paused) {
-        onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
-      }
-    }
-
+  (
+    { src, type, onTimeUpdate, controls = true, onPlay, onPause, onSeeked },
+    ref
+  ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
+    const seeking = useRef(false)
 
     useImperativeHandle(ref, () => ({
       seekTo: (seconds: number) => {
@@ -43,9 +36,24 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
       <video
         controls={controls}
         width="100%"
-        onTimeUpdate={handleTimeUpdate}
         ref={videoRef}
-        onPlay={onPlay}
+        onPlay={(e) => {
+          onPlay?.(Math.floor(e.currentTarget.currentTime))
+        }}
+        onPause={(e) => {
+          onPause?.(Math.floor(e.currentTarget.currentTime))
+        }}
+        onSeeked={(e) => {
+          if (seeking.current) {
+            seeking.current = false
+            return
+          }
+
+          onSeeked?.(Math.floor(e.currentTarget.currentTime))
+        }}
+        onTimeUpdate={(e) => {
+          onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
+        }}
       >
         <source src={src} type={type} />
       </video>

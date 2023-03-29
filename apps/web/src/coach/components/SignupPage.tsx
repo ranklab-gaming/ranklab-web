@@ -50,8 +50,6 @@ export const CoachSignupPage = ({
     mode: "onSubmit",
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
-    serverErrorMessage:
-      "There was a problem creating your profile. Please try again later.",
   })
 
   const createCoach = async (data: FormValues) => {
