@@ -55,7 +55,7 @@
     "@types/koa": "2.13.6",
     "@types/koa-mount": "4.0.2",
     "@types/lodash": "4.14.192",
-    "@types/node": "18.15.10",
+    "@types/node": "18.15.11",
     "@types/oidc-provider": "8.1.1",
     "@types/react": "18.0.30",
     "@types/react-dom": "18.0.11",
