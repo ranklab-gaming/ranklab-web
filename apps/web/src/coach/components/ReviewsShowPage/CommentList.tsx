@@ -51,7 +51,6 @@ export const CommentList = ({
   onStopEditing,
   editing,
   form: {
-    watch,
     control,
     handleSubmit,
     formState: { isSubmitting },
@@ -174,6 +173,47 @@ export const CommentList = ({
               Start Review
             </LoadingButton>
           </Box>
+        </Stack>
+      </Paper>
+    )
+  }
+
+  if (review.state !== ReviewState.Draft) {
+    return (
+      <Paper
+        sx={{
+          p: 4,
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        component={m.div}
+        variants={animateFade().in}
+        exit="exit"
+      >
+        <Stack spacing={3} sx={{ textAlign: "center" }}>
+          <Box height={64}>
+            <Iconify
+              icon={
+                review.state === ReviewState.Accepted
+                  ? "eva:checkmark-circle-2-outline"
+                  : review.state === ReviewState.Published
+                  ? "eva:checkmark-circle-outline"
+                  : "eva:refresh-outline"
+              }
+              width={64}
+              height={64}
+            />
+          </Box>
+          <Typography variant="h3">
+            {review.state === ReviewState.Accepted
+              ? "This review has been accepted by the player."
+              : review.state === ReviewState.Published
+              ? "This review has been published."
+              : "This review has been refunded."}{" "}
+            You can&apos;t add comments or drawings to it anymore.
+          </Typography>
         </Stack>
       </Paper>
     )
