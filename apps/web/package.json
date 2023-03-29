@@ -47,7 +47,7 @@
     "react-quill": "2.0.0",
     "react-stickynode": "4.1.0",
     "sharp": "^0.32.0",
-    "simplebar-react": "3.2.2",
+    "simplebar-react": "3.2.3",
     "yup": "1.0.2"
   },
   "devDependencies": {

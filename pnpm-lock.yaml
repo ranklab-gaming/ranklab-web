@@ -131,8 +131,8 @@ importers:
         specifier: ^0.32.0
         version: 0.32.0
       simplebar-react:
-        specifier: 3.2.2
-        version: 3.2.2(react@18.2.0)
+        specifier: 3.2.3
+        version: 3.2.3(react@18.2.0)
       yup:
         specifier: 1.0.2
         version: 1.0.2
@@ -1378,9 +1378,14 @@ packages:
       '@types/koa-compose': 3.2.5
       '@types/node': 18.15.11
 
+  /@types/lodash-es@4.17.7:
+    resolution: {integrity: sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==}
+    dependencies:
+      '@types/lodash': 4.14.192
+    dev: false
+
   /@types/lodash@4.14.192:
     resolution: {integrity: sha512-km+Vyn3BYm5ytMO13k9KTp27O75rbQ0NFw+U//g+PX7VZyjCioXaRFisqSIJRECljcTv73G3i6BpglNGHgUQ5A==}
-    dev: true
 
   /@types/mime@3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
@@ -4374,21 +4379,22 @@ packages:
       is-arrayish: 0.3.2
     dev: false
 
-  /simplebar-core@1.2.2:
-    resolution: {integrity: sha512-uVNCnLtZRHgzBd5Tg23hGA5LX2NBt15xPQ3UhPUbPRnSx3rEYuWLK3iEnkR8Yxkcp/Kf/Vu/PJTEaiaJ3T0gTw==}
+  /simplebar-core@1.2.3:
+    resolution: {integrity: sha512-xWZOYLlqWMW8qDCh1vcyyPdb10FOb8KJNCgqimsBKWS/o6a/9LnATjBgR2+nTzTHUT+DGOOf+TM8yj54/Io+dw==}
     dependencies:
+      '@types/lodash-es': 4.17.7
       can-use-dom: 0.1.0
       lodash: 4.17.21
       lodash-es: 4.17.21
     dev: false
 
-  /simplebar-react@3.2.2(react@18.2.0):
-    resolution: {integrity: sha512-QkUA9ZOELCp9ITJxvxARDqT87+9DkY75Atu9Ov9IfPzAkfwOTohjAXnyw3WvhvSSCxdHfl5yZIGzfNU0ZeNkDA==}
+  /simplebar-react@3.2.3(react@18.2.0):
+    resolution: {integrity: sha512-GjbACC7KlDUlfIZSbLf7K4FQcHW4rS0OFAAs6YvJpHUsOZ5DtIzg1WD4Uv+nO8wfQLFXMyFHDVk0jm15APFRNA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
-      simplebar-core: 1.2.2
+      simplebar-core: 1.2.3
     dev: false
 
   /slash@3.0.0:
