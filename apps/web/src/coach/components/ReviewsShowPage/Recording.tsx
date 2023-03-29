@@ -57,7 +57,7 @@ export const Recording = ({
             exit="exit"
             variants={animateFade().in}
             position="absolute"
-            top={0}
+            top={theme.spacing(1)}
             left={theme.spacing(1)}
           >
             <SpeedDial

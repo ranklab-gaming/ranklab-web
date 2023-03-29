@@ -1,5 +1,13 @@
 import { Review, Game } from "@ranklab/api"
-import { Chip, Grid, Paper, Stack, Typography, useTheme } from "@mui/material"
+import {
+  Box,
+  Chip,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { ReviewState } from "./ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
@@ -8,7 +16,6 @@ import Sticky from "react-stickynode"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Iconify } from "@/components/Iconify"
-import { useUser } from "@/hooks/useUser"
 
 interface Props {
   review: Review
@@ -16,6 +23,8 @@ interface Props {
   title: string
   recordingElement: JSX.Element
   commentListElement: JSX.Element
+  titleActionsElement?: JSX.Element
+  editing?: boolean
 }
 
 export const ReviewDetails = ({
@@ -23,12 +32,13 @@ export const ReviewDetails = ({
   games,
   recordingElement,
   commentListElement,
+  titleActionsElement,
   title,
   children,
+  editing,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const fullScreenHandle = useFullScreenHandle()
-  const user = useUser()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
@@ -66,13 +76,14 @@ export const ReviewDetails = ({
           >
             <Iconify icon="eva:expand-outline" />
           </IconButtonAnimate>
+          {titleActionsElement}
         </Stack>
       </Paper>
       {children}
       <Grid container spacing={1}>
         <Grid
           item
-          md={user.type === "coach" ? 7 : 8}
+          md={editing ? 6 : 8}
           xs={12}
           sx={{ transition: "all 0.3s ease" }}
         >
@@ -86,7 +97,14 @@ export const ReviewDetails = ({
                 borderBottomRightRadius: 0,
               }}
             >
-              {recordingElement}
+              <Box
+                height="70vh"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Box position="relative">{recordingElement}</Box>
+              </Box>
             </Paper>
             <Paper
               elevation={4}
@@ -111,7 +129,7 @@ export const ReviewDetails = ({
         </Grid>
         <Grid
           item
-          md={user.type === "coach" ? 5 : 4}
+          md={editing ? 6 : 4}
           sx={{ transition: "all 0.3s ease" }}
           xs={12}
           minHeight="70vh"

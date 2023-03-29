@@ -22,7 +22,6 @@ import { formatDuration } from "@/helpers/formatDuration"
 import { Controller, UseFormReturn } from "react-hook-form"
 import { Editor } from "@/components/Editor"
 import { animateFade } from "@/animate/fade"
-import Sticky from "react-stickynode"
 import { CommentFormValues } from "@/coach/components/ReviewsShowPage"
 
 interface Props {
@@ -158,119 +157,98 @@ export const CommentList = ({
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
         <Stack spacing={2}>
-          <Sticky top={80} innerZ={10}>
-            <AnimatePresence presenceAffectsLayout>
-              {editing ? (
-                <Card
-                  component={m.div}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  key="body"
-                  variant="outlined"
-                  variants={{
-                    initial: {
-                      height: 0,
-                    },
-                    animate: {
-                      height: "auto",
-                    },
-                    exit: {
-                      height: 0,
-                    },
-                  }}
-                  sx={{ zIndex: 10 }}
-                >
-                  <CardContent>
-                    <Stack spacing={2}>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography variant="body2">
-                          {formatDuration(videoTimestamp)}
-                        </Typography>
+          <AnimatePresence>
+            {editing ? (
+              <Card>
+                <CardContent>
+                  <Stack spacing={2}>
+                    <Stack direction="row" alignItems="center" spacing={2}>
+                      <Typography variant="body2">
+                        {formatDuration(videoTimestamp)}
+                      </Typography>
 
-                        <Box>
-                          {drawing ? (
-                            <Tooltip title="Drawing">
-                              <Iconify
-                                icon="mdi:gesture"
-                                width={24}
-                                height={24}
-                              />
-                            </Tooltip>
-                          ) : null}
-                        </Box>
-                      </Stack>
-                      <form onSubmit={handleSubmit(saveComment)}>
-                        <Stack spacing={2}>
-                          <Controller
-                            name="body"
-                            control={control}
-                            render={({ field, fieldState: { error } }) => (
-                              <Box>
-                                <Editor
-                                  value={field.value}
-                                  onChange={field.onChange}
-                                  onBlur={field.onBlur}
-                                  error={Boolean(error)}
-                                  sx={{
-                                    backgroundColor:
-                                      theme.palette.background.paper,
-                                    height: 300,
-                                  }}
-                                />
-                                <FormHelperText
-                                  error={Boolean(error)}
-                                  sx={{ px: 2 }}
-                                >
-                                  {error ? error.message : null}
-                                </FormHelperText>
-                              </Box>
-                            )}
-                          />
-                          <Stack direction="row" spacing={2}>
-                            <Button
-                              onClick={onStopEditing}
-                              size="large"
-                              color="primary"
-                              sx={{ ml: "auto" }}
-                            >
-                              Cancel
-                            </Button>
-                            <LoadingButton
-                              variant="contained"
-                              size="large"
-                              type="submit"
-                              color="primary"
-                              loading={isSubmitting}
-                              disabled={isSubmitting}
-                            >
-                              Save
-                            </LoadingButton>
-                          </Stack>
-                        </Stack>
-                      </form>
+                      <Box>
+                        {drawing ? (
+                          <Tooltip title="Drawing">
+                            <Iconify
+                              icon="mdi:gesture"
+                              width={24}
+                              height={24}
+                            />
+                          </Tooltip>
+                        ) : null}
+                      </Box>
                     </Stack>
-                  </CardContent>
-                </Card>
-              ) : null}
-            </AnimatePresence>
-            {!editing ? (
-              <Paper>
-                <Button
-                  onClick={() => {
-                    setSelectedComment(null)
-                    onStartEditing()
-                  }}
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  fullWidth
-                >
-                  Add Comment at {formatDuration(videoTimestamp)}
-                </Button>
-              </Paper>
+                    <form onSubmit={handleSubmit(saveComment)}>
+                      <Stack spacing={2}>
+                        <Controller
+                          name="body"
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <Box>
+                              <Editor
+                                value={field.value}
+                                onChange={field.onChange}
+                                onBlur={field.onBlur}
+                                error={Boolean(error)}
+                                sx={{
+                                  backgroundColor:
+                                    theme.palette.background.paper,
+                                  height: 300,
+                                }}
+                              />
+                              <FormHelperText
+                                error={Boolean(error)}
+                                sx={{ px: 2 }}
+                              >
+                                {error ? error.message : null}
+                              </FormHelperText>
+                            </Box>
+                          )}
+                        />
+                        <Stack direction="row" spacing={2}>
+                          <Button
+                            onClick={onStopEditing}
+                            size="large"
+                            color="primary"
+                            sx={{ ml: "auto" }}
+                          >
+                            Cancel
+                          </Button>
+                          <LoadingButton
+                            variant="contained"
+                            size="large"
+                            type="submit"
+                            color="primary"
+                            loading={isSubmitting}
+                            disabled={isSubmitting}
+                          >
+                            Save
+                          </LoadingButton>
+                        </Stack>
+                      </Stack>
+                    </form>
+                  </Stack>
+                </CardContent>
+              </Card>
             ) : null}
-          </Sticky>
+          </AnimatePresence>
+          {!editing ? (
+            <Paper>
+              <Button
+                onClick={() => {
+                  setSelectedComment(null)
+                  onStartEditing()
+                }}
+                variant="outlined"
+                size="large"
+                color="primary"
+                fullWidth
+              >
+                Add Comment at {formatDuration(videoTimestamp)}
+              </Button>
+            </Paper>
+          ) : null}
           {comments.map((comment) => {
             return (
               <Card

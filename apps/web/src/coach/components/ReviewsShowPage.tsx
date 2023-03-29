@@ -10,6 +10,7 @@ import { VideoPlayerRef } from "@/components/VideoPlayer"
 import * as yup from "yup"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { Button } from "@mui/material"
 
 interface Props {
   review: Review
@@ -49,9 +50,15 @@ export const CoachReviewsShowPage = ({
   return (
     <DashboardLayout user={user} title={recording.title} showTitle={false}>
       <ReviewDetails
+        editing={editing}
         review={review}
         games={games}
         title={`Review For ${player.name}`}
+        titleActionsElement={
+          <Button variant="outlined" color="success">
+            Publish Review
+          </Button>
+        }
         recordingElement={
           <Recording
             recording={recording}
