@@ -66,16 +66,18 @@ export const ReviewDetails = ({
           <Typography variant="body2" color="text.secondary">
             Requested on {formatDate(review.createdAt)}
           </Typography>
-          <IconButtonAnimate
-            onClick={
-              fullScreenHandle.active
-                ? fullScreenHandle.exit
-                : fullScreenHandle.enter
-            }
-            sx={{ p: 1 }}
-          >
-            <Iconify icon="eva:expand-outline" />
-          </IconButtonAnimate>
+          {user.type === "player" ? (
+            <IconButtonAnimate
+              onClick={
+                fullScreenHandle.active
+                  ? fullScreenHandle.exit
+                  : fullScreenHandle.enter
+              }
+              sx={{ p: 1 }}
+            >
+              <Iconify icon="eva:expand-outline" />
+            </IconButtonAnimate>
+          ) : null}
           {titleActionsElement}
         </Stack>
       </Paper>
