@@ -24,7 +24,6 @@ import { Editor } from "@/components/Editor"
 import { animateFade } from "@/animate/fade"
 import Sticky from "react-stickynode"
 import { CommentFormValues } from "@/coach/components/ReviewsShowPage"
-import { animateSlide } from "@/animate/slide"
 
 interface Props {
   review: Review

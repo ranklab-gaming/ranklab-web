@@ -1,13 +1,5 @@
 import { Review, Game } from "@ranklab/api"
-import {
-  Box,
-  Chip,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { Chip, Grid, Paper, Stack, Typography, useTheme } from "@mui/material"
 import { ReviewState } from "./ReviewState"
 import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
