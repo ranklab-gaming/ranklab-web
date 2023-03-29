@@ -2,7 +2,7 @@ import { assertProp } from "@/assert"
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { ReviewDetails } from "@/components/ReviewDetails"
-import { Comment, Game, Review } from "@ranklab/api"
+import { Comment, Game, Review, ReviewState } from "@ranklab/api"
 import { Recording } from "./ReviewsShowPage/Recording"
 import { CommentList } from "./ReviewsShowPage/CommentList"
 import { useRef, useState } from "react"
@@ -86,46 +86,48 @@ export const CoachReviewsShowPage = ({
         games={games}
         title={`Review For ${player.name}`}
         titleActionsElement={
-          <>
-            <Button
-              variant="outlined"
-              color="success"
-              onClick={() => setShowPublishDialog(true)}
-            >
-              Publish Review
-            </Button>
-            <Dialog
-              open={showPublishDialog}
-              onClose={() => setShowPublishDialog(false)}
-              fullWidth
-            >
-              <DialogTitle>
-                Are you sure you want to publish this review?
-              </DialogTitle>
-              <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
-                <DialogContentText>
-                  This action cannot be undone. Once you publish this review, it
-                  will be visible to the player, and you will no longer be able
-                  to edit it.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setShowPublishDialog(false)}>
-                  Go Back
-                </Button>
-                <LoadingButton
-                  onClick={publishReview}
-                  autoFocus
-                  disabled={publishing}
-                  loading={publishing}
-                  color="primary"
-                  variant="contained"
-                >
-                  Publish
-                </LoadingButton>
-              </DialogActions>
-            </Dialog>
-          </>
+          review.state === ReviewState.Draft ? (
+            <>
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={() => setShowPublishDialog(true)}
+              >
+                Publish Review
+              </Button>
+              <Dialog
+                open={showPublishDialog}
+                onClose={() => setShowPublishDialog(false)}
+                fullWidth
+              >
+                <DialogTitle>
+                  Are you sure you want to publish this review?
+                </DialogTitle>
+                <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                  <DialogContentText>
+                    This action cannot be undone. Once you publish this review,
+                    it will be visible to the player, and you will no longer be
+                    able to edit it.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setShowPublishDialog(false)}>
+                    Go Back
+                  </Button>
+                  <LoadingButton
+                    onClick={publishReview}
+                    autoFocus
+                    disabled={publishing}
+                    loading={publishing}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Publish
+                  </LoadingButton>
+                </DialogActions>
+              </Dialog>
+            </>
+          ) : undefined
         }
         recordingElement={
           <Recording
