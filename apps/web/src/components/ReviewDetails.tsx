@@ -83,7 +83,7 @@ export const ReviewDetails = ({
       <Grid container spacing={1}>
         <Grid
           item
-          md={user.type === "coach" ? 6 : 8}
+          md={user.type === "coach" ? 7 : 8}
           xs={12}
           sx={{ transition: "all 0.3s ease" }}
         >
@@ -129,7 +129,7 @@ export const ReviewDetails = ({
         </Grid>
         <Grid
           item
-          md={user.type === "coach" ? 6 : 4}
+          md={user.type === "coach" ? 5 : 4}
           xs={12}
           minHeight="70vh"
           overflow={fullScreenHandle.active ? "auto" : undefined}
