@@ -16,6 +16,7 @@ import Sticky from "react-stickynode"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Iconify } from "@/components/Iconify"
+import { useUser } from "@/hooks/useUser"
 
 interface Props {
   review: Review
@@ -24,7 +25,6 @@ interface Props {
   recordingElement: JSX.Element
   commentListElement: JSX.Element
   titleActionsElement?: JSX.Element
-  editing?: boolean
 }
 
 export const ReviewDetails = ({
@@ -35,10 +35,10 @@ export const ReviewDetails = ({
   titleActionsElement,
   title,
   children,
-  editing,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const fullScreenHandle = useFullScreenHandle()
+  const user = useUser()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
@@ -83,7 +83,7 @@ export const ReviewDetails = ({
       <Grid container spacing={1}>
         <Grid
           item
-          md={editing ? 6 : 8}
+          md={user.type === "coach" ? 6 : 8}
           xs={12}
           sx={{ transition: "all 0.3s ease" }}
         >
@@ -129,8 +129,7 @@ export const ReviewDetails = ({
         </Grid>
         <Grid
           item
-          md={editing ? 6 : 4}
-          sx={{ transition: "all 0.3s ease" }}
+          md={user.type === "coach" ? 6 : 4}
           xs={12}
           minHeight="70vh"
           overflow={fullScreenHandle.active ? "auto" : undefined}

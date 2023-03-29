@@ -1,4 +1,3 @@
-import { animateFade } from "@/animate/fade"
 import { CommentFormValues } from "@/coach/components/ReviewsShowPage"
 import { Iconify } from "@/components/Iconify"
 import { VideoPlayer, VideoPlayerRef } from "@/components/VideoPlayer"
@@ -12,9 +11,23 @@ import {
   useTheme,
 } from "@mui/material"
 import { Recording as ApiRecording } from "@ranklab/api"
-import { AnimatePresence, m } from "framer-motion"
-import { RefObject, useState } from "react"
+import { m } from "framer-motion"
+import {
+  forwardRef,
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react"
 import { UseFormReturn } from "react-hook-form"
+import { useSvgDrawing } from "@svg-drawing/react"
+import drawCursor from "@/images/cursors/draw.png"
+import { animateFade } from "@/animate/fade"
+
+if (typeof window !== "undefined") {
+  window.TouchEvent = window.TouchEvent || Object.create(Event)
+}
 
 interface Props {
   recording: ApiRecording
@@ -33,7 +46,69 @@ const colors = [
   "info",
 ] as const
 
-type Colors = (typeof colors)[number]
+type Color = (typeof colors)[number]
+
+interface DrawingProps {
+  color: Color
+  value: string
+  onChange: (value: string) => void
+}
+
+interface DrawingRef {
+  changeColor: (color: Color) => void
+}
+
+const Drawing = forwardRef<DrawingRef, DrawingProps>(
+  ({ color, value, onChange }, ref) => {
+    const theme = useTheme()
+
+    const [renderRef, draw] = useSvgDrawing({
+      penWidth: 2,
+      penColor: theme.palette[color].main,
+      delay: 100,
+    })
+
+    useEffect(() => {
+      draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")
+      draw.ref.current?.update()
+    }, [draw.ref, value])
+
+    useEffect(() => {
+      onChange(draw.getSvgXML() || "")
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [draw.getSvgXML()])
+
+    useImperativeHandle(ref, () => ({
+      changeColor: (color: Color) => {
+        draw.changePenColor(theme.palette[color].main)
+      },
+    }))
+
+    return (
+      <Box
+        component={m.div}
+        variants={animateFade().in}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+      >
+        <div
+          ref={renderRef}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            cursor: `url(${drawCursor.src}) 0 16, auto`,
+          }}
+        />
+      </Box>
+    )
+  }
+)
+
+Drawing.displayName = "Drawing"
 
 export const Recording = ({
   recording,
@@ -42,82 +117,77 @@ export const Recording = ({
   editing,
   form,
 }: Props) => {
-  const [selectedColor, setSelectedColor] = useState<Colors>("primary")
   const theme = useTheme()
+  const [color, setColor] = useState<Color>("primary")
+  const drawing = form.watch("drawing")
+  const drawingRef = useRef<DrawingRef>(null)
 
   return (
     <Stack spacing={2}>
-      <AnimatePresence>
-        {editing ? (
-          <Box
-            component={m.div}
-            key="toolbar"
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={animateFade().in}
-            position="absolute"
-            top={theme.spacing(1)}
-            left={theme.spacing(1)}
+      {editing ? (
+        <Box
+          component={m.div}
+          key="color"
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={animateFade().in}
+          position="absolute"
+          top={theme.spacing(1)}
+          left={theme.spacing(1)}
+        >
+          <SpeedDial
+            direction="right"
+            ariaLabel="Color"
+            FabProps={{
+              size: "small",
+              color,
+            }}
+            sx={{
+              "& .MuiSpeedDial-actions": {
+                pl: 5,
+              },
+            }}
+            icon={
+              <SpeedDialIcon
+                openIcon={
+                  <Iconify icon="eva:brush-outline" height={24} fontSize={24} />
+                }
+                icon={
+                  <Iconify icon="eva:brush-outline" height={24} fontSize={24} />
+                }
+                sx={{
+                  "& .MuiSpeedDialIcon-openIcon": {
+                    transform: "none",
+                    transition: "none",
+                  },
+                  "& .MuiSpeedDialIcon-icon": {
+                    transform: "none",
+                    transition: "none",
+                  },
+                }}
+              />
+            }
           >
-            <SpeedDial
-              direction="right"
-              ariaLabel="Color"
-              FabProps={{
-                size: "small",
-                color: selectedColor,
-              }}
-              sx={{
-                "& .MuiSpeedDial-actions": {
-                  pl: 5,
-                },
-              }}
-              icon={
-                <SpeedDialIcon
-                  openIcon={
-                    <Iconify
-                      icon="eva:brush-outline"
-                      height={24}
-                      fontSize={24}
-                    />
-                  }
-                  icon={
-                    <Iconify
-                      icon="eva:brush-outline"
-                      height={24}
-                      fontSize={24}
-                    />
-                  }
-                  sx={{
-                    "& .MuiSpeedDialIcon-openIcon": {
-                      transform: "none",
-                      transition: "none",
-                    },
-                    "& .MuiSpeedDialIcon-icon": {
-                      transform: "none",
-                      transition: "none",
-                    },
-                  }}
-                />
-              }
-            >
-              {colors.map((color, index) => (
-                <SpeedDialAction
-                  key={index}
-                  sx={{
-                    color: (theme) => theme.palette.common.white,
-                    bgcolor: (theme) => theme.palette[color].main,
-                    "&:hover": {
-                      bgcolor: (theme) => theme.palette[color].dark,
-                    },
-                  }}
-                  onClick={() => setSelectedColor(color)}
-                />
-              ))}
-            </SpeedDial>
-          </Box>
-        ) : null}
-      </AnimatePresence>
+            {colors.map((color, index) => (
+              <SpeedDialAction
+                key={index}
+                sx={{
+                  color: (theme) => theme.palette.common.white,
+                  bgcolor: (theme) => theme.palette[color].main,
+                  "&:hover": {
+                    bgcolor: (theme) => theme.palette[color].dark,
+                  },
+                }}
+                onClick={() => {
+                  setColor(color)
+                  drawingRef.current?.changeColor(color)
+                }}
+              />
+            ))}
+          </SpeedDial>
+        </Box>
+      ) : null}
       <Box
         height="70vh"
         display="flex"
@@ -125,6 +195,25 @@ export const Recording = ({
         justifyContent="center"
       >
         <Box position="relative">
+          {editing ? (
+            <Drawing
+              color={color}
+              ref={drawingRef}
+              value={drawing}
+              onChange={(value) => form.setValue("drawing", value)}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{ __html: drawing }}
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+            />
+          )}
           <VideoPlayer
             src={`${uploadsCdnUrl}/${recording.videoKey}`}
             type={recording.mimeType}

@@ -59,8 +59,8 @@ importers:
         specifier: 1.52.0
         version: 1.52.0
       '@svg-drawing/react':
-        specifier: 5.0.1-beta.0
-        version: 5.0.1-beta.0(react@18.2.0)
+        specifier: 4.2.5
+        version: 4.2.5(react@18.2.0)
       '@zach.codes/use-upload':
         specifier: 1.0.1
         version: 1.0.1
@@ -1241,38 +1241,38 @@ packages:
     resolution: {integrity: sha512-Ja2VlaTf3kM5tN4Y0sC8T3ibZAnfGUU/QzMAlk/G+Adz2fF1ycTabtSkdSuVP4/adXox8NkPPV4Xndx/EP4fMg==}
     dev: false
 
-  /@svg-drawing/animation@5.0.1-beta.0:
-    resolution: {integrity: sha512-YCdrrvO+pQStcLAiMUycXGyKVmuXYxOcAl4gSdPNUiasubJxkGLDc5IwOjGHQvxDDZ27GmfezQtRWIsmD53JmA==}
+  /@svg-drawing/animation@4.2.5:
+    resolution: {integrity: sha512-YxOnn+VXFkkYrC+Dbt4RNG4BJkN3WIoJa14oPi3f/a/KOmgbWZ+NMwIMR0ojc4OGvidQie+UhDSVZN3mKv7Ufw==}
     requiresBuild: true
     optionalDependencies:
-      '@svg-drawing/core': 5.0.1-beta.0
+      '@svg-drawing/core': 4.2.5
     dev: false
     optional: true
 
-  /@svg-drawing/core@5.0.1-beta.0:
-    resolution: {integrity: sha512-KyNiiGUpeZPGh8QxtEW381K9+sa+b9E6QRUzaC2ugyrMuXKraHWqu9d/mF5WKgBt5t2yEGRTOf2nMvSHb7D3jQ==}
+  /@svg-drawing/core@4.2.5:
+    resolution: {integrity: sha512-SqZpUilYOI176qyEyLMyeVZdXRHoEUw03Z4Fen/Q5671TKv7xskF9mM/89Cd2q2KPS+9H1PPlhf2uY8vj89reg==}
     requiresBuild: true
     dev: false
     optional: true
 
-  /@svg-drawing/img-trace@5.0.1-beta.0:
-    resolution: {integrity: sha512-tJVs47YFsLgRi/1cbCryPsUMqV0pfhPK8vtzZ5w5Hi/VgREZSCWXymzChE+ZDcCobFtA8tUXOForawZ0ZpeM5g==}
+  /@svg-drawing/img-trace@4.2.5:
+    resolution: {integrity: sha512-ND+IOOzS4BBIXlGuXjGSaKJN3II0nhnO2TKwiY1hy1puP6hFi+IlICdgdOXoVOWuFpfhzckY49UcBtlqhum6pw==}
     requiresBuild: true
     optionalDependencies:
-      '@svg-drawing/animation': 5.0.1-beta.0
-      '@svg-drawing/core': 5.0.1-beta.0
+      '@svg-drawing/animation': 4.2.5
+      '@svg-drawing/core': 4.2.5
     dev: false
     optional: true
 
-  /@svg-drawing/react@5.0.1-beta.0(react@18.2.0):
-    resolution: {integrity: sha512-I/xKiw4LEU61QwUv1I2T2PJKE3dcYFSY/EjQLRDgAqICgGZJE8TcuvJdr1m0uXVIzLwTgO9+RCY09BHlbzoijg==}
+  /@svg-drawing/react@4.2.5(react@18.2.0):
+    resolution: {integrity: sha512-w256Kzg0Y3aDL9pHI6w9I+fkLpOjZvL9CJWS4+2OY4NcpmHGJh5aZFQ7mAql4iS7R3h/eOfO8oC9DWBW/r/GpA==}
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
       react: 18.2.0
     optionalDependencies:
-      '@svg-drawing/core': 5.0.1-beta.0
-      '@svg-drawing/img-trace': 5.0.1-beta.0
+      '@svg-drawing/core': 4.2.5
+      '@svg-drawing/img-trace': 4.2.5
     dev: false
 
   /@swc/helpers@0.4.14:

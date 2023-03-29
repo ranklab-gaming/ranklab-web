@@ -29,7 +29,7 @@ interface Props {
 }
 
 const CommentFormSchema = yup.object().shape({
-  body: yup.string().required().min(1),
+  body: yup.string().required("Comment is required").min(1),
   drawing: yup.string().defined(),
 })
 
@@ -81,7 +81,6 @@ export const CoachReviewsShowPage = ({
   return (
     <DashboardLayout user={user} title={recording.title} showTitle={false}>
       <ReviewDetails
-        editing={editing}
         review={review}
         games={games}
         title={`Review For ${player.name}`}

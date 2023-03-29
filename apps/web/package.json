@@ -23,7 +23,7 @@
     "@sentry/nextjs": "7.45.0",
     "@stripe/react-stripe-js": "2.1.0",
     "@stripe/stripe-js": "1.52.0",
-    "@svg-drawing/react": "5.0.1-beta.0",
+    "@svg-drawing/react": "4.2.5",
     "@zach.codes/use-upload": "1.0.1",
     "csstype": "^3.1.1",
     "date-fns": "2.29.3",

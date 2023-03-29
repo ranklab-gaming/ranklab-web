@@ -17,6 +17,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  IconButton,
 } from "@mui/material"
 import { Review, ReviewState, Comment } from "@ranklab/api"
 import { useState } from "react"
@@ -219,119 +220,117 @@ export const CommentList = ({
     )
   }
 
+  const editForm = (
+    <Card>
+      <CardContent>
+        <Stack spacing={2}>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography variant="body2" mr="auto">
+              {formatDuration(videoTimestamp)}
+            </Typography>
+            {selectedComment ? (
+              <Box>
+                <IconButton onClick={() => setShowDeleteDialog(true)}>
+                  <Iconify icon="eva:trash-outline" width={22} fontSize={22} />
+                </IconButton>
+                <Dialog
+                  open={showDeleteDialog}
+                  onClose={() => setShowDeleteDialog(false)}
+                  fullWidth
+                >
+                  <DialogTitle>Really delete this comment?</DialogTitle>
+                  <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
+                    <DialogContentText>
+                      This action cannot be undone. Your comment will be
+                      permanently deleted.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => setShowDeleteDialog(false)}>
+                      Go Back
+                    </Button>
+                    <LoadingButton
+                      onClick={deleteComment}
+                      autoFocus
+                      disabled={deleting}
+                      loading={deleting}
+                      color="primary"
+                      variant="contained"
+                    >
+                      Delete
+                    </LoadingButton>
+                  </DialogActions>
+                </Dialog>
+              </Box>
+            ) : null}
+          </Stack>
+          <form onSubmit={handleSubmit(saveComment)}>
+            <Stack spacing={2}>
+              <Controller
+                name="body"
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <Box>
+                    <Editor
+                      value={field.value}
+                      onChange={(value) => {
+                        const element = document.createElement("div")
+                        element.innerHTML = value
+
+                        if (!element.textContent) {
+                          field.onChange("")
+                        } else {
+                          field.onChange(value)
+                        }
+                      }}
+                      onBlur={field.onBlur}
+                      error={Boolean(error)}
+                      sx={{
+                        backgroundColor: theme.palette.background.paper,
+                        height: 300,
+                      }}
+                    />
+                    <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                      {error ? error.message : null}
+                    </FormHelperText>
+                  </Box>
+                )}
+              />
+              <Stack direction="row" spacing={2}>
+                <Button
+                  onClick={() => {
+                    onStopEditing()
+                    setSelectedComment(null)
+                  }}
+                  size="large"
+                  color="primary"
+                  sx={{ ml: "auto" }}
+                >
+                  Cancel
+                </Button>
+                <LoadingButton
+                  variant="contained"
+                  size="large"
+                  type="submit"
+                  color="primary"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                >
+                  Save
+                </LoadingButton>
+              </Stack>
+            </Stack>
+          </form>
+        </Stack>
+      </CardContent>
+    </Card>
+  )
+
   return (
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
         <Stack spacing={2}>
-          <AnimatePresence>
-            {editing ? (
-              <Card>
-                <CardContent>
-                  <Stack spacing={2}>
-                    <Stack direction="row" alignItems="center" spacing={2}>
-                      <Typography variant="body2" mr="auto">
-                        {formatDuration(videoTimestamp)}
-                      </Typography>
-                      {selectedComment ? (
-                        <Box>
-                          <LoadingButton
-                            onClick={() => setShowDeleteDialog(true)}
-                            size="small"
-                            color="error"
-                            loading={deleting}
-                            disabled={deleting}
-                          >
-                            Delete
-                          </LoadingButton>
-                          <Dialog
-                            open={showDeleteDialog}
-                            onClose={() => setShowDeleteDialog(false)}
-                            fullWidth
-                          >
-                            <DialogTitle>
-                              Really delete this comment?
-                            </DialogTitle>
-                            <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
-                              <DialogContentText>
-                                This action cannot be undone. Your comment will
-                                be permanently deleted.
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={() => setShowDeleteDialog(false)}
-                              >
-                                Go Back
-                              </Button>
-                              <LoadingButton
-                                onClick={deleteComment}
-                                autoFocus
-                                disabled={deleting}
-                                loading={deleting}
-                                color="primary"
-                                variant="contained"
-                              >
-                                Delete
-                              </LoadingButton>
-                            </DialogActions>
-                          </Dialog>
-                        </Box>
-                      ) : null}
-                    </Stack>
-                    <form onSubmit={handleSubmit(saveComment)}>
-                      <Stack spacing={2}>
-                        <Controller
-                          name="body"
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <Box>
-                              <Editor
-                                value={field.value}
-                                onChange={field.onChange}
-                                onBlur={field.onBlur}
-                                error={Boolean(error)}
-                                sx={{
-                                  backgroundColor:
-                                    theme.palette.background.paper,
-                                  height: 300,
-                                }}
-                              />
-                              <FormHelperText
-                                error={Boolean(error)}
-                                sx={{ px: 2 }}
-                              >
-                                {error ? error.message : null}
-                              </FormHelperText>
-                            </Box>
-                          )}
-                        />
-                        <Stack direction="row" spacing={2}>
-                          <Button
-                            onClick={onStopEditing}
-                            size="large"
-                            color="primary"
-                            sx={{ ml: "auto" }}
-                          >
-                            Cancel
-                          </Button>
-                          <LoadingButton
-                            variant="contained"
-                            size="large"
-                            type="submit"
-                            color="primary"
-                            loading={isSubmitting}
-                            disabled={isSubmitting}
-                          >
-                            Save
-                          </LoadingButton>
-                        </Stack>
-                      </Stack>
-                    </form>
-                  </Stack>
-                </CardContent>
-              </Card>
-            ) : null}
-          </AnimatePresence>
+          {editing && !selectedComment ? editForm : null}
           {!editing ? (
             <Paper>
               <Button
@@ -349,7 +348,9 @@ export const CommentList = ({
             </Paper>
           ) : null}
           {comments.map((comment) => {
-            return (
+            return comment === selectedComment ? (
+              editForm
+            ) : (
               <Card
                 key={comment.id}
                 component={m.div}
