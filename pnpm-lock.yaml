@@ -71,8 +71,8 @@ importers:
         specifier: 2.29.3
         version: 2.29.3
       framer-motion:
-        specifier: 10.9.2
-        version: 10.9.2(react-dom@18.2.0)(react@18.2.0)
+        specifier: 10.10.0
+        version: 10.10.0(react-dom@18.2.0)(react@18.2.0)
       ioredis:
         specifier: 5.3.1
         version: 5.3.1
@@ -2589,8 +2589,8 @@ packages:
     engines: {node: '>= 14.17'}
     dev: false
 
-  /framer-motion@10.9.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-qNhnSAO0rd4A2GI93Y5SlljdBQEP6u/y98tX6esz48WxGPhHfePRfEmp9acUHOvxE+e9p3M/RbSDsoGkXTeqRA==}
+  /framer-motion@10.10.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-eCsyOcJimIRbx9KOzBTO3j9u1rF/H8/o/ybizYqdrzHkEeHx9L2NcEfGWfV0OHTc1JV17ECVzuZpomupEJ4+dw==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
