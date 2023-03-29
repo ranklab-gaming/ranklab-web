@@ -56,6 +56,7 @@ interface DrawingProps {
 
 interface DrawingRef {
   changeColor: (color: Color) => void
+  clear: () => void
 }
 
 const Drawing = forwardRef<DrawingRef, DrawingProps>(
@@ -81,6 +82,9 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     useImperativeHandle(ref, () => ({
       changeColor: (color: Color) => {
         draw.changePenColor(theme.palette[color].main)
+      },
+      clear: () => {
+        draw.clear()
       },
     }))
 
@@ -185,6 +189,14 @@ export const Recording = ({
                 }}
               />
             ))}
+            <SpeedDialAction
+              icon={
+                <Iconify icon="eva:trash-2-outline" height={24} fontSize={24} />
+              }
+              onClick={() => {
+                drawingRef.current?.clear()
+              }}
+            />
           </SpeedDial>
         </Box>
       ) : null}
