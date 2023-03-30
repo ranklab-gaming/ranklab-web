@@ -20,7 +20,7 @@
     "@mui/lab": "5.0.0-alpha.124",
     "@mui/material": "5.11.15",
     "@ranklab/api": "workspace:*",
-    "@sentry/nextjs": "7.45.0",
+    "@sentry/nextjs": "7.46.0",
     "@stripe/react-stripe-js": "2.1.0",
     "@stripe/stripe-js": "1.52.0",
     "@svg-drawing/react": "4.2.5",
