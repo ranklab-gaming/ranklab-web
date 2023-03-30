@@ -141,7 +141,7 @@ export const Recording = ({
   const drawingRef = useRef<DrawingRef>(null)
 
   return (
-    <Stack spacing={2}>
+    <>
       {editing ? (
         <Box
           component={m.div}
@@ -214,42 +214,44 @@ export const Recording = ({
           </SpeedDial>
         </Box>
       ) : null}
-      <Box
-        height="70vh"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Box position="relative">
-          {editing ? (
-            <Drawing
-              color={color}
-              ref={drawingRef}
-              value={drawing}
-              onChange={(value) => form.setValue("drawing", value)}
+      <Stack spacing={2}>
+        <Box
+          height="70vh"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box position="relative">
+            {editing ? (
+              <Drawing
+                color={color}
+                ref={drawingRef}
+                value={drawing}
+                onChange={(value) => form.setValue("drawing", value)}
+              />
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{ __html: drawing }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  pointerEvents: "none",
+                }}
+              />
+            )}
+            <VideoPlayer
+              src={`${uploadsCdnUrl}/${recording.videoKey}`}
+              type={recording.mimeType}
+              onTimeUpdate={onTimeUpdate}
+              ref={videoRef}
+              controls={!editing}
             />
-          ) : (
-            <div
-              dangerouslySetInnerHTML={{ __html: drawing }}
-              style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                pointerEvents: "none",
-              }}
-            />
-          )}
-          <VideoPlayer
-            src={`${uploadsCdnUrl}/${recording.videoKey}`}
-            type={recording.mimeType}
-            onTimeUpdate={onTimeUpdate}
-            ref={videoRef}
-            controls={!editing}
-          />
+          </Box>
         </Box>
-      </Box>
-    </Stack>
+      </Stack>
+    </>
   )
 }
