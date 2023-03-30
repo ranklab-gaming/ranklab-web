@@ -7,6 +7,7 @@ import { m } from "framer-motion"
 import { PropsWithChildren } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
+import { useResponsive } from "@/hooks/useResponsive"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -58,10 +59,15 @@ const HeroImgStyle = styled(Logo)(() => ({
 
 export const Hero = () => {
   const theme = useTheme()
+  const isDesktop = useResponsive("up", "md")
 
   return (
     <>
-      <RootStyle initial="initial" animate="animate">
+      <RootStyle
+        initial="initial"
+        animate="animate"
+        sx={{ overflow: "hidden" }}
+      >
         <HeroOverlayStyle variants={animateFade().in}>
           <Overlay />
         </HeroOverlayStyle>
@@ -94,7 +100,12 @@ export const Hero = () => {
               </Typography>
             </m.div>
             <m.div variants={animateFade().inRight}>
-              <Stack spacing={3} direction="row" alignItems="center">
+              <Stack
+                spacing={3}
+                direction="row"
+                alignItems="center"
+                justifyContent={!isDesktop ? "center" : "flex-start"}
+              >
                 <NextLink
                   href="/api/auth/signin?intent=signup"
                   passHref
@@ -123,7 +134,7 @@ export const Hero = () => {
           </ContentStyle>
         </Container>
       </RootStyle>
-      <Box sx={{ height: { md: "100vh" } }} />
+      <Box sx={{ height: "100vh" }} />
     </>
   )
 }
