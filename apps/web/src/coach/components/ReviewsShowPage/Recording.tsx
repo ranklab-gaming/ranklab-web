@@ -24,6 +24,7 @@ import { UseFormReturn } from "react-hook-form"
 import { useSvgDrawing } from "@svg-drawing/react"
 import drawCursor from "@/images/cursors/draw.png"
 import { animateFade } from "@/animate/fade"
+import { debounce } from "lodash"
 
 if (typeof window !== "undefined") {
   window.TouchEvent = window.TouchEvent || Object.create(Event)
@@ -64,7 +65,7 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     const theme = useTheme()
 
     const [renderRef, draw] = useSvgDrawing({
-      penWidth: 2,
+      penWidth: 3,
       penColor: theme.palette[color].main,
       delay: 100,
     })
@@ -72,29 +73,36 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     useEffect(() => {
       draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")
       draw.ref.current?.update()
-    }, [draw.ref, value])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [draw.ref.current, value])
 
     useEffect(() => {
-      const svg = draw.getSvgXML() || "<svg></svg>"
-      const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml")
+      const handleOnChange = () => {
+        const svg = draw.getSvgXML() || "<svg></svg>"
+        const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml")
 
-      if (svgElement.documentElement.childElementCount === 0) {
-        onChange("")
-        return
+        if (svgElement.documentElement.childElementCount === 0) {
+          onChange("")
+          return
+        }
+
+        const width = svgElement.documentElement.getAttribute("width")
+        const height = svgElement.documentElement.getAttribute("height")
+
+        svgElement.documentElement.removeAttribute("height")
+        svgElement.documentElement.removeAttribute("width")
+
+        svgElement.documentElement.setAttribute(
+          "viewBox",
+          `0 0 ${width} ${height}`
+        )
+
+        onChange(svgElement.documentElement.outerHTML)
       }
 
-      const width = svgElement.documentElement.getAttribute("width")
-      const height = svgElement.documentElement.getAttribute("height")
+      handleOnChange()
 
-      svgElement.documentElement.removeAttribute("height")
-      svgElement.documentElement.removeAttribute("width")
-
-      svgElement.documentElement.setAttribute(
-        "viewBox",
-        `0 0 ${width} ${height}`
-      )
-
-      onChange(svgElement.documentElement.outerHTML)
+      return handleOnChange
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [draw.getSvgXML()])
 
@@ -143,8 +151,29 @@ export const Recording = ({
 }: Props) => {
   const theme = useTheme()
   const [color, setColor] = useState<Color>("primary")
+  const [resizing, setResizing] = useState(false)
   const drawing = form.watch("drawing")
   const drawingRef = useRef<DrawingRef>(null)
+  const boxRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (boxRef.current === null) return
+
+    const handleResize = debounce(() => {
+      setResizing(false)
+    }, 100)
+
+    const resizeObserver = new ResizeObserver(() => {
+      setResizing(true)
+      handleResize()
+    })
+
+    resizeObserver.observe(boxRef.current)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   return (
     <>
@@ -227,8 +256,8 @@ export const Recording = ({
           alignItems="center"
           justifyContent="center"
         >
-          <Box position="relative">
-            {editing ? (
+          <Box position="relative" ref={boxRef}>
+            {editing && !resizing ? (
               <Drawing
                 color={color}
                 ref={drawingRef}
