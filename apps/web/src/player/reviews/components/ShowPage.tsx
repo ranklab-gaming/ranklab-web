@@ -105,32 +105,16 @@ export const PlayerReviewsShowPage = ({
               severity="success"
               sx={{ mb: 1 }}
               action={
-                <Stack direction="row" spacing={2}>
-                  <NextLink
-                    href="mailto:support@ranklab.gg"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Button
-                      size="small"
-                      variant="text"
-                      color="success"
-                      component="a"
-                    >
-                      REQUEST REFUND
-                    </Button>
-                  </NextLink>
-                  <LoadingButton
-                    size="small"
-                    variant="text"
-                    color="success"
-                    onClick={acceptReview}
-                    loading={accepting}
-                    disabled={accepting}
-                  >
-                    ACCEPT REVIEW
-                  </LoadingButton>
-                </Stack>
+                <LoadingButton
+                  size="small"
+                  variant="text"
+                  color="success"
+                  onClick={acceptReview}
+                  loading={accepting}
+                  disabled={accepting}
+                >
+                  ACCEPT REVIEW
+                </LoadingButton>
               }
             >
               Are you happy with this review? If so, please accept it to so that{" "}

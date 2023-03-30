@@ -23,12 +23,6 @@ const links = [
       },
     ],
   },
-  {
-    headline: "Contact Us",
-    children: [
-      { name: "support@ranklab.gg", href: "mailto:support@ranklab.gg" },
-    ],
-  },
 ]
 
 const RootStyle = styled("div")(({ theme }) => ({
