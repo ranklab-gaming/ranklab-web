@@ -12,15 +12,12 @@ import { useResponsive } from "@/hooks/useResponsive"
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
   backgroundColor: theme.palette.grey[400],
-  [theme.breakpoints.up("md")]: {
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100vh",
-    display: "flex",
-    position: "fixed",
-    alignItems: "center",
-  },
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
 }))
 
 const Content = (props: PropsWithChildren) => <Stack spacing={5} {...props} />
@@ -79,14 +76,14 @@ export const Hero = () => {
             <m.div variants={animateFade().inRight}>
               <Typography
                 variant="h1"
-                sx={{ color: "common.white", fontSize: 60 }}
+                sx={{ color: "common.white", fontSize: isDesktop ? 60 : 40 }}
               >
                 Up your game <br />
                 with
                 <Typography
                   component="span"
                   variant="h1"
-                  sx={{ fontSize: 60, color: "primary.main" }}
+                  sx={{ fontSize: isDesktop ? 60 : 40, color: "primary.main" }}
                 >
                   &nbsp;Ranklab
                 </Typography>
