@@ -8,7 +8,7 @@ export const Overlay = (props: BoxProps) => {
         height: "100%",
         width: "100%",
         backgroundImage:
-          "linear-gradient(180deg, rgba(22, 28, 36, 0.48) 0%, rgba(22, 28, 36, 0.8) 50%, rgba(22, 28, 36, 1) 100%)",
+          "radial-gradient(at top right, rgba(22, 38, 36, 0.48) 0%, rgba(22, 28, 36, 0.8) 49.865%, #161c24 100%)",
       }}
     />
   )
