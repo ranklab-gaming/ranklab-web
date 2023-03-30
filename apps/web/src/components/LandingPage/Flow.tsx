@@ -66,8 +66,8 @@ const CardStyle = styled(Card)(({ theme }) => {
 })
 
 const CardIconStyle = styled("div")(({ theme }) => ({
-  width: 80,
-  height: 80,
+  width: 64,
+  height: 64,
   margin: "auto",
   marginBottom: theme.spacing(10),
 }))
