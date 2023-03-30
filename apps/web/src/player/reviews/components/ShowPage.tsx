@@ -11,9 +11,9 @@ import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
-import NextLink from "next/link"
 import { assertProp } from "@/assert"
 import { VideoPlayerRef } from "@/components/VideoPlayer"
+import { useIntercom } from "react-use-intercom"
 
 interface Props {
   review: Review
@@ -34,6 +34,7 @@ export const PlayerReviewsShowPage = ({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const { show } = useIntercom()
   const videoRef = useRef<VideoPlayerRef>(null)
   const recording = assertProp(review, "recording")
   const coach = assertProp(review, "coach")
@@ -105,16 +106,26 @@ export const PlayerReviewsShowPage = ({
               severity="success"
               sx={{ mb: 1 }}
               action={
-                <LoadingButton
-                  size="small"
-                  variant="text"
-                  color="success"
-                  onClick={acceptReview}
-                  loading={accepting}
-                  disabled={accepting}
-                >
-                  ACCEPT REVIEW
-                </LoadingButton>
+                <Stack direction="row" spacing={2}>
+                  <Button
+                    size="small"
+                    variant="text"
+                    color="success"
+                    onClick={show}
+                  >
+                    REQUEST REFUND
+                  </Button>
+                  <LoadingButton
+                    size="small"
+                    variant="text"
+                    color="success"
+                    onClick={acceptReview}
+                    loading={accepting}
+                    disabled={accepting}
+                  >
+                    ACCEPT REVIEW
+                  </LoadingButton>
+                </Stack>
               }
             >
               Are you happy with this review? If so, please accept it to so that{" "}
