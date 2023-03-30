@@ -61,6 +61,7 @@ export const PlayerReviewsShowPage = ({
       user={user}
       title={isCheckout ? "Checkout" : recording.title}
       showTitle={isCheckout}
+      fullWidth
     >
       {isCheckout ? (
         <CheckoutForm

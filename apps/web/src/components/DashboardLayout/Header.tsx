@@ -9,11 +9,12 @@ import { AccountPopover } from "./AccountPopover"
 
 type RootStyleProps = {
   isOffset: boolean
+  collapsed: boolean
 }
 
 const RootStyle = styled(AppBar, {
-  shouldForwardProp: (prop) => prop !== "isOffset",
-})<RootStyleProps>(({ isOffset, theme }) => ({
+  shouldForwardProp: (prop) => prop !== "isOffset" && prop !== "collapsed",
+})<RootStyleProps>(({ isOffset, theme, collapsed }) => ({
   ...styles(theme).backgroundBlur(),
   boxShadow: "none",
   height: headerStyles.mobileHeight,
@@ -23,7 +24,11 @@ const RootStyle = styled(AppBar, {
   }),
   [theme.breakpoints.up("lg")]: {
     height: headerStyles.dashboardDesktopHeight,
-    width: `calc(100% - ${navbarStyles.dashboardWidth + 1}px)`,
+    width: `calc(100% - ${
+      (collapsed
+        ? navbarStyles.dashboardCollapsedWidth
+        : navbarStyles.dashboardWidth) + 1
+    }px)`,
     ...(isOffset && {
       height: headerStyles.dashboardDesktopOffsetHeight,
     }),
@@ -32,14 +37,15 @@ const RootStyle = styled(AppBar, {
 
 type Props = {
   onOpenSidebar: VoidFunction
+  collapsed: boolean
 }
 
-export const Header = ({ onOpenSidebar }: Props) => {
+export const Header = ({ onOpenSidebar, collapsed }: Props) => {
   const isOffset = useOffsetTop(headerStyles.dashboardDesktopHeight)
   const isDesktop = useResponsive("up", "lg")
 
   return (
-    <RootStyle isOffset={isOffset}>
+    <RootStyle isOffset={isOffset} collapsed={collapsed}>
       <Toolbar
         sx={{
           minHeight: "100% !important",

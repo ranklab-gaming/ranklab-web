@@ -17,15 +17,17 @@ export type NavListProps = {
 
 type NavListRootProps = {
   list: NavListProps
+  collapsed: boolean
 }
 
-export const NavListRoot = ({ list }: NavListRootProps) => {
+export const NavListRoot = ({ list, collapsed }: NavListRootProps) => {
   const { pathname } = useRouter()
 
   return (
     <NavItemRoot
       item={list}
-      active={"path" in list ? list.path === pathname : list.active}
+      active={"path" in list ? list.path === pathname : Boolean(list.active)}
+      collapsed={collapsed}
     />
   )
 }

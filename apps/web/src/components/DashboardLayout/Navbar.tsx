@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
+import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -32,9 +33,16 @@ const icons = {
 type Props = {
   sidebarOpen: boolean
   onCloseSidebar: VoidFunction
+  collapsed: boolean
+  onCollapse: VoidFunction
 }
 
-export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
+export const Navbar = ({
+  sidebarOpen,
+  onCloseSidebar,
+  collapsed,
+  onCollapse,
+}: Props) => {
   const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
@@ -130,12 +138,28 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <NextLink href="/">
-            <Logo />
-          </NextLink>
+          {!collapsed ? (
+            <NextLink href="/">
+              <Logo />
+            </NextLink>
+          ) : null}
+          {isDesktop ? (
+            <IconButtonAnimate
+              onClick={onCollapse}
+              sx={{ mr: 1, color: "text.primary" }}
+            >
+              <Iconify
+                icon={
+                  collapsed
+                    ? "eva:chevron-right-outline"
+                    : "eva:chevron-left-outline"
+                }
+              />
+            </IconButtonAnimate>
+          ) : null}
         </Stack>
       </Stack>
-      <NavSection navConfig={navConfig} />
+      <NavSection navConfig={navConfig} collapsed={collapsed} />
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   )
@@ -144,7 +168,9 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
     <RootStyle
       sx={{
         width: {
-          lg: navbarStyles.dashboardWidth,
+          lg: collapsed
+            ? navbarStyles.dashboardCollapsedWidth
+            : navbarStyles.dashboardWidth,
         },
       }}
     >
@@ -152,7 +178,13 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
         <Drawer
           open={sidebarOpen}
           onClose={onCloseSidebar}
-          PaperProps={{ sx: { width: navbarStyles.dashboardWidth } }}
+          PaperProps={{
+            sx: {
+              width: collapsed
+                ? navbarStyles.dashboardCollapsedWidth
+                : navbarStyles.dashboardWidth,
+            },
+          }}
         >
           {renderContent}
         </Drawer>
@@ -163,7 +195,9 @@ export const Navbar = ({ sidebarOpen, onCloseSidebar }: Props) => {
           variant="persistent"
           PaperProps={{
             sx: {
-              width: navbarStyles.dashboardWidth,
+              width: collapsed
+                ? navbarStyles.dashboardCollapsedWidth
+                : navbarStyles.dashboardWidth,
               borderRightStyle: "dashed",
               bgcolor: "background.default",
               transition: (theme) =>

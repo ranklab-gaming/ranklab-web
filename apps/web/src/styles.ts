@@ -39,6 +39,7 @@ export const headerStyles = {
 export const navbarStyles = {
   baseWidth: 260,
   dashboardWidth: 280,
+  dashboardCollapsedWidth: 80,
   dashboardItemRootHeight: 48,
   dashboardItemSubHeight: 40,
   dashboardItemHorizontalHeight: 32,

@@ -14,7 +14,13 @@ import { PropsWithChildren, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 
-const MainStyle = styled("main")(({ theme }) => ({
+interface MainStyleProps {
+  collapsed: boolean
+}
+
+const MainStyle = styled("main", {
+  shouldForwardProp: (prop) => prop !== "collapsed",
+})<MainStyleProps>(({ theme, collapsed }) => ({
   flexGrow: 1,
   paddingTop: headerStyles.mobileHeight + 24,
   paddingBottom: headerStyles.mobileHeight + 24,
@@ -23,7 +29,11 @@ const MainStyle = styled("main")(({ theme }) => ({
     paddingRight: 16,
     paddingTop: headerStyles.dashboardDesktopHeight + 24,
     paddingBottom: headerStyles.dashboardDesktopHeight + 24,
-    width: `calc(100% - ${navbarStyles.dashboardWidth}px)`,
+    width: `calc(100% - ${
+      collapsed
+        ? navbarStyles.dashboardCollapsedWidth
+        : navbarStyles.dashboardWidth
+    }px)`,
     transition: theme.transitions.create("margin-left", {
       duration: theme.transitions.duration.shorter,
     }),
@@ -34,6 +44,7 @@ interface Props {
   title: string
   user: User
   showTitle?: boolean
+  fullWidth?: boolean
 }
 
 export const DashboardLayout = ({
@@ -41,9 +52,11 @@ export const DashboardLayout = ({
   title,
   user,
   showTitle = true,
+  fullWidth = false,
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
+  const [collapsed, setCollapsed] = useState(false)
 
   return (
     <UserProvider user={user}>
@@ -54,13 +67,18 @@ export const DashboardLayout = ({
             minHeight: { lg: 1 },
           }}
         >
-          <Header onOpenSidebar={() => setSidebarOpen(true)} />
+          <Header
+            onOpenSidebar={() => setSidebarOpen(true)}
+            collapsed={collapsed}
+          />
           <Navbar
             sidebarOpen={sidebarOpen}
             onCloseSidebar={() => setSidebarOpen(false)}
+            collapsed={collapsed}
+            onCollapse={() => setCollapsed(!collapsed)}
           />
-          <MainStyle>
-            <Container maxWidth="xl">
+          <MainStyle collapsed={collapsed}>
+            <Container maxWidth={fullWidth ? false : "xl"}>
               {showTitle ? (
                 <Paper
                   sx={{

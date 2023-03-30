@@ -79,7 +79,12 @@ export const CoachReviewsShowPage = ({
   })
 
   return (
-    <DashboardLayout user={user} title={recording.title} showTitle={false}>
+    <DashboardLayout
+      user={user}
+      title={recording.title}
+      showTitle={false}
+      fullWidth
+    >
       <ReviewDetails
         review={review}
         games={games}

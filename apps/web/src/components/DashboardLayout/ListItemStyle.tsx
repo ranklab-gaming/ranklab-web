@@ -4,6 +4,7 @@ import {
   ListItemButton,
   ListItemButtonProps,
   ListItemIcon,
+  ListItemIconProps,
   ListItemText,
 } from "@mui/material"
 import { alpha, styled } from "@mui/material/styles"
@@ -14,25 +15,30 @@ type BaseProps = LinkProps & ListItemButtonProps
 export interface ListItemStyleProps extends BaseProps {
   component?: ReactNode
   activeRoot?: boolean
-  activeSub?: boolean
-  subItem?: boolean
   roles?: string[]
+  collapsed: boolean
 }
 
 export const ListItemStyle = styled(ListItemButton, {
   shouldForwardProp: (prop) =>
-    prop !== "activeRoot" &&
-    prop !== "activeSub" &&
-    prop !== "subItem" &&
-    prop !== "open",
-})<ListItemStyleProps>(({ activeRoot, activeSub, subItem, theme }) => ({
+    prop !== "activeRoot" && prop !== "open" && prop !== "collapsed",
+})<ListItemStyleProps>(({ activeRoot, theme, collapsed }) => ({
   ...theme.typography.body2,
   position: "relative",
   height: navbarStyles.dashboardItemRootHeight,
   textTransform: "capitalize",
-  paddingLeft: theme.spacing(2),
-  paddingRight: theme.spacing(1.5),
-  marginBottom: theme.spacing(0.5),
+  ...(collapsed
+    ? {
+        paddingLeft: 0,
+        paddingRight: 0,
+        justifyContent: "center",
+        alignItems: "center",
+      }
+    : {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(1.5),
+        marginBottom: theme.spacing(0.5),
+      }),
   color: theme.palette.text.secondary,
   borderRadius: theme.shape.borderRadius,
   ...(activeRoot && {
@@ -43,13 +49,6 @@ export const ListItemStyle = styled(ListItemButton, {
       theme.palette.action.selectedOpacity
     ),
   }),
-  ...(activeSub && {
-    ...theme.typography.subtitle2,
-    color: theme.palette.text.primary,
-  }),
-  ...(subItem && {
-    height: navbarStyles.dashboardItemSubHeight,
-  }),
 }))
 
 export const ListItemTextStyle = styled(ListItemText)(({ theme }) => ({
@@ -59,11 +58,20 @@ export const ListItemTextStyle = styled(ListItemText)(({ theme }) => ({
   }),
 }))
 
-export const ListItemIconStyle = styled(ListItemIcon)({
+interface ListItemIconStyleProps extends ListItemIconProps {
+  collapsed: boolean
+}
+
+export const ListItemIconStyle = styled(ListItemIcon, {
+  shouldForwardProp: (prop) => prop !== "collapsed",
+})<ListItemIconStyleProps>(({ collapsed }) => ({
   width: iconStyles.navbarItem,
   height: iconStyles.navbarItem,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   "& svg": { width: "100%", height: "100%" },
-})
+  ...(collapsed && {
+    marginRight: 0,
+  }),
+}))
