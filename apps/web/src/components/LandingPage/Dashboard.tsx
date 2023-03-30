@@ -4,6 +4,8 @@ import { Button, Container, Grid, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import NextLink from "next/link"
+import NextImage from "next/image"
+import dashboardScreenshot from "@/images/screenshots/dashboard.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(28, 0),
@@ -72,10 +74,12 @@ export const Dashboard = () => {
           </Grid>
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
-              {/*eslint-disable-next-line @next/next/no-img-element*/}
-              <img
-                alt="light mode"
-                src="https://picsum.photos/seed/lightmode/800/600"
+              <NextImage
+                src={dashboardScreenshot.src}
+                width={dashboardScreenshot.width}
+                height={dashboardScreenshot.height}
+                style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                alt="Dashboard Screenshot"
               />
             </m.div>
           </Grid>

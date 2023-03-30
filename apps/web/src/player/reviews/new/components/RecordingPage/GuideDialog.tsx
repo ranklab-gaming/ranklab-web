@@ -108,8 +108,8 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                     <Grid item xs={8}>
                       <NextImage
                         src={step.image}
-                        width={700}
-                        height={400}
+                        width={step.image.width}
+                        height={step.image.height}
                         style={{
                           width: "100%",
                           height: "100%",
