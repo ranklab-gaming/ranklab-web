@@ -10,9 +10,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { PropsWithChildren, useState } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
+import { useIntercom } from "react-use-intercom"
 
 interface MainStyleProps {
   collapsed: boolean
@@ -57,6 +58,11 @@ export const DashboardLayout = ({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
   const [collapsed, setCollapsed] = useState(false)
+  const { update } = useIntercom()
+
+  useEffect(() => {
+    update({ name: user.name, email: user.email })
+  }, [user, update])
 
   return (
     <UserProvider user={user}>

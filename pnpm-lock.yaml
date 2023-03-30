@@ -124,6 +124,9 @@ importers:
       react-stickynode:
         specifier: 4.1.0
         version: 4.1.0(react-dom@18.2.0)(react@18.2.0)
+      react-use-intercom:
+        specifier: ^5.0.0
+        version: 5.0.0(react-dom@18.2.0)(react@18.2.0)
       sharp:
         specifier: ^0.32.0
         version: 0.32.0
@@ -4096,6 +4099,17 @@ packages:
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-use-intercom@5.0.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qTPW3FbvzGwZUy6jmMPttK0T7Iy4cK93wDrWfOL36Cd4qPkozPVkXLcGNKYUfMsgaclyF+EXrbFQ135Wg5m0Zw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
