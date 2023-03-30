@@ -105,6 +105,7 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
             width: "100%",
             height: "100%",
             cursor: `url(${drawCursor.src}) 0 16, auto`,
+            zIndex: 10,
           }}
         />
       </Box>

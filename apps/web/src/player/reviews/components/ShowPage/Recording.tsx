@@ -38,17 +38,22 @@ export const Recording = ({
         />
         {selectedComment && selectedComment.drawing ? (
           <Box
-            position="absolute"
-            top={0}
-            left={0}
             component={m.div}
             variants={animateFade().in}
             initial="initial"
             animate="animate"
-            width="100%"
-            height="100%"
+            exit="exit"
           >
             <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 10,
+                pointerEvents: "none",
+              }}
               dangerouslySetInnerHTML={{
                 __html: selectedComment.drawing,
               }}

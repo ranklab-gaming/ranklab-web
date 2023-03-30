@@ -221,7 +221,7 @@ export const CommentList = ({
   }
 
   const editForm = (
-    <Card>
+    <Card key="editForm">
       <CardContent>
         <Stack spacing={2}>
           <Stack direction="row" alignItems="center" spacing={2}>
