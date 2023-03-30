@@ -1,5 +1,6 @@
 import overwatch from "@/images/games/overwatch.svg"
 import valorant from "@/images/games/valorant.svg"
+import hearthstone from "@/images/games/hearthstone.svg"
 import { Avatar } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { forwardRef } from "react"
@@ -7,6 +8,7 @@ import { forwardRef } from "react"
 const logos = {
   overwatch,
   valorant,
+  hearthstone,
 }
 
 interface Props {
