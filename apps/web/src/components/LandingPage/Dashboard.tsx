@@ -1,6 +1,6 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Grid, Typography } from "@mui/material"
+import { Button, Container, Grid, Paper, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import NextLink from "next/link"
@@ -74,13 +74,15 @@ export const Dashboard = () => {
           </Grid>
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
-              <NextImage
-                src={dashboardScreenshot.src}
-                width={dashboardScreenshot.width}
-                height={dashboardScreenshot.height}
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
-                alt="Dashboard Screenshot"
-              />
+              <Paper elevation={6}>
+                <NextImage
+                  src={dashboardScreenshot.src}
+                  width={dashboardScreenshot.width}
+                  height={dashboardScreenshot.height}
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                  alt="Dashboard Screenshot"
+                />
+              </Paper>
             </m.div>
           </Grid>
         </Grid>

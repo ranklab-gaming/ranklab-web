@@ -1,6 +1,6 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Grid, Typography } from "@mui/material"
+import { Button, Container, Grid, Typography, Paper } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import NextLink from "next/link"
@@ -71,13 +71,19 @@ export const Review = () => {
           </Grid>
           <Grid item xs={12} md={7} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
-              <NextImage
-                src={reviewScreenshot.src}
-                width={reviewScreenshot.width}
-                height={reviewScreenshot.height}
-                alt="Dashboard Screenshot"
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              />
+              <Paper elevation={6}>
+                <NextImage
+                  src={reviewScreenshot.src}
+                  width={reviewScreenshot.width}
+                  height={reviewScreenshot.height}
+                  alt="Review Screenshot"
+                  style={{
+                    objectFit: "cover",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </Paper>
             </m.div>
           </Grid>
         </Grid>
