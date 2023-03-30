@@ -30,7 +30,7 @@ importers:
         version: 11.10.6(@emotion/react@11.10.6)(@types/react@18.0.31)(react@18.2.0)
       '@hookform/resolvers':
         specifier: 2.9.11
-        version: 2.9.11(react-hook-form@7.43.8)
+        version: 2.9.11(react-hook-form@7.43.9)
       '@iconify/icons-eva':
         specifier: 1.2.6
         version: 1.2.6
@@ -116,8 +116,8 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
       react-hook-form:
-        specifier: 7.43.8
-        version: 7.43.8(react@18.2.0)
+        specifier: 7.43.9
+        version: 7.43.9(react@18.2.0)
       react-quill:
         specifier: 2.0.0
         version: 2.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -420,12 +420,12 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@hookform/resolvers@2.9.11(react-hook-form@7.43.8):
+  /@hookform/resolvers@2.9.11(react-hook-form@7.43.9):
     resolution: {integrity: sha512-bA3aZ79UgcHj7tFV7RlgThzwSSHZgvfbt2wprldRkYBcMopdMvHyO17Wwp/twcJasNFischFfS7oz8Katz8DdQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.43.8(react@18.2.0)
+      react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.8:
@@ -4045,8 +4045,8 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-hook-form@7.43.8(react@18.2.0):
-    resolution: {integrity: sha512-BQm+Ge5KjTk1EchDBRhdP8Pkb7MArO2jFF+UWYr3rtvh6197khi22uloLqlWeuY02ItlCzPunPsFt1/q9wQKnw==}
+  /react-hook-form@7.43.9(react@18.2.0):
+    resolution: {integrity: sha512-AUDN3Pz2NSeoxQ7Hs6OhQhDr6gtF9YRuutGDwPQqhSUAHJSgGl2VeY3qN19MG0SucpjgDiuMJ4iC5T5uB+eaNQ==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
