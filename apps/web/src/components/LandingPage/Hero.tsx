@@ -1,7 +1,7 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Stack, Typography } from "@mui/material"
+import { Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren } from "react"
@@ -59,79 +59,72 @@ export const Hero = () => {
   const isDesktop = useResponsive("up", "md")
 
   return (
-    <>
-      <RootStyle
-        initial="initial"
-        animate="animate"
-        sx={{ overflow: "hidden" }}
-      >
-        <HeroOverlayStyle variants={animateFade().in}>
-          <Overlay />
-        </HeroOverlayStyle>
-        <m.div variants={animateFade().in}>
-          <HeroImgStyle />
-        </m.div>
-        <Container maxWidth="lg" component={MotionContainer}>
-          <ContentStyle>
-            <m.div variants={animateFade().inRight}>
+    <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
+      <HeroOverlayStyle variants={animateFade().in}>
+        <Overlay />
+      </HeroOverlayStyle>
+      <m.div variants={animateFade().in}>
+        <HeroImgStyle />
+      </m.div>
+      <Container maxWidth="lg" component={MotionContainer}>
+        <ContentStyle>
+          <m.div variants={animateFade().inRight}>
+            <Typography
+              variant="h1"
+              sx={{ color: "common.white", fontSize: isDesktop ? 60 : 40 }}
+            >
+              Up your game <br />
+              with
               <Typography
+                component="span"
                 variant="h1"
-                sx={{ color: "common.white", fontSize: isDesktop ? 60 : 40 }}
+                sx={{ fontSize: isDesktop ? 60 : 40, color: "primary.main" }}
               >
-                Up your game <br />
-                with
-                <Typography
-                  component="span"
-                  variant="h1"
-                  sx={{ fontSize: isDesktop ? 60 : 40, color: "primary.main" }}
-                >
-                  &nbsp;Ranklab
-                </Typography>
-                .
+                &nbsp;Ranklab
               </Typography>
-            </m.div>
+              .
+            </Typography>
+          </m.div>
 
-            <m.div variants={animateFade().inRight}>
-              <Typography sx={{ color: "common.white" }} variant="h4">
-                Get your gameplay analyzed by experienced coaches.
-              </Typography>
-            </m.div>
-            <m.div variants={animateFade().inRight}>
-              <Stack
-                spacing={3}
-                direction="row"
-                alignItems="center"
-                justifyContent={!isDesktop ? "center" : "flex-start"}
+          <m.div variants={animateFade().inRight}>
+            <Typography sx={{ color: "common.white" }} variant="h4">
+              Get your gameplay analyzed by experienced coaches.
+            </Typography>
+          </m.div>
+          <m.div variants={animateFade().inRight}>
+            <Stack
+              spacing={3}
+              direction="row"
+              alignItems="center"
+              justifyContent={!isDesktop ? "center" : "flex-start"}
+            >
+              <NextLink
+                href="/api/auth/signin?intent=signup"
+                passHref
+                legacyBehavior
               >
-                <NextLink
-                  href="/api/auth/signin?intent=signup"
-                  passHref
-                  legacyBehavior
+                <Button
+                  size="large"
+                  variant="text"
+                  sx={{
+                    fontSize: 22,
+                    p: 4,
+                    color: "common.white",
+                    transition: "all 0.25s",
+                    backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                    boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                    "&:hover": {
+                      filter: "brightness(1.3)",
+                    },
+                  }}
                 >
-                  <Button
-                    size="large"
-                    variant="text"
-                    sx={{
-                      fontSize: 22,
-                      p: 4,
-                      color: "common.white",
-                      transition: "all 0.25s",
-                      backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                      boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                      "&:hover": {
-                        filter: "brightness(1.3)",
-                      },
-                    }}
-                  >
-                    Get Started
-                  </Button>
-                </NextLink>
-              </Stack>
-            </m.div>
-          </ContentStyle>
-        </Container>
-      </RootStyle>
-      <Box sx={{ height: "100vh" }} />
-    </>
+                  Get Started
+                </Button>
+              </NextLink>
+            </Stack>
+          </m.div>
+        </ContentStyle>
+      </Container>
+    </RootStyle>
   )
 }
