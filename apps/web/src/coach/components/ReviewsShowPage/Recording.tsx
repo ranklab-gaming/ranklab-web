@@ -77,6 +77,12 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     useEffect(() => {
       const svg = draw.getSvgXML() || "<svg></svg>"
       const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml")
+
+      if (svgElement.documentElement.childElementCount === 0) {
+        onChange("")
+        return
+      }
+
       const width = svgElement.documentElement.getAttribute("width")
       const height = svgElement.documentElement.getAttribute("height")
 
