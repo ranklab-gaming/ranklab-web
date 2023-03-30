@@ -73,7 +73,7 @@ export const Review = () => {
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage
-                  src={reviewScreenshot.src}
+                  src={reviewScreenshot}
                   width={reviewScreenshot.width}
                   height={reviewScreenshot.height}
                   alt="Review Screenshot"

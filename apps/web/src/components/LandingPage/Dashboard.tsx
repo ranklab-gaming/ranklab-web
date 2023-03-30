@@ -76,7 +76,7 @@ export const Dashboard = () => {
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage
-                  src={dashboardScreenshot.src}
+                  src={dashboardScreenshot}
                   width={dashboardScreenshot.width}
                   height={dashboardScreenshot.height}
                   style={{ objectFit: "cover", width: "100%", height: "100%" }}
