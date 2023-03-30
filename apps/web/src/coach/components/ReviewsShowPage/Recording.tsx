@@ -75,7 +75,20 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     }, [draw.ref, value])
 
     useEffect(() => {
-      onChange(draw.getSvgXML() || "")
+      const svg = draw.getSvgXML() || "<svg></svg>"
+      const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml")
+      const width = svgElement.documentElement.getAttribute("width")
+      const height = svgElement.documentElement.getAttribute("height")
+
+      svgElement.documentElement.removeAttribute("height")
+      svgElement.documentElement.removeAttribute("width")
+
+      svgElement.documentElement.setAttribute(
+        "viewBox",
+        `0 0 ${width} ${height}`
+      )
+
+      onChange(svgElement.documentElement.outerHTML)
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [draw.getSvgXML()])
 
