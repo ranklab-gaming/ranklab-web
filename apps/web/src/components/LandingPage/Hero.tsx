@@ -107,7 +107,6 @@ export const Hero = ({ games }: HeroProps) => {
               sx={{
                 color: "common.white",
                 display: "inline-flex",
-                whiteSpace: "nowrap",
                 fontSize: isDesktop ? 60 : 40,
               }}
             >
