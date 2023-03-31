@@ -74,7 +74,7 @@ export const Hero = ({ games }: HeroProps) => {
     return () => clearInterval(interval)
   }, [games, currentGame])
 
-  const gameAnimation = animateSlide().inUp
+  const gameAnimation = animateSlide().inDown
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -94,10 +94,23 @@ export const Hero = ({ games }: HeroProps) => {
               sx={{
                 color: "common.white",
                 display: "inline-flex",
+                whiteSpace: "nowrap",
                 fontSize: isDesktop ? 60 : 40,
               }}
             >
               Up your
+            </Typography>
+            <Typography
+              variant="h1"
+              component={m.div}
+              layout
+              sx={{
+                color: "common.white",
+                display: "inline-flex",
+                whiteSpace: "nowrap",
+                fontSize: isDesktop ? 60 : 40,
+              }}
+            >
               <Typography
                 component={m.span}
                 key={currentGame.id}
