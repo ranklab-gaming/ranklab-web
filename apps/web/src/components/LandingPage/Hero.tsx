@@ -1,13 +1,15 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Stack, Typography } from "@mui/material"
+import { Button, Container, Stack, Tooltip, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
+import { GameIcon } from "../GameIcon"
+import { Game } from "@ranklab/api"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -54,7 +56,11 @@ const HeroImgStyle = styled(Logo)(() => ({
   filter: "grayscale(100%)",
 }))
 
-export const Hero = () => {
+interface HeroProps {
+  games: Game[]
+}
+
+export const Hero = ({ games }: HeroProps) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
 
@@ -91,6 +97,23 @@ export const Hero = () => {
               Get your gameplay analyzed by experienced coaches.
             </Typography>
           </m.div>
+
+          <m.div variants={animateFade().inRight}>
+            <Stack
+              spacing={2}
+              direction="row"
+              alignItems="center"
+              sx={{ filter: "grayscale(1)" }}
+              justifyContent={!isDesktop ? "center" : "flex-start"}
+            >
+              {games.map((game) => (
+                <Tooltip key={game.id} title={game.name} placement="top">
+                  <GameIcon game={game} />
+                </Tooltip>
+              ))}
+            </Stack>
+          </m.div>
+
           <m.div variants={animateFade().inRight}>
             <Stack
               spacing={3}
