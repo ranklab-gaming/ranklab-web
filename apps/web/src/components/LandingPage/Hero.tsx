@@ -74,7 +74,7 @@ export const Hero = ({ games }: HeroProps) => {
     return () => clearInterval(interval)
   }, [games, currentGame])
 
-  const gameAnimation = animateSlide().inDown
+  const gameAnimation = animateSlide().inUp
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -108,10 +108,7 @@ export const Hero = ({ games }: HeroProps) => {
                     ...gameAnimation.initial,
                     opacity: 0,
                   },
-                  exit: {
-                    ...gameAnimation.exit,
-                    opacity: 0,
-                  },
+
                   animate: {
                     ...gameAnimation.animate,
                     opacity: 1,
