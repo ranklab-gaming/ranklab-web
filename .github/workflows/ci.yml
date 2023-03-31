@@ -4,10 +4,12 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  REDIS_URL: redis://redis:6379
+  REDIS_URL: REDIS_URL
   API_HOST: https://api.ranklab.gg
   WEB_HOST: https://ranklab.gg
-  COOKIE_SECRET: 123
+  COOKIE_SECRET: COOKIE_SECRET
+  AUTH_JWKS: QVVUSF9KV0tT
+  AUTH_CLIENT_SECRET: AUTH_CLIENT_SECRET
 jobs:
   test:
     runs-on: ubuntu-latest
