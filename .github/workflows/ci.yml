@@ -8,7 +8,7 @@ env:
   API_HOST: https://api.ranklab.gg
   WEB_HOST: https://ranklab.gg
   COOKIE_SECRET: COOKIE_SECRET
-  AUTH_JWKS: e30=
+  AUTH_JWKS: "e30="
   AUTH_CLIENT_SECRET: AUTH_CLIENT_SECRET
 jobs:
   test:
