@@ -10,7 +10,8 @@ interface UsePollingOptions<T> {
   initialResult: T
 }
 
-export function usePolling<T>(options: UsePollingOptions<T>) {
+export function usePolling<T>(initialOptions: UsePollingOptions<T>) {
+  const { current: options } = useRef(initialOptions)
   const initialRetries = options.retries ?? 3
   const [polling, setPolling] = useState(false)
   const [result, setResult] = useState<T>(options.initialResult)
@@ -18,44 +19,43 @@ export function usePolling<T>(options: UsePollingOptions<T>) {
   const timeoutHandle = useRef<NodeJS.Timeout>()
 
   useEffect(() => {
-    function clearTimeoutHandle() {
+    const clearTimeoutHandle = () => {
       if (timeoutHandle.current) {
         clearTimeout(timeoutHandle.current)
         timeoutHandle.current = undefined
       }
     }
 
-    async function poll() {
+    const poll = async () => {
+      if (!polling) {
+        clearTimeoutHandle()
+        retries.current = initialRetries
+        return
+      }
+
+      if (retries.current === 0) {
+        setPolling(false)
+        options.onRetriesExceeded?.()
+        return
+      }
+
       setResult(await options.poll())
-
-      timeoutHandle.current = setTimeout(
-        () => (retries.current = retries.current - 1),
-        options.interval ?? 1000
-      )
-    }
-
-    if (!polling) {
-      clearTimeoutHandle()
-      retries.current = initialRetries
-      return
-    }
-
-    if (options.condition && options.condition(result)) {
-      setPolling(false)
-      options.onCondition?.()
-      return
-    }
-
-    if (retries.current === 0) {
-      setPolling(false)
-      options.onRetriesExceeded?.()
-      return
+      retries.current--
+      timeoutHandle.current = setTimeout(poll, options.interval ?? 1000)
     }
 
     poll()
 
     return clearTimeoutHandle
-  }, [polling, options, result, initialRetries])
+  }, [initialRetries, options, polling])
+
+  useEffect(() => {
+    if (options.condition && options.condition(result)) {
+      setPolling(false)
+      options.onCondition?.()
+      return
+    }
+  }, [options, result])
 
   return {
     polling,
