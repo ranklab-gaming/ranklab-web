@@ -1,15 +1,15 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Stack, Tooltip, Typography } from "@mui/material"
+import { Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
-import { GameIcon } from "../GameIcon"
 import { Game } from "@ranklab/api"
+import { animateSlide } from "@/animate/slide"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -63,6 +63,18 @@ interface HeroProps {
 export const Hero = ({ games }: HeroProps) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
+  const [currentGame, setCurrentGame] = useState(games[0])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const index = games.findIndex((game) => game.id === currentGame.id)
+      const nextIndex = index + 1 === games.length ? 0 : index + 1
+      setCurrentGame(games[nextIndex])
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [games, currentGame])
+
+  const gameAnimation = animateSlide().inDown
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -77,18 +89,52 @@ export const Hero = ({ games }: HeroProps) => {
           <m.div variants={animateFade().inRight}>
             <Typography
               variant="h1"
-              sx={{ color: "common.white", fontSize: isDesktop ? 60 : 40 }}
+              component={m.div}
+              layout
+              sx={{
+                color: "common.white",
+                display: "inline-flex",
+                fontSize: isDesktop ? 60 : 40,
+              }}
             >
-              Up your game <br />
-              with
+              Up your
               <Typography
-                component="span"
+                component={m.span}
+                key={currentGame.id}
+                layout
+                variants={{
+                  ...gameAnimation,
+                  initial: {
+                    ...gameAnimation.initial,
+                    opacity: 0,
+                  },
+                  exit: {
+                    ...gameAnimation.exit,
+                    opacity: 0,
+                  },
+                  animate: {
+                    ...gameAnimation.animate,
+                    opacity: 1,
+                  },
+                }}
                 variant="h1"
-                sx={{ fontSize: isDesktop ? 60 : 40, color: "primary.main" }}
+                sx={{
+                  fontSize: isDesktop ? 60 : 40,
+                  color: "primary.main",
+                }}
               >
-                &nbsp;Ranklab
+                &nbsp;{currentGame.name}&nbsp;
               </Typography>
-              .
+              game
+            </Typography>
+            <Typography
+              variant="h1"
+              sx={{
+                color: "common.white",
+                fontSize: isDesktop ? 60 : 40,
+              }}
+            >
+              with Ranklab.
             </Typography>
           </m.div>
 
@@ -96,22 +142,6 @@ export const Hero = ({ games }: HeroProps) => {
             <Typography sx={{ color: "common.white" }} variant="h4">
               Get your gameplay analyzed by experienced coaches.
             </Typography>
-          </m.div>
-
-          <m.div variants={animateFade().inRight}>
-            <Stack
-              spacing={2}
-              direction="row"
-              alignItems="center"
-              sx={{ filter: "grayscale(1)" }}
-              justifyContent={!isDesktop ? "center" : "flex-start"}
-            >
-              {games.map((game) => (
-                <Tooltip key={game.id} title={game.name} placement="top">
-                  <GameIcon game={game} />
-                </Tooltip>
-              ))}
-            </Stack>
           </m.div>
 
           <m.div variants={animateFade().inRight}>
