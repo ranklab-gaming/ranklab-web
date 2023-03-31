@@ -23,7 +23,7 @@ const stripeAccountLinks = withSessionApiRoute(async function (
 
   const accountLink = await api.coachStripeAccountLinksCreate({
     createAccountLinkRequest: {
-      refreshUrl: `${webHost}/api/stripe-account-link?return_url=${returnUrl}`,
+      refreshUrl: `${webHost}/api/stripe-account-links?return_url=${returnUrl}`,
       returnUrl: `${webHost}${returnUrl}`,
     },
   })
