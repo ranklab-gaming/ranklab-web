@@ -115,12 +115,12 @@ jobs:
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.NEXT_PUBLIC_UPLOADS_CDN_URL }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-            REDIS_URL: REDIS_URL
-            API_HOST: https://api.ranklab.gg
-            WEB_HOST: WEB_HOST
-            COOKIE_SECRET: COOKIE_SECRET
-            AUTH_JWKS: e30=
-            AUTH_CLIENT_SECRET: AUTH_CLIENT_SECRET
+            REDIS_URL=REDIS_URL
+            API_HOST=https://api.ranklab.gg
+            WEB_HOST=WEB_HOST
+            COOKIE_SECRET=COOKIE_SECRET
+            AUTH_JWKS=e30=
+            AUTH_CLIENT_SECRET=AUTH_CLIENT_SECRET
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
