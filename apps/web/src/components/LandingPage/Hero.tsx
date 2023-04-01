@@ -147,7 +147,7 @@ export const Hero = ({ games }: HeroProps) => {
                 },
               }}
             >
-              with Ranklab
+              with Ranklab.
             </Typography>
           </m.div>
 
