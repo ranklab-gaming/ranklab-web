@@ -1,7 +1,7 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Stack, Typography } from "@mui/material"
+import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren, useEffect, useState } from "react"
@@ -94,22 +94,20 @@ export const Hero = ({ games }: HeroProps) => {
               sx={{
                 color: "common.white",
                 display: "inline-flex",
-                whiteSpace: "nowrap",
+                justifyContent: "center",
+                flexDirection: "row",
                 fontSize: isDesktop ? 60 : 40,
+                flexWrap: "wrap",
+                textAlign: "center",
+                [theme.breakpoints.up("md")]: {
+                  margin: "unset",
+                  textAlign: "left",
+                  justifyContent: "flex-start",
+                },
               }}
             >
-              Up your
-            </Typography>
-            <Typography
-              variant="h1"
-              component={m.div}
-              layout
-              sx={{
-                color: "common.white",
-                display: "inline-flex",
-                fontSize: isDesktop ? 60 : 40,
-              }}
-            >
+              <Box>Up&nbsp;</Box>
+              <Box>your&nbsp;</Box>
               <Typography
                 component={m.span}
                 key={currentGame.id}
@@ -132,18 +130,24 @@ export const Hero = ({ games }: HeroProps) => {
                   color: "primary.main",
                 }}
               >
-                &nbsp;{currentGame.name}&nbsp;
+                {currentGame.name}&nbsp;
               </Typography>
-              game
+              <Box>game&nbsp;</Box>
             </Typography>
             <Typography
               variant="h1"
+              component={m.div}
+              layout
               sx={{
                 color: "common.white",
                 fontSize: isDesktop ? 60 : 40,
+                [theme.breakpoints.up("md")]: {
+                  margin: "unset",
+                  textAlign: "left",
+                },
               }}
             >
-              with Ranklab.
+              with Ranklab
             </Typography>
           </m.div>
 
