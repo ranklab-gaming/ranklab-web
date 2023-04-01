@@ -3,13 +3,14 @@ import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
-import { m } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { Game } from "@ranklab/api"
 import { animateSlide } from "@/animate/slide"
+import { animateFlip } from "@/animate/flip"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -93,11 +94,8 @@ export const Hero = ({ games }: HeroProps) => {
               layout
               sx={{
                 color: "common.white",
-                display: "inline-flex",
-                justifyContent: "center",
-                flexDirection: "row",
+                display: "inline-block",
                 fontSize: isDesktop ? 60 : 40,
-                flexWrap: "wrap",
                 textAlign: "center",
                 [theme.breakpoints.up("md")]: {
                   margin: "unset",
@@ -106,11 +104,12 @@ export const Hero = ({ games }: HeroProps) => {
                 },
               }}
             >
-              <Box>Up&nbsp;</Box>
-              <Box>your&nbsp;</Box>
+              Up your{" "}
               <Typography
-                component={m.span}
                 key={currentGame.id}
+                component={m.div}
+                initial="initial"
+                animate="animate"
                 layout
                 variants={{
                   ...gameAnimation,
@@ -118,7 +117,6 @@ export const Hero = ({ games }: HeroProps) => {
                     ...gameAnimation.initial,
                     opacity: 0,
                   },
-
                   animate: {
                     ...gameAnimation.animate,
                     opacity: 1,
@@ -128,25 +126,13 @@ export const Hero = ({ games }: HeroProps) => {
                 sx={{
                   fontSize: isDesktop ? 60 : 40,
                   color: "primary.main",
+                  display: "inline-block",
                 }}
               >
-                {currentGame.name}&nbsp;
-              </Typography>
-              <Box>game&nbsp;</Box>
-            </Typography>
-            <Typography
-              variant="h1"
-              component={m.div}
-              layout
-              sx={{
-                color: "common.white",
-                fontSize: isDesktop ? 60 : 40,
-                [theme.breakpoints.up("md")]: {
-                  margin: "unset",
-                  textAlign: "left",
-                },
-              }}
-            >
+                {currentGame.name}
+              </Typography>{" "}
+              game
+              <br />
               with Ranklab.
             </Typography>
           </m.div>

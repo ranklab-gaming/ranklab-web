@@ -278,6 +278,10 @@ export const PlayerReviewsNewRecordingPage = ({
                                     <Link
                                       color="secondary.main"
                                       fontWeight="bold"
+                                      component="button"
+                                      sx={{
+                                        verticalAlign: "baseline",
+                                      }}
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()

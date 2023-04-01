@@ -160,6 +160,12 @@ export interface Coach {
    * @memberof Coach
    */
   emailsEnabled: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof Coach
+   */
+  intercomHash?: string | null
 }
 /**
  *
@@ -353,6 +359,25 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   drawing: string
+}
+/**
+ *
+ * @export
+ * @interface CreateGameRequest
+ */
+export interface CreateGameRequest {
+  /**
+   *
+   * @type {string}
+   * @memberof CreateGameRequest
+   */
+  email: string
+  /**
+   *
+   * @type {string}
+   * @memberof CreateGameRequest
+   */
+  name: string
 }
 /**
  *
@@ -665,6 +690,12 @@ export interface Player {
    * @memberof Player
    */
   emailsEnabled: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof Player
+   */
+  intercomHash?: string | null
 }
 /**
  *

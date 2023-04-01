@@ -1,6 +1,22 @@
+import { api } from "@/api"
 import { GameSelect } from "@/components/GameSelect"
-import { TextField, MenuItem } from "@mui/material"
+import { useForm } from "@/hooks/useForm"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { LoadingButton } from "@mui/lab"
+import {
+  TextField,
+  MenuItem,
+  Link,
+  Dialog,
+  DialogContent,
+  Box,
+  DialogTitle,
+  Typography,
+  Stack,
+} from "@mui/material"
 import { Game } from "@ranklab/api"
+import { useSnackbar } from "notistack"
+import { useState } from "react"
 import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
 
@@ -42,6 +58,16 @@ interface Props<
   showPasswordField?: TWithPassword
 }
 
+const GameRequestSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  email: yup
+    .string()
+    .email("Email must be valid")
+    .required("Email is required"),
+})
+
+type GameRequestFormValues = yup.InferType<typeof GameRequestSchema>
+
 export const AccountFields = <
   TWithPassword extends boolean,
   TFormValues extends FormValues<TWithPassword>
@@ -53,6 +79,32 @@ export const AccountFields = <
 }: Props<TWithPassword, TFormValues>) => {
   const gameId = watch("gameId" as Path<TFormValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
+  const [gameRequestDialogOpen, setGameRequestDialogOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+
+  const gameRequestForm = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+    resolver: yupResolver(GameRequestSchema),
+    mode: "onSubmit",
+  })
+
+  const requestGame = async (values: GameRequestFormValues) => {
+    await api.gameCreate({
+      createGameRequest: {
+        name: values.name,
+        email: values.email,
+      },
+    })
+
+    setGameRequestDialogOpen(false)
+
+    enqueueSnackbar("Game request sent! We'll get back to you soon.", {
+      variant: "success",
+    })
+  }
 
   return (
     <>
@@ -113,7 +165,98 @@ export const AccountFields = <
             onBlur={field.onBlur}
             error={Boolean(error)}
             helperText={
-              error ? error.message : "The game you want to be coached in"
+              error ? (
+                error.message
+              ) : (
+                <Typography variant="caption" color="textSecondary">
+                  Don&apos;t see your game? Use{" "}
+                  <Link
+                    color="secondary.main"
+                    fontWeight="bold"
+                    sx={{ verticalAlign: "baseline" }}
+                    component="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setGameRequestDialogOpen(true)
+                    }}
+                  >
+                    our form
+                  </Link>{" "}
+                  and ask for it to be added
+                  <Dialog
+                    open={gameRequestDialogOpen}
+                    maxWidth="lg"
+                    onClose={() => setGameRequestDialogOpen(false)}
+                  >
+                    <DialogTitle>
+                      <Box p={3} pb={0}>
+                        Request a Game
+                      </Box>
+                    </DialogTitle>
+                    <DialogContent>
+                      <form>
+                        <Box p={3} minWidth={480}>
+                          <Stack spacing={3}>
+                            <Controller
+                              name="email"
+                              control={gameRequestForm.control}
+                              render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                  {...field}
+                                  fullWidth
+                                  error={Boolean(error)}
+                                  helperText={
+                                    error
+                                      ? error.message
+                                      : "The email we can use to contact you once the game is added"
+                                  }
+                                  label="Email"
+                                  type="email"
+                                />
+                              )}
+                            />
+                            <Controller
+                              name="name"
+                              control={gameRequestForm.control}
+                              render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                  {...field}
+                                  fullWidth
+                                  error={Boolean(error)}
+                                  helperText={
+                                    error
+                                      ? error.message
+                                      : "The name of the game you want to be added"
+                                  }
+                                  label="Game"
+                                />
+                              )}
+                            />
+                          </Stack>
+                          <LoadingButton
+                            type="button"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            size="large"
+                            sx={{ mt: 3 }}
+                            loading={gameRequestForm.formState.isSubmitting}
+                            disabled={gameRequestForm.formState.isSubmitting}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              gameRequestForm.handleSubmit(requestGame)()
+                            }}
+                          >
+                            Submit Request
+                          </LoadingButton>
+                        </Box>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </Typography>
+              )
             }
           />
         )}

@@ -61,7 +61,11 @@ export const DashboardLayout = ({
   const { update } = useIntercom()
 
   useEffect(() => {
-    update({ name: user.name, email: user.email })
+    update({
+      name: user.name,
+      email: user.email,
+      userHash: user.intercomHash ?? undefined,
+    })
   }, [user, update])
 
   return (

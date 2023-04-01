@@ -15,7 +15,7 @@ interface Props {
   value: string
   onBlur: () => void
   error: boolean
-  helperText?: string
+  helperText?: string | JSX.Element
 }
 
 export const GameSelect = forwardRef<HTMLDivElement, Props>(function (

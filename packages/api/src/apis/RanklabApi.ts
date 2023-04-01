@@ -25,6 +25,7 @@ import type {
   CreateBillingPortalSession,
   CreateCoachRequest,
   CreateCommentRequest,
+  CreateGameRequest,
   CreateLoginLink,
   CreatePlayerRequest,
   CreateRecordingRequest,
@@ -94,6 +95,10 @@ export interface CoachStripeAccountLinksCreateRequest {
 
 export interface CoachStripeLoginLinksCreateRequest {
   createLoginLink: CreateLoginLink
+}
+
+export interface GameCreateRequest {
+  createGameRequest: CreateGameRequest
 }
 
 export interface PlayerAccountCreateRequest {
@@ -785,6 +790,52 @@ export class RanklabApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     )
+    return await response.value()
+  }
+
+  /**
+   */
+  async gameCreateRaw(
+    requestParameters: GameCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (
+      requestParameters.createGameRequest === null ||
+      requestParameters.createGameRequest === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "createGameRequest",
+        "Required parameter requestParameters.createGameRequest was null or undefined when calling gameCreate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/games`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.createGameRequest,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async gameCreate(
+    requestParameters: GameCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.gameCreateRaw(requestParameters, initOverrides)
     return await response.value()
   }
 
