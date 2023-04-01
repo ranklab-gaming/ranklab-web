@@ -14,6 +14,7 @@ import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { useIntercom } from "react-use-intercom"
+import { nodeEnv } from "@/config"
 
 interface MainStyleProps {
   collapsed: boolean

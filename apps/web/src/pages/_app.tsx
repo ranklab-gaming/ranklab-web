@@ -10,6 +10,7 @@ import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
 import NextNProgress from "nextjs-progressbar"
 import { IntercomProvider } from "react-use-intercom"
+import { nodeEnv } from "@/config"
 
 const INTERCOM_APP_ID = "ng7bf492"
 
@@ -54,7 +55,11 @@ export default function App({
         <ThemeProvider theme={theme}>
           <MotionLazyContainer>
             <NotistackProvider>
-              <IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
+              <IntercomProvider
+                appId={INTERCOM_APP_ID}
+                autoBoot
+                shouldInitialize={nodeEnv === "production"}
+              >
                 <CssBaseline />
                 <NextNProgress color={theme.palette.secondary.main} />
                 <Component {...pageProps} />

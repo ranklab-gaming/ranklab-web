@@ -6,6 +6,8 @@ export function requireEnv(name: string, value: string | undefined): string {
   return value
 }
 
+const nodeEnv = requireEnv("NODE_ENV", process.env.NODE_ENV)
+
 const assetsCdnUrl = requireEnv(
   "NEXT_PUBLIC_ASSETS_CDN_URL",
   process.env.NEXT_PUBLIC_ASSETS_CDN_URL
@@ -21,4 +23,4 @@ const uploadsCdnUrl = requireEnv(
   process.env.NEXT_PUBLIC_UPLOADS_CDN_URL
 )
 
-export { assetsCdnUrl, stripePublishableKey, uploadsCdnUrl }
+export { assetsCdnUrl, stripePublishableKey, uploadsCdnUrl, nodeEnv }
