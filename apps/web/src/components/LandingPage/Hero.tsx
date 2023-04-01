@@ -1,16 +1,15 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Stack, Typography } from "@mui/material"
+import { Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
-import { AnimatePresence, m } from "framer-motion"
+import { m } from "framer-motion"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { Game } from "@ranklab/api"
 import { animateSlide } from "@/animate/slide"
-import { animateFlip } from "@/animate/flip"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
