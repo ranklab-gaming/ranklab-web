@@ -13,6 +13,8 @@ import {
   DialogTitle,
   Typography,
   Stack,
+  Button,
+  DialogActions,
 } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { useSnackbar } from "notistack"
@@ -89,6 +91,9 @@ export const AccountFields = <
     },
     resolver: yupResolver(GameRequestSchema),
     mode: "onSubmit",
+    errorMessages: {
+      422: "Game request already sent. We'll get back to you soon.",
+    },
   })
 
   const requestGame = async (values: GameRequestFormValues) => {
@@ -196,7 +201,7 @@ export const AccountFields = <
                     </DialogTitle>
                     <DialogContent>
                       <form>
-                        <Box p={3} minWidth={480}>
+                        <Box p={3} pb={0} minWidth={480}>
                           <Stack spacing={3}>
                             <Controller
                               name="email"
@@ -254,6 +259,14 @@ export const AccountFields = <
                         </Box>
                       </form>
                     </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={() => setGameRequestDialogOpen(false)}
+                        color="primary"
+                      >
+                        Close
+                      </Button>
+                    </DialogActions>
                   </Dialog>
                 </Typography>
               )
