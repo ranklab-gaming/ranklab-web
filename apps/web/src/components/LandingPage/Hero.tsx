@@ -85,7 +85,7 @@ export const Hero = ({ games }: HeroProps) => {
   )
 
   useEffect(() => {
-    const updateWidth = () => {
+    const handle = setTimeout(() => {
       const canvas = document.createElement("canvas")
       const context = canvas.getContext("2d")
 
@@ -95,19 +95,13 @@ export const Hero = ({ games }: HeroProps) => {
         isDesktop ? 60 : 40
       }px ${theme.typography.fontFamily}`
 
-      console.log(gameWithMaxNameLength.name)
-
       const metrics = context.measureText(gameWithMaxNameLength.name)
       const textWidth = metrics.width
       const letterSpacing = gameWithMaxNameLength.name.length * 2
       const padding = parseInt(theme.spacing(2), 10)
 
       setGameNameWidth(textWidth + letterSpacing + padding)
-    }
-
-    const handle = setTimeout(updateWidth, 1000)
-
-    updateWidth()
+    }, 0)
 
     return () => clearTimeout(handle)
   }, [gameWithMaxNameLength.name, isDesktop, theme])
