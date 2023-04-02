@@ -84,8 +84,6 @@ export const Hero = ({ games }: HeroProps) => {
     [games]
   )
 
-  const gameAnimation = animateFlip().inX
-
   useEffect(() => {
     const canvas = document.createElement("canvas")
 
@@ -149,21 +147,7 @@ export const Hero = ({ games }: HeroProps) => {
                     animate="animate"
                     exit="exit"
                     layout
-                    variants={{
-                      ...gameAnimation,
-                      initial: {
-                        ...gameAnimation.initial,
-                        opacity: 0,
-                      },
-                      animate: {
-                        ...gameAnimation.animate,
-                        opacity: 1,
-                      },
-                      exit: {
-                        ...gameAnimation.exit,
-                        opacity: 0,
-                      },
-                    }}
+                    variants={animateFlip().inX}
                     variant="h1"
                     sx={{
                       fontSize: isDesktop ? 60 : 40,
