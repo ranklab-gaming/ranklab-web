@@ -10,6 +10,7 @@ import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { Game } from "@ranklab/api"
 import { animateSlide } from "@/animate/slide"
+import { animateFlip } from "@/animate/flip"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -84,7 +85,7 @@ export const Hero = ({ games }: HeroProps) => {
     [games]
   )
 
-  const gameAnimation = animateSlide().inDown
+  const gameAnimation = animateFlip().inX
 
   useEffect(() => {
     const canvas = document.createElement("canvas")
