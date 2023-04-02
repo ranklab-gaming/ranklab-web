@@ -3,13 +3,12 @@ import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
 import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
-import { m } from "framer-motion"
+import { AnimatePresence, m } from "framer-motion"
 import { PropsWithChildren, useEffect, useMemo, useState } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { Game } from "@ranklab/api"
-import { animateSlide } from "@/animate/slide"
 import { animateFlip } from "@/animate/flip"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -134,39 +133,47 @@ export const Hero = ({ games }: HeroProps) => {
                 display="inline-block"
                 sx={{
                   borderRadius: 1,
-                  padding: 1,
+                  p: 1,
+                  my: 1,
                   borderWidth: 1,
                   borderStyle: "solid",
                   borderColor: "primary.main",
                   width: gameNameWidth,
                 }}
               >
-                <Typography
-                  key={currentGame.id}
-                  component={m.div}
-                  initial="initial"
-                  animate="animate"
-                  layout
-                  variants={{
-                    ...gameAnimation,
-                    initial: {
-                      ...gameAnimation.initial,
-                      opacity: 0,
-                    },
-                    animate: {
-                      ...gameAnimation.animate,
-                      opacity: 1,
-                    },
-                  }}
-                  variant="h1"
-                  sx={{
-                    fontSize: isDesktop ? 60 : 40,
-                    color: "primary.main",
-                    display: "inline-block",
-                  }}
-                >
-                  {currentGame.name}
-                </Typography>
+                <AnimatePresence mode="popLayout">
+                  <Typography
+                    key={currentGame.id}
+                    component={m.div}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    layout
+                    variants={{
+                      ...gameAnimation,
+                      initial: {
+                        ...gameAnimation.initial,
+                        opacity: 0,
+                      },
+                      animate: {
+                        ...gameAnimation.animate,
+                        opacity: 1,
+                      },
+                      exit: {
+                        ...gameAnimation.exit,
+                        opacity: 0,
+                      },
+                    }}
+                    variant="h1"
+                    sx={{
+                      fontSize: isDesktop ? 60 : 40,
+                      color: "primary.main",
+                      display: "inline-block",
+                    }}
+                  >
+                    {currentGame.name}
+                  </Typography>
+                </AnimatePresence>
               </Box>{" "}
               game
               <br />
