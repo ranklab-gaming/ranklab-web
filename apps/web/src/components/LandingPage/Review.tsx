@@ -30,7 +30,7 @@ export const Review = () => {
           <Grid
             item
             xs={12}
-            md={4}
+            md={3}
             sx={{ display: "flex", alignItems: "center" }}
           >
             <ContentStyle>
@@ -69,7 +69,7 @@ export const Review = () => {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={7} sx={{ position: "relative" }}>
+          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage

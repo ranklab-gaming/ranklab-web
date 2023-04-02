@@ -41,7 +41,7 @@ export const Dashboard = () => {
           direction="row-reverse"
           justifyContent="space-between"
         >
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3}>
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
                 <Typography variant="h1" sx={{ mb: 3, color: "common.white" }}>
@@ -72,7 +72,7 @@ export const Dashboard = () => {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={7} sx={{ position: "relative" }}>
+          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage
