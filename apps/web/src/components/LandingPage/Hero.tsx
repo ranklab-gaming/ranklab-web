@@ -131,7 +131,7 @@ export const Hero = ({ games }: HeroProps) => {
                 display="inline-block"
                 sx={{
                   borderRadius: 1,
-                  p: 1,
+                  px: 1,
                   my: 1,
                   borderWidth: 1,
                   borderStyle: "solid",
