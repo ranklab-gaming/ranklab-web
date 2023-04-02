@@ -21,9 +21,9 @@ import {
   useTheme,
 } from "@mui/material"
 import { Recording } from "@ranklab/api"
-import { useUpload } from "@zach.codes/use-upload/lib/react"
+import { useUpload } from "@/hooks/useUpload"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useState } from "react"
+import { useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
@@ -33,6 +33,7 @@ import { updateSessionReview } from "@/api"
 import { assertProp } from "@/assert"
 import { uploadsCdnUrl } from "@/config"
 import { GuideDialog } from "./RecordingPage/GuideDialog"
+import { formatBytes } from "@/player/helpers/formatBytes"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -51,6 +52,11 @@ const FormSchema = yup.object().shape({
           "required",
           "Video is required",
           (value) => value && value instanceof File && value.size > 0
+        )
+        .test(
+          "fileSize",
+          "Video file must be less than 4GiB",
+          (value) => value && value instanceof File && value.size < 4294967296
         ),
   }),
 })
@@ -73,7 +79,6 @@ export const PlayerReviewsNewRecordingPage = ({
 }: PropsWithUser<Props>) => {
   const router = useRouter()
   const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
-  const [newRecording, setNewRecording] = useState<Recording | null>(null)
   const player = playerFromUser(user)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
@@ -105,99 +110,56 @@ export const PlayerReviewsNewRecordingPage = ({
       ? null
       : recordings.find((r) => r.id === recordingId)
 
-  const [
-    upload,
-    {
-      progress: uploadProgress,
-      loading: uploading,
-      done: uploadDone,
-      error: uploadError,
-    },
-  ] = useUpload(async ({ files }) => {
-    const file = assertProp(files, 0)
-    const uploadUrl = assertProp(newRecording, "uploadUrl")
+  const [upload, { progress: uploadProgress, uploading }] = useUpload()
 
-    return {
-      method: "PUT",
-      url: uploadUrl,
-      body: file,
-      headers: {
-        "X-Amz-Acl": "public-read",
-      },
-    }
-  })
+  const goToNextStep = async function (values: FormValues) {
+    if (values.recordingId === newRecordingId) {
+      const newRecordingVideo = assertProp(values, "newRecordingVideo")
 
-  const goToNextStep = useCallback(
-    async function (values: FormValues) {
-      if (values.recordingId === newRecordingId) {
-        const newRecordingVideo = assertProp(values, "newRecordingVideo")
-
-        const recording = await api.playerRecordingsCreate({
-          createRecordingRequest: {
-            mimeType: newRecordingVideo.type,
-            size: newRecordingVideo.size,
-            title: values.newRecordingTitle,
-            skillLevel: player.skillLevel,
-            gameId: player.gameId,
-          },
-        })
-
-        setNewRecording(recording)
-
-        return
-      }
-
-      await updateSessionReview({
-        recordingId: values.recordingId,
+      const recording = await api.playerRecordingsCreate({
+        createRecordingRequest: {
+          mimeType: newRecordingVideo.type,
+          size: newRecordingVideo.size,
+          title: values.newRecordingTitle,
+          skillLevel: player.skillLevel,
+          gameId: player.gameId,
+        },
       })
 
-      await router.push("/player/reviews/new/coach")
-    },
-    [player.gameId, player.skillLevel, router]
-  )
-
-  useEffect(() => {
-    if (!uploadDone || !newRecording) {
-      return
-    }
-
-    setRecordings([...recordings, newRecording])
-    setValue("recordingId", newRecording.id)
-    handleSubmit(goToNextStep)()
-  }, [
-    goToNextStep,
-    handleSubmit,
-    newRecording,
-    recordings,
-    setValue,
-    uploadDone,
-  ])
-
-  useEffect(() => {
-    if (!newRecordingVideo || !newRecording) {
-      return
-    }
-
-    upload({
-      files: {
-        ...[newRecordingVideo],
-        item: () => newRecordingVideo,
-      },
-    })
-  }, [newRecording, newRecordingVideo, upload])
-
-  useEffect(() => {
-    if (!uploadError) {
-      return
-    }
-
-    enqueueSnackbar(
-      "An error occurred while uploading your video. Please try again.",
-      {
-        variant: "error",
+      if (!recording.uploadUrl) {
+        throw new Error("uploadUrl is missing")
       }
-    )
-  }, [enqueueSnackbar, uploadError])
+
+      upload({
+        onDone: () => {
+          setRecordings([...recordings, recording])
+          setValue("recordingId", recording.id)
+          handleSubmit(goToNextStep)()
+        },
+        onError: () => {
+          enqueueSnackbar(
+            "An error occurred while uploading your video. Please try again.",
+            {
+              variant: "error",
+            }
+          )
+        },
+        file: newRecordingVideo,
+        url: recording.uploadUrl,
+        headers: {
+          "X-Amz-Acl": "public-read",
+        },
+      })
+
+      return
+    }
+
+    await updateSessionReview({
+      recordingId: values.recordingId,
+    })
+
+    await router.push("/player/reviews/new/coach")
+  }
 
   return (
     <DashboardLayout
@@ -321,11 +283,23 @@ export const PlayerReviewsNewRecordingPage = ({
                     </Stack>
                   )}
                   {uploading ? (
-                    <LinearProgress
-                      variant="determinate"
-                      value={uploadProgress ?? 0}
-                      color="info"
-                    />
+                    <Stack spacing={1} direction="row" alignItems="center">
+                      <Box flexGrow={1}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={uploadProgress}
+                          color="secondary"
+                        />
+                      </Box>
+                      <Box sx={{ minWidth: 35 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {`${uploadProgress}% (${formatBytes(
+                            (newRecordingVideo?.size ?? 0) *
+                              (uploadProgress / 100)
+                          )} / ${formatBytes(newRecordingVideo?.size ?? 0)})`}
+                        </Typography>
+                      </Box>
+                    </Stack>
                   ) : null}
                 </Stack>
                 {selectedRecording ? (
