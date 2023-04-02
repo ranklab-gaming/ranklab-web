@@ -1,10 +1,10 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Button, Container, Stack, Typography } from "@mui/material"
+import { Box, Button, Container, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, useEffect, useMemo, useState } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
@@ -64,6 +64,7 @@ export const Hero = ({ games }: HeroProps) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
   const [currentGame, setCurrentGame] = useState(games[0])
+  const [gameNameWidth, setGameNameWidth] = useState(0)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,7 +75,32 @@ export const Hero = ({ games }: HeroProps) => {
     return () => clearInterval(interval)
   }, [games, currentGame])
 
+  const gameWithMaxNameLength = useMemo(
+    () =>
+      games.reduce((max, game) => {
+        if (game.name.length > max.name.length) return game
+        return max
+      }),
+    [games]
+  )
+
   const gameAnimation = animateSlide().inDown
+
+  useEffect(() => {
+    const canvas = document.createElement("canvas")
+
+    const context = canvas.getContext("2d")
+    if (!context) return
+    context.font = `${theme.typography.fontWeightBold} ${
+      isDesktop ? 60 : 40
+    }px ${theme.typography.fontFamily}`
+    const metrics = context.measureText(gameWithMaxNameLength.name)
+    setGameNameWidth(
+      metrics.width +
+        gameWithMaxNameLength.name.length * 2 +
+        parseInt(theme.spacing(2), 10)
+    )
+  }, [gameWithMaxNameLength.name, isDesktop, theme])
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -90,7 +116,6 @@ export const Hero = ({ games }: HeroProps) => {
             <Typography
               variant="h1"
               component={m.div}
-              layout
               sx={{
                 color: "common.white",
                 display: "inline-block",
@@ -104,32 +129,44 @@ export const Hero = ({ games }: HeroProps) => {
               }}
             >
               Up your{" "}
-              <Typography
-                key={currentGame.id}
-                component={m.div}
-                initial="initial"
-                animate="animate"
-                layout
-                variants={{
-                  ...gameAnimation,
-                  initial: {
-                    ...gameAnimation.initial,
-                    opacity: 0,
-                  },
-                  animate: {
-                    ...gameAnimation.animate,
-                    opacity: 1,
-                  },
-                }}
-                variant="h1"
+              <Box
+                display="inline-block"
                 sx={{
-                  fontSize: isDesktop ? 60 : 40,
-                  color: "primary.main",
-                  display: "inline-block",
+                  borderRadius: 1,
+                  padding: 1,
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "primary.main",
+                  width: gameNameWidth,
                 }}
               >
-                {currentGame.name}
-              </Typography>{" "}
+                <Typography
+                  key={currentGame.id}
+                  component={m.div}
+                  initial="initial"
+                  animate="animate"
+                  layout
+                  variants={{
+                    ...gameAnimation,
+                    initial: {
+                      ...gameAnimation.initial,
+                      opacity: 0,
+                    },
+                    animate: {
+                      ...gameAnimation.animate,
+                      opacity: 1,
+                    },
+                  }}
+                  variant="h1"
+                  sx={{
+                    fontSize: isDesktop ? 60 : 40,
+                    color: "primary.main",
+                    display: "inline-block",
+                  }}
+                >
+                  {currentGame.name}
+                </Typography>
+              </Box>{" "}
               game
               <br />
               with Ranklab.
