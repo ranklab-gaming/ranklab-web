@@ -44,8 +44,8 @@ const ActionMessage = ({ review }: ActionMessageProps) => {
   if (review.state === ReviewState.Refunded) {
     return (
       <>
-        This review has been refunded. If you wish, you can request a new one
-        for the same recording.
+        This review has been refunded. <br />
+        If you wish, you can request a new one for the same recording.
       </>
     )
   }
@@ -53,8 +53,8 @@ const ActionMessage = ({ review }: ActionMessageProps) => {
   if (review.state === ReviewState.Draft) {
     return (
       <>
-        {coach.name} has started reviewing your recording. You will be notified
-        when it is complete.
+        {coach.name} has started reviewing your recording.
+        <br /> You will be notified when it is complete.
       </>
     )
   }

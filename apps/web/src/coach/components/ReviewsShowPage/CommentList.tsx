@@ -161,8 +161,9 @@ export const CommentList = ({
             <Iconify icon="eva:message-square-outline" width={64} height={64} />
           </Box>
           <Typography variant="h3">
-            This review hasn&apos;t started yet. Mark it as started to add
-            comments and drawings to it.
+            This review hasn&apos;t started yet.
+            <br />
+            Mark it as started to add comments and drawings to it.
           </Typography>
           <Box>
             <LoadingButton
@@ -213,7 +214,8 @@ export const CommentList = ({
               ? "This review has been accepted by the player."
               : review.state === ReviewState.Published
               ? "This review has been published."
-              : "This review has been refunded."}{" "}
+              : "This review has been refunded."}
+            <br />
             You can&apos;t add comments or drawings to it anymore.
           </Typography>
         </Stack>
