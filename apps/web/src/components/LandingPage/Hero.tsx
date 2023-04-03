@@ -85,25 +85,21 @@ export const Hero = ({ games }: HeroProps) => {
   )
 
   useEffect(() => {
-    const handle = setTimeout(() => {
-      const canvas = document.createElement("canvas")
-      const context = canvas.getContext("2d")
+    const canvas = document.createElement("canvas")
+    const context = canvas.getContext("2d")
 
-      if (!context) return
+    if (!context) return
 
-      context.font = `${theme.typography.fontWeightBold} ${
-        isDesktop ? 60 : 40
-      }px ${theme.typography.fontFamily}`
+    context.font = `${theme.typography.fontWeightBold} ${
+      isDesktop ? 60 : 40
+    }px ${theme.typography.fontFamily}`
 
-      const metrics = context.measureText(gameWithMaxNameLength.name)
-      const textWidth = metrics.width
-      const letterSpacing = gameWithMaxNameLength.name.length * 2
-      const padding = parseInt(theme.spacing(2), 10)
+    const metrics = context.measureText(gameWithMaxNameLength.name)
+    const textWidth = metrics.width
+    const letterSpacing = gameWithMaxNameLength.name.length * 2
+    const padding = parseInt(theme.spacing(2), 10)
 
-      setGameNameWidth(textWidth + letterSpacing + padding)
-    }, 0)
-
-    return () => clearTimeout(handle)
+    setGameNameWidth(textWidth + letterSpacing + padding)
   }, [gameWithMaxNameLength.name, isDesktop, theme])
 
   return (

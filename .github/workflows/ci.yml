@@ -115,6 +115,7 @@ jobs:
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.NEXT_PUBLIC_UPLOADS_CDN_URL }}
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
