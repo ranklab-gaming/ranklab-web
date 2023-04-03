@@ -23,4 +23,12 @@ const uploadsCdnUrl = requireEnv(
   process.env.NEXT_PUBLIC_UPLOADS_CDN_URL
 )
 
-export { assetsCdnUrl, stripePublishableKey, uploadsCdnUrl, nodeEnv }
+const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID
+
+export {
+  assetsCdnUrl,
+  stripePublishableKey,
+  uploadsCdnUrl,
+  nodeEnv,
+  intercomAppId,
+}

@@ -15,11 +15,7 @@ import Head from "next/head"
 import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
 import NextNProgress from "nextjs-progressbar"
-import { IntercomProvider } from "react-use-intercom"
-import { nodeEnv } from "@/config"
 import { PropsWithChildren } from "react"
-
-const INTERCOM_APP_ID = "ng7bf492"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -74,44 +70,38 @@ export default function App({
         <ThemeProvider theme={theme}>
           <MotionLazyContainer>
             <NotistackProvider>
-              <IntercomProvider
-                appId={INTERCOM_APP_ID}
-                autoBoot
-                shouldInitialize={nodeEnv === "production"}
+              <CssBaseline />
+              <NextNProgress color={theme.palette.secondary.main} />
+              <Component {...pageProps} />
+              <CookieConsent
+                style={{
+                  backgroundColor: theme.palette.background.paper,
+                  fontFamily: theme.typography.fontFamily,
+                  zIndex: 9999999999,
+                  color: theme.palette.text.secondary,
+                }}
+                buttonText="Accept"
+                ButtonComponent={AcceptButton}
               >
-                <CssBaseline />
-                <NextNProgress color={theme.palette.secondary.main} />
-                <Component {...pageProps} />
-                <CookieConsent
-                  style={{
-                    backgroundColor: theme.palette.background.paper,
-                    fontFamily: theme.typography.fontFamily,
-                    zIndex: 9999999999,
-                    color: theme.palette.text.secondary,
-                  }}
-                  buttonText="Accept"
-                  ButtonComponent={AcceptButton}
+                This website uses essential cookies in order to function
+                correctly. By using this website you agree to our{" "}
+                <NextLink
+                  href="https://www.iubenda.com/privacy-policy/88772361"
+                  passHref
+                  legacyBehavior
                 >
-                  This website uses essential cookies in order to function
-                  correctly. By using this website you agree to our{" "}
-                  <NextLink
-                    href="https://www.iubenda.com/privacy-policy/88772361"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Link color="secondary.contrastText">privacy policy</Link>
-                  </NextLink>{" "}
-                  and{" "}
-                  <NextLink
-                    href="https://www.iubenda.com/terms-and-conditions/88772361"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Link color="secondary.contrastText">terms of service</Link>
-                  </NextLink>
-                  .
-                </CookieConsent>
-              </IntercomProvider>
+                  <Link color="secondary.contrastText">privacy policy</Link>
+                </NextLink>{" "}
+                and{" "}
+                <NextLink
+                  href="https://www.iubenda.com/terms-and-conditions/88772361"
+                  passHref
+                  legacyBehavior
+                >
+                  <Link color="secondary.contrastText">terms of service</Link>
+                </NextLink>
+                .
+              </CookieConsent>
             </NotistackProvider>
           </MotionLazyContainer>
         </ThemeProvider>
