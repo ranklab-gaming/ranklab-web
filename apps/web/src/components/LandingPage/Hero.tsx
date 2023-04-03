@@ -1,10 +1,24 @@
 import { animateFade } from "@/animate/fade"
 import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Stack, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Typography,
+  debounce,
+} from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { AnimatePresence, m } from "framer-motion"
-import { PropsWithChildren, useEffect, useMemo, useState } from "react"
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
@@ -65,6 +79,7 @@ export const Hero = ({ games }: HeroProps) => {
   const isDesktop = useResponsive("up", "md")
   const [currentGame, setCurrentGame] = useState(games[0])
   const [gameNameWidth, setGameNameWidth] = useState(0)
+  const boxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -84,7 +99,7 @@ export const Hero = ({ games }: HeroProps) => {
     [games]
   )
 
-  useEffect(() => {
+  const updateGameNameWidth = useCallback(() => {
     const canvas = document.createElement("canvas")
     const context = canvas.getContext("2d")
 
@@ -102,6 +117,23 @@ export const Hero = ({ games }: HeroProps) => {
     setGameNameWidth(textWidth + letterSpacing + padding)
   }, [gameWithMaxNameLength.name, isDesktop, theme])
 
+  useEffect(() => {
+    if (boxRef.current === null) return
+
+    const handleResize = debounce(() => {
+      updateGameNameWidth()
+    }, 100)
+
+    const resizeObserver = new ResizeObserver(handleResize)
+
+    resizeObserver.observe(boxRef.current)
+    updateGameNameWidth()
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [updateGameNameWidth])
+
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
       <HeroOverlayStyle variants={animateFade().in}>
@@ -116,6 +148,7 @@ export const Hero = ({ games }: HeroProps) => {
             <Typography
               variant="h1"
               component={m.div}
+              ref={boxRef}
               sx={{
                 color: "common.white",
                 display: "inline-block",
