@@ -86,7 +86,7 @@ export default function App({
                   style={{
                     backgroundColor: theme.palette.background.paper,
                     fontFamily: theme.typography.fontFamily,
-                    zIndex: 9999,
+                    zIndex: 9999999999,
                     color: theme.palette.text.secondary,
                   }}
                   buttonText="Accept"
