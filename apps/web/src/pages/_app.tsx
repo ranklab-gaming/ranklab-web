@@ -3,7 +3,13 @@ import { NotistackProvider } from "@/components/NotistackProvider"
 import { createEmotionCache } from "@/styles"
 import { theme } from "@/theme/theme"
 import { CacheProvider, EmotionCache } from "@emotion/react"
-import { Button, CssBaseline, Link, ThemeProvider } from "@mui/material"
+import {
+  Button,
+  ButtonProps,
+  CssBaseline,
+  Link,
+  ThemeProvider,
+} from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import CookieConsent from "react-cookie-consent"
@@ -21,12 +27,13 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
-const AcceptButton = (props: PropsWithChildren) => (
+const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
   <Button
     variant="contained"
     color="secondary"
     size="large"
     sx={{ m: 1, color: "secondary.contrastText" }}
+    onClick={props.onClick}
   >
     {props.children}
   </Button>
