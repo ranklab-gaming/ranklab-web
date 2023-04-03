@@ -71,8 +71,11 @@ export default function App({
                   }}
                   buttonStyle={{
                     ...theme.typography.button,
-                    backgroundColor: theme.palette.secondary.main,
+                    borderColor: theme.palette.secondary.main,
+                    borderWidth: 1,
+                    borderStyle: "solid",
                     borderRadius: theme.shape.borderRadius,
+                    backgroundColor: "transparent",
                     padding: theme.spacing(1, 2),
                     color: theme.palette.secondary.contrastText,
                   }}
