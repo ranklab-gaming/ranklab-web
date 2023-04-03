@@ -67,12 +67,14 @@ export default function App({
                   style={{
                     backgroundColor: theme.palette.background.paper,
                     fontFamily: theme.typography.fontFamily,
+                    zIndex: 9999,
                   }}
                   buttonStyle={{
-                    backgroundColor: theme.palette.primary.main,
-                    color: theme.palette.text.primary,
-                    fontFamily: theme.typography.fontFamily,
-                    fontWeight: theme.typography.fontWeightBold,
+                    ...theme.typography.button,
+                    backgroundColor: theme.palette.secondary.main,
+                    borderRadius: theme.shape.borderRadius,
+                    padding: theme.spacing(1, 2),
+                    color: theme.palette.secondary.contrastText,
                   }}
                 >
                   This website uses essential cookies in order to function
@@ -82,7 +84,7 @@ export default function App({
                     passHref
                     legacyBehavior
                   >
-                    <Link>privacy policy</Link>
+                    <Link color="secondary.contrastText">privacy policy</Link>
                   </NextLink>{" "}
                   and{" "}
                   <NextLink
@@ -90,7 +92,7 @@ export default function App({
                     passHref
                     legacyBehavior
                   >
-                    <Link>terms of service</Link>
+                    <Link color="secondary.contrastText">terms of service</Link>
                   </NextLink>
                   .
                 </CookieConsent>
