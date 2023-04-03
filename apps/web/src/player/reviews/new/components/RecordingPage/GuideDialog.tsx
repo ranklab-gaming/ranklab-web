@@ -160,7 +160,7 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                 </Paper>
               ))}
             </Stack>
-            <Typography variant="body1">
+            <Typography variant="body1" mt={2}>
               If you have a large video file, you can use a video editing
               software to reduce the file size. We recommend using Clipchamp,
               which is free and easy to use. You can follow the steps below to
