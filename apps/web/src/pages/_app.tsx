@@ -29,7 +29,7 @@ export interface AppProps extends NextAppProps {
 
 const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
   <Button
-    variant="contained"
+    variant="outlined"
     color="secondary"
     size="large"
     sx={{ m: 1, color: "secondary.contrastText" }}
