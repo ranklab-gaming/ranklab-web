@@ -20,6 +20,12 @@ import windowsStep1 from "@/images/recordingGuide/windows1.png"
 import windowsStep2 from "@/images/recordingGuide/windows2.png"
 import windowsStep3 from "@/images/recordingGuide/windows3.png"
 import windowsStep4 from "@/images/recordingGuide/windows4.png"
+import reduceStep1 from "@/images/recordingGuide/reduce1.png"
+import reduceStep2 from "@/images/recordingGuide/reduce2.png"
+import reduceStep3 from "@/images/recordingGuide/reduce3.png"
+import reduceStep4 from "@/images/recordingGuide/reduce4.png"
+import reduceStep5 from "@/images/recordingGuide/reduce5.png"
+import reduceStep6 from "@/images/recordingGuide/reduce6.png"
 
 interface Props {
   open: boolean
@@ -42,6 +48,33 @@ const windowsSteps = [
   {
     image: windowsStep4,
     description: `Adjust Xbox Game Bar settings`,
+  },
+]
+
+const reduceSteps = [
+  {
+    image: reduceStep1,
+    description: `Search "Clipchamp" in the Windows search bar`,
+  },
+  {
+    image: reduceStep2,
+    description: `Click "Create a new video" in the main window`,
+  },
+  {
+    image: reduceStep3,
+    description: `Click "Import media" in the top left corner`,
+  },
+  {
+    image: reduceStep4,
+    description: `Drag your video from the "Media" tab to the timeline at the bottom`,
+  },
+  {
+    image: reduceStep5,
+    description: `Click "Export" in the top right corner`,
+  },
+  {
+    image: reduceStep6,
+    description: `Optionally, give your video a name and wait for it to export`,
   },
 ]
 
@@ -119,7 +152,45 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <Typography variant="caption" gutterBottom>
+                      <Typography variant="body2" gutterBottom>
+                        {index + 1}. {step.description}.
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              ))}
+            </Stack>
+            <Typography variant="body1">
+              If you have a large video file, you can use a video editing
+              software to reduce the file size. We recommend using Clipchamp,
+              which is free and easy to use. You can follow the steps below to
+              reduce your video file size.
+            </Typography>
+            <Stack spacing={2} mt={2}>
+              {reduceSteps.map((step, index) => (
+                <Paper
+                  sx={{
+                    p: 2,
+                    backgroundColor: theme.palette.grey[900],
+                  }}
+                  key={index}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={8}>
+                      <NextImage
+                        src={step.image}
+                        width={step.image.width}
+                        height={step.image.height}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                        alt={`Reduce Step ${index + 1}`}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="body2" gutterBottom>
                         {index + 1}. {step.description}.
                       </Typography>
                     </Grid>
