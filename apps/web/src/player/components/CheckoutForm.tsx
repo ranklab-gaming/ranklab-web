@@ -364,10 +364,25 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
             ) : null}
             <Alert
               severity="info"
-              sx={{ mb: 2, backgroundColor: theme.palette.grey[800] }}
+              icon={
+                <Iconify
+                  icon="eva:alert-circle-outline"
+                  sx={{ color: theme.palette.text.secondary }}
+                />
+              }
+              sx={{
+                mb: 2,
+                backgroundColor: "transparent",
+                color: theme.palette.text.secondary,
+              }}
               action={
                 <Button
-                  sx={{ color: theme.palette.info.lighter }}
+                  sx={{
+                    color: theme.palette.text.secondary,
+                    "&:hover": {
+                      backgroundColor: theme.palette.background.paper,
+                    },
+                  }}
                   size="small"
                   variant="text"
                   onClick={() => setShowDeleteDialog(true)}
@@ -403,7 +418,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                   color="primary"
                   variant="contained"
                 >
-                  Proceed
+                  Delete
                 </LoadingButton>
               </DialogActions>
             </Dialog>
