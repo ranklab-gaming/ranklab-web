@@ -3,7 +3,7 @@ import { NotistackProvider } from "@/components/NotistackProvider"
 import { createEmotionCache } from "@/styles"
 import { theme } from "@/theme/theme"
 import { CacheProvider, EmotionCache } from "@emotion/react"
-import { CssBaseline, Link, ThemeProvider } from "@mui/material"
+import { Button, CssBaseline, Link, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import CookieConsent from "react-cookie-consent"
@@ -11,6 +11,7 @@ import NextLink from "next/link"
 import NextNProgress from "nextjs-progressbar"
 import { IntercomProvider } from "react-use-intercom"
 import { nodeEnv } from "@/config"
+import { PropsWithChildren } from "react"
 
 const INTERCOM_APP_ID = "ng7bf492"
 
@@ -19,6 +20,17 @@ const clientSideEmotionCache = createEmotionCache()
 export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
+
+const AcceptButton = (props: PropsWithChildren) => (
+  <Button
+    variant="contained"
+    color="secondary"
+    size="large"
+    sx={{ m: 1, color: "secondary.contrastText" }}
+  >
+    {props.children}
+  </Button>
+)
 
 export default function App({
   Component,
@@ -68,17 +80,10 @@ export default function App({
                     backgroundColor: theme.palette.background.paper,
                     fontFamily: theme.typography.fontFamily,
                     zIndex: 9999,
+                    color: theme.palette.text.secondary,
                   }}
-                  buttonStyle={{
-                    ...theme.typography.button,
-                    borderColor: theme.palette.secondary.main,
-                    borderWidth: 1,
-                    borderStyle: "solid",
-                    borderRadius: theme.shape.borderRadius,
-                    backgroundColor: "transparent",
-                    padding: theme.spacing(1, 2),
-                    color: theme.palette.secondary.contrastText,
-                  }}
+                  buttonText="Accept"
+                  ButtonComponent={AcceptButton}
                 >
                   This website uses essential cookies in order to function
                   correctly. By using this website you agree to our{" "}
