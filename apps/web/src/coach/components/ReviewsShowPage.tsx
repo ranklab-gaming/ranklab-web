@@ -159,8 +159,10 @@ export const CoachReviewsShowPage = ({
                 form.setValue("drawing", comment.drawing)
                 videoRef.current?.seekTo(comment.videoTimestamp)
               } else {
-                videoRef.current?.pause()
+                form.reset()
               }
+
+              videoRef.current?.pause()
             }}
             onStopEditing={() => {
               form.reset()

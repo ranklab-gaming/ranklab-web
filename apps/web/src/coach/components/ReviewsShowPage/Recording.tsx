@@ -26,10 +26,6 @@ import drawCursor from "@/images/cursors/draw.png"
 import { animateFade } from "@/animate/fade"
 import { debounce } from "lodash"
 
-if (typeof window !== "undefined") {
-  window.TouchEvent = window.TouchEvent || Object.create(Event)
-}
-
 interface Props {
   recording: ApiRecording
   onTimeUpdate: (time: number) => void
@@ -63,6 +59,10 @@ interface DrawingRef {
 const Drawing = forwardRef<DrawingRef, DrawingProps>(
   ({ color, value, onChange }, ref) => {
     const theme = useTheme()
+
+    if (typeof window !== "undefined") {
+      window.TouchEvent = window.TouchEvent || Object.create(Event)
+    }
 
     const [renderRef, draw] = useSvgDrawing({
       penWidth: 3,
