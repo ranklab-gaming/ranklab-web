@@ -25,9 +25,9 @@ export interface AppProps extends NextAppProps {
 
 const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
   <Button
-    variant="outlined"
+    variant="contained"
     color="secondary"
-    size="large"
+    size="small"
     sx={{ m: 1, color: "secondary.contrastText" }}
     onClick={props.onClick}
   >
