@@ -3,7 +3,7 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
-import { Box, Button, Paper, Typography } from "@mui/material"
+import { Box, Button, Paper, Typography, useTheme } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
 
 interface Props {
@@ -17,6 +17,7 @@ export const PlayerDashboardPage = ({
   user,
 }: PropsWithUser<Props>) => {
   const createReview = useCreateReview()
+  const theme = useTheme()
 
   return (
     <DashboardLayout user={user} title="Dashboard">
@@ -24,19 +25,26 @@ export const PlayerDashboardPage = ({
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
-              <Iconify icon="eva:list-outline" width={40} height={40} />
+              <Iconify icon="eva:trending-up-outline" width={40} height={40} />
               <Typography variant="h3" component="h1" gutterBottom>
-                No Reviews Yet
+                Ready to up your game?
               </Typography>
               <Typography variant="body1" gutterBottom>
                 Once you request a review from a coach, it will appear here.
               </Typography>
               <Button
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2 }}
-                component="a"
                 size="large"
+                variant="text"
+                sx={{
+                  mt: 2,
+                  color: "common.white",
+                  transition: "all 0.25s",
+                  backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                  boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                  "&:hover": {
+                    filter: "brightness(1.3)",
+                  },
+                }}
                 onClick={() => createReview()}
               >
                 Request a Review
