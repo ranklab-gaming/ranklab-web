@@ -26,6 +26,10 @@ import drawCursor from "@/images/cursors/draw.png"
 import { animateFade } from "@/animate/fade"
 import { debounce } from "lodash"
 
+if (typeof window !== "undefined") {
+  window.TouchEvent = window.TouchEvent || function TouchEvent() {}
+}
+
 interface Props {
   recording: ApiRecording
   onTimeUpdate: (time: number) => void
@@ -67,7 +71,6 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
     })
 
     useEffect(() => {
-      window.TouchEvent = window.TouchEvent || Object.create(Event)
       draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")
       draw.ref.current?.update()
       // eslint-disable-next-line react-hooks/exhaustive-deps
