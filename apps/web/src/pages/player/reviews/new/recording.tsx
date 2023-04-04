@@ -27,7 +27,9 @@ export const getServerSideProps = withUserSsr<Props>(
 
     return {
       props: {
-        recordings,
+        recordings: recordings.filter(
+          (recording) => recording.gameId === ctx.user.gameId
+        ),
         recordingId: review.recordingId ?? null,
       },
     }
