@@ -32,10 +32,11 @@ export const PlayerDashboardPage = ({
                 Once you request a review from a coach, it will appear here.
               </Typography>
               <Button
-                variant="outlined"
+                variant="contained"
                 color="primary"
                 sx={{ mt: 2 }}
                 component="a"
+                size="large"
                 onClick={() => createReview()}
               >
                 Request a Review
