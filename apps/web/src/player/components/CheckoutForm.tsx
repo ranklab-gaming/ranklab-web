@@ -88,6 +88,11 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
   const deleteReview = async () => {
     setDeleting(true)
     await api.playerReviewsDelete({ id: review.id })
+
+    enqueueSnackbar("Review deleted successfully.", {
+      variant: "success",
+    })
+
     await router.push("/player/dashboard")
   }
 
