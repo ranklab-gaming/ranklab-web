@@ -7,6 +7,14 @@ const nextConfig = {
   images: {
     domains: ["minimal-assets-api-dev.vercel.app"],
   },
+  rewrites() {
+    return [
+      {
+        source: "/r/:slug",
+        destination: "/api/r/:slug",
+      },
+    ]
+  }
 }
 
 module.exports = withSentryConfig(

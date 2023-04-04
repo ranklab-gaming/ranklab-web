@@ -109,6 +109,10 @@ export interface PlayerAccountUpdateRequest {
   updatePlayerRequest: UpdatePlayerRequest
 }
 
+export interface PlayerCoachesGetRequest {
+  slug: string
+}
+
 export interface PlayerCommentsListRequest {
   reviewId: string
 }
@@ -1024,6 +1028,55 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Player> {
     const response = await this.playerAccountUpdateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async playerCoachesGetRaw(
+    requestParameters: PlayerCoachesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Coach>> {
+    if (
+      requestParameters.slug === null ||
+      requestParameters.slug === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "slug",
+        "Required parameter requestParameters.slug was null or undefined when calling playerCoachesGet."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/player/coaches/{slug}`.replace(
+          `{${"slug"}}`,
+          encodeURIComponent(String(requestParameters.slug))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerCoachesGet(
+    requestParameters: PlayerCoachesGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Coach> {
+    const response = await this.playerCoachesGetRaw(
       requestParameters,
       initOverrides
     )

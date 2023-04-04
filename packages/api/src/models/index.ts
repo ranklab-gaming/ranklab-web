@@ -291,6 +291,12 @@ export interface CreateCoachRequest {
    * @type {string}
    * @memberof CreateCoachRequest
    */
+  name: string
+  /**
+   *
+   * @type {string}
+   * @memberof CreateCoachRequest
+   */
   email: string
   /**
    *
@@ -298,12 +304,6 @@ export interface CreateCoachRequest {
    * @memberof CreateCoachRequest
    */
   password: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  name: string
   /**
    *
    * @type {string}

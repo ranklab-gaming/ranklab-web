@@ -56,7 +56,7 @@ export const Dashboard = () => {
               </m.div>
               <m.div variants={animateFade().inUp}>
                 <NextLink
-                  href="/auth/signin?intent=signup"
+                  href="/api/auth/signin?intent=signup"
                   passHref
                   legacyBehavior
                 >
