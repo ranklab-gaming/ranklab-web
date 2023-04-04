@@ -27,6 +27,7 @@ import { animateFade } from "@/animate/fade"
 import { debounce } from "lodash"
 
 if (typeof window !== "undefined") {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   window.TouchEvent = window.TouchEvent || function TouchEvent() {}
 }
 
