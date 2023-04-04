@@ -22,14 +22,15 @@ interface Props {
   comments: Comment[]
 }
 
-export const PlayerReviewsShowPage = ({
-  user,
-  review: initialReview,
+const Content = ({
+  review,
   paymentMethods,
   games,
   comments,
-}: PropsWithUser<Props>) => {
-  const [review, setReview] = useState(initialReview)
+  setReview,
+}: Props & {
+  setReview: (review: Review) => void
+}) => {
   const isCheckout = review.state === "AwaitingPayment"
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [accepting, setAccepting] = useState(false)
@@ -57,6 +58,91 @@ export const PlayerReviewsShowPage = ({
     setAccepting(false)
   }
 
+  if (isCheckout) {
+    return (
+      <CheckoutForm
+        review={review}
+        paymentMethods={paymentMethods}
+        games={games}
+        setReview={setReview}
+      />
+    )
+  }
+
+  return (
+    <ReviewDetails
+      review={review}
+      games={games}
+      title={`Review By ${coach.name}`}
+      recordingElement={
+        <Recording
+          selectedComment={selectedComment}
+          recording={recording}
+          videoRef={videoRef}
+          onPlay={() => setSelectedComment(null)}
+          onSeeked={() => setSelectedComment(null)}
+        />
+      }
+      commentListElement={
+        <CommentList
+          review={review}
+          comments={comments}
+          selectedComment={selectedComment}
+          onCommentSelect={(comment) => {
+            setSelectedComment(comment)
+
+            if (comment) {
+              videoRef.current?.seekTo(comment.videoTimestamp)
+            }
+          }}
+          onReviewChange={setReview}
+        />
+      }
+    >
+      {review.state === ReviewState.Published && (
+        <Alert
+          severity="success"
+          sx={{ mb: 1 }}
+          action={
+            <Stack direction="row" spacing={2}>
+              <Button
+                size="small"
+                variant="text"
+                color="success"
+                onClick={show}
+              >
+                REQUEST REFUND
+              </Button>
+              <LoadingButton
+                size="small"
+                variant="text"
+                color="success"
+                onClick={acceptReview}
+                loading={accepting}
+                disabled={accepting}
+              >
+                ACCEPT REVIEW
+              </LoadingButton>
+            </Stack>
+          }
+        >
+          Are you happy with this review? If so, please accept it to so that{" "}
+          {coach.name} can receive payment.
+        </Alert>
+      )}
+    </ReviewDetails>
+  )
+}
+
+export const PlayerReviewsShowPage = ({
+  review: initialReview,
+  user,
+  ...props
+}: PropsWithUser<Props>) => {
+  const [review, setReview] = useState(initialReview)
+  const isCheckout = review.state === "AwaitingPayment"
+  const recording = assertProp(review, "recording")
+
   return (
     <DashboardLayout
       user={user}
@@ -64,76 +150,7 @@ export const PlayerReviewsShowPage = ({
       showTitle={isCheckout}
       fullWidth
     >
-      {isCheckout ? (
-        <CheckoutForm
-          review={review}
-          paymentMethods={paymentMethods}
-          games={games}
-          setReview={setReview}
-        />
-      ) : (
-        <ReviewDetails
-          review={review}
-          games={games}
-          title={`Review By ${coach.name}`}
-          recordingElement={
-            <Recording
-              selectedComment={selectedComment}
-              recording={recording}
-              videoRef={videoRef}
-              onPlay={() => setSelectedComment(null)}
-              onSeeked={() => setSelectedComment(null)}
-            />
-          }
-          commentListElement={
-            <CommentList
-              review={review}
-              comments={comments}
-              selectedComment={selectedComment}
-              onCommentSelect={(comment) => {
-                setSelectedComment(comment)
-
-                if (comment) {
-                  videoRef.current?.seekTo(comment.videoTimestamp)
-                }
-              }}
-              onReviewChange={setReview}
-            />
-          }
-        >
-          {review.state === ReviewState.Published && (
-            <Alert
-              severity="success"
-              sx={{ mb: 1 }}
-              action={
-                <Stack direction="row" spacing={2}>
-                  <Button
-                    size="small"
-                    variant="text"
-                    color="success"
-                    onClick={show}
-                  >
-                    REQUEST REFUND
-                  </Button>
-                  <LoadingButton
-                    size="small"
-                    variant="text"
-                    color="success"
-                    onClick={acceptReview}
-                    loading={accepting}
-                    disabled={accepting}
-                  >
-                    ACCEPT REVIEW
-                  </LoadingButton>
-                </Stack>
-              }
-            >
-              Are you happy with this review? If so, please accept it to so that{" "}
-              {coach.name} can receive payment.
-            </Alert>
-          )}
-        </ReviewDetails>
-      )}
+      <Content {...props} review={review} setReview={setReview} />
     </DashboardLayout>
   )
 }
