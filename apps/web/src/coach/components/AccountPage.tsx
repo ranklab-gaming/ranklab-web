@@ -27,9 +27,10 @@ import { Game } from "@ranklab/api"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
+import CopyToClipboardButton from "@/components/CopyToClipboardButton"
 
 interface Props {
   games: Game[]
@@ -50,6 +51,11 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const theme = useTheme()
   const router = useRouter()
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
+  const [origin, setOrigin] = useState<string | null>(null)
+
+  useEffect(() => {
+    setOrigin(window.location.origin)
+  }, [])
 
   const defaultValues: FormValues = {
     bio: coach.bio,
@@ -109,6 +115,12 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
             icon={<Iconify icon="eva:bell-outline" />}
             value="notifications"
           />
+          <Tab
+            disableRipple
+            label="Sharing"
+            icon={<Iconify icon="eva:share-outline" />}
+            value="sharing"
+          />
         </Tabs>
         <TabPanel value="account">
           <form onSubmit={handleSubmit(updateCoach)}>
@@ -151,7 +163,6 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
             </LoadingButton>
           </form>
         </TabPanel>
-
         <TabPanel value="notifications">
           <form onSubmit={handleSubmit(updateCoach)}>
             <Stack spacing={3} my={4}>
@@ -196,6 +207,15 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
               Save Changes
             </LoadingButton>
           </form>
+        </TabPanel>
+        <TabPanel value="sharing">
+          <Stack spacing={3} my={4}>
+            <CopyToClipboardButton
+              label="Review Link"
+              value={`${origin}/r/${coach.slug}`}
+              helperText="You can share this link to quickly let players request a review from you"
+            />
+          </Stack>
         </TabPanel>
       </TabContext>
     </DashboardLayout>

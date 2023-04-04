@@ -166,6 +166,12 @@ export interface Coach {
    * @memberof Coach
    */
   intercomHash?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Coach
+   */
+  slug: string
 }
 /**
  *
