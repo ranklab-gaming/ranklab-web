@@ -1,6 +1,5 @@
 import { Iconify } from "@/components/Iconify"
 import {
-  Button,
   FormControl,
   FormHelperText,
   IconButton,
@@ -19,10 +18,10 @@ interface Props {
 const CopyToClipboardButton = ({ value, label, helperText }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const handleClick = () => {
-    enqueueSnackbar("Copied to clipboard.", { variant: "success" })
+  const handleClick = async () => {
     if (!navigator.clipboard) return
-    navigator.clipboard.writeText(window.location.toString())
+    await navigator.clipboard.writeText(value)
+    enqueueSnackbar("Copied to clipboard.", { variant: "success" })
   }
 
   return (
