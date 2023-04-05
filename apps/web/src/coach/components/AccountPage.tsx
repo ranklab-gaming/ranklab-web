@@ -125,11 +125,11 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         <TabPanel value="account">
           <form onSubmit={handleSubmit(updateCoach)}>
             <Stack spacing={3} my={4}>
-              <Alert
+              {coach.payoutsEnabled ? <Alert
                 severity="info"
                 action={
                   <NextLink
-                    href={`/api/stripe-account-links?${new URLSearchParams({
+                    href={`/api/stripe-login-links?${new URLSearchParams({
                       return_url: "/coach/account",
                     })}`}
                     passHref
@@ -146,9 +146,9 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                   </NextLink>
                 }
               >
-                We partner with Stripe to handle transactions. You can update
-                your personal details using their dashboard.
-              </Alert>
+                We partner with Stripe to handle transactions. You can view your available balance, see upcoming payouts,
+                and track your earnings in real time.
+              </Alert> : null}
               <AccountFields control={control} games={games} />
             </Stack>
             <LoadingButton
