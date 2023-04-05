@@ -22,7 +22,7 @@ const stripeLoginLinks = withSessionApiRoute(async function (
   }
 
   const loginLink = await api.coachStripeLoginLinksCreate({
-    createLoginLinkRequest: {
+    createLoginLink: {
       returnUrl: `${webHost}${returnUrl}`,
     },
   })
