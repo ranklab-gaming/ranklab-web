@@ -3,12 +3,22 @@ import { withSessionApiRoute } from "@/session"
 
 const slug = withSessionApiRoute(async (req, res) => {
   const session = await getServerSession(req)
+  const returnUrl = req.url ?? "/player/dashboard"
 
-  if (!session || session.userType !== "player") {
+  if (!session) {
     return res.redirect(
       307,
       `/api/auth/signin?${new URLSearchParams({
-        return_url: req.url ?? "/player/dashboard",
+        return_url: returnUrl,
+      })}`
+    )
+  }
+
+  if (session.userType !== "player") {
+    return res.redirect(
+      307,
+      `/api/auth/logout?${new URLSearchParams({
+        return_url: returnUrl,
       })}`
     )
   }
