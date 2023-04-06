@@ -25,11 +25,11 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     const pausing = useRef(false)
 
     useImperativeHandle(ref, () => ({
-      seekTo: (seconds: number) => {
+      seekTo: (time: number) => {
         if (videoRef.current) {
           seeking.current = true
           videoRef.current.pause()
-          videoRef.current.currentTime = seconds
+          videoRef.current.currentTime = time / 1000000
         }
       },
       pause: () => {
@@ -40,13 +40,17 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
       },
     }))
 
+    const currentTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+      return Math.floor(e.currentTarget.currentTime * 1000000)
+    }
+
     return (
       <video
         controls={controls}
         width="100%"
         ref={videoRef}
         onPlay={(e) => {
-          onPlay?.(Math.floor(e.currentTarget.currentTime))
+          onPlay?.(currentTime(e))
         }}
         onPause={(e) => {
           if (pausing.current) {
@@ -54,7 +58,7 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             return
           }
 
-          onPause?.(Math.floor(e.currentTarget.currentTime))
+          onPause?.(currentTime(e))
         }}
         onSeeked={(e) => {
           if (seeking.current) {
@@ -62,10 +66,10 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
             return
           }
 
-          onSeeked?.(Math.floor(e.currentTarget.currentTime))
+          onSeeked?.(currentTime(e))
         }}
         onTimeUpdate={(e) => {
-          onTimeUpdate?.(Math.floor(e.currentTarget.currentTime))
+          onTimeUpdate?.(currentTime(e))
         }}
       >
         <source src={src} type={type} />

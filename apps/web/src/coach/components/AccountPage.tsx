@@ -125,30 +125,33 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         <TabPanel value="account">
           <form onSubmit={handleSubmit(updateCoach)}>
             <Stack spacing={3} my={4}>
-              {coach.payoutsEnabled ? <Alert
-                severity="info"
-                action={
-                  <NextLink
-                    href={`/api/stripe-login-links?${new URLSearchParams({
-                      return_url: "/coach/account",
-                    })}`}
-                    passHref
-                    legacyBehavior
-                  >
-                    <Button
-                      color="info"
-                      variant="text"
-                      size="small"
-                      component="a"
+              {coach.payoutsEnabled ? (
+                <Alert
+                  severity="info"
+                  action={
+                    <NextLink
+                      href={`/api/stripe-login-links?${new URLSearchParams({
+                        return_url: "/coach/account",
+                      })}`}
+                      passHref
+                      legacyBehavior
                     >
-                      OPEN ACCOUNT DASHBOARD
-                    </Button>
-                  </NextLink>
-                }
-              >
-                We partner with Stripe to handle transactions. You can view your available balance, see upcoming payouts,
-                and track your earnings in real time.
-              </Alert> : null}
+                      <Button
+                        color="info"
+                        variant="text"
+                        size="small"
+                        component="a"
+                      >
+                        OPEN ACCOUNT DASHBOARD
+                      </Button>
+                    </NextLink>
+                  }
+                >
+                  We partner with Stripe to handle transactions. You can view
+                  your available balance, see upcoming payouts, and track your
+                  earnings in real time.
+                </Alert>
+              ) : null}
               <AccountFields control={control} games={games} />
             </Stack>
             <LoadingButton

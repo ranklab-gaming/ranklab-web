@@ -233,7 +233,7 @@ export const CommentList = ({
           <Stack spacing={2}>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="body2" mr="auto">
-                {formatDuration(videoTimestamp)}
+                {formatDuration(videoTimestamp / 1000000)}
               </Typography>
               {selectedComment ? (
                 <Box>
@@ -355,7 +355,7 @@ export const CommentList = ({
                 color="primary"
                 fullWidth
               >
-                Add Comment at {formatDuration(videoTimestamp)}
+                Add Comment at {formatDuration(videoTimestamp / 1000000)}
               </Button>
             </Paper>
           ) : null}
@@ -386,7 +386,7 @@ export const CommentList = ({
                   <CardContent>
                     <Stack direction="row" alignItems="center" spacing={2}>
                       <Typography variant="body2">
-                        {formatDuration(comment.videoTimestamp)}
+                        {formatDuration(comment.videoTimestamp / 1000000)}
                       </Typography>
                       <AnimatePresence initial={false}>
                         <Typography
