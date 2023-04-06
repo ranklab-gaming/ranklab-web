@@ -4,7 +4,7 @@ import {
   cookieSecret,
   authJwks,
 } from "@/config/server"
-import { OidcRedisAdapter } from "@/oidc/redisAdapter"
+import { RedisAdapter } from "@/oidc/redisAdapter"
 import Provider, { Configuration, errors } from "oidc-provider"
 import * as Sentry from "@sentry/nextjs"
 
@@ -107,7 +107,7 @@ export function getOidcProvider() {
       },
     },
     jwks: authJwks,
-    adapter: OidcRedisAdapter,
+    adapter: RedisAdapter,
     renderError: async (ctx, _, error) => {
       console.error(error)
       Sentry.captureException(error)

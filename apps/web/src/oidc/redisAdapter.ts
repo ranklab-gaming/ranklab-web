@@ -29,7 +29,7 @@ function uidKeyFor(uid: string) {
   return `uid:${uid}`
 }
 
-export class OidcRedisAdapter {
+export class RedisAdapter {
   name: string
   client: Redis
 
