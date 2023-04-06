@@ -104,12 +104,14 @@ export const GuideDialog = ({ open, onClose }: Props) => {
               label="Mac"
               icon={<Iconify icon="mdi:apple" />}
               value="mac"
+              disabled
             />
             <Tab
               disableRipple
               label="Linux"
               icon={<Iconify icon="mdi:linux" />}
               value="linux"
+              disabled
             />
           </Tabs>
           <TabPanel value="windows">
@@ -197,32 +199,6 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                   </Grid>
                 </Paper>
               ))}
-            </Stack>
-          </TabPanel>
-          <TabPanel value="mac">
-            <Stack
-              spacing={2}
-              minHeight={600}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="mdi:apple" fontSize={96} />
-              <Typography variant="body1" mt={2}>
-                Our Mac guide is coming soon.
-              </Typography>
-            </Stack>
-          </TabPanel>
-          <TabPanel value="linux">
-            <Stack
-              spacing={2}
-              minHeight={600}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="mdi:linux" fontSize={96} />
-              <Typography variant="body1" mt={2}>
-                Our Linux guide is coming soon.
-              </Typography>
             </Stack>
           </TabPanel>
         </TabContext>
