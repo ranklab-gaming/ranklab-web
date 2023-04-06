@@ -102,7 +102,7 @@ export const LandingPage = ({ games }: LandingPageProps) => {
       <Stack>
         <Header />
         <RootStyle>
-          <Hero games={games} />
+          <Hero games={games.filter((g) => g.id !== "test")} />
           <ContentStyle>
             <Flow />
             <Review />
