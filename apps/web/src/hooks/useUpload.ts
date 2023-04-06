@@ -12,9 +12,6 @@ export type RequestOptions = {
 }
 
 export type UploadProps = {
-  onDone?: () => void
-  onError?: (error: ProgressEvent) => void
-  onAbort?: () => void
   file: File
   url: string
   headers?: Headers
@@ -26,7 +23,7 @@ export type UseUploadState = {
   progress: number
 }
 
-export type UploadFunction = (data: UploadProps) => void
+export type UploadFunction = (data: UploadProps) => Promise<void>
 export type UseUploadResults = [UploadFunction, UseUploadState]
 
 export const useUpload = (): UseUploadResults => {
@@ -35,15 +32,7 @@ export const useUpload = (): UseUploadResults => {
     progress: 0,
   })
 
-  const upload = async ({
-    file,
-    headers,
-    method,
-    url,
-    onDone,
-    onAbort,
-    onError,
-  }: UploadProps) => {
+  const upload = async ({ file, headers, method, url }: UploadProps) => {
     setState({ uploading: true, progress: 0 })
 
     const xhr = new XMLHttpRequest()
@@ -63,22 +52,24 @@ export const useUpload = (): UseUploadResults => {
       }))
     })
 
-    xhr.addEventListener("load", () => {
-      setState({ uploading: false, progress: 0 })
-      onDone?.()
-    })
+    return new Promise<void>((resolve, reject) => {
+      xhr.addEventListener("load", () => {
+        setState({ uploading: false, progress: 0 })
+        resolve()
+      })
 
-    xhr.addEventListener("error", (error) => {
-      setState({ uploading: false, progress: 0 })
-      onError?.(error)
-    })
+      xhr.addEventListener("error", (error) => {
+        setState({ uploading: false, progress: 0 })
+        reject(error)
+      })
 
-    xhr.addEventListener("abort", () => {
-      setState({ uploading: false, progress: 0 })
-      onAbort?.()
-    })
+      xhr.addEventListener("abort", (error) => {
+        setState({ uploading: false, progress: 0 })
+        reject(error)
+      })
 
-    xhr.send(file)
+      xhr.send(file)
+    })
   }
 
   return [upload, state]

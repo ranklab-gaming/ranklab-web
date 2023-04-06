@@ -112,7 +112,9 @@ export const PlayerReviewsNewRecordingPage = ({
 
   const [upload, { progress: uploadProgress, uploading }] = useUpload()
 
-  const goToNextStep = async function (values: FormValues) {
+  const submit = async function (values: FormValues) {
+    let recordingId = values.recordingId
+
     if (values.recordingId === newRecordingId) {
       const newRecordingVideo = assertProp(values, "newRecordingVideo")
 
@@ -130,20 +132,7 @@ export const PlayerReviewsNewRecordingPage = ({
         throw new Error("uploadUrl is missing")
       }
 
-      upload({
-        onDone: () => {
-          setRecordings([...recordings, recording])
-          setValue("recordingId", recording.id)
-          handleSubmit(goToNextStep)()
-        },
-        onError: () => {
-          enqueueSnackbar(
-            "An error occurred while uploading your video. Please try again.",
-            {
-              variant: "error",
-            }
-          )
-        },
+      await upload({
         file: newRecordingVideo,
         url: recording.uploadUrl,
         headers: {
@@ -151,13 +140,10 @@ export const PlayerReviewsNewRecordingPage = ({
         },
       })
 
-      return
+      recordingId = recording.id
     }
 
-    await updateSessionReview({
-      recordingId: values.recordingId,
-    })
-
+    await updateSessionReview({ recordingId })
     await router.push("/player/reviews/new/coach")
   }
 
@@ -172,7 +158,7 @@ export const PlayerReviewsNewRecordingPage = ({
           <CardContent>
             <Box p={3}>
               <Stepper activeStep={0} />
-              <form onSubmit={handleSubmit(goToNextStep)}>
+              <form onSubmit={handleSubmit(submit)}>
                 <Stack spacing={3} mt={4}>
                   <Controller
                     name="recordingId"
