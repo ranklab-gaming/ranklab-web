@@ -3,17 +3,11 @@ import { LoadingButton } from "@mui/lab"
 import {
   Alert,
   Box,
-  Button,
   Card,
   CardContent,
   CardHeader,
   Checkbox,
   Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   Grid,
@@ -50,6 +44,7 @@ import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
 import { ChessBoard } from "@/components/ChessBoard"
+import ConfirmationButton from "@/components/ConfirmationDialog"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -82,12 +77,9 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [deleting, setDeleting] = useState(false)
   const theme = useTheme()
 
   const deleteReview = async () => {
-    setDeleting(true)
     await api.playerReviewsDelete({ id: review.id })
 
     enqueueSnackbar("Review deleted successfully.", {
@@ -376,52 +368,27 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                 color: theme.palette.text.secondary,
               }}
               action={
-                <Button
-                  sx={{
-                    color: theme.palette.text.secondary,
-                    "&:hover": {
-                      backgroundColor: theme.palette.background.paper,
+                <ConfirmationButton
+                  buttonProps={{
+                    sx: {
+                      color: theme.palette.text.secondary,
+                      "&:hover": {
+                        backgroundColor: theme.palette.background.paper,
+                      },
                     },
+                    size: "small",
+                    variant: "text",
                   }}
-                  size="small"
-                  variant="text"
-                  onClick={() => setShowDeleteDialog(true)}
-                >
-                  DELETE REVIEW
-                </Button>
+                  dialogContentText="This action cannot be undone. Your order will be cancelled and the review will be deleted from your dashboard."
+                  dialogTitle="Really delete this review?"
+                  buttonText="DELETE REVIEW"
+                  action={deleteReview}
+                />
               }
             >
               If you created this order by mistake, you can delete this review
               to remove it from your dashboard.
             </Alert>
-            <Dialog
-              open={showDeleteDialog}
-              onClose={() => setShowDeleteDialog(false)}
-              fullWidth
-            >
-              <DialogTitle>Really delete this review?</DialogTitle>
-              <DialogContent sx={{ mt: 2, mb: 0, pb: 0 }}>
-                <DialogContentText>
-                  This action cannot be undone. Your order will be cancelled and
-                  the review will be deleted from your dashboard.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setShowDeleteDialog(false)}>
-                  Go Back
-                </Button>
-                <LoadingButton
-                  onClick={deleteReview}
-                  autoFocus
-                  disabled={deleting}
-                  loading={deleting}
-                  color="primary"
-                  variant="contained"
-                >
-                  Delete
-                </LoadingButton>
-              </DialogActions>
-            </Dialog>
           </Stack>
         </Grid>
         <Grid item xs={12} md={4}>

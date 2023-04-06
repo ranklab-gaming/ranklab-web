@@ -29,10 +29,10 @@ export const Recording = ({
 }: Props) => {
   return (
     <Box
-      height="70vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
+      height="100%"
     >
       <Box position="relative">
         {recording.videoKey === null ? (

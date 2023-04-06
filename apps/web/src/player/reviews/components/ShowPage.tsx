@@ -91,7 +91,7 @@ const Content = ({
           onCommentSelect={(comment) => {
             setSelectedComment(comment)
 
-            if (comment?.videoTimestamp) {
+            if (comment?.videoTimestamp != null) {
               videoRef.current?.seekTo(comment.videoTimestamp)
             }
           }}

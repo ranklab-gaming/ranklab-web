@@ -1,8 +1,13 @@
-import { forwardRef, useImperativeHandle, useRef } from "react"
+import ResponsiveVideo from "@/components/ResponsiveVideo"
+import {
+  PropsWithChildren,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from "react"
 
 interface VideoPlayerProps {
   src: string
-  type: string
   onTimeUpdate?: (seconds: number) => void
   controls?: boolean
   onPlay?: (seconds: number) => void
@@ -15,9 +20,12 @@ export interface VideoPlayerRef {
   pause: () => void
 }
 
-export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
+export const VideoPlayer = forwardRef<
+  VideoPlayerRef,
+  PropsWithChildren<VideoPlayerProps>
+>(
   (
-    { src, type, onTimeUpdate, controls = true, onPlay, onPause, onSeeked },
+    { src, children, onTimeUpdate, controls = true, onPlay, onPause, onSeeked },
     ref
   ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
@@ -45,9 +53,9 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
     }
 
     return (
-      <video
+      <ResponsiveVideo
+        src={src}
         controls={controls}
-        width="100%"
         ref={videoRef}
         onPlay={(e) => {
           onPlay?.(currentTime(e))
@@ -72,8 +80,8 @@ export const VideoPlayer = forwardRef<VideoPlayerRef, VideoPlayerProps>(
           onTimeUpdate?.(currentTime(e))
         }}
       >
-        <source src={src} type={type} />
-      </video>
+        {children}
+      </ResponsiveVideo>
     )
   }
 )
