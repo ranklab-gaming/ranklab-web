@@ -99,20 +99,6 @@ export const GuideDialog = ({ open, onClose }: Props) => {
               icon={<Iconify icon="mdi:windows" />}
               value="windows"
             />
-            <Tab
-              disableRipple
-              label="Mac"
-              icon={<Iconify icon="mdi:apple" />}
-              value="mac"
-              disabled
-            />
-            <Tab
-              disableRipple
-              label="Linux"
-              icon={<Iconify icon="mdi:linux" />}
-              value="linux"
-              disabled
-            />
           </Tabs>
           <TabPanel value="windows">
             <Typography variant="body1" mt={2} gutterBottom>
