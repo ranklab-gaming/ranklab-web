@@ -216,7 +216,10 @@ export const CommentList = ({
               ? "This review has been published."
               : "This review has been refunded."}
             <br />
-            You can&apos;t add comments or drawings to it anymore.
+            {review.state === ReviewState.Published ||
+            review.state === ReviewState.Accepted
+              ? "You're all done, thanks!"
+              : " You can't add comments or drawings to it anymore."}
           </Typography>
         </Stack>
       </Paper>
