@@ -1,15 +1,25 @@
 import { Footer } from "./Footer"
 import { Page } from "./Page"
-import { Box, Stack, styled } from "@mui/material"
+import {
+  Box,
+  Button,
+  ButtonProps,
+  Link,
+  Stack,
+  styled,
+  useTheme,
+} from "@mui/material"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
-import { useEffect } from "react"
+import { PropsWithChildren, useEffect } from "react"
 import { Dashboard } from "./LandingPage/Dashboard"
 import { Flow } from "./LandingPage/Flow"
 import { Header } from "./LandingPage/Header"
 import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
 import { Game } from "@ranklab/api"
+import CookieConsent from "react-cookie-consent"
+import NextLink from "next/link"
 
 const RootStyle = styled("div")({
   height: "100%",
@@ -21,6 +31,18 @@ const ContentStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
+const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
+  <Button
+    variant="contained"
+    color="secondary"
+    size="small"
+    sx={{ m: 1, color: "secondary.contrastText" }}
+    onClick={props.onClick}
+  >
+    {props.children}
+  </Button>
+)
+
 interface LandingPageProps {
   games: Game[]
 }
@@ -28,6 +50,7 @@ interface LandingPageProps {
 export const LandingPage = ({ games }: LandingPageProps) => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
+  const theme = useTheme()
 
   useEffect(() => {
     if (router.query.error) {
@@ -48,6 +71,34 @@ export const LandingPage = ({ games }: LandingPageProps) => {
 
   return (
     <Page title="Up your game">
+      <CookieConsent
+        style={{
+          backgroundColor: theme.palette.background.paper,
+          fontFamily: theme.typography.fontFamily,
+          zIndex: 9999999999,
+          color: theme.palette.text.secondary,
+        }}
+        ButtonComponent={AcceptButton}
+      >
+        This website uses essential cookies in order to function correctly. By
+        using this website you agree to our{" "}
+        <NextLink
+          href="https://www.iubenda.com/privacy-policy/88772361"
+          passHref
+          legacyBehavior
+        >
+          <Link color="secondary.contrastText">privacy policy</Link>
+        </NextLink>{" "}
+        and{" "}
+        <NextLink
+          href="https://www.iubenda.com/terms-and-conditions/88772361"
+          passHref
+          legacyBehavior
+        >
+          <Link color="secondary.contrastText">terms of service</Link>
+        </NextLink>
+        .
+      </CookieConsent>
       <Stack>
         <Header />
         <RootStyle>
