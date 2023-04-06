@@ -4,7 +4,7 @@ import {
   cookieSecret,
   authJwks,
 } from "@/config/server"
-import { RedisAdapter } from "@/oidc/redisAdapter"
+import { RedisAdapter } from "./oidc/redisAdapter"
 import Provider, { Configuration, errors } from "oidc-provider"
 import * as Sentry from "@sentry/nextjs"
 
