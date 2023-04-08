@@ -43,7 +43,6 @@ export const Navbar = ({
   collapsed,
   onCollapse,
 }: Props) => {
-  const { pathname } = useRouter()
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
   const router = useRouter()
@@ -106,12 +105,6 @@ export const Navbar = ({
             },
           ],
         ]
-
-  useEffect(() => {
-    if (sidebarOpen) {
-      onCloseSidebar()
-    }
-  }, [onCloseSidebar, pathname, sidebarOpen])
 
   const renderContent = (
     <Scrollbar
