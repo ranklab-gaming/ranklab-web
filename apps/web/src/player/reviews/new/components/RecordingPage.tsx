@@ -20,7 +20,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { Recording } from "@ranklab/api"
+import { Recording, RecordingState } from "@ranklab/api"
 import { useUpload } from "@/hooks/useUpload"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -28,12 +28,12 @@ import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
-import { useSnackbar } from "notistack"
 import { updateSessionReview } from "@/api"
 import { assertProp } from "@/assert"
-import { uploadsCdnUrl } from "@/config"
 import { GuideDialog } from "./RecordingPage/GuideDialog"
 import { formatBytes } from "@/player/helpers/formatBytes"
+import { RecordingVideo } from "@/player/components/RecordingVideo"
+import { useSnackbar } from "notistack"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -81,9 +81,15 @@ export const PlayerReviewsNewRecordingPage = ({
   const player = playerFromUser(user)
   const theme = useTheme()
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+
+  const selectedRecordingId =
+    initialRecordingId && recordings.find((r) => r.id === initialRecordingId)
+      ? initialRecordingId
+      : null
 
   const defaultValues: FormValues = {
-    recordingId: initialRecordingId ?? newRecordingId,
+    recordingId: selectedRecordingId ?? newRecordingId,
     newRecordingTitle: "",
   }
 
@@ -137,6 +143,37 @@ export const PlayerReviewsNewRecordingPage = ({
           "X-Amz-Acl": "public-read",
         },
       })
+
+      const waitForRecordingUploaded = async (
+        retries = 10
+      ): Promise<boolean> => {
+        const updatedRecording = await api.playerRecordingsGet({
+          id: recording.id,
+        })
+
+        if (updatedRecording.state !== RecordingState.Created) {
+          return true
+        }
+
+        if (retries === 0) {
+          return false
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
+        return waitForRecordingUploaded(retries - 1)
+      }
+
+      if (!(await waitForRecordingUploaded())) {
+        enqueueSnackbar(
+          "There was an error uploading your recording. Please try again later.",
+          {
+            variant: "error",
+          }
+        )
+
+        return
+      }
 
       recordingId = recording.id
     }
@@ -294,17 +331,10 @@ export const PlayerReviewsNewRecordingPage = ({
                       backgroundColor: theme.palette.grey[900],
                     }}
                   >
-                    <video
-                      height="400"
-                      width="100%"
-                      controls
-                      key={selectedRecording.id}
-                    >
-                      <source
-                        src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
-                        type={selectedRecording.mimeType}
-                      />
-                    </video>
+                    <RecordingVideo
+                      recording={selectedRecording}
+                      style={{ maxHeight: 400 }}
+                    />
                   </Paper>
                 ) : null}
                 <Stack direction="row">

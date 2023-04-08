@@ -745,7 +745,13 @@ export interface Recording {
    * @type {string}
    * @memberof Recording
    */
-  videoKey: string
+  videoKey?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Recording
+   */
+  thumbnailKey?: string | null
   /**
    *
    * @type {string}
@@ -788,7 +794,26 @@ export interface Recording {
    * @memberof Recording
    */
   skillLevel: number
+  /**
+   *
+   * @type {RecordingState}
+   * @memberof Recording
+   */
+  state: RecordingState
 }
+
+/**
+ *
+ * @export
+ */
+export const RecordingState = {
+  Created: "Created",
+  Uploaded: "Uploaded",
+  Processed: "Processed",
+} as const
+export type RecordingState =
+  (typeof RecordingState)[keyof typeof RecordingState]
+
 /**
  *
  * @export

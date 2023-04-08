@@ -1,4 +1,4 @@
-import { Box } from "@mui/material"
+import { Box, Paper, Skeleton } from "@mui/material"
 import { styled, SxProps } from "@mui/material/styles"
 import dynamic from "next/dynamic"
 import { ReactNode, useId } from "react"
@@ -36,18 +36,14 @@ const formats = [
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
-    <Box
-      sx={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        position: "absolute",
-        bgcolor: "background.paper",
-      }}
+    <Paper
+      sx={{ p: 3, position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
     >
-      Loading...
-    </Box>
+      <Skeleton animation="wave" />
+      <Skeleton animation="wave" />
+      <Skeleton animation="wave" />
+      <Skeleton animation="wave" />
+    </Paper>
   ),
 })
 

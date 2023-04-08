@@ -12,8 +12,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material"
-import { Game, Recording } from "@ranklab/api"
+import { Game, Recording, RecordingState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
@@ -62,15 +63,27 @@ export const RecordingList = ({ recordings, games }: Props) => {
               </TableCell>
               <TableCell align="right" width={300}>
                 <Stack direction="row" spacing={1} justifyContent="end">
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    size="small"
-                    onClick={() => setSelectedRecording(recording)}
-                  >
-                    View Video
-                  </Button>
-
+                  {recording.state === RecordingState.Processed ? (
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      onClick={() => setSelectedRecording(recording)}
+                    >
+                      View Video
+                    </Button>
+                  ) : (
+                    <Tooltip title="This recording is being processed">
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        size="small"
+                        disabled
+                      >
+                        View Video
+                      </Button>
+                    </Tooltip>
+                  )}
                   <Button
                     variant="outlined"
                     color="primary"

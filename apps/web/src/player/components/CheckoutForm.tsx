@@ -1,4 +1,3 @@
-import { uploadsCdnUrl } from "@/config"
 import { formatPrice } from "@/player/helpers/formatPrice"
 import { LoadingButton } from "@mui/lab"
 import {
@@ -49,6 +48,7 @@ import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
 import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
+import { RecordingVideo } from "@/player/components/RecordingVideo"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -342,20 +342,10 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
-                  <video
-                    style={{
-                      objectFit: "cover",
-                      width: "100%",
-                      height: "100%",
-                      maxHeight: 600,
-                    }}
-                    controls
-                  >
-                    <source
-                      src={`${uploadsCdnUrl}/${recording.videoKey}`}
-                      type={recording.mimeType}
-                    />
-                  </video>
+                  <RecordingVideo
+                    recording={recording}
+                    style={{ maxHeight: 600 }}
+                  />
                 </Stack>
               </CardContent>
             </Card>
