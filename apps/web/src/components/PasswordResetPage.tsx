@@ -1,7 +1,6 @@
 import { api } from "@/api"
 import { BasicLayout } from "./BasicLayout"
 import { useForm } from "@/hooks/useForm"
-import { useParam } from "@/hooks/useParam"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
@@ -25,11 +24,7 @@ export const PasswordResetPage = ({ token }: Props) => {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-
-  const userType = useParam("user_type", "player", [
-    "coach",
-    "player",
-  ]) as UserType
+  const userType = router.query.user_type as UserType
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
