@@ -1,4 +1,4 @@
-import { Box, Paper, Skeleton } from "@mui/material"
+import { Box, Paper, Skeleton, Stack } from "@mui/material"
 import { styled, SxProps } from "@mui/material/styles"
 import dynamic from "next/dynamic"
 import { ReactNode, useId } from "react"
@@ -37,12 +37,19 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
   loading: () => (
     <Paper
-      sx={{ p: 3, position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+      sx={{
+        p: 1,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+      }}
     >
-      <Skeleton animation="wave" />
-      <Skeleton animation="wave" />
-      <Skeleton animation="wave" />
-      <Skeleton animation="wave" />
+      <Stack spacing={1} height="100%">
+        <Skeleton animation="wave" variant="rectangular" height={40} />
+        <Skeleton animation="wave" variant="rectangular" height={210} />
+      </Stack>
     </Paper>
   ),
 })
@@ -50,6 +57,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 const RootStyle = styled(Box)(({ theme }) => ({
   overflow: "hidden",
   position: "relative",
+  minHeight: 250,
   borderRadius: theme.shape.borderRadius,
   border: `solid 1px ${theme.palette.grey[500_32]}`,
   "& .ql-container.ql-snow": {
