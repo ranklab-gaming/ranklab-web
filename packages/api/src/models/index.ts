@@ -754,12 +754,6 @@ export interface Recording {
   uploadUrl?: string | null
   /**
    *
-   * @type {boolean}
-   * @memberof Recording
-   */
-  uploaded: boolean
-  /**
-   *
    * @type {string}
    * @memberof Recording
    */

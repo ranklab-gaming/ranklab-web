@@ -73,14 +73,12 @@ interface Props {
 }
 
 export const PlayerReviewsNewRecordingPage = ({
-  recordings: initialRecordings,
+  recordings,
   user,
   recordingId: initialRecordingId,
 }: PropsWithUser<Props>) => {
   const router = useRouter()
-  const [recordings, setRecordings] = useState<Recording[]>(initialRecordings)
   const player = playerFromUser(user)
-  const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
 
@@ -178,7 +176,7 @@ export const PlayerReviewsNewRecordingPage = ({
                         }
                       >
                         <MenuItem value={newRecordingId}>
-                          Upload a new recording
+                          New recording
                         </MenuItem>
                         {recordings.map((recording) => (
                           <MenuItem key={recording.id} value={recording.id}>
