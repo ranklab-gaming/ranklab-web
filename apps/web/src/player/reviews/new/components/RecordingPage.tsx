@@ -83,13 +83,8 @@ export const PlayerReviewsNewRecordingPage = ({
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
-  const selectedRecordingId =
-    initialRecordingId && recordings.find((r) => r.id === initialRecordingId)
-      ? initialRecordingId
-      : null
-
   const defaultValues: FormValues = {
-    recordingId: selectedRecordingId ?? newRecordingId,
+    recordingId: initialRecordingId ?? newRecordingId,
     newRecordingTitle: "",
   }
 

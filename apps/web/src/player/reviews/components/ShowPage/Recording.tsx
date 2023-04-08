@@ -1,8 +1,13 @@
 import { animateFade } from "@/animate/fade"
 import { VideoPlayer, VideoPlayerRef } from "@/components/VideoPlayer"
 import { uploadsCdnUrl } from "@/config"
+import { RecordingVideo } from "@/player/components/RecordingVideo"
 import { Box } from "@mui/material"
-import { Comment, Recording as ApiRecording } from "@ranklab/api"
+import {
+  Comment,
+  Recording as ApiRecording,
+  RecordingState,
+} from "@ranklab/api"
 import { m } from "framer-motion"
 import { RefObject } from "react"
 
@@ -29,13 +34,17 @@ export const Recording = ({
       justifyContent="center"
     >
       <Box position="relative">
-        <VideoPlayer
-          ref={videoRef}
-          src={`${uploadsCdnUrl}/${recording.videoKey}`}
-          type={recording.mimeType}
-          onPlay={onPlay}
-          onSeeked={onSeeked}
-        />
+        {recording.state === RecordingState.Processed ? (
+          <VideoPlayer
+            ref={videoRef}
+            src={`${uploadsCdnUrl}/${recording.videoKey}`}
+            type={recording.mimeType}
+            onPlay={onPlay}
+            onSeeked={onSeeked}
+          />
+        ) : (
+          <RecordingVideo recording={recording} />
+        )}
         {selectedComment && selectedComment.drawing ? (
           <Box
             component={m.div}
