@@ -1,6 +1,7 @@
 import { uploadsCdnUrl } from "@/config"
 import { formatDate } from "@/helpers/formatDate"
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -74,14 +75,16 @@ export const RecordingList = ({ recordings, games }: Props) => {
                     </Button>
                   ) : (
                     <Tooltip title="This recording is being processed">
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        size="small"
-                        disabled
-                      >
-                        View Video
-                      </Button>
+                      <Box>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          size="small"
+                          disabled
+                        >
+                          View Video
+                        </Button>
+                      </Box>
                     </Tooltip>
                   )}
                   <Button

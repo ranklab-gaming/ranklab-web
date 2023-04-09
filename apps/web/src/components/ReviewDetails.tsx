@@ -13,7 +13,6 @@ import { PropsWithChildren } from "react"
 import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
 import Sticky from "react-stickynode"
-import { useUser } from "@/hooks/useUser"
 
 interface Props {
   review: Review
@@ -34,7 +33,6 @@ export const ReviewDetails = ({
   children,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
-  const user = useUser()
   const recording = assertProp(review, "recording")
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
@@ -67,12 +65,7 @@ export const ReviewDetails = ({
       </Paper>
       {children}
       <Grid container spacing={1}>
-        <Grid
-          item
-          md={user.type === "coach" ? 7 : 8}
-          xs={12}
-          sx={{ transition: "all 0.3s ease" }}
-        >
+        <Grid item md={8} xs={12} sx={{ transition: "all 0.3s ease" }}>
           <Sticky top={64}>
             <Paper
               elevation={4}
@@ -113,7 +106,7 @@ export const ReviewDetails = ({
             </Paper>
           </Sticky>
         </Grid>
-        <Grid item md={user.type === "coach" ? 5 : 4} xs={12} minHeight="70vh">
+        <Grid item md={4} xs={12} minHeight="70vh">
           {commentListElement}
         </Grid>
       </Grid>
