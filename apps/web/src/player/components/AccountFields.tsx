@@ -58,6 +58,7 @@ interface Props<
   control: Control<TFormValues>
   watch: UseFormWatch<TFormValues>
   showPasswordField?: TWithPassword
+  showGameRequestDialog?: boolean
 }
 
 const GameRequestSchema = yup.object().shape({
@@ -78,6 +79,7 @@ export const AccountFields = <
   games,
   watch,
   showPasswordField = false as TWithPassword,
+  showGameRequestDialog = false,
 }: Props<TWithPassword, TFormValues>) => {
   const gameId = watch("gameId" as Path<TFormValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
@@ -172,7 +174,7 @@ export const AccountFields = <
             helperText={
               error ? (
                 error.message
-              ) : (
+              ) : showGameRequestDialog ? (
                 <Typography variant="caption" color="textSecondary">
                   Don&apos;t see your game? Use{" "}
                   <Link
@@ -269,6 +271,8 @@ export const AccountFields = <
                     </DialogActions>
                   </Dialog>
                 </Typography>
+              ) : (
+                "The game you want to be coached in"
               )
             }
           />

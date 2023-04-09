@@ -66,6 +66,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
               control={control}
               watch={watch}
               showPasswordField
+              showGameRequestDialog
             />
           </Stack>
           <Box
