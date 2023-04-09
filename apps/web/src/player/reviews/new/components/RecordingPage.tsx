@@ -34,6 +34,9 @@ import { GuideDialog } from "./RecordingPage/GuideDialog"
 import { formatBytes } from "@/player/helpers/formatBytes"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
 import { useSnackbar } from "notistack"
+import { formatDate } from "@/helpers/formatDate"
+import { uploadsCdnUrl } from "@/config"
+import { Iconify } from "@/components/Iconify"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -212,7 +215,43 @@ export const PlayerReviewsNewRecordingPage = ({
                         </MenuItem>
                         {recordings.map((recording) => (
                           <MenuItem key={recording.id} value={recording.id}>
-                            {recording.title}
+                            <Stack direction="row" spacing={2}>
+                              {recording.state === RecordingState.Processed ? (
+                                <img
+                                  src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
+                                  width={100}
+                                  height={60}
+                                  style={{
+                                    objectFit: "cover",
+                                  }}
+                                />
+                              ) : (
+                                <Paper
+                                  sx={{
+                                    backgroundColor: theme.palette.grey[900],
+                                    width: 100,
+                                    height: 60,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 0,
+                                  }}
+                                >
+                                  <Iconify icon="eva:film-outline" />
+                                </Paper>
+                              )}
+                              <Stack spacing={1}>
+                                <Typography variant="body1">
+                                  {recording.title}
+                                </Typography>
+                                <Typography
+                                  variant="caption"
+                                  color="textSecondary"
+                                >
+                                  Created on {formatDate(recording.createdAt)}
+                                </Typography>
+                              </Stack>
+                            </Stack>
                           </MenuItem>
                         ))}
                       </TextField>
