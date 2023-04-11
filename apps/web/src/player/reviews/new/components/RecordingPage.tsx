@@ -37,6 +37,7 @@ import { useSnackbar } from "notistack"
 import { formatDate } from "@/helpers/formatDate"
 import { uploadsCdnUrl } from "@/config"
 import { Iconify } from "@/components/Iconify"
+import NextImage from "next/image"
 
 const newRecordingId = "NEW_RECORDING"
 
@@ -217,10 +218,11 @@ export const PlayerReviewsNewRecordingPage = ({
                           <MenuItem key={recording.id} value={recording.id}>
                             <Stack direction="row" spacing={2}>
                               {recording.state === RecordingState.Processed ? (
-                                <img
+                                <NextImage
                                   src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
                                   width={100}
                                   height={60}
+                                  alt={recording.title}
                                   style={{
                                     objectFit: "cover",
                                   }}

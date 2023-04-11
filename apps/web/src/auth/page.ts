@@ -71,6 +71,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
 
       try {
         if (nodeEnv === "production") {
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
         }
 
