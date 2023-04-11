@@ -24,8 +24,6 @@ function userFromPlayer(player: Player): PlayerUser {
   return { ...player, type: "player" }
 }
 
-const xrayMiddleware = middleware.openSegment("ranklab-web")
-
 type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
   ctx: PropsWithUser<GetServerSidePropsContext>
 ) => Promise<GetServerSidePropsResult<P>>
@@ -71,6 +69,8 @@ export function withUserSsr<P extends { [key: string]: any }>(
 
       try {
         if (nodeEnv === "production") {
+          const xrayMiddleware = middleware.openSegment("ranklab-web")
+
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
         }
