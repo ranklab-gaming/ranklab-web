@@ -8,6 +8,7 @@ import {
 import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
 import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
+import fetch from "node-fetch"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
@@ -34,6 +35,7 @@ export class ServerApi extends RanklabApi {
     const configuration = new Configuration({
       apiKey,
       basePath: apiHost,
+      fetchApi: fetch as any,
       middleware: [
         {
           post: async ({ response }) => {
