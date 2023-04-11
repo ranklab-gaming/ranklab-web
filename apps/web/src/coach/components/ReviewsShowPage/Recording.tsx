@@ -126,7 +126,7 @@ const Drawing = forwardRef<DrawingRef, DrawingProps>(
             left: 0,
             width: "100%",
             height: "100%",
-            cursor: `url(${drawCursor.src}) 0 16, auto`,
+            cursor: `url(${drawCursor.src}) 0 15, auto`,
             zIndex: 10,
           }}
         />
