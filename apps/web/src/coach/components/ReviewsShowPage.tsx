@@ -62,7 +62,7 @@ export const CoachReviewsShowPage = ({
       },
     })
 
-    enqueueSnackbar("Your review was published successfully. Great work!", {
+    enqueueSnackbar("Your review was published successfully.", {
       variant: "success",
     })
 
