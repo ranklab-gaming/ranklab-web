@@ -1,10 +1,11 @@
-import AWSXRay, { Segment } from "aws-xray-sdk"
+import AWSXRay from "aws-xray-sdk"
 import middleware from "aws-xray-sdk-express"
 import * as http from "http"
 
 if (nodeEnv === "production") {
   AWSXRay.captureHTTPsGlobal(http)
-  AWSXRay.setSegment(new Segment("ranklab-web"))
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  AWSXRay.setContextMissingStrategy(() => {})
 }
 
 import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
