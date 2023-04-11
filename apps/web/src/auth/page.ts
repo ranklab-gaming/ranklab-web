@@ -1,10 +1,10 @@
-import AWSXRay from "aws-xray-sdk"
+import AWSXRay, { Segment } from "aws-xray-sdk"
 import middleware from "aws-xray-sdk-express"
 import * as http from "http"
 
 if (nodeEnv === "production") {
   AWSXRay.captureHTTPsGlobal(http)
-  AWSXRay.middleware.setDefaultName("ranklab-web")
+  AWSXRay.setSegment(new Segment("ranklab-web"))
 }
 
 import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
