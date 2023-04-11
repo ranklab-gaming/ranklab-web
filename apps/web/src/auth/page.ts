@@ -1,9 +1,9 @@
 import AWSXRay from "aws-xray-sdk"
 import middleware from "aws-xray-sdk-express"
-import * as http from "http"
+import * as https from "https"
 
 if (nodeEnv === "production") {
-  AWSXRay.captureHTTPsGlobal(http)
+  AWSXRay.captureHTTPsGlobal(https)
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   AWSXRay.setContextMissingStrategy(() => {})
 }
