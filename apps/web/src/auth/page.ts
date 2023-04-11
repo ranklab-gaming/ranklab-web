@@ -1,3 +1,11 @@
+import AWSXRay from "aws-xray-sdk"
+import middleware from "aws-xray-sdk-express"
+import * as http from "http"
+
+if (nodeEnv === "production") {
+  AWSXRay.captureHTTPsGlobal(http)
+}
+
 import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
 import {
   GetServerSideProps,
@@ -6,6 +14,7 @@ import {
 } from "next"
 import { CoachUser, PlayerUser, PropsWithUser } from "../auth"
 import { withSessionSsr } from "@/session"
+import { nodeEnv } from "@/config"
 
 function userFromCoach(coach: Coach): CoachUser {
   return { ...coach, type: "coach" }
@@ -14,6 +23,8 @@ function userFromCoach(coach: Coach): CoachUser {
 function userFromPlayer(player: Player): PlayerUser {
   return { ...player, type: "player" }
 }
+
+const xrayMiddleware = middleware.openSegment("ranklab-web")
 
 type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
   ctx: PropsWithUser<GetServerSidePropsContext>
@@ -59,6 +70,10 @@ export function withUserSsr<P extends { [key: string]: any }>(
       let res
 
       try {
+        if (nodeEnv === "production") {
+          xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
+        }
+
         res = await getServerSideProps({ ...ctx, user })
       } catch (e: unknown) {
         if (!(e instanceof ResponseError)) {

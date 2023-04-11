@@ -67,6 +67,9 @@ importers:
       aws-xray-sdk-core:
         specifier: ^3.5.0
         version: 3.5.0
+      aws-xray-sdk-express:
+        specifier: ^3.5.0
+        version: 3.5.0(aws-xray-sdk-core@3.5.0)
       csstype:
         specifier: ^3.1.1
         version: 3.1.1
