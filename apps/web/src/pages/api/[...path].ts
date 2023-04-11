@@ -1,12 +1,13 @@
+import AWSXRay from "aws-xray-sdk"
+import * as http from "http"
+
+AWSXRay.captureHTTPsGlobal(http, true)
+
 import { ServerApi } from "@/api/server"
 import { HTTPMethod, JSONApiResponse, ResponseError } from "@ranklab/api"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "@/auth/session"
 import { withSessionApiRoute } from "@/session"
-import AWSXRay from "aws-xray-sdk"
-import http from "http"
-
-AWSXRay.captureHTTPsGlobal(http, true)
 
 const api = withSessionApiRoute(async function (
   req: NextApiRequest,
