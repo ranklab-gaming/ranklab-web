@@ -3,11 +3,23 @@ import { HTTPMethod, JSONApiResponse, ResponseError } from "@ranklab/api"
 import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "@/auth/session"
 import { withSessionApiRoute } from "@/session"
+import AWSXRay from "aws-xray-sdk"
+import http from "http"
+
+AWSXRay.captureHTTPsGlobal(http, true)
 
 const api = withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const segment = new AWSXRay.Segment("web")
+
+  segment.addIncomingRequestData(
+    new AWSXRay.middleware.IncomingRequestData(req)
+  )
+
+  AWSXRay.setSegment(segment)
+
   const session = await getServerSession(req)
   const token = session?.accessToken
   const api = new ServerApi(token)
@@ -41,6 +53,8 @@ const api = withSessionApiRoute(async function (
     }
 
     throw e
+  } finally {
+    segment.close()
   }
 })
 
