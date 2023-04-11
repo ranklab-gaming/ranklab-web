@@ -38,6 +38,13 @@ export function withUserSsr<P extends { [key: string]: any }>(
     async (
       ctx: GetServerSidePropsContext
     ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
+      if (nodeEnv === "production") {
+        const xrayMiddleware = middleware.openSegment("ranklab-web")
+
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
+      }
+
       const { getServerSession } = await import("./session")
       const { createServerApi } = await import("@/api/server")
       const session = await getServerSession(ctx.req)
@@ -70,13 +77,6 @@ export function withUserSsr<P extends { [key: string]: any }>(
       let res
 
       try {
-        if (nodeEnv === "production") {
-          const xrayMiddleware = middleware.openSegment("ranklab-web")
-
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
-        }
-
         res = await getServerSideProps({ ...ctx, user })
       } catch (e: unknown) {
         if (!(e instanceof ResponseError)) {
