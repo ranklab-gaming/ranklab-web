@@ -4,6 +4,7 @@ import * as http from "http"
 
 if (nodeEnv === "production") {
   AWSXRay.captureHTTPsGlobal(http)
+  AWSXRay.middleware.setDefaultName("ranklab-web")
 }
 
 import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
