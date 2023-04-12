@@ -34,11 +34,12 @@ function decamelize(json: Record<string, any>) {
 
 export class ServerApi extends RanklabApi {
   constructor(apiKey?: string) {
+    const hostname = new URL(apiHost).hostname
     const configuration = new Configuration({
       apiKey,
       basePath: apiHost,
       async fetchApi(input, init) {
-        return AWSXRay.captureAsyncFunc(apiHost, async (subsegment) => {
+        return AWSXRay.captureAsyncFunc(hostname, async (subsegment) => {
           try {
             const response = await fetch(input, init)
 
