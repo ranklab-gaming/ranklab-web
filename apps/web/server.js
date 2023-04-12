@@ -14,7 +14,7 @@ if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
   process.on("SIGINT", () => process.exit(0))
 }
 
-
+AWSXRay.middleware.enableDynamicNaming()
 AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
 AWSXRay.captureHTTPsGlobal(require("http"))
 AWSXRay.captureHTTPsGlobal(require("https"))
