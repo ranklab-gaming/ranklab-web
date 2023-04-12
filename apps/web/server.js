@@ -1,8 +1,8 @@
-const next = require("next")
 const oidc = import("./oidc/provider.mjs")
 const express = require("express")
 const xrayExpress = require("aws-xray-sdk-express")
 const AWSXRay = require("aws-xray-sdk")
+const next = require("next")
 
 process.chdir(__dirname)
 
@@ -10,6 +10,8 @@ if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
   process.on("SIGTERM", () => process.exit(0))
   process.on("SIGINT", () => process.exit(0))
 }
+
+AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const webHost = new URL(process.env.WEB_HOST || "http://localhost:3000")
