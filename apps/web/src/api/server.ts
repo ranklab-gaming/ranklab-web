@@ -38,20 +38,9 @@ export class ServerApi extends RanklabApi {
       apiKey,
       basePath: apiHost,
       async fetchApi(input, init) {
-        const segment = AWSXRay.getSegment()
-        let subsegment
-
-        if (segment) {
-          subsegment = segment.addNewSubsegment(input.toString())
-        }
-
-        const response = await fetch(input, init)
-
-        if (subsegment) {
-          subsegment.close()
-        }
-
-        return response
+        return AWSXRay.captureAsyncFunc(input.toString(), () =>
+          fetch(input, init)
+        )
       },
       middleware: [
         {
