@@ -12,7 +12,7 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.5.2",
+    "@openapitools/openapi-generator-cli": "2.6.0",
     "prettier": "2.8.7",
     "turbo": "1.9.0"
   }
