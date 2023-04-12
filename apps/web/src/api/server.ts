@@ -34,7 +34,8 @@ function decamelize(json: Record<string, any>) {
 
 export class ServerApi extends RanklabApi {
   constructor(apiKey?: string) {
-    const hostname = new URL(apiHost).hostname
+    const { hostname } = new URL(apiHost)
+
     const configuration = new Configuration({
       apiKey,
       basePath: apiHost,
