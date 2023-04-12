@@ -1,13 +1,3 @@
-import AWSXRay from "aws-xray-sdk"
-import middleware from "aws-xray-sdk-express"
-import * as https from "https"
-
-if (nodeEnv === "production") {
-  AWSXRay.captureHTTPsGlobal(https)
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  AWSXRay.setContextMissingStrategy(() => {})
-}
-
 import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
 import {
   GetServerSideProps,
@@ -38,13 +28,6 @@ export function withUserSsr<P extends { [key: string]: any }>(
     async (
       ctx: GetServerSidePropsContext
     ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
-      if (nodeEnv === "production") {
-        const xrayMiddleware = middleware.openSegment("ranklab-web")
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        xrayMiddleware(ctx.req as any, ctx.res as any, () => {})
-      }
-
       const { getServerSession } = await import("./session")
       const { createServerApi } = await import("@/api/server")
       const session = await getServerSession(ctx.req)
