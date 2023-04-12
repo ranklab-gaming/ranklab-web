@@ -50,7 +50,6 @@ export class ServerApi extends RanklabApi {
               },
               response: {
                 status: response.status,
-                content_length: response.headers.get("content-length"),
               },
             })
 
