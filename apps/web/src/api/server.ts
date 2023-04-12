@@ -10,8 +10,6 @@ import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
 import AWSXRay from "aws-xray-sdk"
 
-AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
-
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
     json,
@@ -38,19 +36,28 @@ export class ServerApi extends RanklabApi {
       apiKey,
       basePath: apiHost,
       async fetchApi(input, init) {
-        return AWSXRay.captureAsyncFunc(
-          input.toString(),
-          async (subsegment) => {
-            try {
-              const response = await fetch(input, init)
-              subsegment?.close()
-              return response
-            } catch (error) {
-              subsegment?.close(error as any)
-              throw error
-            }
+        return AWSXRay.captureAsyncFunc(apiHost, async (subsegment) => {
+          try {
+            const response = await fetch(input, init)
+
+            subsegment?.addAttribute("http", {
+              request: {
+                method: init?.method,
+                url: input,
+              },
+              response: {
+                status: response.status,
+                content_length: response.headers.get("content-length"),
+              },
+            })
+
+            subsegment?.close()
+            return response
+          } catch (error) {
+            subsegment?.close(error as any)
+            throw error
           }
-        )
+        })
       },
       middleware: [
         {
