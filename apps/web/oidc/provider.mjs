@@ -1,6 +1,6 @@
 import RedisAdapter from "./redisAdapter.js"
 import Provider, { errors } from "oidc-provider"
-import * as Sentry from "@sentry/nextjs"
+import Sentry from "@sentry/nextjs"
 
 let provider = null
 
