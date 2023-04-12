@@ -26,16 +26,6 @@ services:
       - DISPLAY
     depends_on:
       - redis
-  xray-daemon:
-    image: amazon/aws-xray-daemon
-    ports:
-      - "2000:2000/udp"
-    networks:
-      - ranklab
-    environment:
-      - AWS_REGION=eu-west-2
-      - AWS_ACCESS_KEY_ID=AKIA6F52566XD2PPP3CX
-      - AWS_SECRET_ACCESS_KEY=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
 volumes:
   redis:
 networks:
