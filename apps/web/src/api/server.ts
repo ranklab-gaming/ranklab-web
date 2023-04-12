@@ -8,6 +8,7 @@ import {
 import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
 import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
+import AWSXRay from "aws-xray-sdk"
 
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
@@ -34,6 +35,22 @@ export class ServerApi extends RanklabApi {
     const configuration = new Configuration({
       apiKey,
       basePath: apiHost,
+      async fetchApi(input, init) {
+        const segment = AWSXRay.getSegment()
+        let subsegment
+
+        if (segment) {
+          subsegment = segment.addNewSubsegment(input.toString())
+        }
+
+        const response = await fetch(input, init)
+
+        if (subsegment) {
+          subsegment.close()
+        }
+
+        return response
+      },
       middleware: [
         {
           post: async ({ response }) => {

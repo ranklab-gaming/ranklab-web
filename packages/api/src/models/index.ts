@@ -240,7 +240,7 @@ export interface Comment {
    * @type {number}
    * @memberof Comment
    */
-  videoTimestamp: number
+  videoTimestamp?: number | null
   /**
    *
    * @type {string}
@@ -253,6 +253,12 @@ export interface Comment {
    * @memberof Comment
    */
   preview: string
+  /**
+   *
+   * @type {any}
+   * @memberof Comment
+   */
+  metadata?: any | null
 }
 /**
  *
@@ -800,6 +806,12 @@ export interface Recording {
    * @memberof Recording
    */
   state: RecordingState
+  /**
+   *
+   * @type {any}
+   * @memberof Recording
+   */
+  metadata?: any | null
 }
 
 /**
