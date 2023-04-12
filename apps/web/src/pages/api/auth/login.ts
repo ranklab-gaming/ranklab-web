@@ -1,9 +1,9 @@
 import { assertProp } from "@/assert"
 import { apiHost, authClientSecret, webHost } from "@/config/server"
-import { getOidcProvider } from "@/oidc"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
 import { errors } from "oidc-provider"
+import { getOidcProvider } from "@oidc/provider"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

@@ -1,21 +1,23 @@
-import {
-  authClientSecret,
-  webHost,
-  cookieSecret,
-  authJwks,
-} from "@/config/server"
-import { RedisAdapter } from "./oidc/redisAdapter"
-import Provider, { Configuration, errors } from "oidc-provider"
+import RedisAdapter from "./redisAdapter.js"
+import Provider, { errors } from "oidc-provider"
 import * as Sentry from "@sentry/nextjs"
 
-let provider: Provider | null = null
+let provider = null
+
+const authJwks = JSON.parse(
+  Buffer.from(process.env.AUTH_JWKS, "base64").toString("utf8")
+)
+
+const authClientSecret = process.env.AUTH_CLIENT_SECRET
+const webHost = process.env.WEB_HOST
+const cookieSecret = process.env.COOKIE_SECRET
 
 export function getOidcProvider() {
   if (provider) {
     return provider
   }
 
-  const config: Configuration = {
+  const config = {
     clients: [
       {
         client_id: "web",
@@ -32,11 +34,11 @@ export function getOidcProvider() {
         const userType = interaction.params.user_type ?? "player"
         const invitationToken = interaction.params.token
 
-        if (!["coach", "player"].includes(userType as string)) {
+        if (!["coach", "player"].includes(userType)) {
           throw new Error(`invalid user type: ${userType}`)
         }
 
-        if (!["login", "signup"].includes(intent as string)) {
+        if (!["login", "signup"].includes(intent)) {
           throw new Error(`invalid intent: ${intent}`)
         }
 

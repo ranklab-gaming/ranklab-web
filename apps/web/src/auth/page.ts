@@ -6,7 +6,6 @@ import {
 } from "next"
 import { CoachUser, PlayerUser, PropsWithUser } from "../auth"
 import { withSessionSsr } from "@/session"
-import { nodeEnv } from "@/config"
 
 function userFromCoach(coach: Coach): CoachUser {
   return { ...coach, type: "coach" }

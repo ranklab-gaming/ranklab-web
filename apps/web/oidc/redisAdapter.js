@@ -1,6 +1,7 @@
-import { redisUrl } from "@/config/server"
-import Redis from "ioredis"
-import isEmpty from "lodash/isEmpty"
+const Redis = require("ioredis")
+const isEmpty = require("lodash/isEmpty")
+
+const redisUrl = process.env.REDIS_URL
 
 const grantable = new Set([
   "AccessToken",
@@ -17,28 +18,25 @@ const consumable = new Set([
   "BackchannelAuthenticationRequest",
 ])
 
-function grantKeyFor(id: string) {
+function grantKeyFor(id) {
   return `grant:${id}`
 }
 
-function userCodeKeyFor(userCode: string) {
+function userCodeKeyFor(userCode) {
   return `userCode:${userCode}`
 }
 
-function uidKeyFor(uid: string) {
+function uidKeyFor(uid) {
   return `uid:${uid}`
 }
 
-export class RedisAdapter {
-  name: string
-  client: Redis
-
-  constructor(name: string) {
+class RedisAdapter {
+  constructor(name) {
     this.client = new Redis(redisUrl)
     this.name = name
   }
 
-  async upsert(id: string, payload: any, expiresIn: number) {
+  async upsert(id, payload, expiresIn) {
     const key = this.key(id)
     const multi = this.client.multi()
 
@@ -78,7 +76,7 @@ export class RedisAdapter {
     await multi.exec()
   }
 
-  async find(id: string) {
+  async find(id) {
     const data = consumable.has(this.name)
       ? await this.client.hgetall(this.key(id))
       : await this.client.get(this.key(id))
@@ -91,7 +89,7 @@ export class RedisAdapter {
       return JSON.parse(data)
     }
 
-    const { payload, ...rest } = data as any
+    const { payload, ...rest } = data
 
     return {
       ...rest,
@@ -99,7 +97,7 @@ export class RedisAdapter {
     }
   }
 
-  async findByUid(uid: string) {
+  async findByUid(uid) {
     const id = await this.client.get(uidKeyFor(uid))
 
     if (!id) {
@@ -109,7 +107,7 @@ export class RedisAdapter {
     return this.find(id)
   }
 
-  async findByUserCode(userCode: string) {
+  async findByUserCode(userCode) {
     const id = await this.client.get(userCodeKeyFor(userCode))
 
     if (!id) {
@@ -119,12 +117,12 @@ export class RedisAdapter {
     return this.find(id)
   }
 
-  async destroy(id: string) {
+  async destroy(id) {
     const key = this.key(id)
     await this.client.del(key)
   }
 
-  async revokeByGrantId(grantId: string) {
+  async revokeByGrantId(grantId) {
     const multi = this.client.multi()
     const tokens = await this.client.lrange(grantKeyFor(grantId), 0, -1)
     tokens.forEach((token) => multi.del(token))
@@ -132,7 +130,7 @@ export class RedisAdapter {
     await multi.exec()
   }
 
-  async consume(id: string) {
+  async consume(id) {
     await this.client.hset(
       this.key(id),
       "consumed",
@@ -140,7 +138,9 @@ export class RedisAdapter {
     )
   }
 
-  key(id: string) {
+  key(id) {
     return `${this.name}:${id}`
   }
 }
+
+module.exports = RedisAdapter

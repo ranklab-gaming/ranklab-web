@@ -14,7 +14,7 @@ const logout = withSessionApiRoute(async function (
   res
     .redirect(
       307,
-      `/api/oidc/session/end?${new URLSearchParams({
+      `/oidc/session/end?${new URLSearchParams({
         post_logout_redirect_uri: `${webHost}/api/auth/post-logout`,
         client_id: "web",
       })}`

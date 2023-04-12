@@ -13,7 +13,7 @@ async function getIssuer() {
     return issuer
   }
 
-  issuer = await Issuer.discover(`${webHost}/api/oidc`)
+  issuer = await Issuer.discover(`${webHost}/oidc`)
   return issuer
 }
 
