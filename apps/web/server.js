@@ -33,9 +33,14 @@ oidc.then(({ getOidcProvider }) => {
   nextApp.prepare().then(() => {
     const app = express()
     const nextHandler = nextApp.getRequestHandler()
+    const oidcProvider = getOidcProvider()
+
+    if (!dev) {
+      oidcProvider.proxy = true
+    }
 
     app.use(xrayExpress.openSegment("ranklab-web"))
-    app.use("/oidc", getOidcProvider().callback())
+    app.use("/oidc", oidcProvider.callback())
 
     app.get("/r/:id", (req, res) => {
       res.redirect(307, `/api/r/${req.params.id}`)
