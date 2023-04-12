@@ -26,13 +26,13 @@ ENV AUTH_CLIENT_SECRET=AUTH_CLIENT_SECRET
 WORKDIR /app
 
 RUN apk add --no-cache git libc6-compat
-RUN npm install -g pnpm@latest turbo@latest
+RUN npm install -g pnpm@latest
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/api/package.json ./packages/api/
 
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -44,4 +44,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "apps/web/server.js"]
+CMD ["pnpm", "run", "start"]
