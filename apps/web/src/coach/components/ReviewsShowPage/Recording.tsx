@@ -274,7 +274,7 @@ export const Recording = ({
             )}
             <VideoPlayer
               src={`${uploadsCdnUrl}/${recording.videoKey}`}
-              type={recording.mimeType}
+              type="video/mp4"
               onTimeUpdate={onTimeUpdate}
               ref={videoRef}
               controls={!editing}

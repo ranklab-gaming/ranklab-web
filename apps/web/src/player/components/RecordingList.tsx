@@ -117,7 +117,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                           >
                             <source
                               src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
-                              type={selectedRecording.mimeType}
+                              type="video/mp4"
                             />
                           </video>
                         </DialogContent>

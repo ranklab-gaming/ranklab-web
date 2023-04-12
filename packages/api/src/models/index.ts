@@ -449,18 +449,6 @@ export interface CreatePlayerRequest {
 export interface CreateRecordingRequest {
   /**
    *
-   * @type {number}
-   * @memberof CreateRecordingRequest
-   */
-  size: number
-  /**
-   *
-   * @type {string}
-   * @memberof CreateRecordingRequest
-   */
-  mimeType: string
-  /**
-   *
    * @type {string}
    * @memberof CreateRecordingRequest
    */
@@ -477,6 +465,12 @@ export interface CreateRecordingRequest {
    * @memberof CreateRecordingRequest
    */
   gameId: string
+  /**
+   *
+   * @type {any}
+   * @memberof CreateRecordingRequest
+   */
+  metadata?: any | null
 }
 /**
  *
@@ -764,12 +758,6 @@ export interface Recording {
    * @memberof Recording
    */
   uploadUrl?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Recording
-   */
-  mimeType: string
   /**
    *
    * @type {string}

@@ -38,7 +38,7 @@ export const Recording = ({
           <VideoPlayer
             ref={videoRef}
             src={`${uploadsCdnUrl}/${recording.videoKey}`}
-            type={recording.mimeType}
+            type="video/mp4"
             onPlay={onPlay}
             onSeeked={onSeeked}
           />
