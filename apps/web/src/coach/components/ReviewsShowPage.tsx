@@ -157,7 +157,10 @@ export const CoachReviewsShowPage = ({
               if (comment) {
                 form.setValue("body", comment.body)
                 form.setValue("drawing", comment.drawing)
-                videoRef.current?.seekTo(comment.videoTimestamp)
+
+                if (comment.videoTimestamp) {
+                  videoRef.current?.seekTo(comment.videoTimestamp)
+                }
               } else {
                 form.reset()
               }

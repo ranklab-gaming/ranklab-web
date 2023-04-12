@@ -138,7 +138,7 @@ export const CommentList = ({
       (selectedComment
         ? comments.map((c) => (c.id === comment.id ? comment : c))
         : [comment, ...comments]
-      ).sort((a, b) => a.videoTimestamp - b.videoTimestamp)
+      ).sort((a, b) => (a.videoTimestamp ?? 0) - (b.videoTimestamp ?? 0))
     )
   }
 
@@ -386,7 +386,9 @@ export const CommentList = ({
                   <CardContent>
                     <Stack direction="row" alignItems="center" spacing={2}>
                       <Typography variant="body2">
-                        {formatDuration(comment.videoTimestamp / 1000000)}
+                        {comment.videoTimestamp
+                          ? formatDuration(comment.videoTimestamp / 1000000)
+                          : null}
                       </Typography>
                       <AnimatePresence initial={false}>
                         <Typography
