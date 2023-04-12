@@ -16,6 +16,7 @@ if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
 
 AWSXRay.middleware.enableDynamicNaming()
 AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
+AWSXRay.capturePromise()
 AWSXRay.captureHTTPsGlobal(require("http"))
 AWSXRay.captureHTTPsGlobal(require("https"))
 
