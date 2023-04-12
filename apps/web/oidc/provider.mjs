@@ -4,18 +4,18 @@ import * as Sentry from "@sentry/nextjs"
 
 let provider = null
 
-const authJwks = JSON.parse(
-  Buffer.from(process.env.AUTH_JWKS, "base64").toString("utf8")
-)
-
-const authClientSecret = process.env.AUTH_CLIENT_SECRET
-const webHost = process.env.WEB_HOST
-const cookieSecret = process.env.COOKIE_SECRET
-
 export function getOidcProvider() {
   if (provider) {
     return provider
   }
+
+  const authJwks = JSON.parse(
+    Buffer.from(process.env.AUTH_JWKS, "base64").toString("utf8")
+  )
+
+  const authClientSecret = process.env.AUTH_CLIENT_SECRET
+  const webHost = process.env.WEB_HOST
+  const cookieSecret = process.env.COOKIE_SECRET
 
   const config = {
     clients: [
