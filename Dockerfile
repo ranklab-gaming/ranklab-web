@@ -26,7 +26,7 @@ ENV AUTH_CLIENT_SECRET=AUTH_CLIENT_SECRET
 WORKDIR /app
 
 RUN apk add --no-cache git libc6-compat
-RUN npm install -g pnpm@latest
+RUN npm install -g pnpm@latest turbo@latest
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
