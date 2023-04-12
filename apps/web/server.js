@@ -16,6 +16,8 @@ if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
 
 
 AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
+AWSXRay.captureHTTPsGlobal(require("http"))
+AWSXRay.captureHTTPsGlobal(require("https"))
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const webHost = new URL(process.env.WEB_HOST || "http://localhost:3000")
@@ -26,9 +28,6 @@ const nextApp = next({
   port,
   dev,
 })
-
-AWSXRay.captureHTTPsGlobal(require("http"))
-AWSXRay.captureHTTPsGlobal(require("https"))
 
 oidc.then(({ getOidcProvider }) => {
   nextApp.prepare().then(() => {
