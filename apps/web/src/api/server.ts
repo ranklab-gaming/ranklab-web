@@ -10,6 +10,8 @@ import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
 import AWSXRay from "aws-xray-sdk"
 
+AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
+
 function camelize(json: Record<string, any>) {
   return transform<any, Record<string, any>>(
     json,
