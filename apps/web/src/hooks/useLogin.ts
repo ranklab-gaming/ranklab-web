@@ -15,7 +15,7 @@ export function useLogin(userType: UserType) {
 
     if (response.ok) {
       const json = await response.json()
-      await router.push(json.location)
+      window.location.href = json.location
       return
     }
 
