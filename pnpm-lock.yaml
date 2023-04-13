@@ -159,8 +159,8 @@ importers:
         specifier: 18.15.11
         version: 18.15.11
       '@types/oidc-provider':
-        specifier: 8.1.1
-        version: 8.1.1
+        specifier: 8.1.2
+        version: 8.1.2
       '@types/react':
         specifier: 18.0.35
         version: 18.0.35
@@ -1398,8 +1398,8 @@ packages:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
     dev: false
 
-  /@types/oidc-provider@8.1.1:
-    resolution: {integrity: sha512-mfcUrWDZ+/TWUfKZBV6uE+zzZYVUZ5QI8eQQsAf6PTfimKnlpcduWiypKhcnEOBepAJI4Ho+mKAkCNXrNJGOgg==}
+  /@types/oidc-provider@8.1.2:
+    resolution: {integrity: sha512-BuPhEmwcw1uMh0CNGDZl1z5Nw7sqAA0xtSFgZg5i7ATJuSBwz4RuC5MfIL4cOVtwkfwZXhXODdmA7PRA0/31Gw==}
     dependencies:
       '@types/koa': 2.13.6
     dev: true
