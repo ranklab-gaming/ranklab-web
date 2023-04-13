@@ -8,7 +8,7 @@ import {
 import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
 import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
-import AWSXRay, { Segment, Subsegment } from "aws-xray-sdk"
+import AWSXRay from "aws-xray-sdk"
 
 AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
 
@@ -40,31 +40,8 @@ export class ServerApi extends RanklabApi {
       apiKey,
       basePath: apiHost,
       async fetchApi(input, init = {}) {
-        function getRootSegment(
-          segment?: Segment | Subsegment
-        ): Segment | undefined {
-          if (!segment) {
-            return
-          }
-
-          if ("parent" in segment) {
-            return getRootSegment(segment.parent)
-          }
-
-          return segment
-        }
-
-        const root = getRootSegment(AWSXRay.getSegment())
-
         return AWSXRay.captureAsyncFunc(hostname, async (subsegment) => {
           try {
-            init.headers = {
-              ...(init.headers ?? {}),
-              "x-amzn-trace-id": `Root=${root?.trace_id};Parent=${
-                subsegment?.id
-              };Sampled=${subsegment?.notTraced ? "0" : "1"}`,
-            }
-
             const response = await fetch(input, init)
 
             subsegment?.addAttribute("http", {
