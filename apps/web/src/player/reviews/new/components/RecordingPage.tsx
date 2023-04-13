@@ -41,30 +41,6 @@ import NextImage from "next/image"
 
 const newRecordingId = "NEW_RECORDING"
 
-const FormSchema = yup.object().shape({
-  recordingId: yup.string().required("Recording is required"),
-  newRecordingTitle: yup.string().when("recordingId", {
-    is: newRecordingId,
-    then: () => yup.string().required("Title is required"),
-  }),
-  newRecordingVideo: yup.mixed().when("recordingId", {
-    is: newRecordingId,
-    then: () =>
-      yup
-        .mixed()
-        .test(
-          "required",
-          "Video is required",
-          (value) => value && value instanceof File && value.size > 0
-        )
-        .test(
-          "fileSize",
-          "Video file must be less than 4GiB",
-          (value) => value && value instanceof File && value.size < 4294967296
-        ),
-  }),
-})
-
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
@@ -100,7 +76,7 @@ export const PlayerReviewsNewRecordingPage = ({
     formSchema = formSchema.shape({
       newRecordingMetadata: yup.object().when("recordingId", {
         is: newRecordingId,
-        then: () => yup.object().required("Metadata is required"),
+        then: () => yup.object().required("PGN is required"),
       }),
     })
   } else {
@@ -138,7 +114,7 @@ export const PlayerReviewsNewRecordingPage = ({
     setValue,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver<yup.ObjectSchema<any>>(formSchema),
     defaultValues,
   })
 
