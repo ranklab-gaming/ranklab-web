@@ -6,8 +6,8 @@ const next = require("next")
 const { loadEnvConfig } = require("@next/env")
 const dev = process.env.NODE_ENV !== "production"
 
-loadEnvConfig("./", dev)
 process.chdir(__dirname)
+loadEnvConfig("./", dev)
 
 if (!process.env.NEXT_MANUAL_SIG_HANDLE) {
   process.on("SIGTERM", () => process.exit(0))

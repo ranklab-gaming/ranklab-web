@@ -13,7 +13,12 @@ export const getServerSideProps = withUserSsr<Props>(
   async function (ctx) {
     const { createServerApi } = await import("@/api/server")
     const api = await createServerApi(ctx.req)
-    const recordings = await api.playerRecordingsList()
+
+    const [user, recordings] = await Promise.all([
+      ctx.user,
+      api.playerRecordingsList(),
+    ])
+
     const review = ctx.req.session.review
 
     if (!review) {
@@ -28,7 +33,7 @@ export const getServerSideProps = withUserSsr<Props>(
     return {
       props: {
         recordings: recordings.filter(
-          (recording) => recording.gameId === ctx.user.gameId
+          (recording) => recording.gameId === user.gameId
         ),
         recordingId: review.recordingId ?? null,
       },
