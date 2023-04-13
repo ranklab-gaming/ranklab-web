@@ -4,7 +4,7 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next"
-import { CoachUser, PlayerUser, PropsWithUser } from "../auth"
+import { CoachUser, PlayerUser, PropsWithUser, User } from "../auth"
 import { withSessionSsr } from "@/session"
 
 function userFromCoach(coach: Coach): CoachUser {
@@ -16,7 +16,7 @@ function userFromPlayer(player: Player): PlayerUser {
 }
 
 type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
-  ctx: PropsWithUser<GetServerSidePropsContext>
+  ctx: GetServerSidePropsContext & { user: Promise<User> }
 ) => Promise<GetServerSidePropsResult<P>>
 
 export function withUserSsr<P extends { [key: string]: any }>(
@@ -51,15 +51,15 @@ export function withUserSsr<P extends { [key: string]: any }>(
         }
       }
 
-      const user =
+      const fetchUser =
         userType === "coach"
-          ? userFromCoach(await api.coachAccountGet())
-          : userFromPlayer(await api.playerAccountGet())
+          ? api.coachAccountGet().then(userFromCoach)
+          : api.playerAccountGet().then(userFromPlayer)
 
       let res
 
       try {
-        res = await getServerSideProps({ ...ctx, user })
+        res = await getServerSideProps({ ...ctx, user: fetchUser })
       } catch (e: unknown) {
         if (!(e instanceof ResponseError)) {
           throw e
@@ -87,7 +87,7 @@ export function withUserSsr<P extends { [key: string]: any }>(
         return res
       }
 
-      const props = await res.props
+      const [user, props] = await Promise.all([fetchUser, res.props])
 
       return {
         props: { ...props, user },

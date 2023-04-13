@@ -11,8 +11,11 @@ interface Props {
 export const getServerSideProps = withUserSsr<Props>("coach", async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx.req)
-  const reviews = await api.coachReviewsList({ archived: true })
-  const games = await api.gameList()
+
+  const [reviews, games] = await Promise.all([
+    api.coachReviewsList({ archived: true }),
+    api.gameList(),
+  ])
 
   return {
     props: {

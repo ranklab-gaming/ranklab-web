@@ -13,9 +13,12 @@ export const getServerSideProps = withUserSsr<Props>("coach", async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const id = ctx.query.id as string
   const api = await createServerApi(ctx.req)
-  const review = await api.coachReviewsGet({ id })
-  const games = await api.gameList()
-  const comments = await api.coachCommentsList({ reviewId: id })
+
+  const [review, games, comments] = await Promise.all([
+    api.coachReviewsGet({ id }),
+    api.gameList(),
+    api.coachCommentsList({ reviewId: id }),
+  ])
 
   return {
     props: {

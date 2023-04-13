@@ -16,13 +16,13 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
   const api = await createServerApi(ctx.req)
   const review = await api.playerReviewsGet({ id })
 
-  const paymentMethods =
+  const [paymentMethods, games, comments] = await Promise.all([
     review.state === "AwaitingPayment"
-      ? await api.playerStripePaymentMethodsList()
-      : []
-
-  const games = await api.gameList()
-  const comments = await api.playerCommentsList({ reviewId: id })
+      ? api.playerStripePaymentMethodsList()
+      : [],
+    api.gameList(),
+    api.playerCommentsList({ reviewId: id }),
+  ])
 
   return {
     props: {
