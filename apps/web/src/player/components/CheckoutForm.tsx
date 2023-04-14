@@ -343,7 +343,14 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
-                  <ChessBoard />
+                  {recording.videoKey ? (
+                    <RecordingVideo
+                      recording={recording}
+                      style={{ maxHeight: 600 }}
+                    />
+                  ) : (
+                    <ChessBoard pgn={recording.metadata.chess.pgn} />
+                  )}
                 </Stack>
               </CardContent>
             </Card>

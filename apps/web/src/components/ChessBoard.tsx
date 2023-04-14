@@ -1,7 +1,12 @@
 import { Box } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 
-export const ChessBoard = () => {
+interface Props {
+  pgn: string
+  onPathChange?: (path: string) => void
+}
+
+export const ChessBoard = ({ pgn, onPathChange }: Props) => {
   const url =
     process.env.NODE_ENV === "development"
       ? "http://ranklab-web:8080"
@@ -12,19 +17,15 @@ export const ChessBoard = () => {
 
   useEffect(() => {
     function handleMessage(event: any) {
-      if (event.data.type === "shapes") {
-        console.log(event.data.shapes)
-      }
-
-      if (event.data.type === "move") {
-        console.log(event.data.move)
+      if (event.data.type === "pathChange") {
+        onPathChange?.(event.data.path)
       }
 
       if (event.data.type === "ready") {
         iframeRef.current?.contentWindow?.postMessage(
           {
             type: "loadPgn",
-            pgn: "e4",
+            pgn: pgn,
           },
           "*"
         )
@@ -41,7 +42,7 @@ export const ChessBoard = () => {
   }, [])
 
   return (
-    <Box>
+    <Box width={"100%"}>
       {showIframe ? (
         <iframe
           src={url}

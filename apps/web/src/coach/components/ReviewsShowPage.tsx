@@ -21,6 +21,7 @@ import {
 import { LoadingButton } from "@mui/lab"
 import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
+import { ChessBoard } from "@/components/ChessBoard"
 
 interface Props {
   review: Review
@@ -134,13 +135,20 @@ export const CoachReviewsShowPage = ({
           ) : undefined
         }
         recordingElement={
-          <Recording
-            recording={recording}
-            onTimeUpdate={setVideoTimestamp}
-            videoRef={videoRef}
-            form={form}
-            editing={editing}
-          />
+          recording.videoKey ? (
+            <Recording
+              recording={recording}
+              onTimeUpdate={setVideoTimestamp}
+              videoRef={videoRef}
+              form={form}
+              editing={editing}
+            />
+          ) : (
+            <ChessBoard
+              pgn={recording.metadata.chess.pgn}
+              onPathChange={(path) => {}}
+            />
+          )
         }
         commentListElement={
           <CommentList
