@@ -5,6 +5,34 @@ const AWSXRay = require("aws-xray-sdk")
 const next = require("next")
 const { loadEnvConfig } = require("@next/env")
 const dev = process.env.NODE_ENV !== "production"
+const pino = require("pino-http")
+
+let logger = {
+  serializers: {
+    req: (req) => ({
+      id: req.id,
+      method: req.method,
+      url: req.url,
+      headers: Object.entries(req.headers).reduce(
+        (acc, [key, value]) =>
+          key === "cookie" ? acc : { ...acc, [key]: value },
+        {}
+      ),
+    }),
+  },
+}
+
+if (dev) {
+  logger = {
+    ...logger,
+    transport: {
+      target: "pino-pretty",
+      options: {
+        colorize: true,
+      },
+    },
+  }
+}
 
 process.chdir(__dirname)
 loadEnvConfig("./", dev)
@@ -36,6 +64,7 @@ oidc.then(({ getOidcProvider }) => {
       oidcProvider.proxy = true
     }
 
+    app.use(pino(logger))
     app.use(xrayExpress.openSegment("ranklab-web"))
     app.use("/oidc", oidcProvider.callback())
 
