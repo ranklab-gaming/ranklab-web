@@ -73,7 +73,7 @@ export const CommentList = ({
                     <Stack spacing={2}>
                       <Stack direction="row" alignItems="center" spacing={2}>
                         <Typography variant="body2">
-                          {comment.videoTimestamp
+                          {comment.videoTimestamp != null
                             ? formatDuration(comment.videoTimestamp / 1000000)
                             : currentChessMove
                             ? formatMove(comment.metadata.chess.move)
