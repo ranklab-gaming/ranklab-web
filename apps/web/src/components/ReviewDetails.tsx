@@ -18,9 +18,10 @@ interface Props {
   review: Review
   games: Game[]
   title: string
-  recordingElement: JSX.Element
+  recordingElement?: JSX.Element
   commentListElement: JSX.Element
   titleActionsElement?: JSX.Element
+  chessBoardElement?: JSX.Element
 }
 
 export const ReviewDetails = ({
@@ -31,6 +32,7 @@ export const ReviewDetails = ({
   titleActionsElement,
   title,
   children,
+  chessBoardElement,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const recording = assertProp(review, "recording")
@@ -76,14 +78,18 @@ export const ReviewDetails = ({
                 borderBottomRightRadius: 0,
               }}
             >
-              <Box
-                height="70vh"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box position="relative">{recordingElement}</Box>
-              </Box>
+              {recordingElement ? (
+                <Box
+                  height="70vh"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Box position="relative">{recordingElement}</Box>
+                </Box>
+              ) : (
+                chessBoardElement
+              )}
             </Paper>
             <Paper
               elevation={4}

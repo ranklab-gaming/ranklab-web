@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react"
 
 interface Props {
   pgn: string
-  onPathChange?: (path: string) => void
+  onMove?: (move: any) => void
 }
 
-export const ChessBoard = ({ pgn, onPathChange }: Props) => {
+export const ChessBoard = ({ pgn, onMove }: Props) => {
   const url =
     process.env.NODE_ENV === "development"
       ? "http://ranklab-web:8080"
@@ -17,8 +17,8 @@ export const ChessBoard = ({ pgn, onPathChange }: Props) => {
 
   useEffect(() => {
     function handleMessage(event: any) {
-      if (event.data.type === "pathChange") {
-        onPathChange?.(event.data.path)
+      if (event.data.type === "move") {
+        onMove?.(event.data.move)
       }
 
       if (event.data.type === "ready") {

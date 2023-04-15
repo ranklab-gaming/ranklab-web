@@ -19,7 +19,12 @@ import {
   DialogTitle,
   IconButton,
 } from "@mui/material"
-import { Review, ReviewState, Comment } from "@ranklab/api"
+import {
+  Review,
+  ReviewState,
+  Comment,
+  CreateCommentRequest,
+} from "@ranklab/api"
 import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
@@ -41,6 +46,7 @@ interface Props {
   onStopEditing: () => void
   editing: boolean
   form: UseFormReturn<CommentFormValues>
+  currentChessBoardPath?: string
 }
 
 export const CommentList = ({
@@ -57,6 +63,7 @@ export const CommentList = ({
     handleSubmit,
     formState: { isSubmitting },
   },
+  currentChessBoardPath,
 }: Props) => {
   const theme = useTheme()
   const [starting, setStarting] = useState(false)
@@ -107,13 +114,29 @@ export const CommentList = ({
     let comment: Comment
 
     if (!selectedComment) {
+      let params: CreateCommentRequest = {
+        reviewId: review.id,
+        body: values.body,
+        drawing: values.drawing,
+      }
+
+      if (review.recording?.metadata) {
+        params = {
+          ...params,
+          metadata: {
+            chess: {
+              path: currentChessBoardPath,
+            },
+          },
+        }
+      } else {
+        params = {
+          ...params,
+          videoTimestamp: videoTimestamp,
+        }
+      }
       comment = await api.coachCommentsCreate({
-        createCommentRequest: {
-          reviewId: review.id,
-          body: values.body,
-          drawing: values.drawing,
-          videoTimestamp,
-        },
+        createCommentRequest: params,
       })
     } else {
       comment = await api.coachCommentsUpdate({

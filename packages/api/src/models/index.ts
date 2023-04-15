@@ -358,7 +358,7 @@ export interface CreateCommentRequest {
    * @type {number}
    * @memberof CreateCommentRequest
    */
-  videoTimestamp: number
+  videoTimestamp?: number | null
   /**
    *
    * @type {string}
@@ -371,6 +371,12 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   drawing: string
+  /**
+   *
+   * @type {any}
+   * @memberof CreateCommentRequest
+   */
+  metadata?: any | null
 }
 /**
  *
