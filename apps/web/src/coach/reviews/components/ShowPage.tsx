@@ -202,7 +202,7 @@ export const CoachReviewsShowPage = ({
             ) : undefined
           }
           recordingElement={
-            recording.videoKey ? (
+            recording.gameId !== "chess" ? (
               <Recording
                 recording={recording}
                 videoRef={videoRef}

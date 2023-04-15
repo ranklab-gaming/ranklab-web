@@ -19,6 +19,7 @@ import { Game, Recording, RecordingState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
+import { RecordingVideo } from "@/player/components/RecordingVideo"
 
 interface Props {
   recordings: Recording[]
@@ -106,20 +107,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                       <>
                         <DialogTitle>{selectedRecording.title}</DialogTitle>
                         <DialogContent sx={{ mt: 2 }}>
-                          <video
-                            style={{
-                              objectFit: "cover",
-                              width: "100%",
-                              height: "100%",
-                              maxHeight: 600,
-                            }}
-                            controls
-                          >
-                            <source
-                              src={`${uploadsCdnUrl}/${selectedRecording.videoKey}`}
-                              type="video/mp4"
-                            />
-                          </video>
+                          <RecordingVideo recording={selectedRecording} />
                         </DialogContent>
                         <DialogActions>
                           <Button
