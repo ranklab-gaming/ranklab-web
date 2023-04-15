@@ -3,6 +3,7 @@ import valorant from "@/images/games/valorant.svg"
 import hearthstone from "@/images/games/hearthstone.svg"
 import r6s from "@/images/games/r6s.png"
 import test from "@/images/games/test.png"
+import chess from "@/images/games/chess.png"
 import { Avatar } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { forwardRef } from "react"
@@ -13,6 +14,7 @@ const logos = {
   hearthstone,
   r6s,
   test,
+  chess,
 }
 
 interface Props {

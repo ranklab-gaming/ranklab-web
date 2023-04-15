@@ -1,4 +1,5 @@
 import { animateFade } from "@/animate/fade"
+import { ChessBoard } from "@/components/ChessBoard"
 import { VideoPlayer, VideoPlayerRef } from "@/components/VideoPlayer"
 import { uploadsCdnUrl } from "@/config"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
@@ -34,11 +35,13 @@ export const Recording = ({
       justifyContent="center"
     >
       <Box position="relative">
-        {recording.state === RecordingState.Processed ? (
+        {recording.videoKey === null ? (
+          <ChessBoard pgn={recording.metadata.chess.pgn} />
+        ) : recording.state === RecordingState.Processed ? (
           <VideoPlayer
             ref={videoRef}
             src={`${uploadsCdnUrl}/${recording.videoKey}`}
-            type={recording.mimeType}
+            type="video/mp4"
             onPlay={onPlay}
             onSeeked={onSeeked}
           />

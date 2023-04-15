@@ -49,6 +49,7 @@ import { api } from "@/api"
 import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
+import { ChessBoard } from "@/components/ChessBoard"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -342,10 +343,14 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
-                  <RecordingVideo
-                    recording={recording}
-                    style={{ maxHeight: 600 }}
-                  />
+                  {recording.videoKey ? (
+                    <RecordingVideo
+                      recording={recording}
+                      style={{ maxHeight: 600 }}
+                    />
+                  ) : (
+                    <ChessBoard pgn={recording.metadata.chess.pgn} />
+                  )}
                 </Stack>
               </CardContent>
             </Card>

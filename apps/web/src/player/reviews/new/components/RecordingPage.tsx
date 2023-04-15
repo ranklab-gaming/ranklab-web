@@ -20,7 +20,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { Recording, RecordingState } from "@ranklab/api"
+import { CreateRecordingRequest, Recording, RecordingState } from "@ranklab/api"
 import { useUpload } from "@/hooks/useUpload"
 import { useRouter } from "next/router"
 import { useState } from "react"
@@ -29,7 +29,6 @@ import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { updateSessionReview } from "@/api"
-import { assertProp } from "@/assert"
 import { GuideDialog } from "./RecordingPage/GuideDialog"
 import { formatBytes } from "@/player/helpers/formatBytes"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
@@ -41,34 +40,11 @@ import NextImage from "next/image"
 
 const newRecordingId = "NEW_RECORDING"
 
-const FormSchema = yup.object().shape({
-  recordingId: yup.string().required("Recording is required"),
-  newRecordingTitle: yup.string().when("recordingId", {
-    is: newRecordingId,
-    then: () => yup.string().required("Title is required"),
-  }),
-  newRecordingVideo: yup.mixed().when("recordingId", {
-    is: newRecordingId,
-    then: () =>
-      yup
-        .mixed()
-        .test(
-          "required",
-          "Video is required",
-          (value) => value && value instanceof File && value.size > 0
-        )
-        .test(
-          "fileSize",
-          "Video file must be less than 4GiB",
-          (value) => value && value instanceof File && value.size < 4294967296
-        ),
-  }),
-})
-
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
   newRecordingVideo?: File
+  newRecordingMetadata?: any
 }
 
 interface Props {
@@ -87,6 +63,43 @@ export const PlayerReviewsNewRecordingPage = ({
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
+  let formSchema = yup.object().shape({
+    recordingId: yup.string().required("Recording is required"),
+    newRecordingTitle: yup.string().when("recordingId", {
+      is: newRecordingId,
+      then: () => yup.string().required("Title is required"),
+    }),
+  })
+
+  if (player.gameId === "chess") {
+    formSchema = formSchema.shape({
+      newRecordingMetadata: yup.object().when("recordingId", {
+        is: newRecordingId,
+        then: () => yup.object().required("PGN is required"),
+      }),
+    })
+  } else {
+    formSchema = formSchema.shape({
+      newRecordingVideo: yup.mixed().when("recordingId", {
+        is: newRecordingId,
+        then: () =>
+          yup
+            .mixed()
+            .test(
+              "required",
+              "Video is required",
+              (value) => value && value instanceof File && value.size > 0
+            )
+            .test(
+              "fileSize",
+              "Video file must be less than 4GiB",
+              (value) =>
+                value && value instanceof File && value.size < 4294967296
+            ),
+      }),
+    })
+  }
+
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
     newRecordingTitle: "",
@@ -100,13 +113,14 @@ export const PlayerReviewsNewRecordingPage = ({
     setValue,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver<yup.ObjectSchema<any>>(formSchema),
     defaultValues,
   })
 
   const recordingId = watch("recordingId")
   const newRecordingVideo = watch("newRecordingVideo")
   const newRecordingTitle = watch("newRecordingTitle")
+  const newRecordingMetadata = watch("newRecordingMetadata")
 
   const selectedRecording =
     recordingId === newRecordingId
@@ -119,59 +133,66 @@ export const PlayerReviewsNewRecordingPage = ({
     let recordingId = values.recordingId
 
     if (values.recordingId === newRecordingId) {
-      const newRecordingVideo = assertProp(values, "newRecordingVideo")
+      let request: CreateRecordingRequest = {
+        title: values.newRecordingTitle,
+        skillLevel: player.skillLevel,
+        gameId: player.gameId,
+      }
+
+      if (newRecordingMetadata) {
+        request = {
+          ...request,
+          metadata: newRecordingMetadata,
+        }
+      }
 
       const recording = await api.playerRecordingsCreate({
-        createRecordingRequest: {
-          mimeType: newRecordingVideo.type,
-          size: newRecordingVideo.size,
-          title: values.newRecordingTitle,
-          skillLevel: player.skillLevel,
-          gameId: player.gameId,
-        },
+        createRecordingRequest: request,
       })
 
-      if (!recording.uploadUrl) {
-        throw new Error("uploadUrl is missing")
-      }
+      if (newRecordingVideo) {
+        if (!recording.uploadUrl) {
+          throw new Error("uploadUrl is missing")
+        }
 
-      await upload({
-        file: newRecordingVideo,
-        url: recording.uploadUrl,
-        headers: {
-          "X-Amz-Acl": "public-read",
-        },
-      })
-
-      const waitForRecordingUploaded = async (
-        retries = 10
-      ): Promise<boolean> => {
-        const updatedRecording = await api.playerRecordingsGet({
-          id: recording.id,
+        await upload({
+          file: newRecordingVideo,
+          url: recording.uploadUrl,
+          headers: {
+            "X-Amz-Acl": "public-read",
+          },
         })
 
-        if (updatedRecording.state !== RecordingState.Created) {
-          return true
-        }
+        const waitForRecordingUploaded = async (
+          retries = 10
+        ): Promise<boolean> => {
+          const updatedRecording = await api.playerRecordingsGet({
+            id: recording.id,
+          })
 
-        if (retries === 0) {
-          return false
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        return waitForRecordingUploaded(retries - 1)
-      }
-
-      if (!(await waitForRecordingUploaded())) {
-        enqueueSnackbar(
-          "There was an error uploading your recording. Please try again later.",
-          {
-            variant: "error",
+          if (updatedRecording.state !== RecordingState.Created) {
+            return true
           }
-        )
 
-        return
+          if (retries === 0) {
+            return false
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+
+          return waitForRecordingUploaded(retries - 1)
+        }
+
+        if (!(await waitForRecordingUploaded())) {
+          enqueueSnackbar(
+            "There was an error uploading your recording. Please try again later.",
+            {
+              variant: "error",
+            }
+          )
+
+          return
+        }
       }
 
       recordingId = recording.id
@@ -261,66 +282,93 @@ export const PlayerReviewsNewRecordingPage = ({
                   />
                   {recordingId === newRecordingId && (
                     <Stack spacing={3}>
-                      <Controller
-                        name="newRecordingVideo"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <VideoFileSelect
-                            {...field}
-                            onChange={(file) => {
-                              if (!newRecordingTitle && file) {
-                                setValue(
-                                  "newRecordingTitle",
-                                  file.name.split(".")[0],
-                                  {
-                                    shouldDirty: true,
-                                    shouldTouch: true,
-                                    shouldValidate: true,
-                                  }
+                      {user.gameId === "chess" ? (
+                        <Controller
+                          name="newRecordingMetadata"
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <TextField
+                              {...field}
+                              onChange={(event) => {
+                                field.onChange({
+                                  chess: {
+                                    pgn: event.currentTarget.value,
+                                  },
+                                })
+                              }}
+                              value={field.value?.chess?.pgn}
+                              label="PGN"
+                              error={Boolean(error)}
+                              multiline
+                              rows={4}
+                              helperText={
+                                error ? error.message : "The game PGN file"
+                              }
+                            />
+                          )}
+                        />
+                      ) : (
+                        <Controller
+                          name="newRecordingVideo"
+                          control={control}
+                          render={({ field, fieldState: { error } }) => (
+                            <VideoFileSelect
+                              {...field}
+                              onChange={(file) => {
+                                if (!newRecordingTitle && file) {
+                                  setValue(
+                                    "newRecordingTitle",
+                                    file.name.split(".")[0],
+                                    {
+                                      shouldDirty: true,
+                                      shouldTouch: true,
+                                      shouldValidate: true,
+                                    }
+                                  )
+                                }
+
+                                field.onChange(file)
+                              }}
+                              error={Boolean(error)}
+                              helperText={
+                                error ? (
+                                  error.message
+                                ) : (
+                                  <>
+                                    <Typography
+                                      variant="caption"
+                                      color="textSecondary"
+                                    >
+                                      Not sure how to record your gameplay?
+                                      Check out{" "}
+                                      <Link
+                                        color="secondary.main"
+                                        fontWeight="bold"
+                                        component="button"
+                                        sx={{
+                                          verticalAlign: "baseline",
+                                        }}
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          setGuideDialogOpen(true)
+                                        }}
+                                      >
+                                        our guide
+                                      </Link>
+                                      .
+                                    </Typography>
+                                    <GuideDialog
+                                      open={guideDialogOpen}
+                                      onClose={() => setGuideDialogOpen(false)}
+                                    />
+                                  </>
                                 )
                               }
-
-                              field.onChange(file)
-                            }}
-                            error={Boolean(error)}
-                            helperText={
-                              error ? (
-                                error.message
-                              ) : (
-                                <>
-                                  <Typography
-                                    variant="caption"
-                                    color="textSecondary"
-                                  >
-                                    Not sure how to record your gameplay? Check
-                                    out{" "}
-                                    <Link
-                                      color="secondary.main"
-                                      fontWeight="bold"
-                                      component="button"
-                                      sx={{
-                                        verticalAlign: "baseline",
-                                      }}
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        setGuideDialogOpen(true)
-                                      }}
-                                    >
-                                      our guide
-                                    </Link>
-                                    .
-                                  </Typography>
-                                  <GuideDialog
-                                    open={guideDialogOpen}
-                                    onClose={() => setGuideDialogOpen(false)}
-                                  />
-                                </>
-                              )
-                            }
-                          />
-                        )}
-                      />
+                            />
+                          )}
+                        />
+                      )}
                       <Controller
                         name="newRecordingTitle"
                         control={control}

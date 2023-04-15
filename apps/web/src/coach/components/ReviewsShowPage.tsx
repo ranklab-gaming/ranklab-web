@@ -21,6 +21,7 @@ import {
 import { LoadingButton } from "@mui/lab"
 import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
+import { ChessBoard } from "@/components/ChessBoard"
 
 interface Props {
   review: Review
@@ -46,6 +47,9 @@ export const CoachReviewsShowPage = ({
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
   const [videoTimestamp, setVideoTimestamp] = useState(0)
+  const [currentChessBoardPath, setCurrentChessBoardPath] = useState<
+    string | undefined
+  >(undefined)
   const videoRef = useRef<VideoPlayerRef>(null)
   const [editing, setEditing] = useState(false)
   const [showPublishDialog, setShowPublishDialog] = useState(false)
@@ -134,13 +138,25 @@ export const CoachReviewsShowPage = ({
           ) : undefined
         }
         recordingElement={
-          <Recording
-            recording={recording}
-            onTimeUpdate={setVideoTimestamp}
-            videoRef={videoRef}
-            form={form}
-            editing={editing}
-          />
+          recording.videoKey ? (
+            <Recording
+              recording={recording}
+              onTimeUpdate={setVideoTimestamp}
+              videoRef={videoRef}
+              form={form}
+              editing={editing}
+            />
+          ) : undefined
+        }
+        chessBoardElement={
+          recording.metadata ? (
+            <ChessBoard
+              pgn={recording.metadata.chess.pgn}
+              onMove={(move) => {
+                console.log(move)
+              }}
+            />
+          ) : undefined
         }
         commentListElement={
           <CommentList
@@ -171,6 +187,7 @@ export const CoachReviewsShowPage = ({
               form.reset()
               setEditing(false)
             }}
+            currentChessBoardPath={currentChessBoardPath}
           />
         }
       />

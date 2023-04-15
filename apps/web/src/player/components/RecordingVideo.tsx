@@ -24,7 +24,7 @@ export const RecordingVideo = ({ recording, style }: Props) => {
       >
         <source
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
-          type={recording.mimeType}
+          type="video/mp4"
         />
       </video>
     )
