@@ -29,12 +29,12 @@ export const Recording = ({
 }: Props) => {
   return (
     <Box
-      height={recording.videoKey ? "70vh" : "100%"}
-      display={recording.videoKey ? "flex" : undefined}
-      alignItems={recording.videoKey ? "center" : undefined}
-      justifyContent={recording.videoKey ? "center" : undefined}
+      height="70vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
     >
-      <Box position="relative" width={"100%"}>
+      <Box position="relative">
         {recording.videoKey === null ? (
           <ChessBoard pgn={recording.metadata.chess.pgn} />
         ) : recording.state === RecordingState.Processed ? (

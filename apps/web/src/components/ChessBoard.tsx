@@ -42,7 +42,7 @@ export const ChessBoard = ({ pgn, onMove }: Props) => {
   }, [])
 
   return (
-    <Box width={"100%"}>
+    <Box>
       {showIframe ? (
         <iframe
           src={url}
