@@ -29,19 +29,18 @@ export const Recording = ({
 }: Props) => {
   return (
     <Box
-      height="70vh"
       display="flex"
       alignItems="center"
       justifyContent="center"
+      height="100%"
     >
       <Box position="relative">
-        {recording.videoKey === null ? (
+        {recording.gameId == "chess" ? (
           <ChessBoard pgn={recording.metadata.chess.pgn} />
         ) : recording.state === RecordingState.Processed ? (
           <VideoPlayer
             ref={videoRef}
             src={`${uploadsCdnUrl}/${recording.videoKey}`}
-            type="video/mp4"
             onPlay={onPlay}
             onSeeked={onSeeked}
           />

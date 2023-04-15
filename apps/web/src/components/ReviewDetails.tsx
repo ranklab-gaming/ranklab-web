@@ -21,7 +21,6 @@ interface Props {
   recordingElement?: JSX.Element
   commentListElement: JSX.Element
   titleActionsElement?: JSX.Element
-  chessBoardElement?: JSX.Element
 }
 
 export const ReviewDetails = ({
@@ -32,7 +31,6 @@ export const ReviewDetails = ({
   titleActionsElement,
   title,
   children,
-  chessBoardElement,
 }: PropsWithChildren<Props>) => {
   const theme = useTheme()
   const recording = assertProp(review, "recording")
@@ -73,44 +71,25 @@ export const ReviewDetails = ({
               elevation={4}
               sx={{
                 backgroundColor: theme.palette.common.black,
-                overflow: "hidden",
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
+                height: "70vh",
               }}
             >
-              {recordingElement ? (
-                <Box
-                  height="70vh"
-                  display="flex"
+              <Box display="flex" flexDirection="column" height="100%">
+                {recordingElement}
+                <Stack
+                  direction="row"
                   alignItems="center"
-                  justifyContent="center"
+                  spacing={2}
+                  p={2}
+                  borderTop={`1px dashed ${theme.palette.grey[900]}`}
                 >
-                  <Box position="relative">{recordingElement}</Box>
-                </Box>
-              ) : (
-                <Box height="100%" width="100%">
-                  {chessBoardElement}
-                </Box>
-              )}
-            </Paper>
-            <Paper
-              elevation={4}
-              sx={{
-                borderTop: `1px dashed ${theme.palette.grey[900]}`,
-                bgcolor: theme.palette.common.black,
-                backgroundColor: theme.palette.common.black,
-                overflow: "hidden",
-                borderTopLeftRadius: 0,
-                borderTopRightRadius: 0,
-              }}
-            >
-              <Stack direction="row" alignItems="center" spacing={2} p={2}>
-                <Typography variant="caption" mb={0}>
-                  {recording.title}
-                </Typography>
-                <Chip label={skillLevel.name} size="small" />
-                <Chip label={game.name} size="small" />
-              </Stack>
+                  <Typography variant="caption" mb={0}>
+                    {recording.title}
+                  </Typography>
+                  <Chip label={skillLevel.name} size="small" />
+                  <Chip label={game.name} size="small" />
+                </Stack>
+              </Box>
             </Paper>
           </Sticky>
         </Grid>
