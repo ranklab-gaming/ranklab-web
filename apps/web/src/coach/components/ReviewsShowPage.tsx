@@ -46,10 +46,12 @@ export const CoachReviewsShowPage = ({
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
-  const [videoTimestamp, setVideoTimestamp] = useState(0)
-  const [currentChessBoardPath, setCurrentChessBoardPath] = useState<
-    string | undefined
-  >(undefined)
+  const [videoTimestamp, setVideoTimestamp] = useState<number | undefined>(
+    undefined
+  )
+  const [currentChessMove, setCurrentChessMove] = useState<string | undefined>(
+    undefined
+  )
   const videoRef = useRef<VideoPlayerRef>(null)
   const [editing, setEditing] = useState(false)
   const [showPublishDialog, setShowPublishDialog] = useState(false)
@@ -152,9 +154,7 @@ export const CoachReviewsShowPage = ({
           recording.metadata ? (
             <ChessBoard
               pgn={recording.metadata.chess.pgn}
-              onMove={(move) => {
-                console.log(move)
-              }}
+              onMove={setCurrentChessMove}
             />
           ) : undefined
         }
@@ -187,7 +187,7 @@ export const CoachReviewsShowPage = ({
               form.reset()
               setEditing(false)
             }}
-            currentChessBoardPath={currentChessBoardPath}
+            currentChessMove={currentChessMove}
           />
         }
       />

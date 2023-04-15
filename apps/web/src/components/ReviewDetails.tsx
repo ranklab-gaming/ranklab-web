@@ -88,7 +88,9 @@ export const ReviewDetails = ({
                   <Box position="relative">{recordingElement}</Box>
                 </Box>
               ) : (
-                chessBoardElement
+                <Box height="100%" width="100%">
+                  {chessBoardElement}
+                </Box>
               )}
             </Paper>
             <Paper

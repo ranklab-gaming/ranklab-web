@@ -18,6 +18,7 @@ export const ChessBoard = ({ pgn, onMove }: Props) => {
   useEffect(() => {
     function handleMessage(event: any) {
       if (event.data.type === "move") {
+        console.log(event.data.move)
         onMove?.(event.data.move)
       }
 
@@ -41,17 +42,13 @@ export const ChessBoard = ({ pgn, onMove }: Props) => {
     }
   }, [])
 
-  return (
-    <Box>
-      {showIframe ? (
-        <iframe
-          src={url}
-          width="100%"
-          height="700"
-          frameBorder="0"
-          ref={iframeRef}
-        />
-      ) : null}
-    </Box>
-  )
+  return showIframe ? (
+    <iframe
+      src={url}
+      width="100%"
+      height="700"
+      frameBorder="0"
+      ref={iframeRef}
+    />
+  ) : null
 }

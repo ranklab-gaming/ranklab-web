@@ -35,18 +35,19 @@ import { Editor } from "@/components/Editor"
 import { animateFade } from "@/animate/fade"
 import { CommentFormValues } from "@/coach/components/ReviewsShowPage"
 import Sticky from "react-stickynode"
+import { formatMove } from "@/utils/chess"
 
 interface Props {
   review: Review
   comments: Comment[]
-  videoTimestamp: number
+  videoTimestamp?: number
   onReviewChange: (review: Review) => void
   onCommentsChange: (comments: Comment[]) => void
   onStartEditing: (comment?: Comment) => void
   onStopEditing: () => void
   editing: boolean
   form: UseFormReturn<CommentFormValues>
-  currentChessBoardPath?: string
+  currentChessMove?: any
 }
 
 export const CommentList = ({
@@ -63,7 +64,7 @@ export const CommentList = ({
     handleSubmit,
     formState: { isSubmitting },
   },
-  currentChessBoardPath,
+  currentChessMove,
 }: Props) => {
   const theme = useTheme()
   const [starting, setStarting] = useState(false)
@@ -125,7 +126,7 @@ export const CommentList = ({
           ...params,
           metadata: {
             chess: {
-              path: currentChessBoardPath,
+              move: currentChessMove,
             },
           },
         }
@@ -256,7 +257,11 @@ export const CommentList = ({
           <Stack spacing={2}>
             <Stack direction="row" alignItems="center" spacing={2}>
               <Typography variant="body2" mr="auto">
-                {formatDuration(videoTimestamp / 1000000)}
+                {videoTimestamp
+                  ? formatDuration(videoTimestamp / 1000000)
+                  : currentChessMove
+                  ? formatMove(currentChessMove)
+                  : null}
               </Typography>
               {selectedComment ? (
                 <Box>
@@ -378,7 +383,12 @@ export const CommentList = ({
                 color="primary"
                 fullWidth
               >
-                Add Comment at {formatDuration(videoTimestamp / 1000000)}
+                Add Comment
+                {videoTimestamp
+                  ? ` at ${formatDuration(videoTimestamp / 1000000)}`
+                  : currentChessMove
+                  ? ` at ${formatMove(currentChessMove)}`
+                  : ""}
               </Button>
             </Paper>
           ) : null}
@@ -411,6 +421,8 @@ export const CommentList = ({
                       <Typography variant="body2">
                         {comment.videoTimestamp
                           ? formatDuration(comment.videoTimestamp / 1000000)
+                          : currentChessMove
+                          ? formatMove(comment.metadata.chess.move)
                           : null}
                       </Typography>
                       <AnimatePresence initial={false}>
