@@ -20,6 +20,7 @@ import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
 import ConfirmationButton from "@/components/ConfirmationDialog"
 import { ChessBoard } from "@/components/ChessBoard"
+import { ChessToolbar } from "@/coach/reviews/components/ShowPage/Recording/ChessToolbar"
 
 interface Props {
   review: Review
@@ -217,10 +218,21 @@ export const CoachReviewsShowPage = ({
                 selectedComment={selectedComment}
               />
             ) : (
-              <ChessBoard
-                pgn={recording.metadata.chess.pgn}
-                onMove={setCurrentChessMove}
-              />
+              <>
+                <ChessToolbar
+                  commenting={commenting}
+                  onCommentingChange={setCommenting}
+                  comments={comments}
+                  onCommentsChange={setComments}
+                  onCommentSelect={handleCommentSelect}
+                  selectedComment={selectedComment}
+                  form={form}
+                />
+                <ChessBoard
+                  pgn={recording.metadata.chess.pgn}
+                  onMove={setCurrentChessMove}
+                />
+              </>
             )
           }
           commentListElement={
