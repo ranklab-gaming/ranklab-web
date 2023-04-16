@@ -131,7 +131,7 @@ export function getOidcProvider() {
     },
   }
 
-  provider = new Provider(webHost, config)
+  provider = new Provider("https://auth.ranklab.gg", config)
 
   provider.on("interaction.started", (ctx) => {
     const cookieHeader = ctx.res.getHeader("set-cookie")
