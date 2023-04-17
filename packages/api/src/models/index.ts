@@ -240,12 +240,6 @@ export interface Comment {
    * @type {string}
    * @memberof Comment
    */
-  drawing: string
-  /**
-   *
-   * @type {string}
-   * @memberof Comment
-   */
   preview: string
   /**
    *
@@ -353,12 +347,6 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   reviewId: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCommentRequest
-   */
-  drawing: string
   /**
    *
    * @type {any}
@@ -1010,10 +998,10 @@ export interface UpdateCommentRequest {
   body: string
   /**
    *
-   * @type {string}
+   * @type {any}
    * @memberof UpdateCommentRequest
    */
-  drawing: string
+  metadata: any | null
 }
 /**
  *

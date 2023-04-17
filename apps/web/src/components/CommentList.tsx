@@ -73,7 +73,7 @@ export const CommentList = ({
                     <Stack spacing={2}>
                       <Stack direction="row" alignItems="center" spacing={2}>
                         <Typography variant="body2">
-                          {comment.metadata.video.timestamp != null
+                          {comment.metadata.video?.timestamp !== undefined
                             ? formatDuration(
                                 comment.metadata.video.timestamp / 1000000
                               )

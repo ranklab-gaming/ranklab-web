@@ -19,8 +19,14 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
 import ConfirmationButton from "@/components/ConfirmationDialog"
-import { ChessBoard } from "@/components/ChessBoard"
+import { ChessBoard, ChessBoardRef } from "@/components/ChessBoard"
 import { ChessToolbar } from "@/coach/reviews/components/ShowPage/Recording/ChessToolbar"
+import { animateFade } from "@/animate/fade"
+import { Editor } from "@/components/Editor"
+import { theme } from "@/theme/theme"
+import { alpha, FormHelperText, Box } from "@mui/material"
+import { AnimatePresence, m } from "framer-motion"
+import { Controller } from "react-hook-form"
 
 interface Props {
   review: Review
@@ -32,30 +38,17 @@ const CommentFormSchema = yup
   .object()
   .shape({
     body: yup.string().defined(),
-    drawing: yup.string().defined(),
-    metadata: yup
-      .object()
-      .shape({
-        video: yup
-          .object()
-          .shape({
-            timestamp: yup.number().defined(),
-          })
-          .optional(),
-        chess: yup
-          .object()
-          .shape({
-            move: yup.object().defined(),
-          })
-          .optional(),
-      })
-      .defined(),
+    metadata: yup.mixed().defined(),
   })
   .test(
-    "either-body-or-drawing",
-    "You must provide either a body or a drawing",
+    "either-body-or-drawing-or-chess-move",
+    "You must provide either a body or a drawing or a chess move",
     (obj) => {
-      return !!(obj.body || obj.drawing)
+      return !!(
+        obj.body ||
+        (obj.metadata as any).video?.drawing ||
+        (obj.metadata as any).chess?.move
+      )
     }
   )
 
@@ -72,13 +65,10 @@ export const CoachReviewsShowPage = ({
   const player = assertProp(review, "player")
   const recording = assertProp(review, "recording")
   const videoRef = useRef<VideoPlayerRef>(null)
+  const chessBoardRef = useRef<ChessBoardRef>(null)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [commenting, setCommenting] = useState(false)
   const [drawing, setDrawing] = useState(false)
-
-  const [currentChessMove, setCurrentChessMove] = useState<string | undefined>(
-    undefined
-  )
 
   const publishReview = async () => {
     const updatedReview = await api.coachReviewsUpdate({
@@ -99,7 +89,6 @@ export const CoachReviewsShowPage = ({
     resolver: yupResolver<yup.ObjectSchema<any>>(CommentFormSchema),
     defaultValues: {
       body: "",
-      drawing: "",
       metadata: {},
     },
   })
@@ -110,22 +99,7 @@ export const CoachReviewsShowPage = ({
     const params: CreateCommentRequest = {
       reviewId: review.id,
       body: values.body,
-      drawing: values.drawing,
-      metadata: {},
-    }
-
-    if (review.recording?.gameId === "chess") {
-      params.metadata = {
-        chess: {
-          move: currentChessMove,
-        },
-      }
-    } else {
-      params.metadata = {
-        video: {
-          timestamp: values.metadata.video?.timestamp,
-        },
-      }
+      metadata: values.metadata,
     }
 
     if (!selectedComment) {
@@ -137,7 +111,7 @@ export const CoachReviewsShowPage = ({
         id: selectedComment.id,
         updateCommentRequest: {
           body: values.body,
-          drawing: values.drawing,
+          metadata: values.metadata,
         },
       })
     }
@@ -152,8 +126,8 @@ export const CoachReviewsShowPage = ({
         : [comment, ...comments]
       ).sort(
         (a, b) =>
-          (a.metadata.video.timestamp ?? a.metadata.chess.move.ply ?? 0) -
-          (b.metadata.video.timestamp ?? a.metadata.chess.move.ply ?? 0)
+          (a.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0) -
+          (b.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0)
       )
     )
 
@@ -162,17 +136,17 @@ export const CoachReviewsShowPage = ({
 
   const handleCommentSelect = (comment: Comment | null, shouldPause = true) => {
     if (comment) {
-      if (comment.drawing) {
+      if (comment.metadata.video?.drawing) {
         setDrawing(true)
       }
 
-      form.setValue("drawing", comment.drawing, {
+      form.setValue("metadata", comment.metadata, {
         shouldDirty: true,
         shouldValidate: true,
         shouldTouch: true,
       })
 
-      if (comment.body) {
+      if (recording.gameId === "chess" || comment.body) {
         setCommenting(true)
       }
 
@@ -182,8 +156,10 @@ export const CoachReviewsShowPage = ({
         shouldTouch: true,
       })
 
-      if (comment.metadata.video.timestamp != null) {
+      if (comment.metadata.video?.timestamp !== undefined) {
         videoRef.current?.seekTo(comment.metadata.video.timestamp)
+      } else if (comment.metadata.chess?.move !== undefined) {
+        chessBoardRef.current?.move(comment.metadata.chess.move)
       }
     } else {
       setDrawing(false)
@@ -197,6 +173,8 @@ export const CoachReviewsShowPage = ({
 
     setSelectedComment(comment)
   }
+
+  const metadata = form.watch("metadata")
 
   return (
     <DashboardLayout
@@ -249,8 +227,73 @@ export const CoachReviewsShowPage = ({
                 />
                 <ChessBoard
                   pgn={recording.metadata.chess.pgn}
-                  onMove={setCurrentChessMove}
-                />
+                  onMove={(move) =>
+                    form.setValue("metadata", {
+                      chess: {
+                        move,
+                      },
+                    })
+                  }
+                  ref={chessBoardRef}
+                >
+                  <AnimatePresence mode="popLayout">
+                    {commenting ? (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          zIndex: 999999,
+                        }}
+                        component={m.div}
+                        variants={animateFade().in}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                      >
+                        <Controller
+                          name="body"
+                          control={form.control}
+                          render={({ field, fieldState: { error } }) => (
+                            <Box>
+                              <Editor
+                                value={field.value}
+                                onChange={(value) => {
+                                  const element = document.createElement("div")
+                                  element.innerHTML = value
+
+                                  if (!element.textContent) {
+                                    field.onChange("")
+                                  } else {
+                                    field.onChange(value)
+                                  }
+                                }}
+                                onBlur={field.onBlur}
+                                error={Boolean(error)}
+                                sx={{
+                                  backgroundColor: alpha(
+                                    theme.palette.common.black,
+                                    0.75
+                                  ),
+                                  height: 200,
+                                  borderWidth: 0,
+                                  borderRadius: 0,
+                                }}
+                              />
+                              <FormHelperText
+                                error={Boolean(error)}
+                                sx={{ px: 2 }}
+                              >
+                                {error ? error.message : null}
+                              </FormHelperText>
+                            </Box>
+                          )}
+                        />
+                      </Box>
+                    ) : null}
+                  </AnimatePresence>
+                </ChessBoard>
               </>
             )
           }
@@ -261,7 +304,7 @@ export const CoachReviewsShowPage = ({
               onCommentSelect={handleCommentSelect}
               onReviewChange={setReview}
               selectedComment={selectedComment}
-              currentChessMove={currentChessMove}
+              currentChessMove={(metadata as any).chess?.move}
             />
           }
         />
