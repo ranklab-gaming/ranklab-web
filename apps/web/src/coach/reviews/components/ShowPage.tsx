@@ -20,6 +20,7 @@ import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
 import ConfirmationButton from "@/components/ConfirmationDialog"
 import { ChessBoard } from "@/components/ChessBoard"
+import { ChessToolbar } from "@/coach/reviews/components/ShowPage/Recording/ChessToolbar"
 
 interface Props {
   review: Review
@@ -32,7 +33,23 @@ const CommentFormSchema = yup
   .shape({
     body: yup.string().defined(),
     drawing: yup.string().defined(),
-    videoTimestamp: yup.number().defined(),
+    metadata: yup
+      .object()
+      .shape({
+        video: yup
+          .object()
+          .shape({
+            timestamp: yup.number().defined(),
+          })
+          .optional(),
+        chess: yup
+          .object()
+          .shape({
+            move: yup.object().defined(),
+          })
+          .optional(),
+      })
+      .defined(),
   })
   .test(
     "either-body-or-drawing",
@@ -83,32 +100,31 @@ export const CoachReviewsShowPage = ({
     defaultValues: {
       body: "",
       drawing: "",
-      videoTimestamp: 0,
+      metadata: {},
     },
   })
 
   const saveComment = async (values: CommentFormValues) => {
     let comment: Comment
 
-    let params: CreateCommentRequest = {
+    const params: CreateCommentRequest = {
       reviewId: review.id,
       body: values.body,
       drawing: values.drawing,
+      metadata: {},
     }
 
-    if (review.recording?.metadata) {
-      params = {
-        ...params,
-        metadata: {
-          chess: {
-            move: currentChessMove,
-          },
+    if (review.recording?.gameId === "chess") {
+      params.metadata = {
+        chess: {
+          move: currentChessMove,
         },
       }
     } else {
-      params = {
-        ...params,
-        videoTimestamp: values.videoTimestamp,
+      params.metadata = {
+        video: {
+          timestamp: values.metadata.video?.timestamp,
+        },
       }
     }
 
@@ -134,7 +150,11 @@ export const CoachReviewsShowPage = ({
       (selectedComment
         ? comments.map((c) => (c.id === comment.id ? comment : c))
         : [comment, ...comments]
-      ).sort((a, b) => (a.videoTimestamp ?? 0) - (b.videoTimestamp ?? 0))
+      ).sort(
+        (a, b) =>
+          (a.metadata.video.timestamp ?? a.metadata.chess.move.ply ?? 0) -
+          (b.metadata.video.timestamp ?? a.metadata.chess.move.ply ?? 0)
+      )
     )
 
     handleCommentSelect(null)
@@ -162,8 +182,8 @@ export const CoachReviewsShowPage = ({
         shouldTouch: true,
       })
 
-      if (comment.videoTimestamp != null) {
-        videoRef.current?.seekTo(comment.videoTimestamp)
+      if (comment.metadata.video.timestamp != null) {
+        videoRef.current?.seekTo(comment.metadata.video.timestamp)
       }
     } else {
       setDrawing(false)
@@ -217,10 +237,21 @@ export const CoachReviewsShowPage = ({
                 selectedComment={selectedComment}
               />
             ) : (
-              <ChessBoard
-                pgn={recording.metadata.chess.pgn}
-                onMove={setCurrentChessMove}
-              />
+              <>
+                <ChessToolbar
+                  commenting={commenting}
+                  onCommentingChange={setCommenting}
+                  comments={comments}
+                  onCommentsChange={setComments}
+                  onCommentSelect={handleCommentSelect}
+                  selectedComment={selectedComment}
+                  form={form}
+                />
+                <ChessBoard
+                  pgn={recording.metadata.chess.pgn}
+                  onMove={setCurrentChessMove}
+                />
+              </>
             )
           }
           commentListElement={

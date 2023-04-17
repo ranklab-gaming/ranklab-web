@@ -237,12 +237,6 @@ export interface Comment {
   body: string
   /**
    *
-   * @type {number}
-   * @memberof Comment
-   */
-  videoTimestamp?: number | null
-  /**
-   *
    * @type {string}
    * @memberof Comment
    */
@@ -258,7 +252,7 @@ export interface Comment {
    * @type {any}
    * @memberof Comment
    */
-  metadata?: any | null
+  metadata: any | null
 }
 /**
  *
@@ -355,12 +349,6 @@ export interface CreateCommentRequest {
   body: string
   /**
    *
-   * @type {number}
-   * @memberof CreateCommentRequest
-   */
-  videoTimestamp?: number | null
-  /**
-   *
    * @type {string}
    * @memberof CreateCommentRequest
    */
@@ -376,7 +364,7 @@ export interface CreateCommentRequest {
    * @type {any}
    * @memberof CreateCommentRequest
    */
-  metadata?: any | null
+  metadata: any | null
 }
 /**
  *

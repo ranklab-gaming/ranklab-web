@@ -107,7 +107,9 @@ export const Recording = ({
       >
         <VideoPlayer
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
-          onTimeUpdate={(time) => form.setValue("videoTimestamp", time)}
+          onTimeUpdate={(time) =>
+            form.setValue("metadata", { video: { timestamp: time } })
+          }
           onSeeked={() => onCommentSelect(null)}
           onPause={() => onCommentSelect(null)}
           onPlay={() => onCommentSelect(null, false)}
