@@ -76,11 +76,34 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
         <iframe
           src={url}
           width="100%"
-          height="700"
+          height="100%"
           frameBorder="0"
+          scrolling="no"
           ref={iframeRef}
         />
-        {children}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              overflow: "hidden",
+              gridRowGap: "0",
+              height: "100%",
+              gridTemplateAreas: `
+              'board   side'
+            `,
+              gridTemplateColumns: `minmax(200px, calc(100vh - 4em)) minmax(232px, 1fr)`,
+            }}
+          >
+            {children}
+          </div>
+        </div>
       </div>
     ) : null
   }

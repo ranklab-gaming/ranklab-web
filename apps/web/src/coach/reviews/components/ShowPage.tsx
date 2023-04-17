@@ -238,59 +238,59 @@ export const CoachReviewsShowPage = ({
                 >
                   <AnimatePresence mode="popLayout">
                     {commenting ? (
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          zIndex: 999999,
-                        }}
-                        component={m.div}
-                        variants={animateFade().in}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                      >
-                        <Controller
-                          name="body"
-                          control={form.control}
-                          render={({ field, fieldState: { error } }) => (
-                            <Box>
-                              <Editor
-                                value={field.value}
-                                onChange={(value) => {
-                                  const element = document.createElement("div")
-                                  element.innerHTML = value
+                      <>
+                        <Box sx={{ gridArea: "board" }} />
+                        <Box
+                          sx={{
+                            gridArea: "side",
+                          }}
+                          component={m.div}
+                          variants={animateFade().in}
+                          initial="initial"
+                          animate="animate"
+                          exit="exit"
+                        >
+                          <Controller
+                            name="body"
+                            control={form.control}
+                            render={({ field, fieldState: { error } }) => (
+                              <Box>
+                                <Editor
+                                  value={field.value}
+                                  onChange={(value) => {
+                                    const element =
+                                      document.createElement("div")
+                                    element.innerHTML = value
 
-                                  if (!element.textContent) {
-                                    field.onChange("")
-                                  } else {
-                                    field.onChange(value)
-                                  }
-                                }}
-                                onBlur={field.onBlur}
-                                error={Boolean(error)}
-                                sx={{
-                                  backgroundColor: alpha(
-                                    theme.palette.common.black,
-                                    0.75
-                                  ),
-                                  height: 200,
-                                  borderWidth: 0,
-                                  borderRadius: 0,
-                                }}
-                              />
-                              <FormHelperText
-                                error={Boolean(error)}
-                                sx={{ px: 2 }}
-                              >
-                                {error ? error.message : null}
-                              </FormHelperText>
-                            </Box>
-                          )}
-                        />
-                      </Box>
+                                    if (!element.textContent) {
+                                      field.onChange("")
+                                    } else {
+                                      field.onChange(value)
+                                    }
+                                  }}
+                                  onBlur={field.onBlur}
+                                  error={Boolean(error)}
+                                  sx={{
+                                    backgroundColor: alpha(
+                                      theme.palette.common.black,
+                                      0.75
+                                    ),
+                                    height: "100%",
+                                    borderWidth: 0,
+                                    borderRadius: 0,
+                                  }}
+                                />
+                                <FormHelperText
+                                  error={Boolean(error)}
+                                  sx={{ px: 2 }}
+                                >
+                                  {error ? error.message : null}
+                                </FormHelperText>
+                              </Box>
+                            )}
+                          />
+                        </Box>
+                      </>
                     ) : null}
                   </AnimatePresence>
                 </ChessBoard>
