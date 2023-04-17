@@ -91,8 +91,8 @@ const Content = ({
           onCommentSelect={(comment) => {
             setSelectedComment(comment)
 
-            if (comment?.videoTimestamp != null) {
-              videoRef.current?.seekTo(comment.videoTimestamp)
+            if (comment?.metadata.video.timestamp != null) {
+              videoRef.current?.seekTo(comment.metadata.video.timestamp)
             }
           }}
           onReviewChange={setReview}
