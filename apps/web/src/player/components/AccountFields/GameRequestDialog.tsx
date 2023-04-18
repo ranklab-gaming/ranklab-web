@@ -47,7 +47,7 @@ export const GameRequestDialog = ({ open, onClose }: Props) => {
   })
 
   const requestGame = async (values: FormValues) => {
-    await api.gameCreate({
+    await api.playerGamesCreate({
       createGameRequest: {
         name: values.name,
         email: values.email,
