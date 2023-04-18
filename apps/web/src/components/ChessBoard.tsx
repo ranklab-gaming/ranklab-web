@@ -29,7 +29,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
 
     useImperativeHandle(ref, () => ({
       move: (move: any) => {
-        iframeRef.current?.contentWindow?.postMessage(
+        iframeRef.current?.contentWindow?.postMessage?.(
           {
             type: "move",
             move,
@@ -46,7 +46,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
         }
 
         if (event.data.type === "ready") {
-          iframeRef.current?.contentWindow?.postMessage(
+          iframeRef.current?.contentWindow?.postMessage?.(
             {
               type: "loadPgn",
               pgn: pgn,
