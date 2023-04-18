@@ -174,7 +174,7 @@ export const CoachReviewsShowPage = ({
     setSelectedComment(comment)
   }
 
-  const metadata = form.watch("metadata")
+  const metadata = form.watch("metadata") as any
 
   return (
     <DashboardLayout
@@ -230,7 +230,9 @@ export const CoachReviewsShowPage = ({
                   playerColor={recording.metadata.chess.playerColor}
                   onMove={(move) =>
                     form.setValue("metadata", {
+                      ...metadata,
                       chess: {
+                        ...metadata?.chess,
                         move,
                       },
                     })
