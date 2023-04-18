@@ -11,7 +11,7 @@ import {
 } from "@ranklab/api"
 import { Recording } from "./ShowPage/Recording"
 import { CommentList } from "./ShowPage/CommentList"
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { VideoPlayerRef } from "@/components/VideoPlayer"
 import * as yup from "yup"
 import { useForm } from "@/hooks/useForm"
@@ -69,6 +69,13 @@ export const CoachReviewsShowPage = ({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [commenting, setCommenting] = useState(false)
   const [drawing, setDrawing] = useState(false)
+  const orderedComments = useMemo(() => {
+    return comments.sort(
+      (a, b) =>
+        (a.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0) -
+        (b.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0)
+    )
+  }, [comments])
 
   const publishReview = async () => {
     const updatedReview = await api.coachReviewsUpdate({
@@ -121,14 +128,9 @@ export const CoachReviewsShowPage = ({
     })
 
     setComments(
-      (selectedComment
+      selectedComment
         ? comments.map((c) => (c.id === comment.id ? comment : c))
         : [comment, ...comments]
-      ).sort(
-        (a, b) =>
-          (a.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0) -
-          (b.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0)
-      )
     )
 
     handleCommentSelect(null)
@@ -302,7 +304,7 @@ export const CoachReviewsShowPage = ({
           }
           commentListElement={
             <CommentList
-              comments={comments}
+              comments={orderedComments}
               review={review}
               onCommentSelect={handleCommentSelect}
               onReviewChange={setReview}
