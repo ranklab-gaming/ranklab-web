@@ -5,10 +5,10 @@ interface IndexProps {
   games: Game[]
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { ServerApi } = await import("@/api/server")
   const api = new ServerApi()
-  const games = await api.gameList()
+  const games = await api.playerGamesList()
 
   return {
     props: {

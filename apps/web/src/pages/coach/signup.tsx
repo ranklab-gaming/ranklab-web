@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   const api = await createServerApi(ctx.req)
 
   const [games, availableCountries] = await Promise.all([
-    api.gameList(),
+    api.coachGamesList(),
     api.coachStripeCountrySpecsList(),
   ])
 

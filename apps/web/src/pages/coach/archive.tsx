@@ -14,7 +14,7 @@ export const getServerSideProps = withUserSsr<Props>("coach", async (ctx) => {
 
   const [reviews, games] = await Promise.all([
     api.coachReviewsList({ archived: true }),
-    api.gameList(),
+    api.coachGamesList(),
   ])
 
   return {

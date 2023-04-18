@@ -97,10 +97,6 @@ export interface CoachStripeLoginLinksCreateRequest {
   createLoginLink: CreateLoginLink
 }
 
-export interface GameCreateRequest {
-  createGameRequest: CreateGameRequest
-}
-
 export interface PlayerAccountCreateRequest {
   createPlayerRequest: CreatePlayerRequest
 }
@@ -115,6 +111,10 @@ export interface PlayerCoachesGetRequest {
 
 export interface PlayerCommentsListRequest {
   reviewId: string
+}
+
+export interface PlayerGamesCreateRequest {
+  createGameRequest: CreateGameRequest
 }
 
 export interface PlayerRecordingsCreateRequest {
@@ -521,6 +521,37 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
+  async coachGamesListRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<Game>>> {
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/games`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachGamesList(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<Game>> {
+    const response = await this.coachGamesListRaw(initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
   async coachReviewsGetRaw(
     requestParameters: CoachReviewsGetRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
@@ -794,83 +825,6 @@ export class RanklabApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     )
-    return await response.value()
-  }
-
-  /**
-   */
-  async gameCreateRaw(
-    requestParameters: GameCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<StatusResponse>> {
-    if (
-      requestParameters.createGameRequest === null ||
-      requestParameters.createGameRequest === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "createGameRequest",
-        "Required parameter requestParameters.createGameRequest was null or undefined when calling gameCreate."
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    headerParameters["Content-Type"] = "application/json"
-
-    const response = await this.request(
-      {
-        path: `/games`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: requestParameters.createGameRequest,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async gameCreate(
-    requestParameters: GameCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<StatusResponse> {
-    const response = await this.gameCreateRaw(requestParameters, initOverrides)
-    return await response.value()
-  }
-
-  /**
-   */
-  async gameListRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Array<Game>>> {
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/games`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async gameList(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Array<Game>> {
-    const response = await this.gameListRaw(initOverrides)
     return await response.value()
   }
 
@@ -1161,6 +1115,86 @@ export class RanklabApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     )
+    return await response.value()
+  }
+
+  /**
+   */
+  async playerGamesCreateRaw(
+    requestParameters: PlayerGamesCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (
+      requestParameters.createGameRequest === null ||
+      requestParameters.createGameRequest === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "createGameRequest",
+        "Required parameter requestParameters.createGameRequest was null or undefined when calling playerGamesCreate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/player/games`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.createGameRequest,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerGamesCreate(
+    requestParameters: PlayerGamesCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.playerGamesCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async playerGamesListRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<Game>>> {
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/player/games`,
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async playerGamesList(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<Game>> {
+    const response = await this.playerGamesListRaw(initOverrides)
     return await response.value()
   }
 

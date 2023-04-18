@@ -14,7 +14,7 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
 
   const [recordings, games] = await Promise.all([
     api.playerRecordingsList(),
-    api.gameList(),
+    api.playerGamesList(),
   ])
 
   return {

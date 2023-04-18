@@ -59,9 +59,9 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
 
   const defaultValues: FormValues = {
     bio: coach.bio,
-    gameId: coach.gameId,
     name: coach.name,
     email: coach.email,
+    gameId: coach.gameId,
     price: (coach.price / 100).toFixed(2),
     emailsEnabled: coach.emailsEnabled,
   }
@@ -83,7 +83,6 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       updateCoachRequest: {
         name: data.name,
         bio: data.bio,
-        gameId: data.gameId,
         email: data.email,
         price: Number(data.price) * 100,
         emailsEnabled: data.emailsEnabled,
@@ -152,7 +151,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                   earnings in real time.
                 </Alert>
               ) : null}
-              <AccountFields control={control} games={games} />
+              <AccountFields control={control} games={games} gameDisabled />
             </Stack>
             <LoadingButton
               color="primary"

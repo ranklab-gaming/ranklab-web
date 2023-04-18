@@ -964,12 +964,6 @@ export interface UpdateCoachRequest {
    * @type {string}
    * @memberof UpdateCoachRequest
    */
-  gameId: string
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateCoachRequest
-   */
   bio: string
   /**
    *

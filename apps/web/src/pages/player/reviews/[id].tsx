@@ -20,7 +20,7 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
     review.state === "AwaitingPayment"
       ? api.playerStripePaymentMethodsList()
       : [],
-    api.gameList(),
+    api.playerGamesList(),
     api.playerCommentsList({ reviewId: id }),
   ])
 

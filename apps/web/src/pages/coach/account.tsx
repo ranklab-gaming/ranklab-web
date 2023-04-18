@@ -13,7 +13,7 @@ export const getServerSideProps = withUserSsr<Props>("coach", async (ctx) => {
 
   return {
     props: {
-      games: await api.gameList(),
+      games: await api.coachGamesList(),
     },
   }
 })

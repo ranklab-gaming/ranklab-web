@@ -46,6 +46,7 @@ interface Props<
   games: Game[]
   control: Control<TFormValues>
   showPasswordField?: TWithPassword
+  gameDisabled?: boolean
 }
 
 export const AccountFields = <
@@ -55,6 +56,7 @@ export const AccountFields = <
   control,
   games,
   showPasswordField = false as TWithPassword,
+  gameDisabled = false,
 }: Props<TWithPassword, TFormValues>) => {
   return (
     <>
@@ -130,6 +132,7 @@ export const AccountFields = <
             {...field}
             games={games}
             error={Boolean(error)}
+            disabled={gameDisabled}
             helperText={
               error ? error.message : "The game you offer coaching for"
             }

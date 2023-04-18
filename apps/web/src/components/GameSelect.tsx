@@ -16,10 +16,19 @@ interface Props {
   onBlur: () => void
   error: boolean
   helperText?: string | JSX.Element
+  disabled?: boolean
 }
 
 export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
-  { games, onChange, value, onBlur, error, helperText }: Props,
+  {
+    games,
+    onChange,
+    value,
+    onBlur,
+    error,
+    helperText,
+    disabled = false,
+  }: Props,
   ref
 ) {
   return (
@@ -33,6 +42,7 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
         error={error}
         helperText={helperText}
         ref={ref}
+        disabled={disabled}
       >
         {games.map((game) => (
           <MenuItem
