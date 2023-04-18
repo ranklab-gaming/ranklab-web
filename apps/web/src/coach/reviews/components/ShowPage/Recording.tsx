@@ -61,6 +61,7 @@ export const Recording = ({
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const editing = commenting || drawing
+  const metadata = form.watch("metadata") as any
 
   useEffect(() => {
     if (boxRef.current === null) return
@@ -108,7 +109,13 @@ export const Recording = ({
         <VideoPlayer
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
           onTimeUpdate={(time) =>
-            form.setValue("metadata", { video: { timestamp: time } })
+            form.setValue("metadata", {
+              ...metadata,
+              video: {
+                ...metadata.video,
+                timestamp: time,
+              },
+            })
           }
           onSeeked={() => onCommentSelect(null)}
           onPause={() => onCommentSelect(null)}
@@ -119,13 +126,23 @@ export const Recording = ({
           {drawing && !resizing ? (
             <Drawing
               color={color}
-              value={form.watch("drawing")}
+              value={metadata.video?.drawing}
               onChange={(value) => {
-                form.setValue("drawing", value, {
-                  shouldDirty: true,
-                  shouldTouch: true,
-                  shouldValidate: true,
-                })
+                form.setValue(
+                  "metadata",
+                  {
+                    ...metadata,
+                    video: {
+                      ...metadata.video,
+                      drawing: value,
+                    },
+                  },
+                  {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  }
+                )
               }}
               ref={drawingRef}
             />

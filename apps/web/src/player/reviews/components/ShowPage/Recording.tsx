@@ -50,7 +50,7 @@ export const Recording = ({
         ) : (
           <RecordingVideo recording={recording} />
         )}
-        {selectedComment && selectedComment.drawing ? (
+        {selectedComment && selectedComment.metadata.video?.drawing ? (
           <Box
             component={m.div}
             variants={animateFade().in}
@@ -69,7 +69,7 @@ export const Recording = ({
                 pointerEvents: "none",
               }}
               dangerouslySetInnerHTML={{
-                __html: selectedComment.drawing,
+                __html: selectedComment.metadata.video?.drawing,
               }}
             />
           </Box>

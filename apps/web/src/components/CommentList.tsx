@@ -109,7 +109,7 @@ export const CommentList = ({
                           )}
                         </AnimatePresence>
                         <Box>
-                          {comment.drawing ? (
+                          {comment.metadata.video?.drawing ? (
                             <Tooltip title="Drawing">
                               <Iconify icon="mdi:draw" width={24} height={24} />
                             </Tooltip>
