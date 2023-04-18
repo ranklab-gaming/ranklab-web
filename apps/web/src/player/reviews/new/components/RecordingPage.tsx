@@ -11,10 +11,14 @@ import {
   Card,
   CardContent,
   Container,
+  FormControl,
+  FormHelperText,
+  InputLabel,
   LinearProgress,
   Link,
   MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -62,6 +66,8 @@ export const PlayerReviewsNewRecordingPage = ({
   const theme = useTheme()
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
+  const recordingLabel = player.gameId === "chess" ? "Game" : "Recording"
+  const lowercaseRecordingLabel = recordingLabel.toLowerCase()
 
   let formSchema = yup.object().shape({
     recordingId: yup.string().required("Recording is required"),
@@ -185,7 +191,7 @@ export const PlayerReviewsNewRecordingPage = ({
 
         if (!(await waitForRecordingUploaded())) {
           enqueueSnackbar(
-            "There was an error uploading your recording. Please try again later.",
+            `There was an error uploading your ${lowercaseRecordingLabel}. Please try again later.`,
             {
               variant: "error",
             }
@@ -205,7 +211,7 @@ export const PlayerReviewsNewRecordingPage = ({
   return (
     <DashboardLayout
       user={user}
-      title="Request a Review | Choose a Recording"
+      title={`Request a Review | Choose a ${recordingLabel}`}
       showTitle={false}
     >
       <Container maxWidth="lg">
@@ -221,7 +227,7 @@ export const PlayerReviewsNewRecordingPage = ({
                     render={({ field, fieldState: { error } }) => (
                       <TextField
                         select
-                        label="Recording"
+                        label={recordingLabel}
                         onChange={field.onChange}
                         value={field.value}
                         onBlur={field.onBlur}
@@ -229,11 +235,11 @@ export const PlayerReviewsNewRecordingPage = ({
                         helperText={
                           error
                             ? error.message
-                            : "The recording you want to be reviewed"
+                            : `The ${lowercaseRecordingLabel} you want to be reviewed`
                         }
                       >
                         <MenuItem value={newRecordingId}>
-                          New recording
+                          New {lowercaseRecordingLabel}
                         </MenuItem>
                         {recordings.map((recording) => (
                           <MenuItem key={recording.id} value={recording.id}>
@@ -283,30 +289,71 @@ export const PlayerReviewsNewRecordingPage = ({
                   {recordingId === newRecordingId && (
                     <Stack spacing={3}>
                       {user.gameId === "chess" ? (
-                        <Controller
-                          name="newRecordingMetadata"
-                          control={control}
-                          render={({ field, fieldState: { error } }) => (
-                            <TextField
-                              {...field}
-                              onChange={(event) => {
-                                field.onChange({
-                                  chess: {
-                                    pgn: event.currentTarget.value,
-                                  },
-                                })
-                              }}
-                              value={field.value?.chess?.pgn}
-                              label="PGN"
-                              error={Boolean(error)}
-                              multiline
-                              rows={4}
-                              helperText={
-                                error ? error.message : "The game PGN file"
-                              }
-                            />
-                          )}
-                        />
+                        <>
+                          <Controller
+                            name="newRecordingMetadata"
+                            control={control}
+                            render={({ field, fieldState: { error } }) => (
+                              <TextField
+                                {...field}
+                                onChange={(event) => {
+                                  field.onChange({
+                                    ...newRecordingMetadata,
+                                    chess: {
+                                      ...newRecordingMetadata?.chess,
+                                      pgn: event.currentTarget.value,
+                                    },
+                                  })
+                                }}
+                                value={field.value?.chess?.pgn}
+                                label="PGN"
+                                error={Boolean(error)}
+                                multiline
+                                rows={4}
+                                helperText={
+                                  error ? error.message : "The game PGN file"
+                                }
+                              />
+                            )}
+                          />
+                          <Controller
+                            name="newRecordingMetadata"
+                            control={control}
+                            render={({ field, fieldState: { error } }) => (
+                              <FormControl>
+                                <InputLabel>Color</InputLabel>
+                                <Select
+                                  {...field}
+                                  onChange={(event) => {
+                                    field.onChange({
+                                      ...newRecordingMetadata,
+                                      chess: {
+                                        ...newRecordingMetadata?.chess,
+                                        playerColor: event.target.value,
+                                      },
+                                    })
+                                  }}
+                                  value={field.value?.chess?.playerColor}
+                                  label="Color"
+                                  error={Boolean(error)}
+                                  defaultValue="white"
+                                >
+                                  <MenuItem key="white" value="white">
+                                    White
+                                  </MenuItem>
+                                  <MenuItem key="black" value="black">
+                                    Black
+                                  </MenuItem>
+                                </Select>
+                                <FormHelperText>
+                                  {error
+                                    ? error.message
+                                    : "The color you played as in the game"}
+                                </FormHelperText>
+                              </FormControl>
+                            )}
+                          />
+                        </>
                       ) : (
                         <Controller
                           name="newRecordingVideo"
@@ -380,7 +427,7 @@ export const PlayerReviewsNewRecordingPage = ({
                             helperText={
                               error
                                 ? error.message
-                                : "A title to help you remember this recording"
+                                : `A title to help you remember this ${lowercaseRecordingLabel}`
                             }
                           />
                         )}

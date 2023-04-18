@@ -36,7 +36,10 @@ export const Recording = ({
     >
       <Box position="relative">
         {recording.gameId == "chess" ? (
-          <ChessBoard pgn={recording.metadata.chess.pgn} />
+          <ChessBoard
+            pgn={recording.metadata.chess.pgn}
+            playerColor={recording.metadata.chess.playerColor}
+          />
         ) : recording.state === RecordingState.Processed ? (
           <VideoPlayer
             ref={videoRef}

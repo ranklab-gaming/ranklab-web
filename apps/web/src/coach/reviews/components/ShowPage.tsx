@@ -227,6 +227,7 @@ export const CoachReviewsShowPage = ({
                 />
                 <ChessBoard
                   pgn={recording.metadata.chess.pgn}
+                  playerColor={recording.metadata.chess.playerColor}
                   onMove={(move) =>
                     form.setValue("metadata", {
                       chess: {

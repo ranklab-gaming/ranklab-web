@@ -9,6 +9,7 @@ import {
 
 interface Props {
   pgn: string
+  playerColor: "white" | "black"
   onMove?: (move: any) => void
 }
 
@@ -17,7 +18,7 @@ export interface ChessBoardRef {
 }
 
 export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
-  ({ pgn, onMove, children }, ref) => {
+  ({ pgn, onMove, playerColor, children }, ref) => {
     const url =
       process.env.NODE_ENV === "development"
         ? "http://ranklab-web:8080"
@@ -49,6 +50,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
             {
               type: "loadPgn",
               pgn: pgn,
+              playerColor: playerColor,
             },
             "*"
           )
