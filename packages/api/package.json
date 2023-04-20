@@ -1,14 +1,11 @@
 {
   "name": "@ranklab/api",
-  "version": "1.0.0",
-  "description": "OpenAPI client for @ranklab/api",
-  "author": "OpenAPI-Generator",
+  "private": true,
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
-  "module": "./dist/esm/index.js",
   "sideEffects": false,
   "scripts": {
-    "build": "tsc && tsc -p tsconfig.esm.json"
+    "build": "tsc"
   },
   "devDependencies": {
     "typescript": "5.0.4"

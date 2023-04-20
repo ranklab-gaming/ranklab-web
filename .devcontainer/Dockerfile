@@ -16,3 +16,4 @@ ENV PATH="$HOME/.local/share/pnpm/bin:${PATH}"
 RUN pnpm config set store-dir $HOME/.local/share/pnpm/store
 RUN pnpm config set global-bin-dir $HOME/.local/share/pnpm/bin
 RUN pnpm config set package-import-method hardlink
+RUN pnpm install -g @openapitools/openapi-generator-cli

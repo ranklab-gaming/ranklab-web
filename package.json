@@ -1,9 +1,6 @@
 {
   "name": "@ranklab/ranklab",
   "private": true,
-  "keywords": [
-    "turbo"
-  ],
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -12,7 +9,6 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "2.6.0",
     "prettier": "2.8.7",
     "turbo": "1.9.1"
   }

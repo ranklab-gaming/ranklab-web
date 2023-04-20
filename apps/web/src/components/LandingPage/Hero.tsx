@@ -92,10 +92,10 @@ export const Hero = ({ games }: HeroProps) => {
 
   const gameWithMaxNameLength = useMemo(
     () =>
-      games.reduce((max, game) => {
-        if (game.name.length > max.name.length) return game
+      games.reduce<Game | null>((max, game) => {
+        if (game.name.length > (max ? max.name.length : 0)) return game
         return max
-      }),
+      }, null),
     [games]
   )
 
@@ -109,13 +109,15 @@ export const Hero = ({ games }: HeroProps) => {
       isDesktop ? 60 : 40
     }px ${theme.typography.fontFamily}`
 
+    if (!gameWithMaxNameLength) return
+
     const metrics = context.measureText(gameWithMaxNameLength.name)
     const textWidth = metrics.width
     const letterSpacing = gameWithMaxNameLength.name.length * 2
     const padding = parseInt(theme.spacing(2), 10)
 
     setGameNameWidth(textWidth + letterSpacing + padding)
-  }, [gameWithMaxNameLength.name, isDesktop, theme])
+  }, [gameWithMaxNameLength?.name, isDesktop, theme])
 
   useEffect(() => {
     if (boxRef.current === null) return
@@ -162,38 +164,40 @@ export const Hero = ({ games }: HeroProps) => {
               }}
             >
               Up your{" "}
-              <Box
-                display="inline-block"
-                sx={{
-                  borderRadius: 1,
-                  px: 1,
-                  my: 1,
-                  borderWidth: 1,
-                  borderStyle: "solid",
-                  borderColor: "primary.main",
-                  width: gameNameWidth,
-                }}
-              >
-                <AnimatePresence mode="popLayout">
-                  <Typography
-                    key={currentGame.id}
-                    component={m.div}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                    layout
-                    variants={animateFlip().inX}
-                    variant="h1"
-                    sx={{
-                      fontSize: isDesktop ? 60 : 40,
-                      color: "primary.main",
-                      display: "inline-block",
-                    }}
-                  >
-                    {currentGame.name}
-                  </Typography>
-                </AnimatePresence>
-              </Box>{" "}
+              {currentGame ? (
+                <Box
+                  display="inline-block"
+                  sx={{
+                    borderRadius: 1,
+                    px: 1,
+                    my: 1,
+                    borderWidth: 1,
+                    borderStyle: "solid",
+                    borderColor: "primary.main",
+                    width: gameNameWidth,
+                  }}
+                >
+                  <AnimatePresence mode="popLayout">
+                    <Typography
+                      key={currentGame.id}
+                      component={m.div}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      layout
+                      variants={animateFlip().inX}
+                      variant="h1"
+                      sx={{
+                        fontSize: isDesktop ? 60 : 40,
+                        color: "primary.main",
+                        display: "inline-block",
+                      }}
+                    >
+                      {currentGame.name}
+                    </Typography>
+                  </AnimatePresence>
+                </Box>
+              ) : null}{" "}
               game
               <br />
               with Ranklab.

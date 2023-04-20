@@ -1,4 +1,3 @@
-import { uploadsCdnUrl } from "@/config"
 import { formatDate } from "@/helpers/formatDate"
 import {
   Box,
