@@ -2,7 +2,7 @@
 
 set -e
 
-TS_POST_PROCESS_FILE="pnpm exec prettier --write" pnpm exec openapi-generator-cli generate \
+TS_POST_PROCESS_FILE="pnpm exec prettier --write" openapi-generator-cli generate \
   -i http://ranklab-api:8000/openapi.json \
   -o ./packages/api \
   -g typescript-fetch \
