@@ -18,7 +18,7 @@ export function assertFind<T>(
   const item = array.find(findFn)
 
   if (!item) {
-    throw new Error(message ?? `expected array to contain item`)
+    throw new Error(message ?? "expected array to contain item")
   }
 
   return item as NonNullable<T>

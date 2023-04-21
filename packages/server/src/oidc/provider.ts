@@ -110,10 +110,13 @@ const getOidcProvider = async () => {
     },
     jwks: authJwks,
     adapter: RedisAdapter,
-    renderError: async (ctx, _, error) => {
+    renderError: (ctx, _, error) => {
       console.error(error)
-      Sentry.captureException(error)
-      await Sentry.flush(2000)
+
+      Sentry.withScope((scope) => {
+        scope.setSDKProcessingMetadata({ request: ctx.request })
+        Sentry.captureException(error)
+      })
 
       if (error instanceof errors.OIDCProviderError) {
         if (error instanceof errors.SessionNotFound) {

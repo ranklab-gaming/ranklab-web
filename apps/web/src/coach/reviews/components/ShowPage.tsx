@@ -24,7 +24,7 @@ import { ChessToolbar } from "@/coach/reviews/components/ShowPage/Recording/Ches
 import { animateFade } from "@/animate/fade"
 import { Editor } from "@/components/Editor"
 import { theme } from "@/theme/theme"
-import { alpha, FormHelperText, Box } from "@mui/material"
+import { FormHelperText, Box } from "@mui/material"
 import { AnimatePresence, m } from "framer-motion"
 import { Controller } from "react-hook-form"
 

@@ -1,5 +1,5 @@
 import { Redis } from "ioredis"
-import * as lodash from "lodash"
+import lodash from "lodash"
 import { redisUrl } from "../config.js"
 
 const { isEmpty } = lodash
