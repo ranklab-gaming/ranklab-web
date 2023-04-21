@@ -2,8 +2,7 @@ import { assertProp } from "@/assert"
 import { apiHost, authClientSecret, host } from "@/config/server"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
-import { errors } from "oidc-provider"
-import { getOidcProvider } from "@ranklab/server/dist/oidc/provider"
+import { getOidcProvider, errors } from "@ranklab/server/dist/oidc/provider"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

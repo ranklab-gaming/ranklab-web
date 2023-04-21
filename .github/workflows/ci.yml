@@ -44,7 +44,6 @@ jobs:
           RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }}
           RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }}
-          RANKLAB_OIDC_ENABLED: false
         image: ghcr.io/ranklab-gaming/ranklab-api:latest
         credentials:
           username: $

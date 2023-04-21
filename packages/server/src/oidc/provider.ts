@@ -11,7 +11,7 @@ import {
 
 let provider: Provider | null = null
 
-export const getOidcProvider = async () => {
+const getOidcProvider = async () => {
   if (provider) {
     return provider
   }
@@ -146,3 +146,5 @@ export const getOidcProvider = async () => {
 
   return provider
 }
+
+export { getOidcProvider, errors }
