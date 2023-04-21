@@ -341,10 +341,18 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                       style={{ maxHeight: 600 }}
                     />
                   ) : (
-                    <ChessBoard
-                      pgn={recording.metadata.chess.pgn}
-                      playerColor={recording.metadata.chess.playerColor}
-                    />
+                    <Paper
+                      elevation={4}
+                      sx={{
+                        backgroundColor: theme.palette.common.black,
+                        height: "50vh",
+                      }}
+                    >
+                      <ChessBoard
+                        pgn={recording.metadata.chess.pgn}
+                        playerColor={recording.metadata.chess.playerColor}
+                      />
+                    </Paper>
                   )}
                 </Stack>
               </CardContent>
