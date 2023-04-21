@@ -1,6 +1,7 @@
 import { RedisAdapter } from "./redisAdapter.js"
 import Provider, { Configuration, errors } from "oidc-provider"
 import * as Sentry from "@sentry/node"
+
 import {
   authClientSecret,
   host,
@@ -23,8 +24,8 @@ const getOidcProvider = async () => {
         client_secret: authClientSecret,
         grant_types: ["refresh_token", "authorization_code"],
         token_endpoint_auth_method: "client_secret_post",
-        redirect_uris: [`${host}/api/auth/callback`],
-        post_logout_redirect_uris: [`${host}/api/auth/post-logout`],
+        redirect_uris: [`${host.origin}/api/auth/callback`],
+        post_logout_redirect_uris: [`${host.origin}/api/auth/post-logout`],
       },
     ],
     interactions: {

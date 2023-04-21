@@ -81,10 +81,6 @@ export default async () => {
   app.use(xrayExpress.closeSegment())
 
   app.listen(port, () => {
-    console.log(
-      "Listening on port",
-      port,
-      "url: http://" + hostname + ":" + port
-    )
+    console.log("Listening on port", port, "url: " + host.origin)
   })
 }
