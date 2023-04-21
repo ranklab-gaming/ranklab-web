@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:18-alpine
 
 ARG SENTRY_AUTH_TOKEN
 ARG NEXT_PUBLIC_ASSETS_CDN_URL
@@ -16,6 +16,7 @@ RUN npm install -g pnpm@latest
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/api/package.json ./packages/api/
+COPY packages/server/package.json ./packages/server/
 
 RUN pnpm install --frozen-lockfile
 RUN addgroup --system --gid 1001 nodejs
@@ -32,11 +33,6 @@ ENV NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
 ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
 ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
 ENV NEXT_PUBLIC_INTERCOM_APP_ID=${NEXT_PUBLIC_INTERCOM_APP_ID}
-ENV REDIS_URL=REDIS_URL
-ENV API_HOST=https://api.ranklab.gg
-ENV WEB_HOST=WEB_HOST
-ENV COOKIE_SECRET=COOKIE_SECRET
-ENV AUTH_CLIENT_SECRET=AUTH_CLIENT_SECRET
 
 RUN pnpm run build
 

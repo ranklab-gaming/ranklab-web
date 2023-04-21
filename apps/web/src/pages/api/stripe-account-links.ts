@@ -1,6 +1,6 @@
 import { createServerApi } from "@/api/server"
 import { getServerSession } from "@/auth/session"
-import { webHost } from "@/config/server"
+import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
@@ -23,8 +23,8 @@ const stripeAccountLinks = withSessionApiRoute(async function (
 
   const accountLink = await api.coachStripeAccountLinksCreate({
     createAccountLinkRequest: {
-      refreshUrl: `${webHost}/api/stripe-account-links?return_url=${returnUrl}`,
-      returnUrl: `${webHost}${returnUrl}`,
+      refreshUrl: `${host}/api/stripe-account-links?return_url=${returnUrl}`,
+      returnUrl: `${host}${returnUrl}`,
     },
   })
 

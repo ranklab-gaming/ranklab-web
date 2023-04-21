@@ -9,7 +9,7 @@
       "dependsOn": ["build"]
     },
     "dev": {
-      "dependsOn": ["@ranklab/api#build"],
+      "dependsOn": ["@ranklab/api#build", "@ranklab/server#build"],
       "cache": false,
       "persistent": true
     },

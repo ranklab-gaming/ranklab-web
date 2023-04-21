@@ -1,5 +1,5 @@
 import { getAuthClient } from "@/auth/session"
-import { webHost } from "@/config/server"
+import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 import { generators } from "openid-client"
@@ -18,7 +18,7 @@ const signin = withSessionApiRoute(async function (
 
   const url = client.authorizationUrl({
     scope: "openid offline_access",
-    resource: webHost,
+    resource: host,
     code_challenge: codeChallenge,
     code_challenge_method: "S256",
     intent: req.query.intent,

@@ -1,4 +1,4 @@
-import { webHost } from "@/config/server"
+import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
@@ -11,5 +11,5 @@ export default withSessionApiRoute(async function (
   delete req.session.returnUrl
   await req.session.save()
 
-  res.redirect(307, `${webHost}${returnUrl}`).end()
+  res.redirect(307, `${host}${returnUrl}`).end()
 })

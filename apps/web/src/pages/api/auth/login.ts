@@ -1,9 +1,9 @@
 import { assertProp } from "@/assert"
-import { apiHost, authClientSecret, webHost } from "@/config/server"
+import { apiHost, authClientSecret, host } from "@/config/server"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
 import { errors } from "oidc-provider"
-import { getOidcProvider } from "@oidc/provider"
+import { getOidcProvider } from "@ranklab/server/dist/oidc/provider"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -19,11 +19,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   )
 
   const accountId = assertProp(payload, "sub")
-  const oidcProvider = getOidcProvider()
+  const oidcProvider = await getOidcProvider()
   const grant = new oidcProvider.Grant({ accountId, clientId: "web" })
 
   grant.addOIDCScope("openid offline_access")
-  grant.addResourceScope(webHost, "openid offline_access")
+  grant.addResourceScope(host, "openid offline_access")
   const grantId = await grant.save()
 
   try {

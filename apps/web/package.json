@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node server.mjs",
     "build": "next build",
-    "start": "node server.js",
+    "start": "node server.mjs",
     "lint": "next lint"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "@mui/material": "5.12.1",
     "@next/env": "^13.3.0",
     "@ranklab/api": "workspace:*",
+    "@ranklab/server": "workspace:*",
     "@sentry/nextjs": "7.49.0",
     "@stripe/react-stripe-js": "2.1.0",
     "@stripe/stripe-js": "1.52.1",

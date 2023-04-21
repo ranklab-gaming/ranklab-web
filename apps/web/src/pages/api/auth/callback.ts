@@ -1,6 +1,6 @@
 import { assertProp } from "@/assert"
 import { getAuthClient, sessionFromToken } from "@/auth/session"
-import { webHost } from "@/config/server"
+import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
@@ -13,11 +13,9 @@ const callback = withSessionApiRoute(async function (
   const codeVerifier = req.session.codeVerifier
   const returnUrl = req.session.returnUrl
 
-  const tokenSet = await client.callback(
-    `${webHost}/api/auth/callback`,
-    params,
-    { code_verifier: codeVerifier }
-  )
+  const tokenSet = await client.callback(`${host}/api/auth/callback`, params, {
+    code_verifier: codeVerifier,
+  })
 
   const accessToken = assertProp(tokenSet, "access_token")
   const refreshToken = assertProp(tokenSet, "refresh_token")

@@ -1,6 +1,6 @@
 import { createServerApi } from "@/api/server"
 import { getServerSession } from "@/auth/session"
-import { webHost } from "@/config/server"
+import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
 
@@ -23,7 +23,7 @@ const stripeLoginLinks = withSessionApiRoute(async function (
 
   const loginLink = await api.coachStripeLoginLinksCreate({
     createLoginLink: {
-      returnUrl: `${webHost}${returnUrl}`,
+      returnUrl: `${host}${returnUrl}`,
     },
   })
 

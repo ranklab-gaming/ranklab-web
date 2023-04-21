@@ -117,7 +117,7 @@ export const Hero = ({ games }: HeroProps) => {
     const padding = parseInt(theme.spacing(2), 10)
 
     setGameNameWidth(textWidth + letterSpacing + padding)
-  }, [gameWithMaxNameLength?.name, isDesktop, theme])
+  }, [gameWithMaxNameLength, isDesktop, theme])
 
   useEffect(() => {
     if (boxRef.current === null) return

@@ -1,31 +1,30 @@
-import RedisAdapter from "./redisAdapter.js"
-import Provider, { errors } from "oidc-provider"
-import Sentry from "@sentry/nextjs"
+import { RedisAdapter } from "./redisAdapter.js"
+import Provider, { Configuration, errors } from "oidc-provider"
+import * as Sentry from "@sentry/node"
+import {
+  authClientSecret,
+  host,
+  cookieSecret,
+  authJwks,
+  authIssuer,
+} from "../config.js"
 
-let provider = null
+let provider: Provider | null = null
 
-export function getOidcProvider() {
+export const getOidcProvider = async () => {
   if (provider) {
     return provider
   }
 
-  const authJwks = JSON.parse(
-    Buffer.from(process.env.AUTH_JWKS, "base64").toString("utf8")
-  )
-
-  const authClientSecret = process.env.AUTH_CLIENT_SECRET
-  const webHost = process.env.WEB_HOST
-  const cookieSecret = process.env.COOKIE_SECRET
-
-  const config = {
+  const config: Configuration = {
     clients: [
       {
         client_id: "web",
         client_secret: authClientSecret,
         grant_types: ["refresh_token", "authorization_code"],
         token_endpoint_auth_method: "client_secret_post",
-        redirect_uris: [`${webHost}/api/auth/callback`],
-        post_logout_redirect_uris: [`${webHost}/api/auth/post-logout`],
+        redirect_uris: [`${host}/api/auth/callback`],
+        post_logout_redirect_uris: [`${host}/api/auth/post-logout`],
       },
     ],
     interactions: {
@@ -34,11 +33,11 @@ export function getOidcProvider() {
         const userType = interaction.params.user_type ?? "player"
         const invitationToken = interaction.params.token
 
-        if (!["coach", "player"].includes(userType)) {
+        if (!["coach", "player"].includes(userType as string)) {
           throw new Error(`invalid user type: ${userType}`)
         }
 
-        if (!["login", "signup"].includes(intent)) {
+        if (!["login", "signup"].includes(intent as string)) {
           throw new Error(`invalid intent: ${intent}`)
         }
 
@@ -100,7 +99,7 @@ export function getOidcProvider() {
       },
       resourceIndicators: {
         enabled: true,
-        defaultResource: () => webHost,
+        defaultResource: () => host.origin,
         useGrantedResource: () => true,
         getResourceServerInfo: () => ({
           scope: "openid",
@@ -131,7 +130,7 @@ export function getOidcProvider() {
     },
   }
 
-  provider = new Provider(process.env.AUTH_ISSUER, config)
+  provider = new Provider(authIssuer, config)
 
   provider.on("interaction.started", (ctx) => {
     const cookieHeader = ctx.res.getHeader("set-cookie")

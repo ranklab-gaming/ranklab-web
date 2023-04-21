@@ -1,5 +1,5 @@
 import { assertProp } from "@/assert"
-import { authClientSecret, webHost } from "@/config/server"
+import { authClientSecret, host } from "@/config/server"
 import { UserType } from "@ranklab/api"
 import { IncomingMessage } from "http"
 import { decodeJwt } from "jose"
@@ -13,7 +13,7 @@ async function getIssuer() {
     return issuer
   }
 
-  issuer = await Issuer.discover(`${webHost}/oidc`)
+  issuer = await Issuer.discover(`${host}/oidc`)
   return issuer
 }
 
@@ -27,7 +27,7 @@ export async function getAuthClient() {
   client = new issuer.Client({
     client_id: "web",
     client_secret: authClientSecret,
-    redirect_uris: [`${webHost}/api/auth/callback`],
+    redirect_uris: [`${host}/api/auth/callback`],
     response_types: ["code"],
   })
 
