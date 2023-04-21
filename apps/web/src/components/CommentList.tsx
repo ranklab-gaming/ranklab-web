@@ -18,14 +18,12 @@ interface Props {
   comments: Comment[]
   selectedComment: Comment | null
   onCommentSelect: (comment: Comment | null) => void
-  currentChessMove?: any
 }
 
 export const CommentList = ({
   comments,
   selectedComment,
   onCommentSelect,
-  currentChessMove,
 }: Props) => {
   return (
     <Card sx={{ minHeight: "100%" }}>
@@ -77,7 +75,7 @@ export const CommentList = ({
                             ? formatDuration(
                                 comment.metadata.video.timestamp / 1000000
                               )
-                            : currentChessMove
+                            : comment.metadata.chess?.move
                             ? formatMove(comment.metadata.chess.move)
                             : null}
                         </Typography>

@@ -10,7 +10,6 @@ interface Props {
   onCommentSelect: (comment: Comment | null) => void
   onReviewChange: (review: Review) => void
   selectedComment: Comment | null
-  currentChessMove?: any
 }
 
 export const CommentList = ({
@@ -19,7 +18,6 @@ export const CommentList = ({
   onReviewChange,
   selectedComment,
   onCommentSelect,
-  currentChessMove,
 }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
 
@@ -114,7 +112,6 @@ export const CommentList = ({
       comments={comments}
       selectedComment={selectedComment}
       onCommentSelect={onCommentSelect}
-      currentChessMove={currentChessMove}
     />
   )
 }

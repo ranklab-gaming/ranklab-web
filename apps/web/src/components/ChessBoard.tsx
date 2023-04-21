@@ -11,6 +11,7 @@ interface Props {
   pgn: string
   playerColor: "white" | "black"
   onMove?: (move: any) => void
+  onSideResize?: (dimensions: { width: number; height: number }) => void
 }
 
 export interface ChessBoardRef {
@@ -18,7 +19,7 @@ export interface ChessBoardRef {
 }
 
 export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
-  ({ pgn, onMove, playerColor, children }, ref) => {
+  ({ pgn, onMove, playerColor, onSideResize, children }, ref) => {
     const url =
       process.env.NODE_ENV === "development"
         ? "http://ranklab-web:8080"
@@ -43,6 +44,10 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       function handleMessage(event: any) {
         if (event.data.type === "move") {
           onMove?.(event.data.move)
+        }
+
+        if (event.data.type === "sideResize") {
+          onSideResize?.(event.data.dimensions)
         }
 
         if (event.data.type === "ready") {
@@ -84,29 +89,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           scrolling="no"
           ref={iframeRef}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              overflow: "hidden",
-              gridRowGap: "0",
-              height: "100%",
-              gridTemplateAreas: `
-              'board   side'
-            `,
-              gridTemplateColumns: `minmax(200px, calc(100vh - 4em)) minmax(232px, 1fr)`,
-            }}
-          >
-            {children}
-          </div>
-        </div>
+        {children}
       </div>
     ) : null
   }

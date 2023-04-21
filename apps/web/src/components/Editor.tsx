@@ -87,6 +87,7 @@ export interface Props extends ReactQuillProps {
   helperText?: ReactNode
   sx?: SxProps
   placeholder?: string
+  vertical?: boolean
 }
 
 export const Editor = ({
@@ -95,6 +96,7 @@ export const Editor = ({
   onChange,
   placeholder,
   helperText,
+  vertical = false,
   sx,
   ...other
 }: Props) => {
@@ -115,11 +117,20 @@ export const Editor = ({
   }
 
   return (
-    <div>
+    <Box
+      sx={{
+        ...(vertical && {
+          height: "100%",
+        }),
+      }}
+    >
       <RootStyle
         sx={{
           ...(error && {
             border: (theme) => `solid 1px ${theme.palette.error.main}`,
+          }),
+          ...(vertical && {
+            height: "100%",
           }),
           ...sx,
         }}
@@ -136,6 +147,6 @@ export const Editor = ({
       </RootStyle>
 
       {helperText}
-    </div>
+    </Box>
   )
 }

@@ -69,13 +69,21 @@ export const CoachReviewsShowPage = ({
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [commenting, setCommenting] = useState(false)
   const [drawing, setDrawing] = useState(false)
-  const orderedComments = useMemo(() => {
-    return comments.sort(
-      (a, b) =>
-        (a.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0) -
-        (b.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0)
-    )
-  }, [comments])
+
+  const orderedComments = useMemo(
+    () =>
+      comments.sort(
+        (a, b) =>
+          (a.metadata.video?.timestamp ?? a.metadata.chess?.move.ply ?? 0) -
+          (b.metadata.video?.timestamp ?? b.metadata.chess?.move.ply ?? 0)
+      ),
+    [comments]
+  )
+
+  const [overlayDimensions, setOverlayDimensions] = useState({
+    width: 0,
+    height: 0,
+  })
 
   const publishReview = async () => {
     const updatedReview = await api.coachReviewsUpdate({
@@ -239,27 +247,39 @@ export const CoachReviewsShowPage = ({
                       },
                     })
                   }
+                  onSideResize={setOverlayDimensions}
                   ref={chessBoardRef}
                 >
                   <AnimatePresence mode="popLayout">
                     {commenting ? (
-                      <>
-                        <Box sx={{ gridArea: "board" }} />
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          bottom: 0,
+                          right: 0,
+                          width: overlayDimensions.width,
+                        }}
+                      >
                         <Box
-                          sx={{
-                            gridArea: "side",
-                          }}
                           component={m.div}
                           variants={animateFade().in}
                           initial="initial"
                           animate="animate"
                           exit="exit"
+                          sx={{
+                            height: "100%",
+                          }}
                         >
                           <Controller
                             name="body"
                             control={form.control}
                             render={({ field, fieldState: { error } }) => (
-                              <Box>
+                              <Box
+                                sx={{
+                                  height: "100%",
+                                }}
+                              >
                                 <Editor
                                   value={field.value}
                                   onChange={(value) => {
@@ -276,14 +296,12 @@ export const CoachReviewsShowPage = ({
                                   onBlur={field.onBlur}
                                   error={Boolean(error)}
                                   sx={{
-                                    backgroundColor: alpha(
-                                      theme.palette.common.black,
-                                      0.75
-                                    ),
+                                    backgroundColor: theme.palette.common.black,
                                     height: "100%",
                                     borderWidth: 0,
                                     borderRadius: 0,
                                   }}
+                                  vertical
                                 />
                                 <FormHelperText
                                   error={Boolean(error)}
@@ -295,7 +313,7 @@ export const CoachReviewsShowPage = ({
                             )}
                           />
                         </Box>
-                      </>
+                      </div>
                     ) : null}
                   </AnimatePresence>
                 </ChessBoard>
@@ -309,7 +327,6 @@ export const CoachReviewsShowPage = ({
               onCommentSelect={handleCommentSelect}
               onReviewChange={setReview}
               selectedComment={selectedComment}
-              currentChessMove={(metadata as any).chess?.move}
             />
           }
         />
