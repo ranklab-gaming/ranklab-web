@@ -245,12 +245,7 @@ export const CoachReviewsShowPage = ({
                   pgn={recording.metadata.chess.pgn}
                   playerColor={recording.metadata.chess.playerColor}
                   onMove={(move) => {
-                    let chess = metadata?.chess
-                    if (!chess) {
-                      metadata.chess = {}
-                      chess = metadata.chess
-                    }
-
+                    const chess = metadata?.chess ?? {}
                     chess.move = move
 
                     form.setValue("metadata", {
@@ -262,12 +257,7 @@ export const CoachReviewsShowPage = ({
                   ref={chessBoardRef}
                   drawArrows
                   onShapeChange={(shapes) => {
-                    let chess = metadata?.chess
-                    if (!chess) {
-                      metadata.chess = {}
-                      chess = metadata.chess
-                    }
-
+                    const chess = metadata?.chess ?? {}
                     chess.shapes = shapes
 
                     form.setValue("metadata", {
