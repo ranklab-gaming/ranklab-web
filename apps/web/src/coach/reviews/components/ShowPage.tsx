@@ -256,7 +256,7 @@ export const CoachReviewsShowPage = ({
                   onSideResize={setOverlayDimensions}
                   ref={chessBoardRef}
                   drawArrows
-                  onShapeChange={(shapes) => {
+                  onShapesChange={(shapes) => {
                     const chess = metadata?.chess ?? {}
                     chess.shapes = shapes
 

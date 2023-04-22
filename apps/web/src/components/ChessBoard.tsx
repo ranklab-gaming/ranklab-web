@@ -14,7 +14,7 @@ interface Props {
   drawArrows?: boolean
   onMove?: (move: any) => void
   onSideResize?: (dimensions: { width: number; height: number }) => void
-  onShapeChange?: (shapes: any) => void
+  onShapesChange?: (shapes: any) => void
 }
 
 export interface ChessBoardRef {
@@ -29,7 +29,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       onMove,
       playerColor,
       onSideResize,
-      onShapeChange,
+      onShapesChange,
       drawArrows = false,
       allowNavigation = true,
       children,
@@ -88,7 +88,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
         }
 
         if (event.data.type === "shapesChange") {
-          onShapeChange?.(event.data.shapes)
+          onShapesChange?.(event.data.shapes)
         }
       }
 
@@ -125,7 +125,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       allowNavigation,
       drawArrows,
       onMove,
-      onShapeChange,
+      onShapesChange,
       onSideResize,
       pgn,
       playerColor,
