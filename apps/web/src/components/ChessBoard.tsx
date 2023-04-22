@@ -10,6 +10,7 @@ import {
 interface Props {
   pgn: string
   playerColor: "white" | "black"
+  allowNavigation?: boolean
   drawArrows?: boolean
   onMove?: (move: any) => void
   onSideResize?: (dimensions: { width: number; height: number }) => void
@@ -30,6 +31,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       onSideResize,
       onShapeChange,
       drawArrows = false,
+      allowNavigation = true,
       children,
     },
     ref
@@ -90,15 +92,44 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
         }
       }
 
+      function handleKeyDown(event: KeyboardEvent) {
+        if (!allowNavigation) {
+          return
+        }
+
+        if (event.key === "ArrowLeft") {
+          iframeRef.current?.contentWindow?.postMessage?.(
+            { type: "goToPrev" },
+            "*"
+          )
+        }
+
+        if (event.key === "ArrowRight") {
+          iframeRef.current?.contentWindow?.postMessage?.(
+            { type: "goToNext" },
+            "*"
+          )
+        }
+      }
+
+      window.addEventListener("keydown", handleKeyDown)
       window.addEventListener("message", handleMessage)
 
       setShowIframe(true)
 
       return () => {
         window.removeEventListener("message", handleMessage)
+        window.removeEventListener("keydown", handleKeyDown)
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [
+      allowNavigation,
+      drawArrows,
+      onMove,
+      onShapeChange,
+      onSideResize,
+      pgn,
+      playerColor,
+    ])
 
     return showIframe ? (
       <div

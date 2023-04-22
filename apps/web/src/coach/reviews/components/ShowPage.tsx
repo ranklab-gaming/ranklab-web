@@ -275,6 +275,7 @@ export const CoachReviewsShowPage = ({
                       chess,
                     })
                   }}
+                  allowNavigation={!commenting}
                 >
                   <AnimatePresence mode="popLayout">
                     {commenting ? (
