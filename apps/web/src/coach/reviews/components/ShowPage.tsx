@@ -42,12 +42,13 @@ const CommentFormSchema = yup
   })
   .test(
     "either-body-or-drawing-or-chess-move",
-    "You must provide either a body or a drawing or a chess move",
+    "You must provide either a body or a drawing or a chess move or chess shapes",
     (obj) => {
       return !!(
         obj.body ||
         (obj.metadata as any).video?.drawing ||
-        (obj.metadata as any).chess?.move
+        (obj.metadata as any).chess?.move ||
+        (obj.metadata as any).chess?.shapes
       )
     }
   )
@@ -170,10 +171,15 @@ export const CoachReviewsShowPage = ({
         videoRef.current?.seekTo(comment.metadata.video.timestamp)
       } else if (comment.metadata.chess?.move !== undefined) {
         chessBoardRef.current?.move(comment.metadata.chess.move)
+
+        if (comment.metadata.chess.shapes !== undefined) {
+          chessBoardRef.current?.setShapes(comment.metadata.chess.shapes)
+        }
       }
     } else {
       setDrawing(false)
       setCommenting(false)
+      chessBoardRef.current?.setShapes([])
       form.reset()
     }
 
@@ -238,17 +244,37 @@ export const CoachReviewsShowPage = ({
                 <ChessBoard
                   pgn={recording.metadata.chess.pgn}
                   playerColor={recording.metadata.chess.playerColor}
-                  onMove={(move) =>
+                  onMove={(move) => {
+                    let chess = metadata?.chess
+                    if (!chess) {
+                      metadata.chess = {}
+                      chess = metadata.chess
+                    }
+
+                    chess.move = move
+
                     form.setValue("metadata", {
                       ...metadata,
-                      chess: {
-                        ...metadata?.chess,
-                        move,
-                      },
+                      chess,
                     })
-                  }
+                  }}
                   onSideResize={setOverlayDimensions}
                   ref={chessBoardRef}
+                  drawArrows
+                  onShapeChange={(shapes) => {
+                    let chess = metadata?.chess
+                    if (!chess) {
+                      metadata.chess = {}
+                      chess = metadata.chess
+                    }
+
+                    chess.shapes = shapes
+
+                    form.setValue("metadata", {
+                      ...metadata,
+                      chess,
+                    })
+                  }}
                 >
                   <AnimatePresence mode="popLayout">
                     {commenting ? (

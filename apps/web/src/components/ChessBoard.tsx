@@ -10,16 +10,30 @@ import {
 interface Props {
   pgn: string
   playerColor: "white" | "black"
+  drawArrows?: boolean
   onMove?: (move: any) => void
   onSideResize?: (dimensions: { width: number; height: number }) => void
+  onShapeChange?: (shapes: any) => void
 }
 
 export interface ChessBoardRef {
   move: (move: any) => void
+  setShapes: (shapes: any) => void
 }
 
 export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
-  ({ pgn, onMove, playerColor, onSideResize, children }, ref) => {
+  (
+    {
+      pgn,
+      onMove,
+      playerColor,
+      onSideResize,
+      onShapeChange,
+      drawArrows = false,
+      children,
+    },
+    ref
+  ) => {
     const url =
       process.env.NODE_ENV === "development"
         ? "http://ranklab-web:8080"
@@ -34,6 +48,15 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           {
             type: "move",
             move,
+          },
+          "*"
+        )
+      },
+      setShapes: (shapes: any) => {
+        iframeRef.current?.contentWindow?.postMessage?.(
+          {
+            type: "setShapes",
+            shapes,
           },
           "*"
         )
@@ -56,9 +79,14 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
               type: "loadPgn",
               pgn: pgn,
               playerColor: playerColor,
+              drawArrows: drawArrows,
             },
             "*"
           )
+        }
+
+        if (event.data.type === "shapesChange") {
+          onShapeChange?.(event.data.shapes)
         }
       }
 
