@@ -80,7 +80,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
             {
               type: "loadPgn",
               pgn: pgn,
-              playerColor: playerColor,
+              orientation: playerColor,
               drawArrows: drawArrows,
             },
             "*"
