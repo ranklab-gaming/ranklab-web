@@ -3,15 +3,16 @@ import React, {
   useState,
   useEffect,
   ForwardedRef,
-  useImperativeHandle,
   PropsWithChildren,
+  HTMLProps,
+  forwardRef,
 } from "react"
 
-interface Props extends React.HTMLProps<HTMLVideoElement> {
+interface Props extends HTMLProps<HTMLVideoElement> {
   src: string
 }
 
-const ResponsiveVideo = React.forwardRef<
+export const VideoElement = forwardRef<
   HTMLVideoElement,
   PropsWithChildren<Props>
 >(({ children, src, ...videoProps }, ref: ForwardedRef<HTMLVideoElement>) => {
@@ -19,9 +20,6 @@ const ResponsiveVideo = React.forwardRef<
   const videoRef = useRef<HTMLVideoElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState<number>(0)
   const [wrapperHeight, setWrapperHeight] = useState<number>(0)
-
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  useImperativeHandle(ref, () => videoRef.current!)
 
   useEffect(() => {
     const resizeVideo = () => {
@@ -51,6 +49,7 @@ const ResponsiveVideo = React.forwardRef<
     }
 
     window.addEventListener("resize", resizeVideo)
+    resizeVideo()
 
     return () => {
       window.removeEventListener("resize", resizeVideo)
@@ -91,6 +90,4 @@ const ResponsiveVideo = React.forwardRef<
   )
 })
 
-ResponsiveVideo.displayName = "ResponsiveVideo"
-
-export default ResponsiveVideo
+VideoElement.displayName = "VideoElement"

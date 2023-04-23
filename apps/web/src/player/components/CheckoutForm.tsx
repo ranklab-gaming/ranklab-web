@@ -45,6 +45,7 @@ import { assertFind, assertProp } from "@/assert"
 import { RecordingVideo } from "@/player/components/RecordingVideo"
 import { ChessBoard } from "@/components/ChessBoard"
 import ConfirmationButton from "@/components/ConfirmationDialog"
+import { useGameComponent } from "@/hooks/useGameComponent"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -78,6 +79,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
   const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
+  const Recording = useGameComponent("Recording")
 
   const deleteReview = async () => {
     await api.playerReviewsDelete({ id: review.id })
@@ -335,25 +337,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
-                  {recording.videoKey ? (
-                    <RecordingVideo
-                      recording={recording}
-                      style={{ maxHeight: 600 }}
-                    />
-                  ) : (
-                    <Paper
-                      elevation={4}
-                      sx={{
-                        backgroundColor: theme.palette.common.black,
-                        height: "50vh",
-                      }}
-                    >
-                      <ChessBoard
-                        pgn={recording.metadata.chess.pgn}
-                        playerColor={recording.metadata.chess.playerColor}
-                      />
-                    </Paper>
-                  )}
+                  <Recording recording={recording} />
                 </Stack>
               </CardContent>
             </Card>

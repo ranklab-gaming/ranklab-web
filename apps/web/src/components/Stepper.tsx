@@ -1,5 +1,4 @@
 import { Iconify } from "@/components/Iconify"
-import { useUser } from "@/hooks/useUser"
 import {
   StepConnector,
   stepConnectorClasses,
@@ -77,17 +76,11 @@ const ColorlibStepIcon = (props: StepIconProps) => {
 
 interface Props {
   activeStep: number
+  recordingStep: string
 }
 
-export const Stepper = ({ activeStep }: Props) => {
-  const user = useUser()
-
-  const steps = [
-    user.gameId === "chess" ? "Paste a PGN" : "Choose a Recording",
-    "Choose a Coach",
-    "Billing Details",
-    "Checkout",
-  ]
+export const Stepper = ({ activeStep, recordingStep }: Props) => {
+  const steps = [recordingStep, "Choose a Coach", "Billing Details", "Checkout"]
 
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>

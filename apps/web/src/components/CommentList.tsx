@@ -1,18 +1,8 @@
-import { Iconify } from "@/components/Iconify"
 import { Comment } from "@ranklab/api"
 import { theme } from "@/theme/theme"
-import {
-  Card,
-  CardContent,
-  Stack,
-  CardActionArea,
-  Typography,
-  Tooltip,
-  Box,
-} from "@mui/material"
-import { formatDuration } from "@/helpers/formatDuration"
+import { Card, CardContent, Stack, CardActionArea } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
-import { formatMove } from "@/utils/chess"
+import { useGameComponent } from "@/hooks/useGameComponent"
 
 interface Props {
   comments: Comment[]
@@ -25,6 +15,8 @@ export const CommentList = ({
   selectedComment,
   onCommentSelect,
 }: Props) => {
+  const CommentListItem = useGameComponent("CommentListItem")
+
   return (
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
@@ -68,89 +60,10 @@ export const CommentList = ({
                   }}
                 >
                   <CardContent>
-                    <Stack spacing={2}>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography variant="body2">
-                          {comment.metadata.video?.timestamp !== undefined
-                            ? formatDuration(
-                                comment.metadata.video.timestamp / 1000000
-                              )
-                            : comment.metadata.chess?.move
-                            ? formatMove(comment.metadata.chess.move)
-                            : null}
-                        </Typography>
-                        <AnimatePresence initial={false}>
-                          {selectedComment !== comment ? (
-                            <Typography
-                              variant="body2"
-                              noWrap
-                              textOverflow="ellipsis"
-                              overflow="hidden"
-                              component={m.div}
-                              key="body"
-                              variants={{
-                                initial: {
-                                  opacity: 0,
-                                },
-                                animate: {
-                                  opacity: 1,
-                                },
-                              }}
-                              initial="initial"
-                              animate="animate"
-                              flexGrow={1}
-                            >
-                              {comment.preview}
-                            </Typography>
-                          ) : (
-                            <Box flexGrow={1} />
-                          )}
-                        </AnimatePresence>
-                        <Box>
-                          {comment.metadata.video?.drawing ? (
-                            <Tooltip title="Drawing">
-                              <Iconify icon="mdi:draw" width={24} height={24} />
-                            </Tooltip>
-                          ) : null}
-                        </Box>
-                      </Stack>
-                      {comment.body ? (
-                        <AnimatePresence>
-                          {selectedComment === comment ? (
-                            <Typography
-                              variant="body1"
-                              key="body"
-                              component={m.div}
-                              variants={{
-                                initial: {
-                                  opacity: 0,
-                                  height: 0,
-                                },
-                                animate: {
-                                  opacity: 1,
-                                  height: "auto",
-                                },
-                                exit: {
-                                  height: 0,
-                                  padding: 0,
-                                  margin: 0,
-                                  opacity: 0,
-                                },
-                              }}
-                              initial="initial"
-                              animate="animate"
-                              exit="exit"
-                            >
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: comment.body,
-                                }}
-                              />
-                            </Typography>
-                          ) : null}
-                        </AnimatePresence>
-                      ) : null}
-                    </Stack>
+                    <CommentListItem
+                      comment={comment}
+                      selected={comment === selectedComment}
+                    />
                   </CardContent>
                 </CardActionArea>
               </Card>
