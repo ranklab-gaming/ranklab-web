@@ -3,15 +3,17 @@ import React, {
   useState,
   useEffect,
   ForwardedRef,
-  useImperativeHandle,
   PropsWithChildren,
+  HTMLProps,
+  forwardRef,
+  useImperativeHandle,
 } from "react"
 
-interface Props extends React.HTMLProps<HTMLVideoElement> {
+interface Props extends HTMLProps<HTMLVideoElement> {
   src: string
 }
 
-const ResponsiveVideo = React.forwardRef<
+export const VideoElement = forwardRef<
   HTMLVideoElement,
   PropsWithChildren<Props>
 >(({ children, src, ...videoProps }, ref: ForwardedRef<HTMLVideoElement>) => {
@@ -51,6 +53,7 @@ const ResponsiveVideo = React.forwardRef<
     }
 
     window.addEventListener("resize", resizeVideo)
+    resizeVideo()
 
     return () => {
       window.removeEventListener("resize", resizeVideo)
@@ -91,6 +94,4 @@ const ResponsiveVideo = React.forwardRef<
   )
 })
 
-ResponsiveVideo.displayName = "ResponsiveVideo"
-
-export default ResponsiveVideo
+VideoElement.displayName = "VideoElement"

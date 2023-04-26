@@ -1,19 +1,16 @@
 import { PropsWithUser } from "@/auth"
 import { CheckoutForm } from "@/player/components/CheckoutForm"
-import { ReviewDetails } from "@/components/ReviewDetails"
 import { Game, PaymentMethod, Review, ReviewState } from "@ranklab/api"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Comment } from "@ranklab/api"
-import { Recording } from "./ShowPage/Recording"
-import { CommentList } from "./ShowPage/CommentList"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import { assertProp } from "@/assert"
-import { VideoPlayerRef } from "@/components/VideoPlayer"
 import { useIntercom } from "react-use-intercom"
+import { useGameComponent } from "@/hooks/useGameComponent"
 
 interface Props {
   review: Review
@@ -36,7 +33,7 @@ const Content = ({
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const { show } = useIntercom()
-  const videoRef = useRef<VideoPlayerRef>(null)
+  const ReviewDetails = useGameComponent("ReviewDetails")
   const recording = assertProp(review, "recording")
   const coach = assertProp(review, "coach")
 
@@ -73,31 +70,12 @@ const Content = ({
     <ReviewDetails
       review={review}
       games={games}
+      comments={comments}
       title={`Review By ${coach.name}`}
-      recordingElement={
-        <Recording
-          selectedComment={selectedComment}
-          recording={recording}
-          videoRef={videoRef}
-          onPlay={() => setSelectedComment(null)}
-          onSeeked={() => setSelectedComment(null)}
-        />
-      }
-      commentListElement={
-        <CommentList
-          review={review}
-          comments={comments}
-          selectedComment={selectedComment}
-          onCommentSelect={(comment) => {
-            setSelectedComment(comment)
-
-            if (comment?.metadata.video.timestamp != null) {
-              videoRef.current?.seekTo(comment.metadata.video.timestamp)
-            }
-          }}
-          onReviewChange={setReview}
-        />
-      }
+      selectedComment={selectedComment}
+      recording={recording}
+      onCommentSelect={setSelectedComment}
+      onReviewChange={setReview}
     >
       {review.state === ReviewState.Published && (
         <Alert

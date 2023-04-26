@@ -2,7 +2,7 @@ import { animateFade } from "@/animate/fade"
 import { useSvgDrawing } from "@svg-drawing/react"
 import { m } from "framer-motion"
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react"
-import { Color } from "../Recording"
+import { Color } from "./Recording"
 import { Box, useTheme } from "@mui/material"
 import drawCursor from "@/images/cursors/draw.png"
 

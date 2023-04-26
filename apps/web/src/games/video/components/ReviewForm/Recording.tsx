@@ -1,17 +1,17 @@
-import { CommentFormValues } from "../ShowPage"
-import { VideoPlayer, VideoPlayerRef } from "@/components/VideoPlayer"
+import { CommentFormValues } from "@/coach/reviews/components/ShowPage"
 import { uploadsCdnUrl } from "@/config"
 import { Box, FormHelperText, alpha } from "@mui/material"
-import { Recording as ApiRecording, Comment } from "@ranklab/api"
+import { Recording as ApiRecording, Comment, Review } from "@ranklab/api"
 import { RefObject, useEffect, useRef, useState } from "react"
 import { Controller, UseFormReturn } from "react-hook-form"
 import { debounce } from "lodash"
-import { Drawing, DrawingRef } from "./Recording/Drawing"
-import { Toolbar } from "./Recording/Toolbar"
+import { Drawing, DrawingRef } from "./Drawing"
+import { Toolbar } from "./Toolbar"
 import { Editor } from "@/components/Editor"
 import { theme } from "@/theme/theme"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
+import { VideoPlayerRef, VideoPlayer } from "../VideoPlayer"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -21,15 +21,16 @@ if (typeof window !== "undefined") {
 interface Props {
   commenting: boolean
   comments: Comment[]
-  drawing: boolean
   form: UseFormReturn<CommentFormValues>
   onCommentSelect: (comment: Comment | null, shouldPause?: boolean) => void
   onCommentingChange: (commenting: boolean) => void
   onCommentsChange: (comments: Comment[]) => void
-  onDrawingChange: (drawing: boolean) => void
   recording: ApiRecording
   selectedComment: Comment | null
   videoRef: RefObject<VideoPlayerRef>
+  drawing: boolean
+  onDrawingChange: (drawing: boolean) => void
+  review: Review
 }
 
 export const colors = [
@@ -50,17 +51,17 @@ export const Recording = ({
   commenting,
   onCommentingChange,
   comments,
-  drawing,
   onCommentsChange,
-  onDrawingChange,
   selectedComment,
   onCommentSelect,
+  drawing,
+  onDrawingChange,
+  review,
 }: Props) => {
   const [color, setColor] = useState<Color>("primary")
   const [resizing, setResizing] = useState(false)
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
-  const editing = commenting || drawing
   const metadata = form.watch("metadata") as any
 
   useEffect(() => {
@@ -76,6 +77,7 @@ export const Recording = ({
     })
 
     resizeObserver.observe(boxRef.current)
+    handleResize()
 
     return () => {
       resizeObserver.disconnect()
@@ -94,10 +96,11 @@ export const Recording = ({
         drawing={drawing}
         form={form}
         videoRef={videoRef}
+        review={review}
         onCommentsChange={onCommentsChange}
         onCommentSelect={onCommentSelect}
-        onDrawingChange={onDrawingChange}
         onCommentingChange={onCommentingChange}
+        onDrawingChange={onDrawingChange}
       />
       <Box
         display="flex"
@@ -118,15 +121,19 @@ export const Recording = ({
             })
           }
           onSeeked={() => onCommentSelect(null)}
-          onPause={() => onCommentSelect(null)}
-          onPlay={() => onCommentSelect(null, false)}
+          onPause={() => {
+            onCommentSelect(null)
+          }}
+          onPlay={() => {
+            onCommentSelect(null, false)
+          }}
           ref={videoRef}
-          controls={!editing}
+          controls={!drawing}
         >
           {drawing && !resizing ? (
             <Drawing
               color={color}
-              value={metadata.video?.drawing}
+              value={metadata.video.drawing}
               onChange={(value) => {
                 form.setValue(
                   "metadata",

@@ -1,5 +1,6 @@
-import ResponsiveVideo from "@/components/ResponsiveVideo"
+import { VideoElement } from "./VideoPlayer/VideoElement"
 import {
+  CSSProperties,
   PropsWithChildren,
   forwardRef,
   useImperativeHandle,
@@ -8,6 +9,7 @@ import {
 
 interface VideoPlayerProps {
   src: string
+  style?: CSSProperties
   onTimeUpdate?: (seconds: number) => void
   controls?: boolean
   onPlay?: (seconds: number) => void
@@ -25,7 +27,16 @@ export const VideoPlayer = forwardRef<
   PropsWithChildren<VideoPlayerProps>
 >(
   (
-    { src, children, onTimeUpdate, controls = true, onPlay, onPause, onSeeked },
+    {
+      src,
+      children,
+      onTimeUpdate,
+      controls = true,
+      onPlay,
+      onPause,
+      onSeeked,
+      style,
+    },
     ref
   ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
@@ -53,7 +64,7 @@ export const VideoPlayer = forwardRef<
     }
 
     return (
-      <ResponsiveVideo
+      <VideoElement
         src={src}
         controls={controls}
         ref={videoRef}
@@ -79,9 +90,10 @@ export const VideoPlayer = forwardRef<
         onTimeUpdate={(e) => {
           onTimeUpdate?.(currentTime(e))
         }}
+        style={style}
       >
         {children}
-      </ResponsiveVideo>
+      </VideoElement>
     )
   }
 )

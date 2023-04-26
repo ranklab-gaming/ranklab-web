@@ -1,3 +1,5 @@
+import { nodeEnv } from "@/config"
+import { RecordingProps } from "@/games/video/components/Recording"
 import {
   PropsWithChildren,
   forwardRef,
@@ -7,9 +9,12 @@ import {
   useState,
 } from "react"
 
-interface Props {
-  pgn: string
-  playerColor: "white" | "black"
+export interface ChessBoardRef {
+  move: (move: any) => void
+  setShapes: (shapes: any) => void
+}
+
+interface Props extends RecordingProps {
   allowNavigation?: boolean
   drawArrows?: boolean
   onMove?: (move: any) => void
@@ -17,27 +22,21 @@ interface Props {
   onShapesChange?: (shapes: any) => void
 }
 
-export interface ChessBoardRef {
-  move: (move: any) => void
-  setShapes: (shapes: any) => void
-}
-
 export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
   (
     {
-      pgn,
       onMove,
-      playerColor,
       onSideResize,
       onShapesChange,
       drawArrows = false,
       allowNavigation = true,
       children,
+      recording,
     },
     ref
   ) => {
     const url =
-      process.env.NODE_ENV === "development"
+      nodeEnv === "development"
         ? "http://ranklab-web:8080"
         : "https://chess.ranklab.gg"
 
@@ -79,8 +78,8 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           iframeRef.current?.contentWindow?.postMessage?.(
             {
               type: "loadPgn",
-              pgn: pgn,
-              orientation: playerColor,
+              pgn: recording.metadata.chess.pgn,
+              orientation: recording.metadata.chess.playerColor,
               drawArrows: drawArrows,
             },
             "*"
@@ -127,8 +126,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       onMove,
       onShapesChange,
       onSideResize,
-      pgn,
-      playerColor,
+      recording,
     ])
 
     return showIframe ? (
@@ -144,9 +142,8 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           src={url}
           width="100%"
           height="100%"
-          frameBorder="0"
-          scrolling="no"
           ref={iframeRef}
+          style={{ border: "none", overflow: "hidden" }}
         />
         {children}
       </div>

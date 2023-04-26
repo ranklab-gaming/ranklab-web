@@ -18,7 +18,7 @@ import { Game, Recording, RecordingState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
-import { RecordingVideo } from "@/player/components/RecordingVideo"
+import { useGameComponent } from "@/hooks/useGameComponent"
 
 interface Props {
   recordings: Recording[]
@@ -31,6 +31,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
   )
 
   const createReview = useCreateReview()
+  const Recording = useGameComponent("Recording")
 
   return (
     <Table>
@@ -106,7 +107,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                       <>
                         <DialogTitle>{selectedRecording.title}</DialogTitle>
                         <DialogContent sx={{ mt: 2 }}>
-                          <RecordingVideo recording={selectedRecording} />
+                          <Recording recording={selectedRecording} />
                         </DialogContent>
                         <DialogActions>
                           <Button
