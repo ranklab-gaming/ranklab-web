@@ -123,7 +123,7 @@ const RecordingForm = ({
     let recordingId = values.recordingId
 
     if (values.recordingId === newRecordingId) {
-      let request: CreateRecordingRequest = {
+      const request: CreateRecordingRequest = {
         title: values.newRecordingTitle,
         skillLevel: player.skillLevel,
         gameId: player.gameId,

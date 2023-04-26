@@ -1,11 +1,20 @@
+import { User } from "@/auth"
+import { UserContext } from "@/contexts/UserContext"
 import gameComponents from "@/games/components"
 import type { GameComponents } from "@/games/components"
-import { useUser } from "@/hooks/useUser"
+import { useContext } from "react"
 
 export const useGameComponent = <T extends keyof GameComponents>(
   name: T,
-  user = useUser()
+  inUser?: User
 ): GameComponents[T] => {
+  const contextUser = useContext(UserContext)
+  const user = inUser || contextUser
+
+  if (!user) {
+    throw new Error("user missing in useGameComponent")
+  }
+
   const components =
     gameComponents[user.gameId as keyof typeof gameComponents] ||
     gameComponents.video

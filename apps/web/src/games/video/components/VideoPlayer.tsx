@@ -27,7 +27,16 @@ export const VideoPlayer = forwardRef<
   PropsWithChildren<VideoPlayerProps>
 >(
   (
-    { src, children, onTimeUpdate, controls = true, onPlay, onPause, onSeeked },
+    {
+      src,
+      children,
+      onTimeUpdate,
+      controls = true,
+      onPlay,
+      onPause,
+      onSeeked,
+      style,
+    },
     ref
   ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
@@ -81,6 +90,7 @@ export const VideoPlayer = forwardRef<
         onTimeUpdate={(e) => {
           onTimeUpdate?.(currentTime(e))
         }}
+        style={style}
       >
         {children}
       </VideoElement>

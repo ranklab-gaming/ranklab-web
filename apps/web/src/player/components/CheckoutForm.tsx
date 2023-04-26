@@ -42,8 +42,6 @@ import { usePolling } from "@/hooks/usePolling"
 import { api } from "@/api"
 import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
-import { RecordingVideo } from "@/player/components/RecordingVideo"
-import { ChessBoard } from "@/components/ChessBoard"
 import ConfirmationButton from "@/components/ConfirmationDialog"
 import { useGameComponent } from "@/hooks/useGameComponent"
 

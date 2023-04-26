@@ -6,6 +6,7 @@ import React, {
   PropsWithChildren,
   HTMLProps,
   forwardRef,
+  useImperativeHandle,
 } from "react"
 
 interface Props extends HTMLProps<HTMLVideoElement> {
@@ -20,6 +21,9 @@ export const VideoElement = forwardRef<
   const videoRef = useRef<HTMLVideoElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState<number>(0)
   const [wrapperHeight, setWrapperHeight] = useState<number>(0)
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  useImperativeHandle(ref, () => videoRef.current!)
 
   useEffect(() => {
     const resizeVideo = () => {
