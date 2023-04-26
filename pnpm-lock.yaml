@@ -83,8 +83,8 @@ importers:
         specifier: 6.3.1
         version: 6.3.1(next@13.2.4)
       jose:
-        specifier: 4.14.1
-        version: 4.14.1
+        specifier: 4.14.2
+        version: 4.14.2
       lodash:
         specifier: 4.17.21
         version: 4.17.21
@@ -3147,8 +3147,8 @@ packages:
   /isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  /jose@4.14.1:
-    resolution: {integrity: sha512-SgjXLpP7jhQkUNKL6RpowoR/IF4QKE+WjLDMpNnh2vmhiFs67NftrNpvFtgbwpvRdtueFliahYYWz9E+XZZQlg==}
+  /jose@4.14.2:
+    resolution: {integrity: sha512-Fcbi5lskAiSvs8qhdQBusANZWwyATdp7IxgHJTXiaU74sbVjX9uAw+myDPvI8pNo2wXKHECXCR63hqhRkN/SSQ==}
     dev: false
 
   /joycon@3.1.1:
@@ -3654,7 +3654,7 @@ packages:
       debug: 4.3.4
       eta: 2.0.1
       got: 12.5.3
-      jose: 4.14.1
+      jose: 4.14.2
       jsesc: 3.0.2
       koa: 2.14.1
       nanoid: 4.0.1
@@ -3694,7 +3694,7 @@ packages:
   /openid-client@5.4.0:
     resolution: {integrity: sha512-hgJa2aQKcM2hn3eyVtN12tEA45ECjTJPXCgUh5YzTzy9qwapCvmDTVPWOcWVL0d34zeQoQ/hbG9lJhl3AYxJlQ==}
     dependencies:
-      jose: 4.14.1
+      jose: 4.14.2
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.1
