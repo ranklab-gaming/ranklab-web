@@ -9,7 +9,7 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "turbo": "1.9.3"
   }
 }
