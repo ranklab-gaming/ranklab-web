@@ -5,10 +5,23 @@ import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { MenuItem, Stack, TextField } from "@mui/material"
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  MenuItem,
+  Stack,
+  TextField,
+  useTheme,
+} from "@mui/material"
 import { Game } from "@ranklab/api"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
+import { assetsCdnUrl } from "@/config"
+import Sticky from "react-stickynode"
+import { useId } from "react"
 
 interface Props {
   games: Game[]
@@ -31,6 +44,8 @@ export const CoachSignupPage = ({
 }: Props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
+  const theme = useTheme()
+  const id = useId().replace(/:/g, "")
 
   const defaultValues: FormValues = {
     bio: "",
@@ -77,40 +92,85 @@ export const CoachSignupPage = ({
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <BasicLayout title="Sign up to Ranklab as a Coach">
-      <form onSubmit={handleSubmit(createCoach)}>
+    <BasicLayout title="Sign up to Ranklab as a Coach" maxWidth="xl">
+      <form onSubmit={handleSubmit(createCoach)} className={`${id}-form`}>
         <Stack spacing={3}>
-          <AccountFields control={control} games={games} showPasswordField />
-          <Controller
-            name="country"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                {...field}
-                select
-                error={Boolean(error)}
-                helperText={error ? error.message : "The country you live in"}
-                label="Country"
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={5}>
+              <Stack spacing={3}>
+                <AccountFields
+                  control={control}
+                  games={games}
+                  showPasswordField
+                />
+                <Controller
+                  name="country"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <TextField
+                      {...field}
+                      select
+                      error={Boolean(error)}
+                      helperText={
+                        error ? error.message : "The country you live in"
+                      }
+                      label="Country"
+                    >
+                      {countries.map((country) => (
+                        <MenuItem key={country.value} value={country.value}>
+                          {country.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+                <LoadingButton
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                >
+                  Create Account
+                </LoadingButton>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={7}>
+              <Sticky
+                enabled={true}
+                top={20}
+                innerZ={9999}
+                bottomBoundary={`.${id}-form`}
               >
-                {countries.map((country) => (
-                  <MenuItem key={country.value} value={country.value}>
-                    {country.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-          <LoadingButton
-            fullWidth
-            color="primary"
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            disabled={isSubmitting}
-          >
-            Create Account
-          </LoadingButton>
+                <Card elevation={4}>
+                  <CardHeader
+                    title="Quick Start Guide"
+                    subheader="This is a short video to help you get started with Ranklab as a coach"
+                  />
+                  <CardContent>
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      controls
+                      style={{
+                        maxWidth: "100%",
+                        objectFit: "cover",
+                        borderRadius: theme.shape.borderRadius,
+                      }}
+                    >
+                      <source
+                        src={`${assetsCdnUrl}/coaches-review-tutorial.mp4`}
+                        type="video/mp4"
+                      />
+                    </video>
+                  </CardContent>
+                </Card>
+              </Sticky>
+            </Grid>
+          </Grid>
         </Stack>
       </form>
     </BasicLayout>

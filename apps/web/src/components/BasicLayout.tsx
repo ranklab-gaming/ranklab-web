@@ -2,24 +2,26 @@ import { Footer } from "./Footer"
 import { Label } from "./Label"
 import { Logo } from "./Logo"
 import { Page } from "./Page"
-import { Box, Container, Typography } from "@mui/material"
+import { Box, Container, ContainerProps, Typography } from "@mui/material"
 import NextLink from "next/link"
 import { PropsWithChildren } from "react"
 
 interface Props {
   title: string
   showTitle?: boolean
+  maxWidth?: ContainerProps["maxWidth"]
 }
 
 export const BasicLayout = ({
   children,
   title,
   showTitle = true,
+  maxWidth = "sm",
 }: PropsWithChildren<Props>) => {
   return (
     <Page title={title}>
       <Container
-        maxWidth="lg"
+        maxWidth={maxWidth}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -39,7 +41,7 @@ export const BasicLayout = ({
         </NextLink>
         <Box sx={{ flexGrow: 1 }} />
       </Container>
-      <Container maxWidth="sm" sx={{ my: 8 }}>
+      <Container maxWidth={maxWidth} sx={{ my: 8 }}>
         {showTitle ? (
           <Typography variant="h3" component="h1" paragraph>
             {title}
