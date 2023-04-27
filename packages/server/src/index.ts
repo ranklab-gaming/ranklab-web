@@ -1,7 +1,7 @@
 import express from "express"
 import xrayExpress from "aws-xray-sdk-express"
 import AWSXRay from "aws-xray-sdk"
-import next = require("next")
+import * as next from "next"
 import nextEnv from "@next/env"
 import pino = require("pino-http")
 import type { Options as PinoOptions } from "pino-http"
