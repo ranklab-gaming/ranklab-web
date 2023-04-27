@@ -335,7 +335,16 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     <Chip label={skillLevel.name} size="small" />
                     <Chip label={game.name} size="small" />
                   </Stack>
-                  <Recording recording={recording} />
+                  <Paper
+                    sx={{
+                      height: "600px",
+                      backgroundColor: theme.palette.common.black,
+                      borderRadius: 0,
+                    }}
+                    elevation={4}
+                  >
+                    <Recording recording={recording} />
+                  </Paper>
                 </Stack>
               </CardContent>
             </Card>

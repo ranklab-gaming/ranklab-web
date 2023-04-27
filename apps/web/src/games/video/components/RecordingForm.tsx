@@ -40,9 +40,9 @@ import { formatDate } from "@/helpers/formatDate"
 import { uploadsCdnUrl } from "@/config"
 import { Iconify } from "@/components/Iconify"
 import NextImage from "next/image"
-import { useGameComponent } from "@/hooks/useGameComponent"
 import { useUpload } from "../hooks/useUpload"
 import { Recording } from "./Recording"
+import Stepper from "./Stepper"
 
 export interface RecordingFormProps {
   formSchema: RecordingFormSchema
@@ -70,7 +70,6 @@ const RecordingForm = ({
   const theme = useTheme()
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-  const Stepper = useGameComponent("Stepper")
 
   const formSchema = baseFormSchema.shape({
     newRecordingVideo: yup.mixed().when("recordingId", {
@@ -368,13 +367,12 @@ const RecordingForm = ({
                     elevation={4}
                     sx={{
                       mt: 2,
-                      backgroundColor: theme.palette.grey[900],
+                      backgroundColor: theme.palette.common.black,
+                      height: "400px",
+                      borderRadius: 0,
                     }}
                   >
-                    <Recording
-                      recording={selectedRecording}
-                      style={{ maxHeight: 400 }}
-                    />
+                    <Recording recording={selectedRecording} />
                   </Paper>
                 ) : null}
                 <Stack direction="row">

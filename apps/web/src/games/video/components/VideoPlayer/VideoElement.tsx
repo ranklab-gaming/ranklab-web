@@ -1,12 +1,12 @@
 import React, {
   useRef,
   useState,
-  useEffect,
   ForwardedRef,
   PropsWithChildren,
   HTMLProps,
   forwardRef,
   useImperativeHandle,
+  useLayoutEffect,
 } from "react"
 
 interface Props extends HTMLProps<HTMLVideoElement> {
@@ -25,7 +25,7 @@ export const VideoElement = forwardRef<
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   useImperativeHandle(ref, () => videoRef.current!)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const resizeVideo = () => {
       if (containerRef.current && videoRef.current) {
         const containerWidth = containerRef.current.clientWidth
@@ -34,6 +34,11 @@ export const VideoElement = forwardRef<
 
         const videoWidth = videoRef.current.videoWidth
         const videoHeight = videoRef.current.videoHeight
+
+        if (videoWidth === 0 || videoHeight === 0) {
+          return
+        }
+
         const videoAspectRatio = videoWidth / videoHeight
 
         if (containerAspectRatio > videoAspectRatio) {
@@ -84,8 +89,8 @@ export const VideoElement = forwardRef<
         {children}
         <video
           ref={videoRef}
-          style={{ width: "100%", height: "100%" }}
           {...videoProps}
+          style={{ ...videoProps.style, width: "100%", height: "100%" }}
         >
           <source src={src} type="video/mp4" />
         </video>
