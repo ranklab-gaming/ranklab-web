@@ -21,7 +21,7 @@ interface ConfirmationButtonProps {
   action: () => Promise<void>
 }
 
-const ConfirmationButton = forwardRef<
+export const ConfirmationButton = forwardRef<
   HTMLButtonElement,
   ConfirmationButtonProps
 >(
@@ -116,5 +116,3 @@ const ConfirmationButton = forwardRef<
 )
 
 ConfirmationButton.displayName = "ConfirmationButton"
-
-export default ConfirmationButton

@@ -30,7 +30,7 @@ import { useSnackbar } from "notistack"
 import { useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import CopyToClipboardButton from "@/components/CopyToClipboardButton"
+import { CopyToClipboardButton } from "@/components/CopyToClipboardButton"
 
 interface Props {
   games: Game[]

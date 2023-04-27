@@ -12,7 +12,7 @@ import { useState } from "react"
 import * as yup from "yup"
 import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
-import ConfirmationButton from "@/components/ConfirmationDialog"
+import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { useGameComponent } from "@/hooks/useGameComponent"
 
 interface Props {

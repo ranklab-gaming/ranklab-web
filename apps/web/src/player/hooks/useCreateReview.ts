@@ -1,4 +1,4 @@
-import { createSessionReview } from "@/api"
+import { createSessionReview } from "@/api/sessionReview"
 import { SessionReview } from "@/session"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"

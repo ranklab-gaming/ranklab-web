@@ -15,7 +15,7 @@ interface Props {
   helperText?: string
 }
 
-const CopyToClipboardButton = ({ value, label, helperText }: Props) => {
+export const CopyToClipboardButton = ({ value, label, helperText }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const handleClick = async () => {
@@ -44,5 +44,3 @@ const CopyToClipboardButton = ({ value, label, helperText }: Props) => {
     </FormControl>
   )
 }
-
-export default CopyToClipboardButton

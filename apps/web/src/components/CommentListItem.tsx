@@ -87,5 +87,3 @@ export const CommentListItem = ({
     </Stack>
   )
 }
-
-export default CommentListItem

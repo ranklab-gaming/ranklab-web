@@ -20,7 +20,7 @@ import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
 import { CoachSelect } from "@/player/components/CoachSelect"
 import { Coach } from "@ranklab/api"
-import { updateSessionReview } from "@/api"
+import { updateSessionReview } from "@/api/sessionReview"
 import { useGameComponent } from "@/hooks/useGameComponent"
 
 const FormSchema = yup.object().shape({

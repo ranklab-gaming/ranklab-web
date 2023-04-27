@@ -7,7 +7,7 @@ import {
   Button,
   Tooltip,
 } from "@mui/material"
-import ConfirmationButton from "@/components/ConfirmationDialog"
+import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { Comment, Review, ReviewState } from "@ranklab/api"

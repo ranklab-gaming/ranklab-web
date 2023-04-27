@@ -1,8 +1,6 @@
 import { formatMove } from "@/games/chess/helpers"
-import {
-  CommentListItem as BaseCommentListItem,
-  CommentListItemProps,
-} from "@/components/CommentListItem"
+import { CommentListItem as BaseCommentListItem } from "@/components/CommentListItem"
+import { CommentListItemProps } from "@/games/video/components/CommentListItem"
 
 const CommentListItem = ({ comment, selected }: CommentListItemProps) => {
   return (
