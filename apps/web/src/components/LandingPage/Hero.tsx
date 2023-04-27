@@ -1,10 +1,10 @@
 import { animateFade } from "@/animate/fade"
-import { Logo } from "@/components/Logo"
 import { MotionContainer } from "@/components/MotionContainer"
 import {
   Box,
   Button,
   Container,
+  Paper,
   Stack,
   Typography,
   debounce,
@@ -24,6 +24,7 @@ import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { Game } from "@ranklab/api"
 import { animateFlip } from "@/animate/flip"
+import { assetsCdnUrl } from "@/config"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -59,15 +60,14 @@ const HeroOverlayStyle = styled(m.div)({
   position: "absolute",
 })
 
-const HeroImgStyle = styled(Logo)(() => ({
-  top: 0,
-  right: "20%",
+const HeroImgStyle = styled(m.div)(() => ({
+  top: "0",
+  right: "0",
+  left: "0",
+  bottom: "0",
   zIndex: 8,
-  width: "800px",
-  height: "auto",
-  margin: "auto",
   position: "absolute",
-  filter: "grayscale(100%)",
+  filter: "grayscale(100%) contrast(1) brightness(50%)",
 }))
 
 interface HeroProps {
@@ -142,7 +142,23 @@ export const Hero = ({ games }: HeroProps) => {
         <Overlay />
       </HeroOverlayStyle>
       <m.div variants={animateFade().in}>
-        <HeroImgStyle />
+        <HeroImgStyle>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: theme.shape.borderRadius,
+            }}
+          >
+            <source src={`${assetsCdnUrl}/player-demo.mp4`} type="video/mp4" />
+          </video>
+        </HeroImgStyle>
       </m.div>
       <Container maxWidth="lg" component={MotionContainer}>
         <ContentStyle>
