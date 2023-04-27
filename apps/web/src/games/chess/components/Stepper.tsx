@@ -1,8 +1,5 @@
 import { Stepper as BaseStepper } from "@/components/Stepper"
-
-export interface StepperProps {
-  activeStep: number
-}
+import { StepperProps } from "@/games/video/components/Stepper"
 
 const Stepper = ({ activeStep }: StepperProps) => {
   return <BaseStepper activeStep={activeStep} recordingStep="Paste a PGN" />

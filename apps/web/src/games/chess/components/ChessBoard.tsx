@@ -32,6 +32,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
       allowNavigation = true,
       children,
       recording,
+      style,
     },
     ref
   ) => {
@@ -136,6 +137,7 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           height: "100%",
           position: "relative",
           overflow: "hidden",
+          ...style,
         }}
       >
         <iframe
@@ -143,7 +145,8 @@ export const ChessBoard = forwardRef<ChessBoardRef, PropsWithChildren<Props>>(
           width="100%"
           height="100%"
           ref={iframeRef}
-          style={{ border: "none", overflow: "hidden" }}
+          scrolling="no"
+          style={{ border: "none" }}
         />
         {children}
       </div>

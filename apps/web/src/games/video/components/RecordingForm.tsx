@@ -41,7 +41,7 @@ import { uploadsCdnUrl } from "@/config"
 import { Iconify } from "@/components/Iconify"
 import NextImage from "next/image"
 import { useUpload } from "../hooks/useUpload"
-import { Recording } from "./Recording"
+import { VideoRecording } from "./Recording"
 import Stepper from "./Stepper"
 
 export interface RecordingFormProps {
@@ -369,10 +369,9 @@ const RecordingForm = ({
                       mt: 2,
                       backgroundColor: theme.palette.common.black,
                       height: "400px",
-                      borderRadius: 0,
                     }}
                   >
-                    <Recording recording={selectedRecording} />
+                    <VideoRecording recording={selectedRecording} />
                   </Paper>
                 ) : null}
                 <Stack direction="row">

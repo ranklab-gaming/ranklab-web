@@ -136,19 +136,16 @@ const RecordingForm = ({
                         <MenuItem value={newRecordingId}>New game</MenuItem>
                         {recordings.map((recording) => (
                           <MenuItem key={recording.id} value={recording.id}>
-                            <Stack direction="row" spacing={2}>
-                              <ChessBoard recording={recording} />
-                              <Stack spacing={1}>
-                                <Typography variant="body1">
-                                  {recording.title}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  color="textSecondary"
-                                >
-                                  Created on {formatDate(recording.createdAt)}
-                                </Typography>
-                              </Stack>
+                            <Stack spacing={1}>
+                              <Typography variant="body1">
+                                {recording.title}
+                              </Typography>
+                              <Typography
+                                variant="caption"
+                                color="textSecondary"
+                              >
+                                Created on {formatDate(recording.createdAt)}
+                              </Typography>
                             </Stack>
                           </MenuItem>
                         ))}
@@ -247,7 +244,10 @@ const RecordingForm = ({
                       backgroundColor: theme.palette.grey[900],
                     }}
                   >
-                    <ChessBoard recording={selectedRecording} />
+                    <ChessBoard
+                      recording={selectedRecording}
+                      style={{ height: "300px" }}
+                    />
                   </Paper>
                 ) : null}
                 <Stack direction="row">

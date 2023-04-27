@@ -1,19 +1,8 @@
-import { Review, Game, Recording as ApiRecording, Comment } from "@ranklab/api"
 import { PropsWithChildren, useRef } from "react"
 import { ReviewDetails as BaseReviewDetails } from "@/components/ReviewDetails"
 import { ChessBoard, ChessBoardRef } from "./ChessBoard"
 import { CommentList as BaseCommentList } from "@/player/components/CommentList"
-
-export interface ReviewDetailsProps {
-  review: Review
-  games: Game[]
-  comments: Comment[]
-  title: string
-  selectedComment: Comment | null
-  recording: ApiRecording
-  onCommentSelect: (comment: Comment | null) => void
-  onReviewChange: (review: Review) => void
-}
+import { ReviewDetailsProps } from "@/games/video/components/ReviewDetails"
 
 const ReviewDetails = ({
   review,

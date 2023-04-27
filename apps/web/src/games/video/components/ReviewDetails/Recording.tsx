@@ -4,7 +4,7 @@ import { Box } from "@mui/material"
 import { Comment, Recording as ApiRecording } from "@ranklab/api"
 import { m } from "framer-motion"
 import { RefObject } from "react"
-import { Recording as BaseRecording } from "../Recording"
+import { VideoRecording as BaseRecording } from "../Recording"
 
 interface Props {
   selectedComment: Comment | null

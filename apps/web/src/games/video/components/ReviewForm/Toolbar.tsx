@@ -68,7 +68,7 @@ export const Toolbar = ({
           <Iconify icon="mdi:pencil" width={22} fontSize={22} />
         </IconButton>
       </Tooltip>
-      <AnimatePresence>
+      <AnimatePresence mode="popLayout">
         {drawing ? (
           <Stack
             direction="row"

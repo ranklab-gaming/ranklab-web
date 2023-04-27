@@ -10,19 +10,19 @@ export interface RecordingProps {
   style?: CSSProperties
 }
 
-interface InternalProps {
+interface Props {
   videoRef?: RefObject<VideoPlayerRef>
   onPlay?: () => void
   onSeeked?: () => void
 }
 
-export const Recording = ({
+export const VideoRecording = ({
   recording,
   style,
   videoRef,
   onPlay,
   onSeeked,
-}: PropsWithChildren<RecordingProps & InternalProps>) => {
+}: PropsWithChildren<RecordingProps & Props>) => {
   if (recording.state === RecordingState.Processed) {
     return (
       <VideoPlayer
@@ -45,8 +45,8 @@ export const Recording = ({
   )
 }
 
-const InternalRecording = ({ recording, style }: RecordingProps) => {
-  return <Recording recording={recording} style={style} />
+const Recording = ({ recording, style }: RecordingProps) => {
+  return <VideoRecording recording={recording} style={style} />
 }
 
-export default InternalRecording
+export default Recording

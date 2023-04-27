@@ -1,11 +1,8 @@
 import { formatMove } from "@/games/chess/helpers"
-import { Comment } from "@ranklab/api"
-import { CommentListItem as BaseCommentListItem } from "@/components/CommentListItem"
-
-export interface CommentListItemProps {
-  comment: Comment
-  selected: boolean
-}
+import {
+  CommentListItem as BaseCommentListItem,
+  CommentListItemProps,
+} from "@/components/CommentListItem"
 
 const CommentListItem = ({ comment, selected }: CommentListItemProps) => {
   return (
