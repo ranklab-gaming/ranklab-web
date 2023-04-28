@@ -49,6 +49,7 @@ export const Toolbar = ({
   return (
     <BaseToolbar
       review={review}
+      editing={drawing || commenting}
       commenting={commenting}
       comments={comments}
       form={form}

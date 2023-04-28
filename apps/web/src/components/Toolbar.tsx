@@ -22,6 +22,7 @@ export interface ToolbarProps {
   selectedComment: Comment | null
   comments: Comment[]
   commenting: boolean
+  editing?: boolean
   review: Review
   form: UseFormReturn<CommentFormValues>
   onCommentingChange: (commenting: boolean) => void
@@ -36,13 +37,14 @@ export const Toolbar = ({
   comments,
   commenting,
   form,
+  editing: inEditing,
   onCommentingChange,
   children,
   review,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
   const { enqueueSnackbar } = useSnackbar()
-  const editing = commenting || selectedComment
+  const editing = inEditing || commenting || selectedComment
 
   const deleteComment = async () => {
     if (!selectedComment) return
