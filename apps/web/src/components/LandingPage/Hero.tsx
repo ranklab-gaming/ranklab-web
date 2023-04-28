@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Container,
-  Paper,
   Stack,
   Typography,
   debounce,

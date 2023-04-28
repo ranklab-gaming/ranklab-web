@@ -6,7 +6,6 @@ import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
@@ -138,7 +137,7 @@ export const CoachSignupPage = ({
             </Grid>
             <Grid item xs={12} sm={7}>
               <Sticky
-                enabled={true}
+                enabled
                 top={20}
                 innerZ={9999}
                 bottomBoundary={`.${id}-form`}
