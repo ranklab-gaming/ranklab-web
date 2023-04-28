@@ -84,6 +84,16 @@ export const Recording = ({
     }
   }, [])
 
+  const setTimestamp = (microseconds: number) => {
+    form.setValue("metadata", {
+      ...metadata,
+      video: {
+        ...metadata.video,
+        timestamp: microseconds,
+      },
+    })
+  }
+
   return (
     <>
       <Toolbar
@@ -111,21 +121,18 @@ export const Recording = ({
       >
         <VideoPlayer
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
-          onTimeUpdate={(time) =>
-            form.setValue("metadata", {
-              ...metadata,
-              video: {
-                ...metadata.video,
-                timestamp: time,
-              },
-            })
-          }
-          onSeeked={() => onCommentSelect(null)}
-          onPause={() => {
+          onTimeUpdate={setTimestamp}
+          onSeeked={(time) => {
             onCommentSelect(null)
+            setTimestamp(time)
           }}
-          onPlay={() => {
+          onPause={(time) => {
+            onCommentSelect(null)
+            setTimestamp(time)
+          }}
+          onPlay={(time) => {
             onCommentSelect(null, false)
+            setTimestamp(time)
           }}
           ref={videoRef}
           controls={!drawing}

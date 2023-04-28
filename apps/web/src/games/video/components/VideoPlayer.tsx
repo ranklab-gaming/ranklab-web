@@ -10,11 +10,11 @@ import {
 interface VideoPlayerProps {
   src: string
   style?: CSSProperties
-  onTimeUpdate?: (seconds: number) => void
+  onTimeUpdate?: (microseconds: number) => void
   controls?: boolean
-  onPlay?: (seconds: number) => void
-  onPause?: (seconds: number) => void
-  onSeeked?: (seconds: number) => void
+  onPlay?: (microseconds: number) => void
+  onPause?: (microseconds: number) => void
+  onSeeked?: (microseconds: number) => void
 }
 
 export interface VideoPlayerRef {
