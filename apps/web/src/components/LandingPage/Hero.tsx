@@ -155,7 +155,10 @@ export const Hero = ({ games }: HeroProps) => {
               borderRadius: theme.shape.borderRadius,
             }}
           >
-            <source src={`${assetsCdnUrl}/player-demo.mp4`} type="video/mp4" />
+            <source
+              src={`${assetsCdnUrl}/coach-review-tutorial.mp4`}
+              type="video/mp4"
+            />
           </video>
         </HeroImgStyle>
       </m.div>
