@@ -8,11 +8,11 @@ const api = withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const session = await getServerSession(req)
-  const token = session?.accessToken
-  const api = new ServerApi(token)
   const { query, method, headers, body } = req
   const path = Array.isArray(query.path) ? query.path.join("/") : query.path
+  const session = path === "sessions" ? null : await getServerSession(req)
+  const token = session?.accessToken
+  const api = new ServerApi(token)
 
   delete query.path
 

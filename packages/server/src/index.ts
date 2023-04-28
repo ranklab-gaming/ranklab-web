@@ -17,7 +17,7 @@ export default async () => {
   const { hostname } = host
   const { getOidcProvider } = await import("./oidc/provider.js")
 
-  let pinoOptions: PinoOptions = {
+  const pinoOptions: PinoOptions = {
     serializers: {
       req: (req) => ({
         id: req.id,
