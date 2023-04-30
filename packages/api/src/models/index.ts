@@ -59,6 +59,61 @@ export interface Address {
 /**
  *
  * @export
+ * @interface Avatar
+ */
+export interface Avatar {
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  id: string
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  imageKey?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  uploadUrl?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  createdAt: string
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  updatedAt: string
+  /**
+   *
+   * @type {AvatarState}
+   * @memberof Avatar
+   */
+  state: AvatarState
+}
+
+/**
+ *
+ * @export
+ */
+export const AvatarState = {
+  Created: "Created",
+  Uploaded: "Uploaded",
+  Processed: "Processed",
+} as const
+export type AvatarState = (typeof AvatarState)[keyof typeof AvatarState]
+
+/**
+ *
+ * @export
  * @interface BillingDetails
  */
 export interface BillingDetails {
@@ -172,6 +227,12 @@ export interface Coach {
    * @memberof Coach
    */
   slug: string
+  /**
+   *
+   * @type {string}
+   * @memberof Coach
+   */
+  avatarImageKey?: string | null
 }
 /**
  *

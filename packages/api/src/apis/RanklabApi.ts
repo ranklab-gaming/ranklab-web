@@ -15,6 +15,7 @@
 import * as runtime from "../runtime"
 import type {
   AccountLink,
+  Avatar,
   BillingDetails,
   BillingPortalLink,
   Coach,
@@ -56,6 +57,10 @@ export interface CoachAccountCreateRequest {
 
 export interface CoachAccountUpdateRequest {
   updateCoachRequest: UpdateCoachRequest
+}
+
+export interface CoachAvatarsCreateRequest {
+  body: object
 }
 
 export interface CoachCommentsCreateRequest {
@@ -312,6 +317,86 @@ export class RanklabApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides
     )
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachAvatarsCreateRaw(
+    requestParameters: CoachAvatarsCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Avatar>> {
+    if (
+      requestParameters.body === null ||
+      requestParameters.body === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "body",
+        "Required parameter requestParameters.body was null or undefined when calling coachAvatarsCreate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/coach/avatars`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.body as any,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAvatarsCreate(
+    requestParameters: CoachAvatarsCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Avatar> {
+    const response = await this.coachAvatarsCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachAvatarsDeleteRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/avatars`,
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAvatarsDelete(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.coachAvatarsDeleteRaw(initOverrides)
     return await response.value()
   }
 

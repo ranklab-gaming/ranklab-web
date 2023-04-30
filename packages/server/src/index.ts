@@ -64,10 +64,6 @@ export default async () => {
   app.use(xrayExpress.openSegment("ranklab-web"))
   app.use("/oidc", oidcProvider.callback())
 
-  app.get("/r/:id", (req, res) => {
-    res.redirect(307, `/api/r/${req.params.id}`)
-  })
-
   app.all("*", async (req, res) => {
     try {
       await nextHandler(req, res)

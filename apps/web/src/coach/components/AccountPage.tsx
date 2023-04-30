@@ -23,7 +23,7 @@ import {
   Tabs,
   useTheme,
 } from "@mui/material"
-import { Game } from "@ranklab/api"
+import { Game, Coach } from "@ranklab/api"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
@@ -31,6 +31,9 @@ import { useEffect, useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton"
+import { AvatarSelect } from "@/components/AvatarSelect"
+import { uploadsCdnUrl } from "@/config"
+import { useUpload } from "@/games/video/hooks/useUpload"
 
 interface Props {
   games: Game[]
@@ -40,18 +43,31 @@ const FormSchema = yup
   .object()
   .shape({
     emailsEnabled: yup.boolean().required(),
+    avatar: yup
+      .mixed()
+      .test(
+        "fileSize",
+        "Image file must be less than 32MiB",
+        (value) =>
+          !value ||
+          (value instanceof File && value.size > 0 && value.size < 33554432)
+      ),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
 
-type FormValues = yup.InferType<typeof FormSchema>
+type FormValues = yup.InferType<typeof FormSchema> & {
+  avatar?: File
+}
 
 export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
-  const coach = coachFromUser(user)
+  const [coach, setCoach] = useState<Coach>(coachFromUser(user))
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
   const router = useRouter()
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [origin, setOrigin] = useState<string | null>(null)
+  const [upload, { uploading }] = useUpload()
+  const [deletingAvatar, setDeletingAvatar] = useState(false)
 
   useEffect(() => {
     setOrigin(window.location.origin)
@@ -89,7 +105,35 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       },
     })
 
+    if (data.avatar) {
+      const avatar = await api.coachAvatarsCreate({
+        body: {},
+      })
+
+      if (!avatar.uploadUrl) {
+        throw new Error("uploadUrl is missing")
+      }
+
+      await upload({
+        file: data.avatar,
+        url: avatar.uploadUrl,
+        headers: {
+          "x-amz-acl": "public-read",
+          "x-amz-meta-coach-id": coach.id,
+        },
+      })
+    }
+
     enqueueSnackbar("Account updated successfully", { variant: "success" })
+  }
+
+  const deleteAvatar = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setDeletingAvatar(true)
+    await api.coachAvatarsDelete()
+    setDeletingAvatar(false)
+    setCoach((coach) => ({ ...coach, avatarImageKey: null }))
+    enqueueSnackbar("Avatar deleted successfully", { variant: "success" })
   }
 
   return (
@@ -151,15 +195,58 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                   earnings in real time.
                 </Alert>
               ) : null}
-              <AccountFields control={control} games={games} gameDisabled />
+              <AccountFields control={control} games={games} gameDisabled>
+                <Controller
+                  name="avatar"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <AvatarSelect
+                      defaultAvatarUrl={
+                        coach.avatarImageKey
+                          ? `${uploadsCdnUrl}/${coach.avatarImageKey}`
+                          : undefined
+                      }
+                      endAdornment={
+                        coach.avatarImageKey ? (
+                          <LoadingButton
+                            loading={deletingAvatar}
+                            onClick={deleteAvatar}
+                            color="error"
+                            variant="text"
+                            size="small"
+                            type="button"
+                          >
+                            Delete
+                          </LoadingButton>
+                        ) : (
+                          <Iconify
+                            icon="eva:image-outline"
+                            fontSize={24}
+                            color={error ? "error.main" : undefined}
+                          />
+                        )
+                      }
+                      onChange={field.onChange}
+                      value={field.value}
+                      label="Upload an avatar"
+                      error={Boolean(error)}
+                      helperText={
+                        error
+                          ? error.message
+                          : "The image you use to represent yourself"
+                      }
+                    />
+                  )}
+                />
+              </AccountFields>
             </Stack>
             <LoadingButton
               color="primary"
               size="large"
               type="submit"
               variant="contained"
-              loading={isSubmitting}
-              disabled={isSubmitting}
+              loading={isSubmitting || uploading}
+              disabled={isSubmitting || uploading}
             >
               Save Changes
             </LoadingButton>
