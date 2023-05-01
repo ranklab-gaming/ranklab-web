@@ -1,14 +1,14 @@
 import { PropsWithUser } from "@/auth"
-import { withUserSsr } from "@/auth/page"
 import { ReviewRequestPage } from "@/components/ReviewRequestPage"
 import { Coach, Game } from "@ranklab/api"
+import { GetServerSidePropsContext } from "next"
 
 interface Props {
   coach: Coach
   games: Game[]
 }
 
-export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx.req)
 
@@ -23,7 +23,7 @@ export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
       games,
     },
   }
-})
+}
 
 export default function ({ coach, games }: PropsWithUser<Props>) {
   return <ReviewRequestPage coach={coach} games={games} />
