@@ -83,31 +83,29 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                       <Typography variant="body1" gutterBottom>
                         <span dangerouslySetInnerHTML={{ __html: coach.bio }} />
                       </Typography>
-                      <Box>
-                        <NextLink
-                          href={`/player/reviews/new?slug=${coach.slug}`}
-                          passHref
-                          legacyBehavior
+                      <NextLink
+                        href={`/player/reviews/new?slug=${coach.slug}`}
+                        passHref
+                        legacyBehavior
+                      >
+                        <Button
+                          size="large"
+                          variant="text"
+                          sx={{
+                            fontSize: 18,
+                            p: 3,
+                            color: "common.white",
+                            transition: "all 0.25s",
+                            backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                            boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                            "&:hover": {
+                              filter: "brightness(1.3)",
+                            },
+                          }}
                         >
-                          <Button
-                            size="large"
-                            variant="text"
-                            sx={{
-                              fontSize: 18,
-                              p: 3,
-                              color: "common.white",
-                              transition: "all 0.25s",
-                              backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                              boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                              "&:hover": {
-                                filter: "brightness(1.3)",
-                              },
-                            }}
-                          >
-                            Request a Review from {coach.name}
-                          </Button>
-                        </NextLink>
-                      </Box>
+                          Request a Review from {coach.name}
+                        </Button>
+                      </NextLink>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} sm={6}>
