@@ -1,5 +1,4 @@
 import { UserContext } from "@/contexts/UserContext"
-import { useUser } from "@/hooks/useUser"
 import {
   Avatar as MuiAvatar,
   AvatarProps as MuiAvatarProps,

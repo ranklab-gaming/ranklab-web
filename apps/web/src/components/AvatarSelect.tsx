@@ -2,12 +2,11 @@
 import React, {
   ChangeEvent,
   forwardRef,
-  ReactNode,
   useEffect,
   useId,
   useState,
 } from "react"
-import { Box, Button, FormControl, Paper, Stack, styled } from "@mui/material"
+import { Box, Button, FormControl, Stack, styled } from "@mui/material"
 import { Avatar } from "@/components/Avatar"
 
 const StyledImage = styled("img")`
@@ -20,14 +19,13 @@ const StyledImage = styled("img")`
 
 interface AvatarSelectProps {
   defaultAvatarUrl?: string
-  value?: File
   onChange: (file?: File) => void
   onClear: () => void
   userName?: string
 }
 
 export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
-  function ({ defaultAvatarUrl, value, onChange, onClear, userName }, ref) {
+  function ({ defaultAvatarUrl, onChange, onClear, userName }, ref) {
     const [previewUrl, setPreviewUrl] = useState(defaultAvatarUrl)
     const id = useId().slice(1, -1)
 

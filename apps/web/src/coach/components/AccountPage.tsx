@@ -192,7 +192,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                 <Controller
                   name="avatar"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field }) => (
                     <AvatarSelect
                       defaultAvatarUrl={
                         coach.avatarImageKey
