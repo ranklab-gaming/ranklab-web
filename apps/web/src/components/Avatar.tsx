@@ -1,10 +1,11 @@
+import { UserContext } from "@/contexts/UserContext"
 import { useUser } from "@/hooks/useUser"
 import {
   Avatar as MuiAvatar,
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
-import { forwardRef } from "react"
+import { forwardRef, useContext } from "react"
 
 type AvatarColor =
   | "default"
@@ -46,8 +47,14 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
   ref
 ) {
   const theme = useTheme()
-  const user = useUser()
-  const { name } = initialUser ?? user
+  const contextUser = useContext(UserContext)
+  const user = initialUser ?? contextUser
+
+  if (!user) {
+    throw new Error("user is missing")
+  }
+
+  const { name } = user
   const initial = getInitial(name)
   const color = getAvatarColor(name)
 

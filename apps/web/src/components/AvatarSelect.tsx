@@ -3,26 +3,17 @@ import React, {
   ChangeEvent,
   forwardRef,
   ReactNode,
+  useEffect,
   useId,
   useState,
 } from "react"
-import {
-  Box,
-  FormControl,
-  FormHelperText,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-  styled,
-} from "@mui/material"
+import { Box, Button, FormControl, Paper, Stack, styled } from "@mui/material"
+import { Avatar } from "@/components/Avatar"
 
 const StyledImage = styled("img")`
   display: block;
-  max-width: 40px;
-  max-height: 40px;
-  width: auto;
-  height: auto;
+  width: 48px;
+  height: 48px;
   object-fit: cover;
   border-radius: 50%;
 `
@@ -31,25 +22,12 @@ interface AvatarSelectProps {
   defaultAvatarUrl?: string
   value?: File
   onChange: (file?: File) => void
-  label: string
-  error: boolean
-  helperText: ReactNode
-  endAdornment?: ReactNode
+  onClear: () => void
+  userName?: string
 }
 
 export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
-  function (
-    {
-      defaultAvatarUrl,
-      value,
-      onChange,
-      label,
-      error,
-      helperText,
-      endAdornment,
-    },
-    ref
-  ) {
+  function ({ defaultAvatarUrl, value, onChange, onClear, userName }, ref) {
     const [previewUrl, setPreviewUrl] = useState(defaultAvatarUrl)
     const id = useId().slice(1, -1)
 
@@ -61,42 +39,56 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
       }
     }
 
+    useEffect(() => {
+      setPreviewUrl(defaultAvatarUrl)
+    }, [defaultAvatarUrl])
+
     return (
-      <Box sx={{ width: "100%" }} ref={ref}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Box width={40} height={40} my={2}>
-            {previewUrl ? (
+      <Box ref={ref}>
+        <Stack spacing={1} alignItems="center">
+          {previewUrl ? (
+            <Box width={48} height={48}>
               <StyledImage src={previewUrl} alt="Avatar preview" />
-            ) : null}
-          </Box>
-          <FormControl
-            sx={{ width: "100%", cursor: "pointer" }}
-            component="label"
-            htmlFor={id}
-            error={error}
-          >
-            <input
-              id={id}
-              style={{ display: "none" }}
-              accept="image/*"
-              type="file"
-              onChange={handleFileChange}
-            />
-            {!previewUrl && (
-              <InputLabel htmlFor={id} error={error}>
-                {label}
-              </InputLabel>
-            )}
-            <OutlinedInput
-              type="text"
-              value={value ? value.name : previewUrl ? label : ""}
-              sx={{ pointerEvents: "none" }}
-              error={error}
-            />
-            {helperText && (
-              <FormHelperText error={error}>{helperText}</FormHelperText>
-            )}
-          </FormControl>
+            </Box>
+          ) : userName ? (
+            <Avatar user={{ name: userName }} sx={{ width: 48, height: 48 }} />
+          ) : null}
+          {previewUrl ? (
+            <Button
+              variant="text"
+              onClick={() => {
+                setPreviewUrl(defaultAvatarUrl)
+                onClear()
+              }}
+              size="small"
+            >
+              Clear
+            </Button>
+          ) : (
+            <FormControl
+              sx={{
+                cursor: "pointer",
+              }}
+              component="label"
+              htmlFor={id}
+            >
+              <input
+                id={id}
+                style={{ display: "none" }}
+                accept="image/*"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <Button
+                variant="text"
+                size="small"
+                type="button"
+                sx={{ pointerEvents: "none" }}
+              >
+                Upload
+              </Button>
+            </FormControl>
+          )}
         </Stack>
       </Box>
     )

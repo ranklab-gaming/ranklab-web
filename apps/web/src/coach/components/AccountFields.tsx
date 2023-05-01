@@ -1,5 +1,5 @@
 import { GameSelect } from "@/components/GameSelect"
-import { TextField, InputAdornment } from "@mui/material"
+import { TextField, InputAdornment, Stack, Box } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { PropsWithChildren } from "react"
 import { Control, Controller, Path } from "react-hook-form"
@@ -62,22 +62,26 @@ export const AccountFields = <
 }: PropsWithChildren<Props<TWithPassword, TFormValues>>) => {
   return (
     <>
-      <Controller
-        name={"name" as Path<TFormValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="Name"
-            error={Boolean(error)}
-            helperText={
-              error
-                ? error.message
-                : "This is how you'll appear in your profile"
-            }
-          />
-        )}
-      />
+      <Stack spacing={2} direction="row" alignItems="center">
+        <Box>{children}</Box>
+        <Controller
+          name={"name" as Path<TFormValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              label="Name"
+              error={Boolean(error)}
+              fullWidth
+              helperText={
+                error
+                  ? error.message
+                  : "This is how you'll appear in your profile"
+              }
+            />
+          )}
+        />
+      </Stack>
       <Controller
         name={"email" as Path<TFormValues>}
         control={control}
@@ -108,7 +112,6 @@ export const AccountFields = <
           )}
         />
       ) : null}
-      {children}
       <Controller
         name={"bio" as Path<TFormValues>}
         control={control}

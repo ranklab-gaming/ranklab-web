@@ -60,14 +60,14 @@ type FormValues = yup.InferType<typeof FormSchema> & {
 }
 
 export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
-  const [coach, setCoach] = useState<Coach>(coachFromUser(user))
+  const initialCoach = coachFromUser(user)
+  const [coach, setCoach] = useState<Coach>(initialCoach)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
   const router = useRouter()
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [origin, setOrigin] = useState<string | null>(null)
-  const [upload, { uploading }] = useUpload()
-  const [deletingAvatar, setDeletingAvatar] = useState(false)
+  const [upload] = useUpload()
 
   useEffect(() => {
     setOrigin(window.location.origin)
@@ -85,6 +85,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const {
     control,
     handleSubmit,
+    resetField,
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
@@ -119,21 +120,13 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         url: avatar.uploadUrl,
         headers: {
           "x-amz-acl": "public-read",
-          "x-amz-meta-coach-id": coach.id,
         },
       })
+    } else if (initialCoach.avatarImageKey && !coach.avatarImageKey) {
+      await api.coachAvatarsDelete()
     }
 
     enqueueSnackbar("Account updated successfully", { variant: "success" })
-  }
-
-  const deleteAvatar = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setDeletingAvatar(true)
-    await api.coachAvatarsDelete()
-    setDeletingAvatar(false)
-    setCoach((coach) => ({ ...coach, avatarImageKey: null }))
-    enqueueSnackbar("Avatar deleted successfully", { variant: "success" })
   }
 
   return (
@@ -206,35 +199,16 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                           ? `${uploadsCdnUrl}/${coach.avatarImageKey}`
                           : undefined
                       }
-                      endAdornment={
-                        coach.avatarImageKey ? (
-                          <LoadingButton
-                            loading={deletingAvatar}
-                            onClick={deleteAvatar}
-                            color="error"
-                            variant="text"
-                            size="small"
-                            type="button"
-                          >
-                            Delete
-                          </LoadingButton>
-                        ) : (
-                          <Iconify
-                            icon="eva:image-outline"
-                            fontSize={24}
-                            color={error ? "error.main" : undefined}
-                          />
-                        )
-                      }
                       onChange={field.onChange}
+                      onClear={() => {
+                        setCoach((coach) => ({
+                          ...coach,
+                          avatarImageKey: null,
+                        }))
+                        resetField("avatar")
+                      }}
                       value={field.value}
-                      label="Upload an avatar"
-                      error={Boolean(error)}
-                      helperText={
-                        error
-                          ? error.message
-                          : "The image you use to represent yourself"
-                      }
+                      userName={coach.name}
                     />
                   )}
                 />
@@ -245,8 +219,8 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
               size="large"
               type="submit"
               variant="contained"
-              loading={isSubmitting || uploading}
-              disabled={isSubmitting || uploading}
+              loading={isSubmitting}
+              disabled={isSubmitting}
             >
               Save Changes
             </LoadingButton>
