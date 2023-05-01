@@ -207,7 +207,6 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                         }))
                         resetField("avatar")
                       }}
-                      value={field.value}
                       userName={coach.name}
                     />
                   )}
