@@ -56,7 +56,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                 <NextLink href="/">
                   <Logo sx={{ width: 48 }} />
                 </NextLink>
-                <Box>Ready to up your {game.name} game?</Box>
+                <Box>Up your {game.name} game with Ranklab.</Box>
               </Stack>
             </Typography>
             <Card sx={{ p: 2 }}>
@@ -83,35 +83,37 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                       <Typography variant="body1" gutterBottom>
                         <span dangerouslySetInnerHTML={{ __html: coach.bio }} />
                       </Typography>
-                      <NextLink
-                        href={`/player/reviews/new?slug=${coach.slug}`}
-                        passHref
-                        legacyBehavior
-                      >
-                        <Button
-                          size="large"
-                          variant="text"
-                          sx={{
-                            fontSize: 18,
-                            p: 3,
-                            color: "common.white",
-                            transition: "all 0.25s",
-                            backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                            boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                            "&:hover": {
-                              filter: "brightness(1.3)",
-                            },
-                          }}
+                      <Box>
+                        <NextLink
+                          href={`/player/reviews/new?slug=${coach.slug}`}
+                          passHref
+                          legacyBehavior
                         >
-                          Request a Review from {coach.name}
-                        </Button>
-                      </NextLink>
+                          <Button
+                            size="large"
+                            variant="text"
+                            sx={{
+                              fontSize: 18,
+                              p: 3,
+                              color: "common.white",
+                              transition: "all 0.25s",
+                              backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                              boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                              "&:hover": {
+                                filter: "brightness(1.3)",
+                              },
+                            }}
+                          >
+                            Get Coached By {coach.name}
+                          </Button>
+                        </NextLink>
+                      </Box>
                     </Stack>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CardHeader
                       title="What is Ranklab?"
-                      subheader="This is a short video to give an overview of Ranklab and how it works."
+                      subheader="This is a short video to give an overview of the platform and how it works."
                     />
                     <CardContent>
                       <video
