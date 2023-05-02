@@ -21,6 +21,10 @@ const links = [
         name: "Privacy Policy",
         href: "https://www.iubenda.com/privacy-policy/88772361",
       },
+      {
+        name: "Contact Us",
+        href: "mailto:contact@ranklab.gg",
+      },
     ],
   },
 ]
