@@ -156,7 +156,7 @@ export const Hero = ({ games }: HeroProps) => {
             }}
           >
             <source
-              src={`${assetsCdnUrl}/coach-review-tutorial.mp4`}
+              src={`${assetsCdnUrl}/hero-background-video.mp4`}
               type="video/mp4"
             />
           </video>
