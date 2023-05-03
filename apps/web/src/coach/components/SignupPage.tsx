@@ -161,7 +161,7 @@ export const CoachSignupPage = ({
                       }}
                     >
                       <source
-                        src={`${assetsCdnUrl}/coaches-review-tutorial.mp4`}
+                        src={`${assetsCdnUrl}/coach-review-tutorial.mp4`}
                         type="video/mp4"
                       />
                     </video>

@@ -129,7 +129,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                         }}
                       >
                         <source
-                          src={`${assetsCdnUrl}/coaches-review-tutorial.mp4`}
+                          src={`${assetsCdnUrl}/player-review-tutorial.mp4`}
                           type="video/mp4"
                         />
                       </video>
