@@ -25,6 +25,7 @@ const ReviewDetails = ({
   recording,
   onCommentSelect,
   onReviewChange,
+  children,
 }: PropsWithChildren<ReviewDetailsProps>) => {
   const videoRef = useRef<VideoPlayerRef>(null)
 
@@ -57,7 +58,9 @@ const ReviewDetails = ({
           onSeeked={() => onCommentSelect(null)}
         />
       }
-    />
+    >
+      {children}
+    </BaseReviewDetails>
   )
 }
 

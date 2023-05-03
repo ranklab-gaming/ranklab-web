@@ -13,6 +13,7 @@ const ReviewDetails = ({
   recording,
   onCommentSelect,
   onReviewChange,
+  children,
 }: PropsWithChildren<ReviewDetailsProps>) => {
   const chessBoardRef = useRef<ChessBoardRef>(null)
 
@@ -39,7 +40,9 @@ const ReviewDetails = ({
       recordingElement={
         <ChessBoard ref={chessBoardRef} recording={recording} />
       }
-    />
+    >
+      {children}
+    </BaseReviewDetails>
   )
 }
 
