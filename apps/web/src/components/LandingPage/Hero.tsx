@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Container,
+  Link,
   Stack,
   Typography,
   debounce,
@@ -235,29 +236,45 @@ export const Hero = ({ games }: HeroProps) => {
               alignItems="center"
               justifyContent={!isDesktop ? "center" : "flex-start"}
             >
-              <NextLink
-                href="/api/auth/signin?intent=signup"
-                passHref
-                legacyBehavior
-              >
-                <Button
-                  size="large"
-                  variant="text"
-                  sx={{
-                    fontSize: 22,
-                    p: 4,
-                    color: "common.white",
-                    transition: "all 0.25s",
-                    backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                    boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                    "&:hover": {
-                      filter: "brightness(1.3)",
-                    },
-                  }}
+              <Stack spacing={2} textAlign="center">
+                <NextLink
+                  href="/api/auth/signin?intent=signup"
+                  passHref
+                  legacyBehavior
                 >
-                  Get Started
-                </Button>
-              </NextLink>
+                  <Button
+                    size="large"
+                    variant="text"
+                    sx={{
+                      fontSize: 22,
+                      p: 4,
+                      color: "common.white",
+                      transition: "all 0.25s",
+                      backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                      boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                      "&:hover": {
+                        filter: "brightness(1.3)",
+                      },
+                    }}
+                  >
+                    Get Started
+                  </Button>
+                </NextLink>
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.secondary" }}
+                  textAlign="center"
+                >
+                  Are you a coach?{" "}
+                  <NextLink
+                    href="mailto:support@ranklab.gg"
+                    passHref
+                    legacyBehavior
+                  >
+                    <Link color="secondary.contrastText">Contact us</Link>
+                  </NextLink>
+                </Typography>
+              </Stack>
             </Stack>
           </m.div>
         </ContentStyle>
