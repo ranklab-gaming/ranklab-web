@@ -52,20 +52,6 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
       >
         <Container maxWidth="lg">
           <Stack spacing={2}>
-            <Typography variant="h2">
-              <Stack direction="row" spacing={2} alignItems="center">
-                <NextLink href="/">
-                  <Logo sx={{ width: 48 }} />
-                </NextLink>
-                <Box>
-                  Up your game with{" "}
-                  <Typography color="primary" variant="h2" component="span">
-                    Ranklab
-                  </Typography>
-                  .
-                </Box>
-              </Stack>
-            </Typography>
             <Card sx={{ p: 2 }}>
               <CardContent>
                 <Grid container spacing={2}>
@@ -118,8 +104,8 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CardHeader
-                      title="How it works"
-                      subheader="This is a short video to give an overview of the platform and how it works."
+                      title="What is Ranklab?"
+                      subheader="This is a short video to give you an overview of the platform and how it works."
                     />
                     <CardContent>
                       <video
@@ -144,6 +130,20 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                 </Grid>
               </CardContent>
             </Card>
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems="center"
+              justifyContent="center"
+              pt={4}
+            >
+              <NextLink href="/">
+                <Logo sx={{ width: 24 }} />
+              </NextLink>
+              <Typography variant="body2" color="textSecondary">
+                Up your game with Ranklab.
+              </Typography>
+            </Stack>
           </Stack>
         </Container>
       </Box>
