@@ -337,7 +337,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                   </Stack>
                   <Paper
                     sx={{
-                      height: "400px",
+                      height: "600px",
                       backgroundColor: theme.palette.common.black,
                     }}
                     elevation={4}
