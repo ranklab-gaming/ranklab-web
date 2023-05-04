@@ -118,7 +118,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <CardHeader
-                      title="What is Ranklab?"
+                      title="How it works"
                       subheader="This is a short video to give an overview of the platform and how it works."
                     />
                     <CardContent>
