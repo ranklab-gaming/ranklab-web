@@ -99,6 +99,7 @@ const ReviewForm = ({
       }
     } else {
       setCommenting(false)
+      chessBoardRef.current?.setShapes([])
       form.reset()
     }
 
