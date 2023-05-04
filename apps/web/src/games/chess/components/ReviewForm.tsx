@@ -92,6 +92,10 @@ const ReviewForm = ({
 
       if (comment.metadata.chess.move) {
         chessBoardRef.current?.move(comment.metadata.chess.move)
+
+        if (comment.metadata.chess.shapes) {
+          chessBoardRef.current?.setShapes(comment.metadata.chess.shapes)
+        }
       }
     } else {
       setCommenting(false)
@@ -129,17 +133,28 @@ const ReviewForm = ({
             />
             <ChessBoard
               recording={recording}
-              onMove={(move) =>
+              onMove={(move) => {
+                const chess = metadata?.chess ?? {}
+                chess.move = move
+
                 form.setValue("metadata", {
                   ...metadata,
-                  chess: {
-                    ...metadata?.chess,
-                    move,
-                  },
+                  chess,
                 })
-              }
+              }}
               onSideResize={setOverlayDimensions}
               ref={chessBoardRef}
+              drawArrows
+              onShapesChange={(shapes) => {
+                const chess = metadata?.chess ?? {}
+                chess.shapes = shapes
+
+                form.setValue("metadata", {
+                  ...metadata,
+                  chess,
+                })
+              }}
+              allowNavigation={!commenting}
             >
               <AnimatePresence mode="popLayout">
                 {commenting ? (
