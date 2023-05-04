@@ -96,7 +96,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                               },
                             }}
                           >
-                            Request a Review
+                            Submit your VOD
                           </Button>
                         </NextLink>
                       </Box>
