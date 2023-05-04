@@ -1,4 +1,4 @@
-import { formatMove } from "@/games/chess/helpers"
+import { formatMove } from "@/games/chess/helpers/formatMove"
 import { CommentListItem as BaseCommentListItem } from "@/components/CommentListItem"
 import { CommentListItemProps } from "@/games/video/components/CommentListItem"
 
