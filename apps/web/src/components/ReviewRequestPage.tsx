@@ -10,6 +10,7 @@ import {
   CardContent,
   CardHeader,
   Grid,
+  Chip,
 } from "@mui/material"
 import { Coach, Game } from "@ranklab/api"
 import { assetsCdnUrl, uploadsCdnUrl } from "@/config"
@@ -51,12 +52,18 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
       >
         <Container maxWidth="lg">
           <Stack spacing={2}>
-            <Typography variant="h2" gutterBottom>
+            <Typography variant="h2">
               <Stack direction="row" spacing={2} alignItems="center">
                 <NextLink href="/">
                   <Logo sx={{ width: 48 }} />
                 </NextLink>
-                <Box>Up your {game.name} game with Ranklab.</Box>
+                <Box>
+                  Up your game with{" "}
+                  <Typography color="primary" variant="h2" component="span">
+                    Ranklab
+                  </Typography>
+                  .
+                </Box>
               </Stack>
             </Typography>
             <Card sx={{ p: 2 }}>
@@ -76,11 +83,10 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                             sx={{ width: 48, height: 48 }}
                           />
                         )}
-                        <Typography variant="h3" gutterBottom>
-                          {coach.name}
-                        </Typography>
+                        <Typography variant="h3">{coach.name}</Typography>
+                        <Chip label={game.name} />
                       </Stack>
-                      <Typography variant="body1" gutterBottom>
+                      <Typography variant="body1">
                         <span dangerouslySetInnerHTML={{ __html: coach.bio }} />
                       </Typography>
                       <Box>
@@ -104,7 +110,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                               },
                             }}
                           >
-                            Get Coached By {coach.name}
+                            Request a Review
                           </Button>
                         </NextLink>
                       </Box>
