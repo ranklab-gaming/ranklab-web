@@ -3,7 +3,6 @@ import { default as Recording } from "./components/Recording"
 import { default as RecordingForm } from "./components/RecordingForm"
 import { default as ReviewDetails } from "./components/ReviewDetails"
 import { default as ReviewForm } from "./components/ReviewForm"
-import { default as Stepper } from "./components/Stepper"
 
 export default {
   "component:comment-list-item": CommentListItem,
@@ -11,5 +10,5 @@ export default {
   "component:recording-form": RecordingForm,
   "component:review-details": ReviewDetails,
   "component:review-form": ReviewForm,
-  "component:stepper": Stepper,
+  "text:recording-step": "Choose a Recording",
 }

@@ -30,8 +30,8 @@ import NextLink from "next/link"
 import { updateSessionReview } from "@/api/sessionReview"
 import { formatDate } from "@/helpers/formatDate"
 import { RecordingFormProps } from "@/games/video/components/RecordingForm"
-import Stepper from "./Stepper"
 import { ChessBoard } from "./ChessBoard"
+import { Stepper } from "@/player/reviews/new/components/Stepper"
 
 interface FormValues {
   recordingId: string

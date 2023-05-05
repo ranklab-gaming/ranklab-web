@@ -20,7 +20,7 @@ import { StripeElements } from "@/player/components/StripeElements"
 import { BillingDetails } from "@ranklab/api"
 import { useState } from "react"
 import { SessionReview } from "@/session"
-import { useGameDependency } from "@/hooks/useGameDependency"
+import { Stepper } from "@/player/reviews/new/components/Stepper"
 
 interface Props {
   billingDetails: BillingDetails
@@ -31,7 +31,6 @@ const Content = ({ billingDetails, review }: Props) => {
   const router = useRouter()
   const elements = useElements()
   const [loading, setLoading] = useState(true)
-  const Stepper = useGameDependency("component:stepper")
 
   const {
     handleSubmit,

@@ -42,7 +42,7 @@ import { Iconify } from "@/components/Iconify"
 import NextImage from "next/image"
 import { useUpload } from "../hooks/useUpload"
 import { VideoRecording } from "./Recording"
-import Stepper from "./Stepper"
+import { Stepper } from "@/player/reviews/new/components/Stepper"
 
 export interface RecordingFormProps {
   formSchema: RecordingFormSchema

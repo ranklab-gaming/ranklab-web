@@ -1,6 +1,6 @@
-import chess from "./chess/components"
-import video from "./video/components"
+import chessContainer from "./chess/container"
+import videoContainer from "./video/container"
 
-export type Container = typeof video
+export type Container = typeof videoContainer
 
-export default { chess, video }
+export default { chess: chessContainer, video: videoContainer }

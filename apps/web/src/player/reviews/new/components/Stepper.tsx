@@ -1,4 +1,5 @@
 import { Iconify } from "@/components/Iconify"
+import { useGameDependency } from "@/hooks/useGameDependency"
 import {
   StepConnector,
   stepConnectorClasses,
@@ -76,10 +77,10 @@ const ColorlibStepIcon = (props: StepIconProps) => {
 
 interface Props {
   activeStep: number
-  recordingStep: string
 }
 
-export const Stepper = ({ activeStep, recordingStep }: Props) => {
+export const Stepper = ({ activeStep }: Props) => {
+  const recordingStep = useGameDependency("text:recording-step")
   const steps = [recordingStep, "Choose a Coach", "Billing Details", "Checkout"]
 
   return (
