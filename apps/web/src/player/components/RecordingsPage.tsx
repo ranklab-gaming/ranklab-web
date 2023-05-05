@@ -5,6 +5,7 @@ import { RecordingList } from "./RecordingList"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   recordings: Recording[]
@@ -16,18 +17,21 @@ export const PlayerRecordingsPage = ({
   games,
   user,
 }: PropsWithUser<Props>) => {
+  const recordingsTitle = useGameDependency("text:recordings-title")
+  const recordingsEmptyText = useGameDependency("text:recordings-empty-text")
+
   return (
-    <DashboardLayout user={user} title="Recordings">
+    <DashboardLayout user={user} title={recordingsTitle}>
       {recordings.length === 0 ? (
         <Paper>
           <Box p={2}>
             <Box textAlign="center" p={8}>
               <Iconify icon="eva:video-outline" width={40} height={40} />
               <Typography variant="h3" component="h1" gutterBottom>
-                No Recordings Yet
+                No {recordingsTitle} Yet
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Once you upload a recording of your games, it will appear here.
+                {recordingsEmptyText}
               </Typography>
               <NextLink href="/player/dashboard" passHref legacyBehavior>
                 <Button

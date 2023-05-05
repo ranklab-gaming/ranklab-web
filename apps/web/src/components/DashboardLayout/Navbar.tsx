@@ -11,6 +11,7 @@ import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -24,7 +25,6 @@ const RootStyle = styled("div")(({ theme }) => ({
 const icons = {
   user: <Iconify icon="eva:person-outline" />,
   dashboard: <Iconify icon="eva:grid-outline" />,
-  recordings: <Iconify icon="eva:video-outline" />,
   archive: <Iconify icon="eva:archive-outline" />,
   review: <Iconify icon="eva:plus-square-outline" />,
 }
@@ -46,6 +46,8 @@ export const Navbar = ({
   const user = useUser()
   const router = useRouter()
   const createReview = useCreateReview()
+  const recordingsTitle = useGameDependency("text:recordings-title")
+  const recordingsIcon = useGameDependency("component:recording-icon")
 
   const navConfig =
     user.type === "player"
@@ -70,9 +72,9 @@ export const Navbar = ({
               icon: icons.archive,
             },
             {
-              title: "Recordings",
+              title: recordingsTitle,
               path: "/player/recordings",
-              icon: icons.recordings,
+              icon: recordingsIcon,
             },
           ],
           [

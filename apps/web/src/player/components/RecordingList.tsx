@@ -32,6 +32,8 @@ export const RecordingList = ({ recordings, games }: Props) => {
 
   const createReview = useCreateReview()
   const Recording = useGameDependency("component:recording")
+  const recordingsDateColumn = useGameDependency("text:recordings-date-column")
+  const recordingTitle = useGameDependency("text:recording-title")
 
   return (
     <Table>
@@ -40,7 +42,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
           <TableCell width={300}>Title</TableCell>
           <TableCell align="center">Game</TableCell>
           <TableCell align="center">Skill Level</TableCell>
-          <TableCell align="center">Date Uploaded</TableCell>
+          <TableCell align="center">{recordingsDateColumn}</TableCell>
           <TableCell align="right" width={300}>
             Actions
           </TableCell>
@@ -72,10 +74,12 @@ export const RecordingList = ({ recordings, games }: Props) => {
                       size="small"
                       onClick={() => setSelectedRecording(recording)}
                     >
-                      View Recording
+                      View {recordingTitle}
                     </Button>
                   ) : (
-                    <Tooltip title="This recording is being processed">
+                    <Tooltip
+                      title={`This ${recordingTitle.toLowerCase()} is being processed`}
+                    >
                       <Box>
                         <Button
                           variant="outlined"
@@ -83,7 +87,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                           size="small"
                           disabled
                         >
-                          View Video
+                          View {recordingTitle}
                         </Button>
                       </Box>
                     </Tooltip>
