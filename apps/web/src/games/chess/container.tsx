@@ -21,4 +21,6 @@ export default {
     "Once you have submitted a PGN for one of your matches, it will appear here.",
   "text:recordings-date-column": "Date Submitted",
   "text:recording-title": "Match",
+  "text:empty-comments-text":
+    "Use the controls above the chessboard to add comments to this review. You can also draw arrows on the board.",
 }

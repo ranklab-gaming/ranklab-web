@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { CommentList as BaseCommentList } from "@/components/CommentList"
 import { MessageBox } from "@/components/MessageBox"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   review: Review
@@ -20,6 +21,7 @@ export const CommentList = ({
   onCommentSelect,
 }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
+  const emptyCommentsText = useGameDependency("text:empty-comments-text")
 
   const startReview = async () => {
     const updatedReview = await api.coachReviewsUpdate({
@@ -100,10 +102,7 @@ export const CommentList = ({
 
   if (comments.length === 0) {
     return (
-      <MessageBox
-        icon="eva:corner-up-left-outline"
-        text="Use the controls above the video to add comments and drawings to this review."
-      />
+      <MessageBox icon="eva:corner-up-left-outline" text={emptyCommentsText} />
     )
   }
 

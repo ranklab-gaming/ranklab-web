@@ -21,4 +21,6 @@ export default {
     "Once you have uploaded a recording for one of your games, it will appear here.",
   "text:recordings-date-column": "Date Uploaded",
   "text:recording-title": "Recording",
+  "text:empty-comments-text":
+    "Use the controls above the video to add comments and drawings to this review.",
 }
