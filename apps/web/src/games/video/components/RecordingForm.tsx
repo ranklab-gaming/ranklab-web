@@ -186,7 +186,7 @@ const RecordingForm = ({
       recordingId = recording.id
     }
 
-    await updateSessionReview({ recordingId })
+    await updateSessionReview({ recordingId, notes: values.notes })
     await router.push("/player/reviews/new/billing")
   }
 
@@ -348,27 +348,6 @@ const RecordingForm = ({
                       />
                     </Stack>
                   )}
-                  <Controller
-                    name="notes"
-                    control={control}
-                    render={({ field, fieldState: { error } }) => {
-                      return (
-                        <Box mt={2}>
-                          <Editor
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            error={Boolean(error)}
-                          />
-                          <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
-                            {error
-                              ? error.message
-                              : "Any notes you want to add for the coach (optional)"}
-                          </FormHelperText>
-                        </Box>
-                      )
-                    }}
-                  />
                   {uploading ? (
                     <Stack spacing={1} direction="row" alignItems="center">
                       <Box flexGrow={1}>
@@ -401,6 +380,27 @@ const RecordingForm = ({
                     <VideoRecording recording={selectedRecording} />
                   </Paper>
                 ) : null}
+                <Controller
+                  name="notes"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => {
+                    return (
+                      <Box mt={2}>
+                        <Editor
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          error={Boolean(error)}
+                        />
+                        <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                          {error
+                            ? error.message
+                            : "Any notes you want to add for the coach (optional)"}
+                        </FormHelperText>
+                      </Box>
+                    )
+                  }}
+                />
                 <Stack direction="row">
                   <NextLink
                     href="/player/reviews/new/coach"

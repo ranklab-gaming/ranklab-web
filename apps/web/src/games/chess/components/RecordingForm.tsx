@@ -103,7 +103,7 @@ const RecordingForm = ({
       recordingId = recording.id
     }
 
-    await updateSessionReview({ recordingId })
+    await updateSessionReview({ recordingId, notes: values.notes })
     await router.push("/player/reviews/new/billing")
   }
 
@@ -155,6 +155,27 @@ const RecordingForm = ({
                         ))}
                       </TextField>
                     )}
+                  />
+                  <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => {
+                      return (
+                        <Box mt={2}>
+                          <Editor
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={Boolean(error)}
+                          />
+                          <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                            {error
+                              ? error.message
+                              : "Any notes you want to add for the coach (optional)"}
+                          </FormHelperText>
+                        </Box>
+                      )
+                    }}
                   />
                   {recordingId === newRecordingId ? (
                     <>
@@ -239,27 +260,6 @@ const RecordingForm = ({
                       />
                     </>
                   ) : null}
-                  <Controller
-                    name="notes"
-                    control={control}
-                    render={({ field, fieldState: { error } }) => {
-                      return (
-                        <Box mt={2}>
-                          <Editor
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            error={Boolean(error)}
-                          />
-                          <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
-                            {error
-                              ? error.message
-                              : "Any notes you want to add for the coach (optional)"}
-                          </FormHelperText>
-                        </Box>
-                      )
-                    }}
-                  />
                 </Stack>
                 {selectedRecording ? (
                   <Paper

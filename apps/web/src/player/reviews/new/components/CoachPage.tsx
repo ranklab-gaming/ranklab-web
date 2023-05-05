@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardHeader,
   Container,
   Link,
   Stack,
@@ -96,13 +97,22 @@ const Content = ({ coaches, coachId }: Props) => {
                 />
               </Stack>
               {selectedCoach ? (
-                <Box mt={3}>
-                  <Typography variant="body1">
-                    <span
-                      dangerouslySetInnerHTML={{ __html: selectedCoach.bio }}
-                    />
-                  </Typography>
-                </Box>
+                <Card sx={{ mt: 3, bgcolor: "grey.900" }} elevation={0}>
+                  <CardHeader
+                    title={`${selectedCoach.name}'s Bio`}
+                    titleTypographyProps={{
+                      variant: "caption",
+                      color: "text.secondary",
+                    }}
+                  />
+                  <CardContent>
+                    <Typography variant="body1">
+                      <span
+                        dangerouslySetInnerHTML={{ __html: selectedCoach.bio }}
+                      />
+                    </Typography>
+                  </CardContent>
+                </Card>
               ) : null}
               <Stack direction="row">
                 <NextLink href="/player/dashboard" passHref legacyBehavior>

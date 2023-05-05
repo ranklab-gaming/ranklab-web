@@ -2,6 +2,7 @@ import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { Iconify } from "@/components/Iconify"
 import { ReviewList } from "@/components/ReviewList"
+import { useGameDependency } from "@/hooks/useGameDependency"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { Box, Button, Paper, Typography, useTheme } from "@mui/material"
 import { Game, PaginatedResultForReview } from "@ranklab/api"
@@ -18,6 +19,10 @@ export const PlayerDashboardPage = ({
 }: PropsWithUser<Props>) => {
   const createReview = useCreateReview()
   const theme = useTheme()
+
+  const requestReviewButtonText = useGameDependency(
+    "text:request-review-button"
+  )
 
   return (
     <DashboardLayout user={user} title="Dashboard">
@@ -37,6 +42,8 @@ export const PlayerDashboardPage = ({
                 variant="text"
                 sx={{
                   mt: 2,
+                  fontSize: 18,
+                  p: 3,
                   color: "common.white",
                   transition: "all 0.25s",
                   backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
@@ -47,7 +54,7 @@ export const PlayerDashboardPage = ({
                 }}
                 onClick={() => createReview()}
               >
-                Request a Review
+                {requestReviewButtonText}
               </Button>
             </Box>
           </Box>
