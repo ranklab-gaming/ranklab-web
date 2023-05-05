@@ -124,7 +124,7 @@ export const PlayerReviewsShowPage = ({
   return (
     <DashboardLayout
       user={user}
-      title={isCheckout ? "Checkout" : recording.title}
+      title={isCheckout ? "Review Checkout" : recording.title}
       showTitle={isCheckout}
       fullWidth
     >

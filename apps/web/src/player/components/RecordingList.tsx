@@ -72,7 +72,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                       size="small"
                       onClick={() => setSelectedRecording(recording)}
                     >
-                      View Video
+                      View Recording
                     </Button>
                   ) : (
                     <Tooltip title="This recording is being processed">
@@ -106,7 +106,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
                     {selectedRecording ? (
                       <>
                         <DialogTitle>{selectedRecording.title}</DialogTitle>
-                        <DialogContent sx={{ mt: 2 }}>
+                        <DialogContent sx={{ mt: 2, height: 500, p: 0 }}>
                           <Recording recording={selectedRecording} />
                         </DialogContent>
                         <DialogActions>
