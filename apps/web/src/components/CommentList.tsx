@@ -2,7 +2,7 @@ import { Comment } from "@ranklab/api"
 import { theme } from "@/theme/theme"
 import { Card, CardContent, Stack, CardActionArea } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   comments: Comment[]
@@ -15,7 +15,7 @@ export const CommentList = ({
   selectedComment,
   onCommentSelect,
 }: Props) => {
-  const CommentListItem = useGameComponent("CommentListItem")
+  const CommentListItem = useGameDependency("component:comment-list-item")
 
   return (
     <Card sx={{ minHeight: "100%" }}>

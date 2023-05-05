@@ -13,7 +13,7 @@ import * as yup from "yup"
 import { api } from "@/api"
 import { enqueueSnackbar } from "notistack"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   review: Review
@@ -37,7 +37,7 @@ const Content = ({
   const [review, setReview] = useState(initialReview)
   const [comments, setComments] = useState<Comment[]>(initialComments)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
-  const ReviewForm = useGameComponent("ReviewForm")
+  const ReviewForm = useGameDependency("component:review-form")
   const player = assertProp(review, "player")
 
   const publishReview = async () => {

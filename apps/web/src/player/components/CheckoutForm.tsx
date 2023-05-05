@@ -43,7 +43,7 @@ import { api } from "@/api"
 import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -77,7 +77,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
   const [loading, setLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
-  const Recording = useGameComponent("Recording")
+  const Recording = useGameDependency("component:recording")
 
   const deleteReview = async () => {
     await api.playerReviewsDelete({ id: review.id })

@@ -1,5 +1,5 @@
 import { PropsWithUser } from "@/auth"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 import { Recording } from "@ranklab/api"
 import * as yup from "yup"
 
@@ -26,7 +26,7 @@ export const PlayerReviewsNewRecordingPage = ({
   user,
   recordingId,
 }: PropsWithUser<Props>) => {
-  const RecordingForm = useGameComponent("RecordingForm", user)
+  const RecordingForm = useGameDependency("component:recording-form", user)
 
   return (
     <RecordingForm

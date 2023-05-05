@@ -10,7 +10,7 @@ import { LoadingButton } from "@mui/lab"
 import { Alert, Stack, Button } from "@mui/material"
 import { assertProp } from "@/assert"
 import { useIntercom } from "react-use-intercom"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   review: Review
@@ -33,7 +33,7 @@ const Content = ({
   const [accepting, setAccepting] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const { show } = useIntercom()
-  const ReviewDetails = useGameComponent("ReviewDetails")
+  const ReviewDetails = useGameDependency("component:review-details")
   const recording = assertProp(review, "recording")
   const coach = assertProp(review, "coach")
 

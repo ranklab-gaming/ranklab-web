@@ -21,7 +21,7 @@ import NextLink from "next/link"
 import { CoachSelect } from "@/player/components/CoachSelect"
 import { Coach } from "@ranklab/api"
 import { updateSessionReview } from "@/api/sessionReview"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 const FormSchema = yup.object().shape({
   notes: yup.string(),
@@ -41,7 +41,7 @@ interface Props {
 
 const Content = ({ coaches, coachId, notes }: Props) => {
   const router = useRouter()
-  const Stepper = useGameComponent("Stepper")
+  const Stepper = useGameDependency("component:stepper")
 
   const defaultValues: FormValues = {
     coachId: coachId ?? "",

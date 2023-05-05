@@ -18,7 +18,7 @@ import { Game, Recording, RecordingState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
 import { useCreateReview } from "@/player/hooks/useCreateReview"
-import { useGameComponent } from "@/hooks/useGameComponent"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   recordings: Recording[]
@@ -31,7 +31,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
   )
 
   const createReview = useCreateReview()
-  const Recording = useGameComponent("Recording")
+  const Recording = useGameDependency("component:recording")
 
   return (
     <Table>
