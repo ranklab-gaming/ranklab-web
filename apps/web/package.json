@@ -29,7 +29,7 @@
     "aws-xray-sdk": "^3.5.0",
     "aws-xray-sdk-core": "^3.5.0",
     "csstype": "^3.1.1",
-    "date-fns": "2.29.3",
+    "date-fns": "2.30.0",
     "framer-motion": "10.12.7",
     "iron-session": "6.3.1",
     "jose": "4.14.4",
