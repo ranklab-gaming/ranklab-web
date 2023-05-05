@@ -32,6 +32,10 @@ const ReviewDetails = ({
 
             if (comment) {
               chessBoardRef.current?.move(comment.metadata.chess.move)
+
+              if (comment.metadata.chess.shapes !== undefined) {
+                chessBoardRef.current?.setShapes(comment.metadata.chess.shapes)
+              }
             }
           }}
           onReviewChange={onReviewChange}
