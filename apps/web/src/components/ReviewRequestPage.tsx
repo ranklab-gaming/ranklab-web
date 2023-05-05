@@ -49,7 +49,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
   const game = assertFind(games, (game) => game.id === coach.gameId)
 
   return (
-    <Page title="Request a Review">
+    <Page title={coach.name}>
       <Box
         position="absolute"
         top={0}
