@@ -12,6 +12,7 @@ import {
   Card,
   CardContent,
   Container,
+  FormHelperText,
   LinearProgress,
   Link,
   MenuItem,
@@ -43,6 +44,7 @@ import NextImage from "next/image"
 import { useUpload } from "../hooks/useUpload"
 import { VideoRecording } from "./Recording"
 import { Stepper } from "@/player/reviews/new/components/Stepper"
+import { Editor } from "@/components/Editor"
 
 export interface RecordingFormProps {
   formSchema: RecordingFormSchema
@@ -50,12 +52,14 @@ export interface RecordingFormProps {
   recordingId?: string
   recordings: ApiRecording[]
   user: User
+  notes?: string
 }
 
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
   newRecordingVideo?: File
+  notes: string
 }
 
 const RecordingForm = ({
@@ -64,6 +68,7 @@ const RecordingForm = ({
   recordings,
   user,
   recordingId: initialRecordingId,
+  notes,
 }: RecordingFormProps) => {
   const router = useRouter()
   const player = playerFromUser(user)
@@ -93,6 +98,7 @@ const RecordingForm = ({
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
     newRecordingTitle: "",
+    notes: notes ?? "",
   }
 
   const {
@@ -181,7 +187,7 @@ const RecordingForm = ({
     }
 
     await updateSessionReview({ recordingId })
-    await router.push("/player/reviews/new/coach")
+    await router.push("/player/reviews/new/billing")
   }
 
   return (
@@ -342,6 +348,27 @@ const RecordingForm = ({
                       />
                     </Stack>
                   )}
+                  <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => {
+                      return (
+                        <Box mt={2}>
+                          <Editor
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={Boolean(error)}
+                          />
+                          <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                            {error
+                              ? error.message
+                              : "Any notes you want to add for the coach (optional)"}
+                          </FormHelperText>
+                        </Box>
+                      )
+                    }}
+                  />
                   {uploading ? (
                     <Stack spacing={1} direction="row" alignItems="center">
                       <Box flexGrow={1}>
@@ -375,9 +402,13 @@ const RecordingForm = ({
                   </Paper>
                 ) : null}
                 <Stack direction="row">
-                  <NextLink href="/player/dashboard" passHref legacyBehavior>
+                  <NextLink
+                    href="/player/reviews/new/coach"
+                    passHref
+                    legacyBehavior
+                  >
                     <Button variant="text" component={Link} sx={{ mt: 3 }}>
-                      Cancel
+                      Go Back
                     </Button>
                   </NextLink>
                   <Box sx={{ flexGrow: 1 }} />

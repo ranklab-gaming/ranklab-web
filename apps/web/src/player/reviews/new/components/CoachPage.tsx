@@ -1,5 +1,4 @@
 import { PropsWithUser } from "@/auth"
-import { Editor } from "@/components/Editor"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
@@ -9,7 +8,6 @@ import {
   Card,
   CardContent,
   Container,
-  FormHelperText,
   Link,
   Stack,
 } from "@mui/material"
@@ -24,27 +22,23 @@ import { updateSessionReview } from "@/api/sessionReview"
 import { Stepper } from "@/player/reviews/new/components/Stepper"
 
 const FormSchema = yup.object().shape({
-  notes: yup.string(),
   coachId: yup.string().required("Coach is required"),
 })
 
 interface FormValues {
-  notes?: string
   coachId: string
 }
 
 interface Props {
   coaches: Coach[]
   coachId?: string
-  notes?: string
 }
 
-const Content = ({ coaches, coachId, notes }: Props) => {
+const Content = ({ coaches, coachId }: Props) => {
   const router = useRouter()
 
   const defaultValues: FormValues = {
     coachId: coachId ?? "",
-    notes: notes ?? "",
   }
 
   const {
@@ -60,10 +54,9 @@ const Content = ({ coaches, coachId, notes }: Props) => {
   const goToNextStep = async function (values: FormValues) {
     await updateSessionReview({
       coachId: values.coachId,
-      notes: values.notes,
     })
 
-    await router.push("/player/reviews/new/billing")
+    await router.push("/player/reviews/new/recording")
   }
 
   return (
@@ -71,7 +64,7 @@ const Content = ({ coaches, coachId, notes }: Props) => {
       <Card>
         <CardContent>
           <Box p={3}>
-            <Stepper activeStep={1} />
+            <Stepper activeStep={0} />
             <form onSubmit={handleSubmit(goToNextStep)}>
               <Stack spacing={3} mt={4}>
                 <Controller
@@ -92,36 +85,11 @@ const Content = ({ coaches, coachId, notes }: Props) => {
                     />
                   )}
                 />
-                <Controller
-                  name="notes"
-                  control={control}
-                  render={({ field, fieldState: { error } }) => {
-                    return (
-                      <Box>
-                        <Editor
-                          value={field.value}
-                          onChange={field.onChange}
-                          onBlur={field.onBlur}
-                          error={Boolean(error)}
-                        />
-                        <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
-                          {error
-                            ? error.message
-                            : "Any notes you want to add for the coach (optional)"}
-                        </FormHelperText>
-                      </Box>
-                    )
-                  }}
-                />
               </Stack>
               <Stack direction="row">
-                <NextLink
-                  href="/player/reviews/new/recording"
-                  passHref
-                  legacyBehavior
-                >
+                <NextLink href="/player/dashboard" passHref legacyBehavior>
                   <Button variant="text" component={Link} sx={{ mt: 3 }}>
-                    Go back
+                    Cancel
                   </Button>
                 </NextLink>
                 <Box sx={{ flexGrow: 1 }} />
@@ -149,7 +117,6 @@ export const PlayerReviewsNewCoachPage = ({
   user,
   coaches,
   coachId,
-  notes,
 }: PropsWithUser<Props>) => {
   return (
     <DashboardLayout
@@ -157,7 +124,7 @@ export const PlayerReviewsNewCoachPage = ({
       title="Request a Review | Choose a Coach"
       showTitle={false}
     >
-      <Content coaches={coaches} coachId={coachId} notes={notes} />
+      <Content coaches={coaches} coachId={coachId} />
     </DashboardLayout>
   )
 }

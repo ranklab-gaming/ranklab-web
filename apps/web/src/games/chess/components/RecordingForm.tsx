@@ -32,11 +32,13 @@ import { formatDate } from "@/helpers/formatDate"
 import { RecordingFormProps } from "@/games/video/components/RecordingForm"
 import { ChessBoard } from "./ChessBoard"
 import { Stepper } from "@/player/reviews/new/components/Stepper"
+import { Editor } from "@/components/Editor"
 
 interface FormValues {
   recordingId: string
   newRecordingTitle: string
   newRecordingMetadata?: any
+  notes?: string
 }
 
 const RecordingForm = ({
@@ -45,6 +47,7 @@ const RecordingForm = ({
   recordings,
   user,
   recordingId: initialRecordingId,
+  notes,
 }: RecordingFormProps) => {
   const router = useRouter()
   const player = playerFromUser(user)
@@ -60,6 +63,7 @@ const RecordingForm = ({
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
     newRecordingTitle: "",
+    notes: notes ?? "",
   }
 
   const {
@@ -100,7 +104,7 @@ const RecordingForm = ({
     }
 
     await updateSessionReview({ recordingId })
-    await router.push("/player/reviews/new/coach")
+    await router.push("/player/reviews/new/billing")
   }
 
   return (
@@ -113,7 +117,7 @@ const RecordingForm = ({
         <Card>
           <CardContent>
             <Box p={3}>
-              <Stepper activeStep={0} />
+              <Stepper activeStep={1} />
               <form onSubmit={handleSubmit(submit)}>
                 <Stack spacing={3} mt={4}>
                   <Controller
@@ -235,6 +239,27 @@ const RecordingForm = ({
                       />
                     </>
                   ) : null}
+                  <Controller
+                    name="notes"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => {
+                      return (
+                        <Box mt={2}>
+                          <Editor
+                            value={field.value}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            error={Boolean(error)}
+                          />
+                          <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                            {error
+                              ? error.message
+                              : "Any notes you want to add for the coach (optional)"}
+                          </FormHelperText>
+                        </Box>
+                      )
+                    }}
+                  />
                 </Stack>
                 {selectedRecording ? (
                   <Paper

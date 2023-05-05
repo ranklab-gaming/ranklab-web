@@ -10,7 +10,7 @@ async function createReview(
 
   await session.save()
 
-  const step = body.recordingId ? "coach" : "recording"
+  const step = body.coachId ? "recording" : "coach"
 
   res.status(201).json({ location: `/player/reviews/new/${step}` })
 }

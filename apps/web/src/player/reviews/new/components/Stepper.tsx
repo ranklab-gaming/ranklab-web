@@ -59,8 +59,8 @@ const ColorlibStepIcon = (props: StepIconProps) => {
   const { active, completed, className } = props
 
   const icons: { [index: string]: ReactElement } = {
-    1: <Iconify icon="eva:video-outline" />,
-    2: <Iconify icon="eva:person-outline" />,
+    1: <Iconify icon="eva:person-outline" />,
+    2: <Iconify icon="eva:video-outline" />,
     3: <Iconify icon="eva:credit-card-outline" />,
     4: <Iconify icon="eva:shopping-cart-outline" />,
   }
@@ -81,7 +81,7 @@ interface Props {
 
 export const Stepper = ({ activeStep }: Props) => {
   const recordingStep = useGameDependency("text:recording-step")
-  const steps = [recordingStep, "Choose a Coach", "Billing Details", "Checkout"]
+  const steps = ["Choose a Coach", recordingStep, "Billing Details", "Checkout"]
 
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>

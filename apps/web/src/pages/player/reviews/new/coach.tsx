@@ -17,7 +17,7 @@ export const getServerSideProps = withUserSsr<Props>(
     const coaches = await api.playerCoachesList()
     const review = ctx.req.session.review
 
-    if (!review || !review.recordingId) {
+    if (!review) {
       return {
         redirect: {
           destination: "/player/dashboard",
