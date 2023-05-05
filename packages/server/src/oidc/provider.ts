@@ -43,8 +43,16 @@ const getOidcProvider = async () => {
           throw new Error(`invalid intent: ${intent}`)
         }
 
-        let query = invitationToken ? `?token=${invitationToken}` : ""
-        query += gameId ? `&game_id=${gameId}` : ""
+        let query = ""
+
+        if (invitationToken) {
+          query += `?token=${invitationToken}`
+        }
+
+        if (gameId) {
+          query += `${query ? "&" : "?"}game_id=${gameId}`
+        }
+
         return `/${userType}/${intent}${query}`
       },
     },
