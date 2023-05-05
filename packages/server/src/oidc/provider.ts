@@ -33,6 +33,7 @@ const getOidcProvider = async () => {
         const intent = interaction.params.intent ?? "login"
         const userType = interaction.params.user_type ?? "player"
         const invitationToken = interaction.params.token
+        const gameId = interaction.params.game_id
 
         if (!["coach", "player"].includes(userType as string)) {
           throw new Error(`invalid user type: ${userType}`)
@@ -42,7 +43,8 @@ const getOidcProvider = async () => {
           throw new Error(`invalid intent: ${intent}`)
         }
 
-        const query = invitationToken ? `?token=${invitationToken}` : ""
+        let query = invitationToken ? `?token=${invitationToken}` : ""
+        query += gameId ? `&game_id=${gameId}` : ""
         return `/${userType}/${intent}${query}`
       },
     },
@@ -60,7 +62,7 @@ const getOidcProvider = async () => {
     },
     issueRefreshToken: () => true,
     rotateRefreshToken: () => true,
-    extraParams: ["user_type", "intent", "token"],
+    extraParams: ["user_type", "intent", "token", "game_id"],
     async findAccount(_ctx, id) {
       return {
         accountId: id,

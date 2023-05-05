@@ -24,6 +24,7 @@ const signin = withSessionApiRoute(async function (
     intent: req.query.intent,
     user_type: req.query.user_type,
     token: req.query.token,
+    game_id: req.query.game_id,
   })
 
   res.redirect(307, url).end()

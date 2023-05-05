@@ -6,6 +6,7 @@ interface Props {
   games: Game[]
   availableCountries: string[]
   token: string
+  gameId: string | null
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
@@ -18,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   ])
 
   const token = ctx.query.token as string | undefined
+  const gameId = (ctx.query.game_id as string | undefined) ?? null
 
   if (!token) {
     return {
@@ -33,16 +35,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       games,
       availableCountries,
       token,
+      gameId,
     },
   }
 }
 
-export default function ({ games, availableCountries, token }: Props) {
+export default function ({ games, availableCountries, token, gameId }: Props) {
   return (
     <CoachSignupPage
       games={games}
       availableCountries={availableCountries}
       token={token}
+      gameId={gameId}
     />
   )
 }

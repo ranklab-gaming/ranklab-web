@@ -27,6 +27,7 @@ interface Props {
   games: Game[]
   availableCountries: string[]
   token: string
+  gameId: string | null
 }
 
 const FormSchema = AccountFieldsSchema.concat(
@@ -41,6 +42,7 @@ export const CoachSignupPage = ({
   games,
   availableCountries,
   token,
+  gameId,
 }: Props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
@@ -49,7 +51,7 @@ export const CoachSignupPage = ({
 
   const defaultValues: FormValues = {
     bio: "",
-    gameId: "",
+    gameId: gameId ?? "",
     name: "",
     country: "US",
     email: "",
@@ -68,8 +70,11 @@ export const CoachSignupPage = ({
     defaultValues,
   })
 
-  const gameId = watch("gameId")
-  const reviewDemoKey = useGameDependency("text:coach-review-demo-key", gameId)
+  const gameIdFormValue = watch("gameId")
+  const reviewDemoKey = useGameDependency(
+    "text:coach-review-demo-key",
+    gameIdFormValue
+  )
 
   const createCoach = async (data: FormValues) => {
     const session = await api.coachAccountCreate({
