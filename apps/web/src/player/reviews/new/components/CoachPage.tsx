@@ -95,7 +95,7 @@ const Content = ({ coaches, coachId }: Props) => {
                   )}
                 />
               </Stack>
-              {selectedCoach && (
+              {selectedCoach ? (
                 <Box mt={3}>
                   <Typography variant="body1">
                     <span
@@ -103,7 +103,7 @@ const Content = ({ coaches, coachId }: Props) => {
                     />
                   </Typography>
                 </Box>
-              )}
+              ) : null}
               <Stack direction="row">
                 <NextLink href="/player/dashboard" passHref legacyBehavior>
                   <Button variant="text" component={Link} sx={{ mt: 3 }}>

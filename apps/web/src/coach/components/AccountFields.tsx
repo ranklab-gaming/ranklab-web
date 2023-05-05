@@ -1,5 +1,5 @@
 import { GameSelect } from "@/components/GameSelect"
-import { TextField, InputAdornment, Stack, Box } from "@mui/material"
+import { TextField, InputAdornment, Stack } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { PropsWithChildren } from "react"
 import { Control, Controller, Path } from "react-hook-form"
