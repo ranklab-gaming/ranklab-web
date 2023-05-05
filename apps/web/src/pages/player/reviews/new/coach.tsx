@@ -6,7 +6,6 @@ import { Coach } from "@ranklab/api"
 interface Props {
   coaches: Coach[]
   coachId: string | null
-  notes: string | null
 }
 
 export const getServerSideProps = withUserSsr<Props>(
@@ -30,24 +29,17 @@ export const getServerSideProps = withUserSsr<Props>(
       props: {
         coaches,
         coachId: review.coachId ?? null,
-        notes: review.notes ?? null,
       },
     }
   }
 )
 
-export default function ({
-  user,
-  coaches,
-  coachId,
-  notes,
-}: PropsWithUser<Props>) {
+export default function ({ user, coaches, coachId }: PropsWithUser<Props>) {
   return (
     <PlayerReviewsNewCoachPage
       user={user}
       coaches={coaches}
       coachId={coachId ?? undefined}
-      notes={notes ?? undefined}
     />
   )
 }

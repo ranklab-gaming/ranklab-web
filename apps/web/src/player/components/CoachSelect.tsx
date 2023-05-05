@@ -48,16 +48,6 @@ export const CoachSelect = ({
                   <Chip label={formatPrice(coach.price)} size="small" />
                 </Stack>
               }
-              secondary={
-                <Typography
-                  sx={{ display: "inline" }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
-                  {coach.bio}
-                </Typography>
-              }
             />
           </Stack>
         </MenuItem>

@@ -10,6 +10,7 @@ import {
   Container,
   Link,
   Stack,
+  Typography,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
@@ -20,6 +21,7 @@ import { CoachSelect } from "@/player/components/CoachSelect"
 import { Coach } from "@ranklab/api"
 import { updateSessionReview } from "@/api/sessionReview"
 import { Stepper } from "@/player/reviews/new/components/Stepper"
+import { assertFind } from "@/assert"
 
 const FormSchema = yup.object().shape({
   coachId: yup.string().required("Coach is required"),
@@ -45,11 +47,18 @@ const Content = ({ coaches, coachId }: Props) => {
     control,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
+
+  const selectedCoachId = watch("coachId")
+
+  const selectedCoach = selectedCoachId
+    ? assertFind(coaches, (coach) => coach.id === selectedCoachId)
+    : undefined
 
   const goToNextStep = async function (values: FormValues) {
     await updateSessionReview({
@@ -86,6 +95,15 @@ const Content = ({ coaches, coachId }: Props) => {
                   )}
                 />
               </Stack>
+              {selectedCoach && (
+                <Box mt={3}>
+                  <Typography variant="body1">
+                    <span
+                      dangerouslySetInnerHTML={{ __html: selectedCoach.bio }}
+                    />
+                  </Typography>
+                </Box>
+              )}
               <Stack direction="row">
                 <NextLink href="/player/dashboard" passHref legacyBehavior>
                   <Button variant="text" component={Link} sx={{ mt: 3 }}>

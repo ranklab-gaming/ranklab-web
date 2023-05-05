@@ -200,7 +200,7 @@ const RecordingForm = ({
         <Card>
           <CardContent>
             <Box p={3}>
-              <Stepper activeStep={0} />
+              <Stepper activeStep={1} />
               <form onSubmit={handleSubmit(submit)}>
                 <Stack spacing={3} mt={4}>
                   <Controller
