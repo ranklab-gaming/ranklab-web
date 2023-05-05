@@ -30,10 +30,12 @@ const getOidcProvider = async () => {
     ],
     interactions: {
       url: (_ctx, interaction) => {
-        const intent = interaction.params.intent ?? "login"
-        const userType = interaction.params.user_type ?? "player"
-        const invitationToken = interaction.params.token
-        const gameId = interaction.params.game_id
+        const intent =
+          (interaction.params.intent as string | undefined) ?? "login"
+        const userType =
+          (interaction.params.user_type as string | undefined) ?? "player"
+        const invitationToken = interaction.params.token as string | undefined
+        const gameId = interaction.params.game_id as string | undefined
 
         if (!["coach", "player"].includes(userType as string)) {
           throw new Error(`invalid user type: ${userType}`)
@@ -43,16 +45,17 @@ const getOidcProvider = async () => {
           throw new Error(`invalid intent: ${intent}`)
         }
 
-        let query = ""
+        const queryParams = new URLSearchParams()
 
         if (invitationToken) {
-          query += `?token=${invitationToken}`
+          queryParams.append("token", invitationToken)
         }
 
         if (gameId) {
-          query += `${query ? "&" : "?"}game_id=${gameId}`
+          queryParams.append("game_id", gameId)
         }
 
+        const query = queryParams.toString() ? `?${queryParams.toString()}` : ""
         return `/${userType}/${intent}${query}`
       },
     },
