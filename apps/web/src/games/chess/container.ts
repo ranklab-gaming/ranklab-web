@@ -11,4 +11,7 @@ export default {
   "component:review-details": ReviewDetails,
   "component:review-form": ReviewForm,
   "text:recording-step": "Paste a PGN",
+  "text:request-review-button": "Submit your PGN",
+  "text:coach-review-demo-key": "coach-chess-review-demo.mp4",
+  "text:player-review-demo-key": "player-chess-review-demo.mp4",
 }

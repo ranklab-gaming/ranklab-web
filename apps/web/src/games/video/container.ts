@@ -11,4 +11,7 @@ export default {
   "component:review-details": ReviewDetails,
   "component:review-form": ReviewForm,
   "text:recording-step": "Choose a Recording",
+  "text:request-review-button": "Submit your VOD",
+  "text:coach-review-demo-key": "coach-video-review-demo.mp4",
+  "text:player-review-demo-key": "player-video-review-demo.mp4",
 }

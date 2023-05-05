@@ -26,7 +26,10 @@ export const PlayerReviewsNewRecordingPage = ({
   user,
   recordingId,
 }: PropsWithUser<Props>) => {
-  const RecordingForm = useGameDependency("component:recording-form", user)
+  const RecordingForm = useGameDependency(
+    "component:recording-form",
+    user.gameId
+  )
 
   return (
     <RecordingForm

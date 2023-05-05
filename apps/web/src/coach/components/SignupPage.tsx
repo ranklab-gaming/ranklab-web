@@ -21,6 +21,7 @@ import * as yup from "yup"
 import { assetsCdnUrl } from "@/config"
 import Sticky from "react-stickynode"
 import { useId } from "react"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   games: Game[]
@@ -60,11 +61,15 @@ export const CoachSignupPage = ({
     control,
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
+
+  const gameId = watch("gameId")
+  const reviewDemoKey = useGameDependency("text:coach-review-demo-key", gameId)
 
   const createCoach = async (data: FormValues) => {
     const session = await api.coachAccountCreate({
@@ -154,6 +159,7 @@ export const CoachSignupPage = ({
                       muted
                       playsInline
                       controls
+                      key={reviewDemoKey}
                       style={{
                         maxWidth: "100%",
                         objectFit: "cover",
@@ -161,7 +167,7 @@ export const CoachSignupPage = ({
                       }}
                     >
                       <source
-                        src={`${assetsCdnUrl}/coach-review-tutorial.mp4`}
+                        src={`${assetsCdnUrl}/${reviewDemoKey}`}
                         type="video/mp4"
                       />
                     </video>

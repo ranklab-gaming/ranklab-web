@@ -19,6 +19,7 @@ import { Page } from "@/components/Page"
 import { Logo } from "@/components/Logo"
 import { assertFind } from "@/assert"
 import NextLink from "next/link"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   coach: Coach
@@ -34,8 +35,18 @@ const AvatarImage = styled("img")`
 `
 
 export const ReviewRequestPage = ({ coach, games }: Props) => {
-  const game = assertFind(games, (game) => game.id === coach.gameId)
+  const buttonText = useGameDependency(
+    "text:request-review-button",
+    coach.gameId
+  )
+
+  const reviewDemoKey = useGameDependency(
+    "text:player-review-demo-key",
+    coach.gameId
+  )
+
   const theme = useTheme()
+  const game = assertFind(games, (game) => game.id === coach.gameId)
 
   return (
     <Page title="Request a Review">
@@ -96,7 +107,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                               },
                             }}
                           >
-                            Submit your VOD
+                            {buttonText}
                           </Button>
                         </NextLink>
                       </Box>
@@ -121,7 +132,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                         }}
                       >
                         <source
-                          src={`${assetsCdnUrl}/player-review-demo.mp4`}
+                          src={`${assetsCdnUrl}/${reviewDemoKey}`}
                           type="video/mp4"
                         />
                       </video>

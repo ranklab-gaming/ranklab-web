@@ -62,8 +62,23 @@ export const AccountFields = <
 }: PropsWithChildren<Props<TWithPassword, TFormValues>>) => {
   return (
     <>
+      <Controller
+        name={"gameId" as Path<TFormValues>}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <GameSelect
+            {...field}
+            games={games}
+            error={Boolean(error)}
+            disabled={gameDisabled}
+            helperText={
+              error ? error.message : "The game you offer coaching for"
+            }
+          />
+        )}
+      />
       <Stack spacing={2} direction="row" alignItems="center">
-        <Box>{children}</Box>
+        {children}
         <Controller
           name={"name" as Path<TFormValues>}
           control={control}
@@ -126,21 +141,6 @@ export const AccountFields = <
               error
                 ? error.message
                 : "Tell us about yourself and your coaching experience"
-            }
-          />
-        )}
-      />
-      <Controller
-        name={"gameId" as Path<TFormValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <GameSelect
-            {...field}
-            games={games}
-            error={Boolean(error)}
-            disabled={gameDisabled}
-            helperText={
-              error ? error.message : "The game you offer coaching for"
             }
           />
         )}
