@@ -154,7 +154,9 @@ export const AccountFields = <
             label="Price"
             error={Boolean(error)}
             helperText={
-              error ? error.message : "The price you charge per review"
+              error
+                ? error.message
+                : "The price you charge per review (you can always change this later)"
             }
             InputProps={{
               startAdornment: (
