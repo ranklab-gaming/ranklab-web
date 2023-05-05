@@ -267,7 +267,7 @@ export const Hero = ({ games }: HeroProps) => {
                 >
                   Are you a coach?{" "}
                   <NextLink
-                    href="mailto:support@ranklab.gg"
+                    href="mailto:contact@ranklab.gg"
                     passHref
                     legacyBehavior
                   >
