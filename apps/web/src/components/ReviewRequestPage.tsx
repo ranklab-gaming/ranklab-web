@@ -84,7 +84,10 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                         <Chip label={game.name} />
                       </Stack>
                       <Typography variant="body1">
-                        <span dangerouslySetInnerHTML={{ __html: coach.bio }} />
+                        <pre
+                          style={{ fontFamily: "inherit" }}
+                          dangerouslySetInnerHTML={{ __html: coach.bio }}
+                        />
                       </Typography>
                       <Box>
                         <NextLink
