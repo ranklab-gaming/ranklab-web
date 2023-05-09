@@ -158,7 +158,7 @@ const RecordingForm = ({
         })
 
         const waitForRecordingUploaded = async (
-          retries = 10
+          retries = 20
         ): Promise<boolean> => {
           const updatedRecording = await api.playerRecordingsGet({
             id: recording.id,
@@ -354,25 +354,6 @@ const RecordingForm = ({
                       />
                     </Stack>
                   )}
-                  {uploading ? (
-                    <Stack spacing={1} direction="row" alignItems="center">
-                      <Box flexGrow={1}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={uploadProgress}
-                          color="secondary"
-                        />
-                      </Box>
-                      <Box sx={{ minWidth: 35 }}>
-                        <Typography variant="body2" color="text.secondary">
-                          {`${uploadProgress}% (${formatBytes(
-                            (newRecordingVideo?.size ?? 0) *
-                              (uploadProgress / 100)
-                          )} / ${formatBytes(newRecordingVideo?.size ?? 0)})`}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  ) : null}
                 </Stack>
                 {selectedRecording ? (
                   <Paper
@@ -381,6 +362,9 @@ const RecordingForm = ({
                       mt: 2,
                       backgroundColor: theme.palette.common.black,
                       height: "400px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     <VideoRecording recording={selectedRecording} />
@@ -407,6 +391,25 @@ const RecordingForm = ({
                     )
                   }}
                 />
+                {uploading ? (
+                  <Stack spacing={1} direction="row" alignItems="center" mt={2}>
+                    <Box flexGrow={1}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={uploadProgress}
+                        color="secondary"
+                      />
+                    </Box>
+                    <Box sx={{ minWidth: 35 }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {`${uploadProgress}% (${formatBytes(
+                          (newRecordingVideo?.size ?? 0) *
+                            (uploadProgress / 100)
+                        )} / ${formatBytes(newRecordingVideo?.size ?? 0)})`}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                ) : null}
                 <Stack direction="row">
                   <NextLink
                     href="/player/reviews/new/coach"

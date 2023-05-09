@@ -339,6 +339,9 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                     sx={{
                       height: "600px",
                       backgroundColor: theme.palette.common.black,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                     elevation={4}
                   >

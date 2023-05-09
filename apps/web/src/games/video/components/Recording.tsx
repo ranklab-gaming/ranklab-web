@@ -1,7 +1,7 @@
 import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
 import { VideoPlayer, VideoPlayerRef } from "./VideoPlayer"
-import { Paper, Typography } from "@mui/material"
+import {  Stack, Typography } from "@mui/material"
 import { Recording as ApiRecording, RecordingState } from "@ranklab/api"
 import { CSSProperties, PropsWithChildren, RefObject } from "react"
 
@@ -36,12 +36,12 @@ export const VideoRecording = ({
   }
 
   return (
-    <Paper sx={{ p: 16, textAlign: "center", backgroundColor: "common.black" }}>
+    <Stack spacing={2} alignItems="center">
       <Iconify icon="eva:film-outline" width={40} height={40} />
       <Typography variant="h3" component="h1" gutterBottom>
         This recording is being processed
       </Typography>
-    </Paper>
+    </Stack>
   )
 }
 
