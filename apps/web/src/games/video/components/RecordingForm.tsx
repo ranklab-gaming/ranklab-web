@@ -143,12 +143,18 @@ const RecordingForm = ({
           throw new Error("uploadUrl is missing")
         }
 
+        const headers: Record<string, string> = {
+          "x-amz-acl": "public-read",
+        }
+
+        if (recording.instanceId) {
+          headers["x-amz-meta-instance-id"] = recording.instanceId
+        }
+
         await upload({
           file: newRecordingVideo,
           url: recording.uploadUrl,
-          headers: {
-            "X-Amz-Acl": "public-read",
-          },
+          headers,
         })
 
         const waitForRecordingUploaded = async (

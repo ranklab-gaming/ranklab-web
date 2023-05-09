@@ -98,6 +98,12 @@ export interface Avatar {
    * @memberof Avatar
    */
   state: AvatarState
+  /**
+   *
+   * @type {string}
+   * @memberof Avatar
+   */
+  instanceId?: string | null
 }
 
 /**
@@ -843,6 +849,12 @@ export interface Recording {
    * @memberof Recording
    */
   metadata?: any | null
+  /**
+   *
+   * @type {string}
+   * @memberof Recording
+   */
+  instanceId?: string | null
 }
 
 /**

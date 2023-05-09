@@ -115,12 +115,18 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         throw new Error("uploadUrl is missing")
       }
 
+      const headers: Record<string, string> = {
+        "x-amz-acl": "public-read",
+      }
+
+      if (avatar.instanceId) {
+        headers["x-amz-meta-instance-id"] = avatar.instanceId
+      }
+
       await upload({
         file: data.avatar,
         url: avatar.uploadUrl,
-        headers: {
-          "x-amz-acl": "public-read",
-        },
+        headers,
       })
     } else if (initialCoach.avatarImageKey && !coach.avatarImageKey) {
       await api.coachAvatarsDelete()
