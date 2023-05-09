@@ -3,17 +3,20 @@ import { withUserSsr } from "@/auth/page"
 import { DashboardLayout } from "@/components/DashboardLayout"
 
 export const getServerSideProps = withUserSsr("player", async (ctx) => {
-  const { createServerApi } = await import("@/api/server")
-  const api = await createServerApi(ctx.req)
-  const coach = await api.playerCoachesGet({ slug: ctx.query.slug as string })
+  const coachId = ctx.query.coach_id as string
+  const recordingId = ctx.query.recording_id as string
 
-  ctx.req.session.review = { coachId: coach.id }
+  ctx.req.session.review = { coachId, recordingId }
 
   await ctx.req.session.save()
 
+  const destination = coachId
+    ? "/player/reviews/new/recording"
+    : "/player/reviews/new/coach"
+
   return {
     redirect: {
-      destination: `/player/reviews/new/recording`,
+      destination,
       permanent: false,
     },
   }

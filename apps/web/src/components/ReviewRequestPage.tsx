@@ -83,7 +83,7 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                         <Typography variant="h3">{coach.name}</Typography>
                         <Chip label={game.name} />
                       </Stack>
-                      <Typography variant="body1">
+                      <Typography variant="body1" component="div">
                         <pre
                           style={{ fontFamily: "inherit" }}
                           dangerouslySetInnerHTML={{ __html: coach.bio }}
@@ -91,7 +91,10 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                       </Typography>
                       <Box>
                         <NextLink
-                          href={`/player/reviews/new?slug=${coach.slug}`}
+                          href={{
+                            pathname: "/player/reviews/new",
+                            query: { coach_id: coach.id },
+                          }}
                           passHref
                           legacyBehavior
                         >

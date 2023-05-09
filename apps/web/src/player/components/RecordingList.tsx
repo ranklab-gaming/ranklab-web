@@ -17,8 +17,8 @@ import {
 import { Game, Recording, RecordingState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
-import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import NextLink from "next/link"
 
 interface Props {
   recordings: Recording[]
@@ -30,7 +30,6 @@ export const RecordingList = ({ recordings, games }: Props) => {
     null
   )
 
-  const createReview = useCreateReview()
   const Recording = useGameDependency("component:recording")
   const recordingsDateColumn = useGameDependency("text:recordings-date-column")
   const recordingTitle = useGameDependency("text:recording-title")
@@ -92,15 +91,20 @@ export const RecordingList = ({ recordings, games }: Props) => {
                       </Box>
                     </Tooltip>
                   )}
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    component="a"
-                    onClick={() => createReview({ recordingId: recording.id })}
+                  <NextLink
+                    href={{
+                      pathname: "/player/reviews/new",
+                      query: {
+                        recording_id: recording.id,
+                      },
+                    }}
+                    passHref
+                    legacyBehavior
                   >
-                    Request a Review
-                  </Button>
+                    <Button variant="outlined" color="primary" size="small">
+                      Request a Review
+                    </Button>
+                  </NextLink>
                   <Dialog
                     onClose={() => setSelectedRecording(null)}
                     open={Boolean(selectedRecording)}

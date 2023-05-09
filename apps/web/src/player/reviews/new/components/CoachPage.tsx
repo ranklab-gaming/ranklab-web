@@ -106,7 +106,7 @@ const Content = ({ coaches, coachId }: Props) => {
                     }}
                   />
                   <CardContent>
-                    <Typography variant="body1">
+                    <Typography variant="body1" component="div">
                       <pre
                         style={{ fontFamily: "inherit" }}
                         dangerouslySetInnerHTML={{ __html: selectedCoach.bio }}

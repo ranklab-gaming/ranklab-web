@@ -1,7 +1,7 @@
 import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
 import { VideoPlayer, VideoPlayerRef } from "./VideoPlayer"
-import {  Stack, Typography } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 import { Recording as ApiRecording, RecordingState } from "@ranklab/api"
 import { CSSProperties, PropsWithChildren, RefObject } from "react"
 

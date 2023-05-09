@@ -12,9 +12,9 @@ import { useState } from "react"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { assertProp } from "@/assert"
-import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { CommentList as BaseCommentList } from "@/components/CommentList"
 import { MessageBox } from "@/components/MessageBox"
+import { useRouter } from "next/router"
 
 interface Props {
   review: Review
@@ -33,7 +33,7 @@ export const CommentList = ({
 }: Props) => {
   const coach = assertProp(review, "coach")
   const recording = assertProp(review, "recording")
-  const createReview = useCreateReview()
+  const router = useRouter()
   const [cancelling, setCancelling] = useState(false)
   const [showCancelDialog, setShowCancelDialog] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -56,11 +56,13 @@ export const CommentList = ({
       <MessageBox
         icon="eva:refresh-outline"
         text="This review has been refunded. If you wish, you can request a new one for the same recording."
-        action={() =>
-          createReview({
-            recordingId: recording.id,
+        action={async () => {
+          router.push("/player/reviews/new", {
+            query: {
+              recording_id: recording.id,
+            },
           })
-        }
+        }}
         actionText="Request a New Review"
       />
     )

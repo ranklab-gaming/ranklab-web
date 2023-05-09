@@ -9,7 +9,6 @@ import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
-import { useCreateReview } from "@/player/hooks/useCreateReview"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { useGameDependency } from "@/hooks/useGameDependency"
 
@@ -45,7 +44,6 @@ export const Navbar = ({
   const isDesktop = useResponsive("up", "lg")
   const user = useUser()
   const router = useRouter()
-  const createReview = useCreateReview()
   const recordingsTitle = useGameDependency("text:recordings-title")
   const recordingsIcon = useGameDependency("component:recording-icon")
 
@@ -55,7 +53,7 @@ export const Navbar = ({
           [
             {
               title: "Request a Review",
-              action: () => createReview(),
+              path: "/player/reviews/new",
               active: router.pathname.startsWith("/player/reviews/new/"),
               icon: icons.review,
             },

@@ -121,7 +121,7 @@ const Content = ({ billingDetails, review }: Props) => {
             </Box>
             <Stack direction="row">
               <NextLink
-                href="/player/reviews/new/coach"
+                href="/player/reviews/new/recording"
                 passHref
                 legacyBehavior
               >
