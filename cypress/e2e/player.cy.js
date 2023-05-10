@@ -1,3 +1,10 @@
+const getIframeBody = () => {
+  return cy
+    .get('.StripeElement iframe:last')
+    .its('0.contentDocument.body').should('not.be.empty')
+    .then(cy.wrap)
+}
+
 describe('template spec', () => {
   it('passes', () => {
     cy.visit('http://ranklab-web:3000')
@@ -20,6 +27,8 @@ describe('template spec', () => {
     cy.get('[data-test="reviews-new-notes-field"]').click();
     cy.get('.ql-editor').type("some notes");
     cy.get('[data-test="reviews-new-continue-button"]').click();
+    getIframeBody().find('input[name="name"]').type('Test Player');
+    getIframeBody().find('select[name="country"]').select('GB');
     /* ==== End Cypress Studio ==== */
   })
 })

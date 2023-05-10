@@ -192,8 +192,6 @@ const RecordingForm = ({
       recordingId = recording.id
     }
 
-    console.log("recordingId", recordingId)
-    console.log("notes", values.notes)
     await updateSessionReview({ recordingId, notes: values.notes })
     await router.push("/player/reviews/new/billing")
   }
