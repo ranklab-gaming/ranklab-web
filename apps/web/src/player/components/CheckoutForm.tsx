@@ -408,6 +408,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                       loading={loading || polling}
                       disabled={loading || polling}
                       sx={{ fontSize: "1.2rem" }}
+                      data-test="checkout-submit-button"
                     >
                       Pay {formatPrice(coach.price)}
                     </LoadingButton>

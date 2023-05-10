@@ -22,6 +22,7 @@ export const CoachSelect = ({
   onChange,
   helperText,
   value,
+  ...props
 }: Props) => {
   return (
     <TextField
@@ -32,12 +33,14 @@ export const CoachSelect = ({
       onBlur={onBlur}
       error={error}
       helperText={helperText}
+      {...props}
     >
-      {coaches.map((coach) => (
+      {coaches.map((coach, index) => (
         <MenuItem
           key={coach.id}
           value={coach.id}
           sx={{ alignItems: "flex-end" }}
+          data-test={`coach-select-${index}`}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar user={coach} />

@@ -61,52 +61,6 @@ export const AccountFields = <
   return (
     <>
       <Controller
-        name={"name" as Path<TFormValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="Name"
-            error={Boolean(error)}
-            helperText={
-              error ? error.message : "This will appear on your profile"
-            }
-          />
-        )}
-      />
-      <Controller
-        name={"email" as Path<TFormValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            fullWidth
-            error={Boolean(error)}
-            helperText={error ? error.message : "The email you use to login"}
-            label="Email"
-            type="email"
-          />
-        )}
-      />
-      {showPasswordField ? (
-        <Controller
-          name={"password" as Path<TFormValues>}
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              fullWidth
-              error={Boolean(error)}
-              helperText={
-                error ? error.message : "The password you use to login"
-              }
-              label="Password"
-              type="password"
-            />
-          )}
-        />
-      ) : null}
-      <Controller
         name={"gameId" as Path<TFormValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
@@ -145,6 +99,7 @@ export const AccountFields = <
                 "The game you want to be coached in"
               )
             }
+            data-test="account-fields-game"
           />
         )}
       />
@@ -162,6 +117,7 @@ export const AccountFields = <
                 error ? error.message : "Your skill level in the game"
               }
               label="Skill Level"
+              data-test="account-fields-skill-level"
             >
               {selectedGame.skillLevels.map((skillLevel) => (
                 <MenuItem key={skillLevel.value} value={skillLevel.value}>
@@ -169,6 +125,55 @@ export const AccountFields = <
                 </MenuItem>
               ))}
             </TextField>
+          )}
+        />
+      ) : null}
+      <Controller
+        name={"name" as Path<TFormValues>}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            {...field}
+            label="Name"
+            error={Boolean(error)}
+            helperText={
+              error ? error.message : "This will appear on your profile"
+            }
+            inputProps={{ "data-test": "account-fields-name" }}
+          />
+        )}
+      />
+      <Controller
+        name={"email" as Path<TFormValues>}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            {...field}
+            fullWidth
+            error={Boolean(error)}
+            helperText={error ? error.message : "The email you use to login"}
+            label="Email"
+            type="email"
+            inputProps={{ "data-test": "account-fields-email" }}
+          />
+        )}
+      />
+      {showPasswordField ? (
+        <Controller
+          name={"password" as Path<TFormValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              fullWidth
+              error={Boolean(error)}
+              helperText={
+                error ? error.message : "The password you use to login"
+              }
+              label="Password"
+              type="password"
+              inputProps={{ "data-test": "account-fields-password" }}
+            />
           )}
         />
       ) : null}

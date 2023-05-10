@@ -6,6 +6,7 @@ import { Recording } from "@ranklab/api"
 interface Props {
   recordings: Recording[]
   recordingId: string | null
+  notes: string | null
 }
 
 export const getServerSideProps = withUserSsr<Props>(
@@ -36,6 +37,7 @@ export const getServerSideProps = withUserSsr<Props>(
           (recording) => recording.gameId === user.gameId
         ),
         recordingId: review.recordingId ?? null,
+        notes: review.notes ?? null,
       },
     }
   }
@@ -45,12 +47,14 @@ export default function ({
   user,
   recordings,
   recordingId,
+  notes,
 }: PropsWithUser<Props>) {
   return (
     <PlayerReviewsNewRecordingPage
       recordings={recordings}
       user={user}
       recordingId={recordingId ?? undefined}
+      notes={notes ?? undefined}
     />
   )
 }

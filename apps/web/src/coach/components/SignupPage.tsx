@@ -47,7 +47,7 @@ export const CoachSignupPage = ({
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin("coach")
   const theme = useTheme()
-  const id = useId().replace(/:/g, "")
+  const id = useId().slice(1, -1)
 
   const defaultValues: FormValues = {
     bio: "",

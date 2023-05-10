@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
-  { error, helperText, onChange, value },
+  { error, helperText, onChange, value, ...props },
   ref
 ) {
   const id = useId().slice(1, -1)
@@ -29,6 +29,7 @@ export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
         sx={{ width: "100%", cursor: "pointer" }}
         component="label"
         htmlFor={id}
+        {...props}
       >
         <input
           id={id}

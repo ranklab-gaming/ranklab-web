@@ -28,6 +28,7 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
     error,
     helperText,
     disabled = false,
+    ...props
   }: Props,
   ref
 ) {
@@ -43,12 +44,14 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
         helperText={helperText}
         ref={ref}
         disabled={disabled}
+        {...props}
       >
         {games.map((game) => (
           <MenuItem
             key={game.id}
             value={game.id}
             sx={game.id === "test" ? { display: "none" } : {}}
+            data-test={`game-select-${game.id}`}
           >
             <Stack direction="row" alignItems="center">
               <ListItemAvatar>

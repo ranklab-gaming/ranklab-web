@@ -102,6 +102,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
               variant="contained"
               loading={isSubmitting}
               sx={{ maxWidth: 240 }}
+              data-test="signup-submit-button"
             >
               Sign up
             </LoadingButton>

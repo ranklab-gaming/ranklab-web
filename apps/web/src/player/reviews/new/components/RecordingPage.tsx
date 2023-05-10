@@ -8,6 +8,7 @@ const newRecordingId = "NEW_RECORDING"
 interface Props {
   recordings: Recording[]
   recordingId?: string
+  notes?: string
 }
 
 const RecordingFormSchema = yup.object().shape({
@@ -25,6 +26,7 @@ export const PlayerReviewsNewRecordingPage = ({
   recordings,
   user,
   recordingId,
+  notes,
 }: PropsWithUser<Props>) => {
   const RecordingForm = useGameDependency(
     "component:recording-form",
@@ -38,6 +40,7 @@ export const PlayerReviewsNewRecordingPage = ({
       recordingId={recordingId}
       recordings={recordings}
       user={user}
+      notes={notes}
     />
   )
 }

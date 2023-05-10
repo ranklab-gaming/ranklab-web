@@ -6,7 +6,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && sudo apt-get update \
     && sudo apt-get -y upgrade \
     && sudo apt-get install nodejs default-jre libgtk2.0-0 libgtk-3-0 libgbm-dev \
-       libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -y
+       libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb dmz-cursor-theme -y
 
 RUN sudo npm config set prefix /usr/local
 RUN sudo npm install -g npm@latest

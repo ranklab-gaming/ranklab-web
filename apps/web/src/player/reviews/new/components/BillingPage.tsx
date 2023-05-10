@@ -138,6 +138,7 @@ const Content = ({ billingDetails, review }: Props) => {
                 loading={isSubmitting}
                 disabled={isSubmitting || loading}
                 sx={{ mt: 3 }}
+                data-test="reviews-new-continue-button"
               >
                 Proceed to Checkout
               </LoadingButton>
