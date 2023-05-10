@@ -120,7 +120,11 @@ export const AccountFields = <
               data-test="account-fields-skill-level"
             >
               {selectedGame.skillLevels.map((skillLevel) => (
-                <MenuItem key={skillLevel.value} value={skillLevel.value}>
+                <MenuItem
+                  key={skillLevel.value}
+                  value={skillLevel.value}
+                  data-test={`account-fields-skill-level-${skillLevel.value}`}
+                >
                   {skillLevel.name}
                 </MenuItem>
               ))}

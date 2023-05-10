@@ -6,13 +6,10 @@
     "build": "turbo run build",
     "start": "turbo run start",
     "test": "NODE_ENV=test turbo run test",
-    "lint": "turbo run lint",
-    "cypress:open": "cypress open"
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "cypress": "^12.11.0",
     "prettier": "2.8.8",
-    "turbo": "1.9.3",
-    "typescript": "5.0.4"
+    "turbo": "1.9.3"
   }
 }

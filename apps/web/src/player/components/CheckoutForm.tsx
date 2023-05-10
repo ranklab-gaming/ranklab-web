@@ -315,6 +315,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
                                 checked={field.value}
                                 onChange={field.onChange}
                                 onBlur={field.onBlur}
+                                data-test="checkout-save-payment-method-checkbox"
                               />
                             }
                             label="Save this card for future purchases"
