@@ -17,3 +17,7 @@ RUN pnpm config set store-dir $HOME/.local/share/pnpm/store
 RUN pnpm config set global-bin-dir $HOME/.local/share/pnpm/bin
 RUN pnpm config set package-import-method hardlink
 RUN pnpm install -g @openapitools/openapi-generator-cli
+RUN pnpx playwright install
+RUN sudo pnpx playwright install-deps
+# Workaround for https://github.com/microsoft/playwright/issues/15764
+RUN sudo ln -sf /usr/bin/echo /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner

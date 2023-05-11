@@ -6,7 +6,7 @@
       "outputs": ["**/.next/**", "**/dist/**", "**/build/**"]
     },
     "test": {
-      "dependsOn": ["build"]
+      "cache": false
     },
     "dev": {
       "dependsOn": ["@ranklab/api#build", "@ranklab/server#build"],
