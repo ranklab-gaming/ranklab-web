@@ -23,7 +23,7 @@ jobs:
         volumes:
           - redis:/data
       postgres:
-        image: postgres:15.2
+        image: postgres:15.3
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
