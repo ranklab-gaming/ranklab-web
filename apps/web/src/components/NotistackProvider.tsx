@@ -14,6 +14,9 @@ const SnackbarStyles = () => {
     <GlobalStyles
       styles={{
         "#__next": {
+          ".notistack-SnackbarContainer": {
+            zIndex: 999999999,
+          },
           "& .SnackbarContent-root": {
             width: "100%",
             padding: theme.spacing(1),
@@ -82,6 +85,7 @@ export const NotistackProvider = ({ children }: PropsWithChildren) => {
             size="small"
             onClick={onClose(key)}
             sx={{ p: 0.5 }}
+            color="inherit"
           >
             <Iconify icon="eva:close-outline" />
           </IconButtonAnimate>
@@ -110,7 +114,7 @@ const SnackbarIcon = ({ icon, color }: SnackbarIconProps) => {
         borderRadius: 1.5,
         alignItems: "center",
         justifyContent: "center",
-        color: `${color}.main`,
+        color: "text.primary",
         bgcolor: (theme) => alpha(theme.palette[color].main, 0.16),
       }}
     >
