@@ -26,32 +26,31 @@ test.afterEach(async () => {
   await client.end()
 })
 
-const googleAutocompleteSelector =
-  'iframe[title="Google autocomplete suggestions dropdown list"]'
 const stripeSelector = 'iframe[title="undefined"]'
 const stripePaymentSelector = 'iframe[title="Secure payment input frame"]'
 
 test("mvp", async ({ page }) => {
+  const coachEmail = `coach+${uuid()}@example.com`
+  const playerEmail = `player+${uuid()}@example.com`
+
   await page.goto(
     "http://ranklab-test:3000/api/auth/signin?token=123456789&user_type=coach&intent=signup"
   )
-  await page.getByRole("button", { name: "Game ​" }).click()
-  await page.locator('[data-test="game-select-overwatch"]').click()
+  await page.getByRole("button", { name: "Game" }).click()
+  await page.getByRole("option", { name: "Overwatch" }).click()
   await page.getByLabel("Name").click()
   await page.getByLabel("Name").fill("Test Coach")
   await page.getByLabel("Email").click()
-  await page.getByLabel("Email").fill("test1234@coach.com")
+  await page.getByLabel("Email").fill(coachEmail)
   await page.getByLabel("Password").click()
   await page.getByLabel("Password").fill("testcoach")
   await page.getByLabel("Bio").click()
   await page
     .getByLabel("Bio")
-    .fill("A reasonably long bio that passes the checks on string length")
+    .fill("A very short bio that is long enough to at least pass validation")
   await page.getByLabel("Price").click()
-  await page.getByLabel("Price").click()
-  await page.getByLabel("Price").press("Control+a")
   await page.getByLabel("Price").fill("12.34")
-  await page.getByRole("button", { name: "Country United States" }).click()
+  await page.getByRole("button", { name: "Country" }).click()
   await page.getByRole("option", { name: "United Kingdom" }).click()
   await page.getByRole("button", { name: "Create Account" }).click()
   await page.getByRole("link", { name: "Start onboarding" }).click()
@@ -60,41 +59,38 @@ test("mvp", async ({ page }) => {
   await page.locator('[data-test="test-mode-fill-button"]').click()
   await page.getByRole("button", { name: "Continue" }).click()
   await page.getByPlaceholder("First name").click()
-  await page.getByPlaceholder("First name").fill("Eugenio Depalo")
+  await page.getByPlaceholder("First name").fill("Test")
   await page.getByPlaceholder("Last name").click()
-  await page.getByPlaceholder("Last name").fill("Depaulis")
+  await page.getByPlaceholder("Last name").fill("Coach")
   await page.getByPlaceholder("DD").click()
   await page.getByPlaceholder("DD").fill("14")
   await page.getByPlaceholder("MM").fill("03")
   await page.getByPlaceholder("YYYY").fill("1990")
-  await page.getByPlaceholder("YYYY").press("Enter")
+  await page.locator('[data-test="bizrep-submit-button"]').click()
   await page.locator('[data-test="test-mode-fill-button"]').click()
   await page.locator('[data-test="requirements-index-done-button"]').click()
   await page.getByRole("button", { name: "T", exact: true }).click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
-  await page.goto("http://ranklab-test:3000/")
-  await page.locator('[data-test="hero-get-started-button"]').click()
-  await page.locator('[data-test="account-fields-game"]').click()
-  await page.locator('[data-test="game-select-overwatch"]').click()
-  await page.locator('[data-test="account-fields-skill-level"]').click()
-  await page.locator('[data-test="account-fields-skill-level-2"]').click()
-  await page.locator('[data-test="account-fields-name"]').click()
-  await page.locator('[data-test="account-fields-name"]').fill("Test Player")
-  await page
-    .locator('[data-test="account-fields-email"]')
-    .fill(`player+${uuid()}@example.com`)
-  await page.locator('[data-test="account-fields-password"]').fill("testplayer")
-  await page.locator('[data-test="signup-submit-button"]').click()
-  await page.locator('[data-test="dashboard-request-review-button"]').click()
-  await page.locator('[data-test="reviews-new-coach-field"]').click()
-  await page.locator('[data-test="coach-select-0"]').click()
-  await page.locator('[data-test="reviews-new-continue-button"]').click()
-  await page
-    .locator('[data-test="reviews-new-recording-video-field"]')
-    .setInputFiles("tests/fixtures/exampleVideo.mp4")
+  await page.getByRole("link", { name: "Get Started" }).first().click()
+  await page.getByRole("button", { name: "Game" }).click()
+  await page.getByText("Overwatch").click()
+  await page.getByRole("button", { name: "Skill Level Bronze" }).click()
+  await page.getByRole("option", { name: "Platinum" }).click()
+  await page.getByLabel("Name").click()
+  await page.getByLabel("Name").fill("Test Player")
+  await page.getByLabel("Email").click()
+  await page.getByLabel("Email").fill(playerEmail)
+  await page.getByLabel("Password").click()
+  await page.getByLabel("Password").fill("testplayer")
+  await page.getByRole("button", { name: "Sign up" }).click()
+  await page.getByRole("link", { name: "Submit your VOD" }).click()
+  await page.getByRole("button", { name: "Coach" }).click()
+  await page.getByRole("option", { name: "Test Coach" }).click()
+  await page.getByRole("button", { name: "Continue" }).click()
+  await page.locator("body").setInputFiles("exampleVideo.mp4")
   await page.locator(".ql-editor").click()
   await page.locator(".ql-editor").fill("some notes")
-  await page.locator('[data-test="reviews-new-continue-button"]').click()
+  await page.getByRole("button", { name: "Continue" }).click()
   await page
     .frameLocator(stripeSelector)
     .getByPlaceholder("First and last name")
@@ -114,20 +110,18 @@ test("mvp", async ({ page }) => {
   await page
     .frameLocator(stripeSelector)
     .getByPlaceholder("Street address")
+    .fill("Some street")
+  await page.frameLocator(stripeSelector).getByLabel("Town or city").click()
+  await page
+    .frameLocator(stripeSelector)
+    .getByLabel("Town or city")
+    .fill("London")
+  await page.frameLocator(stripeSelector).getByLabel("Postal code").click()
+  await page
+    .frameLocator(stripeSelector)
+    .getByLabel("Postal code")
     .fill("NW31DE")
-  await expect(
-    page
-      .frameLocator(googleAutocompleteSelector)
-      .getByLabel("Upper Hampstead Walk, London NW3 1DE, UK")
-  ).toBeVisible()
-  await page.keyboard.press("Enter")
-  await page.locator('[data-test="reviews-new-continue-button"]').click()
-  await page
-    .frameLocator(stripePaymentSelector)
-    .getByText(
-      "Card numberSupported cards include visa, mastercard, amex, discover, diners, jcb"
-    )
-    .click()
+  await page.getByRole("button", { name: "Proceed to Checkout" }).click()
   await page
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("1234 1234 1234 1234")
@@ -135,7 +129,7 @@ test("mvp", async ({ page }) => {
   await page
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("1234 1234 1234 1234")
-    .fill("4242 4242 4242 42422")
+    .fill("4242 4242 4242 42424")
   await page
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("MM / YY")
@@ -143,7 +137,7 @@ test("mvp", async ({ page }) => {
   await page
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("MM / YY")
-    .fill("11 / 23")
+    .fill("11 / 26")
   await page.frameLocator(stripePaymentSelector).getByPlaceholder("CVC").click()
   await page
     .frameLocator(stripePaymentSelector)
@@ -156,9 +150,18 @@ test("mvp", async ({ page }) => {
   await page
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("WS11 1DB")
-    .fill("123123")
-  await page
-    .locator('[data-test="checkout-save-payment-method-checkbox"]')
-    .click()
-  await page.locator('[data-test="checkout-submit-button"]').click()
+    .fill("NW31DE")
+  await page.getByLabel("Save this card for future purchases").check()
+  await page.getByRole("button", { name: "Pay $12.34" }).click()
+  await page.getByRole("button", { name: "T", exact: true }).click()
+  await page.getByRole("menuitem", { name: "Logout" }).click()
+  await page.getByRole("button").nth(2).click()
+  await page.getByRole("menuitem", { name: "Sign in as coach" }).click()
+  await page.getByLabel("Email").click()
+  await page.getByLabel("Email").fill("test1234@coach.com")
+  await page.getByLabel("Password").click()
+  await page.getByLabel("Password").fill("testcoach")
+  await page.getByRole("button", { name: "Sign in" }).click()
+  await page.getByRole("link", { name: "exampleVideo" }).click()
+  await page.getByRole("button", { name: "Start Review" }).click()
 })

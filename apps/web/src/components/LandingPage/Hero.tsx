@@ -256,7 +256,6 @@ export const Hero = ({ games }: HeroProps) => {
                         filter: "brightness(1.3)",
                       },
                     }}
-                    data-test="hero-get-started-button"
                   >
                     Get Started
                   </Button>

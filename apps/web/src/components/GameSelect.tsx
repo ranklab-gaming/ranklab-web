@@ -51,7 +51,6 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
             key={game.id}
             value={game.id}
             sx={game.id === "test" ? { display: "none" } : {}}
-            data-test={`game-select-${game.id}`}
           >
             <Stack direction="row" alignItems="center">
               <ListItemAvatar>

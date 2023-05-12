@@ -225,7 +225,6 @@ const RecordingForm = ({
                             ? error.message
                             : "The recording you want to be reviewed"
                         }
-                        data-test="reviews-new-recording-field"
                       >
                         <MenuItem value={newRecordingId}>
                           New recording
@@ -334,7 +333,6 @@ const RecordingForm = ({
                                 </>
                               )
                             }
-                            data-test="reviews-new-recording-video-field"
                           />
                         )}
                       />
@@ -351,7 +349,6 @@ const RecordingForm = ({
                                 ? error.message
                                 : "A title to help you remember this recording"
                             }
-                            data-test="reviews-new-recording-title-field"
                           />
                         )}
                       />
@@ -378,7 +375,7 @@ const RecordingForm = ({
                   control={control}
                   render={({ field, fieldState: { error } }) => {
                     return (
-                      <Box mt={2} data-test="reviews-new-notes-field">
+                      <Box mt={2}>
                         <Editor
                           value={field.value}
                           onChange={field.onChange}
@@ -432,7 +429,6 @@ const RecordingForm = ({
                     loading={isSubmitting || uploading}
                     disabled={isSubmitting || uploading}
                     sx={{ mt: 3 }}
-                    data-test="reviews-new-continue-button"
                   >
                     Continue
                   </LoadingButton>

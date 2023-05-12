@@ -52,7 +52,6 @@ export const PlayerDashboardPage = ({
                       filter: "brightness(1.3)",
                     },
                   }}
-                  data-test="dashboard-request-review-button"
                 >
                   {requestReviewButtonText}
                 </Button>

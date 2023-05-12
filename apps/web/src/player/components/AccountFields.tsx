@@ -99,7 +99,6 @@ export const AccountFields = <
                 "The game you want to be coached in"
               )
             }
-            data-test="account-fields-game"
           />
         )}
       />
@@ -117,14 +116,9 @@ export const AccountFields = <
                 error ? error.message : "Your skill level in the game"
               }
               label="Skill Level"
-              data-test="account-fields-skill-level"
             >
               {selectedGame.skillLevels.map((skillLevel) => (
-                <MenuItem
-                  key={skillLevel.value}
-                  value={skillLevel.value}
-                  data-test={`account-fields-skill-level-${skillLevel.value}`}
-                >
+                <MenuItem key={skillLevel.value} value={skillLevel.value}>
                   {skillLevel.name}
                 </MenuItem>
               ))}
@@ -143,7 +137,6 @@ export const AccountFields = <
             helperText={
               error ? error.message : "This will appear on your profile"
             }
-            inputProps={{ "data-test": "account-fields-name" }}
           />
         )}
       />
@@ -158,7 +151,6 @@ export const AccountFields = <
             helperText={error ? error.message : "The email you use to login"}
             label="Email"
             type="email"
-            inputProps={{ "data-test": "account-fields-email" }}
           />
         )}
       />
@@ -176,7 +168,6 @@ export const AccountFields = <
               }
               label="Password"
               type="password"
-              inputProps={{ "data-test": "account-fields-password" }}
             />
           )}
         />

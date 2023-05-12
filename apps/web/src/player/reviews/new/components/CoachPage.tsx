@@ -92,7 +92,6 @@ const Content = ({ coaches, coachId }: Props) => {
                           ? error.message
                           : "The coach you want to assign the review to"
                       }
-                      data-test="reviews-new-coach-field"
                     />
                   )}
                 />
@@ -131,7 +130,6 @@ const Content = ({ coaches, coachId }: Props) => {
                   loading={isSubmitting}
                   disabled={isSubmitting}
                   sx={{ mt: 3 }}
-                  data-test="reviews-new-continue-button"
                 >
                   Continue
                 </LoadingButton>

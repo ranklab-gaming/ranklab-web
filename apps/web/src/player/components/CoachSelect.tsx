@@ -40,7 +40,6 @@ export const CoachSelect = ({
           key={coach.id}
           value={coach.id}
           sx={{ alignItems: "flex-end" }}
-          data-test={`coach-select-${index}`}
         >
           <Stack direction="row" spacing={2} alignItems="center">
             <Avatar user={coach} />
