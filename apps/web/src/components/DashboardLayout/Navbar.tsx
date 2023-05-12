@@ -26,6 +26,7 @@ const icons = {
   dashboard: <Iconify icon="eva:grid-outline" />,
   archive: <Iconify icon="eva:archive-outline" />,
   review: <Iconify icon="eva:plus-square-outline" />,
+  school: <Iconify icon="mdi:school-outline" />,
 }
 
 type Props = {
@@ -63,6 +64,11 @@ export const Navbar = ({
               title: "Dashboard",
               path: "/player/dashboard",
               icon: icons.dashboard,
+            },
+            {
+              title: "Coaches",
+              path: "/player/coaches",
+              icon: icons.school,
             },
             {
               title: "Archive",

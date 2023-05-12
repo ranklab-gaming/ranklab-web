@@ -26,7 +26,7 @@ interface Props {
   games: Game[]
 }
 
-const AvatarImage = styled("img")`
+export const AvatarImage = styled("img")`
   display: block;
   width: 64px;
   height: 64px;

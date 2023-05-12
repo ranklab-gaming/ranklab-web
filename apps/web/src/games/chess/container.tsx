@@ -11,7 +11,7 @@ export default {
   "component:recording-form": RecordingForm,
   "component:review-details": ReviewDetails,
   "component:review-form": ReviewForm,
-  "component:recording-icon": <Iconify icon="mdi:chess-queen" />,
+  "component:recording-icon": <Iconify icon="mdi:checkerboard" />,
   "text:recording-step": "Paste a PGN",
   "text:request-review-button": "Submit your PGN",
   "text:coach-review-demo-key": "coach-chess-review-demo.mp4",
