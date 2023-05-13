@@ -38,9 +38,8 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Desktop Chrome"], channel: "chrome" },
     },
-
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
@@ -66,12 +65,8 @@ export default defineConfig({
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
     // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ..devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
-  timeout: 60 * 1000 * 60,
+  timeout: 60 * 60 * 1000,
 
   /* Run your local dev server before starting the tests */
   // webServer: {
