@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Install Playwright browsers
-        run: pnpx playwright install --with-deps chrome firefox webkit
+        run: pnpx playwright install --with-deps chrome
       - name: Setup hostnames
         run: |
           echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
