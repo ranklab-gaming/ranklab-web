@@ -10,7 +10,7 @@ ARG NEXT_PUBLIC_INTERCOM_APP_ID
 
 WORKDIR /app
 
-RUN apk add --no-cache git libc6-compat
+RUN apk add --no-cache git libc6-compat curl
 RUN npm install -g pnpm@latest
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./

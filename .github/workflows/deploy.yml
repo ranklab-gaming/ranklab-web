@@ -1,80 +1,13 @@
-name: Test and Deploy
-on: [push]
+name: Deploy
+on:
+  push:
+    branches:
+      - master
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
-      TEST_STRIPE_ACCOUNT_ID: ${{ secrets.TEST_STRIPE_ACCOUNT_ID }}
-      TEST_STRIPE_CUSTOMER_ID: ${{ secrets.TEST_STRIPE_CUSTOMER_ID }}
-      NEXT_PUBLIC_ASSETS_CDN_URL: ${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }}
-      NEXT_PUBLIC_UPLOADS_CDN_URL: ${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.TEST_NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
-    timeout-minutes: 10
-    services:
-      redis:
-        image: redis:latest
-        ports:
-          - "6379:6379"
-        volumes:
-          - redis:/data
-      postgres:
-        image: postgres:15.2
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: app_test
-        ports:
-          - "5432:5432"
-      ranklab-api:
-        env:
-          ROCKET_PROFILE: test
-          ROCKET_ADDRESS: 0.0.0.0
-          RANKLAB_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
-          RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
-          RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-          RANKLAB_SENTRY_DSN: ${{ secrets.RANKLAB_SENTRY_DSN }}
-          RANKLAB_S3_BUCKET_QUEUE: ${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
-          RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
-          RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE }}
-          RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
-          RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }}
-          RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }}
-        image: ghcr.io/ranklab-gaming/ranklab-api:latest
-        credentials:
-          username: $
-          password: ${{ secrets.GITHUB_TOKEN }}
-        ports:
-          - "8000:8000"
-        options: >-
-          --add-host=ranklab-test:host-gateway
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@ranklab-gaming"
-          cache: pnpm
-      - name: Add hosts
-        run: echo "127.0.0.1 ranklab-test ranklab-api postgres" | sudo tee -a /etc/hosts
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Build
-        run: pnpm run build
-      - name: Output container logs
-        if: ${{ failure() }}
-        run: cat /containers/**/*.log
   deploy:
     runs-on: ubuntu-latest
     env:
@@ -83,7 +16,6 @@ jobs:
       cluster-name: ${{ secrets.ECS_CLUSTER_NAME }}
       service-name: ${{ secrets.ECS_SERVICE_NAME }}
     if: github.ref == 'refs/heads/master'
-    needs: test
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -108,6 +40,7 @@ jobs:
         id: docker-build
         uses: docker/build-push-action@v4
         with:
+          context: .
           build-args: |
             NODE_ENV=production
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}

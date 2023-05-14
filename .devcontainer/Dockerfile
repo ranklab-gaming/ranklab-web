@@ -18,5 +18,3 @@ RUN pnpm config set global-bin-dir $HOME/.local/share/pnpm/bin
 RUN pnpm config set package-import-method hardlink
 RUN pnpm install -g @openapitools/openapi-generator-cli
 RUN sudo npx playwright install --with-deps chrome
-# Workaround for https://github.com/microsoft/playwright/issues/15764
-RUN sudo ln -sf /usr/bin/echo /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
