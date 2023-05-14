@@ -8,7 +8,6 @@ export function requireEnv(name: string, value: string | undefined): string {
 
 const port = parseInt(process.env.PORT || "3000", 10)
 const host = new URL(process.env.HOST || "http://localhost:3000")
-const address = process.env.ADDRESS || "localhost"
 const redisUrl = requireEnv("REDIS_URL", process.env.REDIS_URL)
 const cookieSecret = requireEnv("COOKIE_SECRET", process.env.COOKIE_SECRET)
 const rawAuthJwks = requireEnv("AUTH_JWKS", process.env.AUTH_JWKS)
@@ -23,7 +22,6 @@ const authClientSecret = requireEnv(
 export {
   port,
   host,
-  address,
   redisUrl,
   cookieSecret,
   authJwks,

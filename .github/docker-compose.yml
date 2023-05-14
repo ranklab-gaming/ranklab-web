@@ -6,7 +6,6 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=test
-      - ADDRESS=0.0.0.0
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 3s
@@ -17,7 +16,6 @@ services:
       - "8000:8000"
     environment:
       - ROCKET_PROFILE=test
-      - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AWS_ACCESS_KEY_ID
       - RANKLAB_AWS_SECRET_KEY
       - RANKLAB_S3_BUCKET_QUEUE

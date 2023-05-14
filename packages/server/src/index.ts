@@ -13,7 +13,7 @@ export default async () => {
 
   loadEnvConfig("./", dev)
 
-  const { port, host, address } = await import("./config.js")
+  const { port, host } = await import("./config.js")
   const { hostname } = host
   const { getOidcProvider } = await import("./oidc/provider.js")
 
@@ -76,7 +76,7 @@ export default async () => {
 
   app.use(xrayExpress.closeSegment())
 
-  app.listen(port, address, () => {
+  app.listen(port, () => {
     console.log("Listening on port", port, "url: " + host.origin)
   })
 }
