@@ -1,11 +1,10 @@
 import { PropsWithUser } from "@/auth"
 import { withUserSsr } from "@/auth/page"
 import { PlayerCoachesPage } from "@/player/components/CoachesPage"
-import { Game, PaginatedResultForReview } from "@ranklab/api"
+import { Coach } from "@ranklab/api"
 
 interface Props {
-  reviews: PaginatedResultForReview
-  games: Game[]
+  coaches: Coach[]
 }
 
 export const getServerSideProps = withUserSsr<Props>("player", async (ctx) => {
