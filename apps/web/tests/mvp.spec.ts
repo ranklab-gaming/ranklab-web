@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test"
+import { test } from "@playwright/test"
 import { Client } from "pg"
 import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
