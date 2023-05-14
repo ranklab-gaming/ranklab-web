@@ -35,7 +35,7 @@ export const CoachSelect = ({
       helperText={helperText}
       {...props}
     >
-      {coaches.map((coach, index) => (
+      {coaches.map((coach) => (
         <MenuItem
           key={coach.id}
           value={coach.id}
