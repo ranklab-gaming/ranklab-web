@@ -10,8 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      DOCKER_BUILDKIT: 1
     services:
       postgres:
         image: postgres:latest
@@ -25,10 +23,6 @@ jobs:
         image: redis:latest
         ports:
           - 6379:6379
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -64,8 +58,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
-          tags: localhost:5000/ranklab-test:latest
+          load: true
+          tags: ranklab-test:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -74,12 +68,11 @@ jobs:
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
             SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
       - name: Start ranklab-test container
-        run: |
-          docker run -d \
-            --name localhost:5000/ranklab-test \
-            -p 3000:3000 \
-            -e NODE_ENV=test \
-            ranklab-test:latest
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ranklab-test:latest
+          name: ranklab-test
+          options: -p 3000:3000 -e NODE_ENV=test
       - name: Wait for ranklab-test to be healthy
         run: |
           while true; do
@@ -92,24 +85,25 @@ jobs:
             sleep 1
           done
       - name: Start ranklab-api container
-        run: |
-          docker run -d \
-            --name ranklab-api \
-            -p 8000:8000 \
-            -e ROCKET_PROFILE=test \
-            -e ROCKET_ADDRESS=0.0.0.0 \
-            -e RANKLAB_AWS_ACCESS_KEY_ID=${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }} \
-            -e RANKLAB_AWS_SECRET_KEY=${{ secrets.RANKLAB_AWS_SECRET_KEY }} \
-            -e RANKLAB_S3_BUCKET_QUEUE=${{ secrets.RANKLAB_S3_BUCKET_QUEUE }} \
-            -e RANKLAB_S3_BUCKET=${{ secrets.RANKLAB_S3_BUCKET }} \
-            -e RANKLAB_SENTRY_DSN=${{ secrets.RANKLAB_SENTRY_DSN }} \
-            -e RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE=${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }} \
-            -e RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET=${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }} \
-            -e RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE=${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE }} \
-            -e RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET=${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }} \
-            -e RANKLAB_STRIPE_SECRET=${{ secrets.RANKLAB_STRIPE_SECRET }} \
-            -e RANKLAB_INSTANCE_ID=${{ env.RANKLAB_INSTANCE_ID }} \
-            ghcr.io/ranklab-gaming/ranklab-api:latest
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ghcr.io/ranklab-gaming/ranklab-api:latest
+          name: ranklab-api
+          options: |
+            -p 8000:8000
+            -e ROCKET_PROFILE=test
+            -e ROCKET_ADDRESS=0.0.0.0
+            -e RANKLAB_AWS_ACCESS_KEY_ID=${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
+            -e RANKLAB_AWS_SECRET_KEY=${{ secrets.RANKLAB_AWS_SECRET_KEY }}
+            -e RANKLAB_S3_BUCKET_QUEUE=${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
+            -e RANKLAB_S3_BUCKET=${{ secrets.RANKLAB_S3_BUCKET }}
+            -e RANKLAB_SENTRY_DSN=${{ secrets.RANKLAB_SENTRY_DSN }}
+            -e RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE=${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE }}
+            -e RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET=${{ secrets.RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET }}
+            -e RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE=${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE }}
+            -e RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET=${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
+            -e RANKLAB_STRIPE_SECRET=${{ secrets.RANKLAB_STRIPE_SECRET }}
+            -e RANKLAB_INSTANCE_ID=${{ env.RANKLAB_INSTANCE_ID }}
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
       - name: Upload Playwright report
