@@ -98,8 +98,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0)
       oidc-provider:
-        specifier: 8.2.0
-        version: 8.2.0
+        specifier: 8.2.1
+        version: 8.2.1
       openid-client:
         specifier: 5.4.2
         version: 5.4.2
@@ -222,8 +222,8 @@ importers:
         specifier: 13.3.1
         version: 13.3.1(react-dom@18.2.0)(react@18.2.0)
       oidc-provider:
-        specifier: 8.2.0
-        version: 8.2.0
+        specifier: 8.2.1
+        version: 8.2.1
       pino-http:
         specifier: ^8.3.3
         version: 8.3.3
@@ -3739,8 +3739,8 @@ packages:
       es-abstract: 1.21.2
     dev: true
 
-  /oidc-provider@8.2.0:
-    resolution: {integrity: sha512-5/Dt8X6yWGZafD1EyEQ+3djWitN7l3fsberw947rWFUrM+eHMovVUxZirHTG1Ecx6PR2KecW/wiaEfc4PVS6Sg==}
+  /oidc-provider@8.2.1:
+    resolution: {integrity: sha512-BSHG9+8XjRGVmDy4wOFgtLCgXodhOdGx5GoGZgkJjllEgAWwXA5PMVj6LTzgRSp/5ngpmuvCBcD1Ec6v+iyMjA==}
     dependencies:
       '@koa/cors': 4.0.0
       '@koa/router': 12.0.0
