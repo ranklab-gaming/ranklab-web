@@ -43,7 +43,7 @@ jobs:
           echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
       - uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
-      - name: Generate instance id
+      - name: Generate instance ID
         run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
