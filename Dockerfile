@@ -37,7 +37,6 @@ ENV NEXT_PUBLIC_INTERCOM_APP_ID=${NEXT_PUBLIC_INTERCOM_APP_ID}
 RUN pnpm run build
 
 EXPOSE 3000
-
 ENV PORT 3000
-
+HEALTHCHECK --interval=3s --retries=10 CMD curl -f http://localhost:3000/api/health || exit 1
 CMD ["pnpm", "run", "start"]
