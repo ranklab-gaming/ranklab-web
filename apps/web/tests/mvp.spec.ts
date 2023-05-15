@@ -3,8 +3,6 @@ import { Client } from "pg"
 import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
 
-// test 1
-
 const client = new Client({
   host: "postgres",
   port: 5432,
