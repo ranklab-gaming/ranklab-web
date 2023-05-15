@@ -44,6 +44,11 @@ jobs:
       - name: Setup Docker caching
         uses: satackey/action-docker-layer-caching@v0.0.11
         continue-on-error: true
+        with:
+          key: docker-layer-cache-{hash}
+          restore-keys: |
+            docker-layer-cache-
+            layer-docker-layer-cache-
       - name: Generate instance ID
         run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
@@ -52,10 +57,8 @@ jobs:
           registry: ghcr.io
           username: $
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build Docker images
-        run: docker-compose -f .github/docker-compose.yml build
-      - name: Start containers
-        run: docker-compose -f .github/docker-compose.yml up -d
+      - name: Build and run containers
+        run: docker-compose -f .github/docker-compose.yml up -d --build
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
       - name: Upload Playwright report
