@@ -116,8 +116,7 @@ test("mvp", async ({ page }) => {
     .fill("123")
   await page
     .frameLocator(stripePaymentSelector)
-    .getByPlaceholder("WS11 1DB")
-    .fill("NW31DE")
+    .locator('[name="postalCode"]')
   await page.getByLabel("Save this card for future purchases").check()
   await page.getByRole("button", { name: "Pay $12.34" }).click()
   await page.getByRole("button", { name: "T", exact: true }).click()

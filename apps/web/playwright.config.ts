@@ -41,9 +41,6 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         channel: "chrome",
-        locale: "en-GB",
-        timezoneId: "Europe/London",
-        geolocation: { latitude: 51.509865, longitude: -0.118092 },
         video: "retain-on-failure",
       },
     },
