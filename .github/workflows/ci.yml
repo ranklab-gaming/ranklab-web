@@ -25,6 +25,10 @@ jobs:
         image: redis:latest
         ports:
           - 6379:6379
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -60,7 +64,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          tags: ranklab-test:latest
+          push: true
+          tags: localhost:5000/ranklab-test:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
@@ -71,7 +76,7 @@ jobs:
       - name: Start ranklab-test container
         run: |
           docker run -d \
-            --name ranklab-test \
+            --name localhost:5000/ranklab-test \
             -p 3000:3000 \
             -e NODE_ENV=test \
             ranklab-test:latest
