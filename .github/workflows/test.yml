@@ -1,6 +1,9 @@
 name: Test
 on: [pull_request]
 env:
+  NEXT_PUBLIC_ASSETS_CDN_URL: ${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }}
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.TEST_NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+  NEXT_PUBLIC_UPLOADS_CDN_URL: ${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
   NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
   RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
@@ -12,6 +15,7 @@ env:
   RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE }}
   RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
   RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
+  SENTRY_AUTH_TOKEN: ${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -37,24 +41,9 @@ jobs:
       - name: Setup hostnames
         run: |
           echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.docker-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
-      - name: Build test image
-        run: |
-          docker build \
-            --progress=plain \
-            --build-arg SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }} \
-            --build-arg NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }} \
-            --build-arg NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }} \
-            --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.TEST_NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }} \
-            --cache-from=type=local,src=/tmp/.docker-cache \
-            --tag ranklab-test:latest .
-      - name: Set RANKLAB_INSTANCE_ID to a random UUID
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+      - name: Generate instance id
         run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
@@ -63,8 +52,8 @@ jobs:
           username: $
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and start containers
-        run: docker compose -f .github/docker-compose.yml up -d
-      - name: Run Playwright tests
+        run: docker compose -f .github/docker-compose.yml up -d --build
+      - name: Run tests
         run: DEBUG=pw:api pnpm run test
       - name: Upload test results
         if: always()
