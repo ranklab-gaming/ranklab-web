@@ -114,9 +114,14 @@ test("mvp", async ({ page }) => {
     .frameLocator(stripePaymentSelector)
     .getByPlaceholder("CVC")
     .fill("123")
+  const postalCode = await page
+    .frameLocator(stripePaymentSelector)
+    .locator('[name="postalCode"]')
+    .getAttribute("placeholder")
   await page
     .frameLocator(stripePaymentSelector)
     .locator('[name="postalCode"]')
+    .fill(postalCode ?? "NW31DE")
   await page.getByLabel("Save this card for future purchases").check()
   await page.getByRole("button", { name: "Pay $12.34" }).click()
   await page.getByRole("button", { name: "T", exact: true }).click()
