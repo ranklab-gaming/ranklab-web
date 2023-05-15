@@ -55,7 +55,7 @@ jobs:
             --cache-from=type=local,src=/tmp/.docker-cache \
             --tag ranklab-test:latest .
       - name: Set RANKLAB_INSTANCE_ID to a random UUID
-        run: echo "RANKLAB_INSTANCE_ID=$(uuidgen)" >> $GITHUB_ENV
+        run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_ENV
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -65,7 +65,7 @@ jobs:
       - name: Build and start containers
         run: docker compose -f .github/docker-compose.yml up -d
       - name: Run Playwright tests
-        run: pnpm run test
+        run: DEBUG=pw:api pnpm run test
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3

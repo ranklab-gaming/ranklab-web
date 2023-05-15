@@ -16,6 +16,7 @@ services:
       - "8000:8000"
     environment:
       - ROCKET_PROFILE=test
+      - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AWS_ACCESS_KEY_ID
       - RANKLAB_AWS_SECRET_KEY
       - RANKLAB_S3_BUCKET_QUEUE
