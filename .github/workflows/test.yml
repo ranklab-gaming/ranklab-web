@@ -52,8 +52,10 @@ jobs:
           registry: ghcr.io
           username: $
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and start containers
-        run: docker compose -f .github/docker-compose.yml up -d --build
+      - name: Build Docker images
+        run: docker-compose -f .github/docker-compose.yml build
+      - name: Start containers
+        run: docker-compose -f .github/docker-compose.yml up -d
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
       - name: Upload Playwright report
