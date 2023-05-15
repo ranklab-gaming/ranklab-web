@@ -1,29 +1,15 @@
 version: "3.8"
 services:
   ranklab-test:
-    build:
-      context: ../
-      dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_ASSETS_CDN_URL=${NEXT_PUBLIC_ASSETS_CDN_URL}
-        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
-        - NEXT_PUBLIC_UPLOADS_CDN_URL=${NEXT_PUBLIC_UPLOADS_CDN_URL}
-        - SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
-    ports:
-      - "3000:3000"
+    image: ranklab-test:latest
+    network_mode: host
     environment:
       - NODE_ENV=test
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-      interval: 3s
-      retries: 10
   ranklab-api:
     image: ghcr.io/ranklab-gaming/ranklab-api:latest
-    ports:
-      - "8000:8000"
+    network_mode: host
     environment:
       - ROCKET_PROFILE=test
-      - ROCKET_ADDRESS=0.0.0.0
       - RANKLAB_AWS_ACCESS_KEY_ID
       - RANKLAB_AWS_SECRET_KEY
       - RANKLAB_S3_BUCKET_QUEUE
@@ -36,21 +22,5 @@ services:
       - RANKLAB_STRIPE_SECRET
       - RANKLAB_INSTANCE_ID
     depends_on:
-      postgres:
-        condition: service_started
-      redis:
-        condition: service_started
       ranklab-test:
         condition: service_healthy
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: app_test
-    ports:
-      - "5432:5432"

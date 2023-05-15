@@ -1,6 +1,7 @@
-.github
-.devcontainer
-.next
-.turbo
-node_modules
-dist
+**
+!/apps
+!/packages
+!/package.json
+!/pnpm-lock.yaml
+!/pnpm-workspace.yaml
+!/turbo.json
