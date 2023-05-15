@@ -56,7 +56,7 @@ jobs:
         run: docker compose -f .github/docker-compose.yml up -d --build
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
-      - name: Upload test report
+      - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v3
         with:
