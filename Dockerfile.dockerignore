@@ -1,6 +1,0 @@
-.github
-.devcontainer
-.next
-.turbo
-node_modules
-dist

@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  ranklab-test:
+    image: ranklab-test:latest
+    network_mode: host
+    environment:
+      - NODE_ENV=test
+  ranklab-api:
+    image: ghcr.io/ranklab-gaming/ranklab-api:latest
+    network_mode: host
+    environment:
+      - ROCKET_PROFILE=test
+      - RANKLAB_AWS_ACCESS_KEY_ID
+      - RANKLAB_AWS_SECRET_KEY
+      - RANKLAB_S3_BUCKET_QUEUE
+      - RANKLAB_S3_BUCKET
+      - RANKLAB_SENTRY_DSN
+      - RANKLAB_STRIPE_CONNECT_WEBHOOKS_QUEUE
+      - RANKLAB_STRIPE_CONNECT_WEBHOOKS_SECRET
+      - RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE
+      - RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET
+      - RANKLAB_STRIPE_SECRET
+      - RANKLAB_INSTANCE_ID
+    depends_on:
+      ranklab-test:
+        condition: service_healthy
