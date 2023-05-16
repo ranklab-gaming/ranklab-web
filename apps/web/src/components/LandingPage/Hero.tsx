@@ -68,7 +68,7 @@ export const Hero = () => {
       </HeroOverlayStyle>
       <Container maxWidth="lg" component={MotionContainer}>
         <ContentStyle>
-          <Stack spacing={3} variants={animateFade().inRight} component={m.div}>
+          <m.div variants={animateFade().inRight}>
             <Typography
               variant="h1"
               component={m.div}
@@ -99,11 +99,14 @@ export const Hero = () => {
               </Typography>
               .
             </Typography>
-
+          </m.div>
+          <m.div variants={animateFade().inRight}>
             <Typography sx={{ color: "common.white" }} variant="h4">
               Get your gameplay analyzed by experienced coaches.
             </Typography>
+          </m.div>
 
+          <m.div variants={animateFade().inRight}>
             <Stack
               spacing={3}
               direction="row"
@@ -150,7 +153,7 @@ export const Hero = () => {
                 </Typography>
               </Stack>
             </Stack>
-          </Stack>
+          </m.div>
           <Box
             component={m.div}
             variants={animateFade().in}
