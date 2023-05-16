@@ -5,6 +5,11 @@ services:
     network_mode: host
     environment:
       - NODE_ENV=test
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 3s
+      timeout: 30s
+      retries: 10
   ranklab-api:
     image: ghcr.io/ranklab-gaming/ranklab-api:latest
     network_mode: host
@@ -24,3 +29,8 @@ services:
     depends_on:
       ranklab-test:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 3s
+      timeout: 30s
+      retries: 10
