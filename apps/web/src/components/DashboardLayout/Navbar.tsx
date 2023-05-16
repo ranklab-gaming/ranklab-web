@@ -65,11 +65,11 @@ export const Navbar = ({
               path: "/player/dashboard",
               icon: icons.dashboard,
             },
-            {
-              title: "Coaches",
-              path: "/player/coaches",
-              icon: icons.school,
-            },
+            // {
+            //   title: "Coaches",
+            //   path: "/player/coaches",
+            //   icon: icons.school,
+            // },
             {
               title: "Archive",
               path: "/player/archive",
