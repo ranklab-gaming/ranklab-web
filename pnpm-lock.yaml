@@ -77,8 +77,8 @@ importers:
         specifier: 2.30.0
         version: 2.30.0
       framer-motion:
-        specifier: 10.12.11
-        version: 10.12.11(react-dom@18.2.0)(react@18.2.0)
+        specifier: 10.12.12
+        version: 10.12.12(react-dom@18.2.0)(react@18.2.0)
       iron-session:
         specifier: 6.3.1
         version: 6.3.1(next@13.3.1)
@@ -2680,8 +2680,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /framer-motion@10.12.11(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uNsJAc/BQZ9V7tYgzRBXSrEdB+YrdJTtRvgn+8lNAQucGKaINJBL8I4aqXxXdw+HzwJZb/uR955jnOrxBy5sTA==}
+  /framer-motion@10.12.12(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-DDCqp60U6hR7aUrXj/BXc/t0Sd/U4ep6w/NZQkw898K+u7s+Vv/P8yxq4WTNA86kU9QCsqOgn1Qhz2DpYK0Oag==}
     peerDependencies:
       react: ^18.0.0
       react-dom: ^18.0.0
