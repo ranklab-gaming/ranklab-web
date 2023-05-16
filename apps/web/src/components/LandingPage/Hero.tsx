@@ -93,7 +93,8 @@ export const Hero = () => {
                 color="primary"
                 fontSize="inherit"
                 fontFamily="inherit"
-                fontWeight="bold"
+                fontWeight="inherit"
+                lineHeight="1"
               >
                 Ranklab
               </Typography>
