@@ -1,4 +1,4 @@
-import { test } from "@playwright/test"
+import { test, expect } from "@playwright/test"
 import { Client } from "pg"
 import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
@@ -138,11 +138,6 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "Save Comment" }).click()
   await page.getByRole("button", { name: "Publish Review" }).click()
   await page.getByRole("button", { name: "Confirm" }).click()
-  await page
-    .getByRole("alert")
-    .filter({ hasText: "Your review was published successfully." })
-    .getByRole("button")
-    .click()
   await page.getByRole("button", { name: "T", exact: true }).click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button", { name: "Sign in" }).click()
@@ -152,4 +147,14 @@ test("mvp", async ({ page }) => {
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "00:00:00 Wow!" }).click()
   await page.getByRole("button", { name: "ACCEPT REVIEW" }).click()
+  await page.getByRole('button', { name: 'T', exact: true }).click();
+  await page.getByRole('menuitem', { name: 'Logout' }).click();
+  await page.getByRole('button').nth(2).click();
+  await page.getByRole('menuitem', { name: 'Sign in as coach' }).click();
+  await page.getByLabel('Email').fill(coachEmail);
+  await page.getByLabel('Password').fill('testcoach');
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await page.getByRole('link', { name: 'Account' }).click();
+  await page.getByRole('link', { name: 'OPEN ACCOUNT DASHBOARD' }).click();
+  await expect(page.locator('div').filter({ hasText: /^Total earnings£7\.80/ })).toBeVisible();
 })
