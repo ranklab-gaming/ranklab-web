@@ -1,4 +1,4 @@
-import { test } from "@playwright/test"
+import { test, expect } from "@playwright/test"
 import { Client } from "pg"
 import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
@@ -42,7 +42,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Email").fill(coachEmail)
   await page.getByLabel("Password").fill("testcoach")
   await page
-    .getByLabel("Bio")
+    .locator(".ql-editor")
     .fill("A very short bio that is long enough to at least pass validation")
   await page.getByLabel("Price").fill("12.34")
   await page.getByRole("button", { name: "Country" }).click()
@@ -61,7 +61,7 @@ test("mvp", async ({ page }) => {
   await page.locator('[data-test="bizrep-submit-button"]').click()
   await page.locator('[data-test="test-mode-fill-button"]').click()
   await page.locator('[data-test="requirements-index-done-button"]').click()
-  await page.getByRole("button", { name: "T", exact: true }).click()
+  await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("link", { name: "Get Started" }).first().click()
   await page.getByRole("button", { name: "Game" }).click()
@@ -124,7 +124,7 @@ test("mvp", async ({ page }) => {
     .fill(postalCode ?? "NW31DE")
   await page.getByLabel("Save this card for future purchases").check()
   await page.getByRole("button", { name: "Pay $12.34" }).click()
-  await page.getByRole("button", { name: "T", exact: true }).click()
+  await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button").nth(2).click()
   await page.getByRole("menuitem", { name: "Sign in as coach" }).click()
@@ -138,12 +138,7 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "Save Comment" }).click()
   await page.getByRole("button", { name: "Publish Review" }).click()
   await page.getByRole("button", { name: "Confirm" }).click()
-  await page
-    .getByRole("alert")
-    .filter({ hasText: "Your review was published successfully." })
-    .getByRole("button")
-    .click()
-  await page.getByRole("button", { name: "T", exact: true }).click()
+  await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button", { name: "Sign in" }).click()
   await page.getByLabel("Email").fill(playerEmail)
@@ -151,5 +146,25 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "Sign in" }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "00:00:00 Wow!" }).click()
-  await page.getByRole("button", { name: "ACCEPT REVIEW" }).click()
+  await page.getByRole("button", { name: "Accept Review" }).click()
+  await page.getByTitle("Account").click()
+  await page.getByRole("menuitem", { name: "Logout" }).click()
+  await page.getByRole("button").nth(2).click()
+  await page.getByRole("menuitem", { name: "Sign in as coach" }).click()
+  await page.getByLabel("Email").fill(coachEmail)
+  await page.getByLabel("Password").fill("testcoach")
+  await page.getByRole("button", { name: "Sign in" }).click()
+  await page.getByRole("link", { name: "Account" }).click()
+  await page.getByRole("link", { name: "Open Account Dashboard" }).click()
+  const totalEarningsLocator = page.locator(
+    '[data-db-analytics-name="express_app_balance_transaction_row_link"]',
+    { hasText: /£\d{1,2}\.?\d{1,2}/ }
+  )
+  const totalEarningsStr = /\d{1,2}\.?\d{1,2}/.exec(
+    await totalEarningsLocator.innerText()
+  )
+  const totalEarnings = totalEarningsStr ? parseFloat(totalEarningsStr[0]) : 0
+  const expectedEarnings = 12.34 * 0.8
+  await expect(totalEarnings).toBeGreaterThan(expectedEarnings * 0.5)
+  await expect(totalEarnings).toBeLessThan(expectedEarnings * 1.5)
 })

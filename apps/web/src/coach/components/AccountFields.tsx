@@ -1,5 +1,12 @@
+import { Editor } from "@/components/Editor"
 import { GameSelect } from "@/components/GameSelect"
-import { TextField, InputAdornment, Stack } from "@mui/material"
+import {
+  TextField,
+  InputAdornment,
+  Stack,
+  FormHelperText,
+  Box,
+} from "@mui/material"
 import { Game } from "@ranklab/api"
 import { PropsWithChildren } from "react"
 import { Control, Controller, Path } from "react-hook-form"
@@ -78,7 +85,6 @@ export const AccountFields = <
         )}
       />
       <Stack spacing={2} direction="row" alignItems="center">
-        {children}
         <Controller
           name={"name" as Path<TFormValues>}
           control={control}
@@ -96,6 +102,7 @@ export const AccountFields = <
             />
           )}
         />
+        {children}
       </Stack>
       <Controller
         name={"email" as Path<TFormValues>}
@@ -131,18 +138,19 @@ export const AccountFields = <
         name={"bio" as Path<TFormValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="Bio"
-            error={Boolean(error)}
-            multiline
-            rows={4}
-            helperText={
-              error
+          <Box>
+            <Editor
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={Boolean(error)}
+            />
+            <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+              {error
                 ? error.message
-                : "Tell us about yourself and your coaching experience"
-            }
-          />
+                : "Tell us about yourself and your coaching experience"}
+            </FormHelperText>
+          </Box>
         )}
       />
       <Controller

@@ -7,12 +7,12 @@ import React, {
   useState,
 } from "react"
 import { Box, Button, FormControl, Stack, styled } from "@mui/material"
-import { Avatar } from "@/components/Avatar"
+import { Iconify } from "@/components/Iconify"
 
 const StyledImage = styled("img")`
   display: block;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   object-fit: cover;
   border-radius: 50%;
 `
@@ -21,11 +21,10 @@ interface AvatarSelectProps {
   defaultAvatarUrl?: string
   onChange: (file?: File) => void
   onClear: () => void
-  userName?: string
 }
 
 export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
-  function ({ defaultAvatarUrl, onChange, onClear, userName }, ref) {
+  function ({ defaultAvatarUrl, onChange, onClear }, ref) {
     const [previewUrl, setPreviewUrl] = useState(defaultAvatarUrl)
     const id = useId().slice(1, -1)
 
@@ -43,14 +42,31 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
 
     return (
       <Box ref={ref}>
-        <Stack spacing={1} alignItems="center">
+        <Stack alignItems="center">
           {previewUrl ? (
-            <Box width={48} height={48}>
+            <Box width={64} height={64}>
               <StyledImage src={previewUrl} alt="Avatar preview" />
             </Box>
-          ) : userName ? (
-            <Avatar user={{ name: userName }} sx={{ width: 48, height: 48 }} />
-          ) : null}
+          ) : (
+            <Box
+              width={64}
+              height={64}
+              sx={{
+                bgcolor: "grey.500",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "50%",
+                p: 1,
+              }}
+            >
+              <Iconify
+                icon="eva:person-fill"
+                fontSize="64px"
+                color="grey.300"
+              />
+            </Box>
+          )}
           {previewUrl ? (
             <Button
               variant="text"
@@ -80,10 +96,9 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
               <Button
                 variant="text"
                 size="small"
-                type="button"
-                sx={{ pointerEvents: "none" }}
+                sx={{ pointerEvents: "none", whiteSpace: "nowrap" }}
               >
-                Upload
+                Select
               </Button>
             </FormControl>
           )}
