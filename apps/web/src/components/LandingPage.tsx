@@ -17,7 +17,6 @@ import { Flow } from "./LandingPage/Flow"
 import { Header } from "./LandingPage/Header"
 import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
-import { Game } from "@ranklab/api"
 import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
 
@@ -43,11 +42,7 @@ const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
   </Button>
 )
 
-interface LandingPageProps {
-  games: Game[]
-}
-
-export const LandingPage = ({ games }: LandingPageProps) => {
+export const LandingPage = () => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
@@ -102,7 +97,7 @@ export const LandingPage = ({ games }: LandingPageProps) => {
       <Stack>
         <Header />
         <RootStyle>
-          <Hero games={games.filter((g) => g.id !== "test")} />
+          <Hero />
           <ContentStyle>
             <Flow />
             <Review />
