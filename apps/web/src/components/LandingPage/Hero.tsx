@@ -48,7 +48,7 @@ const HeroImgStyle = styled(m.div)(({ theme }) => ({
   height: "100%",
   display: "none",
   transform: "perspective(750px) translate3d(0px, 0px, -250px) rotateY(-15deg)",
-  border: `4px solid ${theme.palette.grey[500]}`,
+  border: `3px solid ${theme.palette.grey[800]}`,
   borderRadius: theme.shape.borderRadius,
   boxShadow: "0 70px 40px -20px rgba(0, 0, 0, 0.2)",
   [theme.breakpoints.up("md")]: {

@@ -99,7 +99,7 @@ const Content = ({ coaches, coachId }: Props) => {
               {selectedCoach ? (
                 <Card sx={{ mt: 3, bgcolor: "grey.900" }} elevation={0}>
                   <CardHeader
-                    title={`${selectedCoach.name}'s Bio`}
+                    title="Coach Bio"
                     titleTypographyProps={{
                       variant: "caption",
                       color: "text.secondary",
