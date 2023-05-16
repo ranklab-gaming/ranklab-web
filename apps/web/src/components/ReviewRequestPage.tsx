@@ -85,7 +85,10 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
                       </Stack>
                       <Typography variant="body1" component="div">
                         <pre
-                          style={{ fontFamily: "inherit" }}
+                          style={{
+                            fontFamily: "inherit",
+                            whiteSpace: "pre-wrap",
+                          }}
                           dangerouslySetInnerHTML={{ __html: coach.bio }}
                         />
                       </Typography>
