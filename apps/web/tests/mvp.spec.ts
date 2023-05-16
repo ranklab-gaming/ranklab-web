@@ -165,6 +165,6 @@ test("mvp", async ({ page }) => {
   )
   const totalEarnings = totalEarningsStr ? parseFloat(totalEarningsStr[0]) : 0
   const expectedEarnings = 12.34 * 0.8
-  await expect(totalEarnings).toBeGreaterThan(expectedEarnings * 0.5)
-  await expect(totalEarnings).toBeLessThan(expectedEarnings * 1.5)
+  await expect(totalEarnings).toBeGreaterThan(expectedEarnings * 0.7)
+  await expect(totalEarnings).toBeLessThan(expectedEarnings * 0.9)
 })
