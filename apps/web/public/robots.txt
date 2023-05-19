@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /player/signup
+Disallow: /player/login
+Disallow: /coach/signup
+Disallow: /coach/login
