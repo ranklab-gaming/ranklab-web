@@ -12,6 +12,7 @@ import {
   Link,
   Stack,
   Typography,
+  Paper,
 } from "@mui/material"
 import { useRouter } from "next/router"
 import { Controller } from "react-hook-form"
@@ -75,69 +76,89 @@ const Content = ({ coaches, coachId }: Props) => {
         <CardContent>
           <Box p={3}>
             <Stepper activeStep={0} />
-            <form onSubmit={handleSubmit(goToNextStep)}>
-              <Stack spacing={3} mt={4}>
-                <Controller
-                  name="coachId"
-                  control={control}
-                  render={({ field, fieldState: { error } }) => (
-                    <CoachSelect
-                      onChange={field.onChange}
-                      value={field.value}
-                      onBlur={field.onBlur}
-                      error={Boolean(error)}
-                      coaches={coaches}
-                      helperText={
-                        error
-                          ? error.message
-                          : "The coach you want to assign the review to"
-                      }
-                    />
-                  )}
-                />
-              </Stack>
-              {selectedCoach ? (
-                <Card sx={{ mt: 3, bgcolor: "grey.900" }} elevation={0}>
-                  <CardHeader
-                    title="Coach Bio"
-                    titleTypographyProps={{
-                      variant: "caption",
-                      color: "text.secondary",
-                    }}
-                  />
-                  <CardContent>
-                    <Typography variant="body1" component="div">
-                      <pre
-                        style={{
-                          fontFamily: "inherit",
-                          whiteSpace: "pre-wrap",
-                        }}
-                        dangerouslySetInnerHTML={{ __html: selectedCoach.bio }}
+            {coaches.length === 0 ? (
+              <Paper>
+                <Box textAlign="center" p={8}>
+                  <Typography variant="h3" component="h1" gutterBottom>
+                    Sorry, there are no coaches for this game yet.
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    If you want coaches to join the platform invite them to
+                    contact us at{" "}
+                    <Link href="mailto:contact@ranklab.gg">
+                      contact@ranklab.gg
+                    </Link>
+                    .
+                  </Typography>
+                </Box>
+              </Paper>
+            ) : (
+              <form onSubmit={handleSubmit(goToNextStep)}>
+                <Stack spacing={3} mt={4}>
+                  <Controller
+                    name="coachId"
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <CoachSelect
+                        onChange={field.onChange}
+                        value={field.value}
+                        onBlur={field.onBlur}
+                        error={Boolean(error)}
+                        coaches={coaches}
+                        helperText={
+                          error
+                            ? error.message
+                            : "The coach you want to assign the review to"
+                        }
                       />
-                    </Typography>
-                  </CardContent>
-                </Card>
-              ) : null}
-              <Stack direction="row">
-                <NextLink href="/player/dashboard" passHref legacyBehavior>
-                  <Button variant="text" component={Link} sx={{ mt: 3 }}>
-                    Cancel
-                  </Button>
-                </NextLink>
-                <Box sx={{ flexGrow: 1 }} />
-                <LoadingButton
-                  color="primary"
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                  loading={isSubmitting}
-                  disabled={isSubmitting}
-                  sx={{ mt: 3 }}
-                >
-                  Continue
-                </LoadingButton>
-              </Stack>
-            </form>
+                    )}
+                  />
+                </Stack>
+                {selectedCoach ? (
+                  <Card sx={{ mt: 3, bgcolor: "grey.900" }} elevation={0}>
+                    <CardHeader
+                      title="Coach Bio"
+                      titleTypographyProps={{
+                        variant: "caption",
+                        color: "text.secondary",
+                      }}
+                    />
+                    <CardContent>
+                      <Typography variant="body1" component="div">
+                        <pre
+                          style={{
+                            fontFamily: "inherit",
+                            whiteSpace: "pre-wrap",
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: selectedCoach.bio,
+                          }}
+                        />
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                ) : null}
+                <Stack direction="row">
+                  <NextLink href="/player/dashboard" passHref legacyBehavior>
+                    <Button variant="text" component={Link} sx={{ mt: 3 }}>
+                      Cancel
+                    </Button>
+                  </NextLink>
+                  <Box sx={{ flexGrow: 1 }} />
+                  <LoadingButton
+                    color="primary"
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    loading={isSubmitting}
+                    disabled={isSubmitting}
+                    sx={{ mt: 3 }}
+                  >
+                    Continue
+                  </LoadingButton>
+                </Stack>
+              </form>
+            )}
           </Box>
         </CardContent>
       </Card>
