@@ -124,6 +124,7 @@ test("mvp", async ({ page }) => {
     .fill(postalCode ?? "NW31DE")
   await page.getByLabel("Save this card for future purchases").check()
   await page.getByRole("button", { name: "Pay $12.34" }).click()
+  await expect(page.getByText("Payment successful")).toBeVisible()
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button").nth(2).click()
@@ -138,6 +139,7 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "Save Comment" }).click()
   await page.getByRole("button", { name: "Publish Review" }).click()
   await page.getByRole("button", { name: "Confirm" }).click()
+  await expect(page.getByText("published successfully")).toBeVisible()
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button", { name: "Sign in" }).click()
@@ -147,6 +149,9 @@ test("mvp", async ({ page }) => {
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "00:00:00 Wow!" }).click()
   await page.getByRole("button", { name: "Accept Review" }).click()
+  await expect(page.getByText("accepted successfully")).toBeVisible({
+    timeout: 15000,
+  })
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button").nth(2).click()
