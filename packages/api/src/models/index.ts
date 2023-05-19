@@ -208,7 +208,7 @@ export interface Coach {
    * @type {boolean}
    * @memberof Coach
    */
-  reviewsEnabled: boolean
+  detailsSubmitted: boolean
   /**
    *
    * @type {boolean}
@@ -239,6 +239,12 @@ export interface Coach {
    * @memberof Coach
    */
   avatarImageKey?: string | null
+  /**
+   *
+   * @type {boolean}
+   * @memberof Coach
+   */
+  approved: boolean
 }
 /**
  *
