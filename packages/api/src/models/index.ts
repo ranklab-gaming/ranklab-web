@@ -243,19 +243,6 @@ export interface Coach {
 /**
  *
  * @export
- * @interface CoachInvitationParams
- */
-export interface CoachInvitationParams {
-  /**
-   *
-   * @type {string}
-   * @memberof CoachInvitationParams
-   */
-  token: string
-}
-/**
- *
- * @export
  * @interface CoachUpdateReviewRequest
  */
 export interface CoachUpdateReviewRequest {

@@ -175,23 +175,21 @@ export const LoginPage = ({ userType }: Props) => {
           </LoadingButton>
         </form>
       </FormProvider>
-      {userType === "player" && (
-        <Box display="flex" alignItems="center" mt={3}>
-          <Typography variant="body2" sx={{ mr: 1 }}>
-            Don&apos;t have an account?
-          </Typography>
+      <Box display="flex" alignItems="center" mt={3}>
+        <Typography variant="body2" sx={{ mr: 1 }}>
+          Don&apos;t have an account?
+        </Typography>
 
-          <Link
-            component="button"
-            variant="subtitle2"
-            onClick={() => {
-              router.push("/player/signup")
-            }}
-          >
-            Get started
-          </Link>
-        </Box>
-      )}
+        <Link
+          component="button"
+          variant="subtitle2"
+          onClick={() => {
+            router.push(`/${userType}/signup`)
+          }}
+        >
+          Get started
+        </Link>
+      </Box>
     </BasicLayout>
   )
 }

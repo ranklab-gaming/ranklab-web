@@ -19,7 +19,6 @@ import type {
   BillingDetails,
   BillingPortalLink,
   Coach,
-  CoachInvitationParams,
   CoachUpdateReviewRequest,
   Comment,
   CreateAccountLinkRequest,
@@ -51,7 +50,6 @@ import type {
 } from "../models"
 
 export interface CoachAccountCreateRequest {
-  auth: CoachInvitationParams
   createCoachRequest: CreateCoachRequest
 }
 
@@ -184,16 +182,6 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<runtime.ApiResponse<CreateSessionResponse>> {
     if (
-      requestParameters.auth === null ||
-      requestParameters.auth === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "auth",
-        "Required parameter requestParameters.auth was null or undefined when calling coachAccountCreate."
-      )
-    }
-
-    if (
       requestParameters.createCoachRequest === null ||
       requestParameters.createCoachRequest === undefined
     ) {
@@ -204,10 +192,6 @@ export class RanklabApi extends runtime.BaseAPI {
     }
 
     const queryParameters: any = {}
-
-    if (requestParameters.auth !== undefined) {
-      queryParameters["auth"] = requestParameters.auth
-    }
 
     const headerParameters: runtime.HTTPHeaders = {}
 

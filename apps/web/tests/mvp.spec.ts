@@ -34,7 +34,7 @@ test("mvp", async ({ page }) => {
   const playerEmail = `player+${uuid()}@example.com`
 
   await page.goto(
-    "http://ranklab-test:3000/api/auth/signin?token=123456789&user_type=coach&intent=signup"
+    "http://ranklab-test:3000/api/auth/signin?user_type=coach&intent=signup"
   )
   await page.getByRole("button", { name: "Game" }).click()
   await page.getByRole("option", { name: "Overwatch" }).click()

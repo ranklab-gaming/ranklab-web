@@ -26,7 +26,6 @@ import { useGameDependency } from "@/hooks/useGameDependency"
 interface Props {
   games: Game[]
   availableCountries: string[]
-  token: string
   gameId: string | null
 }
 
@@ -41,7 +40,6 @@ type FormValues = yup.InferType<typeof FormSchema>
 export const CoachSignupPage = ({
   games,
   availableCountries,
-  token,
   gameId,
 }: Props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
@@ -87,7 +85,6 @@ export const CoachSignupPage = ({
         password: data.password,
         price: Number(data.price) * 100,
       },
-      auth: { token },
     })
 
     await login(session.token)

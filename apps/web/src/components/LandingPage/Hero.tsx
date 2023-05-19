@@ -143,13 +143,13 @@ export const Hero = () => {
                   sx={{ color: "text.secondary" }}
                   textAlign="center"
                 >
-                  Are you a coach?{" "}
+                  Are you a coach? You can{" "}
                   <NextLink
                     href="mailto:contact@ranklab.gg"
                     passHref
                     legacyBehavior
                   >
-                    <Link color="secondary.contrastText">Contact us</Link>
+                    <Link color="secondary.contrastText">contact us</Link>
                   </NextLink>
                 </Typography>
               </Stack>
