@@ -124,9 +124,7 @@ test("mvp", async ({ page }) => {
     .fill(postalCode ?? "NW31DE")
   await page.getByLabel("Save this card for future purchases").check()
   await page.getByRole("button", { name: "Pay $12.34" }).click()
-  await expect(page.getByText("Payment successful")).toBeVisible({
-    timeout: 15000,
-  })
+  await expect(page.getByText("Payment successful")).toBeVisible()
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
   await page.getByRole("button").nth(2).click()
