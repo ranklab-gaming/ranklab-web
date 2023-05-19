@@ -4,7 +4,7 @@ import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
 
 const client = new Client({
-  host: "postgres",
+  host: process.env.DB_HOST ?? "postgres",
   port: 5432,
   user: "postgres",
   password: "postgres",
