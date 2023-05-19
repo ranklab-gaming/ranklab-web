@@ -34,7 +34,6 @@ const getOidcProvider = async () => {
           (interaction.params.intent as string | undefined) ?? "login"
         const userType =
           (interaction.params.user_type as string | undefined) ?? "player"
-        const invitationToken = interaction.params.token as string | undefined
         const gameId = interaction.params.game_id as string | undefined
 
         if (!["coach", "player"].includes(userType as string)) {
@@ -46,10 +45,6 @@ const getOidcProvider = async () => {
         }
 
         const queryParams = new URLSearchParams()
-
-        if (invitationToken) {
-          queryParams.append("token", invitationToken)
-        }
 
         if (gameId) {
           queryParams.append("game_id", gameId)
@@ -73,7 +68,7 @@ const getOidcProvider = async () => {
     },
     issueRefreshToken: () => true,
     rotateRefreshToken: () => true,
-    extraParams: ["user_type", "intent", "token", "game_id"],
+    extraParams: ["user_type", "intent", "game_id"],
     async findAccount(_ctx, id) {
       return {
         accountId: id,
