@@ -122,8 +122,8 @@ importers:
         specifier: 4.1.0
         version: 4.1.0(react-dom@18.2.0)(react@18.2.0)
       react-use-intercom:
-        specifier: 5.0.0
-        version: 5.0.0(react-dom@18.2.0)(react@18.2.0)
+        specifier: 5.1.4
+        version: 5.1.4(react-dom@18.2.0)(react@18.2.0)
       sharp:
         specifier: 0.32.0
         version: 0.32.0
@@ -4262,9 +4262,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /react-use-intercom@5.0.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-qTPW3FbvzGwZUy6jmMPttK0T7Iy4cK93wDrWfOL36Cd4qPkozPVkXLcGNKYUfMsgaclyF+EXrbFQ135Wg5m0Zw==}
-    engines: {node: '>=18'}
+  /react-use-intercom@5.1.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-37dMuCg3H5KgMqpUMiZiu7Ni1LcRAkO8T7F1Zg4Xc+hL89j8OYFHzWWBy29EFgRsTdvCEJ2X8J5wAXerU9uuqw==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
