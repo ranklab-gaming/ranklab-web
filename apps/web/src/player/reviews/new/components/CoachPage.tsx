@@ -24,6 +24,8 @@ import { Coach } from "@ranklab/api"
 import { updateSessionReview } from "@/api/sessionReview"
 import { Stepper } from "@/player/reviews/new/components/Stepper"
 import { assertFind } from "@/assert"
+import { useGameDependency } from "@/hooks/useGameDependency"
+import { useSnackbar } from "notistack"
 
 const FormSchema = yup.object().shape({
   coachId: yup.string().required("Coach is required"),
@@ -70,6 +72,14 @@ const Content = ({ coaches, coachId }: Props) => {
     await router.push("/player/reviews/new/recording")
   }
 
+  const RecordingForm = useGameDependency("component:recording-form")
+  const recordingCreatedSuccess = useGameDependency(
+    "text:recording-created-success"
+  )
+  const submitText = useGameDependency("text:recording-submit-button")
+
+  const { enqueueSnackbar } = useSnackbar()
+
   return (
     <Container maxWidth="lg">
       <Card>
@@ -77,21 +87,31 @@ const Content = ({ coaches, coachId }: Props) => {
           <Box p={3}>
             <Stepper activeStep={0} />
             {coaches.length === 0 ? (
-              <Paper>
-                <Box textAlign="center" p={8}>
+              <Box p={8}>
+                <Paper sx={{ bgcolor: "grey.900", p: 4 }} elevation={4}>
                   <Typography variant="h3" component="h1" gutterBottom>
                     Sorry, there are no coaches for this game yet.
                   </Typography>
                   <Typography variant="body1" gutterBottom>
-                    If you want coaches to join the platform invite them to
-                    contact us at{" "}
-                    <Link href="mailto:contact@ranklab.gg">
-                      contact@ranklab.gg
-                    </Link>
-                    .
+                    In the meanwhile you can upload a recording of your game.
+                    Once a coach joins the platform we will notify you and
+                    you&apos;ll be able to request a review.
                   </Typography>
+                </Paper>
+
+                <Box mt={4}>
+                  <RecordingForm
+                    recordings={[]}
+                    onSubmit={async () => {
+                      enqueueSnackbar(recordingCreatedSuccess, {
+                        variant: "success",
+                      })
+                    }}
+                    submitText={submitText}
+                    forReview={false}
+                  />
                 </Box>
-              </Paper>
+              </Box>
             ) : (
               <form onSubmit={handleSubmit(goToNextStep)}>
                 <Stack spacing={3} mt={4}>

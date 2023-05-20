@@ -1,26 +1,16 @@
 import { PropsWithUser } from "@/auth"
+import { DashboardLayout } from "@/components/DashboardLayout"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import { Container, Card, CardContent, Stepper, Box } from "@mui/material"
 import { Recording } from "@ranklab/api"
-import * as yup from "yup"
-
-const newRecordingId = "NEW_RECORDING"
+import { updateSessionReview } from "@/api/sessionReview"
+import { useRouter } from "next/router"
 
 interface Props {
   recordings: Recording[]
   recordingId?: string
   notes?: string
 }
-
-const RecordingFormSchema = yup.object().shape({
-  recordingId: yup.string().required("Recording is required"),
-  newRecordingTitle: yup.string().when("recordingId", {
-    is: newRecordingId,
-    then: () => yup.string().required("Title is required"),
-  }),
-})
-
-export type RecordingFormSchema = typeof RecordingFormSchema
-export type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
 
 export const PlayerReviewsNewRecordingPage = ({
   recordings,
@@ -33,14 +23,36 @@ export const PlayerReviewsNewRecordingPage = ({
     user.gameId
   )
 
+  const recordingPageTitle = useGameDependency(
+    "text:recording-page-title",
+    user.gameId
+  )
+
+  const router = useRouter()
+
   return (
-    <RecordingForm
-      formSchema={RecordingFormSchema}
-      newRecordingId={newRecordingId}
-      recordingId={recordingId}
-      recordings={recordings}
-      user={user}
-      notes={notes}
-    />
+    <DashboardLayout user={user} title={recordingPageTitle} showTitle={false}>
+      <Container maxWidth="lg">
+        <Card>
+          <CardContent>
+            <Box p={3}>
+              <Stepper activeStep={1} />
+              <RecordingForm
+                recordingId={recordingId}
+                recordings={recordings}
+                notes={notes}
+                onSubmit={async (values, recordingId) => {
+                  await updateSessionReview({
+                    recordingId,
+                    notes: values.notes,
+                  })
+                  await router.push("/player/reviews/new/billing")
+                }}
+              />
+            </Box>
+          </CardContent>
+        </Card>
+      </Container>
+    </DashboardLayout>
   )
 }

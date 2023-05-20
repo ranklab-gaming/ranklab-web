@@ -23,4 +23,7 @@ export default {
   "text:recording-title": "Match",
   "text:empty-comments-text":
     "Use the controls above the chessboard to add comments to this review. You can also draw arrows on the board.",
+  "text:recording-page-title": "Request a Review | Paste a PGN",
+  "text:recording-created-success": "PGN submitted successfully",
+  "text:recording-submit-button": "Submit",
 }

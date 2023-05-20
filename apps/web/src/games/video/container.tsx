@@ -23,4 +23,7 @@ export default {
   "text:recording-title": "Recording",
   "text:empty-comments-text":
     "Use the controls above the video to add comments and drawings to this review.",
+  "text:recording-page-title": "Request a Review | Upload a VOD",
+  "text:recording-created-success": "VOD uploaded successfully",
+  "text:recording-submit-button": "Upload",
 }

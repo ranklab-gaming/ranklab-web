@@ -1,7 +1,4 @@
-import { User } from "@/auth"
-import { RecordingFormSchema } from "@/player/reviews/new/components/RecordingPage"
 import { api } from "@/api"
-import { playerFromUser } from "@/auth"
 import { VideoFileSelect } from "@/player/components/VideoFileSelect"
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -9,9 +6,6 @@ import { LoadingButton } from "@mui/lab"
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  Container,
   FormHelperText,
   LinearProgress,
   Link,
@@ -27,13 +21,10 @@ import {
   Recording as ApiRecording,
   RecordingState,
 } from "@ranklab/api"
-import { useRouter } from "next/router"
 import { useState } from "react"
 import { Controller } from "react-hook-form"
 import * as yup from "yup"
-import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
-import { updateSessionReview } from "@/api/sessionReview"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
 import { formatBytes } from "@/player/helpers/formatBytes"
 import { useSnackbar } from "notistack"
@@ -43,16 +34,29 @@ import { Iconify } from "@/components/Iconify"
 import NextImage from "next/image"
 import { useUpload } from "../hooks/useUpload"
 import { VideoRecording } from "./Recording"
-import { Stepper } from "@/player/reviews/new/components/Stepper"
 import { Editor } from "@/components/Editor"
+import { usePlayer } from "@/player/hooks/usePlayer"
+
+export const newRecordingId = "NEW_RECORDING"
+
+export const RecordingFormSchema = yup.object().shape({
+  recordingId: yup.string().required("Recording is required"),
+  newRecordingTitle: yup.string().when("recordingId", {
+    is: newRecordingId,
+    then: () => yup.string().required("Title is required"),
+  }),
+})
+
+export type RecordingFormSchema = typeof RecordingFormSchema
+export type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
 
 export interface RecordingFormProps {
-  formSchema: RecordingFormSchema
-  newRecordingId: string
   recordingId?: string
   recordings: ApiRecording[]
-  user: User
   notes?: string
+  onSubmit: (values: FormValues, recordingId: string) => Promise<void>
+  submitText?: string
+  forReview?: boolean
 }
 
 interface FormValues {
@@ -62,38 +66,37 @@ interface FormValues {
   notes: string
 }
 
+const formSchema = RecordingFormSchema.shape({
+  newRecordingVideo: yup.mixed().when("recordingId", {
+    is: newRecordingId,
+    then: () =>
+      yup
+        .mixed()
+        .test(
+          "required",
+          "Video is required",
+          (value) => value && value instanceof File && value.size > 0
+        )
+        .test(
+          "fileSize",
+          "Video file must be less than 4GiB",
+          (value) => value && value instanceof File && value.size < 4294967296
+        ),
+  }),
+})
+
 const RecordingForm = ({
-  formSchema: baseFormSchema,
-  newRecordingId,
   recordings,
-  user,
   recordingId: initialRecordingId,
   notes,
+  onSubmit,
+  submitText = "Continue",
+  forReview = true,
 }: RecordingFormProps) => {
-  const router = useRouter()
-  const player = playerFromUser(user)
+  const player = usePlayer()
   const theme = useTheme()
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
-
-  const formSchema = baseFormSchema.shape({
-    newRecordingVideo: yup.mixed().when("recordingId", {
-      is: newRecordingId,
-      then: () =>
-        yup
-          .mixed()
-          .test(
-            "required",
-            "Video is required",
-            (value) => value && value instanceof File && value.size > 0
-          )
-          .test(
-            "fileSize",
-            "Video file must be less than 4GiB",
-            (value) => value && value instanceof File && value.size < 4294967296
-          ),
-    }),
-  })
 
   const defaultValues: FormValues = {
     recordingId: initialRecordingId ?? newRecordingId,
@@ -192,253 +195,225 @@ const RecordingForm = ({
       recordingId = recording.id
     }
 
-    await updateSessionReview({ recordingId, notes: values.notes })
-    await router.push("/player/reviews/new/billing")
+    onSubmit(values, recordingId)
   }
 
   return (
-    <DashboardLayout
-      user={user}
-      title="Request a Review | Choose a Recording"
-      showTitle={false}
-    >
-      <Container maxWidth="lg">
-        <Card>
-          <CardContent>
-            <Box p={3}>
-              <Stepper activeStep={1} />
-              <form onSubmit={handleSubmit(submit)}>
-                <Stack spacing={3} mt={4}>
-                  <Controller
-                    name="recordingId"
-                    control={control}
-                    render={({ field, fieldState: { error } }) => (
-                      <TextField
-                        select
-                        label="Recording"
-                        onChange={field.onChange}
-                        value={field.value}
-                        onBlur={field.onBlur}
-                        error={Boolean(error)}
-                        helperText={
-                          error
-                            ? error.message
-                            : "The recording you want to be reviewed"
-                        }
-                      >
-                        <MenuItem value={newRecordingId}>
-                          New recording
-                        </MenuItem>
-                        {recordings.map((recording) => (
-                          <MenuItem key={recording.id} value={recording.id}>
-                            <Stack direction="row" spacing={2}>
-                              {recording.state === RecordingState.Processed ? (
-                                <NextImage
-                                  src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
-                                  width={100}
-                                  height={60}
-                                  alt={recording.title}
-                                  style={{
-                                    objectFit: "cover",
-                                  }}
-                                />
-                              ) : (
-                                <Paper
-                                  sx={{
-                                    backgroundColor: theme.palette.grey[900],
-                                    width: 100,
-                                    height: 60,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    borderRadius: 0,
-                                  }}
-                                >
-                                  <Iconify icon="eva:film-outline" />
-                                </Paper>
-                              )}
-                              <Stack spacing={1}>
-                                <Typography variant="body1">
-                                  {recording.title}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  color="textSecondary"
-                                >
-                                  Created on {formatDate(recording.createdAt)}
-                                </Typography>
-                              </Stack>
-                            </Stack>
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    )}
-                  />
-                  {recordingId === newRecordingId && (
-                    <Stack spacing={3}>
-                      <Controller
-                        name="newRecordingVideo"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <VideoFileSelect
-                            {...field}
-                            onChange={(file) => {
-                              if (!newRecordingTitle && file) {
-                                setValue(
-                                  "newRecordingTitle",
-                                  file.name.split(".")[0],
-                                  {
-                                    shouldDirty: true,
-                                    shouldTouch: true,
-                                    shouldValidate: true,
-                                  }
-                                )
-                              }
-
-                              field.onChange(file)
-                            }}
-                            error={Boolean(error)}
-                            helperText={
-                              error ? (
-                                error.message
-                              ) : (
-                                <>
-                                  <Typography
-                                    variant="caption"
-                                    color="textSecondary"
-                                  >
-                                    Not sure how to record your gameplay? Check
-                                    out{" "}
-                                    <Link
-                                      color="secondary.main"
-                                      fontWeight="bold"
-                                      component="button"
-                                      sx={{
-                                        verticalAlign: "baseline",
-                                      }}
-                                      onClick={(e) => {
-                                        e.preventDefault()
-                                        e.stopPropagation()
-                                        setGuideDialogOpen(true)
-                                      }}
-                                    >
-                                      our guide
-                                    </Link>
-                                    .
-                                  </Typography>
-                                  <GuideDialog
-                                    open={guideDialogOpen}
-                                    onClose={() => setGuideDialogOpen(false)}
-                                  />
-                                </>
-                              )
-                            }
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="newRecordingTitle"
-                        control={control}
-                        render={({ field, fieldState: { error } }) => (
-                          <TextField
-                            {...field}
-                            label="Title"
-                            error={Boolean(error)}
-                            helperText={
-                              error
-                                ? error.message
-                                : "A title to help you remember this recording"
-                            }
-                          />
-                        )}
-                      />
-                    </Stack>
-                  )}
-                </Stack>
-                {selectedRecording ? (
-                  <Paper
-                    elevation={4}
-                    sx={{
-                      mt: 2,
-                      backgroundColor: theme.palette.common.black,
-                      height: "400px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <VideoRecording recording={selectedRecording} />
-                  </Paper>
-                ) : null}
-                <Controller
-                  name="notes"
-                  control={control}
-                  render={({ field, fieldState: { error } }) => {
-                    return (
-                      <Box mt={2}>
-                        <Editor
-                          value={field.value}
-                          onChange={field.onChange}
-                          onBlur={field.onBlur}
-                          error={Boolean(error)}
+    <form onSubmit={handleSubmit(submit)}>
+      <Stack spacing={3} mt={4}>
+        {forReview ? (
+          <Controller
+            name="recordingId"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                select
+                label="Recording"
+                onChange={field.onChange}
+                value={field.value}
+                onBlur={field.onBlur}
+                error={Boolean(error)}
+                helperText={
+                  error
+                    ? error.message
+                    : "The recording you want to be reviewed"
+                }
+              >
+                <MenuItem value={newRecordingId}>New recording</MenuItem>
+                {recordings.map((recording) => (
+                  <MenuItem key={recording.id} value={recording.id}>
+                    <Stack direction="row" spacing={2}>
+                      {recording.state === RecordingState.Processed ? (
+                        <NextImage
+                          src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
+                          width={100}
+                          height={60}
+                          alt={recording.title}
+                          style={{
+                            objectFit: "cover",
+                          }}
                         />
-                        <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
-                          {error
-                            ? error.message
-                            : "Any notes you want to add for the coach (optional)"}
-                        </FormHelperText>
-                      </Box>
-                    )
+                      ) : (
+                        <Paper
+                          sx={{
+                            backgroundColor: theme.palette.grey[900],
+                            width: 100,
+                            height: 60,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderRadius: 0,
+                          }}
+                        >
+                          <Iconify icon="eva:film-outline" />
+                        </Paper>
+                      )}
+                      <Stack spacing={1}>
+                        <Typography variant="body1">
+                          {recording.title}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          Created on {formatDate(recording.createdAt)}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        ) : null}
+        {recordingId === newRecordingId && (
+          <Stack spacing={3}>
+            <Controller
+              name="newRecordingVideo"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <VideoFileSelect
+                  {...field}
+                  onChange={(file) => {
+                    if (!newRecordingTitle && file) {
+                      setValue("newRecordingTitle", file.name.split(".")[0], {
+                        shouldDirty: true,
+                        shouldTouch: true,
+                        shouldValidate: true,
+                      })
+                    }
+
+                    field.onChange(file)
                   }}
+                  error={Boolean(error)}
+                  helperText={
+                    error ? (
+                      error.message
+                    ) : (
+                      <>
+                        <Typography variant="caption" color="textSecondary">
+                          Not sure how to record your gameplay? Check out{" "}
+                          <Link
+                            color="secondary.main"
+                            fontWeight="bold"
+                            component="button"
+                            sx={{
+                              verticalAlign: "baseline",
+                            }}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setGuideDialogOpen(true)
+                            }}
+                          >
+                            our guide
+                          </Link>
+                          .
+                        </Typography>
+                        <GuideDialog
+                          open={guideDialogOpen}
+                          onClose={() => setGuideDialogOpen(false)}
+                        />
+                      </>
+                    )
+                  }
                 />
-                {uploading ? (
-                  <Stack spacing={1} direction="row" alignItems="center" mt={2}>
-                    <Box flexGrow={1}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={uploadProgress}
-                        color="secondary"
-                      />
-                    </Box>
-                    <Box sx={{ minWidth: 35 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        {`${uploadProgress}% (${formatBytes(
-                          (newRecordingVideo?.size ?? 0) *
-                            (uploadProgress / 100)
-                        )} / ${formatBytes(newRecordingVideo?.size ?? 0)})`}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                ) : null}
-                <Stack direction="row">
-                  <NextLink
-                    href="/player/reviews/new/coach"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Button variant="text" component={Link} sx={{ mt: 3 }}>
-                      Go Back
-                    </Button>
-                  </NextLink>
-                  <Box sx={{ flexGrow: 1 }} />
-                  <LoadingButton
-                    color="primary"
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting || uploading}
-                    disabled={isSubmitting || uploading}
-                    sx={{ mt: 3 }}
-                  >
-                    Continue
-                  </LoadingButton>
-                </Stack>
-              </form>
-            </Box>
-          </CardContent>
-        </Card>
-      </Container>
-    </DashboardLayout>
+              )}
+            />
+            <Controller
+              name="newRecordingTitle"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  label="Title"
+                  error={Boolean(error)}
+                  helperText={
+                    error
+                      ? error.message
+                      : "A title to help you remember this recording"
+                  }
+                />
+              )}
+            />
+          </Stack>
+        )}
+      </Stack>
+      {selectedRecording ? (
+        <Paper
+          elevation={4}
+          sx={{
+            mt: 2,
+            backgroundColor: theme.palette.common.black,
+            height: "400px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <VideoRecording recording={selectedRecording} />
+        </Paper>
+      ) : null}
+      {forReview ? (
+        <Controller
+          name="notes"
+          control={control}
+          render={({ field, fieldState: { error } }) => {
+            return (
+              <Box mt={2}>
+                <Editor
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
+                  {error
+                    ? error.message
+                    : "Any notes you want to add for the coach (optional)"}
+                </FormHelperText>
+              </Box>
+            )
+          }}
+        />
+      ) : null}
+      {uploading ? (
+        <Stack spacing={1} direction="row" alignItems="center" mt={2}>
+          <Box flexGrow={1}>
+            <LinearProgress
+              variant="determinate"
+              value={uploadProgress}
+              color="secondary"
+            />
+          </Box>
+          <Box sx={{ minWidth: 35 }}>
+            <Typography variant="body2" color="text.secondary">
+              {`${uploadProgress}% (${formatBytes(
+                (newRecordingVideo?.size ?? 0) * (uploadProgress / 100)
+              )} / ${formatBytes(newRecordingVideo?.size ?? 0)})`}
+            </Typography>
+          </Box>
+        </Stack>
+      ) : null}
+      <Stack direction="row">
+        {forReview ? (
+          <NextLink href="/player/reviews/new/coach" passHref legacyBehavior>
+            <Button variant="text" component={Link} sx={{ mt: 3 }}>
+              Go Back
+            </Button>
+          </NextLink>
+        ) : null}
+        <Box sx={{ flexGrow: 1 }} />
+        <LoadingButton
+          color="primary"
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={isSubmitting || uploading}
+          disabled={isSubmitting || uploading}
+          sx={{ mt: 3 }}
+        >
+          {submitText}
+        </LoadingButton>
+      </Stack>
+    </form>
   )
 }
 
