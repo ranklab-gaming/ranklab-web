@@ -9,7 +9,7 @@ import csgo from "@/images/games/csgo.svg"
 import dota2 from "@/images/games/dota2.svg"
 import lol from "@/images/games/lol.svg"
 
-import { Avatar } from "@mui/material"
+import { Avatar, SxProps } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { forwardRef } from "react"
 
@@ -28,6 +28,7 @@ const logos = {
 
 interface Props {
   game: Game
+  sx: SxProps
 }
 
 export const GameIcon = forwardRef<HTMLDivElement, Props>(function (

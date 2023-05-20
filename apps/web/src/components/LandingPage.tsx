@@ -17,8 +17,10 @@ import { Flow } from "./LandingPage/Flow"
 import { Header } from "./LandingPage/Header"
 import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
+import { SupportedGames } from "./LandingPage/SupportedGames"
 import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
+import { Game } from "@ranklab/api"
 
 const RootStyle = styled("div")({
   height: "100%",
@@ -42,7 +44,11 @@ const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
   </Button>
 )
 
-export const LandingPage = () => {
+interface Props {
+  games: Game[]
+}
+
+export const LandingPage = ({ games }: Props) => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const theme = useTheme()
@@ -99,6 +105,7 @@ export const LandingPage = () => {
         <RootStyle>
           <Hero />
           <ContentStyle>
+            <SupportedGames games={games} />
             <Flow />
             <Review />
             <Dashboard />

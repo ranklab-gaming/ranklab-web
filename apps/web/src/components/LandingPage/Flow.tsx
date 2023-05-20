@@ -16,10 +16,7 @@ import { alpha, styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  paddingTop: theme.spacing(15),
-  [theme.breakpoints.up("md")]: {
-    paddingBottom: theme.spacing(15),
-  },
+  paddingTop: theme.spacing(24),
 }))
 
 const CardStyle = styled(Card)(({ theme }) => {

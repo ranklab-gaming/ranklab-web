@@ -8,7 +8,8 @@ import NextImage from "next/image"
 import reviewScreenshot from "@/images/screenshots/review.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  padding: theme.spacing(24, 0),
+  padding: theme.spacing(24),
+  paddingBottom: 0,
   backgroundImage: "none",
 }))
 
@@ -69,7 +70,7 @@ export const Review = () => {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
+          <Grid item xs={12} md={9} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage
