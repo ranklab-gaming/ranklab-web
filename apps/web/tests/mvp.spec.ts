@@ -142,7 +142,7 @@ test("mvp", async ({ page }) => {
   await expect(page.getByText("published successfully")).toBeVisible()
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()
-  await page.getByRole("button", { name: "Sign in" }).click()
+  await page.getByRole("link", { name: "Sign in" }).click()
   await page.getByLabel("Email").fill(playerEmail)
   await page.getByLabel("Password").fill("testplayer")
   await page.getByRole("button", { name: "Sign in" }).click()
