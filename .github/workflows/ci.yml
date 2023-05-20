@@ -37,15 +37,39 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           scope: "@ranklab-gaming"
           cache: pnpm
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.PNPM_STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chrome
-      - name: Setup hostnames
+      - name: Get Playwright Version
+        id: get-playwright-version
         run: |
-          echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
+          PLAYWRIGHT_VERSION=$(pnpm ls -r @playwright/test | grep @playwright | sed 's/.*@//')
+          PLAYWRIGHT_VERSION_SHA=$(echo -n $PLAYWRIGHT_VERSION | shasum -a 256 | cut -c-64)
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION_SHA" >> $GITHUB_OUTPUT
+      - name: Cache Playwright browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.get-playwright-version.outputs.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: pnpm -r -f apps/web exec playwright install --with-deps chrome
+      - name: Setup hostnames
+        run: echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
       - name: Generate instance ID
-        run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_ENV
+        id: generate-instance-id
+        run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_OUTPUT
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -78,7 +102,7 @@ jobs:
           RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_QUEUE }}
           RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
           RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
-          RANKLAB_INSTANCE_ID: ${{ env.RANKLAB_INSTANCE_ID }}
+          RANKLAB_INSTANCE_ID: ${{ steps.generate-instance-id.outputs.RANKLAB_INSTANCE_ID }}
         run: docker compose -f .github/docker-compose.yml up -d
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
