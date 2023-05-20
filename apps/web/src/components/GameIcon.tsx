@@ -28,7 +28,7 @@ const logos = {
 
 interface Props {
   game: Game
-  sx: SxProps
+  sx?: SxProps
 }
 
 export const GameIcon = forwardRef<HTMLDivElement, Props>(function (

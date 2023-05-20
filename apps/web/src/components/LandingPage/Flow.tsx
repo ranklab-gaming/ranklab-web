@@ -102,7 +102,11 @@ export const Flow = () => {
       <Container maxWidth="lg" component={MotionContainer}>
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
           <m.div variants={animateFade().inDown}>
-            <Typography variant="h1" sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h1"
+              component="h3"
+              sx={{ textAlign: "center" }}
+            >
               How it works
             </Typography>
           </m.div>
@@ -133,10 +137,14 @@ export const Flow = () => {
                       }}
                     />
                   </CardIconStyle>
-                  <Typography variant="h3" paragraph>
+                  <Typography variant="h3" component="h4" paragraph>
                     {card.title}
                   </Typography>
-                  <Typography sx={{ color: "common.white" }}>
+                  <Typography
+                    sx={{ color: "common.white" }}
+                    variant="body1"
+                    component="h5"
+                  >
                     {card.description}
                   </Typography>
                 </CardStyle>

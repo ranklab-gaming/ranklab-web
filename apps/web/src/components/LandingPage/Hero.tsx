@@ -71,7 +71,7 @@ export const Hero = () => {
           <m.div variants={animateFade().inRight}>
             <Typography
               variant="h1"
-              component={m.div}
+              component={m.h1}
               ref={boxRef}
               sx={{
                 color: "common.white",
@@ -102,7 +102,11 @@ export const Hero = () => {
             </Typography>
           </m.div>
           <m.div variants={animateFade().inRight}>
-            <Typography sx={{ color: "common.white" }} variant="h4">
+            <Typography
+              sx={{ color: "common.white" }}
+              variant="h4"
+              component="h2"
+            >
               Get your gameplay analyzed by experienced coaches.
             </Typography>
           </m.div>

@@ -36,7 +36,7 @@ export const Review = () => {
           >
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
-                <Typography variant="h1" sx={{ mb: 3 }}>
+                <Typography variant="h1" component="h3" sx={{ mb: 3 }}>
                   Key moments <br />
                   analyzed.
                 </Typography>
@@ -47,6 +47,7 @@ export const Review = () => {
                     mb: 5,
                     color: "common.white",
                   }}
+                  variant="body1"
                 >
                   Coaches can comment or draw at specific points in the match,
                   giving you moment by moment feedback on your gameplay.

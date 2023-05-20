@@ -32,7 +32,7 @@ export const SupportedGames = ({ games }: Props) => {
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>
         <m.div variants={animateFade().inDown}>
-          <Typography variant="h1" sx={{ textAlign: "center" }}>
+          <Typography variant="h1" component="h3" sx={{ textAlign: "center" }}>
             Games we support
           </Typography>
         </m.div>
