@@ -23,7 +23,10 @@ export default function App({
     <>
       <Head>
         <title>Ranklab</title>
-        <meta name="description" content="Up your game." />
+        <meta
+          name="description"
+          content="Improve your gaming skills with Ranklab. Get personalized coaching and game analysis from experienced coaches."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />

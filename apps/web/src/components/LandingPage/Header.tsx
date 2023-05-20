@@ -1,11 +1,10 @@
 import { Label } from "@/components/Label"
 import { Logo } from "@/components/Logo"
-import { SplitButton } from "@/components/SplitButton"
+import { SplitButton, SplitButtonItem } from "@/components/SplitButton"
 import { useOffsetTop } from "@/hooks/useOffsetTop"
 import { headerStyles, styles } from "@/styles"
 import { AppBar, Box, Container, Toolbar } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
-import { useRouter } from "next/router"
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   height: headerStyles.mobileHeight,
@@ -34,7 +33,6 @@ const ToolbarShadowStyle = styled("div")(({ theme }) => ({
 export const Header = () => {
   const isOffset = useOffsetTop(headerStyles.mainDesktopHeight)
   const theme = useTheme()
-  const router = useRouter()
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: "transparent" }}>
@@ -62,19 +60,14 @@ export const Header = () => {
           <SplitButton
             variant="contained"
             color="secondary"
-            options={["Sign in", "Sign in as coach"]}
-            handleClick={() => {
-              router.push("/api/auth/signin")
-            }}
-            handleMenuItemClick={() => {
-              router.push({
-                pathname: "/api/auth/signin",
-                query: {
-                  user_type: "coach",
-                },
-              })
-            }}
-          />
+            href="/api/auth/signin"
+            label="Sign In"
+          >
+            <SplitButtonItem
+              href="/api/auth/signin?user_type=coach"
+              label="Sign in as Coach"
+            />
+          </SplitButton>
         </Container>
       </ToolbarStyle>
       {isOffset ? <ToolbarShadowStyle /> : null}

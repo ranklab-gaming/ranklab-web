@@ -1,8 +1,6 @@
 import { GameSelect } from "@/components/GameSelect"
-import { GameRequestDialog } from "./AccountFields/GameRequestDialog"
-import { TextField, MenuItem, Link, Typography } from "@mui/material"
+import { TextField, MenuItem } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { useState } from "react"
 import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
 
@@ -42,7 +40,6 @@ interface Props<
   control: Control<TFormValues>
   watch: UseFormWatch<TFormValues>
   showPasswordField?: TWithPassword
-  showGameRequestDialog?: boolean
 }
 export const AccountFields = <
   TWithPassword extends boolean,
@@ -52,11 +49,9 @@ export const AccountFields = <
   games,
   watch,
   showPasswordField = false as TWithPassword,
-  showGameRequestDialog = false,
 }: Props<TWithPassword, TFormValues>) => {
   const gameId = watch("gameId" as Path<TFormValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
-  const [gameRequestDialogOpen, setGameRequestDialogOpen] = useState(false)
 
   return (
     <>
@@ -71,33 +66,7 @@ export const AccountFields = <
             onBlur={field.onBlur}
             error={Boolean(error)}
             helperText={
-              error ? (
-                error.message
-              ) : showGameRequestDialog ? (
-                <Typography variant="caption" color="textSecondary">
-                  Don&apos;t see your game? Use{" "}
-                  <Link
-                    color="secondary.main"
-                    fontWeight="bold"
-                    sx={{ verticalAlign: "baseline" }}
-                    component="button"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      setGameRequestDialogOpen(true)
-                    }}
-                  >
-                    our form
-                  </Link>{" "}
-                  and ask for it to be added
-                  <GameRequestDialog
-                    open={gameRequestDialogOpen}
-                    onClose={() => setGameRequestDialogOpen(false)}
-                  />
-                </Typography>
-              ) : (
-                "The game you want to be coached in"
-              )
+              error ? error.message : "The game you want to be coached in"
             }
           />
         )}

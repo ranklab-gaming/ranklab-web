@@ -8,7 +8,8 @@ import NextImage from "next/image"
 import reviewScreenshot from "@/images/screenshots/review.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  padding: theme.spacing(24, 0),
+  padding: theme.spacing(24),
+  paddingBottom: 0,
   backgroundImage: "none",
 }))
 
@@ -35,7 +36,7 @@ export const Review = () => {
           >
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
-                <Typography variant="h1" sx={{ mb: 3 }}>
+                <Typography variant="h1" component="h3" sx={{ mb: 3 }}>
                   Key moments <br />
                   analyzed.
                 </Typography>
@@ -46,6 +47,7 @@ export const Review = () => {
                     mb: 5,
                     color: "common.white",
                   }}
+                  variant="body1"
                 >
                   Coaches can comment or draw at specific points in the match,
                   giving you moment by moment feedback on your gameplay.
@@ -69,7 +71,7 @@ export const Review = () => {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
+          <Grid item xs={12} md={9} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage

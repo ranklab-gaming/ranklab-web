@@ -8,7 +8,7 @@ import NextImage from "next/image"
 import dashboardScreenshot from "@/images/screenshots/dashboard.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  padding: theme.spacing(28, 0),
+  padding: theme.spacing(24),
   backgroundColor: theme.palette.grey[900],
 }))
 
@@ -44,12 +44,19 @@ export const Dashboard = () => {
           <Grid item xs={12} md={3}>
             <ContentStyle>
               <m.div variants={animateFade().inUp}>
-                <Typography variant="h1" sx={{ mb: 3, color: "common.white" }}>
+                <Typography
+                  component="h3"
+                  variant="h1"
+                  sx={{ mb: 3, color: "common.white" }}
+                >
                   Your reviews in one place.
                 </Typography>
               </m.div>
               <m.div variants={animateFade().inUp}>
-                <Typography sx={{ color: "common.white", mb: 5 }}>
+                <Typography
+                  sx={{ color: "common.white", mb: 5 }}
+                  variant="body1"
+                >
                   Easily go back to your past reviews and keep track of all the
                   ones that are in progress.
                 </Typography>
@@ -72,7 +79,7 @@ export const Dashboard = () => {
               </m.div>
             </ContentStyle>
           </Grid>
-          <Grid item xs={12} md={8} sx={{ position: "relative" }}>
+          <Grid item xs={12} md={9} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
                 <NextImage

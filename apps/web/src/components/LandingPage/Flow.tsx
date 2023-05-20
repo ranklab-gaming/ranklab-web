@@ -16,10 +16,7 @@ import { alpha, styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  paddingTop: theme.spacing(15),
-  [theme.breakpoints.up("md")]: {
-    paddingBottom: theme.spacing(15),
-  },
+  paddingTop: theme.spacing(24),
 }))
 
 const CardStyle = styled(Card)(({ theme }) => {
@@ -81,7 +78,7 @@ export const Flow = () => {
       icon: videoOutline,
       title: "Record",
       description:
-        "Record your gameplay and upload it to our platform. We recommend using Xbox Game Bar or OBS Studio.",
+        "Record your gameplay and upload it to our platform. For Chess, you can just paste the PGN.",
       color: theme.palette.error.main,
     },
     {
@@ -105,7 +102,11 @@ export const Flow = () => {
       <Container maxWidth="lg" component={MotionContainer}>
         <Box sx={{ mb: { xs: 10, md: 25 } }}>
           <m.div variants={animateFade().inDown}>
-            <Typography variant="h1" sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h1"
+              component="h3"
+              sx={{ textAlign: "center" }}
+            >
               How it works
             </Typography>
           </m.div>
@@ -136,10 +137,14 @@ export const Flow = () => {
                       }}
                     />
                   </CardIconStyle>
-                  <Typography variant="h3" paragraph>
+                  <Typography variant="h3" component="h4" paragraph>
                     {card.title}
                   </Typography>
-                  <Typography sx={{ color: "common.white" }}>
+                  <Typography
+                    sx={{ color: "common.white" }}
+                    variant="body1"
+                    component="h5"
+                  >
                     {card.description}
                   </Typography>
                 </CardStyle>

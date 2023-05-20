@@ -7,15 +7,11 @@ import MenuItem from "@mui/material/MenuItem"
 import MenuList from "@mui/material/MenuList"
 import Paper from "@mui/material/Paper"
 import Popper from "@mui/material/Popper"
-import { MouseEvent as ReactMouseEvent, useRef, useState } from "react"
+import { PropsWithChildren, useRef, useState } from "react"
 
 interface Props {
-  handleClick: (event: ReactMouseEvent<HTMLButtonElement>) => void
-  handleMenuItemClick: (
-    event: ReactMouseEvent<HTMLLIElement, MouseEvent>,
-    index: number
-  ) => void
-  options: string[]
+  href: string
+  label: string
   variant?: "text" | "contained" | "outlined"
   color?:
     | "inherit"
@@ -27,23 +23,31 @@ interface Props {
     | "warning"
 }
 
+interface ItemProps {
+  href: string
+  label: string
+}
+
+export const SplitButtonItem = ({
+  href,
+  label,
+}: PropsWithChildren<ItemProps>) => {
+  return (
+    <MenuItem href={href} component="a">
+      {label}
+    </MenuItem>
+  )
+}
+
 export const SplitButton = ({
-  handleClick,
-  options,
-  handleMenuItemClick,
+  href,
+  label,
   variant,
   color,
-}: Props) => {
+  children,
+}: PropsWithChildren<Props>) => {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLDivElement>(null)
-
-  const onMenuItemClick = (
-    event: ReactMouseEvent<HTMLLIElement, MouseEvent>,
-    index: number
-  ) => {
-    handleMenuItemClick(event, index)
-    setOpen(false)
-  }
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen)
@@ -68,13 +72,15 @@ export const SplitButton = ({
         ref={anchorRef}
         aria-label="split button"
       >
-        <Button onClick={handleClick}>{options[0]}</Button>
+        <Button href={href}>{label}</Button>
         <Button
           size="small"
           aria-controls={open ? "split-button-menu" : undefined}
           aria-expanded={open ? "true" : undefined}
           aria-haspopup="menu"
           onClick={handleToggle}
+          component="a"
+          title="More options"
         >
           <ArrowDropDownIcon />
         </Button>
@@ -100,14 +106,7 @@ export const SplitButton = ({
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu" autoFocusItem>
-                  {options.slice(1).map((option, index) => (
-                    <MenuItem
-                      key={option}
-                      onClick={(event) => onMenuItemClick(event, index)}
-                    >
-                      {option}
-                    </MenuItem>
-                  ))}
+                  {children}
                 </MenuList>
               </ClickAwayListener>
             </Paper>
