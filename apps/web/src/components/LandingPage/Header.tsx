@@ -5,7 +5,6 @@ import { useOffsetTop } from "@/hooks/useOffsetTop"
 import { headerStyles, styles } from "@/styles"
 import { AppBar, Box, Container, Toolbar } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
-import { useRouter } from "next/router"
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   height: headerStyles.mobileHeight,

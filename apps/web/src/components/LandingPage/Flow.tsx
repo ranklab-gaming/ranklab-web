@@ -78,7 +78,7 @@ export const Flow = () => {
       icon: videoOutline,
       title: "Record",
       description:
-        "Record your gameplay and upload it to our platform. We recommend using Xbox Game Bar or OBS Studio.",
+        "Record your gameplay and upload it to our platform. For Chess, you can just paste the PGN.",
       color: theme.palette.error.main,
     },
     {

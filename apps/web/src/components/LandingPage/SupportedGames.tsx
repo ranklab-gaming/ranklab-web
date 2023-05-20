@@ -80,7 +80,7 @@ export const SupportedGames = ({ games }: Props) => {
                     justifyContent: "center",
                     display: "flex",
                     flexDirection: "column",
-                    bgcolor: "grey.900",
+                    bgcolor: "common.black",
                   }}
                 >
                   <CardContent>
@@ -89,10 +89,11 @@ export const SupportedGames = ({ games }: Props) => {
                       color="text.secondary"
                       sx={{ textAlign: "center" }}
                     >
-                      Don't see your game?{" "}
+                      Don&apos;t see your game?{" "}
                       <Button
                         onClick={() => setGameRequestDialogOpen(true)}
                         sx={{ textTransform: "none" }}
+                        color="secondary"
                       >
                         Let us know!
                       </Button>

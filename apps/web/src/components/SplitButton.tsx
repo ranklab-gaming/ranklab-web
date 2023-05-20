@@ -7,12 +7,7 @@ import MenuItem from "@mui/material/MenuItem"
 import MenuList from "@mui/material/MenuList"
 import Paper from "@mui/material/Paper"
 import Popper from "@mui/material/Popper"
-import {
-  PropsWithChildren,
-  MouseEvent as ReactMouseEvent,
-  useRef,
-  useState,
-} from "react"
+import { PropsWithChildren, useRef, useState } from "react"
 
 interface Props {
   href: string
