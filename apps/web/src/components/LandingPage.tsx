@@ -103,7 +103,7 @@ export const LandingPage = ({ games }: Props) => {
       <Stack>
         <Header />
         <RootStyle>
-          <Hero />
+          <Hero games={games} />
           <ContentStyle>
             <SupportedGames games={games} />
             <Flow />

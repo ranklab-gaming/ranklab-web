@@ -1,6 +1,14 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Link, Stack, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Container,
+  Fab,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren, useRef } from "react"
@@ -8,6 +16,9 @@ import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { assetsCdnUrl } from "@/config"
+import { Game } from "@ranklab/api"
+import { GameIcon } from "@/components/GameIcon"
+import { Iconify } from "@/components/Iconify"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -20,7 +31,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
   alignItems: "center",
 }))
 
-const Content = (props: PropsWithChildren) => <Stack spacing={5} {...props} />
+const Content = (props: PropsWithChildren) => <Box {...props} />
 
 const ContentStyle = styled(Content)(({ theme }) => ({
   zIndex: 10,
@@ -41,6 +52,7 @@ const HeroOverlayStyle = styled(m.div)({
   width: "100%",
   height: "100%",
   position: "absolute",
+  color: "common.white",
 })
 
 const HeroImgStyle = styled(m.div)(({ theme }) => ({
@@ -56,10 +68,21 @@ const HeroImgStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-export const Hero = () => {
+interface Props {
+  games: Game[]
+}
+
+export const Hero = ({ games }: Props) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
   const boxRef = useRef<HTMLDivElement>(null)
+
+  const scrollToContent = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth",
+    })
+  }
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -102,23 +125,45 @@ export const Hero = () => {
             </Typography>
           </m.div>
           <m.div variants={animateFade().inRight}>
-            <Typography
-              sx={{ color: "common.white" }}
-              variant="h4"
-              component="h2"
-            >
-              Get your gameplay analyzed by experienced coaches.
-            </Typography>
+            <Stack spacing={2} mt={4}>
+              <Typography
+                sx={{ color: "common.white" }}
+                variant="h4"
+                component="h2"
+              >
+                Get your gameplay analyzed by experienced coaches.
+              </Typography>
+              <Stack
+                spacing={1}
+                direction="row"
+                alignItems="center"
+                justifyContent={!isDesktop ? "center" : "flex-start"}
+              >
+                {games.slice(0, 6).map((game) => (
+                  <GameIcon
+                    key={game.id}
+                    game={game}
+                    sx={{ width: 32, height: 32, filter: "grayscale(1)" }}
+                  />
+                ))}
+                <Typography
+                  sx={{ color: "common.white" }}
+                  variant="body2"
+                  component="p"
+                >
+                  and more
+                </Typography>
+              </Stack>
+            </Stack>
           </m.div>
-
           <m.div variants={animateFade().inRight}>
-            <Stack
-              spacing={3}
-              direction="row"
+            <Box
+              display="flex"
               alignItems="center"
               justifyContent={!isDesktop ? "center" : "flex-start"}
+              mt={6}
             >
-              <Stack spacing={2} textAlign="center">
+              <Stack spacing={1} textAlign="center">
                 <NextLink
                   href="/api/auth/signin?intent=signup"
                   passHref
@@ -157,7 +202,7 @@ export const Hero = () => {
                   </NextLink>
                 </Typography>
               </Stack>
-            </Stack>
+            </Box>
           </m.div>
           <Box
             component={m.div}
@@ -165,7 +210,7 @@ export const Hero = () => {
             sx={{
               position: "absolute",
               right: "-300px",
-              top: 0,
+              top: 70,
               zIndex: -1,
               opacity: 0.5,
               height: "500px",
@@ -193,6 +238,24 @@ export const Hero = () => {
           </Box>
         </ContentStyle>
       </Container>
+      <m.div
+        animate={{ y: ["5%", "-5%", "5%"], x: ["-50%", "-50%", "-50%"] }}
+        transition={{ duration: 1, repeat: Infinity }}
+        style={{
+          position: "absolute",
+          bottom: "30px",
+          left: "50%",
+          zIndex: 999,
+        }}
+      >
+        <Fab
+          color="secondary"
+          aria-label="scroll down"
+          onClick={scrollToContent}
+        >
+          <Iconify icon="mdi:chevron-down" sx={{ fontSize: 32 }} />
+        </Fab>
+      </m.div>
     </RootStyle>
   )
 }
