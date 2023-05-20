@@ -65,7 +65,9 @@ export const AccountPopover = () => {
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
         <NextLink href="/api/auth/logout" passHref legacyBehavior>
-          <MenuItem sx={{ m: 1 }}>Logout</MenuItem>
+          <MenuItem sx={{ m: 1 }} component="a">
+            Logout
+          </MenuItem>
         </NextLink>
       </MenuPopover>
     </>
