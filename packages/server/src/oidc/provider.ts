@@ -1,7 +1,5 @@
-import { RedisAdapter } from "./redisAdapter.js"
 import Provider, { Configuration, errors } from "oidc-provider"
 import * as Sentry from "@sentry/node"
-
 import {
   authClientSecret,
   host,
@@ -9,6 +7,7 @@ import {
   authJwks,
   authIssuer,
 } from "../config.js"
+import { Adapter } from "./adapter.js"
 
 let provider: Provider | null = null
 
@@ -117,7 +116,7 @@ const getOidcProvider = async () => {
       },
     },
     jwks: authJwks,
-    adapter: RedisAdapter,
+    adapter: Adapter,
     renderError: (ctx, _, error) => {
       console.error(error)
 

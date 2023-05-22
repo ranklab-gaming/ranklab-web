@@ -9,6 +9,9 @@
     "lint": "turbo run lint"
   },
   "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.335.0",
+    "@types/node": "18.16.13",
+    "dotenv": "16.0.3",
     "prettier": "2.8.8",
     "turbo": "1.9.8"
   }

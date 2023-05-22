@@ -7,9 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Box, Link, Stack, Typography } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { useRouter } from "next/router"
 import { FormProvider } from "react-hook-form"
 import * as yup from "yup"
+import NextLink from "next/link"
 
 interface Props {
   games: Game[]
@@ -26,8 +26,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
     name: "",
   }
 
-  const router = useRouter()
-  const login = useLogin("player")
+  const login = useLogin()
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(AccountFieldsSchema),
@@ -68,42 +67,24 @@ export const PlayerSignupPage = ({ games }: Props) => {
               showPasswordField
             />
           </Stack>
-          <Box
-            display="flex"
-            alignItems="center"
-            flexWrap="wrap"
-            gap={2}
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
             sx={{ mt: 3 }}
           >
-            <Box
-              marginRight="auto"
-              flexShrink={0}
-              display="flex"
-              alignItems="center"
-            >
-              <Typography variant="body2" sx={{ mr: 1 }}>
-                Already have an account?
-              </Typography>
-              <Link
-                component="button"
-                variant="subtitle2"
-                onClick={() => {
-                  router.push("/player/login")
-                }}
-              >
-                Sign in
-              </Link>
-            </Box>
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
-              sx={{ maxWidth: 240 }}
-            >
-              Sign up
-            </LoadingButton>
+            Sign up
+          </LoadingButton>
+          <Box display="flex" alignItems="center" mt={3}>
+            <Typography variant="body2" sx={{ mr: 1 }}>
+              Already have an account?
+            </Typography>
+
+            <NextLink href="/player/login" passHref legacyBehavior>
+              <Link variant="subtitle2">Sign in</Link>
+            </NextLink>
           </Box>
         </form>
       </FormProvider>

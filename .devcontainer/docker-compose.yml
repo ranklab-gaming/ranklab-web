@@ -1,11 +1,14 @@
 version: "3"
 services:
-  redis:
-    image: redis:latest
+  dynamodb:
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /data -port 9000"
+    working_dir: /home/dynamodblocal
+    image: amazon/dynamodb-local:latest
     ports:
-      - "6379:6379"
+      - "9000:9000"
     volumes:
-      - redis:/data
+      - dynamodb-data:/data
     networks:
       - ranklab
   ranklab-web:
@@ -22,12 +25,11 @@ services:
     extra_hosts:
       ranklab-test: 0.0.0.0
     environment:
-      - NODE_OPTIONS=--max_old_space_size=4096
       - DISPLAY
     depends_on:
-      - redis
+      - dynamodb
 volumes:
-  redis:
+  dynamodb-data:
 networks:
   ranklab:
     name: ranklab

@@ -1,5 +1,7 @@
 FROM ghcr.io/ranklab-gaming/ranklab-devcontainer:v2.0.0
 
+ENV NODE_OPTIONS=--max_old_space_size=4096
+
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 
 RUN export DEBIAN_FRONTEND=noninteractive \

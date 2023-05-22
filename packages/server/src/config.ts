@@ -8,7 +8,9 @@ export function requireEnv(name: string, value: string | undefined): string {
 
 const port = parseInt(process.env.PORT || "3000", 10)
 const host = new URL(process.env.HOST || "http://localhost:3000")
-const redisUrl = requireEnv("REDIS_URL", process.env.REDIS_URL)
+const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
+const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
+const dynamoDbEndpoint = requireEnv("DYNAMODB_ENDPOINT", process.env.DYNAMODB_ENDPOINT)
 const cookieSecret = requireEnv("COOKIE_SECRET", process.env.COOKIE_SECRET)
 const rawAuthJwks = requireEnv("AUTH_JWKS", process.env.AUTH_JWKS)
 const authJwks = JSON.parse(Buffer.from(rawAuthJwks, "base64").toString("utf8"))
@@ -22,7 +24,9 @@ const authClientSecret = requireEnv(
 export {
   port,
   host,
-  redisUrl,
+  awsAccessKeyId,
+  awsSecretAccessKey,
+  dynamoDbEndpoint,
   cookieSecret,
   authJwks,
   authIssuer,

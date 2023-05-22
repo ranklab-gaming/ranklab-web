@@ -16,9 +16,7 @@ import {
 } from "@mui/material"
 import { UserType } from "@ranklab/api"
 import NextLink from "next/link"
-import { useRouter } from "next/router"
-import { useSnackbar } from "notistack"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
 
@@ -43,11 +41,7 @@ export const LoginPage = ({ userType }: Props) => {
   }
 
   const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter()
-  const login = useLogin(userType)
-  const { enqueueSnackbar } = useSnackbar()
-  const [shouldCheckSessionExpired, setShouldCheckSessionExpired] =
-    useState(false)
+  const login = useLogin()
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
@@ -70,25 +64,6 @@ export const LoginPage = ({ userType }: Props) => {
 
     await login(session.token)
   }
-
-  useEffect(() => {
-    setShouldCheckSessionExpired(true)
-  }, [])
-
-  useEffect(() => {
-    if (!shouldCheckSessionExpired) return
-
-    const loginSessionExpired = localStorage.getItem("loginSessionExpired")
-
-    if (loginSessionExpired === "true") {
-      localStorage.removeItem("loginSessionExpired")
-
-      enqueueSnackbar(
-        "The session expired before you could login. Please try again.",
-        { variant: "error" }
-      )
-    }
-  }, [enqueueSnackbar, shouldCheckSessionExpired])
 
   return (
     <BasicLayout title="Sign in to Ranklab">
@@ -179,16 +154,11 @@ export const LoginPage = ({ userType }: Props) => {
         <Typography variant="body2" sx={{ mr: 1 }}>
           Don&apos;t have an account?
         </Typography>
-
-        <Link
-          component="button"
-          variant="subtitle2"
-          onClick={() => {
-            router.push(`/${userType}/signup`)
-          }}
-        >
-          Get started
-        </Link>
+        <NextLink href={`/${userType}/signup`} passHref legacyBehavior>
+          <Link component="button" variant="subtitle2">
+            Get started
+          </Link>
+        </NextLink>
       </Box>
     </BasicLayout>
   )
