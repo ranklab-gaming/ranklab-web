@@ -225,7 +225,7 @@ export const Hero = () => {
           color="secondary"
           aria-label="scroll down"
           onClick={scrollToContent}
-          size="small"
+          size={isDesktop ? "medium" : "small"}
         >
           <Iconify icon="mdi:chevron-down" sx={{ fontSize: 32 }} />
         </Fab>
