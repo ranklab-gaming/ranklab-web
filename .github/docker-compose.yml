@@ -1,5 +1,13 @@
 version: "3.8"
 services:
+  dynamodb:
+    user: root
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /data -port 9000"
+    working_dir: /home/dynamodblocal
+    image: amazon/dynamodb-local:latest
+    volumes:
+      - dynamodb-data:/data
+    network_mode: host
   ranklab-test:
     image: ranklab-test:latest
     network_mode: host

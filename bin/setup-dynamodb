@@ -1,0 +1,166 @@
+#!/usr/bin/env node
+
+const {
+  DynamoDBClient,
+  CreateTableCommand,
+  UpdateTimeToLiveCommand,
+  DeleteTableCommand,
+  DescribeTableCommand,
+} = require("@aws-sdk/client-dynamodb")
+
+const dotenv = require("dotenv")
+const path = require("path")
+const appDir = path.resolve(__dirname, "..", "apps", "web")
+const env = process.env.NODE_ENV || "development"
+
+dotenv.config({ path: path.join(appDir, `.env.${env}`) })
+dotenv.config({ path: path.join(appDir, `.env.${env}.local`) })
+dotenv.config({ path: path.join(appDir, ".env.local") })
+dotenv.config({ path: path.join(appDir, ".env") })
+
+const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
+const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
+
+const dbclient = new DynamoDBClient({
+  region: "eu-west-2",
+  endpoint: process.env.DYNAMODB_ENDPOINT,
+  credentials: {
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey,
+  },
+})
+
+const TABLE_NAME = "oidc"
+
+const params = {
+  TableName: TABLE_NAME,
+  KeySchema: [{ AttributeName: "modelId", KeyType: "HASH" }],
+  AttributeDefinitions: [
+    { AttributeName: "modelId", AttributeType: "S" },
+    { AttributeName: "uid", AttributeType: "S" },
+    { AttributeName: "grantId", AttributeType: "S" },
+    { AttributeName: "userCode", AttributeType: "S" },
+  ],
+  ProvisionedThroughput: {
+    ReadCapacityUnits: 10,
+    WriteCapacityUnits: 10,
+  },
+  GlobalSecondaryIndexes: [
+    {
+      IndexName: "uidIndex",
+      KeySchema: [
+        {
+          AttributeName: "uid",
+          KeyType: "HASH",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      },
+      ProvisionedThroughput: {
+        ReadCapacityUnits: 10,
+        WriteCapacityUnits: 10,
+      },
+    },
+    {
+      IndexName: "grantIdIndex",
+      KeySchema: [
+        {
+          AttributeName: "grantId",
+          KeyType: "HASH",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      },
+      ProvisionedThroughput: {
+        ReadCapacityUnits: 10,
+        WriteCapacityUnits: 10,
+      },
+    },
+    {
+      IndexName: "userCodeIndex",
+      KeySchema: [
+        {
+          AttributeName: "userCode",
+          KeyType: "HASH",
+        },
+      ],
+      Projection: {
+        ProjectionType: "ALL",
+      },
+      ProvisionedThroughput: {
+        ReadCapacityUnits: 10,
+        WriteCapacityUnits: 10,
+      },
+    },
+  ],
+}
+
+const ttlParams = {
+  TableName: "oidc",
+  TimeToLiveSpecification: {
+    AttributeName: "expiresAt",
+    Enabled: true,
+  },
+}
+
+const MAX_WAIT_TIME = 30000
+
+const checkTableExists = async (tableName) => {
+  try {
+    await dbclient.send(new DescribeTableCommand({ TableName: tableName }))
+    return true
+  } catch (err) {
+    if (err.name !== "ResourceNotFoundException") {
+      throw err
+    }
+    return false
+  }
+}
+
+const waitForTableToBeDeleted = async (tableName) => {
+  let waitedTime = 0
+  while (await checkTableExists(tableName)) {
+    if (waitedTime > MAX_WAIT_TIME) {
+      throw new Error("Timeout exceeded waiting for table to be deleted")
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    waitedTime += 1000
+  }
+}
+
+const waitForTableToBeActive = async (tableName) => {
+  let waitedTime = 0
+  let tableActive = false
+  while (!tableActive) {
+    const { Table } = await dbclient.send(
+      new DescribeTableCommand({ TableName: tableName })
+    )
+    tableActive = Table?.TableStatus === "ACTIVE"
+    if (!tableActive) {
+      if (waitedTime > MAX_WAIT_TIME) {
+        throw new Error("Timeout exceeded waiting for table to become active")
+      }
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      waitedTime += 1000
+    }
+  }
+}
+
+const run = async () => {
+  try {
+    if (await checkTableExists(TABLE_NAME)) {
+      await dbclient.send(new DeleteTableCommand({ TableName: TABLE_NAME }))
+      await waitForTableToBeDeleted(TABLE_NAME)
+    }
+
+    await dbclient.send(new CreateTableCommand(params))
+    await waitForTableToBeActive(TABLE_NAME)
+    await dbclient.send(new UpdateTimeToLiveCommand(ttlParams))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+run()

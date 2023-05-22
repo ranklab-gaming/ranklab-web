@@ -19,10 +19,6 @@ jobs:
           POSTGRES_DB: app_test
         ports:
           - 5432:5432
-      redis:
-        image: redis:latest
-        ports:
-          - 6379:6379
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -65,7 +61,7 @@ jobs:
         if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
         run: pnpm -r -F @ranklab/web exec playwright install --with-deps chrome
       - name: Setup hostnames
-        run: echo "127.0.0.1 postgres redis ranklab-test ranklab-api" | sudo tee -a /etc/hosts
+        run: echo "127.0.0.1 postgres dynamodb ranklab-test ranklab-api" | sudo tee -a /etc/hosts
       - name: Generate instance ID
         id: generate-instance-id
         run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_OUTPUT
@@ -103,6 +99,8 @@ jobs:
           RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
           RANKLAB_INSTANCE_ID: ${{ steps.generate-instance-id.outputs.RANKLAB_INSTANCE_ID }}
         run: docker compose -f .github/docker-compose.yml up -d
+      - name: Setup DynamoDB
+        run: NODE_ENV=test ./bin/setup-dynamodb
       - name: Run tests
         run: DEBUG=pw:api pnpm run test
       - name: Upload Playwright report
