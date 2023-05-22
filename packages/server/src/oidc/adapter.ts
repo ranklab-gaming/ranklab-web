@@ -25,6 +25,7 @@ export class Adapter implements OidcAdapter {
   name: string
 
   constructor(name: string) {
+    console.log(name)
     this.name = name
   }
 
@@ -33,6 +34,8 @@ export class Adapter implements OidcAdapter {
     payload: AdapterPayload,
     expiresIn?: number
   ): Promise<void> {
+    console.info("[dynamodb] upsert", id, expiresIn)
+
     const expiresAt = expiresIn
       ? Math.floor(Date.now() / 1000) + expiresIn
       : null
@@ -100,34 +103,26 @@ export class Adapter implements OidcAdapter {
   }
 
   async findByUid(uid: string): Promise<AdapterPayload | undefined> {
-    console.info("[dynamodb] findByUid", uid)
-    try {
-      const params: QueryCommandInput = {
-        TableName: TABLE_NAME,
-        IndexName: "uidIndex",
-        KeyConditionExpression: "uid = :uid",
-        ExpressionAttributeValues: {
-          ":uid": uid,
-        },
-        Limit: 1,
-        ProjectionExpression: "payload, expiresAt",
-      }
-
-      const result = <
-        { payload: AdapterPayload; expiresAt?: number } | undefined
-        >(await dynamoClient.query(params)).Items?.[0]
-
-      console.info("[dynamodb] findByUid result", result)
-
-      if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
-        return undefined
-      }
-
-      return result.payload
-    } catch (e) {
-      console.log(e)
-      throw e
+    const params: QueryCommandInput = {
+      TableName: TABLE_NAME,
+      IndexName: "uidIndex",
+      KeyConditionExpression: "uid = :uid",
+      ExpressionAttributeValues: {
+        ":uid": uid,
+      },
+      Limit: 1,
+      ProjectionExpression: "payload, expiresAt",
     }
+
+    const result = <
+      { payload: AdapterPayload; expiresAt?: number } | undefined
+      >(await dynamoClient.query(params)).Items?.[0]
+
+    if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
+      return undefined
+    }
+
+    return result.payload
   }
 
   async consume(id: string): Promise<void> {
