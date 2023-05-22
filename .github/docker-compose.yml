@@ -42,3 +42,5 @@ services:
       interval: 3s
       timeout: 30s
       retries: 10
+volumes:
+  dynamodb-data:
