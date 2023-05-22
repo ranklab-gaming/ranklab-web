@@ -16,8 +16,6 @@ import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { assetsCdnUrl } from "@/config"
-import { Game } from "@ranklab/api"
-import { GameIcon } from "@/components/GameIcon"
 import { Iconify } from "@/components/Iconify"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -68,11 +66,7 @@ const HeroImgStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-interface Props {
-  games: Game[]
-}
-
-export const Hero = ({ games }: Props) => {
+export const Hero = () => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
   const boxRef = useRef<HTMLDivElement>(null)
@@ -133,27 +127,6 @@ export const Hero = ({ games }: Props) => {
               >
                 Get your gameplay analyzed by experienced coaches.
               </Typography>
-              <Stack
-                spacing={1}
-                direction="row"
-                alignItems="center"
-                justifyContent={!isDesktop ? "center" : "flex-start"}
-              >
-                {games.slice(0, 6).map((game) => (
-                  <GameIcon
-                    key={game.id}
-                    game={game}
-                    sx={{ width: 32, height: 32, filter: "grayscale(1)" }}
-                  />
-                ))}
-                <Typography
-                  sx={{ color: "common.white" }}
-                  variant="body2"
-                  component="p"
-                >
-                  and more
-                </Typography>
-              </Stack>
             </Stack>
           </m.div>
           <m.div variants={animateFade().inRight}>
@@ -209,11 +182,11 @@ export const Hero = ({ games }: Props) => {
             variants={animateFade().in}
             sx={{
               position: "absolute",
-              right: "-300px",
+              right: "-320px",
               top: 70,
               zIndex: -1,
               opacity: 0.5,
-              height: "500px",
+              height: "450px",
             }}
           >
             <HeroImgStyle>
@@ -252,6 +225,7 @@ export const Hero = ({ games }: Props) => {
           color="secondary"
           aria-label="scroll down"
           onClick={scrollToContent}
+          size="small"
         >
           <Iconify icon="mdi:chevron-down" sx={{ fontSize: 32 }} />
         </Fab>

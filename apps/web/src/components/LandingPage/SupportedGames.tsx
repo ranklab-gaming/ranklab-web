@@ -80,7 +80,7 @@ export const SupportedGames = ({ games }: Props) => {
                     justifyContent: "center",
                     display: "flex",
                     flexDirection: "column",
-                    bgcolor: "common.black",
+                    bgcolor: "grey.900",
                   }}
                 >
                   <CardContent>
