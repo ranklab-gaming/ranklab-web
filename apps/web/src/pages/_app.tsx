@@ -7,6 +7,10 @@ import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
+import { useCallback, useEffect } from "react"
+import mixpanel from "mixpanel-browser"
+import { mixpanelProjectToken } from "@/config"
+import { useRouter } from "next/router"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -19,6 +23,28 @@ export default function App({
   emotionCache = clientSideEmotionCache,
   pageProps,
 }: AppProps) {
+  const router = useRouter()
+
+  useEffect(() => {
+    if (mixpanelProjectToken) {
+      const handleRouteChange = (url: string) => {
+        mixpanel.track("Page view", { url })
+      }
+
+      mixpanel.init(mixpanelProjectToken, {
+        disable_persistence: true,
+        debug: true,
+      })
+
+      handleRouteChange(router.basePath + router.asPath)
+
+      router.events.on("routeChangeComplete", handleRouteChange)
+      return () => {
+        router.events.off("routeChangeComplete", handleRouteChange)
+      }
+    }
+  }, [])
+
   return (
     <>
       <Head>

@@ -24,6 +24,7 @@ const uploadsCdnUrl = requireEnv(
 )
 
 const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID
+const mixpanelProjectToken = process.env.NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN
 
 export {
   assetsCdnUrl,
@@ -31,4 +32,5 @@ export {
   uploadsCdnUrl,
   nodeEnv,
   intercomAppId,
+  mixpanelProjectToken,
 }
