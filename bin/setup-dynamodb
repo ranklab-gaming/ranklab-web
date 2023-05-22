@@ -12,11 +12,11 @@ const dotenv = require("dotenv")
 const path = require("path")
 const appDir = path.resolve(__dirname, "..", "apps", "web")
 const env = process.env.NODE_ENV || "development"
+const envFiles = [`.env.${env}.local`, `.env.${env}`, ".env"]
 
-dotenv.config({ path: path.join(appDir, `.env.${env}`) })
-dotenv.config({ path: path.join(appDir, `.env.${env}.local`) })
-dotenv.config({ path: path.join(appDir, ".env.local") })
-dotenv.config({ path: path.join(appDir, ".env") })
+for (const file of envFiles) {
+  dotenv.config({ path: path.join(appDir, file) })
+}
 
 const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
 const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
