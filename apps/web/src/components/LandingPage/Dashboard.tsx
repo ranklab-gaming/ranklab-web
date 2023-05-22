@@ -10,6 +10,9 @@ import dashboardScreenshot from "@/images/screenshots/dashboard.png"
 const RootStyle = styled("div")(({ theme }) => ({
   padding: theme.spacing(24),
   backgroundColor: theme.palette.grey[900],
+  [theme.breakpoints.down("md")]: {
+    padding: theme.spacing(12, 0),
+  },
 }))
 
 const ContentStyle = styled("div")(({ theme }) => ({

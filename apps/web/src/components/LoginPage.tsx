@@ -179,16 +179,11 @@ export const LoginPage = ({ userType }: Props) => {
         <Typography variant="body2" sx={{ mr: 1 }}>
           Don&apos;t have an account?
         </Typography>
-
-        <Link
-          component="button"
-          variant="subtitle2"
-          onClick={() => {
-            router.push(`/${userType}/signup`)
-          }}
-        >
-          Get started
-        </Link>
+        <NextLink href={`/${userType}/signup`} passHref legacyBehavior>
+          <Link component="button" variant="subtitle2">
+            Get started
+          </Link>
+        </NextLink>
       </Box>
     </BasicLayout>
   )
