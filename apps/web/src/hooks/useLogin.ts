@@ -1,8 +1,10 @@
-import { ResponseError, UserType } from "@ranklab/api"
+import { ResponseError } from "@ranklab/api"
 import { useRouter } from "next/router"
+import { useSnackbar } from "notistack"
 
-export function useLogin(userType: UserType) {
+export function useLogin() {
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
   return async (token: string) => {
     const response = await fetch("/api/auth/login", {
@@ -20,14 +22,11 @@ export function useLogin(userType: UserType) {
     }
 
     if (response.status === 400) {
-      localStorage.setItem("loginSessionExpired", "true")
-
-      await router.push({
-        pathname: "/api/auth/signin",
-        query: {
-          user_type: userType,
-        },
+      enqueueSnackbar("The session expired before you could sign in. Please try again.", {
+        variant: "error",
       })
+
+      await router.push("/")
 
       return
     }

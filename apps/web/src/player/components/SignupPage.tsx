@@ -7,7 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Box, Link, Stack, Typography } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { useRouter } from "next/router"
 import { FormProvider } from "react-hook-form"
 import * as yup from "yup"
 import NextLink from "next/link"
@@ -27,8 +26,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
     name: "",
   }
 
-  const router = useRouter()
-  const login = useLogin("player")
+  const login = useLogin()
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(AccountFieldsSchema),

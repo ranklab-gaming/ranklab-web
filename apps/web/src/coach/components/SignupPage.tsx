@@ -43,7 +43,7 @@ export const CoachSignupPage = ({
   gameId,
 }: Props) => {
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
-  const login = useLogin("coach")
+  const login = useLogin()
   const theme = useTheme()
   const id = useId().slice(1, -1)
 
