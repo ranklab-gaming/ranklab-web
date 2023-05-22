@@ -98,7 +98,7 @@ const params = {
 }
 
 const ttlParams = {
-  TableName: "oidc",
+  TableName: TABLE_NAME,
   TimeToLiveSpecification: {
     AttributeName: "expiresAt",
     Enabled: true,

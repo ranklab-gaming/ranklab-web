@@ -1,6 +1,6 @@
 import { Adapter as OidcAdapter, AdapterPayload } from "oidc-provider"
 import { DynamoDBDocument, QueryCommandInput, UpdateCommandInput, GetCommandInput, DeleteCommandInput } from "@aws-sdk/lib-dynamodb"
-import { AttributeValue, BatchWriteItemInput, Delete, DynamoDB, WriteRequest } from "@aws-sdk/client-dynamodb"
+import { AttributeValue, BatchWriteItemInput, DynamoDB, WriteRequest } from "@aws-sdk/client-dynamodb"
 import {
   awsAccessKeyId,
   awsSecretAccessKey,
@@ -33,8 +33,6 @@ export class Adapter implements OidcAdapter {
     payload: AdapterPayload,
     expiresIn?: number
   ): Promise<void> {
-    console.info("[dynamodb] upsert", id, payload, expiresIn)
-
     const expiresAt = expiresIn
       ? Math.floor(Date.now() / 1000) + expiresIn
       : null
@@ -61,8 +59,6 @@ export class Adapter implements OidcAdapter {
   }
 
   async find(id: string): Promise<AdapterPayload | undefined> {
-    console.info("[dynamodb] find", id)
-
     const params: GetCommandInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -81,8 +77,6 @@ export class Adapter implements OidcAdapter {
   }
 
   async findByUserCode(userCode: string): Promise<AdapterPayload | undefined> {
-    console.info("[dynamodb] findByUserCode", userCode)
-
     const params: QueryCommandInput = {
       TableName: TABLE_NAME,
       IndexName: "userCodeIndex",
@@ -107,31 +101,36 @@ export class Adapter implements OidcAdapter {
 
   async findByUid(uid: string): Promise<AdapterPayload | undefined> {
     console.info("[dynamodb] findByUid", uid)
+    try {
+      const params: QueryCommandInput = {
+        TableName: TABLE_NAME,
+        IndexName: "uidIndex",
+        KeyConditionExpression: "uid = :uid",
+        ExpressionAttributeValues: {
+          ":uid": uid,
+        },
+        Limit: 1,
+        ProjectionExpression: "payload, expiresAt",
+      }
 
-    const params: QueryCommandInput = {
-      TableName: TABLE_NAME,
-      IndexName: "uidIndex",
-      KeyConditionExpression: "uid = :uid",
-      ExpressionAttributeValues: {
-        ":uid": uid,
-      },
-      Limit: 1,
-      ProjectionExpression: "payload, expiresAt",
+      const result = <
+        { payload: AdapterPayload; expiresAt?: number } | undefined
+        >(await dynamoClient.query(params)).Items?.[0]
+
+      console.info("[dynamodb] findByUid result", result)
+
+      if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
+        return undefined
+      }
+
+      return result.payload
+    } catch (e) {
+      console.log(e)
+      throw e
     }
-
-    const result = <
-      { payload: AdapterPayload; expiresAt?: number } | undefined
-      >(await dynamoClient.query(params)).Items?.[0]
-
-    if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
-      return undefined
-    }
-
-    return result.payload
   }
 
   async consume(id: string): Promise<void> {
-    console.info("[dynamodb] consume", id)
     const params: UpdateCommandInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -150,7 +149,6 @@ export class Adapter implements OidcAdapter {
   }
 
   async destroy(id: string): Promise<void> {
-    console.info("[dynamodb] destroy", id)
     const params: DeleteCommandInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -160,7 +158,6 @@ export class Adapter implements OidcAdapter {
   }
 
   async revokeByGrantId(grantId: string): Promise<void> {
-    console.info("[dynamodb] revokeByGrantId", grantId)
     let ExclusiveStartKey: Record<string, AttributeValue> | undefined =
       undefined
 
