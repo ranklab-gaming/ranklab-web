@@ -25,6 +25,7 @@ import Head from "next/head"
 interface Props {
   coach: Coach
   games: Game[]
+  host: string
 }
 
 export const AvatarImage = styled("img")`
@@ -35,7 +36,7 @@ export const AvatarImage = styled("img")`
   border-radius: 50%;
 `
 
-export const ReviewRequestPage = ({ coach, games }: Props) => {
+export const ReviewRequestPage = ({ coach, games, host }: Props) => {
   const buttonText = useGameDependency(
     "text:request-review-button",
     coach.gameId
@@ -62,7 +63,15 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
     <Page title={coach.name}>
       {description ? (
         <Head>
-          <meta name="description" content={description} />
+          <meta name="og:description" content={description} />
+          <meta
+            name="og:image"
+            content={`${uploadsCdnUrl}/${coach.avatarImageKey}`}
+          />
+          <meta name="og:image:alt" content={coach.name} />
+          <meta name="og:title" content={coach.name} />
+          <meta name="og:type" content="profile" />
+          <meta name="og:url" content={`${host}/r/${coach.slug}`} />
         </Head>
       ) : null}
       <Box
