@@ -18,6 +18,7 @@ import { Header } from "./LandingPage/Header"
 import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
 import { SupportedGames } from "./LandingPage/SupportedGames"
+import { Pricing } from "./LandingPage/Pricing"
 import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
 import { Game } from "@ranklab/api"
@@ -109,6 +110,7 @@ export const LandingPage = ({ games }: Props) => {
             <Flow />
             <Review />
             <Dashboard />
+            <Pricing />
           </ContentStyle>
         </RootStyle>
         <Box sx={{ flexGrow: 1, height: 1 }} />
