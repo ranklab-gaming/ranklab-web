@@ -245,6 +245,12 @@ export interface Coach {
    * @memberof Coach
    */
   approved: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof Coach
+   */
+  bioText: string
 }
 /**
  *

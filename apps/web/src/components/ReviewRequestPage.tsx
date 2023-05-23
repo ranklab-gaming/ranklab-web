@@ -50,14 +50,10 @@ export const ReviewRequestPage = ({ coach, games, host }: Props) => {
   const theme = useTheme()
   const game = assertFind(games, (game) => game.id === coach.gameId)
 
-  const textBio =
-    new DOMParser()
-      .parseFromString(coach.bio, "text/html")
-      .textContent?.replace(/\n/g, " ")
-      .trim() ?? ""
-
   const description =
-    textBio.length > 160 ? textBio.slice(0, 160) + "..." : textBio
+    coach.bioText.length > 160
+      ? coach.bioText.slice(0, 160) + "..."
+      : coach.bioText
 
   return (
     <Page title={coach.name}>
