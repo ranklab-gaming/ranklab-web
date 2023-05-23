@@ -129,7 +129,10 @@ const getOidcProvider = async () => {
       let errorMessage
 
       if (error instanceof errors.OIDCProviderError) {
-        if (error instanceof errors.SessionNotFound) {
+        if (
+          error instanceof errors.SessionNotFound ||
+          error instanceof errors.InvalidRequest
+        ) {
           return ctx.redirect("/api/auth/logout")
         }
 
