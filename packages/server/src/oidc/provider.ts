@@ -11,6 +11,12 @@ import { Adapter } from "./adapter.js"
 
 let provider: Provider | null = null
 
+class InvalidInteractionParam extends Error {
+  constructor(param: string, value: string) {
+    super(`invalid ${param}: ${value}`)
+  }
+}
+
 const getOidcProvider = async () => {
   if (provider) {
     return provider
@@ -36,11 +42,11 @@ const getOidcProvider = async () => {
         const gameId = interaction.params.game_id as string | undefined
 
         if (!["coach", "player"].includes(userType as string)) {
-          throw new Error(`invalid user type: ${userType}`)
+          throw new InvalidInteractionParam("user_type", userType)
         }
 
         if (!["login", "signup"].includes(intent as string)) {
-          throw new Error(`invalid intent: ${intent}`)
+          throw new InvalidInteractionParam("intent", intent)
         }
 
         const queryParams = new URLSearchParams()
@@ -120,24 +126,30 @@ const getOidcProvider = async () => {
     renderError: (ctx, _, error) => {
       console.error(error)
 
-      Sentry.withScope((scope) => {
-        scope.setSDKProcessingMetadata({ request: ctx.request })
-        Sentry.captureException(error)
-      })
+      let errorMessage
 
       if (error instanceof errors.OIDCProviderError) {
         if (error instanceof errors.SessionNotFound) {
           return ctx.redirect("/api/auth/logout")
         }
 
-        return ctx.redirect(`/500?error=${error.error}`)
+        errorMessage = error.error
+      } else if (error instanceof Error) {
+        if (error instanceof InvalidInteractionParam) {
+          return ctx.redirect("/")
+        }
+
+        errorMessage = error.name
+      } else {
+        errorMessage = error
       }
 
-      if (error instanceof Error) {
-        return ctx.redirect(`/500?error=${error.name}`)
-      }
+      Sentry.withScope((scope) => {
+        scope.setSDKProcessingMetadata({ request: ctx.request })
+        Sentry.captureException(error)
+      })
 
-      ctx.redirect(`/500?error=${error}`)
+      return ctx.redirect(`/500?error=${errorMessage}`)
     },
   }
 

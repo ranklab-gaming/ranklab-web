@@ -3,6 +3,7 @@ import { getAuthClient, sessionFromToken } from "@/auth/session"
 import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
 import { NextApiRequest, NextApiResponse } from "next"
+import { errors } from "openid-client"
 
 const callback = withSessionApiRoute(async function (
   req: NextApiRequest,
@@ -13,9 +14,23 @@ const callback = withSessionApiRoute(async function (
   const codeVerifier = req.session.codeVerifier
   const returnUrl = req.session.returnUrl
 
-  const tokenSet = await client.callback(`${host}/api/auth/callback`, params, {
-    code_verifier: codeVerifier,
-  })
+  let tokenSet
+
+  try {
+    tokenSet = await client.callback(`${host}/api/auth/callback`, params, {
+      code_verifier: codeVerifier,
+    })
+  } catch (error) {
+    if (
+      error instanceof errors.RPError &&
+      error.message.includes("iss mismatch")
+    ) {
+      console.error(error.message)
+      return res.redirect(`/500?error=${error.message}`)
+    }
+
+    throw error
+  }
 
   const accessToken = assertProp(tokenSet, "access_token")
   const refreshToken = assertProp(tokenSet, "refresh_token")
