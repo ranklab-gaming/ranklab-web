@@ -41,7 +41,7 @@ export const Pricing = () => {
         <Grid
           container
           spacing={5}
-          direction="row-reverse"
+          direction="row"
           justifyContent="space-between"
         >
           <Grid item xs={12} md={3}>
