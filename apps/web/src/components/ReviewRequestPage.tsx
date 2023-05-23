@@ -8,12 +8,10 @@ import {
   Stack,
   Card,
   CardContent,
-  CardHeader,
-  Grid,
   Chip,
 } from "@mui/material"
 import { Coach, Game } from "@ranklab/api"
-import { assetsCdnUrl, uploadsCdnUrl } from "@/config"
+import { uploadsCdnUrl } from "@/config"
 import { Avatar } from "@/components/Avatar"
 import { Page } from "@/components/Page"
 import { Logo } from "@/components/Logo"
@@ -39,11 +37,6 @@ export const AvatarImage = styled("img")`
 export const ReviewRequestPage = ({ coach, games, host }: Props) => {
   const buttonText = useGameDependency(
     "text:request-review-button",
-    coach.gameId
-  )
-
-  const reviewDemoKey = useGameDependency(
-    "text:player-review-demo-key",
     coach.gameId
   )
 
@@ -81,93 +74,64 @@ export const ReviewRequestPage = ({ coach, games, host }: Props) => {
         justifyContent="center"
         overflow="auto"
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
           <Stack spacing={2}>
             <Card sx={{ p: 2 }}>
               <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <Stack spacing={4}>
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        {coach.avatarImageKey ? (
-                          <AvatarImage
-                            src={`${uploadsCdnUrl}/${coach.avatarImageKey}`}
-                            alt={coach.name}
-                          />
-                        ) : (
-                          <Avatar
-                            user={{ name: coach.name }}
-                            sx={{ width: 48, height: 48 }}
-                          />
-                        )}
-                        <Typography variant="h3">{coach.name}</Typography>
-                        <Chip label={game.name} />
-                      </Stack>
-                      <Typography variant="body1" component="div">
-                        <pre
-                          style={{
-                            fontFamily: "inherit",
-                            whiteSpace: "pre-wrap",
-                          }}
-                          dangerouslySetInnerHTML={{ __html: coach.bio }}
-                        />
-                      </Typography>
-                      <Box>
-                        <NextLink
-                          href={{
-                            pathname: "/player/reviews/new",
-                            query: { coach_id: coach.id },
-                          }}
-                          passHref
-                          legacyBehavior
-                        >
-                          <Button
-                            size="large"
-                            variant="text"
-                            sx={{
-                              fontSize: 18,
-                              p: 3,
-                              color: "common.white",
-                              transition: "all 0.25s",
-                              backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                              boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                              "&:hover": {
-                                filter: "brightness(1.3)",
-                              },
-                            }}
-                          >
-                            {buttonText}
-                          </Button>
-                        </NextLink>
-                      </Box>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <CardHeader
-                      title="What is Ranklab?"
-                      subheader="In this video we give you an overview of the platform and how it works."
+                <Stack spacing={4}>
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    {coach.avatarImageKey ? (
+                      <AvatarImage
+                        src={`${uploadsCdnUrl}/${coach.avatarImageKey}`}
+                        alt={coach.name}
+                      />
+                    ) : (
+                      <Avatar
+                        user={{ name: coach.name }}
+                        sx={{ width: 48, height: 48 }}
+                      />
+                    )}
+                    <Typography variant="h3">{coach.name}</Typography>
+                    <Chip label={game.name} />
+                  </Stack>
+                  <Typography variant="body1" component="div">
+                    <pre
+                      style={{
+                        fontFamily: "inherit",
+                        whiteSpace: "pre-wrap",
+                      }}
+                      dangerouslySetInnerHTML={{ __html: coach.bio }}
                     />
-                    <CardContent>
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        controls
-                        style={{
-                          maxWidth: "100%",
-                          objectFit: "cover",
-                          borderRadius: theme.shape.borderRadius,
+                  </Typography>
+                  <Box>
+                    <NextLink
+                      href={{
+                        pathname: "/player/reviews/new",
+                        query: { coach_id: coach.id },
+                      }}
+                      passHref
+                      legacyBehavior
+                    >
+                      <Button
+                        size="large"
+                        variant="text"
+                        sx={{
+                          fontSize: 18,
+                          p: 3,
+                          color: "common.white",
+                          transition: "all 0.25s",
+                          backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                          boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                          "&:hover": {
+                            filter: "brightness(1.3)",
+                          },
                         }}
                       >
-                        <source
-                          src={`${assetsCdnUrl}/${reviewDemoKey}`}
-                          type="video/mp4"
-                        />
-                      </video>
-                    </CardContent>
-                  </Grid>
-                </Grid>
+                        {buttonText}
+                      </Button>
+                    </NextLink>
+                  </Box>
+                </Stack>
               </CardContent>
             </Card>
             <Stack

@@ -5,11 +5,20 @@ import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
-import { Box, Link, Stack, Typography } from "@mui/material"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Grid,
+  Stack,
+  useTheme,
+} from "@mui/material"
 import { Game } from "@ranklab/api"
-import { FormProvider } from "react-hook-form"
 import * as yup from "yup"
-import NextLink from "next/link"
+import { assetsCdnUrl } from "@/config"
+import { useGameDependency } from "@/hooks/useGameDependency"
+import { useId } from "react"
+import Sticky from "react-stickynode"
 
 interface Props {
   games: Game[]
@@ -27,6 +36,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
   }
 
   const login = useLogin()
+  const theme = useTheme()
 
   const form = useForm({
     resolver: yupResolver<yup.ObjectSchema<any>>(AccountFieldsSchema),
@@ -40,6 +50,10 @@ export const PlayerSignupPage = ({ games }: Props) => {
     watch,
   } = form
 
+  const gameId = watch("gameId")
+  const id = useId().slice(1, -1)
+  const reviewDemoKey = useGameDependency("text:player-review-demo-key", gameId)
+
   const onSubmit = async (data: FormValues) => {
     const session = await api.playerAccountCreate({
       createPlayerRequest: data,
@@ -49,45 +63,68 @@ export const PlayerSignupPage = ({ games }: Props) => {
   }
 
   return (
-    <BasicLayout title="Sign up to Ranklab">
-      <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography sx={{ color: "text.secondary" }}>
-            Enter your details below.
-          </Typography>
-        </Box>
-      </Stack>
-      <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={3}>
-            <AccountFields
-              games={games}
-              control={control}
-              watch={watch}
-              showPasswordField
-            />
-          </Stack>
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            sx={{ mt: 3 }}
-          >
-            Sign up
-          </LoadingButton>
-          <Box display="flex" alignItems="center" mt={3}>
-            <Typography variant="body2" sx={{ mr: 1 }}>
-              Already have an account?
-            </Typography>
-
-            <NextLink href="/player/login" passHref legacyBehavior>
-              <Link variant="subtitle2">Sign in</Link>
-            </NextLink>
-          </Box>
-        </form>
-      </FormProvider>
+    <BasicLayout title="Sign up to Ranklab" maxWidth="lg">
+      <form onSubmit={handleSubmit(onSubmit)} className={`${id}-form`}>
+        <Stack spacing={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={3}>
+                <AccountFields
+                  control={control}
+                  games={games}
+                  watch={watch}
+                  showPasswordField
+                />
+                <LoadingButton
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                  disabled={isSubmitting}
+                >
+                  Sign up
+                </LoadingButton>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Sticky
+                enabled
+                top={20}
+                innerZ={9999}
+                bottomBoundary={`.${id}-form`}
+              >
+                <Card elevation={4}>
+                  <CardHeader
+                    title="How does it work?"
+                    subheader="This is a short video to help you get started with Ranklab"
+                  />
+                  <CardContent>
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      controls
+                      key={reviewDemoKey}
+                      style={{
+                        maxWidth: "100%",
+                        objectFit: "cover",
+                        borderRadius: theme.shape.borderRadius,
+                      }}
+                    >
+                      <source
+                        src={`${assetsCdnUrl}/${reviewDemoKey}`}
+                        type="video/mp4"
+                      />
+                    </video>
+                  </CardContent>
+                </Card>
+              </Sticky>
+            </Grid>
+          </Grid>
+        </Stack>
+      </form>
     </BasicLayout>
   )
 }

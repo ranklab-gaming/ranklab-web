@@ -98,11 +98,11 @@ export const CoachSignupPage = ({
     .sort((a, b) => (a.label && b.label ? a.label.localeCompare(b.label) : 0))
 
   return (
-    <BasicLayout title="Sign up to Ranklab as a Coach" maxWidth="xl">
+    <BasicLayout title="Sign up to Ranklab as a Coach" maxWidth="lg">
       <form onSubmit={handleSubmit(createCoach)} className={`${id}-form`}>
         <Stack spacing={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={5}>
+            <Grid item xs={12} sm={6}>
               <Stack spacing={3}>
                 <AccountFields
                   control={control}
@@ -142,7 +142,7 @@ export const CoachSignupPage = ({
                 </LoadingButton>
               </Stack>
             </Grid>
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} sm={6}>
               <Sticky
                 enabled
                 top={20}
