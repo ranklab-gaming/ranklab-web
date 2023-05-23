@@ -20,6 +20,7 @@ import { Logo } from "@/components/Logo"
 import { assertFind } from "@/assert"
 import NextLink from "next/link"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import Head from "next/head"
 
 interface Props {
   coach: Coach
@@ -48,8 +49,22 @@ export const ReviewRequestPage = ({ coach, games }: Props) => {
   const theme = useTheme()
   const game = assertFind(games, (game) => game.id === coach.gameId)
 
+  const textBio =
+    new DOMParser()
+      .parseFromString(coach.bio, "text/html")
+      .textContent?.replace(/\n/g, " ")
+      .trim() ?? ""
+
+  const description =
+    textBio.length > 160 ? textBio.slice(0, 160) + "..." : textBio
+
   return (
     <Page title={coach.name}>
+      {description ? (
+        <Head>
+          <meta name="description" content={description} />
+        </Head>
+      ) : null}
       <Box
         position="absolute"
         top={0}
