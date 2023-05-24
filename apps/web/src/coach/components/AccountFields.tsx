@@ -30,7 +30,12 @@ export const AccountFieldsSchema = yup.object().shape({
     .matches(
       /^\d+\.?\d{0,2}$/,
       "Price must be a number with no more than 2 decimal places"
-    ),
+    )
+    .transform((_value, originalValue) => {
+      return parseFloat(originalValue)
+    })
+    .min(1, "Price must be at least $1")
+    .max(1000, "Price must be at most $1000"),
 })
 
 export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
