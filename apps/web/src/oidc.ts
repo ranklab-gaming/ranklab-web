@@ -25,6 +25,10 @@ export const withOidcInteraction = <T extends { [key: string]: any } = {}>(
       throw e
     }
 
-    return getServerSideProps?.(ctx)
+    if (getServerSideProps) {
+      return getServerSideProps(ctx)
+    } else {
+      return { props: {} }
+    }
   }
 }
