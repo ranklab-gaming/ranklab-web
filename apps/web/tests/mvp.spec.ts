@@ -47,7 +47,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Price").fill("12.34")
   await page.getByRole("button", { name: "Country" }).click()
   await page.getByRole("option", { name: "United Kingdom" }).click()
-  await page.getByRole("button", { name: "Create Account" }).click()
+  await page.getByRole("button", { name: "Sign up" }).click()
   await page.getByRole("link", { name: "Start onboarding" }).click()
   await page.locator('[data-test="phone-help-text-test-mode"]').click()
   await page.locator('[data-test="phone-entry-submit"]').click()
