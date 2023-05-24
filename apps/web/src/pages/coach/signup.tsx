@@ -1,6 +1,6 @@
 import { CoachSignupPage } from "@/coach/components/SignupPage"
+import { withOidcInteraction } from "@/oidc"
 import { Game } from "@ranklab/api"
-import { GetServerSideProps } from "next"
 
 interface Props {
   games: Game[]
@@ -8,28 +8,7 @@ interface Props {
   gameId: string | null
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  const { getOidcProvider, errors } = await import(
-    "@ranklab/server/dist/oidc/provider"
-  )
-
-  const oidcProvider = await getOidcProvider()
-
-  try {
-    oidcProvider.interactionDetails(ctx.req, ctx.res)
-  } catch (e) {
-    if (e instanceof errors.SessionNotFound) {
-      return {
-        redirect: {
-          destination: "/api/auth/signin?intent=signup&user_type=coach",
-          permanent: false,
-        },
-      }
-    }
-
-    throw e
-  }
-
+export const getServerSideProps = withOidcInteraction<Props>(async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx.req)
 
@@ -47,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
       gameId,
     },
   }
-}
+})
 
 export default function ({ games, availableCountries, gameId }: Props) {
   return (
