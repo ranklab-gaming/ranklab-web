@@ -9,6 +9,7 @@ import * as yup from "yup"
 import { Controller } from "react-hook-form"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import mixpanel from "mixpanel-browser"
 
 interface Props {
   games: Game[]
@@ -68,6 +69,8 @@ export const CoachSignupPage = ({
         price: Number(data.price) * 100,
       },
     })
+
+    mixpanel.track("Coach signup")
 
     await login(session.token)
   }

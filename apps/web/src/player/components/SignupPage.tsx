@@ -7,6 +7,7 @@ import { Game } from "@ranklab/api"
 import * as yup from "yup"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import mixpanel from "mixpanel-browser"
 
 interface Props {
   games: Game[]
@@ -50,6 +51,8 @@ export const PlayerSignupPage = ({ games }: Props) => {
         skillLevel: data.skillLevel,
       },
     })
+
+    mixpanel.track("Player signup")
 
     await login(session.token)
   }
