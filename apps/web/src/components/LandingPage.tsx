@@ -19,7 +19,6 @@ import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
 import { SupportedGames } from "./LandingPage/SupportedGames"
 import { Pricing } from "./LandingPage/Pricing"
-import CookieConsent from "react-cookie-consent"
 import NextLink from "next/link"
 import { Game } from "@ranklab/api"
 
@@ -73,34 +72,6 @@ export const LandingPage = ({ games }: Props) => {
 
   return (
     <Page title="Up your game">
-      <CookieConsent
-        style={{
-          backgroundColor: theme.palette.background.paper,
-          fontFamily: theme.typography.fontFamily,
-          zIndex: 9999999999,
-          color: theme.palette.text.secondary,
-        }}
-        ButtonComponent={AcceptButton}
-      >
-        This website uses essential cookies in order to function correctly. By
-        using this website you agree to our{" "}
-        <NextLink
-          href="https://www.iubenda.com/privacy-policy/88772361"
-          passHref
-          legacyBehavior
-        >
-          <Link color="secondary.contrastText">privacy policy</Link>
-        </NextLink>{" "}
-        and{" "}
-        <NextLink
-          href="https://www.iubenda.com/terms-and-conditions/88772361"
-          passHref
-          legacyBehavior
-        >
-          <Link color="secondary.contrastText">terms of service</Link>
-        </NextLink>
-        .
-      </CookieConsent>
       <Stack>
         <Header />
         <RootStyle>
