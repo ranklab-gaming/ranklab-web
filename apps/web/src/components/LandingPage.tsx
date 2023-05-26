@@ -1,17 +1,9 @@
 import { Footer } from "./Footer"
 import { Page } from "./Page"
-import {
-  Box,
-  Button,
-  ButtonProps,
-  Link,
-  Stack,
-  styled,
-  useTheme,
-} from "@mui/material"
+import { Box, Stack, styled } from "@mui/material"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
-import { PropsWithChildren, useEffect } from "react"
+import { useEffect } from "react"
 import { Dashboard } from "./LandingPage/Dashboard"
 import { Flow } from "./LandingPage/Flow"
 import { Header } from "./LandingPage/Header"
@@ -19,7 +11,6 @@ import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
 import { SupportedGames } from "./LandingPage/SupportedGames"
 import { Pricing } from "./LandingPage/Pricing"
-import NextLink from "next/link"
 import { Game } from "@ranklab/api"
 
 const RootStyle = styled("div")({
@@ -32,18 +23,6 @@ const ContentStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-const AcceptButton = (props: PropsWithChildren<ButtonProps>) => (
-  <Button
-    variant="contained"
-    color="secondary"
-    size="small"
-    sx={{ m: 1, color: "secondary.contrastText" }}
-    onClick={props.onClick}
-  >
-    {props.children}
-  </Button>
-)
-
 interface Props {
   games: Game[]
 }
@@ -51,7 +30,6 @@ interface Props {
 export const LandingPage = ({ games }: Props) => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
-  const theme = useTheme()
 
   useEffect(() => {
     if (router.query.error) {
