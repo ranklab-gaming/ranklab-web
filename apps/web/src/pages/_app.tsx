@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import mixpanel from "mixpanel-browser"
 import { mixpanelProjectToken, nodeEnv, intercomAppId } from "@/config"
 import { useRouter } from "next/router"
@@ -25,12 +25,7 @@ export interface AppProps extends NextAppProps {
 const Content = ({
   Component,
   pageProps,
-  setShouldInitializeIntercom,
-  shouldInitializeIntercom,
-}: Pick<AppProps, "Component" | "pageProps"> & {
-  setShouldInitializeIntercom: Dispatch<SetStateAction<boolean>>
-  shouldInitializeIntercom: boolean
-}) => {
+}: Pick<AppProps, "Component" | "pageProps">) => {
   const { boot: bootIntercom, hardShutdown: shutdownIntercom } = useIntercom()
   const router = useRouter()
 
@@ -43,19 +38,18 @@ const Content = ({
       return
     }
 
+    if (mixpanelProjectToken && !mixpanelInitialized) {
+      mixpanel.init(mixpanelProjectToken, {
+        debug: nodeEnv === "development",
+      })
+
+      mixpanelInitialized = true
+    }
+
     handlePreferenceExpressed.current = (preference) => {
       // analytics purpose
-      if (preference.purposes[4]) {
-        if (mixpanelProjectToken && !mixpanelInitialized) {
-          // Initialize Mixpanel.
-          mixpanel.init(mixpanelProjectToken, {
-            debug: nodeEnv === "development",
-          })
-
-          mixpanelInitialized = true
-        }
-      } else {
-        if (mixpanelProjectToken && mixpanelInitialized) {
+      if (!preference.purposes[4]) {
+        if (mixpanelProjectToken) {
           mixpanel.disable()
         }
       }
@@ -63,11 +57,11 @@ const Content = ({
       // marketing purpose
       if (preference.purposes[5]) {
         if (intercomAppId) {
-          setShouldInitializeIntercom(true)
+          bootIntercom()
         }
       } else {
         if (intercomAppId) {
-          setShouldInitializeIntercom(false)
+          shutdownIntercom()
         }
       }
     }
@@ -136,17 +130,12 @@ const Content = ({
       router.events.off("routeChangeComplete", handleRouteChange)
     }
   }, [
+    bootIntercom,
     router.asPath,
     router.basePath,
     router.events,
-    setShouldInitializeIntercom,
+    shutdownIntercom,
   ])
-
-  useEffect(() => {
-    if (!shouldInitializeIntercom) {
-      shutdownIntercom()
-    }
-  }, [bootIntercom, shouldInitializeIntercom, shutdownIntercom])
 
   return (
     <>
@@ -162,9 +151,6 @@ export default function App({
   emotionCache = clientSideEmotionCache,
   pageProps,
 }: AppProps) {
-  const [shouldInitializeIntercom, setShouldInitializeIntercom] =
-    useState(false)
-
   return (
     <>
       <Head>
@@ -200,16 +186,9 @@ export default function App({
             <NotistackProvider>
               <IntercomProvider
                 appId={intercomAppId ?? ""}
-                shouldInitialize={shouldInitializeIntercom}
-                autoBoot
-                key={shouldInitializeIntercom ? "intercom" : "intercom-off"}
+                shouldInitialize={Boolean(intercomAppId)}
               >
-                <Content
-                  Component={Component}
-                  pageProps={pageProps}
-                  setShouldInitializeIntercom={setShouldInitializeIntercom}
-                  shouldInitializeIntercom={shouldInitializeIntercom}
-                />
+                <Content Component={Component} pageProps={pageProps} />
               </IntercomProvider>
             </NotistackProvider>
           </MotionLazyContainer>
