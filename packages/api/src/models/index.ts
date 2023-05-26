@@ -59,6 +59,55 @@ export interface Address {
 /**
  *
  * @export
+ * @interface Audio
+ */
+export interface Audio {
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  id: string
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  audioKey: string
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  uploadUrl?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  createdAt: string
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  updatedAt: string
+  /**
+   *
+   * @type {MediaState}
+   * @memberof Audio
+   */
+  state: MediaState
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  instanceId?: string | null
+}
+/**
+ *
+ * @export
  * @interface Avatar
  */
 export interface Avatar {
@@ -94,10 +143,10 @@ export interface Avatar {
   updatedAt: string
   /**
    *
-   * @type {AvatarState}
+   * @type {MediaState}
    * @memberof Avatar
    */
-  state: AvatarState
+  state: MediaState
   /**
    *
    * @type {string}
@@ -105,18 +154,6 @@ export interface Avatar {
    */
   instanceId?: string | null
 }
-
-/**
- *
- * @export
- */
-export const AvatarState = {
-  Created: "Created",
-  Uploaded: "Uploaded",
-  Processed: "Processed",
-} as const
-export type AvatarState = (typeof AvatarState)[keyof typeof AvatarState]
-
 /**
  *
  * @export
@@ -313,6 +350,12 @@ export interface Comment {
    * @memberof Comment
    */
   metadata: any | null
+  /**
+   *
+   * @type {Audio}
+   * @memberof Comment
+   */
+  audio?: Audio | null
 }
 /**
  *
@@ -332,6 +375,19 @@ export interface CreateAccountLinkRequest {
    * @memberof CreateAccountLinkRequest
    */
   returnUrl: string
+}
+/**
+ *
+ * @export
+ * @interface CreateAudioRequest
+ */
+export interface CreateAudioRequest {
+  /**
+   *
+   * @type {string}
+   * @memberof CreateAudioRequest
+   */
+  reviewId: string
 }
 /**
  *
@@ -419,6 +475,12 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   metadata: any | null
+  /**
+   *
+   * @type {string}
+   * @memberof CreateCommentRequest
+   */
+  audioId?: string | null
 }
 /**
  *
@@ -621,6 +683,18 @@ export interface LoginLink {
    */
   url: string
 }
+
+/**
+ *
+ * @export
+ */
+export const MediaState = {
+  Created: "Created",
+  Uploaded: "Uploaded",
+  Processed: "Processed",
+} as const
+export type MediaState = (typeof MediaState)[keyof typeof MediaState]
+
 /**
  *
  * @export
@@ -838,10 +912,10 @@ export interface Recording {
   skillLevel: number
   /**
    *
-   * @type {RecordingState}
+   * @type {MediaState}
    * @memberof Recording
    */
-  state: RecordingState
+  state: MediaState
   /**
    *
    * @type {any}
@@ -855,19 +929,6 @@ export interface Recording {
    */
   instanceId?: string | null
 }
-
-/**
- *
- * @export
- */
-export const RecordingState = {
-  Created: "Created",
-  Uploaded: "Uploaded",
-  Processed: "Processed",
-} as const
-export type RecordingState =
-  (typeof RecordingState)[keyof typeof RecordingState]
-
 /**
  *
  * @export
@@ -1068,6 +1129,12 @@ export interface UpdateCommentRequest {
    * @memberof UpdateCommentRequest
    */
   metadata: any | null
+  /**
+   *
+   * @type {string}
+   * @memberof UpdateCommentRequest
+   */
+  audioId?: string | null
 }
 /**
  *

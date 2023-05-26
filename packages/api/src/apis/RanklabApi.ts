@@ -15,6 +15,7 @@
 import * as runtime from "../runtime"
 import type {
   AccountLink,
+  Audio,
   Avatar,
   BillingDetails,
   BillingPortalLink,
@@ -22,6 +23,7 @@ import type {
   CoachUpdateReviewRequest,
   Comment,
   CreateAccountLinkRequest,
+  CreateAudioRequest,
   CreateBillingPortalSession,
   CreateCoachRequest,
   CreateCommentRequest,
@@ -57,8 +59,20 @@ export interface CoachAccountUpdateRequest {
   updateCoachRequest: UpdateCoachRequest
 }
 
+export interface CoachAudiosCreateRequest {
+  createAudioRequest: CreateAudioRequest
+}
+
+export interface CoachAudiosGetRequest {
+  id: string
+}
+
 export interface CoachAvatarsCreateRequest {
   body: object
+}
+
+export interface CoachAvatarsGetRequest {
+  id: string
 }
 
 export interface CoachCommentsCreateRequest {
@@ -306,6 +320,101 @@ export class RanklabApi extends runtime.BaseAPI {
 
   /**
    */
+  async coachAudiosCreateRaw(
+    requestParameters: CoachAudiosCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Audio>> {
+    if (
+      requestParameters.createAudioRequest === null ||
+      requestParameters.createAudioRequest === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "createAudioRequest",
+        "Required parameter requestParameters.createAudioRequest was null or undefined when calling coachAudiosCreate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/coach/audios`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.createAudioRequest,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAudiosCreate(
+    requestParameters: CoachAudiosCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Audio> {
+    const response = await this.coachAudiosCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachAudiosGetRaw(
+    requestParameters: CoachAudiosGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Audio>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling coachAudiosGet."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/audios/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAudiosGet(
+    requestParameters: CoachAudiosGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Audio> {
+    const response = await this.coachAudiosGetRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
   async coachAvatarsCreateRaw(
     requestParameters: CoachAvatarsCreateRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction
@@ -381,6 +490,52 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<StatusResponse> {
     const response = await this.coachAvatarsDeleteRaw(initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachAvatarsGetRaw(
+    requestParameters: CoachAvatarsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Avatar>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling coachAvatarsGet."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/avatars/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAvatarsGet(
+    requestParameters: CoachAvatarsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Avatar> {
+    const response = await this.coachAvatarsGetRaw(
+      requestParameters,
+      initOverrides
+    )
     return await response.value()
   }
 

@@ -19,7 +19,7 @@ import {
 import {
   CreateRecordingRequest,
   Recording as ApiRecording,
-  RecordingState,
+  MediaState,
 } from "@ranklab/api"
 import { useState } from "react"
 import { Controller } from "react-hook-form"
@@ -167,7 +167,7 @@ const RecordingForm = ({
             id: recording.id,
           })
 
-          if (updatedRecording.state !== RecordingState.Created) {
+          if (updatedRecording.state !== MediaState.Created) {
             return true
           }
 
@@ -176,7 +176,6 @@ const RecordingForm = ({
           }
 
           await new Promise((resolve) => setTimeout(resolve, 1000))
-
           return waitForRecordingUploaded(retries - 1)
         }
 
@@ -223,7 +222,7 @@ const RecordingForm = ({
                 {recordings.map((recording) => (
                   <MenuItem key={recording.id} value={recording.id}>
                     <Stack direction="row" spacing={2}>
-                      {recording.state === RecordingState.Processed ? (
+                      {recording.state === MediaState.Processed ? (
                         <NextImage
                           src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
                           width={100}

@@ -23,7 +23,7 @@ import {
   Tabs,
   useTheme,
 } from "@mui/material"
-import { Game, Coach } from "@ranklab/api"
+import { Game, Coach, MediaState } from "@ranklab/api"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
@@ -128,6 +128,32 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         url: avatar.uploadUrl,
         headers,
       })
+
+      const avatarId = avatar.id
+
+      const poll = async (retries = 10): Promise<boolean> => {
+        const avatar = await api.coachAvatarsGet({ id: avatarId })
+
+        if (avatar.state === MediaState.Processed) {
+          return true
+        }
+
+        if (retries === 0) {
+          return false
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        return await poll(retries - 1)
+      }
+
+      if (!(await poll())) {
+        enqueueSnackbar(
+          "An error occurred while uploading your avatar. Please try again.",
+          {
+            variant: "error",
+          }
+        )
+      }
     } else if (initialCoach.avatarImageKey && !coach.avatarImageKey) {
       await api.coachAvatarsDelete()
     }

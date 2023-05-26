@@ -14,7 +14,7 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material"
-import { Game, Recording, RecordingState } from "@ranklab/api"
+import { Game, Recording, MediaState } from "@ranklab/api"
 import { useState } from "react"
 import { assertFind } from "@/assert"
 import { useGameDependency } from "@/hooks/useGameDependency"
@@ -66,7 +66,7 @@ export const RecordingList = ({ recordings, games }: Props) => {
               </TableCell>
               <TableCell align="right" width={300}>
                 <Stack direction="row" spacing={1} justifyContent="end">
-                  {recording.state === RecordingState.Processed ? (
+                  {recording.state === MediaState.Processed ? (
                     <Button
                       variant="outlined"
                       color="secondary"

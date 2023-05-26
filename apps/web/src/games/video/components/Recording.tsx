@@ -2,7 +2,7 @@ import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
 import { VideoPlayer, VideoPlayerRef } from "./VideoPlayer"
 import { Stack, Typography } from "@mui/material"
-import { Recording as ApiRecording, RecordingState } from "@ranklab/api"
+import { Recording as ApiRecording, MediaState } from "@ranklab/api"
 import { CSSProperties, PropsWithChildren, RefObject } from "react"
 
 export interface RecordingProps {
@@ -23,7 +23,7 @@ export const VideoRecording = ({
   onPlay,
   onSeeked,
 }: PropsWithChildren<RecordingProps & Props>) => {
-  if (recording.state === RecordingState.Processed) {
+  if (recording.state === MediaState.Processed) {
     return (
       <VideoPlayer
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
