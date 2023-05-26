@@ -66,7 +66,13 @@ export const LoginPage = ({ userType }: Props) => {
   }
 
   return (
-    <BasicLayout title="Sign in to Ranklab">
+    <BasicLayout
+      title={
+        userType === "player"
+          ? "Sign in to Ranklab"
+          : "Sign in to Ranklab as a coach"
+      }
+    >
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography sx={{ color: "text.secondary" }}>
