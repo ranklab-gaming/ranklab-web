@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import mixpanel from "mixpanel-browser"
 import { mixpanelProjectToken, nodeEnv, intercomAppId } from "@/config"
 import { useRouter } from "next/router"
@@ -15,6 +15,7 @@ import { track } from "@/analytics"
 import { IntercomProvider, useIntercom } from "react-use-intercom"
 
 const clientSideEmotionCache = createEmotionCache()
+let iubendaLoaded = false
 let mixpanelInitialized = false
 
 export interface AppProps extends NextAppProps {
@@ -33,101 +34,112 @@ const Content = ({
   const { boot: bootIntercom, hardShutdown: shutdownIntercom } = useIntercom()
   const router = useRouter()
 
+  const handlePreferenceExpressed = useRef<((preference: any) => void) | null>(
+    null
+  )
+
   useEffect(() => {
     if (!intercomAppId && !mixpanelProjectToken) {
       return
     }
 
-    // Create a global _iub object
-    window._iub = window._iub || []
-    window._iub.csConfiguration = {
-      askConsentAtCookiePolicyUpdate: true,
-      countryDetection: true,
-      enableLgpd: true,
-      enableUspr: true,
-      lang: "en",
-      lgpdAppliesGlobally: false,
-      perPurposeConsent: true,
-      siteId: 2925659,
-      cookiePolicyId: 88772361,
-      localConsentDomainExact:
-        nodeEnv === "development" ? "http://ranklab-web:3000" : undefined,
-      banner: {
-        acceptButtonColor: "#7635DC",
-        acceptButtonDisplay: true,
-        backgroundColor: "#212B36",
-        closeButtonDisplay: false,
-        customizeButtonDisplay: true,
-        explicitWithdrawal: true,
-        listPurposes: true,
-        logo: null,
-        position: "float-bottom-center",
-        rejectButtonColor: "#000000",
-        rejectButtonDisplay: true,
-        showPurposesToggles: true,
-      },
-      callback: {
-        onPreferenceExpressed: function (preference: any) {
-          // analytics purpose
-          if (
-            preference.purposes[4] &&
-            mixpanelProjectToken &&
-            !mixpanelInitialized
-          ) {
-            // Initialize Mixpanel.
-            mixpanel.init(mixpanelProjectToken, {
-              debug: nodeEnv === "development",
-            })
+    handlePreferenceExpressed.current = (preference) => {
+      // analytics purpose
+      if (preference.purposes[4]) {
+        if (mixpanelProjectToken && !mixpanelInitialized) {
+          // Initialize Mixpanel.
+          mixpanel.init(mixpanelProjectToken, {
+            debug: nodeEnv === "development",
+          })
 
-            mixpanelInitialized = true
-          } else if (mixpanelProjectToken && mixpanelInitialized) {
-            mixpanel.disable()
-            mixpanelInitialized = false
-          }
+          mixpanelInitialized = true
+        }
+      } else {
+        if (mixpanelProjectToken && mixpanelInitialized) {
+          mixpanel.disable()
+        }
+      }
 
-          // marketing purpose
-          if (preference.purposes[5] && intercomAppId) {
-            setShouldInitializeIntercom(true)
-          } else {
-            setShouldInitializeIntercom(false)
-          }
-        },
-      },
+      // marketing purpose
+      if (preference.purposes[5]) {
+        if (intercomAppId) {
+          setShouldInitializeIntercom(true)
+        }
+      } else {
+        if (intercomAppId) {
+          setShouldInitializeIntercom(false)
+        }
+      }
     }
 
-    // Create script for stub.js
-    const scriptStub = document.createElement("script")
-    scriptStub.type = "text/javascript"
-    scriptStub.src = "//cdn.iubenda.com/cs/gpp/stub.js"
-    document.body.appendChild(scriptStub)
-
-    // Create script for iubenda_cs.js
-    const scriptIubenda = document.createElement("script")
-    scriptIubenda.type = "text/javascript"
-    scriptIubenda.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
-    scriptIubenda.setAttribute("charset", "UTF-8")
-    scriptIubenda.async = true
-    document.body.appendChild(scriptIubenda)
-
-    if (mixpanelProjectToken) {
-      const handleRouteChange = (url: string) => {
-        track("Page view", { url })
+    if (!iubendaLoaded) {
+      // Create a global _iub object
+      window._iub = window._iub || []
+      window._iub.csConfiguration = {
+        askConsentAtCookiePolicyUpdate: true,
+        countryDetection: true,
+        enableLgpd: true,
+        enableUspr: true,
+        lang: "en",
+        lgpdAppliesGlobally: false,
+        perPurposeConsent: true,
+        siteId: 2925659,
+        cookiePolicyId: 88772361,
+        localConsentDomainExact:
+          nodeEnv === "development" ? "http://ranklab-web:3000" : undefined,
+        banner: {
+          acceptButtonColor: "#7635DC",
+          acceptButtonDisplay: true,
+          backgroundColor: "#212B36",
+          closeButtonDisplay: false,
+          customizeButtonDisplay: true,
+          explicitWithdrawal: true,
+          listPurposes: true,
+          logo: null,
+          position: "float-bottom-center",
+          rejectButtonColor: "#000000",
+          rejectButtonDisplay: true,
+          showPurposesToggles: true,
+        },
+        callback: {
+          onPreferenceExpressed: function (preference: any) {
+            handlePreferenceExpressed.current?.(preference)
+          },
+        },
       }
 
-      handleRouteChange(router.basePath + router.asPath)
-      router.events.on("routeChangeComplete", handleRouteChange)
+      // Create script for stub.js
+      const scriptStub = document.createElement("script")
+      scriptStub.type = "text/javascript"
+      scriptStub.src = "//cdn.iubenda.com/cs/gpp/stub.js"
+      document.body.appendChild(scriptStub)
 
-      return () => {
-        router.events.off("routeChangeComplete", handleRouteChange)
-      }
+      // Create script for iubenda_cs.js
+      const scriptIubenda = document.createElement("script")
+      scriptIubenda.type = "text/javascript"
+      scriptIubenda.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
+      scriptIubenda.setAttribute("charset", "UTF-8")
+      scriptIubenda.async = true
+      document.body.appendChild(scriptIubenda)
+
+      iubendaLoaded = true
+    }
+
+    const handleRouteChange = (url: string) => {
+      track("Page view", { url })
+    }
+
+    handleRouteChange(router.basePath + router.asPath)
+    router.events.on("routeChangeComplete", handleRouteChange)
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange)
     }
   }, [
-    bootIntercom,
     router.asPath,
     router.basePath,
     router.events,
     setShouldInitializeIntercom,
-    shutdownIntercom,
   ])
 
   useEffect(() => {
@@ -190,6 +202,7 @@ export default function App({
                 appId={intercomAppId ?? ""}
                 shouldInitialize={shouldInitializeIntercom}
                 autoBoot
+                key={shouldInitializeIntercom ? "intercom" : "intercom-off"}
               >
                 <Content
                   Component={Component}
