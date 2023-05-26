@@ -9,9 +9,10 @@ import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
 import { useEffect } from "react"
 import mixpanel from "mixpanel-browser"
-import { mixpanelProjectToken, nodeEnv } from "@/config"
+import { mixpanelProjectToken, nodeEnv, intercomAppId } from "@/config"
 import { useRouter } from "next/router"
 import { track } from "@/analytics"
+import { IntercomProvider, useIntercom } from "react-use-intercom"
 
 const clientSideEmotionCache = createEmotionCache()
 let mixpanelInitialized = false
@@ -20,26 +21,83 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
-export default function App({
+const Content = ({
   Component,
-  emotionCache = clientSideEmotionCache,
   pageProps,
-}: AppProps) {
+}: Pick<AppProps, "Component" | "pageProps">) => {
+  const { boot: bootIntercom, hardShutdown: shutdownIntercom } = useIntercom()
   const router = useRouter()
 
   useEffect(() => {
+    // Create a global _iub object
+    window._iub = window._iub || []
+    window._iub.csConfiguration = {
+      askConsentAtCookiePolicyUpdate: true,
+      countryDetection: true,
+      enableLgpd: true,
+      enableUspr: true,
+      lang: "en",
+      lgpdAppliesGlobally: false,
+      perPurposeConsent: true,
+      siteId: 2925659,
+      cookiePolicyId: 88772361,
+      localConsentDomainExact: "http://ranklab-web:3000",
+      banner: {
+        acceptButtonColor: "#7635DC",
+        acceptButtonDisplay: true,
+        backgroundColor: "#212B36",
+        closeButtonDisplay: false,
+        customizeButtonDisplay: true,
+        explicitWithdrawal: true,
+        listPurposes: true,
+        logo: null,
+        position: "float-bottom-center",
+        rejectButtonColor: "#000000",
+        rejectButtonDisplay: true,
+        showPurposesToggles: true,
+      },
+      callback: {
+        onPreferenceExpressed: function (preference: any) {
+          if (preference.purposes[4]) {
+            if (mixpanelProjectToken && !mixpanelInitialized) {
+              // Initialize Mixpanel.
+              mixpanel.init(mixpanelProjectToken, {
+                debug: nodeEnv === "development",
+              })
+
+              mixpanelInitialized = true
+            }
+
+            bootIntercom()
+          } else {
+            if (mixpanelProjectToken && mixpanelInitialized) {
+              mixpanel.disable()
+              mixpanelInitialized = false
+            }
+
+            shutdownIntercom()
+          }
+        },
+      },
+    }
+
+    // Create script for stub.js
+    const scriptStub = document.createElement("script")
+    scriptStub.type = "text/javascript"
+    scriptStub.src = "//cdn.iubenda.com/cs/gpp/stub.js"
+    document.body.appendChild(scriptStub)
+
+    // Create script for iubenda_cs.js
+    const scriptIubenda = document.createElement("script")
+    scriptIubenda.type = "text/javascript"
+    scriptIubenda.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
+    scriptIubenda.setAttribute("charset", "UTF-8")
+    scriptIubenda.async = true
+    document.body.appendChild(scriptIubenda)
+
     if (mixpanelProjectToken) {
       const handleRouteChange = (url: string) => {
         track("Page view", { url })
-      }
-
-      if (!mixpanelInitialized) {
-        mixpanel.init(mixpanelProjectToken, {
-          disable_persistence: true,
-          debug: nodeEnv === "development",
-        })
-
-        mixpanelInitialized = true
       }
 
       handleRouteChange(router.basePath + router.asPath)
@@ -49,8 +107,28 @@ export default function App({
         router.events.off("routeChangeComplete", handleRouteChange)
       }
     }
-  }, [router.asPath, router.basePath, router.events])
+  }, [
+    bootIntercom,
+    router.asPath,
+    router.basePath,
+    router.events,
+    shutdownIntercom,
+  ])
 
+  return (
+    <>
+      <CssBaseline />
+      <NextNProgress color={theme.palette.secondary.main} />
+      <Component {...pageProps} />
+    </>
+  )
+}
+
+export default function App({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps,
+}: AppProps) {
   return (
     <>
       <Head>
@@ -84,9 +162,12 @@ export default function App({
         <ThemeProvider theme={theme}>
           <MotionLazyContainer>
             <NotistackProvider>
-              <CssBaseline />
-              <NextNProgress color={theme.palette.secondary.main} />
-              <Component {...pageProps} />
+              <IntercomProvider
+                appId={intercomAppId ?? ""}
+                shouldInitialize={Boolean(intercomAppId)}
+              >
+                <Content Component={Component} pageProps={pageProps} />
+              </IntercomProvider>
             </NotistackProvider>
           </MotionLazyContainer>
         </ThemeProvider>

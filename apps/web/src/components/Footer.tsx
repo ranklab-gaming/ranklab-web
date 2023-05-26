@@ -93,6 +93,20 @@ export const Footer = () => {
                   ))}
                 </Stack>
               ))}
+
+              <Stack spacing={2}>
+                <Typography component="p" variant="overline">
+                  Privacy
+                </Typography>
+                <Link
+                  color="inherit"
+                  variant="body2"
+                  sx={{ display: "block", cursor: "pointer" }}
+                  onClick={() => window._iub.cs.api.openPreferences()}
+                >
+                  Your Privacy Choices
+                </Link>
+              </Stack>
             </Stack>
           </Grid>
         </Grid>

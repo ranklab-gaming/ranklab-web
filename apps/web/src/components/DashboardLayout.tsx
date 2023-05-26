@@ -13,8 +13,6 @@ import {
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
-import { IntercomProvider, useIntercom } from "react-use-intercom"
-import { intercomAppId } from "@/config"
 
 interface MainStyleProps {
   collapsed: boolean
@@ -49,7 +47,7 @@ interface Props {
   fullWidth?: boolean
 }
 
-const Content = ({
+export const DashboardLayout = ({
   children,
   title,
   user,
@@ -109,20 +107,5 @@ const Content = ({
         </Box>
       </Page>
     </UserProvider>
-  )
-}
-
-export const DashboardLayout = ({
-  children,
-  ...props
-}: PropsWithChildren<Props>) => {
-  return (
-    <IntercomProvider
-      appId={intercomAppId ?? ""}
-      autoBoot={Boolean(intercomAppId)}
-      shouldInitialize={Boolean(intercomAppId)}
-    >
-      <Content {...props}>{children}</Content>
-    </IntercomProvider>
   )
 }
