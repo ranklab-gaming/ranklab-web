@@ -8,6 +8,7 @@ import * as yup from "yup"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import mixpanel from "mixpanel-browser"
+import { track } from "@/analytics"
 
 interface Props {
   games: Game[]
@@ -52,7 +53,7 @@ export const PlayerSignupPage = ({ games }: Props) => {
       },
     })
 
-    mixpanel.track("Player signup")
+    track("Player signup")
 
     await login(session.token)
   }

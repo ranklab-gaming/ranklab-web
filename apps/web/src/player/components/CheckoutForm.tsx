@@ -45,6 +45,7 @@ import { assertFind, assertProp } from "@/assert"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import mixpanel from "mixpanel-browser"
+import { track } from "@/analytics"
 
 const cardLogos = {
   amex: americanExpressLogo,
@@ -185,7 +186,7 @@ const Content = ({ review, paymentMethods, games, setReview }: Props) => {
       return
     }
 
-    mixpanel.track("Review payment complete")
+    track("Review payment complete")
     setPolling(true)
   }
 

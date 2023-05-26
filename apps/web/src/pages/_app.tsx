@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import mixpanel from "mixpanel-browser"
 import { mixpanelProjectToken, nodeEnv } from "@/config"
 import { useRouter } from "next/router"
+import { track } from "@/analytics"
 
 const clientSideEmotionCache = createEmotionCache()
 let mixpanelInitialized = false
@@ -29,7 +30,7 @@ export default function App({
   useEffect(() => {
     if (mixpanelProjectToken) {
       const handleRouteChange = (url: string) => {
-        mixpanel.track("Page view", { url })
+        track("Page view", { url })
       }
 
       if (!mixpanelInitialized) {
