@@ -34,7 +34,9 @@ const Content = ({
   const router = useRouter()
 
   useEffect(() => {
-    if (nodeEnv === "test") return
+    if (!intercomAppId && !mixpanelProjectToken) {
+      return
+    }
 
     // Create a global _iub object
     window._iub = window._iub || []

@@ -70,7 +70,7 @@ export default defineConfig({
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
     // },
   ],
-  timeout: 60 * 60 * 1000,
+  timeout: 10 * 60 * 1000,
 
   /* Run your local dev server before starting the tests */
   // webServer: {
