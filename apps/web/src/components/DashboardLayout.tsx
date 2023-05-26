@@ -13,6 +13,7 @@ import {
 import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
+import { useIntercom } from "react-use-intercom"
 
 interface MainStyleProps {
   collapsed: boolean
