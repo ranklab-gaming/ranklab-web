@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
-import { useEffect } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import mixpanel from "mixpanel-browser"
 import { mixpanelProjectToken, nodeEnv, intercomAppId } from "@/config"
 import { useRouter } from "next/router"
@@ -24,11 +24,18 @@ export interface AppProps extends NextAppProps {
 const Content = ({
   Component,
   pageProps,
-}: Pick<AppProps, "Component" | "pageProps">) => {
+  setShouldInitializeIntercom,
+  shouldInitializeIntercom,
+}: Pick<AppProps, "Component" | "pageProps"> & {
+  setShouldInitializeIntercom: Dispatch<SetStateAction<boolean>>
+  shouldInitializeIntercom: boolean
+}) => {
   const { boot: bootIntercom, hardShutdown: shutdownIntercom } = useIntercom()
   const router = useRouter()
 
   useEffect(() => {
+    if (nodeEnv === "test") return
+
     // Create a global _iub object
     window._iub = window._iub || []
     window._iub.csConfiguration = {
@@ -41,7 +48,8 @@ const Content = ({
       perPurposeConsent: true,
       siteId: 2925659,
       cookiePolicyId: 88772361,
-      localConsentDomainExact: "http://ranklab-web:3000",
+      localConsentDomainExact:
+        nodeEnv === "development" ? "http://ranklab-web:3000" : undefined,
       banner: {
         acceptButtonColor: "#7635DC",
         acceptButtonDisplay: true,
@@ -58,24 +66,28 @@ const Content = ({
       },
       callback: {
         onPreferenceExpressed: function (preference: any) {
-          if (preference.purposes[4]) {
-            if (mixpanelProjectToken && !mixpanelInitialized) {
-              // Initialize Mixpanel.
-              mixpanel.init(mixpanelProjectToken, {
-                debug: nodeEnv === "development",
-              })
+          // analytics purpose
+          if (
+            preference.purposes[4] &&
+            mixpanelProjectToken &&
+            !mixpanelInitialized
+          ) {
+            // Initialize Mixpanel.
+            mixpanel.init(mixpanelProjectToken, {
+              debug: nodeEnv === "development",
+            })
 
-              mixpanelInitialized = true
-            }
+            mixpanelInitialized = true
+          } else if (mixpanelProjectToken && mixpanelInitialized) {
+            mixpanel.disable()
+            mixpanelInitialized = false
+          }
 
-            bootIntercom()
+          // marketing purpose
+          if (preference.purposes[5] && intercomAppId) {
+            setShouldInitializeIntercom(true)
           } else {
-            if (mixpanelProjectToken && mixpanelInitialized) {
-              mixpanel.disable()
-              mixpanelInitialized = false
-            }
-
-            shutdownIntercom()
+            setShouldInitializeIntercom(false)
           }
         },
       },
@@ -112,8 +124,15 @@ const Content = ({
     router.asPath,
     router.basePath,
     router.events,
+    setShouldInitializeIntercom,
     shutdownIntercom,
   ])
+
+  useEffect(() => {
+    if (!shouldInitializeIntercom) {
+      shutdownIntercom()
+    }
+  }, [bootIntercom, shouldInitializeIntercom, shutdownIntercom])
 
   return (
     <>
@@ -129,6 +148,9 @@ export default function App({
   emotionCache = clientSideEmotionCache,
   pageProps,
 }: AppProps) {
+  const [shouldInitializeIntercom, setShouldInitializeIntercom] =
+    useState(false)
+
   return (
     <>
       <Head>
@@ -164,9 +186,15 @@ export default function App({
             <NotistackProvider>
               <IntercomProvider
                 appId={intercomAppId ?? ""}
-                shouldInitialize={Boolean(intercomAppId)}
+                shouldInitialize={shouldInitializeIntercom}
+                autoBoot
               >
-                <Content Component={Component} pageProps={pageProps} />
+                <Content
+                  Component={Component}
+                  pageProps={pageProps}
+                  setShouldInitializeIntercom={setShouldInitializeIntercom}
+                  shouldInitializeIntercom={shouldInitializeIntercom}
+                />
               </IntercomProvider>
             </NotistackProvider>
           </MotionLazyContainer>
