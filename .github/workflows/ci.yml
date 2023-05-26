@@ -86,6 +86,7 @@ jobs:
             NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.TEST_NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
             SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
+            NODE_ENV=test
       - name: Start containers
         env:
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
