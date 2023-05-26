@@ -9,7 +9,6 @@ import * as yup from "yup"
 import { Controller } from "react-hook-form"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
-import mixpanel from "mixpanel-browser"
 import { track } from "@/analytics"
 
 interface Props {

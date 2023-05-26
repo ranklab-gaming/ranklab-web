@@ -44,7 +44,6 @@ import { StripeElements } from "@/player/components/StripeElements"
 import { assertFind, assertProp } from "@/assert"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { useGameDependency } from "@/hooks/useGameDependency"
-import mixpanel from "mixpanel-browser"
 import { track } from "@/analytics"
 
 const cardLogos = {
