@@ -15,7 +15,7 @@ import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { UseFormReturn } from "react-hook-form"
 import { LoadingButton } from "@mui/lab"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useRef, useState } from "react"
 import { CommentFormValues } from "@/coach/components/ReviewForm"
 
 export interface ToolbarProps {
@@ -28,6 +28,9 @@ export interface ToolbarProps {
   onCommentingChange: (commenting: boolean) => void
   onCommentSelect: (comment: Comment | null) => void
   onCommentsChange: (comments: Comment[]) => void
+  onPreviewAudioURLChange: (url: string) => void
+  editingAudio: boolean
+  onEditingAudioChange: (editingAudio: boolean) => void
 }
 
 export const Toolbar = ({
@@ -41,10 +44,16 @@ export const Toolbar = ({
   onCommentingChange,
   children,
   review,
+  onPreviewAudioURLChange,
+  editingAudio,
+  onEditingAudioChange,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
   const { enqueueSnackbar } = useSnackbar()
-  const editing = inEditing || commenting || selectedComment
+  const [recordingAudio, setRecordingAudio] = useState(false)
+  const editing = inEditing || commenting || selectedComment || editingAudio
+  const mediaRecorder = useRef<MediaRecorder | null>(null)
+  let chunks: Blob[] = []
 
   const deleteComment = async () => {
     if (!selectedComment) return
@@ -59,6 +68,44 @@ export const Toolbar = ({
 
     onCommentSelect(null)
     onCommentsChange(comments.filter((c) => c.id !== selectedComment.id))
+  }
+
+  const startRecordingAudio = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    mediaRecorder.current = new MediaRecorder(stream)
+    let mimeType: string | undefined
+
+    mediaRecorder.current.onstart = () => {
+      setRecordingAudio(true)
+      mimeType = mediaRecorder.current?.mimeType
+    }
+
+    mediaRecorder.current.ondataavailable = (e) => {
+      chunks.push(e.data)
+    }
+
+    mediaRecorder.current.onstop = async () => {
+      setRecordingAudio(false)
+
+      const blob = new Blob(chunks, { type: mimeType })
+      const url = URL.createObjectURL(blob)
+
+      onPreviewAudioURLChange(url)
+
+      form.setValue("audio", blob, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+
+      chunks = []
+    }
+
+    mediaRecorder.current.start()
+  }
+
+  const stopRecordingAudio = () => {
+    mediaRecorder.current?.stop()
   }
 
   return (
@@ -86,6 +133,50 @@ export const Toolbar = ({
               <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
             </IconButton>
           </Tooltip>
+          <Tooltip title="Record Audio Clip">
+            <IconButton
+              onClick={() => {
+                onEditingAudioChange(!editingAudio)
+              }}
+              sx={editingAudio ? { color: theme.palette.secondary.main } : {}}
+            >
+              <Iconify icon="eva:mic-outline" width={22} fontSize={22} />
+            </IconButton>
+          </Tooltip>
+          <AnimatePresence>
+            {editingAudio ? (
+              <Box
+                component={m.div}
+                variants={animateFade().in}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <Tooltip
+                  title={`${recordingAudio ? "Stop" : "Start"} Recording`}
+                >
+                  <IconButton
+                    onClick={() => {
+                      if (recordingAudio) {
+                        stopRecordingAudio()
+                      } else {
+                        startRecordingAudio()
+                      }
+                    }}
+                    sx={{
+                      color: recordingAudio ? theme.palette.error.main : {},
+                    }}
+                  >
+                    <Iconify
+                      icon="eva:radio-button-on-fill"
+                      width={22}
+                      fontSize={22}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            ) : null}
+          </AnimatePresence>
           {children}
           {selectedComment ? (
             <Tooltip title="Delete">

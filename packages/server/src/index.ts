@@ -5,6 +5,8 @@ import * as next from "next"
 import nextEnv from "@next/env"
 import pino = require("pino-http")
 import type { Options as PinoOptions } from "pino-http"
+import * as fs from "fs"
+import * as https from "https"
 
 const { loadEnvConfig } = nextEnv
 
@@ -16,6 +18,7 @@ export default async () => {
   const { port, host } = await import("./config.js")
   const { hostname } = host
   const { getOidcProvider } = await import("./oidc/provider.js")
+  const localHttps = dev && host.protocol === "https:"
 
   const pinoOptions: PinoOptions = {
     serializers: {
@@ -32,13 +35,13 @@ export default async () => {
     },
     ...(dev
       ? {
-          transport: {
-            target: "pino-pretty",
-            options: {
-              colorize: true,
-            },
+        transport: {
+          target: "pino-pretty",
+          options: {
+            colorize: true,
           },
-        }
+        },
+      }
       : {}),
   }
 
@@ -76,7 +79,15 @@ export default async () => {
 
   app.use(xrayExpress.closeSegment())
 
-  app.listen(port, () => {
+  const options = {
+    key: fs.readFileSync('.certs/key.pem'),
+    cert: fs.readFileSync('.certs/cert.pem')
+  };
+
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = localHttps ? "0" : "1"
+  const server = localHttps ? https.createServer(options, app) : app
+
+  server.listen(port, () => {
     console.log("Listening on port", port, "url: " + host.origin)
   })
 }

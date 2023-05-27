@@ -1,5 +1,7 @@
-import { Stack, Typography, Box } from "@mui/material"
-import { Comment } from "@ranklab/api"
+import { Iconify } from "@/components/Iconify"
+import { uploadsCdnUrl } from "@/config"
+import { Stack, Typography, Box, Tooltip } from "@mui/material"
+import { Comment, MediaState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { PropsWithChildren } from "react"
 
@@ -46,41 +48,56 @@ export const CommentListItem = ({
             <Box flexGrow={1} />
           )}
         </AnimatePresence>
+        {comment.audio ? (
+          <Box>
+            <Tooltip title="Audio Clip">
+              <Iconify icon="eva:mic-outline" width={24} height={24} />
+            </Tooltip>
+          </Box>
+        ) : null}
         {children}
       </Stack>
       {comment.body ? (
         <AnimatePresence>
           {selected ? (
-            <Typography
-              variant="body1"
-              key="body"
-              component={m.div}
-              variants={{
-                initial: {
-                  opacity: 0,
-                  height: 0,
-                },
-                animate: {
-                  opacity: 1,
-                  height: "auto",
-                },
-                exit: {
-                  height: 0,
-                  padding: 0,
-                  margin: 0,
-                  opacity: 0,
-                },
-              }}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: comment.body,
+            <Stack spacing={1}>
+              {comment.audio?.state === MediaState.Processed ? (
+                <audio
+                  controls
+                  src={`${uploadsCdnUrl}/${comment.audio.audioKey}`}
+                />
+              ) : null}
+              <Typography
+                variant="body1"
+                key="body"
+                component={m.div}
+                variants={{
+                  initial: {
+                    opacity: 0,
+                    height: 0,
+                  },
+                  animate: {
+                    opacity: 1,
+                    height: "auto",
+                  },
+                  exit: {
+                    height: 0,
+                    padding: 0,
+                    margin: 0,
+                    opacity: 0,
+                  },
                 }}
-              />
-            </Typography>
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: comment.body,
+                  }}
+                />
+              </Typography>
+            </Stack>
           ) : null}
         </AnimatePresence>
       ) : null}

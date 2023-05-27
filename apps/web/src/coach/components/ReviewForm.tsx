@@ -1,10 +1,11 @@
 import { assertProp } from "@/assert"
 import {
   Comment,
-  CreateCommentRequest,
   Game,
+  MediaState,
   Review,
   ReviewState,
+  Audio,
 } from "@ranklab/api"
 import * as yup from "yup"
 import { api } from "@/api"
@@ -13,6 +14,7 @@ import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { UseFormReturn } from "react-hook-form"
 import { ReviewDetails } from "@/components/ReviewDetails"
 import { CommentList } from "./ReviewForm/CommentList"
+import { useUpload } from "@/games/video/hooks/useUpload"
 
 interface Props {
   review: Review
@@ -30,10 +32,16 @@ interface Props {
 export const CommentFormSchema = yup.object().shape({
   body: yup.string().defined(),
   metadata: yup.mixed().defined(),
+  audio: yup.mixed(),
 })
 
 export type CommentFormSchema = typeof CommentFormSchema
-export type CommentFormValues = yup.InferType<typeof CommentFormSchema>
+
+export interface CommentFormValues {
+  body: string
+  metadata: any
+  audio?: Blob
+}
 
 export const ReviewForm = ({
   review,
@@ -47,6 +55,7 @@ export const ReviewForm = ({
   selectedComment,
   onCommentsChange,
 }: Props) => {
+  const [upload] = useUpload()
   const player = assertProp(review, "player")
   const sortedComments = comments.sort(compareComments)
 
@@ -67,16 +76,72 @@ export const ReviewForm = ({
 
   const saveComment = async (values: CommentFormValues) => {
     let comment: Comment
+    let audio: Audio | null = selectedComment?.audio || null
 
-    const params: CreateCommentRequest = {
-      reviewId: review.id,
-      body: values.body,
-      metadata: values.metadata,
+    if (values.audio instanceof Blob) {
+      audio = await api.coachAudiosCreate({
+        createAudioRequest: {
+          reviewId: review.id,
+        },
+      })
+
+      const uploadUrl = assertProp(audio, "uploadUrl")
+
+      const headers: Record<string, string> = {
+        "x-amz-acl": "public-read",
+      }
+
+      if (audio.instanceId) {
+        headers["x-amz-meta-instance-id"] = audio.instanceId
+      }
+
+      await upload({
+        file: new File([values.audio], "audio", {
+          type: values.audio.type,
+        }),
+        url: uploadUrl,
+        headers,
+      })
+
+      const audioId = audio.id
+
+      const waitForAudioProcessed = async (retries = 20): Promise<boolean> => {
+        const updatedAudio = await api.coachAudiosGet({
+          id: audioId,
+        })
+
+        if (updatedAudio.state === MediaState.Processed) {
+          return true
+        }
+
+        if (retries === 0) {
+          return false
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        return waitForAudioProcessed(retries - 1)
+      }
+
+      if (!(await waitForAudioProcessed())) {
+        enqueueSnackbar(
+          "There was an error processing your audio. Please try again.",
+          {
+            variant: "error",
+          }
+        )
+
+        return
+      }
     }
 
     if (!selectedComment) {
       comment = await api.coachCommentsCreate({
-        createCommentRequest: params,
+        createCommentRequest: {
+          reviewId: review.id,
+          body: values.body,
+          metadata: values.metadata,
+          audioId: audio?.id,
+        },
       })
     } else {
       comment = await api.coachCommentsUpdate({
@@ -84,6 +149,7 @@ export const ReviewForm = ({
         updateCommentRequest: {
           body: values.body,
           metadata: values.metadata,
+          audioId: audio?.id,
         },
       })
     }

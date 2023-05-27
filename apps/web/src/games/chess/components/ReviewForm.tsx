@@ -22,6 +22,7 @@ const CommentFormSchema = BaseCommentFormSchema.test(
   (value) => {
     return (
       value.body ||
+      value.audio ||
       (value.metadata as any).chess.move ||
       (value.metadata as any).chess.shapes
     )
@@ -61,6 +62,10 @@ const ReviewForm = ({
     setCommenting,
     review,
     setReview,
+    previewAudioURL,
+    setPreviewAudioURL,
+    editingAudio,
+    setEditingAudio,
   } = useReviewFormState(form, initialComments, initialReview)
 
   const handleCommentSelect = (comment: Comment | null) => {
@@ -104,6 +109,10 @@ const ReviewForm = ({
           onCommentsChange={setComments}
           onCommentSelect={handleCommentSelect}
           selectedComment={selectedComment}
+          previewAudioURL={previewAudioURL}
+          onPreviewAudioURLChange={setPreviewAudioURL}
+          editingAudio={editingAudio}
+          onEditingAudioChange={setEditingAudio}
         >
           <ChessBoard
             recording={recording}

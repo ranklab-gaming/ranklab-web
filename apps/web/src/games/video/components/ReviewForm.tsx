@@ -23,7 +23,7 @@ const CommentFormSchema = BaseCommentFormSchema.test(
   "valid",
   "Body or drawing must be present",
   (value) => {
-    return value.body || (value.metadata as any).video.drawing
+    return value.body || value.audio || (value.metadata as any).video.drawing
   }
 )
 
@@ -58,6 +58,10 @@ const ReviewForm = ({
     setCommenting,
     review,
     setReview,
+    previewAudioURL,
+    setPreviewAudioURL,
+    editingAudio,
+    setEditingAudio,
   } = useReviewFormState(form, initialComments, initialReview)
 
   const handleCommentSelect = (comment: Comment | null, shouldPause = true) => {
@@ -108,6 +112,10 @@ const ReviewForm = ({
             selectedComment={selectedComment}
             drawing={drawing}
             onDrawingChange={setDrawing}
+            previewAudioURL={previewAudioURL}
+            onPreviewAudioURLChange={setPreviewAudioURL}
+            editingAudio={editingAudio}
+            onEditingAudioChange={setEditingAudio}
           />
         ) : (
           <Box

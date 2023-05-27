@@ -32,6 +32,10 @@ interface Props {
   drawing: boolean
   onDrawingChange: (drawing: boolean) => void
   review: Review
+  previewAudioURL: string | null
+  onPreviewAudioURLChange: (url: string | null) => void
+  editingAudio: boolean
+  onEditingAudioChange: (editingAudio: boolean) => void
 }
 
 export const colors = [
@@ -58,6 +62,10 @@ export const Recording = ({
   drawing,
   onDrawingChange,
   review,
+  previewAudioURL,
+  onPreviewAudioURLChange,
+  editingAudio,
+  onEditingAudioChange,
 }: Props) => {
   const [color, setColor] = useState<Color>("primary")
   const [resizing, setResizing] = useState(false)
@@ -106,6 +114,10 @@ export const Recording = ({
       selectedComment={selectedComment}
       editing={drawing}
       review={review}
+      previewAudioURL={previewAudioURL}
+      onPreviewAudioURLChange={onPreviewAudioURLChange}
+      editingAudio={editingAudio}
+      onEditingAudioChange={onEditingAudioChange}
       toolbarElement={
         <Toolbar
           color={color}
