@@ -20,7 +20,7 @@ import { StripeElements } from "@/player/components/StripeElements"
 import { BillingDetails } from "@ranklab/api"
 import { useState } from "react"
 import { SessionReview } from "@/session"
-import { Stepper } from "@/player/reviews/new/components/Stepper"
+import { Stepper } from "@/player/review-request/components/Stepper"
 
 interface Props {
   billingDetails: BillingDetails
