@@ -3,29 +3,17 @@ import { Color, colors } from "../ReviewForm/Recording"
 import { Iconify } from "@/components/Iconify"
 import { Stack, IconButton, useTheme, Tooltip } from "@mui/material"
 import { RefObject } from "react"
-import { Comment, Review } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
-import { UseFormReturn } from "react-hook-form"
-import { CommentFormValues } from "@/coach/reviews/components/ShowPage"
-import { Toolbar as BaseToolbar } from "@/components/Toolbar"
 import { VideoPlayerRef } from "../VideoPlayer"
 
 interface Props {
   color: Color
   onColorChange: (color: Color) => void
   drawingRef: RefObject<DrawingRef>
-  selectedComment: Comment | null
-  comments: Comment[]
-  commenting: boolean
   drawing: boolean
-  form: UseFormReturn<CommentFormValues>
-  onCommentingChange: (commenting: boolean) => void
-  onCommentSelect: (comment: Comment | null) => void
-  onCommentsChange: (comments: Comment[]) => void
   videoRef: RefObject<VideoPlayerRef>
   onDrawingChange: (drawing: boolean) => void
-  review: Review
 }
 
 export const Toolbar = ({
@@ -35,29 +23,11 @@ export const Toolbar = ({
   drawing,
   onDrawingChange,
   videoRef,
-  commenting,
-  comments,
-  form,
-  onCommentSelect,
-  onCommentingChange,
-  onCommentsChange,
-  selectedComment,
-  review,
 }: Props) => {
   const theme = useTheme()
 
   return (
-    <BaseToolbar
-      review={review}
-      editing={drawing || commenting}
-      commenting={commenting}
-      comments={comments}
-      form={form}
-      onCommentSelect={onCommentSelect}
-      onCommentingChange={onCommentingChange}
-      onCommentsChange={onCommentsChange}
-      selectedComment={selectedComment}
-    >
+    <>
       <Tooltip title="Draw">
         <IconButton
           onClick={() => {
@@ -111,6 +81,6 @@ export const Toolbar = ({
           </Stack>
         ) : null}
       </AnimatePresence>
-    </BaseToolbar>
+    </>
   )
 }

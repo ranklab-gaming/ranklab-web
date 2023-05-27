@@ -13,10 +13,10 @@ import { api } from "@/api"
 import { Comment, Review, ReviewState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
-import { CommentFormValues } from "@/coach/reviews/components/ShowPage"
 import { UseFormReturn } from "react-hook-form"
 import { LoadingButton } from "@mui/lab"
 import { PropsWithChildren } from "react"
+import { CommentFormValues } from "@/coach/components/ReviewForm"
 
 export interface ToolbarProps {
   selectedComment: Comment | null
