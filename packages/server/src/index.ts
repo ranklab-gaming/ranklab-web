@@ -79,13 +79,17 @@ export default async () => {
 
   app.use(xrayExpress.closeSegment())
 
-  const options = {
-    key: fs.readFileSync('.certs/key.pem'),
-    cert: fs.readFileSync('.certs/cert.pem')
-  };
+  let server: express.Express | https.Server = app
 
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = localHttps ? "0" : "1"
-  const server = localHttps ? https.createServer(options, app) : app
+  if (localHttps) {
+    const options = {
+      key: fs.readFileSync('.certs/key.pem'),
+      cert: fs.readFileSync('.certs/cert.pem')
+    };
+
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = localHttps ? "0" : "1"
+    server = https.createServer(options, app)
+  }
 
   server.listen(port, () => {
     console.log("Listening on port", port, "url: " + host.origin)
