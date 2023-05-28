@@ -11,17 +11,17 @@ interface Props {
   color: Color
   onColorChange: (color: Color) => void
   drawingRef: RefObject<DrawingRef>
-  drawing: boolean
+  editingDrawing: boolean
   videoRef: RefObject<VideoPlayerRef>
-  onDrawingChange: (drawing: boolean) => void
+  onEditingDrawingChange: (editingDrawing: boolean) => void
 }
 
 export const Toolbar = ({
   color,
   drawingRef,
   onColorChange,
-  drawing,
-  onDrawingChange,
+  editingDrawing,
+  onEditingDrawingChange,
   videoRef,
 }: Props) => {
   const theme = useTheme()
@@ -31,16 +31,16 @@ export const Toolbar = ({
       <Tooltip title="Draw">
         <IconButton
           onClick={() => {
-            onDrawingChange(!drawing)
+            onEditingDrawingChange(!editingDrawing)
             videoRef.current?.pause()
           }}
-          sx={drawing ? { color: theme.palette.secondary.main } : {}}
+          sx={editingDrawing ? { color: theme.palette.secondary.main } : {}}
         >
           <Iconify icon="mdi:pencil" width={22} fontSize={22} />
         </IconButton>
       </Tooltip>
       <AnimatePresence mode="popLayout">
-        {drawing ? (
+        {editingDrawing ? (
           <Stack
             direction="row"
             alignItems="center"

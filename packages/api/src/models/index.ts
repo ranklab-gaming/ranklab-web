@@ -73,7 +73,7 @@ export interface Audio {
    * @type {string}
    * @memberof Audio
    */
-  audioKey: string
+  audioKey?: string | null
   /**
    *
    * @type {string}

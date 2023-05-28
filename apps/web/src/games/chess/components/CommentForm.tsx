@@ -1,40 +1,20 @@
-import { assertProp } from "@/assert"
 import { ChessBoard, ChessBoardRef } from "./ChessBoard"
-import { ReviewFormProps } from "@/games/video/components/ReviewForm"
+import { CommentFormProps } from "@/games/video/components/CommentForm"
 import { useRef, useState } from "react"
-import { useForm } from "@/hooks/useForm"
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { Comment } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { Box, FormHelperText, useTheme } from "@mui/material"
 import { animateFade } from "@/animate/fade"
 import { Controller } from "react-hook-form"
 import { Editor } from "@/components/Editor"
-import { CommentFormSchema as BaseCommentFormSchema } from "@/coach/components/ReviewForm"
-import { ReviewForm as BaseReviewForm } from "@/coach/components/ReviewForm"
-import { Recording } from "@/coach/components/ReviewForm/Recording"
-import { useReviewFormState } from "@/coach/hooks/useReviewFormState"
+import { useCommentForm } from "@/coach/hooks/useCommentForm"
+import { CommentForm as BaseCommentForm } from "@/coach/components/CommentForm"
+import { Recording } from "@/coach/components/CommentForm/Recording"
 
-const CommentFormSchema = BaseCommentFormSchema.test(
-  "valid",
-  "Body or move/shape must be present",
-  (value) => {
-    return (
-      value.body ||
-      value.audio ||
-      (value.metadata as any).chess.move ||
-      (value.metadata as any).chess.shapes
-    )
-  }
-)
-
-const ReviewForm = ({
+const CommentForm = ({
   review: initialReview,
   comments: initialComments,
   games,
-}: ReviewFormProps) => {
-  const recording = assertProp(initialReview, "recording")
+}: CommentFormProps) => {
   const chessBoardRef = useRef<ChessBoardRef>(null)
   const theme = useTheme()
 
@@ -43,77 +23,41 @@ const ReviewForm = ({
     height: 0,
   })
 
-  const form = useForm({
-    resolver: yupResolver<yup.ObjectSchema<any>>(CommentFormSchema),
-    defaultValues: {
-      body: "",
-      metadata: {
-        chess: {},
-      } as any,
+  const commentForm = useCommentForm({
+    games,
+    review: initialReview,
+    comments: initialComments,
+    validate(values) {
+      return values.metadata.chess.move || values.metadata.chess.shapes
+    },
+    defaultMetadata: {
+      chess: {},
+    },
+    compareComments: (a, b) =>
+      (a.metadata.chess.move?.ply ?? 0) - (b.metadata.chess.move?.ply ?? 0),
+    onCommentSelect: (comment) => {
+      if (comment) {
+        if (comment.metadata.chess.move) {
+          chessBoardRef.current?.move(comment.metadata.chess.move)
+
+          if (comment.metadata.chess.shapes) {
+            chessBoardRef.current?.setShapes(comment.metadata.chess.shapes)
+          }
+        }
+      } else {
+        chessBoardRef.current?.setShapes([])
+      }
     },
   })
 
-  const {
-    commenting,
-    selectedComment,
-    setSelectedComment,
-    comments,
-    setComments,
-    setCommenting,
-    review,
-    setReview,
-    previewAudioURL,
-    setPreviewAudioURL,
-    editingAudio,
-    setEditingAudio,
-  } = useReviewFormState(form, initialComments, initialReview)
-
-  const handleCommentSelect = (comment: Comment | null) => {
-    if (comment) {
-      if (comment.metadata.chess.move) {
-        chessBoardRef.current?.move(comment.metadata.chess.move)
-
-        if (comment.metadata.chess.shapes) {
-          chessBoardRef.current?.setShapes(comment.metadata.chess.shapes)
-        }
-      }
-    } else {
-      chessBoardRef.current?.setShapes([])
-    }
-
-    setSelectedComment(comment)
-  }
-
+  const { form, recording, editingText } = commentForm
   const metadata = form.watch("metadata") as any
 
   return (
-    <BaseReviewForm
-      review={review}
-      onReviewChange={setReview}
-      games={games}
-      comments={comments}
-      form={form}
-      onCommentSelect={handleCommentSelect}
-      onCommentsChange={setComments}
-      selectedComment={selectedComment}
-      compareComments={(a, b) =>
-        (a.metadata.chess.move?.ply ?? 0) - (b.metadata.chess.move?.ply ?? 0)
-      }
+    <BaseCommentForm
+      commentForm={commentForm}
       recordingElement={
-        <Recording
-          commenting={commenting}
-          comments={comments}
-          review={review}
-          form={form}
-          onCommentingChange={setCommenting}
-          onCommentsChange={setComments}
-          onCommentSelect={handleCommentSelect}
-          selectedComment={selectedComment}
-          previewAudioURL={previewAudioURL}
-          onPreviewAudioURLChange={setPreviewAudioURL}
-          editingAudio={editingAudio}
-          onEditingAudioChange={setEditingAudio}
-        >
+        <Recording commentForm={commentForm}>
           <ChessBoard
             recording={recording}
             onMove={(move) => {
@@ -137,10 +81,10 @@ const ReviewForm = ({
                 chess,
               })
             }}
-            allowNavigation={!commenting}
+            allowNavigation={!editingText}
           >
             <AnimatePresence mode="popLayout">
-              {commenting ? (
+              {editingText ? (
                 <div
                   style={{
                     position: "absolute",
@@ -207,4 +151,4 @@ const ReviewForm = ({
   )
 }
 
-export default ReviewForm
+export default CommentForm

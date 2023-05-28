@@ -1,27 +1,20 @@
-import { Review, ReviewState, Comment } from "@ranklab/api"
+import { ReviewState } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { api } from "@/api"
 import { CommentList as BaseCommentList } from "@/components/CommentList"
 import { MessageBox } from "@/components/MessageBox"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import { CommentForm } from "@/coach/hooks/useCommentForm"
 
 interface Props {
-  review: Review
-  comments: Comment[]
-  onCommentSelect: (comment: Comment | null) => void
-  onReviewChange: (review: Review) => void
-  selectedComment: Comment | null
+  commentForm: CommentForm
 }
 
-export const CommentList = ({
-  review,
-  comments,
-  onReviewChange,
-  selectedComment,
-  onCommentSelect,
-}: Props) => {
+export const CommentList = ({ commentForm }: Props) => {
   const { enqueueSnackbar } = useSnackbar()
   const emptyCommentsText = useGameDependency("text:empty-comments-text")
+  const { review, comments, selectedComment, setReview, setSelectedComment } =
+    commentForm
 
   const startReview = async () => {
     const updatedReview = await api.coachReviewsUpdate({
@@ -35,7 +28,7 @@ export const CommentList = ({
       variant: "success",
     })
 
-    onReviewChange(updatedReview)
+    setReview(updatedReview)
   }
 
   if (review.state === ReviewState.AwaitingReview) {
@@ -110,7 +103,7 @@ export const CommentList = ({
     <BaseCommentList
       comments={comments}
       selectedComment={selectedComment}
-      onCommentSelect={onCommentSelect}
+      onCommentSelect={setSelectedComment}
     />
   )
 }

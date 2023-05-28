@@ -1,8 +1,7 @@
 import { uploadsCdnUrl } from "@/config"
 import { Box, FormHelperText, alpha } from "@mui/material"
-import { Recording as ApiRecording, Comment, Review } from "@ranklab/api"
 import { RefObject, useEffect, useRef, useState } from "react"
-import { Controller, UseFormReturn } from "react-hook-form"
+import { Controller } from "react-hook-form"
 import { debounce } from "lodash"
 import { Drawing, DrawingRef } from "./Drawing"
 import { Toolbar } from "./Toolbar"
@@ -11,8 +10,9 @@ import { theme } from "@/theme/theme"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { VideoPlayerRef, VideoPlayer } from "../VideoPlayer"
-import { CommentFormValues } from "@/coach/components/ReviewForm"
-import { Recording as BaseRecording } from "@/coach/components/ReviewForm/Recording"
+import { CommentForm } from "@/coach/hooks/useCommentForm"
+import { Recording as BaseRecording } from "@/coach/components/CommentForm/Recording"
+import { Comment } from "@ranklab/api"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -20,22 +20,11 @@ if (typeof window !== "undefined") {
 }
 
 interface Props {
-  commenting: boolean
-  comments: Comment[]
-  form: UseFormReturn<CommentFormValues>
-  onCommentSelect: (comment: Comment | null, shouldPause?: boolean) => void
-  onCommentingChange: (commenting: boolean) => void
-  onCommentsChange: (comments: Comment[]) => void
-  recording: ApiRecording
-  selectedComment: Comment | null
+  commentForm: CommentForm
   videoRef: RefObject<VideoPlayerRef>
-  drawing: boolean
-  onDrawingChange: (drawing: boolean) => void
-  review: Review
-  previewAudioURL: string | null
-  onPreviewAudioURLChange: (url: string | null) => void
-  editingAudio: boolean
-  onEditingAudioChange: (editingAudio: boolean) => void
+  editingDrawing: boolean
+  onEditingDrawingChange: (editingDrawing: boolean) => void
+  onCommentSelect: (comment: Comment | null, shouldPause: boolean) => void
 }
 
 export const colors = [
@@ -50,27 +39,17 @@ export const colors = [
 export type Color = (typeof colors)[number]
 
 export const Recording = ({
-  recording,
   videoRef,
-  form,
-  commenting,
-  onCommentingChange,
-  comments,
-  onCommentsChange,
-  selectedComment,
+  commentForm,
+  editingDrawing,
+  onEditingDrawingChange,
   onCommentSelect,
-  drawing,
-  onDrawingChange,
-  review,
-  previewAudioURL,
-  onPreviewAudioURLChange,
-  editingAudio,
-  onEditingAudioChange,
 }: Props) => {
   const [color, setColor] = useState<Color>("primary")
   const [resizing, setResizing] = useState(false)
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
+  const { form, recording, editingText } = commentForm
   const metadata = form.watch("metadata") as any
 
   useEffect(() => {
@@ -85,10 +64,12 @@ export const Recording = ({
       handleResize()
     })
 
+    window.addEventListener("resize", handleResize)
     resizeObserver.observe(boxRef.current)
     handleResize()
 
     return () => {
+      window.removeEventListener("resize", handleResize)
       resizeObserver.disconnect()
     }
   }, [])
@@ -105,27 +86,16 @@ export const Recording = ({
 
   return (
     <BaseRecording
-      commenting={commenting}
-      comments={comments}
-      form={form}
-      onCommentSelect={onCommentSelect}
-      onCommentingChange={onCommentingChange}
-      onCommentsChange={onCommentsChange}
-      selectedComment={selectedComment}
-      editing={drawing}
-      review={review}
-      previewAudioURL={previewAudioURL}
-      onPreviewAudioURLChange={onPreviewAudioURLChange}
-      editingAudio={editingAudio}
-      onEditingAudioChange={onEditingAudioChange}
+      commentForm={commentForm}
+      ref={boxRef}
       toolbarElement={
         <Toolbar
           color={color}
           onColorChange={setColor}
           drawingRef={drawingRef}
-          drawing={drawing}
+          editingDrawing={editingDrawing}
           videoRef={videoRef}
-          onDrawingChange={onDrawingChange}
+          onEditingDrawingChange={onEditingDrawingChange}
         />
       }
     >
@@ -133,11 +103,11 @@ export const Recording = ({
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
         onTimeUpdate={setTimestamp}
         onSeeked={(time) => {
-          onCommentSelect(null)
+          onCommentSelect(null, true)
           setTimestamp(time)
         }}
         onPause={(time) => {
-          onCommentSelect(null)
+          onCommentSelect(null, true)
           setTimestamp(time)
         }}
         onPlay={(time) => {
@@ -145,9 +115,9 @@ export const Recording = ({
           setTimestamp(time)
         }}
         ref={videoRef}
-        controls={!drawing}
+        controls={!editingDrawing}
       >
-        {drawing && !resizing ? (
+        {editingDrawing && !resizing ? (
           <Drawing
             color={color}
             value={metadata.video.drawing}
@@ -172,7 +142,7 @@ export const Recording = ({
           />
         ) : null}
         <AnimatePresence mode="popLayout">
-          {commenting ? (
+          {editingText ? (
             <Box
               sx={{
                 position: "absolute",

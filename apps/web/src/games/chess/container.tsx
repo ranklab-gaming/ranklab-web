@@ -2,7 +2,7 @@ import { default as CommentListItem } from "./components/CommentListItem"
 import { default as Recording } from "./components/Recording"
 import { default as RecordingForm } from "./components/RecordingForm"
 import { default as ReviewDetails } from "./components/ReviewDetails"
-import { default as ReviewForm } from "./components/ReviewForm"
+import { default as CommentForm } from "./components/CommentForm"
 import { Iconify } from "@/components/Iconify"
 
 export default {
@@ -10,7 +10,7 @@ export default {
   "component:recording": Recording,
   "component:recording-form": RecordingForm,
   "component:review-details": ReviewDetails,
-  "component:review-form": ReviewForm,
+  "component:comment-form": CommentForm,
   "component:recording-icon": <Iconify icon="mdi:checkerboard" />,
   "text:recording-step": "Paste a PGN",
   "text:request-review-button": "Submit your PGN",

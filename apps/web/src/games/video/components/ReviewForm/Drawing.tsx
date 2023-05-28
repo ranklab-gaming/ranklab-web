@@ -1,7 +1,7 @@
 import { animateFade } from "@/animate/fade"
 import { useSvgDrawing } from "@svg-drawing/react"
 import { m } from "framer-motion"
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react"
+import { forwardRef, useEffect, useImperativeHandle } from "react"
 import { Color } from "./Recording"
 import { Box, useTheme } from "@mui/material"
 import drawCursor from "@/images/cursors/draw.png"
@@ -21,7 +21,6 @@ export interface DrawingRef {
 export const Drawing = forwardRef<DrawingRef, DrawingProps>(
   ({ color, value, onChange }, ref) => {
     const theme = useTheme()
-    const shouldDisableChange = useRef(false)
 
     const [renderRef, draw] = useSvgDrawing({
       penWidth: 3,
@@ -29,7 +28,7 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
       delay: 100,
     })
 
-    function getSvgXml() {
+    const getSvgXml = () => {
       const svg = draw.getSvgXML() || "<svg></svg>"
       const svgElement = new DOMParser().parseFromString(svg, "image/svg+xml")
 
@@ -43,6 +42,10 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
       svgElement.documentElement.removeAttribute("height")
       svgElement.documentElement.removeAttribute("width")
 
+      if (!width || !height) {
+        return null
+      }
+
       svgElement.documentElement.setAttribute(
         "viewBox",
         `0 0 ${width} ${height}`
@@ -52,11 +55,6 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
     }
 
     useEffect(() => {
-      if (shouldDisableChange.current) {
-        shouldDisableChange.current = false
-        return
-      }
-
       if (value !== getSvgXml()) {
         draw.ref.current?.svg.parseSVGString(value || "<svg></svg>")
         draw.ref.current?.update()
@@ -65,32 +63,23 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
     }, [value])
 
     useEffect(() => {
-      const initObserver = () => {
-        const callback = () => {
-          const svg = getSvgXml()
+      const observer = new MutationObserver(() => {
+        const svg = getSvgXml()
 
-          if (svg !== value) {
-            shouldDisableChange.current = true
-            onChange(svg)
-          }
+        if (svg !== null && svg !== value) {
+          onChange(svg)
         }
+      })
 
-        const observer = new MutationObserver(callback)
-
-        if (renderRef.current) {
-          observer.observe(renderRef.current, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-          })
-        }
-
-        return () => observer.disconnect()
+      if (renderRef.current) {
+        observer.observe(renderRef.current, {
+          attributes: true,
+          childList: true,
+          subtree: true,
+        })
       }
 
-      const cleanup = initObserver()
-
-      return () => cleanup()
+      return () => observer.disconnect()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

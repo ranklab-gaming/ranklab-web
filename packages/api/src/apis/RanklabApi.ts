@@ -63,6 +63,10 @@ export interface CoachAudiosCreateRequest {
   createAudioRequest: CreateAudioRequest
 }
 
+export interface CoachAudiosDeleteRequest {
+  id: string
+}
+
 export interface CoachAudiosGetRequest {
   id: string
 }
@@ -361,6 +365,52 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Audio> {
     const response = await this.coachAudiosCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async coachAudiosDeleteRaw(
+    requestParameters: CoachAudiosDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling coachAudiosDelete."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/coach/audios/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async coachAudiosDelete(
+    requestParameters: CoachAudiosDeleteRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.coachAudiosDeleteRaw(
       requestParameters,
       initOverrides
     )

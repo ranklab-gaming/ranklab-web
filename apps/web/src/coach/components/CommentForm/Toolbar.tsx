@@ -8,105 +8,38 @@ import {
   Tooltip,
 } from "@mui/material"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
-import { useSnackbar } from "notistack"
-import { api } from "@/api"
-import { Comment, Review, ReviewState } from "@ranklab/api"
+import { ReviewState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
-import { UseFormReturn } from "react-hook-form"
 import { LoadingButton } from "@mui/lab"
-import { PropsWithChildren, useRef, useState } from "react"
-import { CommentFormValues } from "@/coach/components/ReviewForm"
+import { PropsWithChildren } from "react"
+import { CommentForm } from "@/coach/hooks/useCommentForm"
 
 export interface ToolbarProps {
-  selectedComment: Comment | null
-  comments: Comment[]
-  commenting: boolean
-  editing?: boolean
-  review: Review
-  form: UseFormReturn<CommentFormValues>
-  onCommentingChange: (commenting: boolean) => void
-  onCommentSelect: (comment: Comment | null) => void
-  onCommentsChange: (comments: Comment[]) => void
-  onPreviewAudioURLChange: (url: string) => void
-  editingAudio: boolean
-  onEditingAudioChange: (editingAudio: boolean) => void
+  commentForm: CommentForm
 }
 
 export const Toolbar = ({
-  onCommentsChange,
-  onCommentSelect,
-  selectedComment,
-  comments,
-  commenting,
-  form,
-  editing: inEditing,
-  onCommentingChange,
+  commentForm,
   children,
-  review,
-  onPreviewAudioURLChange,
-  editingAudio,
-  onEditingAudioChange,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
-  const { enqueueSnackbar } = useSnackbar()
-  const [recordingAudio, setRecordingAudio] = useState(false)
-  const editing = inEditing || commenting || selectedComment || editingAudio
-  const mediaRecorder = useRef<MediaRecorder | null>(null)
-  let chunks: Blob[] = []
 
-  const deleteComment = async () => {
-    if (!selectedComment) return
-
-    await api.coachCommentsDelete({
-      id: selectedComment.id,
-    })
-
-    enqueueSnackbar("Comment deleted successfully.", {
-      variant: "success",
-    })
-
-    onCommentSelect(null)
-    onCommentsChange(comments.filter((c) => c.id !== selectedComment.id))
-  }
-
-  const startRecordingAudio = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    mediaRecorder.current = new MediaRecorder(stream)
-    let mimeType: string | undefined
-
-    mediaRecorder.current.onstart = () => {
-      setRecordingAudio(true)
-      mimeType = mediaRecorder.current?.mimeType
-    }
-
-    mediaRecorder.current.ondataavailable = (e) => {
-      chunks.push(e.data)
-    }
-
-    mediaRecorder.current.onstop = async () => {
-      setRecordingAudio(false)
-
-      const blob = new Blob(chunks, { type: mimeType })
-      const url = URL.createObjectURL(blob)
-
-      onPreviewAudioURLChange(url)
-
-      form.setValue("audio", blob, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
-
-      chunks = []
-    }
-
-    mediaRecorder.current.start()
-  }
-
-  const stopRecordingAudio = () => {
-    mediaRecorder.current?.stop()
-  }
+  const {
+    review,
+    setEditingText,
+    editingText,
+    setEditingAudio,
+    editingAudio,
+    recordingAudio,
+    startRecordingAudio,
+    stopRecordingAudio,
+    selectedComment,
+    deleteComment,
+    editing,
+    setSelectedComment,
+    form,
+  } = commentForm
 
   return (
     <AnimatePresence>
@@ -126,9 +59,9 @@ export const Toolbar = ({
           <Tooltip title="Comment">
             <IconButton
               onClick={() => {
-                onCommentingChange(!commenting)
+                setEditingText(!editingText)
               }}
-              sx={commenting ? { color: theme.palette.secondary.main } : {}}
+              sx={editingText ? { color: theme.palette.secondary.main } : {}}
             >
               <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
             </IconButton>
@@ -136,7 +69,7 @@ export const Toolbar = ({
           <Tooltip title="Record Audio Clip">
             <IconButton
               onClick={() => {
-                onEditingAudioChange(!editingAudio)
+                setEditingAudio(!editingAudio)
               }}
               sx={editingAudio ? { color: theme.palette.secondary.main } : {}}
             >
@@ -214,7 +147,7 @@ export const Toolbar = ({
                       },
                     }}
                     onClick={() => {
-                      onCommentSelect(null)
+                      setSelectedComment(null)
                     }}
                   >
                     Cancel

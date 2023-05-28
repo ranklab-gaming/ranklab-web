@@ -17,7 +17,7 @@ export const CoachReviewsShowPage = ({
   games,
 }: PropsWithUser<Props>) => {
   const recording = assertProp(review, "recording")
-  const ReviewForm = useGameDependency("component:review-form", user.gameId)
+  const CommentForm = useGameDependency("component:comment-form", user.gameId)
 
   return (
     <DashboardLayout
@@ -26,7 +26,7 @@ export const CoachReviewsShowPage = ({
       showTitle={false}
       fullWidth
     >
-      <ReviewForm review={review} comments={comments} games={games} />
+      <CommentForm review={review} comments={comments} games={games} />
     </DashboardLayout>
   )
 }
