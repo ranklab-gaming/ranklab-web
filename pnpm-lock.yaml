@@ -70,10 +70,10 @@ importers:
         version: 7.53.1(next@13.4.4)(react@18.2.0)
       '@stripe/react-stripe-js':
         specifier: 2.1.0
-        version: 2.1.0(@stripe/stripe-js@1.53.0)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.1.0(@stripe/stripe-js@1.54.0)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
-        specifier: 1.53.0
-        version: 1.53.0
+        specifier: 1.54.0
+        version: 1.54.0
       '@svg-drawing/react':
         specifier: 4.2.5
         version: 4.2.5(react@18.2.0)
@@ -1833,21 +1833,21 @@ packages:
     dependencies:
       tslib: 2.5.0
 
-  /@stripe/react-stripe-js@2.1.0(@stripe/stripe-js@1.53.0)(react-dom@18.2.0)(react@18.2.0):
+  /@stripe/react-stripe-js@2.1.0(@stripe/stripe-js@1.54.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-Zb6Ycrj5QuhYkvtlvvLzo+cysUyA6wkx3zWHQ7uVnHRYRM/n1jtQD6VGBrdmptC8e8PJN6L091gBCyB5P0FqmA==}
     peerDependencies:
       '@stripe/stripe-js': ^1.44.1
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@stripe/stripe-js': 1.53.0
+      '@stripe/stripe-js': 1.54.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@stripe/stripe-js@1.53.0:
-    resolution: {integrity: sha512-qhhAa5WxlgVqh1J41ppyqqQVu6S1T1Q9lDAk2Ho9eI/GjrkMvAHcJpKqhekJRsZ1vjsK4P68PYOcXBXPyNCpnQ==}
+  /@stripe/stripe-js@1.54.0:
+    resolution: {integrity: sha512-nElTXkS+nMfDNMkWfLmyeqHQfMGJ1JjrjAVMibV61Oc/rYdUv0cKRYCi1l4ivZ5SySB3vQLcLolxbKBkbNznZA==}
     dev: false
 
   /@svg-drawing/animation@4.2.5:
