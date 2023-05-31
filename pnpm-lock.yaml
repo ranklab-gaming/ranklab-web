@@ -128,6 +128,9 @@ importers:
       react-quill:
         specifier: 2.0.0
         version: 2.0.0(react-dom@18.2.0)(react@18.2.0)
+      react-social-icons:
+        specifier: ^5.15.0
+        version: 5.15.0(react@18.2.0)
       react-stickynode:
         specifier: 4.1.0
         version: 4.1.0(react-dom@18.2.0)(react@18.2.0)
@@ -4928,6 +4931,15 @@ packages:
       quill: 1.3.7
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-social-icons@5.15.0(react@18.2.0):
+    resolution: {integrity: sha512-khfDgUiUwEBe34T6br2+mkXQg3hLVDdviVjexxZoVCsogMgxTy/m8+KlX/j6Wa7P2BPxgZ7yZ2jXw3X06pUUFQ==}
+    peerDependencies:
+      react: 15.x.x || 16.x.x || 17.x.x || 18.x.x
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
     dev: false
 
   /react-stickynode@4.1.0(react-dom@18.2.0)(react@18.2.0):

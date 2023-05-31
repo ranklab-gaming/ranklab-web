@@ -615,16 +615,10 @@ export interface CreateReviewRequest {
 export interface CreateSessionRequest {
   /**
    *
-   * @type {string}
+   * @type {Credentials}
    * @memberof CreateSessionRequest
    */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateSessionRequest
-   */
-  password: string
+  credentials: Credentials
   /**
    *
    * @type {UserType}
@@ -644,6 +638,38 @@ export interface CreateSessionResponse {
    * @memberof CreateSessionResponse
    */
   token: string
+}
+/**
+ * @type Credentials
+ *
+ * @export
+ */
+export type Credentials = CredentialsOneOf | CredentialsOneOf1
+/**
+ *
+ * @export
+ * @interface CredentialsOneOf
+ */
+export interface CredentialsOneOf {
+  /**
+   *
+   * @type {PasswordCredentials}
+   * @memberof CredentialsOneOf
+   */
+  password: PasswordCredentials
+}
+/**
+ *
+ * @export
+ * @interface CredentialsOneOf1
+ */
+export interface CredentialsOneOf1 {
+  /**
+   *
+   * @type {TokenCredentials}
+   * @memberof CredentialsOneOf1
+   */
+  token: TokenCredentials
 }
 /**
  *
@@ -750,6 +776,25 @@ export interface PaginatedResultForReview {
    * @memberof PaginatedResultForReview
    */
   count: number
+}
+/**
+ *
+ * @export
+ * @interface PasswordCredentials
+ */
+export interface PasswordCredentials {
+  /**
+   *
+   * @type {string}
+   * @memberof PasswordCredentials
+   */
+  email: string
+  /**
+   *
+   * @type {string}
+   * @memberof PasswordCredentials
+   */
+  password: string
 }
 /**
  *
@@ -1073,6 +1118,19 @@ export interface StatusResponse {
    * @memberof StatusResponse
    */
   status: string
+}
+/**
+ *
+ * @export
+ * @interface TokenCredentials
+ */
+export interface TokenCredentials {
+  /**
+   *
+   * @type {string}
+   * @memberof TokenCredentials
+   */
+  token: string
 }
 /**
  *

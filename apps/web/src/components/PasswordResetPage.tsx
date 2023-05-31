@@ -54,7 +54,7 @@ export const PasswordResetPage = ({ token }: Props) => {
     <BasicLayout title="Reset Your Password">
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={3} sx={{ maxWidth: 480 }}>
+          <Stack spacing={3}>
             <Controller
               name="password"
               control={control}
@@ -76,7 +76,7 @@ export const PasswordResetPage = ({ token }: Props) => {
             type="submit"
             variant="contained"
             loading={isSubmitting}
-            sx={{ maxWidth: 480, mt: 2 }}
+            sx={{ mt: 2 }}
           >
             Change Password
           </LoadingButton>

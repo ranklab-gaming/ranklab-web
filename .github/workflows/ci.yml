@@ -98,6 +98,8 @@ jobs:
           RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET: ${{ secrets.RANKLAB_STRIPE_DIRECT_WEBHOOKS_SECRET }}
           RANKLAB_STRIPE_SECRET: ${{ secrets.RANKLAB_STRIPE_SECRET }}
           RANKLAB_INSTANCE_ID: ${{ steps.generate-instance-id.outputs.RANKLAB_INSTANCE_ID }}
+          TWITCH_CLIENT_ID: ${{ secrets.TEST_TWITCH_CLIENT_ID }}
+          TWITCH_CLIENT_SECRET: ${{ secrets.TEST_TWITCH_CLIENT_SECRET }}
         run: docker compose -f .github/docker-compose.yml up -d
       - name: Setup DynamoDB
         run: NODE_ENV=test ./bin/setup-dynamodb
