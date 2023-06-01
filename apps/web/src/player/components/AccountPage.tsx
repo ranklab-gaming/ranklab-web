@@ -52,6 +52,7 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
 
   const defaultValues: FormValues = {
     gameId: player.gameId,
+    email: player.email,
     skillLevel: player.skillLevel,
     name: player.name,
     emailsEnabled: player.emailsEnabled,
@@ -64,9 +65,7 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(
-      AccountFieldsSchemaWithoutPassword
-    ),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
 

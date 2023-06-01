@@ -20,7 +20,6 @@ export const AccountFieldsSchema = yup.object().shape({
 
 export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
   "password",
-  "email",
 ])
 
 export type AccountFieldsValues = yup.InferType<typeof AccountFieldsSchema>

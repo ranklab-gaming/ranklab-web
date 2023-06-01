@@ -77,6 +77,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     bio: coach.bio,
     name: coach.name,
     gameId: coach.gameId,
+    email: coach.email,
     price: (coach.price / 100).toFixed(2),
     emailsEnabled: coach.emailsEnabled,
   }
@@ -88,9 +89,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(
-      AccountFieldsSchemaWithoutPassword
-    ),
+    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
 
