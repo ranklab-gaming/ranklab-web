@@ -15,12 +15,13 @@ export default async () => {
 
   loadEnvConfig("./", dev)
 
-  const { port, host } = await import("./config.js")
+  const { port, host, logLevel } = await import("./config.js")
   const { hostname } = host
   const { getOidcProvider } = await import("./oidc/provider.js")
   const localHttps = dev && host.protocol === "https:"
 
   const pinoOptions: PinoOptions = {
+    level: logLevel,
     serializers: {
       req: (req) => ({
         id: req.id,
@@ -35,13 +36,13 @@ export default async () => {
     },
     ...(dev
       ? {
-        transport: {
-          target: "pino-pretty",
-          options: {
-            colorize: true,
+          transport: {
+            target: "pino-pretty",
+            options: {
+              colorize: true,
+            },
           },
-        },
-      }
+        }
       : {}),
   }
 
@@ -83,9 +84,9 @@ export default async () => {
 
   if (localHttps) {
     const options = {
-      key: fs.readFileSync('.certs/key.pem'),
-      cert: fs.readFileSync('.certs/cert.pem')
-    };
+      key: fs.readFileSync(".certs/key.pem"),
+      cert: fs.readFileSync(".certs/cert.pem"),
+    }
 
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = localHttps ? "0" : "1"
     server = https.createServer(options, app)

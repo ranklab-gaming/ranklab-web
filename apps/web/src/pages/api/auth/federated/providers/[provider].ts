@@ -7,12 +7,7 @@ export default withSessionApiRoute(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { provider: providerQuery } = req.query
-
-  const provider = Array.isArray(providerQuery)
-    ? providerQuery[0]
-    : providerQuery ?? ""
-
+  const provider = req.query.provider as string
   const client = await getClient(provider)
 
   if (!client) {
@@ -37,10 +32,10 @@ export default withSessionApiRoute(async function handler(
     scope: config.scope,
     code_challenge: codeChallenge,
     code_challenge_method: "S256",
-    state: req.query.user_type as string,
     claims: {
       userinfo: {
         email: null,
+        preferred_username: null,
       },
     },
   })

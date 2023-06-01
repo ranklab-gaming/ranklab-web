@@ -19,6 +19,7 @@ const callback = withSessionApiRoute(async function (
   try {
     tokenSet = await client.callback(`${host}/api/auth/callback`, params, {
       code_verifier: codeVerifier,
+      state: params.state,
     })
   } catch (error) {
     if (

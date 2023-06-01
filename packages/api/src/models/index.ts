@@ -416,16 +416,10 @@ export interface CreateCoachRequest {
   name: string
   /**
    *
-   * @type {string}
+   * @type {Credentials}
    * @memberof CreateCoachRequest
    */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  password: string
+  credentials: Credentials
   /**
    *
    * @type {string}
@@ -528,16 +522,10 @@ export interface CreatePlayerRequest {
   name: string
   /**
    *
-   * @type {string}
+   * @type {Credentials}
    * @memberof CreatePlayerRequest
    */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreatePlayerRequest
-   */
-  password: string
+  credentials: Credentials
   /**
    *
    * @type {string}
@@ -1149,12 +1137,6 @@ export interface UpdateCoachRequest {
    * @type {string}
    * @memberof UpdateCoachRequest
    */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateCoachRequest
-   */
   bio: string
   /**
    *
@@ -1219,12 +1201,6 @@ export interface UpdatePlayerRequest {
    * @memberof UpdatePlayerRequest
    */
   name: string
-  /**
-   *
-   * @type {string}
-   * @memberof UpdatePlayerRequest
-   */
-  email: string
   /**
    *
    * @type {string}

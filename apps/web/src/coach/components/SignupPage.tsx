@@ -1,5 +1,9 @@
 import { api } from "@/api"
-import { AccountFields, AccountFieldsSchema } from "./AccountFields"
+import {
+  AccountFields,
+  AccountFieldsSchema,
+  AccountFieldsSchemaWithoutPassword,
+} from "./AccountFields"
 import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -10,18 +14,23 @@ import { Controller } from "react-hook-form"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import { track } from "@/analytics"
+import { decode } from "jsonwebtoken"
 
 interface Props {
   games: Game[]
   availableCountries: string[]
   gameId: string | null
+  token?: string
 }
 
-const FormSchema = AccountFieldsSchema.concat(
-  yup.object().shape({
-    country: yup.string().required("Country is required"),
-  })
-)
+const SignupSchema = yup.object().shape({
+  country: yup.string().required("Country is required"),
+})
+
+const FormSchemaWithoutPassword =
+  AccountFieldsSchemaWithoutPassword.concat(SignupSchema)
+
+const FormSchema = AccountFieldsSchema.concat(SignupSchema)
 
 type FormValues = yup.InferType<typeof FormSchema>
 
@@ -29,23 +38,28 @@ export const CoachSignupPage = ({
   games,
   availableCountries,
   gameId,
+  token,
 }: Props) => {
+  const jwt = token ? decode(token) : null
+  const jwtPayload = typeof jwt === "string" ? null : jwt
   const regionNamesInEnglish = new Intl.DisplayNames(["en"], { type: "region" })
   const login = useLogin()
 
   const defaultValues: FormValues = {
     bio: "",
     gameId: gameId ?? "",
-    name: "",
+    name: jwtPayload?.name ?? "",
     country: "US",
-    email: "",
+    email: jwtPayload?.sub ?? "",
     password: "",
     price: "10.00",
   }
 
   const form = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver<yup.ObjectSchema<any>>(
+      jwtPayload ? FormSchemaWithoutPassword : FormSchema
+    ),
     defaultValues,
   })
 
@@ -64,8 +78,16 @@ export const CoachSignupPage = ({
         bio: data.bio,
         gameId: data.gameId,
         country: data.country,
-        email: data.email,
-        password: data.password,
+        credentials: token
+          ? {
+              token: { token },
+            }
+          : {
+              password: {
+                password: data.password,
+                email: data.email,
+              },
+            },
         price: Number(data.price) * 100,
       },
     })

@@ -9,12 +9,14 @@ export function requireEnv(name: string, value: string | undefined): string {
 const port = parseInt(process.env.PORT || "3000", 10)
 const host = new URL(process.env.HOST || "http://localhost:3000")
 const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
-const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
+const awsSecretAccessKey =
+  process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
 const dynamoDbEndpoint = process.env.DYNAMODB_ENDPOINT
 const cookieSecret = requireEnv("COOKIE_SECRET", process.env.COOKIE_SECRET)
 const rawAuthJwks = requireEnv("AUTH_JWKS", process.env.AUTH_JWKS)
 const authJwks = JSON.parse(Buffer.from(rawAuthJwks, "base64").toString("utf8"))
 const authIssuer = requireEnv("AUTH_ISSUER", process.env.AUTH_ISSUER)
+const logLevel = process.env.LOG_LEVEL || "info"
 
 const authClientSecret = requireEnv(
   "AUTH_CLIENT_SECRET",
@@ -31,4 +33,5 @@ export {
   authJwks,
   authIssuer,
   authClientSecret,
+  logLevel,
 }

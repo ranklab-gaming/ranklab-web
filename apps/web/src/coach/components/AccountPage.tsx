@@ -76,7 +76,6 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const defaultValues: FormValues = {
     bio: coach.bio,
     name: coach.name,
-    email: coach.email,
     gameId: coach.gameId,
     price: (coach.price / 100).toFixed(2),
     emailsEnabled: coach.emailsEnabled,
@@ -100,7 +99,6 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       updateCoachRequest: {
         name: data.name,
         bio: data.bio,
-        email: data.email,
         price: Number(data.price) * 100,
         emailsEnabled: data.emailsEnabled,
       },

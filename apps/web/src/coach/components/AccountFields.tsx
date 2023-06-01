@@ -39,42 +39,29 @@ export const AccountFieldsSchema = yup.object().shape({
 
 export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
   "password",
+  "email",
 ])
 
-type FormValuesWithPassword = yup.InferType<typeof AccountFieldsSchema>
+export type AccountFieldsValues = yup.InferType<typeof AccountFieldsSchema>
 
-type FormValuesWithoutPassword = yup.InferType<
-  typeof AccountFieldsSchemaWithoutPassword
->
-
-type FormValues<TWithPassword extends boolean> = TWithPassword extends true
-  ? FormValuesWithPassword
-  : FormValuesWithoutPassword
-
-interface Props<
-  TWithPassword extends boolean,
-  TFormValues extends FormValues<TWithPassword>
-> {
+interface Props {
   games: Game[]
-  control: Control<TFormValues>
-  showPasswordField?: TWithPassword
+  control: Control<any>
+  showPasswordField?: boolean
   gameDisabled?: boolean
 }
 
-export const AccountFields = <
-  TWithPassword extends boolean,
-  TFormValues extends FormValues<TWithPassword>
->({
+export const AccountFields = ({
   control,
   games,
-  showPasswordField = false as TWithPassword,
+  showPasswordField = false,
   gameDisabled = false,
   children,
-}: PropsWithChildren<Props<TWithPassword, TFormValues>>) => {
+}: PropsWithChildren<Props>) => {
   return (
     <>
       <Controller
-        name={"gameId" as Path<TFormValues>}
+        name={"gameId" as Path<AccountFieldsValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <GameSelect
@@ -90,7 +77,7 @@ export const AccountFields = <
       />
       <Stack spacing={2} direction="row" alignItems="center">
         <Controller
-          name={"name" as Path<TFormValues>}
+          name={"name" as Path<AccountFieldsValues>}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <TextField
@@ -109,7 +96,7 @@ export const AccountFields = <
         {children}
       </Stack>
       <Controller
-        name={"email" as Path<TFormValues>}
+        name={"email" as Path<AccountFieldsValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <TextField
@@ -118,12 +105,13 @@ export const AccountFields = <
             label="Email"
             error={Boolean(error)}
             helperText={error ? error?.message : "The email you use to log in"}
+            disabled={!showPasswordField}
           />
         )}
       />
       {showPasswordField ? (
         <Controller
-          name={"password" as Path<TFormValues>}
+          name={"password" as Path<AccountFieldsValues>}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <TextField
@@ -139,7 +127,7 @@ export const AccountFields = <
         />
       ) : null}
       <Controller
-        name={"bio" as Path<TFormValues>}
+        name={"bio" as Path<AccountFieldsValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <Box>
@@ -158,7 +146,7 @@ export const AccountFields = <
         )}
       />
       <Controller
-        name={"price" as Path<TFormValues>}
+        name={"price" as Path<AccountFieldsValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <TextField

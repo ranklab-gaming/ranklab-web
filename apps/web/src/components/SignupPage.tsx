@@ -1,7 +1,6 @@
 import { BasicLayout } from "@/components/BasicLayout"
 import { LoadingButton } from "@mui/lab"
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
@@ -14,6 +13,7 @@ import Sticky from "react-stickynode"
 import { assetsCdnUrl } from "@/config"
 import { FieldValues, UseFormReturn } from "react-hook-form"
 import { useResponsive } from "@/hooks/useResponsive"
+import { SocialButtons } from "./SocialButtons"
 
 interface SignupPageProps<T extends FieldValues> {
   title: string
@@ -50,7 +50,7 @@ export const SignupPage = <T extends FieldValues>({
             <Grid item xs={12} sm={6}>
               <Stack spacing={3}>
                 {children}
-                <Box>
+                <Stack direction="row" spacing={2}>
                   <LoadingButton
                     color="primary"
                     size="large"
@@ -63,7 +63,8 @@ export const SignupPage = <T extends FieldValues>({
                   >
                     Sign up
                   </LoadingButton>
-                </Box>
+                  <SocialButtons sx={{ flexGrow: 0 }} />
+                </Stack>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>

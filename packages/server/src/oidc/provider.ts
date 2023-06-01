@@ -11,12 +11,6 @@ import { Adapter } from "./adapter.js"
 
 let provider: Provider | null = null
 
-class InvalidInteractionParam extends Error {
-  constructor(param: string, value: string) {
-    super(`invalid ${param}: ${value}`)
-  }
-}
-
 const getOidcProvider = async () => {
   if (provider) {
     return provider
@@ -35,20 +29,13 @@ const getOidcProvider = async () => {
     ],
     interactions: {
       url: (_ctx, interaction) => {
-        const intent =
-          (interaction.params.intent as string | undefined) ?? "login"
-        const userType =
-          (interaction.params.user_type as string | undefined) ?? "player"
-        const gameId = interaction.params.game_id as string | undefined
+        const state = JSON.parse(
+          Buffer.from(interaction.params.state as string, "base64").toString(
+            "utf8"
+          )
+        )
 
-        if (!["coach", "player"].includes(userType as string)) {
-          throw new InvalidInteractionParam("user_type", userType)
-        }
-
-        if (!["login", "signup"].includes(intent as string)) {
-          throw new InvalidInteractionParam("intent", intent)
-        }
-
+        const { userType, intent, gameId } = state
         const queryParams = new URLSearchParams()
 
         if (gameId) {
@@ -73,7 +60,6 @@ const getOidcProvider = async () => {
     },
     issueRefreshToken: () => true,
     rotateRefreshToken: () => true,
-    extraParams: ["user_type", "intent", "game_id"],
     async findAccount(_ctx, id) {
       return {
         accountId: id,
@@ -139,10 +125,6 @@ const getOidcProvider = async () => {
 
         errorMessage = error.error
       } else if (error instanceof Error) {
-        if (error instanceof InvalidInteractionParam) {
-          return ctx.redirect("/")
-        }
-
         errorMessage = error.name
       } else {
         errorMessage = error

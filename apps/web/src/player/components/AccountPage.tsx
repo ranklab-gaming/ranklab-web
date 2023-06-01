@@ -54,7 +54,6 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     gameId: player.gameId,
     skillLevel: player.skillLevel,
     name: player.name,
-    email: player.email,
     emailsEnabled: player.emailsEnabled,
   }
 
@@ -77,7 +76,6 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         name: data.name,
         skillLevel: data.skillLevel,
         gameId: data.gameId,
-        email: data.email,
         emailsEnabled: data.emailsEnabled,
       },
     })

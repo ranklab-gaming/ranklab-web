@@ -8,9 +8,27 @@ const signin = withSessionApiRoute(async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const intent = (req.query.intent as string) || "login"
+  const userType = (req.query.user_type as string) || "player"
+
+  if (intent !== "login" && intent !== "signup") {
+    res.status(400).end()
+    return
+  }
+
+  if (userType !== "player" && userType !== "coach") {
+    res.status(400).end()
+    return
+  }
+
+  const gameId = req.query.game_id as string
   const client = await getAuthClient()
   const codeVerifier = generators.codeVerifier()
   const codeChallenge = generators.codeChallenge(codeVerifier)
+
+  const state = Buffer.from(
+    JSON.stringify({ intent, userType, gameId })
+  ).toString("base64")
 
   req.session.codeVerifier = codeVerifier
   req.session.returnUrl = req.query.return_url as string
@@ -21,10 +39,7 @@ const signin = withSessionApiRoute(async function (
     resource: host,
     code_challenge: codeChallenge,
     code_challenge_method: "S256",
-    intent: req.query.intent,
-    user_type: req.query.user_type,
-    token: req.query.token,
-    game_id: req.query.game_id,
+    state,
   })
 
   res.redirect(307, url).end()

@@ -7,7 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import {
   Box,
-  Button,
   IconButton,
   InputAdornment,
   Link,
@@ -20,7 +19,7 @@ import NextLink from "next/link"
 import { useState } from "react"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
-import { SocialIcon } from "react-social-icons"
+import { SocialButtons } from "./SocialButtons"
 
 interface Props {
   userType: UserType
@@ -157,42 +156,7 @@ export const LoginPage = ({ userType }: Props) => {
           </LoadingButton>
         </form>
       </FormProvider>
-      {/* <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        flexGrow={1}
-        mt={3}
-      >
-        <NextLink
-          href={`/api/auth/federated/providers/twitch?user_type=${userType}`}
-          passHref
-          legacyBehavior
-        >
-          <Button
-            aria-label="Sign in with Twitch"
-            size="small"
-            variant="outlined"
-            component="div"
-            sx={{
-              p: 0,
-              minWidth: 40,
-              color: "#fff",
-              borderColor: "#9146FF",
-              "&:hover": {
-                borderColor: "#9146FF",
-              },
-            }}
-          >
-            <SocialIcon
-              network="twitch"
-              bgColor="transparent"
-              fgColor="#fff"
-              style={{ height: 40, width: 40 }}
-            />
-          </Button>
-        </NextLink>
-      </Stack> */}
+      <SocialButtons />
       <Box display="flex" alignItems="center" mt={3}>
         <Typography variant="body2" sx={{ mr: 1 }}>
           Don&apos;t have an account?
