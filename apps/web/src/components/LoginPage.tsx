@@ -161,7 +161,11 @@ export const LoginPage = ({ userType }: Props) => {
         <Typography variant="body2" sx={{ mr: 1 }}>
           Don&apos;t have an account?
         </Typography>
-        <NextLink href={`/${userType}/signup`} passHref legacyBehavior>
+        <NextLink
+          href={`/api/auth/signin?user_type=${userType}&intent=signup`}
+          passHref
+          legacyBehavior
+        >
           <Link component="button" variant="subtitle2">
             Get started
           </Link>
