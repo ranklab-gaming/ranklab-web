@@ -104,6 +104,12 @@ export interface Audio {
    * @memberof Audio
    */
   instanceId?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Audio
+   */
+  transcript?: string | null
 }
 /**
  *

@@ -13,7 +13,7 @@ import { useSnackbar } from "notistack"
 const CommentFormSchema = yup.object().shape({
   body: yup.string().defined(),
   metadata: yup.mixed().defined(),
-  audio: yup.mixed().defined()
+  audio: yup.mixed().defined(),
 })
 
 export interface CommentFormValues {
@@ -87,8 +87,8 @@ export function useCommentForm({
 
     return Boolean(
       values.audio.value ||
-      values.body.length > 0 ||
-      validate(values as CommentFormValues)
+        values.body.length > 0 ||
+        validate(values as CommentFormValues)
     )
   })
 
@@ -99,8 +99,8 @@ export function useCommentForm({
       body: "",
       metadata: defaultMetadata,
       audio: {
-        value: false
-      }
+        value: false,
+      },
     },
   })
 
@@ -115,11 +115,15 @@ export function useCommentForm({
   const removeAudio = () => {
     handlePreviewAudioURLChange(null)
 
-    form.setValue("audio", { value: false }, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    })
+    form.setValue(
+      "audio",
+      { value: false },
+      {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      }
+    )
   }
 
   const startRecordingAudio = async () => {
@@ -143,11 +147,15 @@ export function useCommentForm({
 
       handlePreviewAudioURLChange(url)
 
-      form.setValue("audio", { value: blob }, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
+      form.setValue(
+        "audio",
+        { value: blob },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      )
 
       audioChunks = []
     }
@@ -173,11 +181,15 @@ export function useCommentForm({
         shouldTouch: true,
       })
 
-      form.setValue("audio", { value: Boolean(comment.audio) }, {
-        shouldDirty: true,
-        shouldValidate: true,
-        shouldTouch: true,
-      })
+      form.setValue(
+        "audio",
+        { value: Boolean(comment.audio) },
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+          shouldTouch: true,
+        }
+      )
 
       setEditingAudio(Boolean(comment.audio))
       setEditingText(Boolean(comment.body))
@@ -200,7 +212,7 @@ export function useCommentForm({
 
     if (values.audio.value === true) {
       audio = existingAudio ?? undefined
-    } else if (values.audio instanceof Blob) {
+    } else if (values.audio.value instanceof Blob) {
       audio = await api.coachAudiosCreate({
         createAudioRequest: {
           reviewId: review.id,
@@ -218,8 +230,8 @@ export function useCommentForm({
       }
 
       await upload({
-        file: new File([values.audio], "audio", {
-          type: values.audio.type,
+        file: new File([values.audio.value], "audio", {
+          type: values.audio.value.type,
         }),
         url: uploadUrl,
         headers,
@@ -277,7 +289,6 @@ export function useCommentForm({
         },
       })
     }
-
 
     if (existingAudio && values.audio.value !== true) {
       await api.coachAudiosDelete({

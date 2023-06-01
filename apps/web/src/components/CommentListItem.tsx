@@ -57,7 +57,7 @@ export const CommentListItem = ({
         ) : null}
         {children}
       </Stack>
-      {comment.body ? (
+      {comment.body || comment.audio?.transcript ? (
         <AnimatePresence>
           {selected ? (
             <Stack spacing={1}>
@@ -93,7 +93,11 @@ export const CommentListItem = ({
               >
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: comment.body,
+                    __html:
+                      comment.body ||
+                      (comment.audio?.transcript
+                        ? `<p>${comment.audio.transcript}</p>`
+                        : ""),
                   }}
                 />
               </Typography>
