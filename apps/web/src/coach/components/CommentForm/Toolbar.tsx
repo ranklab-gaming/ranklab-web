@@ -135,7 +135,7 @@ export const Toolbar = ({
                       variants={animateFade().in}
                     >
                       {formatDuration(
-                        (Date.now() - startedRecordingAudioAt.getTime()) / 1000
+                        (now - startedRecordingAudioAt.getTime()) / 1000
                       )}
                     </Typography>
                   ) : null}
