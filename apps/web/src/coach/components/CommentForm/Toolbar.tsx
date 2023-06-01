@@ -6,14 +6,16 @@ import {
   Box,
   Button,
   Tooltip,
+  Typography,
 } from "@mui/material"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { ReviewState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { LoadingButton } from "@mui/lab"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useEffect, useState } from "react"
 import { CommentForm } from "@/coach/hooks/useCommentForm"
+import { formatDuration } from "@/helpers/formatDuration"
 
 export interface ToolbarProps {
   commentForm: CommentForm
@@ -24,6 +26,7 @@ export const Toolbar = ({
   children,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
+  const [now, setNow] = useState(Date.now())
 
   const {
     review,
@@ -39,7 +42,22 @@ export const Toolbar = ({
     editing,
     setSelectedComment,
     form,
+    startedRecordingAudioAt,
   } = commentForm
+
+  useEffect(() => {
+    if (!recordingAudio) {
+      return
+    }
+
+    const interval = setInterval(() => {
+      setNow(Date.now())
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    }
+  }, [recordingAudio])
 
   return (
     <AnimatePresence>
@@ -107,6 +125,21 @@ export const Toolbar = ({
                     />
                   </IconButton>
                 </Tooltip>
+                <AnimatePresence>
+                  {recordingAudio && startedRecordingAudioAt ? (
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      component={m.div}
+                      sx={{ display: "inline-block" }}
+                      variants={animateFade().in}
+                    >
+                      {formatDuration(
+                        (Date.now() - startedRecordingAudioAt.getTime()) / 1000
+                      )}
+                    </Typography>
+                  ) : null}
+                </AnimatePresence>
               </Box>
             ) : null}
           </AnimatePresence>

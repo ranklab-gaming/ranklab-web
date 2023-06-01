@@ -91,15 +91,18 @@ export const CommentListItem = ({
                 animate="animate"
                 exit="exit"
               >
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      comment.body ||
-                      (comment.audio?.transcript
-                        ? `<p>${comment.audio.transcript}</p>`
-                        : ""),
-                  }}
-                />
+                <Stack spacing={2}>
+                  {comment.audio?.transcript ? (
+                    <Typography variant="caption" fontStyle="italic">
+                      {comment.audio.transcript}
+                    </Typography>
+                  ) : null}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: comment.body,
+                    }}
+                  />
+                </Stack>
               </Typography>
             </Stack>
           ) : null}

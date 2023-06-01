@@ -1,7 +1,7 @@
 import { Comment } from "@ranklab/api"
 import { CommentListItem as BaseCommentListItem } from "@/components/CommentListItem"
 import { Box, Tooltip } from "@mui/material"
-import { formatDuration } from "../helpers/formatDuration"
+import { formatDuration } from "@/helpers/formatDuration"
 import { Iconify } from "@/components/Iconify"
 
 export interface CommentListItemProps {

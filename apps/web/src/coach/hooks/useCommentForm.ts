@@ -46,6 +46,7 @@ export interface CommentForm {
   removeAudio: () => void
   editing: boolean
   recording: Recording
+  startedRecordingAudioAt: Date | null
 }
 
 interface Props {
@@ -76,6 +77,8 @@ export function useCommentForm({
   const [previewAudioURL, setPreviewAudioURL] = useState<string | null>(null)
   const [editingAudio, setEditingAudio] = useState(false)
   const [recordingAudio, setRecordingAudio] = useState(false)
+  const [startedRecordingAudioAt, setStartedRecordingAudioAt] =
+    useState<Date | null>(null)
   const sortedComments = [...comments].sort(compareComments)
   const [upload] = useUpload()
   const { enqueueSnackbar } = useSnackbar()
@@ -133,6 +136,7 @@ export function useCommentForm({
 
     mediaRecorder.current.onstart = () => {
       setRecordingAudio(true)
+      setStartedRecordingAudioAt(new Date())
       mimeType = mediaRecorder.current?.mimeType
     }
 
@@ -142,6 +146,7 @@ export function useCommentForm({
 
     mediaRecorder.current.onstop = async () => {
       setRecordingAudio(false)
+      setStartedRecordingAudioAt(null)
       const blob = new Blob(audioChunks, { type: mimeType })
       const url = URL.createObjectURL(blob)
 
@@ -346,5 +351,6 @@ export function useCommentForm({
     removeAudio,
     editing: editingAudio || editingText || editing,
     recording: assertProp(review, "recording"),
+    startedRecordingAudioAt,
   }
 }
