@@ -8,6 +8,7 @@ import apex from "@/images/games/apex.svg"
 import csgo from "@/images/games/csgo.svg"
 import dota2 from "@/images/games/dota2.svg"
 import lol from "@/images/games/lol.svg"
+import gym from "@/images/games/gym.png"
 
 import { Avatar, SxProps } from "@mui/material"
 import { Game } from "@ranklab/api"
@@ -24,6 +25,7 @@ const logos = {
   csgo,
   dota2,
   lol,
+  gym,
 }
 
 interface Props {
