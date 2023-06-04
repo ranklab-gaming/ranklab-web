@@ -1,4 +1,5 @@
 import {
+  Box,
   Container,
   Divider,
   Grid,
@@ -55,20 +56,18 @@ export const Footer = () => {
             >
               <Stack spacing={2}>
                 <Typography component="p" variant="overline">
-                  Copyright
+                  Socials
                 </Typography>
-                <Typography
-                  component="p"
+                <Link
+                  color="inherit"
                   variant="body2"
-                  sx={{
-                    fontSize: 13,
-                    textAlign: { xs: "center", md: "left" },
-                  }}
+                  sx={{ display: "block" }}
+                  href="https://twitter.com/ranklabgg"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Copyright © {currentYear} Ranklab Ltd.
-                  <br />
-                  All rights reserved.
-                </Typography>
+                  Twitter
+                </Link>
               </Stack>
               {links.map((list, index) => (
                 <Stack key={index} spacing={2}>
@@ -110,6 +109,20 @@ export const Footer = () => {
             </Stack>
           </Grid>
         </Grid>
+        <Box mt={8}>
+          <Typography
+            component="p"
+            variant="caption"
+            color="text.secondary"
+            sx={{
+              textAlign: "center",
+            }}
+          >
+            Copyright © {currentYear} Ranklab Gaming Ltd.
+            <br />
+            All rights reserved.
+          </Typography>
+        </Box>
       </Container>
     </RootStyle>
   )
