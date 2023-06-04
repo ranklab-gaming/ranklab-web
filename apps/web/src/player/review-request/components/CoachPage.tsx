@@ -13,19 +13,26 @@ import {
   Stack,
   Typography,
   Paper,
+  Grid,
+  CardActionArea,
+  TextField,
+  InputAdornment,
 } from "@mui/material"
 import { useRouter } from "next/router"
-import { Controller } from "react-hook-form"
 import * as yup from "yup"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import NextLink from "next/link"
-import { CoachSelect } from "@/player/components/CoachSelect"
 import { Coach } from "@ranklab/api"
 import { updateSessionReview } from "@/api/sessionReview"
-import { Stepper } from "@/player/review-request/components/Stepper"
-import { assertFind } from "@/assert"
+import { Stepper } from "./Stepper"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import { useSnackbar } from "notistack"
+import { Chip } from "@mui/material"
+import { useState } from "react"
+import { Iconify } from "@/components/Iconify"
+import { formatPrice } from "@/player/helpers/formatPrice"
+import { m } from "framer-motion"
+import { Avatar } from "@/components/Avatar"
 
 const FormSchema = yup.object().shape({
   coachId: yup.string().required("Coach is required"),
@@ -48,21 +55,15 @@ const Content = ({ coaches, coachId }: Props) => {
   }
 
   const {
-    control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
     watch,
+    setValue,
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
     defaultValues,
   })
-
-  const selectedCoachId = watch("coachId")
-
-  const selectedCoach = selectedCoachId
-    ? assertFind(coaches, (coach) => coach.id === selectedCoachId)
-    : undefined
 
   const goToNextStep = async function (values: FormValues) {
     await updateSessionReview({
@@ -77,8 +78,16 @@ const Content = ({ coaches, coachId }: Props) => {
     "text:recording-created-success"
   )
   const submitText = useGameDependency("text:recording-submit-button")
-
+  const [searchTerm, setSearchTerm] = useState("")
   const { enqueueSnackbar } = useSnackbar()
+  const selectedCoachId = watch("coachId")
+
+  const filteredCoaches = coaches.filter((coach) =>
+    coach.name
+      .toLowerCase()
+      .concat(coach.bio.toLowerCase())
+      .includes(searchTerm.toLowerCase())
+  )
 
   return (
     <Container maxWidth="lg">
@@ -114,50 +123,103 @@ const Content = ({ coaches, coachId }: Props) => {
               </Box>
             ) : (
               <form onSubmit={handleSubmit(goToNextStep)}>
-                <Stack spacing={3} mt={4}>
-                  <Controller
-                    name="coachId"
-                    control={control}
-                    render={({ field, fieldState: { error } }) => (
-                      <CoachSelect
-                        onChange={field.onChange}
-                        value={field.value}
-                        onBlur={field.onBlur}
-                        error={Boolean(error)}
-                        coaches={coaches}
-                        helperText={
-                          error
-                            ? error.message
-                            : "The coach you want to assign the review to"
-                        }
-                      />
-                    )}
+                <Box mt={4} mb={2}>
+                  <TextField
+                    type="search"
+                    fullWidth
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search for a coach"
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <Iconify icon="eva:search-outline" fontSize={20} />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
-                </Stack>
-                {selectedCoach ? (
-                  <Card sx={{ mt: 3, bgcolor: "grey.900" }} elevation={0}>
-                    <CardHeader
-                      title="Coach Bio"
-                      titleTypographyProps={{
-                        variant: "caption",
-                        color: "text.secondary",
-                      }}
-                    />
-                    <CardContent>
-                      <Typography variant="body1" component="div">
-                        <pre
-                          style={{
-                            fontFamily: "inherit",
-                            whiteSpace: "pre-wrap",
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: selectedCoach.bio,
-                          }}
-                        />
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ) : null}
+                </Box>
+                <Grid container spacing={2}>
+                  {filteredCoaches.map((coach) => (
+                    <Grid item xs={12} sm={6} md={4} key={coach.id}>
+                      <Card
+                        sx={{
+                          bgcolor:
+                            coach.id === selectedCoachId
+                              ? "secondary.main"
+                              : "grey.900",
+                        }}
+                      >
+                        <CardActionArea
+                          component={m.div}
+                          layout
+                          onClick={() =>
+                            setValue(
+                              "coachId",
+                              coach.id === selectedCoachId ? "" : coach.id,
+                              {
+                                shouldValidate: true,
+                                shouldDirty: true,
+                                shouldTouch: true,
+                              }
+                            )
+                          }
+                        >
+                          <CardHeader
+                            title={
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                                mb={1}
+                              >
+                                <Avatar user={coach} />
+                                <Box>{coach.name}</Box>
+                                <Chip
+                                  size="small"
+                                  label={formatPrice(coach.price)}
+                                />
+                              </Stack>
+                            }
+                            subheader={`${coach.reviewsCount} completed reviews`}
+                          />
+                          <CardContent>
+                            <Typography variant="body1" component="div">
+                              {selectedCoachId === coach.id ? (
+                                <pre
+                                  style={{
+                                    fontFamily: "inherit",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                    lineHeight: "1.5",
+                                  }}
+                                  dangerouslySetInnerHTML={{
+                                    __html: coach.bio,
+                                  }}
+                                />
+                              ) : (
+                                <Typography
+                                  variant="body1"
+                                  component="div"
+                                  sx={{
+                                    fontFamily: "inherit",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                    lineHeight: "1.5",
+                                  }}
+                                >
+                                  {coach.bioText.length > 150
+                                    ? `${coach.bioText.substring(0, 150)}...`
+                                    : coach.bioText}
+                                </Typography>
+                              )}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
                 <Stack direction="row">
                   <NextLink href="/player/dashboard" passHref legacyBehavior>
                     <Button variant="text" component={Link} sx={{ mt: 3 }}>
@@ -171,7 +233,7 @@ const Content = ({ coaches, coachId }: Props) => {
                     type="submit"
                     variant="contained"
                     loading={isSubmitting}
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !isValid}
                     sx={{ mt: 3 }}
                   >
                     Continue

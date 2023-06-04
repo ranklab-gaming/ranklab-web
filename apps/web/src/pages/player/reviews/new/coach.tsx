@@ -13,7 +13,6 @@ export const getServerSideProps = withUserSsr<Props>(
   async function (ctx) {
     const { createServerApi } = await import("@/api/server")
     const api = await createServerApi(ctx.req)
-    const coaches = await api.playerCoachesList()
     const review = ctx.req.session.review
 
     if (!review) {
@@ -24,6 +23,8 @@ export const getServerSideProps = withUserSsr<Props>(
         },
       }
     }
+
+    const coaches = await api.playerCoachesList()
 
     return {
       props: {

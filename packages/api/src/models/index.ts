@@ -294,6 +294,12 @@ export interface Coach {
    * @memberof Coach
    */
   bioText: string
+  /**
+   *
+   * @type {number}
+   * @memberof Coach
+   */
+  reviewsCount: number
 }
 /**
  *

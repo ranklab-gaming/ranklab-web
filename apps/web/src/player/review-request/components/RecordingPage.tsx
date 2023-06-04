@@ -1,10 +1,11 @@
 import { PropsWithUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { useGameDependency } from "@/hooks/useGameDependency"
-import { Container, Card, CardContent, Stepper, Box } from "@mui/material"
+import { Container, Card, CardContent, Box } from "@mui/material"
 import { Recording } from "@ranklab/api"
 import { updateSessionReview } from "@/api/sessionReview"
 import { useRouter } from "next/router"
+import { Stepper } from "./Stepper"
 
 interface Props {
   recordings: Recording[]
