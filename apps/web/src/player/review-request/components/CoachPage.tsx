@@ -182,34 +182,38 @@ const Content = ({ coaches, coachId }: Props) => {
                             subheader={`${coach.reviewsCount} completed reviews`}
                           />
                           <CardContent>
-                            <Typography variant="body1" component="div">
+                            <Typography
+                              variant="body1"
+                              component={m.div}
+                              minHeight={80}
+                              initial={false}
+                              variants={{
+                                animate: { height: 80 },
+                                selected: { height: "auto" },
+                              }}
+                              animate={
+                                selectedCoachId === coach.id
+                                  ? "selected"
+                                  : "animate"
+                              }
+                              sx={{
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                              }}
+                            >
                               {selectedCoachId === coach.id ? (
                                 <pre
                                   style={{
                                     fontFamily: "inherit",
                                     wordWrap: "break-word",
                                     whiteSpace: "normal",
-                                    lineHeight: "1.5",
                                   }}
                                   dangerouslySetInnerHTML={{
                                     __html: coach.bio,
                                   }}
                                 />
                               ) : (
-                                <Typography
-                                  variant="body1"
-                                  component="div"
-                                  sx={{
-                                    fontFamily: "inherit",
-                                    wordWrap: "break-word",
-                                    whiteSpace: "normal",
-                                    lineHeight: "1.5",
-                                  }}
-                                >
-                                  {coach.bioText.length > 150
-                                    ? `${coach.bioText.substring(0, 150)}...`
-                                    : coach.bioText}
-                                </Typography>
+                                coach.bioText
                               )}
                             </Typography>
                           </CardContent>
