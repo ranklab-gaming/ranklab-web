@@ -113,7 +113,11 @@ export const CoachSignupPage = ({
       reviewDemoTitle="Quick Start Guide"
       reviewDemoSubheader="This is a short video to help you get started with Ranklab as a coach"
     >
-      <AccountFields control={control} games={games} showPasswordField />
+      <AccountFields
+        control={control}
+        games={games}
+        showPasswordField={!jwtPayload}
+      />
       <Controller
         name="country"
         control={control}
