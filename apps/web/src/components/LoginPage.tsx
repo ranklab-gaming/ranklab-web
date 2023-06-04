@@ -166,9 +166,7 @@ export const LoginPage = ({ userType }: Props) => {
           passHref
           legacyBehavior
         >
-          <Link component="button" variant="subtitle2">
-            Get started
-          </Link>
+          <Link variant="subtitle2">Get started</Link>
         </NextLink>
       </Box>
     </BasicLayout>
