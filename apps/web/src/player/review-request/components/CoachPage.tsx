@@ -151,8 +151,6 @@ const Content = ({ coaches, coachId }: Props) => {
                         }}
                       >
                         <CardActionArea
-                          component={m.div}
-                          layout
                           onClick={() =>
                             setValue(
                               "coachId",
