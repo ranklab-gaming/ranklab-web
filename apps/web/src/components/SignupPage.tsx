@@ -22,6 +22,7 @@ interface SignupPageProps<T extends FieldValues> {
   reviewDemoKey: string
   reviewDemoTitle: string
   reviewDemoSubheader: string
+  showSocialButtons?: boolean
 }
 
 export const SignupPage = <T extends FieldValues>({
@@ -32,6 +33,7 @@ export const SignupPage = <T extends FieldValues>({
   reviewDemoKey,
   reviewDemoTitle,
   reviewDemoSubheader,
+  showSocialButtons = true,
 }: PropsWithChildren<SignupPageProps<T>>) => {
   const {
     handleSubmit,
@@ -63,7 +65,9 @@ export const SignupPage = <T extends FieldValues>({
                   >
                     Sign up
                   </LoadingButton>
-                  <SocialButtons sx={{ flexGrow: 0 }} />
+                  {showSocialButtons ? (
+                    <SocialButtons sx={{ flexGrow: 0 }} />
+                  ) : null}
                 </Stack>
               </Stack>
             </Grid>

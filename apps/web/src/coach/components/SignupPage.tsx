@@ -112,6 +112,7 @@ export const CoachSignupPage = ({
       reviewDemoKey={reviewDemoKey}
       reviewDemoTitle="Quick Start Guide"
       reviewDemoSubheader="This is a short video to help you get started with Ranklab as a coach"
+      showSocialButtons={!jwtPayload}
     >
       <AccountFields
         control={control}

@@ -84,6 +84,7 @@ export const PlayerSignupPage = ({ games, token }: Props) => {
       reviewDemoKey={reviewDemoKey}
       reviewDemoTitle="How does it work?"
       reviewDemoSubheader="This is a short video to help you get started with Ranklab"
+      showSocialButtons={!jwtPayload}
     >
       <AccountFields
         control={control}
