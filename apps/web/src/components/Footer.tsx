@@ -62,6 +62,16 @@ export const Footer = () => {
                   color="inherit"
                   variant="body2"
                   sx={{ display: "block" }}
+                  href="https://discord.gg/mfYPjhcN4h"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Discord
+                </Link>
+                <Link
+                  color="inherit"
+                  variant="body2"
+                  sx={{ display: "block" }}
                   href="https://twitter.com/ranklabgg"
                   target="_blank"
                   rel="noopener noreferrer"
