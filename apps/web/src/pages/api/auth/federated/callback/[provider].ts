@@ -7,6 +7,7 @@ import { SignJWT } from "jose"
 import { finishInteraction } from "@/oidc/interaction"
 import { withSessionApiRoute } from "@/session"
 import { errors, getOidcProvider } from "@ranklab/server/dist/oidc/provider"
+import { ResponseError } from "@ranklab/api"
 
 const secret = createSecretKey(Buffer.from(authClientSecret))
 
@@ -72,16 +73,28 @@ export default withSessionApiRoute(async function callback(
     .sign(secret)
 
   if (intent === "login") {
-    const session = await api.sessionCreate({
-      createSessionRequest: {
-        credentials: {
-          token: {
-            token: jwt,
+    let session
+
+    try {
+      session = await api.sessionCreate({
+        createSessionRequest: {
+          credentials: {
+            token: {
+              token: jwt,
+            },
           },
+          userType,
         },
-        userType,
-      },
-    })
+      })
+    } catch (e) {
+      if (e instanceof ResponseError && e.response.status === 404) {
+        return res.redirect(
+          `/${userType}/signup?token=${encodeURIComponent(jwt)}`
+        )
+      }
+
+      throw e
+    }
 
     const location = await finishInteraction(session.token, req, res)
 
