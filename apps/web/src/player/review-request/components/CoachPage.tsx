@@ -151,6 +151,7 @@ const Content = ({ coaches, coachId }: Props) => {
                         }}
                       >
                         <CardActionArea
+                          title={coach.name}
                           onClick={() =>
                             setValue(
                               "coachId",

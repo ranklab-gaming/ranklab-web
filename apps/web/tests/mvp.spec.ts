@@ -73,8 +73,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Password").fill("testplayer")
   await page.getByRole("button", { name: "Sign up" }).click()
   await page.getByRole("link", { name: "Submit your VOD" }).click()
-  await page.getByRole("button", { name: "Coach" }).click()
-  await page.getByRole("option", { name: "Test Coach" }).click()
+  await page.getByTitle("Test Coach").click()
   await page.getByRole("button", { name: "Continue" }).click()
   await page
     .locator('[name="newRecordingVideo"]')
