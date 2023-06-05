@@ -8,11 +8,11 @@ import NextImage from "next/image"
 import pricingScreenshot from "@/images/screenshots/pricing.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  padding: theme.spacing(24),
-  backgroundColor: theme.palette.grey[900],
-  [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(12, 0),
-  },
+  minHeight: "100vh",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex",
+  paddingTop: theme.spacing(12),
 }))
 
 const ContentStyle = styled("div")(({ theme }) => ({

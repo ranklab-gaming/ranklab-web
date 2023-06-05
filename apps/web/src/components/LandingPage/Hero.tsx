@@ -211,25 +211,43 @@ export const Hero = () => {
           </Box>
         </ContentStyle>
       </Container>
-      <m.div
-        animate={{ y: ["5%", "-5%", "5%"], x: ["-50%", "-50%", "-50%"] }}
-        transition={{ duration: 1, repeat: Infinity }}
-        style={{
+      <Box
+        sx={{
           position: "absolute",
           bottom: "30px",
           left: "50%",
           zIndex: 999,
+          display: "flex",
+          flexDirection: "column",
+          transform: "translateX(-50%)",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <Fab
-          color="secondary"
-          aria-label="scroll down"
-          onClick={scrollToContent}
-          size={isDesktop ? "medium" : "small"}
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          component="div"
+          pb={2}
+          fontWeight="bold"
+          textTransform="uppercase"
         >
-          <Iconify icon="mdi:chevron-down" sx={{ fontSize: 32 }} />
-        </Fab>
-      </m.div>
+          See what games we support
+        </Typography>
+        <m.div
+          animate={{ y: ["5%", "-5%", "5%"] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        >
+          <Fab
+            color="secondary"
+            aria-label="scroll down"
+            onClick={scrollToContent}
+            size={isDesktop ? "medium" : "small"}
+          >
+            <Iconify icon="mdi:chevron-down" sx={{ fontSize: 32 }} />
+          </Fab>
+        </m.div>
+      </Box>
     </RootStyle>
   )
 }

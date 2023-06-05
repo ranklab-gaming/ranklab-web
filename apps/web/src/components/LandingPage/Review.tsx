@@ -8,12 +8,12 @@ import NextImage from "next/image"
 import reviewScreenshot from "@/images/screenshots/review.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  padding: theme.spacing(24),
-  paddingBottom: 0,
+  minHeight: "100vh",
+  alignItems: "center",
   backgroundImage: "none",
-  [theme.breakpoints.down("md")]: {
-    padding: theme.spacing(12, 0),
-  },
+  justifyContent: "center",
+  display: "flex",
+  paddingTop: theme.spacing(12),
 }))
 
 const ContentStyle = styled("div")(({ theme }) => ({

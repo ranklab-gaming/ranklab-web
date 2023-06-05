@@ -16,7 +16,11 @@ import { alpha, styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  paddingTop: theme.spacing(24),
+  minHeight: "100vh",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex",
+  paddingTop: theme.spacing(12),
 }))
 
 const CardStyle = styled(Card)(({ theme }) => {

@@ -18,7 +18,11 @@ import { m } from "framer-motion"
 import { useState } from "react"
 
 const RootStyle = styled("div")(({ theme }) => ({
-  paddingTop: theme.spacing(24),
+  minHeight: "100vh",
+  alignItems: "center",
+  justifyContent: "center",
+  display: "flex",
+  paddingTop: theme.spacing(12),
 }))
 
 interface Props {
@@ -31,12 +35,7 @@ export const SupportedGames = ({ games }: Props) => {
   return (
     <RootStyle>
       <Container maxWidth="lg" component={MotionContainer}>
-        <m.div variants={animateFade().inDown}>
-          <Typography variant="h1" component="h3" sx={{ textAlign: "center" }}>
-            Games we support
-          </Typography>
-        </m.div>
-        <Box sx={{ mt: 10, display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
           <m.div variants={animateFade().inUp}>
             <Grid container spacing={2}>
               {games.map((game) => (
