@@ -40,7 +40,7 @@ export default withSessionApiRoute(async function callback(
   const params = client.callbackParams(req)
   const codeVerifier = req.session.codeVerifier
 
-  const { intent, userType } = JSON.parse(
+  const { intent, userType, gameId } = JSON.parse(
     Buffer.from(interaction.params.state as string, "base64").toString("utf8")
   )
 
@@ -72,6 +72,14 @@ export default withSessionApiRoute(async function callback(
     .setProtectedHeader({ alg: "HS256" })
     .sign(secret)
 
+  const signupParams = new URLSearchParams({
+    token: jwt,
+  })
+
+  if (gameId) {
+    signupParams.set("game_id", gameId)
+  }
+
   if (intent === "login") {
     let session
 
@@ -88,9 +96,9 @@ export default withSessionApiRoute(async function callback(
       })
     } catch (e) {
       if (e instanceof ResponseError && e.response.status === 404) {
-        return res.redirect(
-          `/${userType}/signup?token=${encodeURIComponent(jwt)}`
-        )
+        signupParams.set("intent", "signup")
+        signupParams.set("user_type", userType)
+        return res.redirect(`/api/auth/signin?${signupParams.toString()}`)
       }
 
       throw e
@@ -105,7 +113,5 @@ export default withSessionApiRoute(async function callback(
     return location
   }
 
-  return res
-    .redirect(`/${userType}/signup?token=${encodeURIComponent(jwt)}`)
-    .end()
+  return res.redirect(`/${userType}/signup?${signupParams.toString()}`).end()
 })

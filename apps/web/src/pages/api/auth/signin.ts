@@ -22,12 +22,13 @@ const signin = withSessionApiRoute(async function (
   }
 
   const gameId = req.query.game_id as string
+  const token = req.query.token as string
   const client = await getAuthClient()
   const codeVerifier = generators.codeVerifier()
   const codeChallenge = generators.codeChallenge(codeVerifier)
 
   const state = Buffer.from(
-    JSON.stringify({ intent, userType, gameId })
+    JSON.stringify({ intent, userType, gameId, token })
   ).toString("base64")
 
   req.session.codeVerifier = codeVerifier
