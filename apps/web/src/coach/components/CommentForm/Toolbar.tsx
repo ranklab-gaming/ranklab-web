@@ -26,7 +26,7 @@ export const Toolbar = ({
   children,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
-  const [now, setNow] = useState(Date.now())
+  const [now, setNow] = useState<number | null>(null)
 
   const {
     review,
@@ -53,6 +53,8 @@ export const Toolbar = ({
     const interval = setInterval(() => {
       setNow(Date.now())
     }, 1000)
+
+    setNow(Date.now())
 
     return () => {
       clearInterval(interval)
@@ -126,7 +128,7 @@ export const Toolbar = ({
                   </IconButton>
                 </Tooltip>
                 <AnimatePresence>
-                  {recordingAudio && startedRecordingAudioAt ? (
+                  {recordingAudio && startedRecordingAudioAt && now ? (
                     <Typography
                       variant="caption"
                       color="text.secondary"

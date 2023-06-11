@@ -311,7 +311,7 @@ export function useCommentForm({
         : [comment, ...comments]
     )
 
-    onCommentSelect(null)
+    handleSelectComment(null)
   }
 
   const handleDeleteComment = async () => {
@@ -325,7 +325,7 @@ export function useCommentForm({
       variant: "success",
     })
 
-    onCommentSelect(null)
+    handleSelectComment(null)
     setComments(comments.filter((c) => c.id !== selectedComment.id))
   }
 
