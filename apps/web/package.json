@@ -20,7 +20,7 @@
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.133",
     "@mui/material": "5.13.4",
-    "@next/env": "13.4.4",
+    "@next/env": "13.4.5",
     "@ranklab/api": "workspace:*",
     "@ranklab/server": "workspace:*",
     "@sentry/nextjs": "7.54.0",
@@ -37,7 +37,7 @@
     "jsonwebtoken": "^9.0.0",
     "lodash": "4.17.21",
     "mixpanel-browser": "^2.47.0",
-    "next": "13.4.4",
+    "next": "13.4.5",
     "nextjs-progressbar": "0.0.16",
     "notistack": "3.0.1",
     "openid-client": "5.4.2",
@@ -53,7 +53,7 @@
     "yup": "1.2.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "13.4.4",
+    "@next/eslint-plugin-next": "13.4.5",
     "@playwright/test": "1.35.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash": "4.14.195",
