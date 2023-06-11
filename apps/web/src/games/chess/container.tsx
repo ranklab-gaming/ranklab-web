@@ -3,6 +3,8 @@ import { default as Recording } from "./components/Recording"
 import { default as RecordingForm } from "./components/RecordingForm"
 import { default as ReviewDetails } from "./components/ReviewDetails"
 import { default as CommentForm } from "./components/CommentForm"
+import { default as RecordingListItem } from "./components/RecordingListItem"
+import { default as RecordingPreview } from "./components/RecordingPreview"
 import { Iconify } from "@/components/Iconify"
 
 export default {
@@ -12,6 +14,8 @@ export default {
   "component:review-details": ReviewDetails,
   "component:comment-form": CommentForm,
   "component:recording-icon": <Iconify icon="mdi:checkerboard" />,
+  "component:recording-list-item": RecordingListItem,
+  "component:recording-preview": RecordingPreview,
   "text:recording-step": "Paste a PGN",
   "text:request-review-button": "Submit your PGN",
   "text:coach-review-demo-key": "coach-chess-review-demo.mp4",
@@ -26,4 +30,5 @@ export default {
   "text:recording-page-title": "Request a Review | Paste a PGN",
   "text:recording-created-success": "PGN submitted successfully",
   "text:recording-submit-button": "Submit",
+  "text:new-recording": "New Game",
 }

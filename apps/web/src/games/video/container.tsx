@@ -3,6 +3,8 @@ import { default as Recording } from "./components/Recording"
 import { default as RecordingForm } from "./components/RecordingForm"
 import { default as ReviewDetails } from "./components/ReviewDetails"
 import { default as CommentForm } from "./components/CommentForm"
+import { default as RecordingListItem } from "./components/RecordingListItem"
+import { default as RecordingPreview } from "./components/RecordingPreview"
 import { Iconify } from "@/components/Iconify"
 
 export default {
@@ -12,6 +14,8 @@ export default {
   "component:review-details": ReviewDetails,
   "component:comment-form": CommentForm,
   "component:recording-icon": <Iconify icon="eva:video-outline" />,
+  "component:recording-list-item": RecordingListItem,
+  "component:recording-preview": RecordingPreview,
   "text:recording-step": "Choose a Recording",
   "text:request-review-button": "Submit your VOD",
   "text:coach-review-demo-key": "coach-video-review-demo.mp4",
@@ -26,4 +30,5 @@ export default {
   "text:recording-page-title": "Request a Review | Upload a VOD",
   "text:recording-created-success": "VOD uploaded successfully",
   "text:recording-submit-button": "Upload",
+  "text:new-recording": "New Recording",
 }
