@@ -1,5 +1,5 @@
+import { useGameDependency } from "@/hooks/useGameDependency"
 import { Paper, useTheme } from "@mui/material"
-import { VideoRecording } from "./Recording"
 import { Recording } from "@ranklab/api"
 
 export interface RecordingPreviewProps {
@@ -8,6 +8,7 @@ export interface RecordingPreviewProps {
 
 const RecordingPreview = ({ recording }: RecordingPreviewProps) => {
   const theme = useTheme()
+  const Recording = useGameDependency("component:recording")
 
   return (
     <Paper
@@ -21,7 +22,7 @@ const RecordingPreview = ({ recording }: RecordingPreviewProps) => {
         justifyContent: "center",
       }}
     >
-      <VideoRecording recording={recording} />
+      <Recording recording={recording} />
     </Paper>
   )
 }

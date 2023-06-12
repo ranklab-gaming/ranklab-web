@@ -50,6 +50,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     watch,
     formState: { isSubmitting },
   } = recordingForm
+
   const recordingId = watch("recordingId" as Path<TValues>)
 
   const selectedRecording =
@@ -85,26 +86,34 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
           <Controller
             name={"recordingId" as Path<TValues>}
             control={control}
-            render={({ field, fieldState: { error } }) => (
-              <TextField
-                select
-                label="Recording"
-                onChange={field.onChange}
-                value={field.value}
-                onBlur={field.onBlur}
-                error={Boolean(error)}
-                helperText={
-                  error
-                    ? error.message
-                    : "The recording you want to be reviewed"
-                }
-              >
-                <MenuItem value={newRecordingId}>{newRecordingText}</MenuItem>
-                {recordings.map((recording) => (
-                  <RecordingListItem key={recording.id} recording={recording} />
-                ))}
-              </TextField>
-            )}
+            render={({ field, fieldState: { error } }) => {
+              console.log(field.value)
+              return (
+                <TextField
+                  select
+                  label="Recording"
+                  onChange={field.onChange}
+                  value={field.value}
+                  onBlur={field.onBlur}
+                  error={Boolean(error)}
+                  helperText={
+                    error
+                      ? error.message
+                      : "The recording you want to be reviewed"
+                  }
+                >
+                  <MenuItem value={newRecordingId}>{newRecordingText}</MenuItem>
+                  {recordings.map((recording) => (
+                    <MenuItem key={recording.id} value={recording.id}>
+                      <RecordingListItem
+                        key={recording.id}
+                        recording={recording}
+                      />
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )
+            }}
           />
         ) : null}
         {recordingId === newRecordingId && (

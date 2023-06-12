@@ -51,7 +51,7 @@ export const RecordingForm = <
   const defaultRecordingForm = useRecordingForm<TValues, TSchema>({
     defaultValues: {
       recordingId,
-      notes: notes,
+      notes,
     } as DeepPartial<TValues>,
   })
 
