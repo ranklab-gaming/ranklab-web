@@ -5,43 +5,66 @@ import { VideoFileSelect } from "@/player/components/VideoFileSelect"
 import { formatBytes } from "@/player/helpers/formatBytes"
 import { Stack, LinearProgress, Typography, Link, Box } from "@mui/material"
 import { useSnackbar } from "notistack"
-import { useState } from "react"
-import { Controller } from "react-hook-form"
-import { useRecordingForm } from "../hooks/useRecordingForm"
+import { PropsWithChildren, useState } from "react"
+import {
+  Controller,
+  DeepPartial,
+  Path,
+  PathValue,
+  UseFormReturn,
+} from "react-hook-form"
+import {
+  RecordingFormSchema,
+  RecordingFormValues,
+  useRecordingForm,
+} from "../hooks/useRecordingForm"
 import { useUpload } from "../hooks/useUpload"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
 
-export interface RecordingFormProps {
+export interface RecordingFormProps<TValues extends RecordingFormValues> {
   recordingId?: string
   recordings: Recording[]
   notes?: string
-  onSubmit: (values: any, recordingId: string) => Promise<void>
+  onSubmit: (values: TValues, recordingId: string) => Promise<void>
   submitText?: string
   forReview?: boolean
+  recordingForm: UseFormReturn<TValues>
 }
 
-const RecordingForm = ({
+export const RecordingForm = <
+  TValues extends RecordingFormValues,
+  TSchema extends RecordingFormSchema
+>({
   recordings,
   recordingId,
   notes,
   onSubmit,
   submitText = "Continue",
   forReview = true,
-}: RecordingFormProps) => {
+  children,
+  recordingForm: recordingFormProp,
+}: PropsWithChildren<RecordingFormProps<TValues>>) => {
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const [upload, { progress: uploadProgress, uploading }] = useUpload()
 
-  const recordingForm = useRecordingForm({
+  const defaultRecordingForm = useRecordingForm<TValues, TSchema>({
     defaultValues: {
       recordingId,
       notes: notes,
-    },
+    } as DeepPartial<TValues>,
   })
 
+  const recordingForm = recordingFormProp ?? defaultRecordingForm
   const { watch, control, setValue } = recordingForm
-  const newRecordingTitle = watch("newRecordingTitle")
-  const newRecordingVideo = watch("newRecordingVideo")
+
+  const newRecordingTitle = watch(
+    "newRecordingTitle" as Path<TValues>
+  ) as string
+
+  const newRecordingVideo = watch(
+    "newRecordingVideo" as Path<TValues>
+  ) as File | null
 
   const submit = async function (values: any, recording: Recording) {
     if (newRecordingVideo) {
@@ -126,18 +149,22 @@ const RecordingForm = ({
       }
     >
       <Controller
-        name="newRecordingVideo"
+        name={"newRecordingVideo" as Path<TValues>}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <VideoFileSelect
-            {...field}
+            value={field.value as File | null}
             onChange={(file) => {
               if (!newRecordingTitle && file) {
-                setValue("newRecordingTitle", file.name.split(".")[0], {
-                  shouldDirty: true,
-                  shouldTouch: true,
-                  shouldValidate: true,
-                })
+                setValue(
+                  "newRecordingTitle" as Path<TValues>,
+                  file.name.split(".")[0] as PathValue<TValues, Path<TValues>>,
+                  {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  }
+                )
               }
 
               field.onChange(file)
@@ -177,6 +204,7 @@ const RecordingForm = ({
           />
         )}
       />
+      {children}
     </BaseRecordingForm>
   )
 }

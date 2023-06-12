@@ -1,9 +1,11 @@
 import {
   RecordingFormSchema as BaseRecordingFormSchema,
+  RecordingFormValues as BaseRecordingFormValues,
   newRecordingId,
   useRecordingForm as baseUseRecordingForm,
   RecordingFormProps,
 } from "@/player/hooks/useRecordingForm"
+import { DeepPartial } from "react-hook-form"
 import * as yup from "yup"
 
 export const RecordingFormSchema = BaseRecordingFormSchema.shape({
@@ -25,10 +27,19 @@ export const RecordingFormSchema = BaseRecordingFormSchema.shape({
   }),
 })
 
-export function useRecordingForm({
-  defaultValues = {},
-  formSchema = RecordingFormSchema,
-}: RecordingFormProps) {
+export interface RecordingFormValues extends BaseRecordingFormValues {
+  newRecordingVideo: File | null
+}
+
+export type RecordingFormSchema = yup.ObjectSchema<RecordingFormValues>
+
+export function useRecordingForm<
+  TValues extends RecordingFormValues = RecordingFormValues,
+  TSchema extends RecordingFormSchema = RecordingFormSchema
+>({
+  defaultValues = {} as DeepPartial<TValues>,
+  formSchema = RecordingFormSchema as TSchema,
+}: RecordingFormProps<TValues, TSchema>) {
   return baseUseRecordingForm({
     defaultValues,
     formSchema,

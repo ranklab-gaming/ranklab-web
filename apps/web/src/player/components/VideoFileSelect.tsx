@@ -13,7 +13,7 @@ import { forwardRef, ReactNode, useId } from "react"
 interface Props {
   error?: boolean
   helperText?: ReactNode
-  value?: File
+  value: File | null
   onChange: (file?: File) => void
 }
 

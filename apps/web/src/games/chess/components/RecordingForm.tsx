@@ -3,7 +3,10 @@ import {
   useRecordingForm,
 } from "@/player/hooks/useRecordingForm"
 import * as yup from "yup"
-import { RecordingFormSchema as BaseRecordingFormSchema } from "@/player/hooks/useRecordingForm"
+import {
+  RecordingFormSchema as BaseRecordingFormSchema,
+  RecordingFormValues as BaseRecordingFormValues,
+} from "@/games/video/hooks/useRecordingForm"
 import { RecordingForm as BaseRecordingForm } from "@/player/components/RecordingForm"
 import { RecordingFormProps } from "@/games/video/components/RecordingForm"
 import {
@@ -13,16 +16,35 @@ import {
   InputLabel,
   Select,
   FormHelperText,
-  useTheme,
 } from "@mui/material"
 import { Controller } from "react-hook-form"
 
 const RecordingFormSchema = BaseRecordingFormSchema.shape({
   newRecordingMetadata: yup.object().when("recordingId", {
     is: newRecordingId,
-    then: () => yup.object().required("PGN is required"),
+    then: () =>
+      yup.object().shape({
+        chess: yup.object().shape({
+          pgn: yup.string().required("PGN is required"),
+          playerColor: yup
+            .string()
+            .oneOf(["white", "black"])
+            .required("Player color is required"),
+        }),
+      }),
   }),
 })
+
+interface RecordingFormValues extends BaseRecordingFormValues {
+  newRecordingMetadata: {
+    chess: {
+      pgn: string
+      playerColor: "white" | "black"
+    }
+  }
+}
+
+type RecordingFormSchema = yup.ObjectSchema<RecordingFormValues>
 
 const RecordingForm = ({
   recordings,
@@ -31,13 +53,21 @@ const RecordingForm = ({
   onSubmit,
   submitText = "Continue",
   forReview = true,
-}: RecordingFormProps) => {
-  const recordingForm = useRecordingForm({
+}: RecordingFormProps<RecordingFormValues>) => {
+  const recordingForm = useRecordingForm<
+    RecordingFormValues,
+    RecordingFormSchema
+  >({
     defaultValues: {
       recordingId,
       notes,
+      newRecordingMetadata: {
+        chess: {
+          pgn: "",
+        },
+      },
     },
-    formSchema: RecordingFormSchema,
+    formSchema: RecordingFormSchema as RecordingFormSchema,
   })
 
   const { watch, control } = recordingForm

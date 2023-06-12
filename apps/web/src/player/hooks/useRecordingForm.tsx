@@ -1,6 +1,5 @@
-import { useForm } from "@/hooks/useForm"
+import { DeepPartial, useForm, UseFormReturn } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { UseFormReturn } from "react-hook-form"
 import * as yup from "yup"
 
 export const newRecordingId = "NEW_RECORDING"
@@ -17,16 +16,30 @@ export const RecordingFormSchema = yup.object().shape({
   notes: yup.string().defined(),
 })
 
-export interface RecordingFormProps {
-  defaultValues?: any
-  formSchema?: yup.ObjectSchema<any>
+export interface RecordingFormValues {
+  recordingId: string
+  newRecordingTitle: string
+  notes: string
 }
 
-export function useRecordingForm({
-  defaultValues = {},
-  formSchema = RecordingFormSchema,
-}: RecordingFormProps): UseFormReturn<any> {
-  const form = useForm({
+export type RecordingFormSchema = yup.ObjectSchema<RecordingFormValues>
+
+export interface RecordingFormProps<
+  TValues extends RecordingFormValues,
+  TSchema extends RecordingFormSchema
+> {
+  defaultValues?: DeepPartial<TValues>
+  formSchema?: TSchema
+}
+
+export function useRecordingForm<
+  TValues extends RecordingFormValues = RecordingFormValues,
+  TSchema extends RecordingFormSchema = RecordingFormSchema
+>({
+  defaultValues = {} as DeepPartial<TValues>,
+  formSchema = RecordingFormSchema as TSchema,
+}: RecordingFormProps<TValues, TSchema>): UseFormReturn<TValues> {
+  const form = useForm<TValues>({
     defaultValues: {
       ...defaultValues,
       recordingId: defaultValues.recordingId ?? newRecordingId,

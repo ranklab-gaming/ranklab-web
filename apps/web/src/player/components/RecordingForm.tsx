@@ -1,6 +1,9 @@
 import { CreateRecordingRequest, Recording } from "@ranklab/api"
-import { newRecordingId } from "@/player/hooks/useRecordingForm"
-import { Controller, UseFormReturn } from "react-hook-form"
+import {
+  RecordingFormValues,
+  newRecordingId,
+} from "@/player/hooks/useRecordingForm"
+import { Controller, Path, UseFormReturn } from "react-hook-form"
 import { usePlayer } from "@/player/hooks/usePlayer"
 import { api } from "@/api"
 import { Editor } from "@/components/Editor"
@@ -18,16 +21,16 @@ import NextLink from "next/link"
 import { PropsWithChildren } from "react"
 import { useGameDependency } from "@/hooks/useGameDependency"
 
-export interface RecordingFormProps {
+export interface RecordingFormProps<TValues extends RecordingFormValues> {
   recordings: Recording[]
-  onSubmit: (values: any, recording: Recording) => Promise<void>
+  onSubmit: (values: TValues, recording: Recording) => Promise<void>
   submitText?: string
   forReview?: boolean
-  recordingForm: UseFormReturn<any>
+  recordingForm: UseFormReturn<TValues>
   footerElement?: JSX.Element | null
 }
 
-export const RecordingForm = ({
+export const RecordingForm = <TValues extends RecordingFormValues>({
   recordings,
   onSubmit,
   submitText = "Continue",
@@ -35,7 +38,7 @@ export const RecordingForm = ({
   recordingForm,
   children,
   footerElement,
-}: PropsWithChildren<RecordingFormProps>) => {
+}: PropsWithChildren<RecordingFormProps<TValues>>) => {
   const player = usePlayer()
   const newRecordingText = useGameDependency("text:new-recording")
   const RecordingListItem = useGameDependency("component:recording-list-item")
@@ -47,7 +50,7 @@ export const RecordingForm = ({
     watch,
     formState: { isSubmitting },
   } = recordingForm
-  const recordingId = watch("recordingId")
+  const recordingId = watch("recordingId" as Path<TValues>)
 
   const selectedRecording =
     recordingId === newRecordingId
@@ -80,7 +83,7 @@ export const RecordingForm = ({
       <Stack spacing={3} mt={4}>
         {forReview ? (
           <Controller
-            name="recordingId"
+            name={"recordingId" as Path<TValues>}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
@@ -108,7 +111,7 @@ export const RecordingForm = ({
           <Stack spacing={3}>
             {children}
             <Controller
-              name="newRecordingTitle"
+              name={"newRecordingTitle" as Path<TValues>}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <TextField
@@ -131,7 +134,7 @@ export const RecordingForm = ({
       ) : null}
       {forReview ? (
         <Controller
-          name="notes"
+          name={"notes" as Path<TValues>}
           control={control}
           render={({ field, fieldState: { error } }) => {
             return (

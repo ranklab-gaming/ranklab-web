@@ -5,10 +5,10 @@ import { useContext } from "react"
 
 export const useGameDependency = <T extends keyof Container>(
   name: T,
-  inGameId?: string
+  gameIdArg?: string
 ): Container[T] => {
   const contextUser = useContext(UserContext)
-  const gameId = inGameId || contextUser?.gameId || "video"
+  const gameId = gameIdArg || contextUser?.gameId || "video"
 
   const components =
     container[gameId as keyof typeof container] || container.video
