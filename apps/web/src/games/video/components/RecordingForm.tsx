@@ -28,7 +28,7 @@ export interface RecordingFormProps<TValues extends RecordingFormValues> {
   onSubmit: (values: TValues, recordingId: string) => Promise<void>
   submitText?: string
   forReview?: boolean
-  recordingForm: UseFormReturn<TValues>
+  recordingForm?: UseFormReturn<TValues>
 }
 
 export const RecordingForm = <
