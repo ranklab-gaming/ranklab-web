@@ -55,9 +55,7 @@ const FormSchema = yup
   })
   .concat(AccountFieldsSchemaWithoutPassword)
 
-type FormValues = yup.InferType<typeof FormSchema> & {
-  avatar?: File
-}
+type FormValues = yup.InferType<typeof FormSchema>
 
 export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const initialCoach = coachFromUser(user)
@@ -89,7 +87,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
   })
 
@@ -121,7 +119,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       }
 
       await upload({
-        file: data.avatar,
+        file: data.avatar as File & {},
         url: avatar.uploadUrl,
         headers,
       })

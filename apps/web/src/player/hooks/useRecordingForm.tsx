@@ -46,7 +46,7 @@ export function useRecordingForm<
       notes: defaultValues.notes ?? "",
       newRecordingTitle: defaultValues.newRecordingTitle ?? "",
     },
-    resolver: yupResolver(formSchema),
+    resolver: yupResolver(formSchema as any),
   })
 
   return form
