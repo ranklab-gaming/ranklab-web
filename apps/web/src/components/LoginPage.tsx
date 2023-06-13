@@ -45,7 +45,7 @@ export const LoginPage = ({ userType }: Props) => {
   const login = useLogin()
 
   const form = useForm({
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver(FormSchema),
     errorMessages: {
       404: "Invalid email or password. Please try again.",
     },

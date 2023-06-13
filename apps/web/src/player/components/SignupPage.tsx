@@ -9,7 +9,6 @@ import { useForm } from "@/hooks/useForm"
 import { useLogin } from "@/hooks/useLogin"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Game } from "@ranklab/api"
-import * as yup from "yup"
 import { SignupPage } from "@/components/SignupPage"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import { track } from "@/analytics"
@@ -35,8 +34,10 @@ export const PlayerSignupPage = ({ games, token }: Props) => {
 
   const form = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(
-      jwtPayload ? AccountFieldsSchemaWithoutPassword : AccountFieldsSchema
+    resolver: yupResolver(
+      (jwtPayload
+        ? AccountFieldsSchemaWithoutPassword
+        : AccountFieldsSchema) as any
     ),
     defaultValues,
   })

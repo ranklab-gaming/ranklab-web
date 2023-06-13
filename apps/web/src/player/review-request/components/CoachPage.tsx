@@ -61,7 +61,7 @@ const Content = ({ coaches, coachId }: Props) => {
     setValue,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver(FormSchema),
     defaultValues,
   })
 

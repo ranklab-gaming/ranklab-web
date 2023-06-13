@@ -97,7 +97,7 @@ export function useCommentForm({
 
   const form = useForm<CommentFormValues>({
     mode: "onChange",
-    resolver: yupResolver<yup.ObjectSchema<any>>(formSchema),
+    resolver: yupResolver(formSchema),
     defaultValues: {
       body: "",
       metadata: defaultMetadata,

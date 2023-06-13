@@ -27,7 +27,7 @@ export const PasswordResetPage = ({ token }: Props) => {
   const userType = router.query.user_type as UserType
 
   const form = useForm({
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver(FormSchema),
     defaultValues,
   })
 

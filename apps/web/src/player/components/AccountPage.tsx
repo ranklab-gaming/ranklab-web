@@ -65,7 +65,7 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver<yup.ObjectSchema<any>>(FormSchema),
+    resolver: yupResolver(FormSchema),
     defaultValues,
   })
 
