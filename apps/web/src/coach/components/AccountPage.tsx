@@ -102,7 +102,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     })
 
     if (data.avatar) {
-      const avatar = await api.coachAvatarsCreate({
+      const avatar = await api.avatarsCreate({
         body: {},
       })
 
@@ -127,7 +127,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
       const avatarId = avatar.id
 
       const poll = async (retries = 10): Promise<boolean> => {
-        const avatar = await api.coachAvatarsGet({ id: avatarId })
+        const avatar = await api.avatarsGet({ id: avatarId })
 
         if (avatar.state === MediaState.Processed) {
           return true
@@ -150,7 +150,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
         )
       }
     } else if (initialCoach.avatarImageKey && !coach.avatarImageKey) {
-      await api.coachAvatarsDelete()
+      await api.avatarsDelete()
     }
 
     enqueueSnackbar("Account updated successfully", { variant: "success" })

@@ -51,6 +51,14 @@ import type {
   UpdatePlayerRequest,
 } from "../models"
 
+export interface AvatarsCreateRequest {
+  body: object
+}
+
+export interface AvatarsGetRequest {
+  id: string
+}
+
 export interface CoachAccountCreateRequest {
   createCoachRequest: CreateCoachRequest
 }
@@ -68,14 +76,6 @@ export interface CoachAudiosDeleteRequest {
 }
 
 export interface CoachAudiosGetRequest {
-  id: string
-}
-
-export interface CoachAvatarsCreateRequest {
-  body: object
-}
-
-export interface CoachAvatarsGetRequest {
   id: string
 }
 
@@ -193,6 +193,129 @@ export interface SessionUpdatePasswordRequest {
  *
  */
 export class RanklabApi extends runtime.BaseAPI {
+  /**
+   */
+  async avatarsCreateRaw(
+    requestParameters: AvatarsCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Avatar>> {
+    if (
+      requestParameters.body === null ||
+      requestParameters.body === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "body",
+        "Required parameter requestParameters.body was null or undefined when calling avatarsCreate."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/avatars`,
+        method: "POST",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.body as any,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async avatarsCreate(
+    requestParameters: AvatarsCreateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Avatar> {
+    const response = await this.avatarsCreateRaw(
+      requestParameters,
+      initOverrides
+    )
+    return await response.value()
+  }
+
+  /**
+   */
+  async avatarsDeleteRaw(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<StatusResponse>> {
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/avatars`,
+        method: "DELETE",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async avatarsDelete(
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<StatusResponse> {
+    const response = await this.avatarsDeleteRaw(initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
+  async avatarsGetRaw(
+    requestParameters: AvatarsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Avatar>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling avatarsGet."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/avatars/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async avatarsGet(
+    requestParameters: AvatarsGetRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Avatar> {
+    const response = await this.avatarsGetRaw(requestParameters, initOverrides)
+    return await response.value()
+  }
+
   /**
    */
   async coachAccountCreateRaw(
@@ -457,132 +580,6 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Audio> {
     const response = await this.coachAudiosGetRaw(
-      requestParameters,
-      initOverrides
-    )
-    return await response.value()
-  }
-
-  /**
-   */
-  async coachAvatarsCreateRaw(
-    requestParameters: CoachAvatarsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Avatar>> {
-    if (
-      requestParameters.body === null ||
-      requestParameters.body === undefined
-    ) {
-      throw new runtime.RequiredError(
-        "body",
-        "Required parameter requestParameters.body was null or undefined when calling coachAvatarsCreate."
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    headerParameters["Content-Type"] = "application/json"
-
-    const response = await this.request(
-      {
-        path: `/coach/avatars`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-        body: requestParameters.body as any,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async coachAvatarsCreate(
-    requestParameters: CoachAvatarsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Avatar> {
-    const response = await this.coachAvatarsCreateRaw(
-      requestParameters,
-      initOverrides
-    )
-    return await response.value()
-  }
-
-  /**
-   */
-  async coachAvatarsDeleteRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<StatusResponse>> {
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/coach/avatars`,
-        method: "DELETE",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async coachAvatarsDelete(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<StatusResponse> {
-    const response = await this.coachAvatarsDeleteRaw(initOverrides)
-    return await response.value()
-  }
-
-  /**
-   */
-  async coachAvatarsGetRaw(
-    requestParameters: CoachAvatarsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<runtime.ApiResponse<Avatar>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling coachAvatarsGet."
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/coach/avatars/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async coachAvatarsGet(
-    requestParameters: CoachAvatarsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
-  ): Promise<Avatar> {
-    const response = await this.coachAvatarsGetRaw(
       requestParameters,
       initOverrides
     )

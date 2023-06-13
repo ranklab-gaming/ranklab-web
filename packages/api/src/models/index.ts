@@ -869,6 +869,12 @@ export interface Player {
    * @memberof Player
    */
   intercomHash?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof Player
+   */
+  avatarImageKey?: string | null
 }
 /**
  *

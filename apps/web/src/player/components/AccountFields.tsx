@@ -1,6 +1,7 @@
 import { GameSelect } from "@/components/GameSelect"
-import { TextField, MenuItem } from "@mui/material"
+import { TextField, MenuItem, Stack } from "@mui/material"
 import { Game } from "@ranklab/api"
+import { PropsWithChildren } from "react"
 import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
 
@@ -35,7 +36,8 @@ export const AccountFields = ({
   games,
   watch,
   showPasswordField = false,
-}: Props) => {
+  children,
+}: PropsWithChildren<Props>) => {
   const gameId = watch("gameId" as Path<AccountFieldsValues>)
   const selectedGame: Game | undefined = games.find((g) => g.id === gameId)
 
@@ -81,20 +83,24 @@ export const AccountFields = ({
           )}
         />
       ) : null}
-      <Controller
-        name={"name" as Path<AccountFieldsValues>}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            label="Name"
-            error={Boolean(error)}
-            helperText={
-              error ? error.message : "This will appear on your profile"
-            }
-          />
-        )}
-      />
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Controller
+          name={"name" as Path<AccountFieldsValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              label="Name"
+              error={Boolean(error)}
+              fullWidth
+              helperText={
+                error ? error.message : "This will appear on your profile"
+              }
+            />
+          )}
+        />
+        {children}
+      </Stack>
       <Controller
         name={"email" as Path<AccountFieldsValues>}
         control={control}

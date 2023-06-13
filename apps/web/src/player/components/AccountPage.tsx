@@ -22,7 +22,7 @@ import {
   Tab,
   Tabs,
 } from "@mui/material"
-import { Game } from "@ranklab/api"
+import { Game, MediaState, Player } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import * as yup from "yup"
 import { useState } from "react"
@@ -30,6 +30,9 @@ import { theme } from "@/theme/theme"
 import { Controller } from "react-hook-form"
 import { Iconify } from "@/components/Iconify"
 import { useRouter } from "next/router"
+import { useUpload } from "@/games/video/hooks/useUpload"
+import { AvatarSelect } from "@/components/AvatarSelect"
+import { uploadsCdnUrl } from "@/config"
 
 interface Props {
   games: Game[]
@@ -39,16 +42,27 @@ const FormSchema = yup
   .object()
   .shape({
     emailsEnabled: yup.boolean().required(),
+    avatar: yup
+      .mixed()
+      .test(
+        "fileSize",
+        "Image file must be less than 32MiB",
+        (value) =>
+          !value ||
+          (value instanceof File && value.size > 0 && value.size < 33554432)
+      ),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
 
 type FormValues = yup.InferType<typeof FormSchema>
 
 export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
-  const player = playerFromUser(user)
+  const initialPlayer = playerFromUser(user)
+  const [player, setPlayer] = useState<Player>(initialPlayer)
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
+  const [upload] = useUpload()
 
   const defaultValues: FormValues = {
     gameId: player.gameId,
@@ -63,13 +77,66 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     handleSubmit,
     watch,
     formState: { isSubmitting },
+    resetField,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema),
+    resolver: yupResolver(FormSchema as any),
     defaultValues,
   })
 
   const updatePlayer = async (data: FormValues) => {
+    if (data.avatar) {
+      const avatar = await api.avatarsCreate({
+        body: {},
+      })
+
+      if (!avatar.uploadUrl) {
+        throw new Error("uploadUrl is missing")
+      }
+
+      const headers: Record<string, string> = {
+        "x-amz-acl": "public-read",
+      }
+
+      if (avatar.instanceId) {
+        headers["x-amz-meta-instance-id"] = avatar.instanceId
+      }
+
+      await upload({
+        file: data.avatar as File & {},
+        url: avatar.uploadUrl,
+        headers,
+      })
+
+      const avatarId = avatar.id
+
+      const poll = async (retries = 10): Promise<boolean> => {
+        const avatar = await api.avatarsGet({ id: avatarId })
+
+        if (avatar.state === MediaState.Processed) {
+          return true
+        }
+
+        if (retries === 0) {
+          return false
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        return await poll(retries - 1)
+      }
+
+      if (!(await poll())) {
+        enqueueSnackbar(
+          "An error occurred while uploading your avatar. Please try again.",
+          {
+            variant: "error",
+          }
+        )
+      }
+    } else if (initialPlayer.avatarImageKey && !player.avatarImageKey) {
+      await api.avatarsDelete()
+    }
+
     await api.playerAccountUpdate({
       updatePlayerRequest: {
         name: data.name,
@@ -135,7 +202,29 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
                 We partner with Stripe to manage payments. You can update your
                 payment details using their customer portal.
               </Alert>
-              <AccountFields control={control} games={games} watch={watch} />
+              <AccountFields control={control} games={games} watch={watch}>
+                <Controller
+                  name="avatar"
+                  control={control}
+                  render={({ field }) => (
+                    <AvatarSelect
+                      defaultAvatarUrl={
+                        player.avatarImageKey
+                          ? `${uploadsCdnUrl}/${player.avatarImageKey}`
+                          : undefined
+                      }
+                      onChange={field.onChange}
+                      onClear={() => {
+                        setPlayer((player) => ({
+                          ...player,
+                          avatarImageKey: null,
+                        }))
+                        resetField("avatar")
+                      }}
+                    />
+                  )}
+                />
+              </AccountFields>
             </Stack>
             <LoadingButton
               color="primary"
