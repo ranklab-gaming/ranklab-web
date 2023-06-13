@@ -153,7 +153,9 @@ export const RecordingForm = <
         control={control}
         render={({ field, fieldState: { error } }) => (
           <VideoFileSelect
+            name={field.name}
             value={field.value as File | null}
+            onBlur={field.onBlur}
             onChange={(file) => {
               if (!newRecordingTitle && file) {
                 setValue(

@@ -14,7 +14,9 @@ interface Props {
   error?: boolean
   helperText?: ReactNode
   value: File | null
+  name: string
   onChange: (file?: File) => void
+  onBlur: () => void
 }
 
 export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (

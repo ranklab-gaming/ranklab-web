@@ -87,7 +87,6 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
             name={"recordingId" as Path<TValues>}
             control={control}
             render={({ field, fieldState: { error } }) => {
-              console.log(field.value)
               return (
                 <TextField
                   select
