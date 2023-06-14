@@ -38,9 +38,7 @@ const FormSchema = yup.object().shape({
   coachId: yup.string().required("Coach is required"),
 })
 
-interface FormValues {
-  coachId: string
-}
+type FormValues = yup.InferType<typeof FormSchema>
 
 interface Props {
   coaches: Coach[]
