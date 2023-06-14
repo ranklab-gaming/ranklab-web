@@ -41,15 +41,13 @@ interface Props {
 const FormSchema = yup
   .object()
   .shape({
-    emailsEnabled: yup.boolean().required(),
+    emailsEnabled: yup.boolean().defined(),
     avatar: yup
-      .mixed()
+      .mixed({ check: (value: any): value is File => value instanceof File })
       .test(
         "fileSize",
         "Image file must be less than 32MiB",
-        (value) =>
-          !value ||
-          (value instanceof File && value.size > 0 && value.size < 33554432)
+        (value) => !value || (value.size > 0 && value.size < 33554432)
       ),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
@@ -64,12 +62,13 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [upload] = useUpload()
 
-  const defaultValues: FormValues = {
+  const defaultValues = {
     gameId: player.gameId,
     email: player.email,
     skillLevel: player.skillLevel,
     name: player.name,
     emailsEnabled: player.emailsEnabled,
+    avatar: undefined,
   }
 
   const {
@@ -80,7 +79,7 @@ export const PlayerAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     resetField,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver(FormSchema),
     defaultValues,
   })
 

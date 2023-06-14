@@ -23,12 +23,12 @@ import { Controller } from "react-hook-form"
 
 const RecordingFormSchema = BaseRecordingFormSchema.shape({
   newRecordingVideo: yup.mixed(),
-  newRecordingMetadata: yup.object(),
+  newRecordingMetadata: yup.mixed(),
 }).test({
   name: "is-valid",
   test: function (value) {
     if (value.recordingId === newRecordingId) {
-      if ((value.newRecordingMetadata as any).overwatch.replayCode === "") {
+      if (value.newRecordingMetadata.overwatch.replayCode === "") {
         if (!value.newRecordingVideo) {
           return this.createError({
             message: "Video is required",
@@ -38,7 +38,7 @@ const RecordingFormSchema = BaseRecordingFormSchema.shape({
       } else {
         if (
           !["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].includes(
-            (value.newRecordingMetadata as any).overwatch.playerPosition
+            value.newRecordingMetadata.overwatch.playerPosition
           )
         ) {
           return this.createError({

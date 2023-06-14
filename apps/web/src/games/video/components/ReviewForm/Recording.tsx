@@ -50,7 +50,7 @@ export const Recording = ({
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const { form, recording, editingText } = commentForm
-  const metadata = form.watch("metadata") as any
+  const metadata = form.watch("metadata")
 
   useEffect(() => {
     if (boxRef.current === null) return

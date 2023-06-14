@@ -58,7 +58,7 @@ export const CoachSignupPage = ({
   const form = useForm({
     mode: "onSubmit",
     resolver: yupResolver(
-      (jwtPayload ? FormSchemaWithoutPassword : FormSchema) as any
+      (jwtPayload ? FormSchemaWithoutPassword : FormSchema) as typeof FormSchema
     ),
     defaultValues,
   })

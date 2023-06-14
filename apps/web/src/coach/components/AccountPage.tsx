@@ -42,15 +42,15 @@ interface Props {
 const FormSchema = yup
   .object()
   .shape({
-    emailsEnabled: yup.boolean().required(),
+    emailsEnabled: yup.boolean().defined(),
     avatar: yup
-      .mixed()
+      .mixed({
+        check: (value: any): value is File => value instanceof File,
+      })
       .test(
         "fileSize",
         "Image file must be less than 32MiB",
-        (value) =>
-          !value ||
-          (value instanceof File && value.size > 0 && value.size < 33554432)
+        (value) => !value || (value.size > 0 && value.size < 33554432)
       ),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
@@ -71,13 +71,14 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     setOrigin(window.location.origin)
   }, [])
 
-  const defaultValues: FormValues = {
+  const defaultValues = {
     bio: coach.bio,
     name: coach.name,
     gameId: coach.gameId,
     email: coach.email,
     price: (coach.price / 100).toFixed(2),
     emailsEnabled: coach.emailsEnabled,
+    avatar: undefined,
   }
 
   const {
@@ -87,7 +88,7 @@ export const CoachAccountPage = ({ games, user }: PropsWithUser<Props>) => {
     formState: { isSubmitting },
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(FormSchema as any),
+    resolver: yupResolver(FormSchema),
     defaultValues,
   })
 

@@ -51,7 +51,7 @@ const CommentForm = ({
   })
 
   const { form, recording, editingText } = commentForm
-  const metadata = form.watch("metadata") as any
+  const metadata = form.watch("metadata")
 
   return (
     <BaseCommentForm

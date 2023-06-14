@@ -37,7 +37,7 @@ export const PlayerSignupPage = ({ games, token }: Props) => {
     resolver: yupResolver(
       (jwtPayload
         ? AccountFieldsSchemaWithoutPassword
-        : AccountFieldsSchema) as any
+        : AccountFieldsSchema) as typeof AccountFieldsSchema
     ),
     defaultValues,
   })
