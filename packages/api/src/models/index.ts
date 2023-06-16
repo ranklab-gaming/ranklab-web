@@ -3,62 +3,6 @@
 /**
  *
  * @export
- * @interface AccountLink
- */
-export interface AccountLink {
-  /**
-   *
-   * @type {string}
-   * @memberof AccountLink
-   */
-  url: string
-}
-/**
- *
- * @export
- * @interface Address
- */
-export interface Address {
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  city?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  country?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  line1?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  line2?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  postalCode?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Address
-   */
-  state?: string | null
-}
-/**
- *
- * @export
  * @interface Audio
  */
 export interface Audio {
@@ -163,166 +107,6 @@ export interface Avatar {
 /**
  *
  * @export
- * @interface BillingDetails
- */
-export interface BillingDetails {
-  /**
-   *
-   * @type {Address}
-   * @memberof BillingDetails
-   */
-  address?: Address | null
-  /**
-   *
-   * @type {string}
-   * @memberof BillingDetails
-   */
-  name?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof BillingDetails
-   */
-  phone?: string | null
-}
-/**
- *
- * @export
- * @interface BillingPortalLink
- */
-export interface BillingPortalLink {
-  /**
-   *
-   * @type {string}
-   * @memberof BillingPortalLink
-   */
-  url: string
-}
-/**
- *
- * @export
- * @interface Coach
- */
-export interface Coach {
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  id: string
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  name: string
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  bio: string
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  gameId: string
-  /**
-   *
-   * @type {number}
-   * @memberof Coach
-   */
-  price: number
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  country: string
-  /**
-   *
-   * @type {boolean}
-   * @memberof Coach
-   */
-  detailsSubmitted: boolean
-  /**
-   *
-   * @type {boolean}
-   * @memberof Coach
-   */
-  payoutsEnabled: boolean
-  /**
-   *
-   * @type {boolean}
-   * @memberof Coach
-   */
-  emailsEnabled: boolean
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  intercomHash?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  slug: string
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  avatarImageKey?: string | null
-  /**
-   *
-   * @type {boolean}
-   * @memberof Coach
-   */
-  approved: boolean
-  /**
-   *
-   * @type {string}
-   * @memberof Coach
-   */
-  bioText: string
-  /**
-   *
-   * @type {number}
-   * @memberof Coach
-   */
-  reviewsCount: number
-}
-/**
- *
- * @export
- * @interface CoachUpdateReviewRequest
- */
-export interface CoachUpdateReviewRequest {
-  /**
-   *
-   * @type {boolean}
-   * @memberof CoachUpdateReviewRequest
-   */
-  published?: boolean | null
-  /**
-   *
-   * @type {boolean}
-   * @memberof CoachUpdateReviewRequest
-   */
-  started?: boolean | null
-}
-/**
- *
- * @export
  * @interface Comment
  */
 export interface Comment {
@@ -337,13 +121,13 @@ export interface Comment {
    * @type {string}
    * @memberof Comment
    */
-  reviewId: string
+  recordingId: string
   /**
    *
    * @type {string}
    * @memberof Comment
    */
-  coachId: string
+  userId: string
   /**
    *
    * @type {string}
@@ -372,90 +156,53 @@ export interface Comment {
 /**
  *
  * @export
- * @interface CreateAccountLinkRequest
+ * @interface CommentMetadata
  */
-export interface CreateAccountLinkRequest {
+export interface CommentMetadata {
   /**
    *
-   * @type {string}
-   * @memberof CreateAccountLinkRequest
+   * @type {CommentMetadataValueOneOfVideo}
+   * @memberof CommentMetadata
    */
-  refreshUrl: string
+  video: CommentMetadataValueOneOfVideo
+}
+/**
+ * @type CommentMetadataValue
+ *
+ * @export
+ */
+export type CommentMetadataValue = CommentMetadataValueOneOf
+/**
+ *
+ * @export
+ * @interface CommentMetadataValueOneOf
+ */
+export interface CommentMetadataValueOneOf {
   /**
    *
-   * @type {string}
-   * @memberof CreateAccountLinkRequest
+   * @type {CommentMetadataValueOneOfVideo}
+   * @memberof CommentMetadataValueOneOf
    */
-  returnUrl: string
+  video: CommentMetadataValueOneOfVideo
 }
 /**
  *
  * @export
- * @interface CreateAudioRequest
+ * @interface CommentMetadataValueOneOfVideo
  */
-export interface CreateAudioRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateAudioRequest
-   */
-  reviewId: string
-}
-/**
- *
- * @export
- * @interface CreateBillingPortalSession
- */
-export interface CreateBillingPortalSession {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateBillingPortalSession
-   */
-  returnUrl: string
-}
-/**
- *
- * @export
- * @interface CreateCoachRequest
- */
-export interface CreateCoachRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  name: string
-  /**
-   *
-   * @type {Credentials}
-   * @memberof CreateCoachRequest
-   */
-  credentials: Credentials
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  bio: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  gameId: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCoachRequest
-   */
-  country: string
+export interface CommentMetadataValueOneOfVideo {
   /**
    *
    * @type {number}
-   * @memberof CreateCoachRequest
+   * @memberof CommentMetadataValueOneOfVideo
    */
-  price: number
+  timestamp: number
+  /**
+   *
+   * @type {string}
+   * @memberof CommentMetadataValueOneOfVideo
+   */
+  drawing: string
 }
 /**
  *
@@ -474,13 +221,13 @@ export interface CreateCommentRequest {
    * @type {string}
    * @memberof CreateCommentRequest
    */
-  reviewId: string
+  recordingId: string
   /**
    *
-   * @type {any}
+   * @type {CommentMetadata}
    * @memberof CreateCommentRequest
    */
-  metadata: any | null
+  metadata: CommentMetadata
   /**
    *
    * @type {string}
@@ -510,46 +257,15 @@ export interface CreateGameRequest {
 /**
  *
  * @export
- * @interface CreateLoginLink
+ * @interface CreatePasswordRequest
  */
-export interface CreateLoginLink {
+export interface CreatePasswordRequest {
   /**
    *
    * @type {string}
-   * @memberof CreateLoginLink
+   * @memberof CreatePasswordRequest
    */
-  returnUrl: string
-}
-/**
- *
- * @export
- * @interface CreatePlayerRequest
- */
-export interface CreatePlayerRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreatePlayerRequest
-   */
-  name: string
-  /**
-   *
-   * @type {Credentials}
-   * @memberof CreatePlayerRequest
-   */
-  credentials: Credentials
-  /**
-   *
-   * @type {string}
-   * @memberof CreatePlayerRequest
-   */
-  gameId: string
-  /**
-   *
-   * @type {number}
-   * @memberof CreatePlayerRequest
-   */
-  skillLevel: number
+  email: string
 }
 /**
  *
@@ -571,41 +287,22 @@ export interface CreateRecordingRequest {
   skillLevel: number
   /**
    *
-   * @type {string}
+   * @type {GameId}
    * @memberof CreateRecordingRequest
    */
-  gameId: string
+  gameId: GameId
   /**
    *
-   * @type {any}
+   * @type {RecordingMetadata}
    * @memberof CreateRecordingRequest
    */
-  metadata?: any | null
-}
-/**
- *
- * @export
- * @interface CreateReviewRequest
- */
-export interface CreateReviewRequest {
+  metadata: RecordingMetadata
   /**
    *
    * @type {string}
-   * @memberof CreateReviewRequest
-   */
-  recordingId: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateReviewRequest
+   * @memberof CreateRecordingRequest
    */
   notes: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateReviewRequest
-   */
-  coachId: string
 }
 /**
  *
@@ -619,25 +316,31 @@ export interface CreateSessionRequest {
    * @memberof CreateSessionRequest
    */
   credentials: Credentials
-  /**
-   *
-   * @type {UserType}
-   * @memberof CreateSessionRequest
-   */
-  userType: UserType
 }
 /**
  *
  * @export
- * @interface CreateSessionResponse
+ * @interface CreateUserRequest
  */
-export interface CreateSessionResponse {
+export interface CreateUserRequest {
   /**
    *
    * @type {string}
-   * @memberof CreateSessionResponse
+   * @memberof CreateUserRequest
    */
-  token: string
+  name: string
+  /**
+   *
+   * @type {Credentials}
+   * @memberof CreateUserRequest
+   */
+  credentials: Credentials
+  /**
+   *
+   * @type {GameId}
+   * @memberof CreateUserRequest
+   */
+  gameId: GameId
 }
 /**
  * @type Credentials
@@ -685,10 +388,10 @@ export interface Game {
   name: string
   /**
    *
-   * @type {string}
+   * @type {GameId}
    * @memberof Game
    */
-  id: string
+  id: GameId
   /**
    *
    * @type {Array<SkillLevel>}
@@ -696,19 +399,15 @@ export interface Game {
    */
   skillLevels: Array<SkillLevel>
 }
+
 /**
  *
  * @export
- * @interface LoginLink
  */
-export interface LoginLink {
-  /**
-   *
-   * @type {string}
-   * @memberof LoginLink
-   */
-  url: string
-}
+export const GameId = {
+  Overwatch: "overwatch",
+} as const
+export type GameId = (typeof GameId)[keyof typeof GameId]
 
 /**
  *
@@ -733,47 +432,41 @@ export interface OneTimeTokenParams {
    * @memberof OneTimeTokenParams
    */
   token: string
-  /**
-   *
-   * @type {UserType}
-   * @memberof OneTimeTokenParams
-   */
-  userType: UserType
 }
 /**
  *
  * @export
- * @interface PaginatedResultForReview
+ * @interface PaginatedResultForRecording
  */
-export interface PaginatedResultForReview {
+export interface PaginatedResultForRecording {
   /**
    *
-   * @type {Array<Review>}
-   * @memberof PaginatedResultForReview
+   * @type {Array<Recording>}
+   * @memberof PaginatedResultForRecording
    */
-  records: Array<Review>
+  records: Array<Recording>
   /**
    *
    * @type {number}
-   * @memberof PaginatedResultForReview
+   * @memberof PaginatedResultForRecording
    */
   totalPages: number
   /**
    *
    * @type {number}
-   * @memberof PaginatedResultForReview
+   * @memberof PaginatedResultForRecording
    */
   perPage: number
   /**
    *
    * @type {number}
-   * @memberof PaginatedResultForReview
+   * @memberof PaginatedResultForRecording
    */
   page: number
   /**
    *
    * @type {number}
-   * @memberof PaginatedResultForReview
+   * @memberof PaginatedResultForRecording
    */
   count: number
 }
@@ -799,105 +492,6 @@ export interface PasswordCredentials {
 /**
  *
  * @export
- * @interface PaymentMethod
- */
-export interface PaymentMethod {
-  /**
-   *
-   * @type {string}
-   * @memberof PaymentMethod
-   */
-  id: string
-  /**
-   *
-   * @type {string}
-   * @memberof PaymentMethod
-   */
-  brand: string
-  /**
-   *
-   * @type {string}
-   * @memberof PaymentMethod
-   */
-  last4: string
-}
-/**
- *
- * @export
- * @interface Player
- */
-export interface Player {
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  id: string
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  name: string
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  gameId: string
-  /**
-   *
-   * @type {number}
-   * @memberof Player
-   */
-  skillLevel: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof Player
-   */
-  emailsEnabled: boolean
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  intercomHash?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Player
-   */
-  avatarImageKey?: string | null
-}
-/**
- *
- * @export
- * @interface PlayerUpdateReviewRequest
- */
-export interface PlayerUpdateReviewRequest {
-  /**
-   *
-   * @type {boolean}
-   * @memberof PlayerUpdateReviewRequest
-   */
-  accepted?: boolean | null
-  /**
-   *
-   * @type {boolean}
-   * @memberof PlayerUpdateReviewRequest
-   */
-  cancelled?: boolean | null
-}
-/**
- *
- * @export
  * @interface Recording
  */
 export interface Recording {
@@ -912,7 +506,7 @@ export interface Recording {
    * @type {string}
    * @memberof Recording
    */
-  playerId: string
+  userId: string
   /**
    *
    * @type {string}
@@ -979,120 +573,83 @@ export interface Recording {
    * @memberof Recording
    */
   instanceId?: string | null
-}
-/**
- *
- * @export
- * @interface ResetPasswordRequest
- */
-export interface ResetPasswordRequest {
   /**
    *
    * @type {string}
-   * @memberof ResetPasswordRequest
-   */
-  email: string
-  /**
-   *
-   * @type {UserType}
-   * @memberof ResetPasswordRequest
-   */
-  userType: UserType
-}
-/**
- *
- * @export
- * @interface Review
- */
-export interface Review {
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  id: string
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  playerId: string
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  coachId: string
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  recordingId: string
-  /**
-   *
-   * @type {Recording}
-   * @memberof Review
-   */
-  recording?: Recording | null
-  /**
-   *
-   * @type {string}
-   * @memberof Review
+   * @memberof Recording
    */
   notes: string
   /**
    *
-   * @type {ReviewState}
-   * @memberof Review
+   * @type {User}
+   * @memberof Recording
    */
-  state: ReviewState
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  createdAt: string
-  /**
-   *
-   * @type {string}
-   * @memberof Review
-   */
-  stripeClientSecret?: string | null
-  /**
-   *
-   * @type {number}
-   * @memberof Review
-   */
-  tax?: number | null
-  /**
-   *
-   * @type {Coach}
-   * @memberof Review
-   */
-  coach?: Coach | null
-  /**
-   *
-   * @type {Player}
-   * @memberof Review
-   */
-  player?: Player | null
+  user?: User | null
 }
-
 /**
  *
  * @export
+ * @interface RecordingMetadata
  */
-export const ReviewState = {
-  AwaitingPayment: "AwaitingPayment",
-  AwaitingReview: "AwaitingReview",
-  Draft: "Draft",
-  Published: "Published",
-  Accepted: "Accepted",
-  Refunded: "Refunded",
-} as const
-export type ReviewState = (typeof ReviewState)[keyof typeof ReviewState]
-
+export interface RecordingMetadata {
+  /**
+   *
+   * @type {RecordingMetadataValueOneOfOverwatch}
+   * @memberof RecordingMetadata
+   */
+  overwatch: RecordingMetadataValueOneOfOverwatch
+}
+/**
+ * @type RecordingMetadataValue
+ *
+ * @export
+ */
+export type RecordingMetadataValue = RecordingMetadataValueOneOf
+/**
+ *
+ * @export
+ * @interface RecordingMetadataValueOneOf
+ */
+export interface RecordingMetadataValueOneOf {
+  /**
+   *
+   * @type {RecordingMetadataValueOneOfOverwatch}
+   * @memberof RecordingMetadataValueOneOf
+   */
+  overwatch: RecordingMetadataValueOneOfOverwatch
+}
+/**
+ *
+ * @export
+ * @interface RecordingMetadataValueOneOfOverwatch
+ */
+export interface RecordingMetadataValueOneOfOverwatch {
+  /**
+   *
+   * @type {string}
+   * @memberof RecordingMetadataValueOneOfOverwatch
+   */
+  replayCode: string
+  /**
+   *
+   * @type {number}
+   * @memberof RecordingMetadataValueOneOfOverwatch
+   */
+  playerPosition: number
+}
+/**
+ *
+ * @export
+ * @interface Session
+ */
+export interface Session {
+  /**
+   *
+   * @type {string}
+   * @memberof Session
+   */
+  token: string
+}
 /**
  *
  * @export
@@ -1141,37 +698,6 @@ export interface TokenCredentials {
 /**
  *
  * @export
- * @interface UpdateCoachRequest
- */
-export interface UpdateCoachRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateCoachRequest
-   */
-  name: string
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateCoachRequest
-   */
-  bio: string
-  /**
-   *
-   * @type {number}
-   * @memberof UpdateCoachRequest
-   */
-  price: number
-  /**
-   *
-   * @type {boolean}
-   * @memberof UpdateCoachRequest
-   */
-  emailsEnabled: boolean
-}
-/**
- *
- * @export
  * @interface UpdateCommentRequest
  */
 export interface UpdateCommentRequest {
@@ -1183,10 +709,10 @@ export interface UpdateCommentRequest {
   body: string
   /**
    *
-   * @type {any}
+   * @type {CommentMetadata}
    * @memberof UpdateCommentRequest
    */
-  metadata: any | null
+  metadata: CommentMetadata
   /**
    *
    * @type {string}
@@ -1210,41 +736,86 @@ export interface UpdatePasswordRequest {
 /**
  *
  * @export
- * @interface UpdatePlayerRequest
+ * @interface UpdateUserRequest
  */
-export interface UpdatePlayerRequest {
+export interface UpdateUserRequest {
   /**
    *
    * @type {string}
-   * @memberof UpdatePlayerRequest
+   * @memberof UpdateUserRequest
+   */
+  name: string
+  /**
+   *
+   * @type {GameId}
+   * @memberof UpdateUserRequest
+   */
+  gameId: GameId
+  /**
+   *
+   * @type {boolean}
+   * @memberof UpdateUserRequest
+   */
+  emailsEnabled: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof UpdateUserRequest
+   */
+  avatarId?: string | null
+}
+/**
+ *
+ * @export
+ * @interface User
+ */
+export interface User {
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  id: string
+  /**
+   *
+   * @type {string}
+   * @memberof User
    */
   name: string
   /**
    *
    * @type {string}
-   * @memberof UpdatePlayerRequest
+   * @memberof User
+   */
+  email: string
+  /**
+   *
+   * @type {string}
+   * @memberof User
    */
   gameId: string
   /**
    *
-   * @type {number}
-   * @memberof UpdatePlayerRequest
-   */
-  skillLevel: number
-  /**
-   *
    * @type {boolean}
-   * @memberof UpdatePlayerRequest
+   * @memberof User
    */
   emailsEnabled: boolean
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  intercomHash?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  avatarId?: string | null
+  /**
+   *
+   * @type {string}
+   * @memberof User
+   */
+  avatarImageKey?: string | null
 }
-
-/**
- *
- * @export
- */
-export const UserType = {
-  Coach: "coach",
-  Player: "player",
-} as const
-export type UserType = (typeof UserType)[keyof typeof UserType]

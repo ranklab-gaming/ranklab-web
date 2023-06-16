@@ -1,14 +1,6 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import {
-  Box,
-  Button,
-  Container,
-  Fab,
-  Link,
-  Stack,
-  Typography,
-} from "@mui/material"
+import { Box, Button, Container, Fab, Stack, Typography } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren, useRef } from "react"
@@ -125,7 +117,7 @@ export const Hero = () => {
                 variant="h4"
                 component="h2"
               >
-                Get your gameplay analyzed by experienced coaches.
+                Get your gameplay analyzed by experienced players.
               </Typography>
             </Stack>
           </m.div>
@@ -160,20 +152,6 @@ export const Hero = () => {
                     Get Started
                   </Button>
                 </NextLink>
-                <Typography
-                  variant="body2"
-                  sx={{ color: "text.secondary" }}
-                  textAlign="center"
-                >
-                  Are you a coach?{" "}
-                  <NextLink
-                    href="/api/auth/signin?intent=signup&user_type=coach"
-                    passHref
-                    legacyBehavior
-                  >
-                    <Link color="secondary.contrastText">Sign up</Link>
-                  </NextLink>
-                </Typography>
               </Stack>
             </Box>
           </m.div>
@@ -224,16 +202,6 @@ export const Hero = () => {
           justifyContent: "center",
         }}
       >
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          component="div"
-          pb={2}
-          fontWeight="bold"
-          textTransform="uppercase"
-        >
-          See what games we support
-        </Typography>
         <m.div
           animate={{ y: ["5%", "-5%", "5%"] }}
           transition={{ duration: 1, repeat: Infinity }}

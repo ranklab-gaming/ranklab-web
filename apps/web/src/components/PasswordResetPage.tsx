@@ -4,7 +4,6 @@ import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
-import { UserType } from "@ranklab/api"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
 import { Controller, FormProvider } from "react-hook-form"
@@ -24,7 +23,6 @@ export const PasswordResetPage = ({ token }: Props) => {
   const defaultValues: FormValues = { password: "" }
   const { enqueueSnackbar } = useSnackbar()
   const router = useRouter()
-  const userType = router.query.user_type as UserType
 
   const form = useForm({
     resolver: yupResolver(FormSchema),
@@ -38,16 +36,16 @@ export const PasswordResetPage = ({ token }: Props) => {
   } = form
 
   const onSubmit = async (data: FormValues) => {
-    await api.sessionUpdatePassword({
+    await api.passwordsUpdate({
       updatePasswordRequest: data,
-      auth: { userType, token },
+      auth: { token },
     })
 
     enqueueSnackbar("Your password was updated successfully.", {
       variant: "success",
     })
 
-    await router.push(`/${userType}/login`)
+    await router.push("/login")
   }
 
   return (

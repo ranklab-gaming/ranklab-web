@@ -14,16 +14,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { UserType } from "@ranklab/api"
 import NextLink from "next/link"
 import { useState } from "react"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
 import { SocialButtons } from "./SocialButtons"
-
-interface Props {
-  userType: UserType
-}
 
 const FormSchema = yup.object().shape({
   email: yup
@@ -35,7 +30,7 @@ const FormSchema = yup.object().shape({
 
 type FormValues = yup.InferType<typeof FormSchema>
 
-export const LoginPage = ({ userType }: Props) => {
+export const LoginPage = () => {
   const defaultValues: FormValues = {
     email: "",
     password: "",
@@ -59,21 +54,15 @@ export const LoginPage = ({ userType }: Props) => {
   } = form
 
   const onSubmit = async (data: FormValues) => {
-    const session = await api.sessionCreate({
-      createSessionRequest: { credentials: { password: data }, userType },
+    const session = await api.sessionsCreate({
+      createSessionRequest: { credentials: { password: data } },
     })
 
     await login(session.token)
   }
 
   return (
-    <BasicLayout
-      title={
-        userType === "player"
-          ? "Sign in to Ranklab"
-          : "Sign in to Ranklab as a coach"
-      }
-    >
+    <BasicLayout title="Sign in to Ranklab">
       <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
         <Box sx={{ flexGrow: 1 }}>
           <Typography sx={{ color: "text.secondary" }}>
@@ -130,42 +119,33 @@ export const LoginPage = ({ userType }: Props) => {
                 />
               )}
             />
-          </Stack>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ my: 2 }}
-          >
-            <NextLink
-              href={`/password/request-reset?user_type=${userType}`}
-              passHref
-              legacyBehavior
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ my: 2 }}
             >
-              <Link variant="subtitle2">Forgot password?</Link>
-            </NextLink>
+              <NextLink href="/password/request-reset" passHref legacyBehavior>
+                <Link variant="subtitle2">Forgot password?</Link>
+              </NextLink>
+            </Stack>
+            <LoadingButton
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Sign in
+            </LoadingButton>
+            <SocialButtons />
           </Stack>
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
-            Sign in
-          </LoadingButton>
         </form>
       </FormProvider>
-      <SocialButtons />
       <Box display="flex" alignItems="center" mt={3}>
         <Typography variant="body2" sx={{ mr: 1 }}>
           Don&apos;t have an account?
         </Typography>
-        <NextLink
-          href={`/api/auth/signin?user_type=${userType}&intent=signup`}
-          passHref
-          legacyBehavior
-        >
+        <NextLink href="/api/auth/signin?intent=signup" passHref legacyBehavior>
           <Link variant="subtitle2">Get started</Link>
         </NextLink>
       </Box>

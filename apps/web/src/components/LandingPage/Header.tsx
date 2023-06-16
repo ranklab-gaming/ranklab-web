@@ -1,9 +1,8 @@
 import { Label } from "@/components/Label"
 import { Logo } from "@/components/Logo"
-import { SplitButton, SplitButtonItem } from "@/components/SplitButton"
 import { useOffsetTop } from "@/hooks/useOffsetTop"
 import { headerStyles, styles } from "@/styles"
-import { AppBar, Box, Container, Toolbar } from "@mui/material"
+import { AppBar, Box, Button, Container, Toolbar } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
@@ -57,17 +56,9 @@ export const Header = () => {
             Ranklab
           </Label>
           <Box sx={{ flexGrow: 1 }} />
-          <SplitButton
-            variant="contained"
-            color="secondary"
-            href="/api/auth/signin"
-            label="Sign In"
-          >
-            <SplitButtonItem
-              href="/api/auth/signin?user_type=coach"
-              label="Sign in as Coach"
-            />
-          </SplitButton>
+          <Button variant="contained" color="secondary" href="/api/auth/signin">
+            Sign In
+          </Button>
         </Container>
       </ToolbarStyle>
       {isOffset ? <ToolbarShadowStyle /> : null}

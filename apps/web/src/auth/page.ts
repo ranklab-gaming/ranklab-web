@@ -1,26 +1,17 @@
-import { Coach, Player, ResponseError, UserType } from "@ranklab/api"
+import { ResponseError, User } from "@ranklab/api"
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next"
-import { CoachUser, PlayerUser, PropsWithUser, User } from "../auth"
+import { PropsWithUser } from "../auth"
 import { withSessionSsr } from "@/session"
-
-function userFromCoach(coach: Coach): CoachUser {
-  return { ...coach, type: "coach" }
-}
-
-function userFromPlayer(player: Player): PlayerUser {
-  return { ...player, type: "player" }
-}
 
 type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
   ctx: GetServerSidePropsContext & { user: Promise<User> }
 ) => Promise<GetServerSidePropsResult<P>>
 
 export function withUserSsr<P extends { [key: string]: any }>(
-  userType: UserType,
   getServerSideProps: GetServerSidePropsWithUser<P>
 ): GetServerSideProps<PropsWithUser<P>> {
   return withSessionSsr(
@@ -36,25 +27,13 @@ export function withUserSsr<P extends { [key: string]: any }>(
       if (!session) {
         return {
           redirect: {
-            destination: `/api/auth/signin?user_type=${userType}&return_url=${returnUrl}`,
+            destination: `/api/auth/signin?return_url=${returnUrl}`,
             permanent: false,
           },
         }
       }
 
-      if (session.userType !== userType) {
-        return {
-          redirect: {
-            destination: `/api/auth/logout?return_url=${returnUrl}`,
-            permanent: false,
-          },
-        }
-      }
-
-      const fetchUser =
-        userType === "coach"
-          ? api.coachAccountGet().then(userFromCoach)
-          : api.playerAccountGet().then(userFromPlayer)
+      const fetchUser = api.usersGet()
 
       let res
 

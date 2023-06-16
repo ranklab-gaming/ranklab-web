@@ -1,4 +1,3 @@
-import { User } from "@/auth"
 import { Page } from "./Page"
 import { UserProvider } from "@/contexts/UserContext"
 import { headerStyles, navbarStyles } from "@/styles"
@@ -14,6 +13,7 @@ import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { useIntercom } from "react-use-intercom"
+import { User } from "@ranklab/api"
 
 interface MainStyleProps {
   collapsed: boolean

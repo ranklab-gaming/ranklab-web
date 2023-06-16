@@ -1,4 +1,4 @@
-import { User } from "@/auth"
+import { User } from "@ranklab/api"
 import { createContext, PropsWithChildren } from "react"
 
 interface UserProviderProps extends PropsWithChildren {

@@ -35,19 +35,15 @@ const getOidcProvider = async () => {
           )
         )
 
-        const { userType, intent, gameId, token } = state
+        const { intent, token } = state
         const queryParams = new URLSearchParams()
-
-        if (gameId) {
-          queryParams.append("game_id", gameId)
-        }
 
         if (token) {
           queryParams.append("token", token)
         }
 
         const query = queryParams.toString() ? `?${queryParams.toString()}` : ""
-        return `/${userType}/${intent}${query}`
+        return `/${intent}${query}`
       },
     },
     pkce: {

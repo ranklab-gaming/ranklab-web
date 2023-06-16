@@ -1,12 +1,10 @@
 import { Iconify } from "@/components/Iconify"
 import { Logo } from "@/components/Logo"
 import { useResponsive } from "@/hooks/useResponsive"
-import { useUser } from "@/hooks/useUser"
 import { navbarStyles } from "@/styles"
 import { Box, Drawer, Stack } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import NextLink from "next/link"
-import { useRouter } from "next/router"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
@@ -43,75 +41,40 @@ export const Navbar = ({
   onCollapse,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
-  const user = useUser()
-  const router = useRouter()
-  const recordingsTitle = useGameDependency("text:recordings-title")
+  const recordingsTitle = `Your ${useGameDependency("text:recording-plural")}`
   const recordingsIcon = useGameDependency("component:recording-icon")
+  const recordingPageTitle = useGameDependency("text:create-recording-button")
 
-  const navConfig =
-    user.type === "player"
-      ? [
-          [
-            {
-              title: "Request a Review",
-              path: "/player/reviews/new",
-              active: router.pathname.startsWith("/player/reviews/new/"),
-              icon: icons.review,
-            },
-          ],
-          [
-            {
-              title: "Dashboard",
-              path: "/player/dashboard",
-              icon: icons.dashboard,
-            },
-            // {
-            //   title: "Coaches",
-            //   path: "/player/coaches",
-            //   icon: icons.school,
-            // },
-            {
-              title: "Archive",
-              path: "/player/archive",
-              icon: icons.archive,
-            },
-            {
-              title: recordingsTitle,
-              path: "/player/recordings",
-              icon: recordingsIcon,
-            },
-          ],
-          [
-            {
-              title: "Account",
-              path: "/player/account",
-              icon: icons.user,
-            },
-          ],
-        ]
-      : [
-          [
-            {
-              title: "Dashboard",
-              path: "/coach/dashboard",
-              icon: icons.dashboard,
-            },
-            {
-              title: "Archive",
-              path: "/coach/archive",
-              icon: icons.archive,
-            },
-          ],
-          [
-            {
-              title: "Account",
-              path: "/coach/account",
-              icon: icons.user,
-            },
-          ],
-        ]
+  const navConfig = [
+    [
+      {
+        title: recordingPageTitle,
+        path: "/recordings/new",
+        icon: icons.review,
+      },
+    ],
+    [
+      {
+        title: "Dashboard",
+        path: "/dashboard",
+        icon: icons.dashboard,
+      },
+      {
+        title: recordingsTitle,
+        path: "/recordings",
+        icon: recordingsIcon,
+      },
+    ],
+    [
+      {
+        title: "Account",
+        path: "/account",
+        icon: icons.user,
+      },
+    ],
+  ]
 
-  const renderContent = (
+  const content = (
     <Scrollbar
       sx={{
         height: 1,
@@ -184,7 +147,7 @@ export const Navbar = ({
             },
           }}
         >
-          {renderContent}
+          {content}
         </Drawer>
       )}
       {isDesktop ? (
@@ -205,7 +168,7 @@ export const Navbar = ({
             },
           }}
         >
-          {renderContent}
+          {content}
         </Drawer>
       ) : null}
     </RootStyle>

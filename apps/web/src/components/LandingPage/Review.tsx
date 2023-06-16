@@ -52,7 +52,7 @@ export const Review = () => {
                   }}
                   variant="body1"
                 >
-                  Coaches can comment or draw at specific points in the match,
+                  Players can comment or draw at specific points in the match,
                   giving you moment by moment feedback on your gameplay.
                 </Typography>
               </m.div>
