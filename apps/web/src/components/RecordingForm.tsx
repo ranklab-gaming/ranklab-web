@@ -10,6 +10,7 @@ import { useGameDependency } from "@/hooks/useGameDependency"
 import { useUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
 import { assertFind } from "@/assert"
+import { useSnackbar } from "notistack"
 
 export interface RecordingFormProps<TValues extends RecordingFormValues> {
   games: Game[]
@@ -28,8 +29,10 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   const user = useUser()
   const recordingSingular = useGameDependency("text:recording-singular")
   const createButtonText = useGameDependency("text:create-recording-button")
+  const successMessage = useGameDependency("text:recording-created-success")
   const router = useRouter()
   const game = assertFind(games, (g) => g.id === user.gameId)
+  const { enqueueSnackbar } = useSnackbar()
 
   const {
     handleSubmit,
@@ -51,6 +54,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     })
 
     await onSubmit(values, recording)
+    enqueueSnackbar(successMessage, { variant: "success" })
     await router.push(`/recordings/${recording.id}`)
   }
 
