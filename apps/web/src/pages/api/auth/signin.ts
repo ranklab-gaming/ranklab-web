@@ -9,27 +9,20 @@ const signin = withSessionApiRoute(async function (
   res: NextApiResponse
 ) {
   const intent = (req.query.intent as string) || "login"
-  const userType = (req.query.user_type as string) || "player"
 
   if (intent !== "login" && intent !== "signup") {
     res.status(400).end()
     return
   }
 
-  if (userType !== "player" && userType !== "coach") {
-    res.status(400).end()
-    return
-  }
-
-  const gameId = req.query.game_id as string
   const token = req.query.token as string
   const client = await getAuthClient()
   const codeVerifier = generators.codeVerifier()
   const codeChallenge = generators.codeChallenge(codeVerifier)
 
-  const state = Buffer.from(
-    JSON.stringify({ intent, userType, gameId, token })
-  ).toString("base64")
+  const state = Buffer.from(JSON.stringify({ intent, token })).toString(
+    "base64"
+  )
 
   req.session.codeVerifier = codeVerifier
   req.session.returnUrl = req.query.return_url as string

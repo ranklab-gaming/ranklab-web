@@ -4,11 +4,9 @@ import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { LoadingButton } from "@mui/lab"
 import { Stack, TextField } from "@mui/material"
-import { UserType } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
-import { useRouter } from "next/router"
 
 const FormSchema = yup.object().shape({
   email: yup
@@ -22,8 +20,6 @@ type FormValues = yup.InferType<typeof FormSchema>
 export const PasswordRequestResetPage = () => {
   const defaultValues: FormValues = { email: "" }
   const { enqueueSnackbar } = useSnackbar()
-  const router = useRouter()
-  const userType = router.query.user_type as UserType
 
   const form = useForm({
     resolver: yupResolver(FormSchema),
@@ -37,8 +33,8 @@ export const PasswordRequestResetPage = () => {
   } = form
 
   const onSubmit = async (data: FormValues) => {
-    await api.sessionResetPassword({
-      resetPasswordRequest: { ...data, userType },
+    await api.passwordsCreate({
+      createPasswordRequest: data,
     })
 
     enqueueSnackbar("Check your email for a link to reset your password.", {

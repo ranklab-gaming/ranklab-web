@@ -82,14 +82,14 @@ export const Flow = () => {
       icon: videoOutline,
       title: "Record",
       description:
-        "Record your gameplay and upload it to our platform. For Chess, you can just paste the PGN.",
+        "Record your gameplay and upload it to our platform. For Overwatch, you can just paste the replay code.",
       color: theme.palette.error.main,
     },
     {
       icon: fileChartCheckOutline,
       title: "Get feedback",
       description:
-        "Get a detailed analysis of your gameplay by one of our coaches with the help of comments and drawings second by second.",
+        "Get a detailed analysis of your gameplay by other players with the help of comments and drawings second by second.",
       color: theme.palette.info.main,
     },
     {

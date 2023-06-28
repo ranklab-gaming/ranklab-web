@@ -1,4 +1,4 @@
-import { requireEnv } from "../config"
+import { requireEnv } from "@/config"
 
 const apiHost = requireEnv("API_HOST", process.env.API_HOST)
 const host = requireEnv("HOST", process.env.HOST)

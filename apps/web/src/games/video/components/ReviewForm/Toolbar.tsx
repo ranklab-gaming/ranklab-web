@@ -1,11 +1,11 @@
 import { DrawingRef } from "./Drawing"
-import { Color, colors } from "../ReviewForm/Recording"
+import { Color, colors } from "./Recording"
 import { Iconify } from "@/components/Iconify"
 import { Stack, IconButton, useTheme, Tooltip } from "@mui/material"
 import { RefObject } from "react"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
-import { VideoPlayerRef } from "../VideoPlayer"
+import { VideoPlayerRef } from "@/components/VideoPlayer"
 
 interface Props {
   color: Color

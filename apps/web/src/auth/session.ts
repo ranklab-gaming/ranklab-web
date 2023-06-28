@@ -1,6 +1,5 @@
 import { assertProp } from "@/assert"
 import { authClientSecret, host } from "@/config/server"
-import { UserType } from "@ranklab/api"
 import { IncomingMessage } from "http"
 import { decodeJwt } from "jose"
 import { Client, Issuer, errors } from "openid-client"
@@ -40,15 +39,8 @@ export function sessionFromToken(token?: string) {
   }
 
   const payload = decodeJwt(token)
-  const sub = assertProp(payload, "sub")
-  const userType = sub.split(":")[0]
-
-  if (!["coach", "player"].includes(userType)) {
-    throw new Error(`invalid user type: ${userType}`)
-  }
 
   return {
-    userType: userType as UserType,
     accessToken: token,
     payload,
   }

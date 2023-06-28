@@ -157,7 +157,7 @@ export default function App({
         <title>Ranklab</title>
         <meta
           name="description"
-          content="Improve your gaming skills with Ranklab. Get personalized coaching and game analysis from experienced coaches."
+          content="Improve your gaming skills with Ranklab. Get personalized game analysis from experienced players."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

@@ -9,9 +9,6 @@ import { Flow } from "./LandingPage/Flow"
 import { Header } from "./LandingPage/Header"
 import { Hero } from "./LandingPage/Hero"
 import { Review } from "./LandingPage/Review"
-import { SupportedGames } from "./LandingPage/SupportedGames"
-import { Pricing } from "./LandingPage/Pricing"
-import { Game } from "@ranklab/api"
 
 const RootStyle = styled("div")({
   height: "100%",
@@ -23,11 +20,7 @@ const ContentStyle = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
 }))
 
-interface Props {
-  games: Game[]
-}
-
-export const LandingPage = ({ games }: Props) => {
+export const LandingPage = () => {
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -55,11 +48,9 @@ export const LandingPage = ({ games }: Props) => {
         <RootStyle>
           <Hero />
           <ContentStyle>
-            <SupportedGames games={games} />
             <Flow />
             <Review />
             <Dashboard />
-            <Pricing />
           </ContentStyle>
         </RootStyle>
         <Box sx={{ flexGrow: 1, height: 1 }} />

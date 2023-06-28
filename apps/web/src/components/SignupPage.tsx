@@ -1,114 +1,113 @@
 import { BasicLayout } from "@/components/BasicLayout"
 import { LoadingButton } from "@mui/lab"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Stack,
-  useTheme,
-} from "@mui/material"
-import { PropsWithChildren, useId } from "react"
-import Sticky from "react-stickynode"
-import { assetsCdnUrl } from "@/config"
-import { FieldValues, UseFormReturn } from "react-hook-form"
-import { useResponsive } from "@/hooks/useResponsive"
+import { Box, Link, Stack, Typography } from "@mui/material"
+import { useId } from "react"
 import { SocialButtons } from "./SocialButtons"
+import { useLogin } from "@/hooks/useLogin"
+import { decode } from "jsonwebtoken"
+import {
+  AccountFields,
+  AccountFieldsSchema,
+  AccountFieldsSchemaWithoutPassword,
+  AccountFieldsValues,
+} from "./AccountFields"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm } from "@/hooks/useForm"
+import { api } from "@/api"
+import { Game, GameId } from "@ranklab/api"
+import { track } from "@/analytics"
+import NextLink from "next/link"
 
-interface SignupPageProps<T extends FieldValues> {
-  title: string
-  form: UseFormReturn<T>
-  onSubmit: (data: T) => Promise<void>
-  reviewDemoKey: string
-  reviewDemoTitle: string
-  reviewDemoSubheader: string
-  showSocialButtons?: boolean
+interface SignupPageProps {
+  token?: string
+  games: Game[]
 }
 
-export const SignupPage = <T extends FieldValues>({
-  title,
-  form,
-  onSubmit,
-  children,
-  reviewDemoKey,
-  reviewDemoTitle,
-  reviewDemoSubheader,
-  showSocialButtons = true,
-}: PropsWithChildren<SignupPageProps<T>>) => {
+export const SignupPage = ({ token, games }: SignupPageProps) => {
+  const id = useId().slice(1, -1)
+  const login = useLogin()
+  const jwt = token ? decode(token) : null
+  const jwtPayload = typeof jwt === "string" ? null : jwt
+
+  const defaultValues: AccountFieldsValues = {
+    gameId: games[0].id,
+    name: jwtPayload?.name ?? "",
+    email: jwtPayload?.sub ?? "",
+    password: "",
+  }
+
+  const form = useForm({
+    mode: "onSubmit",
+    resolver: yupResolver(
+      (jwtPayload
+        ? AccountFieldsSchemaWithoutPassword
+        : AccountFieldsSchema) as typeof AccountFieldsSchema
+    ),
+    defaultValues,
+  })
+
   const {
     handleSubmit,
     formState: { isSubmitting },
   } = form
 
-  const theme = useTheme()
-  const isDesktop = useResponsive("up", "sm")
-  const id = useId().slice(1, -1)
+  const createUser = async (data: AccountFieldsValues) => {
+    const session = await api.usersCreate({
+      createUserRequest: {
+        name: data.name,
+        gameId: data.gameId as GameId,
+        credentials: token
+          ? {
+              token: {
+                token,
+              },
+            }
+          : {
+              password: {
+                email: data.email,
+                password: data.password,
+              },
+            },
+      },
+    })
+
+    track("User signup")
+
+    await login(session.token)
+  }
 
   return (
-    <BasicLayout title={title} maxWidth="lg">
-      <form onSubmit={handleSubmit(onSubmit)} className={`${id}-form`}>
+    <BasicLayout title="Sign up to Ranklab">
+      <form onSubmit={handleSubmit(createUser)} className={`${id}-form`}>
         <Stack spacing={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={3}>
-                {children}
-                <Stack direction="row" spacing={2}>
-                  <LoadingButton
-                    color="primary"
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    loading={isSubmitting}
-                    disabled={isSubmitting}
-                    fullWidth={!isDesktop}
-                    sx={{ minWidth: "150px" }}
-                  >
-                    Sign up
-                  </LoadingButton>
-                  {showSocialButtons ? (
-                    <SocialButtons sx={{ flexGrow: 0 }} />
-                  ) : null}
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Sticky
-                enabled
-                top={20}
-                innerZ={9999}
-                bottomBoundary={`.${id}-form`}
-              >
-                <Card elevation={4}>
-                  <CardHeader
-                    title={reviewDemoTitle}
-                    subheader={reviewDemoSubheader}
-                  />
-                  <CardContent>
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      controls
-                      key={reviewDemoKey}
-                      style={{
-                        maxWidth: "100%",
-                        objectFit: "cover",
-                        borderRadius: theme.shape.borderRadius,
-                      }}
-                    >
-                      <source
-                        src={`${assetsCdnUrl}/${reviewDemoKey}`}
-                        type="video/mp4"
-                      />
-                    </video>
-                  </CardContent>
-                </Card>
-              </Sticky>
-            </Grid>
-          </Grid>
+          <AccountFields
+            control={form.control}
+            games={games}
+            showPasswordField={!jwtPayload}
+          />
+          <LoadingButton
+            color="primary"
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            fullWidth
+            sx={{ minWidth: "150px" }}
+          >
+            Sign up
+          </LoadingButton>
+          <SocialButtons />
         </Stack>
       </form>
+      <Box display="flex" alignItems="center" mt={3}>
+        <Typography variant="body2" sx={{ mr: 1 }}>
+          Already have an account?
+        </Typography>
+        <NextLink href="/api/auth/signin" passHref legacyBehavior>
+          <Link variant="subtitle2">Sign in</Link>
+        </NextLink>
+      </Box>
     </BasicLayout>
   )
 }

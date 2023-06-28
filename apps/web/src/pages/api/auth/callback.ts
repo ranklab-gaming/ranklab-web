@@ -49,7 +49,7 @@ const callback = withSessionApiRoute(async function (
   delete req.session.returnUrl
   await req.session.save()
 
-  res.redirect(307, returnUrl ?? `/${session.userType}/dashboard`).end()
+  res.redirect(307, returnUrl ?? "/dashboard").end()
 })
 
 export default callback

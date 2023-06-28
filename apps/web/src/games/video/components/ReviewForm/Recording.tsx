@@ -9,9 +9,9 @@ import { Editor } from "@/components/Editor"
 import { theme } from "@/theme/theme"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
-import { VideoPlayerRef, VideoPlayer } from "../VideoPlayer"
-import { CommentForm } from "@/coach/hooks/useCommentForm"
-import { Recording as BaseRecording } from "@/coach/components/CommentForm/Recording"
+import { VideoPlayerRef, VideoPlayer } from "@/components/VideoPlayer"
+import { ReviewForm } from "@/hooks/useReviewForm"
+import { Recording as BaseRecording } from "@/components/ReviewForm/Recording"
 import { Comment } from "@ranklab/api"
 
 if (typeof window !== "undefined") {
@@ -20,7 +20,7 @@ if (typeof window !== "undefined") {
 }
 
 interface Props {
-  commentForm: CommentForm
+  reviewForm: ReviewForm
   videoRef: RefObject<VideoPlayerRef>
   editingDrawing: boolean
   onEditingDrawingChange: (editingDrawing: boolean) => void
@@ -40,7 +40,7 @@ export type Color = (typeof colors)[number]
 
 export const Recording = ({
   videoRef,
-  commentForm,
+  reviewForm,
   editingDrawing,
   onEditingDrawingChange,
   onCommentSelect,
@@ -49,7 +49,7 @@ export const Recording = ({
   const [resizing, setResizing] = useState(false)
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
-  const { form, recording, editingText } = commentForm
+  const { form, recording, editingText } = reviewForm
   const metadata = form.watch("metadata")
 
   useEffect(() => {
@@ -86,7 +86,7 @@ export const Recording = ({
 
   return (
     <BaseRecording
-      commentForm={commentForm}
+      reviewForm={reviewForm}
       ref={boxRef}
       toolbarElement={
         <Toolbar

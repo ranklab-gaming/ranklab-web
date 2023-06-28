@@ -1,14 +1,10 @@
-import {
-  newRecordingId,
-  useRecordingForm,
-} from "@/player/hooks/useRecordingForm"
+import { useRecordingForm } from "@/hooks/useRecordingForm"
 import * as yup from "yup"
+import { RecordingFormSchema as BaseRecordingFormSchema } from "@/games/video/hooks/useRecordingForm"
 import {
-  RecordingFormSchema as BaseRecordingFormSchema,
-  RecordingFormValues as BaseRecordingFormValues,
-} from "@/games/video/hooks/useRecordingForm"
-import { RecordingForm as BaseRecordingForm } from "@/games/video/components/RecordingForm"
-import { RecordingFormProps } from "@/games/video/components/RecordingForm"
+  RecordingForm as BaseRecordingForm,
+  RecordingFormProps as BaseRecordingFormProps,
+} from "@/games/video/components/RecordingForm"
 import {
   TextField,
   FormControl,
@@ -18,71 +14,103 @@ import {
   Radio,
   RadioGroup,
   Box,
+  Tabs,
+  Tab,
+  Stack,
 } from "@mui/material"
 import { Controller } from "react-hook-form"
+import firstPosition from "@/images/overwatch/1.png"
+import secondPosition from "@/images/overwatch/2.png"
+import thirdPosition from "@/images/overwatch/3.png"
+import fourthPosition from "@/images/overwatch/4.png"
+import fifthPosition from "@/images/overwatch/5.png"
+import sixthPosition from "@/images/overwatch/6.png"
+import seventhPosition from "@/images/overwatch/7.png"
+import eighthPosition from "@/images/overwatch/8.png"
+import ninthPosition from "@/images/overwatch/9.png"
+import tenthPosition from "@/images/overwatch/10.png"
+import NextImage from "next/image"
+
+const positions = [
+  firstPosition,
+  secondPosition,
+  thirdPosition,
+  fourthPosition,
+  fifthPosition,
+  sixthPosition,
+  seventhPosition,
+  eighthPosition,
+  ninthPosition,
+  tenthPosition,
+]
 
 const RecordingFormSchema = BaseRecordingFormSchema.shape({
-  newRecordingVideo: yup.mixed(),
-  newRecordingMetadata: yup.mixed(),
-}).test({
-  name: "is-valid",
-  test: function (value) {
-    if (value.recordingId === newRecordingId) {
-      if (value.newRecordingMetadata.overwatch.replayCode === "") {
-        if (!value.newRecordingVideo) {
-          return this.createError({
-            message: "Video is required",
-            path: "newRecordingVideo",
-          })
-        }
-      } else {
-        if (
-          !["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].includes(
-            value.newRecordingMetadata.overwatch.playerPosition
+  useReplayCode: yup.boolean().defined(),
+  video: yup
+    .mixed({
+      check(value): value is File {
+        return value instanceof File
+      },
+    })
+    .when("useReplayCode", {
+      is: false,
+      then: (s) =>
+        s
+          .test(
+            "required",
+            "Video is required",
+            (value) => value && value instanceof File && value.size > 0
           )
-        ) {
-          return this.createError({
-            message: "Player position is required",
-            path: "newRecordingMetadata.overwatch.playerPosition",
-          })
-        }
-      }
-    }
-
-    return true
-  },
+          .test(
+            "fileSize",
+            "Video file must be less than 4GiB",
+            (value) => value && value instanceof File && value.size < 4294967296
+          ),
+    }),
+  metadata: yup
+    .object({
+      overwatch: yup.object({
+        replayCode: yup.string().defined(),
+        playerPosition: yup.number().defined(),
+      }),
+    })
+    .when("useReplayCode", {
+      is: true,
+      then: () =>
+        yup.object({
+          overwatch: yup.object({
+            replayCode: yup
+              .string()
+              .defined()
+              .required("Replay code is required"),
+            playerPosition: yup
+              .number()
+              .defined()
+              .min(0)
+              .max(9)
+              .required("Player position is required"),
+          }),
+        }),
+    }),
 })
 
-interface RecordingFormValues extends BaseRecordingFormValues {
-  newRecordingMetadata: {
-    overwatch: {
-      replayCode: string
-      playerPosition: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10"
-    }
-  }
-}
-
+type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
 type RecordingFormSchema = yup.ObjectSchema<RecordingFormValues>
 
 const RecordingForm = ({
-  recordings,
-  recordingId,
-  notes,
   onSubmit,
-  submitText = "Continue",
-  forReview = true,
-}: RecordingFormProps<RecordingFormValues>) => {
+  games,
+}: BaseRecordingFormProps<RecordingFormValues>) => {
   const recordingForm = useRecordingForm<
     RecordingFormValues,
     RecordingFormSchema
   >({
     defaultValues: {
-      recordingId,
-      notes,
-      newRecordingMetadata: {
+      useReplayCode: true,
+      metadata: {
         overwatch: {
           replayCode: "",
-          playerPosition: "1",
+          playerPosition: 0,
         },
       },
     },
@@ -90,76 +118,94 @@ const RecordingForm = ({
   })
 
   const { watch, control } = recordingForm
-  const newRecordingMetadata = watch("newRecordingMetadata")
+  const useReplayCode = watch("useReplayCode")
 
   return (
     <BaseRecordingForm
       onSubmit={onSubmit}
-      submitText={submitText}
-      forReview={forReview}
+      games={games}
       recordingForm={recordingForm}
-      recordings={recordings}
+      showVideoField={!useReplayCode}
+      headerElement={
+        <Tabs
+          value={useReplayCode ? 0 : 1}
+          onChange={(_, value) => {
+            recordingForm.setValue("useReplayCode", value === 0)
+            recordingForm.clearErrors()
+          }}
+        >
+          <Tab label="Replay Code" />
+          <Tab label="Video File" />
+        </Tabs>
+      }
     >
-      <Controller
-        name="newRecordingMetadata"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <TextField
-            {...field}
-            onChange={(event) => {
-              field.onChange({
-                ...newRecordingMetadata,
-                overwatch: {
-                  ...newRecordingMetadata?.overwatch,
-                  replayCode: event.target.value,
-                },
-              })
-            }}
-            value={field.value?.overwatch?.replayCode}
-            label="Replay Code (optional)"
-            error={Boolean(error)}
-            helperText={error ? error.message : "The replay code (e.g. AB1C23)"}
+      {useReplayCode ? (
+        <>
+          <Controller
+            name="metadata.overwatch.replayCode"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                {...field}
+                label="Replay Code"
+                error={Boolean(error)}
+                helperText={
+                  error ? error.message : "The replay code (e.g. AB1C23)"
+                }
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="newRecordingMetadata"
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <Box borderRadius={1} border={1} borderColor="grey.700" p={2}>
-            <FormControl error={Boolean(error)}>
-              <FormLabel id="player-position-label">
-                Player Position (optional)
-              </FormLabel>
-              <RadioGroup
-                row
-                aria-labelledby="player-position-label"
-                name="playerPosition"
-                value={field.value?.overwatch?.playerPosition}
-                onChange={(event) => {
-                  field.onChange({
-                    ...newRecordingMetadata,
-                    overwatch: {
-                      ...newRecordingMetadata?.overwatch,
-                      playerPosition: event.target.value,
-                    },
-                  })
-                }}
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((position) => (
-                  <FormControlLabel
-                    key={position}
-                    value={position.toString()}
-                    control={<Radio />}
-                    label={position.toString()}
-                  />
-                ))}
-              </RadioGroup>
-              {error ? <FormHelperText>{error.message}</FormHelperText> : null}
-            </FormControl>
-          </Box>
-        )}
-      />
+          <Controller
+            name="metadata.overwatch.playerPosition"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Box borderRadius={1} border={1} borderColor="grey.700" p={2}>
+                <FormControl error={Boolean(error)}>
+                  <FormLabel id="player-position-label">
+                    Player Position
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="player-position-label"
+                    {...field}
+                  >
+                    <Box display="flex" flexWrap="wrap" mt={2}>
+                      {positions.map((position, index) => {
+                        const positionValue = (index + 1).toString()
+
+                        return (
+                          <Stack direction="row" key={index}>
+                            <FormControlLabel
+                              value={index}
+                              control={<Radio />}
+                              label={
+                                <NextImage
+                                  src={position}
+                                  width={70}
+                                  height={45}
+                                  alt={positionValue}
+                                  style={{
+                                    maxWidth: "none",
+                                    width: "100%",
+                                    height: "auto",
+                                  }}
+                                />
+                              }
+                            />
+                          </Stack>
+                        )
+                      })}
+                    </Box>
+                  </RadioGroup>
+                  {error ? (
+                    <FormHelperText>{error.message}</FormHelperText>
+                  ) : null}
+                </FormControl>
+              </Box>
+            )}
+          />
+        </>
+      ) : null}
     </BaseRecordingForm>
   )
 }
