@@ -59,7 +59,7 @@ export const ReviewForm = ({
           </Typography>
         </Stack>
         {recording.notesText ? (
-          <Card>
+          <Card variant="outlined" sx={{ bgcolor: "grey.900" }} elevation={0}>
             <CardContent>
               <Typography variant="body2" color="text.secondary">
                 <span dangerouslySetInnerHTML={{ __html: recording.notes }} />
