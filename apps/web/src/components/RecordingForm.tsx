@@ -54,8 +54,8 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     })
 
     await onSubmit(values, recording)
-    enqueueSnackbar(successMessage, { variant: "success" })
     await router.push(`/recordings/${recording.id}`)
+    enqueueSnackbar(successMessage, { variant: "success" })
   }
 
   return (
