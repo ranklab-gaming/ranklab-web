@@ -80,9 +80,14 @@ export const RecordingList = ({
                             <Chip label={skillLevel.name} size="small" />
                           </Stack>
                           <Typography variant="body2" color="text.secondary">
-                            Recording created on{" "}
-                            {formatDate(recording.createdAt)} by{" "}
-                            {recordingUser.name}
+                            Submitted on {formatDate(recording.createdAt)} by{" "}
+                            <Typography
+                              component="span"
+                              fontWeight="bold"
+                              variant="body2"
+                            >
+                              {recordingUser.name}
+                            </Typography>
                           </Typography>
                         </Stack>
                       </Stack>
