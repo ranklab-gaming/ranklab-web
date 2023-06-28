@@ -88,7 +88,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
 
       if (!(await waitForRecordingUploaded())) {
         enqueueSnackbar(
-          `There was an error uploading your recording. Please try again later.`,
+          `There was an error submitting your recording. Please try again later.`,
           {
             variant: "error",
           }

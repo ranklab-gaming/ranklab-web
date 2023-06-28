@@ -55,7 +55,7 @@ export const ReviewForm = ({
             </Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            Recording by{" "}
+            Submitted by{" "}
             <Typography fontWeight="bold" component="span" variant="body2">
               {user.name}
             </Typography>

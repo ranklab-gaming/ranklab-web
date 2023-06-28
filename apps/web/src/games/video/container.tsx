@@ -14,10 +14,10 @@ export default {
   "component:recording-list-item": RecordingListItem,
   "text:create-recording-button": "Submit your VOD",
   "text:recording-plural": "VODs",
-  "text:recordings-date-column": "Date Uploaded",
+  "text:recordings-date-column": "Date Submitted",
   "text:recording-singular": "VOD",
   "text:empty-comments-text":
     "Use the controls above the video to add comments and drawings.",
-  "text:recording-created-success": "VOD uploaded successfully",
+  "text:recording-created-success": "VOD submitted successfully",
   "text:recording-submit-button": "Upload",
 }
