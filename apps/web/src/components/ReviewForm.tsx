@@ -92,9 +92,6 @@ export const ReviewForm = ({
                   p={2}
                   borderTop={`1px dashed ${theme.palette.grey[900]}`}
                 >
-                  <Typography variant="caption" mb={0}>
-                    {recording.title}
-                  </Typography>
                   <Chip label={skillLevel.name} size="small" />
                   <Chip label={game.name} size="small" />
                 </Stack>
