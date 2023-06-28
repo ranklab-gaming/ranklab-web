@@ -1,5 +1,7 @@
 import {
   Box,
+  Card,
+  CardContent,
   Chip,
   Grid,
   Paper,
@@ -8,7 +10,7 @@ import {
   useTheme,
 } from "@mui/material"
 import { PropsWithChildren } from "react"
-import { assertFind } from "@/assert"
+import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
 import Sticky from "react-stickynode"
 import { ReviewForm as UseReviewForm } from "@/hooks/useReviewForm"
@@ -29,6 +31,7 @@ export const ReviewForm = ({
   const theme = useTheme()
   const { recording, games } = reviewForm
   const game = assertFind(games, (g) => g.id === recording.gameId)
+  const user = assertProp(recording, "user")
   const Recording = useGameDependency("component:recording")
 
   const skillLevel = assertFind(
@@ -52,9 +55,18 @@ export const ReviewForm = ({
             </Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            Requested on {formatDate(recording.createdAt)}
+            Submitted on {formatDate(recording.createdAt)} by {user.name}
           </Typography>
         </Stack>
+        {recording.notesText ? (
+          <Card>
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                <span dangerouslySetInnerHTML={{ __html: recording.notes }} />
+              </Typography>
+            </CardContent>
+          </Card>
+        ) : null}
       </Paper>
       {children}
       <Grid container spacing={1}>

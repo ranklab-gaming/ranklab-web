@@ -585,6 +585,12 @@ export interface Recording {
    * @memberof Recording
    */
   user?: User | null
+  /**
+   *
+   * @type {string}
+   * @memberof Recording
+   */
+  notesText: string
 }
 /**
  *

@@ -29,6 +29,7 @@ test.afterEach(async () => {
 test("mvp", async ({ page }) => {
   const reviewerEmail = `reviewer+${uuid()}@example.com`
   const userEmail = `user+${uuid()}@example.com`
+
   await page.goto("http://ranklab-test:3000/api/auth/signin?&intent=signup")
   await page.getByLabel("Name").fill("Test Reviewer")
   await page.getByLabel("Email").fill(reviewerEmail)
@@ -56,8 +57,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Password").fill("testreviewer")
   await page.getByRole("button", { name: "Sign in" }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
-  await page.waitForTimeout(5000)
-  await page.reload()
+  await expect(page.getByText("some notes")).toBeVisible()
   await page.getByRole("button", { name: "Comment" }).click()
   await page.locator(".ql-editor").fill("Wow!")
   await page.getByRole("button", { name: "Save Comment" }).click()
