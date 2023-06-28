@@ -55,7 +55,10 @@ export const ReviewForm = ({
             </Typography>
           </Stack>
           <Typography variant="body2" color="text.secondary">
-            Submitted on {formatDate(recording.createdAt)} by {user.name}
+            Recording by{" "}
+            <Typography fontWeight="bold" component="span" variant="body2">
+              {user.name}
+            </Typography>
           </Typography>
         </Stack>
         {recording.notesText ? (
@@ -92,6 +95,9 @@ export const ReviewForm = ({
                   p={2}
                   borderTop={`1px dashed ${theme.palette.grey[900]}`}
                 >
+                  <Typography variant="caption" mb={0}>
+                    Submitted on {formatDate(recording.createdAt)}
+                  </Typography>
                   <Chip label={skillLevel.name} size="small" />
                   <Chip label={game.name} size="small" />
                 </Stack>
