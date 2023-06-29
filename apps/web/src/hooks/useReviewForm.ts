@@ -13,15 +13,16 @@ import { useSnackbar } from "notistack"
 const ReviewFormSchema = yup.object().shape({
   body: yup.string().defined(),
   metadata: yup.mixed().defined(),
-  audio: yup.mixed().defined(),
+  audio: yup.object().shape({
+    value: yup.mixed({
+      check: (value: any): value is Blob | boolean =>
+        value instanceof Blob || typeof value === "boolean",
+    }),
+  }),
 })
 
-export interface ReviewFormValues {
-  body: string
+export type ReviewFormValues = yup.InferType<typeof ReviewFormSchema> & {
   metadata: any
-  audio: {
-    value: Blob | boolean
-  }
 }
 
 export interface ReviewForm {

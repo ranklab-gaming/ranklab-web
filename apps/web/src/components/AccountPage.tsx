@@ -40,17 +40,16 @@ const FormSchema = yup
   .object()
   .shape({
     emailsEnabled: yup.boolean().defined(),
-    avatar: yup
-      .mixed({
-        check: (value: any): value is File | boolean =>
-          value instanceof File || typeof value === "boolean",
-      })
-      .test(
-        "fileSize",
-        "Image file must be less than 32MiB",
-        (value) =>
-          value instanceof File && value.size > 0 && value.size < 33554432
-      ),
+    avatar: yup.object().shape({
+      value: yup
+        .mixed({
+          check: (value: any): value is File | boolean =>
+            value instanceof File || typeof value === "boolean",
+        })
+        .test("fileSize", "Image file must be less than 32MiB", (value) =>
+          value instanceof File ? value.size > 0 && value.size < 33554432 : true
+        ),
+    }),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
 
@@ -72,7 +71,9 @@ export const AccountPage = ({
     email: user.email,
     name: user.name,
     emailsEnabled: user.emailsEnabled,
-    avatar: user.avatarId ? true : undefined,
+    avatar: {
+      value: user.avatarId ? true : undefined,
+    },
   }
 
   const {
@@ -135,10 +136,10 @@ export const AccountPage = ({
           }
         )
       }
-    } else if (data.avatar === false && user.avatarId) {
+    } else if (data.avatar.value === false && user.avatarId) {
       await api.avatarsDelete({ id: user.avatarId })
 
-      setValue("avatar", undefined, {
+      setValue("avatar.value", undefined, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
@@ -194,13 +195,15 @@ export const AccountPage = ({
                   render={({ field }) => (
                     <AvatarSelect
                       defaultAvatarUrl={
-                        user.avatarImageKey && field.value !== false
+                        user.avatarImageKey && field.value.value !== false
                           ? `${uploadsCdnUrl}/${user.avatarImageKey}`
                           : undefined
                       }
-                      onChange={field.onChange}
+                      onChange={(file) => {
+                        field.onChange({ value: file })
+                      }}
                       onClear={() => {
-                        field.onChange(false)
+                        field.onChange({ value: false })
                       }}
                     />
                   )}
