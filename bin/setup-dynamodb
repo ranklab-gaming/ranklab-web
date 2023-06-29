@@ -18,8 +18,9 @@ for (const file of envFiles) {
   dotenv.config({ path: path.join(appDir, file) })
 }
 
-const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
-const awsSecretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
+const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWSACCESSKEYID"
+const awsSecretAccessKey =
+  process.env.AWS_SECRET_ACCESS_KEY || "AWSSECRETACCESSKEY"
 
 const dbclient = new DynamoDBClient({
   region: "eu-west-2",

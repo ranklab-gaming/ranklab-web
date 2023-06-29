@@ -4,7 +4,7 @@ services:
     user: root
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /data -port 9000"
     working_dir: /home/dynamodblocal
-    image: amazon/dynamodb-local:latest
+    image: amazon/dynamodb-local:1.22.0
     volumes:
       - dynamodb-data:/data
     network_mode: host
