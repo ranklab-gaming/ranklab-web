@@ -28,7 +28,7 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
       <>
         <Toolbar reviewForm={reviewForm}>{toolbarElement}</Toolbar>
         <AnimatePresence>
-          {editingAudio && audioURL ? (
+          {editingAudio && audioURL && audio.value !== false ? (
             <Stack
               component={m.div}
               variants={animateFade().in}
