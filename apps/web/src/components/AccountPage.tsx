@@ -106,7 +106,7 @@ export const AccountPage = ({
       }
 
       await upload({
-        file: data.avatar.value as File & {},
+        file: data.avatar.value,
         url: newAvatar.uploadUrl,
         headers,
       })
@@ -138,11 +138,6 @@ export const AccountPage = ({
       }
     } else if (data.avatar.value === false && user.avatarId) {
       await api.avatarsDelete({ id: user.avatarId })
-
-      setUser((user) => ({
-        ...user,
-        avatarId: null,
-      }))
 
       setValue(
         "avatar",
@@ -204,7 +199,9 @@ export const AccountPage = ({
                   render={({ field }) => (
                     <AvatarSelect
                       defaultAvatarUrl={
-                        user.avatarImageKey && field.value.value !== false
+                        user.avatarImageKey &&
+                        field.value.value !== false &&
+                        field.value.value !== undefined
                           ? `${uploadsCdnUrl}/${user.avatarImageKey}`
                           : undefined
                       }
