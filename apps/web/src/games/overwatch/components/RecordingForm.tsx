@@ -82,6 +82,7 @@ const RecordingFormSchema = BaseRecordingFormSchema.shape({
             replayCode: yup
               .string()
               .defined()
+              .length(6, "Replay code must be 6 characters")
               .required("Replay code is required"),
             playerPosition: yup
               .number()
