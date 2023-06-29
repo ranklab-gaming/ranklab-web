@@ -239,7 +239,7 @@ export function useReviewForm({
 
       const audioId = audio.id
 
-      const waitForAudioProcessed = async (retries = 20): Promise<boolean> => {
+      const waitForAudioProcessed = async (retries = 60): Promise<boolean> => {
         const updatedAudio = await api.audiosGet({
           id: audioId,
         })

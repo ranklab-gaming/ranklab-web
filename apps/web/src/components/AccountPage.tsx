@@ -90,7 +90,7 @@ export const AccountPage = ({
   const updateUser = async (data: FormValues) => {
     let avatarId = user.avatarId
 
-    if (data.avatar instanceof File) {
+    if (data.avatar.value instanceof File) {
       const newAvatar = await api.avatarsCreate()
 
       if (!newAvatar.uploadUrl) {
@@ -106,7 +106,7 @@ export const AccountPage = ({
       }
 
       await upload({
-        file: data.avatar as File & {},
+        file: data.avatar.value as File & {},
         url: newAvatar.uploadUrl,
         headers,
       })
@@ -139,11 +139,20 @@ export const AccountPage = ({
     } else if (data.avatar.value === false && user.avatarId) {
       await api.avatarsDelete({ id: user.avatarId })
 
-      setValue("avatar.value", undefined, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
+      setUser((user) => ({
+        ...user,
+        avatarId: null,
+      }))
+
+      setValue(
+        "avatar",
+        { value: undefined },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      )
 
       avatarId = null
     }
