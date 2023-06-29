@@ -27,6 +27,7 @@ export interface RecordingFormProps<TValues extends RecordingFormValues> {
   onSubmit?: (values: TValues, recording: Recording) => Promise<void>
   headerElement?: JSX.Element
   showVideoField?: boolean
+  requestMetadata?: (values: TValues) => any
 }
 
 export const RecordingForm = <TValues extends RecordingFormValues>({
@@ -36,6 +37,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   onSubmit,
   headerElement,
   showVideoField = true,
+  requestMetadata,
 }: PropsWithChildren<RecordingFormProps<TValues>>) => {
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
@@ -106,6 +108,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
       onSubmit={submit}
       games={games}
       recordingForm={recordingForm}
+      requestMetadata={requestMetadata}
       footerElement={
         uploading ? (
           <Stack spacing={1} direction="row" alignItems="center" mt={2}>

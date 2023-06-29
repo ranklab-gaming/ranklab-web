@@ -17,6 +17,13 @@ export interface RecordingFormProps<TValues extends RecordingFormValues> {
   onSubmit: (values: TValues, recording: Recording) => Promise<void>
   recordingForm: UseFormReturn<TValues>
   footerElement?: JSX.Element | null
+  requestMetadata?: (values: TValues) => any
+}
+
+const defaultRequestMetadata = <TValues extends RecordingFormValues>(
+  values: TValues
+) => {
+  return values.metadata ?? {}
 }
 
 export const RecordingForm = <TValues extends RecordingFormValues>({
@@ -25,6 +32,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   recordingForm,
   children,
   footerElement,
+  requestMetadata = defaultRequestMetadata,
 }: PropsWithChildren<RecordingFormProps<TValues>>) => {
   const user = useUser()
   const recordingSingular = useGameDependency("text:recording-singular")
@@ -46,7 +54,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
       notes: values.notes,
       gameId: user.gameId as GameId,
       skillLevel: values.skillLevel,
-      metadata: values.metadata,
+      metadata: requestMetadata(values),
     }
 
     const recording = await api.recordingsCreate({

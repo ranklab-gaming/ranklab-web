@@ -127,6 +127,18 @@ const RecordingForm = ({
       games={games}
       recordingForm={recordingForm}
       showVideoField={!useReplayCode}
+      requestMetadata={(values) => {
+        if (values.useReplayCode) {
+          return {
+            overwatch: {
+              replayCode: values.metadata.overwatch.replayCode,
+              playerPosition: values.metadata.overwatch.playerPosition,
+            },
+          }
+        }
+
+        return {}
+      }}
       headerElement={
         <Tabs
           value={useReplayCode ? 0 : 1}
