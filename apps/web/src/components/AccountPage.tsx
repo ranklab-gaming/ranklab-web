@@ -30,6 +30,7 @@ import { useRouter } from "next/router"
 import { useUpload } from "@/hooks/useUpload"
 import { uploadsCdnUrl } from "@/config"
 import { AvatarSelect } from "./AccountPage/AvatarSelect"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   games: Game[]
@@ -64,6 +65,7 @@ export const AccountPage = ({
   const [user, setUser] = useState(initialUser)
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [upload] = useUpload()
+  const recordingPlural = useGameDependency("text:recording-plural")
 
   const defaultValues = {
     gameId: user.gameId,
@@ -243,7 +245,7 @@ export const AccountPage = ({
                       </FormGroup>
                       <FormHelperText>
                         When enabled, we will send you emails when there are
-                        events related to your recordings.
+                        events related to your {recordingPlural}.
                       </FormHelperText>
                     </FormControl>
                   )}

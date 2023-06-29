@@ -20,6 +20,7 @@ import {
 } from "../hooks/useRecordingForm"
 import { useUpload } from "@/hooks/useUpload"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 export interface RecordingFormProps<TValues extends RecordingFormValues> {
   games: Game[]
@@ -48,6 +49,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   const title = watch("title" as Path<TValues>) as string
   const video = watch("video" as Path<TValues>) as File | undefined
   const [previewURL, setPreviewURL] = useState<string | undefined>(undefined)
+  const recordingSingular = useGameDependency("text:recording-singular")
 
   const submit = async function (values: any, recording: Recording) {
     if (video) {
@@ -90,7 +92,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
 
       if (!(await waitForRecordingUploaded())) {
         enqueueSnackbar(
-          `There was an error submitting your recording. Please try again later.`,
+          `There was an error submitting your ${recordingSingular}. Please try again later.`,
           {
             variant: "error",
           }
