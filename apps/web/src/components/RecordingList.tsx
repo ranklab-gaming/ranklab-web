@@ -20,6 +20,7 @@ import { assertFind, assertProp } from "@/assert"
 interface Props {
   recordings: PaginatedResultForRecording
   games: Game[]
+  explore?: boolean
   queryParams?: {
     onlyOwn: boolean
   }
@@ -28,6 +29,7 @@ interface Props {
 export const RecordingList = ({
   recordings: initialRecordings,
   games,
+  explore = false,
   queryParams,
 }: Props) => {
   const [page, setPage] = useState(initialRecordings.page)
@@ -60,7 +62,9 @@ export const RecordingList = ({
             <ListItem key={recording.id} sx={{ p: 0, m: 0, mb: 2 }}>
               <Card sx={{ width: "100%" }}>
                 <NextLink
-                  href={`/recordings/${recording.id}`}
+                  href={`${explore ? "/explore" : ""}/recordings/${
+                    recording.id
+                  }`}
                   passHref
                   legacyBehavior
                 >
