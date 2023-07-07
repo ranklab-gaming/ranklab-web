@@ -117,7 +117,7 @@ export const Hero = () => {
                 variant="h4"
                 component="h2"
               >
-                Get your gameplay analyzed by experienced players<br/>
+                Get your gameplay analyzed by experienced players<br />
                 and help others get better.
               </Typography>
             </Stack>
