@@ -1,46 +1,40 @@
+import { formatDate } from "@/helpers/formatDate"
 import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
   Paper,
   Stack,
   Typography,
+  Card,
+  CardContent,
+  Grid,
+  Chip,
+  Box,
   useTheme,
 } from "@mui/material"
-import { PropsWithChildren } from "react"
-import { assertFind, assertProp } from "@/assert"
-import { formatDate } from "@/helpers/formatDate"
+import { Comment, Game, Recording } from "@ranklab/api"
 import Sticky from "react-stickynode"
-import { ReviewForm as UseReviewForm } from "@/hooks/useReviewForm"
-import { CommentList } from "./ReviewForm/CommentList"
-import { MediaState } from "@ranklab/api"
-import { useGameDependency } from "@/hooks/useGameDependency"
+import { VideoRecording } from "@/components/VideoRecording"
+import { assertFind, assertProp } from "@/assert"
+import { CommentList } from "@/components/ReviewForm/CommentList"
+import { useState } from "react"
 
-interface Props {
-  recordingElement?: JSX.Element
-  reviewForm: UseReviewForm
+export interface ExploreReviewProps {
+  recording: Recording
+  games: Game[]
+  comments: Comment[]
 }
 
-export const ReviewForm = ({
-  reviewForm,
-  recordingElement,
-  children,
-}: PropsWithChildren<Props>) => {
+const ExploreReview = ({ recording, games, comments }: ExploreReviewProps) => {
   const theme = useTheme()
-  const { recording, games } = reviewForm
-  const game = assertFind(games, (g) => g.id === recording.gameId)
   const user = assertProp(recording, "user")
-  const Recording = useGameDependency("component:recording")
+  const game = assertFind(games, (g) => g.id === recording.gameId)
+  const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
 
   const skillLevel = assertFind(
     game.skillLevels,
     (sl) => sl.value === recording.skillLevel
   )
-
   return (
-    <form onSubmit={reviewForm.submit}>
+    <>
       <Paper
         sx={{
           mb: 1,
@@ -71,7 +65,6 @@ export const ReviewForm = ({
           </Card>
         ) : null}
       </Paper>
-      {children}
       <Grid container spacing={1}>
         <Grid item md={8} xs={12} sx={{ transition: "all 0.3s ease" }}>
           <Sticky top={64}>
@@ -83,11 +76,7 @@ export const ReviewForm = ({
               }}
             >
               <Box display="flex" flexDirection="column" height="100%">
-                {recording.state === MediaState.Processed ? (
-                  recordingElement
-                ) : (
-                  <Recording recording={recording} />
-                )}
+                <VideoRecording recording={recording} />
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -107,12 +96,14 @@ export const ReviewForm = ({
         </Grid>
         <Grid item md={4} xs={12} minHeight="70vh">
           <CommentList
-            comments={reviewForm.comments}
-            onCommentSelect={reviewForm.setSelectedComment}
-            selectedComment={reviewForm.selectedComment}
+            comments={comments}
+            onCommentSelect={setSelectedComment}
+            selectedComment={selectedComment}
           />
         </Grid>
       </Grid>
-    </form>
+    </>
   )
 }
+
+export default ExploreReview

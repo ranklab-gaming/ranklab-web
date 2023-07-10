@@ -73,6 +73,10 @@ export interface ExploreGetRequest {
   id: string
 }
 
+export interface ExploreGetCommentsRequest {
+  id: string
+}
+
 export interface ExploreListRequest {
   page?: number | null
   gameId?: GameId
@@ -608,6 +612,52 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction
   ): Promise<Recording> {
     const response = await this.exploreGetRaw(requestParameters, initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
+  async exploreGetCommentsRaw(
+    requestParameters: ExploreGetCommentsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<runtime.ApiResponse<Array<Comment>>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling exploreGetComments."
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    const response = await this.request(
+      {
+        path: `/explore/{id}/comments`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id))
+        ),
+        method: "GET",
+        headers: headerParameters,
+        query: queryParameters,
+      },
+      initOverrides
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async exploreGetComments(
+    requestParameters: ExploreGetCommentsRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction
+  ): Promise<Array<Comment>> {
+    const response = await this.exploreGetCommentsRaw(
+      requestParameters,
+      initOverrides
+    )
     return await response.value()
   }
 

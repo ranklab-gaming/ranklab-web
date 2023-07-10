@@ -42,12 +42,14 @@ const MainStyle = styled("main", {
 interface Props {
   title: string
   games: Game[]
+  showTitle?: boolean
 }
 
 export const ExploreLayout = ({
   children,
   title,
   games,
+  showTitle = true,
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
@@ -81,9 +83,11 @@ export const ExploreLayout = ({
               }}
               elevation={1}
             >
-              <Typography variant="h3" component="h1" paragraph p={2}>
-                {title}
-              </Typography>
+              {showTitle ? (
+                <Typography variant="h3" component="h1" paragraph p={2}>
+                  {title}
+                </Typography>
+              ) : null}
             </Paper>
             {children}
           </Container>

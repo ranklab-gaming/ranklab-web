@@ -2,15 +2,20 @@ import { theme } from "@/theme/theme"
 import { Card, CardContent, Stack, CardActionArea } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
 import { useGameDependency } from "@/hooks/useGameDependency"
-import { ReviewForm } from "@/hooks/useReviewForm"
 import { MessageBox } from "@/components/MessageBox"
+import { Comment } from "@ranklab/api"
 
 interface Props {
-  reviewForm: ReviewForm
+  comments: Comment[]
+  onCommentSelect: (comment: Comment | null) => void
+  selectedComment: Comment | null
 }
 
-export const CommentList = ({ reviewForm }: Props) => {
-  const { comments, selectedComment, setSelectedComment } = reviewForm
+export const CommentList = ({
+  comments,
+  onCommentSelect,
+  selectedComment,
+}: Props) => {
   const CommentListItem = useGameDependency("component:comment-list-item")
   const emptyCommentsText = useGameDependency("text:empty-comments-text")
 
@@ -56,9 +61,9 @@ export const CommentList = ({ reviewForm }: Props) => {
                 <CardActionArea
                   onClick={() => {
                     if (selectedComment === comment) {
-                      setSelectedComment(null)
+                      onCommentSelect(null)
                     } else {
-                      setSelectedComment(comment)
+                      onCommentSelect(comment)
                     }
                   }}
                 >
