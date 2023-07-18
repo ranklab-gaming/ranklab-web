@@ -8,9 +8,9 @@ export function requireEnv(name: string, value: string | undefined): string {
 
 const port = parseInt(process.env.PORT || "3000", 10)
 const host = new URL(process.env.HOST || "http://localhost:3000")
-const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWS_ACCESS_KEY_ID"
+const awsAccessKeyId = process.env.AWS_ACCESS_KEY_ID || "AWSACCESSKEYID"
 const awsSecretAccessKey =
-  process.env.AWS_SECRET_ACCESS_KEY || "AWS_SECRET_ACCESS_KEY"
+  process.env.AWS_SECRET_ACCESS_KEY || "AWSSECRETACCESSKEY"
 const dynamoDbEndpoint = process.env.DYNAMODB_ENDPOINT
 const cookieSecret = requireEnv("COOKIE_SECRET", process.env.COOKIE_SECRET)
 const rawAuthJwks = requireEnv("AUTH_JWKS", process.env.AUTH_JWKS)
