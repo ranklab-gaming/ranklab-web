@@ -152,6 +152,12 @@ export interface Comment {
    * @memberof Comment
    */
   audio?: Audio | null
+  /**
+   *
+   * @type {User}
+   * @memberof Comment
+   */
+  user?: User | null
 }
 /**
  *

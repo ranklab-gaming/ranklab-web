@@ -1,6 +1,6 @@
 import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
-import { Stack, Typography, Box, Tooltip } from "@mui/material"
+import { Stack, Typography, Box, Tooltip, Chip } from "@mui/material"
 import { Comment, MediaState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { PropsWithChildren } from "react"
@@ -21,6 +21,7 @@ export const CommentListItem = ({
     <Stack spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="body2">{title}</Typography>
+        <Chip size="small" label={comment.user?.name} variant="outlined" />
         <AnimatePresence initial={false}>
           {!selected ? (
             <Typography
