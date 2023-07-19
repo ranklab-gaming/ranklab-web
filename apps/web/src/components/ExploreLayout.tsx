@@ -2,6 +2,7 @@ import { Page } from "./Page"
 import { headerStyles, navbarStyles } from "@/styles"
 import {
   Box,
+  Button,
   Container,
   Paper,
   styled,
@@ -12,6 +13,8 @@ import { PropsWithChildren, useState } from "react"
 import { Header } from "./ExploreLayout/Header"
 import { Navbar } from "./ExploreLayout/Navbar"
 import { Game } from "@ranklab/api"
+import NextLink from "next/link"
+import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface MainStyleProps {
   collapsed: boolean
@@ -54,6 +57,7 @@ export const ExploreLayout = ({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
   const [collapsed, setCollapsed] = useState(false)
+  const callToAction = useGameDependency("text:create-recording-button")
 
   return (
     <Page title={title}>
@@ -83,11 +87,39 @@ export const ExploreLayout = ({
               }}
               elevation={1}
             >
-              {showTitle ? (
-                <Typography variant="h3" component="h1" paragraph p={2}>
-                  {title}
-                </Typography>
-              ) : null}
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                {showTitle ? (
+                  <Typography variant="h3" component="h1" paragraph p={2}>
+                    {title}
+                  </Typography>
+                ) : null}
+                <Box>
+                  <NextLink href="/explore" passHref legacyBehavior>
+                    <Button
+                      variant="text"
+                      size="small"
+                      sx={{
+                        fontSize: 18,
+                        px: 2,
+                        py: 1,
+                        color: "common.white",
+                        transition: "all 0.25s",
+                        backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                        boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                        "&:hover": {
+                          filter: "brightness(1.3)",
+                        },
+                      }}
+                    >
+                      {callToAction}
+                    </Button>
+                  </NextLink>
+                </Box>
+              </Box>
             </Paper>
             {children}
           </Container>

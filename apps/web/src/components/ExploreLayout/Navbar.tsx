@@ -37,14 +37,13 @@ export const Navbar = ({
   games,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
-  const recordingsIcon = useGameDependency("component:recording-icon")
   const recordingPageTitle = useGameDependency("text:create-recording-button")
 
   const navConfig = [
     [
       {
         title: recordingPageTitle,
-        icon: recordingsIcon,
+        icon: <Iconify icon="eva:plus-square-outline" />,
         path: "/recordings/new",
       },
     ],

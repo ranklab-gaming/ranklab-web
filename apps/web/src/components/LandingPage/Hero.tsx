@@ -117,7 +117,8 @@ export const Hero = () => {
                 variant="h4"
                 component="h2"
               >
-                Get your gameplay analyzed by experienced players<br />
+                Get your gameplay analyzed by experienced players
+                <br />
                 and help others get better.
               </Typography>
             </Stack>
@@ -130,11 +131,7 @@ export const Hero = () => {
               mt={6}
             >
               <Stack spacing={1} textAlign="center">
-                <NextLink
-                  href="/api/auth/signin?intent=signup"
-                  passHref
-                  legacyBehavior
-                >
+                <NextLink href="/explore" passHref legacyBehavior>
                   <Button
                     size="large"
                     variant="text"
@@ -150,7 +147,7 @@ export const Hero = () => {
                       },
                     }}
                   >
-                    Get Started
+                    Explore
                   </Button>
                 </NextLink>
               </Stack>

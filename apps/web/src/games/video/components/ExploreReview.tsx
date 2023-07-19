@@ -99,6 +99,7 @@ const ExploreReview = ({ recording, games, comments }: ExploreReviewProps) => {
             comments={comments}
             onCommentSelect={setSelectedComment}
             selectedComment={selectedComment}
+            recordingId={recording.id}
           />
         </Grid>
       </Grid>

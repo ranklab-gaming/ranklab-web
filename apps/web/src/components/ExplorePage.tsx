@@ -8,10 +8,12 @@ interface Props {
   title: string
 }
 
-export function ExplorePage({ games, recordings, title }: Props) {
+const ExplorePage = ({ games, recordings, title }: Props) => {
   return (
     <ExploreLayout games={games} title={title}>
       <RecordingList recordings={recordings} games={games} explore />
     </ExploreLayout>
   )
 }
+
+export { ExplorePage }
