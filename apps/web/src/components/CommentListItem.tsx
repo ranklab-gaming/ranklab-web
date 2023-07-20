@@ -1,9 +1,10 @@
 import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
+import { UserContext } from "@/contexts/UserContext"
 import { Stack, Typography, Box, Tooltip, Chip } from "@mui/material"
 import { Comment, MediaState } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useContext } from "react"
 
 export interface CommentListItemProps {
   comment: Comment
@@ -17,11 +18,17 @@ export const CommentListItem = ({
   title,
   children,
 }: PropsWithChildren<CommentListItemProps>) => {
+  const user = useContext(UserContext)
+
   return (
     <Stack spacing={2}>
       <Stack direction="row" alignItems="center" spacing={2}>
         <Typography variant="body2">{title}</Typography>
-        <Chip size="small" label={comment.user?.name} variant="outlined" />
+        <Chip
+          size="small"
+          label={comment.user?.name}
+          variant={user && user.id === comment.user?.id ? "filled" : "outlined"}
+        />
         <AnimatePresence initial={false}>
           {!selected ? (
             <Typography

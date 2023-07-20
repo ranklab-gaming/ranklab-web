@@ -18,11 +18,13 @@ import { formatDuration } from "@/helpers/formatDuration"
 
 export interface ToolbarProps {
   reviewForm: ReviewForm
+  disabled?: boolean
 }
 
 export const Toolbar = ({
   reviewForm,
   children,
+  disabled = false,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
   const [now, setNow] = useState<number | null>(null)
@@ -75,6 +77,7 @@ export const Toolbar = ({
       >
         <Tooltip title="Comment">
           <IconButton
+            disabled={disabled}
             onClick={() => {
               setEditingText(!editingText)
             }}
@@ -85,6 +88,7 @@ export const Toolbar = ({
         </Tooltip>
         <Tooltip title="Record Audio Clip">
           <IconButton
+            disabled={disabled}
             onClick={() => {
               setEditingAudio(!editingAudio)
             }}
@@ -94,7 +98,7 @@ export const Toolbar = ({
           </IconButton>
         </Tooltip>
         <AnimatePresence>
-          {editingAudio ? (
+          {editingAudio && !disabled ? (
             <Box
               component={m.div}
               variants={animateFade().in}
@@ -141,7 +145,7 @@ export const Toolbar = ({
           ) : null}
         </AnimatePresence>
         {children}
-        {selectedComment ? (
+        {selectedComment && !disabled ? (
           <Tooltip title="Delete">
             <ConfirmationButton
               action={deleteComment}
