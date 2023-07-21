@@ -13,8 +13,6 @@ import { VideoPlayerRef, VideoPlayer } from "@/components/VideoPlayer"
 import { ReviewForm } from "@/hooks/useReviewForm"
 import { Recording as BaseRecording } from "@/components/ReviewForm/Recording"
 import { Comment } from "@ranklab/api"
-import { UserContext } from "@/contexts/UserContext"
-import { useUser } from "@/hooks/useUser"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function

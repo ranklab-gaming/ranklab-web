@@ -8,7 +8,7 @@ interface Props {
   comments: Comment[]
 }
 
-export function ExploreRecordingPage({ recording, games, comments }: Props) {
+export const ExploreRecordingPage = ({ recording, games, comments }: Props) => {
   const ExploreReview = useGameDependency("component:explore-review")
   return (
     <ExploreLayout games={games} title={recording.title} showTitle={false}>
