@@ -87,7 +87,10 @@ export function useReviewForm({
   const { enqueueSnackbar } = useSnackbar()
   const mediaRecorder = useRef<MediaRecorder | null>(null)
   let audioChunks: Blob[] = []
-  const canEdit = Boolean(user && selectedComment?.user?.id === user.id)
+
+  const canEdit = Boolean(
+    user && (!selectedComment || selectedComment.userId === user.id)
+  )
 
   const formSchema = ReviewFormSchema.test("is-valid", (rawValues) => {
     const values = rawValues as ReviewFormValues
@@ -177,6 +180,8 @@ export function useReviewForm({
   }
 
   const handleSelectComment = (comment: Comment | null) => {
+    const canEdit = Boolean(user && (!comment || comment.userId === user.id))
+
     if (comment && canEdit) {
       form.setValue("metadata", comment.metadata, {
         shouldDirty: true,

@@ -93,32 +93,34 @@ export const ExploreLayout = ({
                 alignItems="center"
               >
                 {showTitle ? (
-                  <Typography variant="h3" component="h1" paragraph p={2}>
-                    {title}
-                  </Typography>
+                  <>
+                    <Typography variant="h3" component="h1" paragraph p={2}>
+                      {title}
+                    </Typography>
+                    <Box>
+                      <NextLink href="/explore" passHref legacyBehavior>
+                        <Button
+                          variant="text"
+                          size="small"
+                          sx={{
+                            fontSize: 18,
+                            px: 2,
+                            py: 1,
+                            color: "common.white",
+                            transition: "all 0.25s",
+                            backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+                            boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+                            "&:hover": {
+                              filter: "brightness(1.3)",
+                            },
+                          }}
+                        >
+                          {callToAction}
+                        </Button>
+                      </NextLink>
+                    </Box>
+                  </>
                 ) : null}
-                <Box>
-                  <NextLink href="/explore" passHref legacyBehavior>
-                    <Button
-                      variant="text"
-                      size="small"
-                      sx={{
-                        fontSize: 18,
-                        px: 2,
-                        py: 1,
-                        color: "common.white",
-                        transition: "all 0.25s",
-                        backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                        boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                        "&:hover": {
-                          filter: "brightness(1.3)",
-                        },
-                      }}
-                    >
-                      {callToAction}
-                    </Button>
-                  </NextLink>
-                </Box>
               </Box>
             </Paper>
             {children}
