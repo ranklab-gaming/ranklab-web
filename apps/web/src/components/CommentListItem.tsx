@@ -22,13 +22,17 @@ export const CommentListItem = ({
 
   return (
     <Stack spacing={2}>
-      <Stack direction="row" alignItems="center" spacing={2}>
-        <Typography variant="body2">{title}</Typography>
-        <Chip
-          size="small"
-          label={comment.user?.name}
-          variant={user && user.id === comment.user?.id ? "filled" : "outlined"}
-        />
+      <Stack direction="column" spacing={1}>
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Typography variant="body2">{title}</Typography>
+          <Chip
+            size="small"
+            label={comment.user?.name}
+            variant={
+              user && user.id === comment.user?.id ? "filled" : "outlined"
+            }
+          />
+        </Stack>
         <AnimatePresence initial={false}>
           {!selected ? (
             <Typography
