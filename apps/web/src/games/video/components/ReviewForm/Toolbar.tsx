@@ -13,6 +13,7 @@ interface Props {
   drawingRef: RefObject<DrawingRef>
   editingDrawing: boolean
   videoRef: RefObject<VideoPlayerRef>
+  disabled?: boolean
   onEditingDrawingChange: (editingDrawing: boolean) => void
 }
 
@@ -23,6 +24,7 @@ export const Toolbar = ({
   editingDrawing,
   onEditingDrawingChange,
   videoRef,
+  disabled = false,
 }: Props) => {
   const theme = useTheme()
 
@@ -30,6 +32,7 @@ export const Toolbar = ({
     <>
       <Tooltip title="Draw">
         <IconButton
+          disabled={disabled}
           onClick={() => {
             onEditingDrawingChange(!editingDrawing)
             videoRef.current?.pause()

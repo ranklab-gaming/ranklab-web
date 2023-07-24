@@ -68,5 +68,5 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Password").fill("testuser")
   await page.getByRole("button", { name: "Sign in" }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
-  await page.getByRole("button", { name: "00:00:00 Wow!" }).click()
+  await page.getByRole("button", { name: "Wow!" }).click()
 })

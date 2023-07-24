@@ -9,12 +9,13 @@ import { ReviewForm } from "@/hooks/useReviewForm"
 
 interface Props {
   reviewForm: ReviewForm
-  toolbarElement?: JSX.Element
+  toolbarDisabled?: boolean
+  toolbarElement?: JSX.Element | null
 }
 
 export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
-  ({ reviewForm, children, toolbarElement }, ref) => {
-    const { previewAudioURL, selectedComment, editingAudio, form } = reviewForm
+  ({ reviewForm, children, toolbarElement, toolbarDisabled }, ref) => {
+    const { previewAudioURL, selectedComment, form, editingAudio } = reviewForm
     const selectedCommentAudio = selectedComment?.audio
     const audio = form.watch("audio")
 
@@ -26,7 +27,9 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
 
     return (
       <>
-        <Toolbar reviewForm={reviewForm}>{toolbarElement}</Toolbar>
+        <Toolbar disabled={toolbarDisabled} reviewForm={reviewForm}>
+          {toolbarElement}
+        </Toolbar>
         <AnimatePresence>
           {editingAudio && audioURL && audio.value !== false ? (
             <Stack

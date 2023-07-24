@@ -1,7 +1,7 @@
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Comment, Game, MediaState, Recording } from "@ranklab/api"
-import { useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import * as yup from "yup"
 import { Audio } from "@ranklab/api"
@@ -9,6 +9,7 @@ import { api } from "@/api"
 import { assertProp } from "@/assert"
 import { useUpload } from "@/hooks/useUpload"
 import { useSnackbar } from "notistack"
+import { UserContext } from "@/contexts/UserContext"
 
 const ReviewFormSchema = yup.object().shape({
   body: yup.string().defined(),
@@ -35,6 +36,7 @@ export interface ReviewForm {
   previewAudioURL: string | null
   recording: Recording
   selectedComment: Comment | null
+  canEdit: boolean
   setEditingAudio: (editingAudio: boolean) => void
   setEditingText: (editingText: boolean) => void
   setRecording: (recording: Recording) => void
@@ -70,6 +72,7 @@ export function useReviewForm({
   validate,
   editing = false,
 }: Props): ReviewForm {
+  const user = useContext(UserContext)
   const [editingText, setEditingText] = useState(false)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [comments, setComments] = useState(initialComments)
@@ -84,6 +87,10 @@ export function useReviewForm({
   const { enqueueSnackbar } = useSnackbar()
   const mediaRecorder = useRef<MediaRecorder | null>(null)
   let audioChunks: Blob[] = []
+
+  const canEdit = Boolean(
+    user && (!selectedComment || selectedComment.userId === user.id)
+  )
 
   const formSchema = ReviewFormSchema.test("is-valid", (rawValues) => {
     const values = rawValues as ReviewFormValues
@@ -173,7 +180,9 @@ export function useReviewForm({
   }
 
   const handleSelectComment = (comment: Comment | null) => {
-    if (comment) {
+    const canEdit = Boolean(user && (!comment || comment.userId === user.id))
+
+    if (comment && canEdit) {
       form.setValue("metadata", comment.metadata, {
         shouldDirty: true,
         shouldValidate: true,
@@ -339,6 +348,7 @@ export function useReviewForm({
     sortedComments,
     editingAudio,
     editingText,
+    canEdit,
     submit: form.handleSubmit(handleSubmit),
     startRecordingAudio,
     recordingAudio,

@@ -51,6 +51,7 @@ export const Recording = ({
   const boxRef = useRef<HTMLDivElement>(null)
   const { form, recording, editingText } = reviewForm
   const metadata = form.watch("metadata")
+  const { selectedComment, canEdit } = reviewForm
 
   useEffect(() => {
     if (boxRef.current === null) return
@@ -88,8 +89,10 @@ export const Recording = ({
     <BaseRecording
       reviewForm={reviewForm}
       ref={boxRef}
+      toolbarDisabled={Boolean(!canEdit && selectedComment)}
       toolbarElement={
         <Toolbar
+          disabled={Boolean(!canEdit && selectedComment)}
           color={color}
           onColorChange={setColor}
           drawingRef={drawingRef}

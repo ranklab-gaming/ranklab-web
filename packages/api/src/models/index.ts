@@ -152,6 +152,12 @@ export interface Comment {
    * @memberof Comment
    */
   audio?: Audio | null
+  /**
+   *
+   * @type {User}
+   * @memberof Comment
+   */
+  user?: User | null
 }
 /**
  *
@@ -600,10 +606,10 @@ export interface Recording {
 export interface RecordingMetadata {
   /**
    *
-   * @type {RecordingMetadataValueOneOfOverwatch}
+   * @type {RecordingOverwatchMetadata}
    * @memberof RecordingMetadata
    */
-  overwatch: RecordingMetadataValueOneOfOverwatch
+  overwatch: RecordingOverwatchMetadata
 }
 /**
  * @type RecordingMetadataValue
@@ -619,27 +625,27 @@ export type RecordingMetadataValue = RecordingMetadataValueOneOf
 export interface RecordingMetadataValueOneOf {
   /**
    *
-   * @type {RecordingMetadataValueOneOfOverwatch}
+   * @type {RecordingOverwatchMetadata}
    * @memberof RecordingMetadataValueOneOf
    */
-  overwatch: RecordingMetadataValueOneOfOverwatch
+  overwatch: RecordingOverwatchMetadata
 }
 /**
  *
  * @export
- * @interface RecordingMetadataValueOneOfOverwatch
+ * @interface RecordingOverwatchMetadata
  */
-export interface RecordingMetadataValueOneOfOverwatch {
+export interface RecordingOverwatchMetadata {
   /**
    *
    * @type {string}
-   * @memberof RecordingMetadataValueOneOfOverwatch
+   * @memberof RecordingOverwatchMetadata
    */
   replayCode: string
   /**
    *
    * @type {number}
-   * @memberof RecordingMetadataValueOneOfOverwatch
+   * @memberof RecordingOverwatchMetadata
    */
   playerPosition: number
 }
