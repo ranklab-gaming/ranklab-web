@@ -18,7 +18,6 @@ import { ReviewForm as UseReviewForm } from "@/hooks/useReviewForm"
 import { CommentList } from "./ReviewForm/CommentList"
 import { MediaState } from "@ranklab/api"
 import { useGameDependency } from "@/hooks/useGameDependency"
-import NextLink from "next/link"
 import { Iconify } from "./Iconify"
 import { enqueueSnackbar } from "notistack"
 

@@ -30,7 +30,7 @@ test("mvp", async ({ page }) => {
   const reviewerEmail = `reviewer+${uuid()}@example.com`
   const userEmail = `user+${uuid()}@example.com`
 
-  await page.goto("http://ranklab-test:3000/api/auth/signin?&intent=signup")
+  await page.goto("/api/auth/signin?&intent=signup")
   await page.getByLabel("Name").fill("Test Reviewer")
   await page.getByLabel("Email").fill(reviewerEmail)
   await page.getByLabel("Password").fill("testreviewer")
