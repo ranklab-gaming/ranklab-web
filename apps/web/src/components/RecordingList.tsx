@@ -40,7 +40,10 @@ export const RecordingList = ({
     page: number
   ) => {
     const requestParams = { page: page + 1, ...(queryParams ?? {}) }
-    const result = await api.recordingsList(requestParams)
+
+    const result = await (explore
+      ? api.exploreList(requestParams)
+      : api.recordingsList(requestParams))
 
     setPage(result.page)
     setRecordings(result)
