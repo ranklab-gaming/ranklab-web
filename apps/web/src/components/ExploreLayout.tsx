@@ -98,7 +98,7 @@ export const ExploreLayout = ({
                       {title}
                     </Typography>
                     <Box>
-                      <NextLink href="/explore" passHref legacyBehavior>
+                      <NextLink href="/recordings/new" passHref legacyBehavior>
                         <Button
                           variant="text"
                           size="small"
