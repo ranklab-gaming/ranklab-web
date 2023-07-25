@@ -5,7 +5,7 @@ import { useState } from "react"
 import NextLink from "next/link"
 
 interface Props {
-  icon: JSX.Element | string
+  icon?: JSX.Element | string
   text: JSX.Element | string
   href?: string
   action?: () => Promise<void>
@@ -38,13 +38,15 @@ export const MessageBox = ({ icon, text, action, actionText, href }: Props) => {
       }}
     >
       <Stack spacing={3} sx={{ textAlign: "center" }}>
-        <Box height={64}>
-          {typeof icon === "string" ? (
-            <Iconify icon={icon} width={64} height={64} />
-          ) : (
-            icon
-          )}
-        </Box>
+        {icon ? (
+          <Box height={64}>
+            {typeof icon === "string" ? (
+              <Iconify icon={icon} width={64} height={64} />
+            ) : (
+              icon
+            )}
+          </Box>
+        ) : null}
         <Typography variant="h3">{text}</Typography>
         {action ? (
           <Box>

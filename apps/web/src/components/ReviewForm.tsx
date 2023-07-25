@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Chip,
@@ -17,6 +18,9 @@ import { ReviewForm as UseReviewForm } from "@/hooks/useReviewForm"
 import { CommentList } from "./ReviewForm/CommentList"
 import { MediaState } from "@ranklab/api"
 import { useGameDependency } from "@/hooks/useGameDependency"
+import NextLink from "next/link"
+import { Iconify } from "./Iconify"
+import { enqueueSnackbar } from "notistack"
 
 interface Props {
   recordingElement?: JSX.Element
@@ -48,18 +52,39 @@ export const ReviewForm = ({
         }}
         elevation={1}
       >
-        <Stack direction="row" p={2} alignItems="center" spacing={2}>
-          <Stack direction="row" alignItems="center" spacing={2} mr="auto">
-            <Typography variant="h3" component="h1" paragraph mb={0}>
-              {recording.title}
-            </Typography>
-          </Stack>
-          <Typography variant="body2" color="text.secondary">
-            Submitted by{" "}
-            <Typography fontWeight="bold" component="span" variant="body2">
-              {user.name}
-            </Typography>
+        <Stack
+          direction="row"
+          p={2}
+          alignItems="center"
+          spacing={2}
+          justifyContent="space-between"
+        >
+          <Typography variant="h3" component="h1" paragraph mb={0}>
+            {recording.title}
           </Typography>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Typography variant="body2" color="text.secondary">
+              Submitted by{" "}
+              <Typography fontWeight="bold" component="span" variant="body2">
+                {user.name}
+              </Typography>
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/explore/recordings/${recording.id}`
+                )
+
+                enqueueSnackbar("Copied share link to clipboard", {
+                  variant: "success",
+                })
+              }}
+            >
+              Share
+              <Iconify icon="eva:external-link-outline" ml={1} />
+            </Button>
+          </Stack>
         </Stack>
         {recording.notesText ? (
           <Card variant="outlined" sx={{ bgcolor: "grey.900" }} elevation={0}>

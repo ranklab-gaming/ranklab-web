@@ -21,10 +21,36 @@ export const CommentList = ({
 }: Props) => {
   const CommentListItem = useGameDependency("component:comment-list-item")
   const emptyCommentsText = useGameDependency("text:empty-comments-text")
+  const firstCommentText = useGameDependency("text:first-comment-text")
+
+  const addACommentButton = (
+    <NextLink href={`/recordings/${recordingId}`} passHref legacyBehavior>
+      <Button
+        variant="text"
+        sx={{
+          fontSize: 18,
+          color: "common.white",
+          transition: "all 0.25s",
+          backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
+          boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
+          "&:hover": {
+            filter: "brightness(1.3)",
+          },
+          py: 1,
+          px: 2,
+        }}
+      >
+        Add a comment
+      </Button>
+    </NextLink>
+  )
 
   if (comments.length === 0) {
     return (
-      <MessageBox icon="eva:corner-up-left-outline" text={emptyCommentsText} />
+      <MessageBox
+        icon={recordingId ? addACommentButton : "eva:corner-up-left-outline"}
+        text={recordingId ? firstCommentText : emptyCommentsText}
+      />
     )
   }
 
@@ -32,29 +58,7 @@ export const CommentList = ({
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
         <Stack spacing={2}>
-          {recordingId ? (
-            <NextLink
-              href={`/recordings/${recordingId}`}
-              passHref
-              legacyBehavior
-            >
-              <Button
-                variant="text"
-                sx={{
-                  fontSize: 18,
-                  color: "common.white",
-                  transition: "all 0.25s",
-                  backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-                  boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-                  "&:hover": {
-                    filter: "brightness(1.3)",
-                  },
-                }}
-              >
-                Add a comment
-              </Button>
-            </NextLink>
-          ) : null}
+          {recordingId ? addACommentButton : null}
           <AnimatePresence>
             {comments.map((comment) => (
               <Card

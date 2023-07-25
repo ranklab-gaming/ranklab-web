@@ -22,4 +22,5 @@ export default {
     "Use the controls above the video to add comments and drawings.",
   "text:recording-created-success": "VOD submitted successfully",
   "text:recording-submit-button": "Upload",
+  "text:first-comment-text": "Be the first to add a comment to this VOD",
 }
