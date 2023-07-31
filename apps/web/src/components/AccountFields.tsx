@@ -1,11 +1,12 @@
-import { Link } from "@mui/material"
+import { Link, MenuItem } from "@mui/material"
 import { GameSelect } from "./AccountFields/GameSelect"
 import { Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { PropsWithChildren, useState } from "react"
-import { Control, Controller, Path } from "react-hook-form"
+import { Control, Controller, Path, UseFormWatch } from "react-hook-form"
 import * as yup from "yup"
 import { GameRequestDialog } from "./AccountFields/GameRequestDialog"
+import { assertFind } from "@/assert"
 
 export const AccountFieldsSchema = yup.object().shape({
   email: yup
@@ -18,6 +19,7 @@ export const AccountFieldsSchema = yup.object().shape({
     .string()
     .required("Name is required")
     .min(2, "Name must be at least 2 characters"),
+  skillLevel: yup.number().required("Skill level is required"),
 })
 
 export const AccountFieldsSchemaWithoutPassword = AccountFieldsSchema.omit([
@@ -30,14 +32,18 @@ interface Props {
   games: Game[]
   control: Control<any>
   showPasswordField?: boolean
+  watch: UseFormWatch<any>
 }
 export const AccountFields = ({
   control,
   games,
   showPasswordField = false,
   children,
+  watch,
 }: PropsWithChildren<Props>) => {
   const [showGameRequestDialog, setShowGameRequestDialog] = useState(false)
+  const gameId = watch("gameId")
+  const game = assertFind(games, (game) => game.id === gameId)
 
   return (
     <>
@@ -73,6 +79,25 @@ export const AccountFields = ({
               )
             }
           />
+        )}
+      />
+      <Controller
+        name={"skillLevel" as Path<AccountFieldsValues>}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <TextField
+            select
+            {...field}
+            label="Skill Level"
+            error={Boolean(error)}
+            helperText={error ? error.message : `Your skill level`}
+          >
+            {game.skillLevels.map((skillLevel) => (
+              <MenuItem key={skillLevel.value} value={skillLevel.value}>
+                {skillLevel.name}
+              </MenuItem>
+            ))}
+          </TextField>
         )}
       />
       <Stack direction="row" spacing={2} alignItems="center">

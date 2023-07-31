@@ -1,4 +1,4 @@
-import { Comment } from "@ranklab/api"
+import { Comment, Game, Recording } from "@ranklab/api"
 import { CommentListItem as BaseCommentListItem } from "@/components/CommentListItem"
 import { Box, Tooltip } from "@mui/material"
 import { formatDuration } from "@/helpers/formatDuration"
@@ -7,14 +7,23 @@ import { Iconify } from "@/components/Iconify"
 export interface CommentListItemProps {
   comment: Comment
   selected: boolean
+  games: Game[]
+  recording: Recording
 }
 
-const CommentListItem = ({ comment, selected }: CommentListItemProps) => {
+const CommentListItem = ({
+  comment,
+  selected,
+  games,
+  recording,
+}: CommentListItemProps) => {
   return (
     <BaseCommentListItem
       comment={comment}
       selected={selected}
       title={formatDuration(comment.metadata.video.timestamp / 1000000)}
+      games={games}
+      recording={recording}
     >
       <Box>
         {comment.metadata.video.drawing ? (

@@ -134,6 +134,8 @@ export const ReviewForm = ({
             comments={reviewForm.comments}
             onCommentSelect={reviewForm.setSelectedComment}
             selectedComment={reviewForm.selectedComment}
+            games={games}
+            recording={recording}
           />
         </Grid>
       </Grid>

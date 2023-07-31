@@ -775,6 +775,12 @@ export interface UpdateUserRequest {
    * @memberof UpdateUserRequest
    */
   avatarId?: string | null
+  /**
+   *
+   * @type {number}
+   * @memberof UpdateUserRequest
+   */
+  skillLevel: number
 }
 /**
  *
@@ -830,4 +836,10 @@ export interface User {
    * @memberof User
    */
   avatarImageKey?: string | null
+  /**
+   *
+   * @type {number}
+   * @memberof User
+   */
+  skillLevel: number
 }

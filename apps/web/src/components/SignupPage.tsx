@@ -34,6 +34,7 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
     name: jwtPayload?.name ?? "",
     email: jwtPayload?.sub ?? "",
     password: "",
+    skillLevel: 0,
   }
 
   const form = useForm({
@@ -49,6 +50,7 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = form
 
   const createUser = async (data: AccountFieldsValues) => {
@@ -84,6 +86,7 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
             control={form.control}
             games={games}
             showPasswordField={!jwtPayload}
+            watch={watch}
           />
           <LoadingButton
             color="primary"
