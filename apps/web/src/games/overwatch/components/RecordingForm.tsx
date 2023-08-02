@@ -30,6 +30,7 @@ import eighthPosition from "@/images/overwatch/8.png"
 import ninthPosition from "@/images/overwatch/9.png"
 import tenthPosition from "@/images/overwatch/10.png"
 import NextImage from "next/image"
+import { useUser } from "@/hooks/useUser"
 
 const positions = [
   firstPosition,
@@ -102,12 +103,15 @@ const RecordingForm = ({
   onSubmit,
   games,
 }: BaseRecordingFormProps<RecordingFormValues>) => {
+  const user = useUser()
+
   const recordingForm = useRecordingForm<
     RecordingFormValues,
     RecordingFormSchema
   >({
     defaultValues: {
       useReplayCode: true,
+      skillLevel: user.skillLevel,
       metadata: {
         overwatch: {
           replayCode: "",
