@@ -347,6 +347,12 @@ export interface CreateUserRequest {
    * @memberof CreateUserRequest
    */
   gameId: GameId
+  /**
+   *
+   * @type {number}
+   * @memberof CreateUserRequest
+   */
+  skillLevel: number
 }
 /**
  * @type Credentials

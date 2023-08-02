@@ -58,6 +58,7 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
       createUserRequest: {
         name: data.name,
         gameId: data.gameId as GameId,
+        skillLevel: data.skillLevel,
         credentials: token
           ? {
               token: {
