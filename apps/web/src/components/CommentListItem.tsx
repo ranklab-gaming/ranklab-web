@@ -1,8 +1,9 @@
+import { assertFind } from "@/assert"
 import { Iconify } from "@/components/Iconify"
 import { uploadsCdnUrl } from "@/config"
 import { UserContext } from "@/contexts/UserContext"
 import { Stack, Typography, Box, Tooltip, Chip } from "@mui/material"
-import { Comment, MediaState } from "@ranklab/api"
+import { Comment, Game, MediaState, Recording } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
 import { PropsWithChildren, useContext } from "react"
 
@@ -10,6 +11,8 @@ export interface CommentListItemProps {
   comment: Comment
   selected: boolean
   title: string
+  games: Game[]
+  recording: Recording
 }
 
 export const CommentListItem = ({
@@ -17,8 +20,16 @@ export const CommentListItem = ({
   selected,
   title,
   children,
+  games,
+  recording,
 }: PropsWithChildren<CommentListItemProps>) => {
   const user = useContext(UserContext)
+
+  const game = assertFind(games, (g) => g.id === recording.gameId)
+
+  const skillLevel = game.skillLevels.find(
+    (sl) => sl.value === comment.user?.skillLevel
+  )
 
   return (
     <Stack spacing={2}>
@@ -32,6 +43,9 @@ export const CommentListItem = ({
               user && user.id === comment.user?.id ? "filled" : "outlined"
             }
           />
+          {skillLevel ? (
+            <Chip size="small" label={skillLevel.name} variant="outlined" />
+          ) : null}
         </Stack>
         <AnimatePresence initial={false}>
           {!selected ? (

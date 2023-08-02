@@ -3,28 +3,32 @@ import { Card, CardContent, Stack, CardActionArea, Button } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
 import { useGameDependency } from "@/hooks/useGameDependency"
 import { MessageBox } from "@/components/MessageBox"
-import { Comment } from "@ranklab/api"
+import { Comment, Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"
 
 interface Props {
   comments: Comment[]
   onCommentSelect: (comment: Comment | null) => void
   selectedComment: Comment | null
-  recordingId?: string
+  explore?: boolean
+  games: Game[]
+  recording: Recording
 }
 
 export const CommentList = ({
   comments,
   onCommentSelect,
   selectedComment,
-  recordingId,
+  explore = false,
+  games,
+  recording,
 }: Props) => {
   const CommentListItem = useGameDependency("component:comment-list-item")
   const emptyCommentsText = useGameDependency("text:empty-comments-text")
   const firstCommentText = useGameDependency("text:first-comment-text")
 
   const addACommentButton = (
-    <NextLink href={`/recordings/${recordingId}`} passHref legacyBehavior>
+    <NextLink href={`/recordings/${recording.id}`} passHref legacyBehavior>
       <Button
         variant="text"
         sx={{
@@ -48,8 +52,8 @@ export const CommentList = ({
   if (comments.length === 0) {
     return (
       <MessageBox
-        icon={recordingId ? addACommentButton : "eva:corner-up-left-outline"}
-        text={recordingId ? firstCommentText : emptyCommentsText}
+        icon={explore ? addACommentButton : "eva:corner-up-left-outline"}
+        text={explore ? firstCommentText : emptyCommentsText}
       />
     )
   }
@@ -58,7 +62,7 @@ export const CommentList = ({
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
         <Stack spacing={2}>
-          {recordingId ? addACommentButton : null}
+          {explore ? addACommentButton : null}
           <AnimatePresence>
             {comments.map((comment) => (
               <Card
@@ -101,6 +105,8 @@ export const CommentList = ({
                     <CommentListItem
                       comment={comment}
                       selected={comment === selectedComment}
+                      games={games}
+                      recording={recording}
                     />
                   </CardContent>
                 </CardActionArea>

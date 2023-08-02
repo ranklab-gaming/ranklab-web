@@ -74,6 +74,7 @@ export const AccountPage = ({
     avatar: {
       value: user.avatarId ? true : undefined,
     },
+    skillLevel: user.skillLevel,
   }
 
   const {
@@ -81,6 +82,7 @@ export const AccountPage = ({
     handleSubmit,
     setValue,
     formState: { isSubmitting },
+    watch,
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
@@ -159,6 +161,7 @@ export const AccountPage = ({
           gameId: data.gameId as GameId,
           emailsEnabled: data.emailsEnabled,
           avatarId,
+          skillLevel: data.skillLevel,
         },
       })
     )
@@ -192,7 +195,7 @@ export const AccountPage = ({
         <TabPanel value="account">
           <form onSubmit={handleSubmit(updateUser)}>
             <Stack spacing={3} my={4}>
-              <AccountFields control={control} games={games}>
+              <AccountFields control={control} games={games} watch={watch}>
                 <Controller
                   name="avatar"
                   control={control}
