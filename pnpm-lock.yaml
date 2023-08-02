@@ -78,8 +78,8 @@ importers:
         specifier: 4.2.5
         version: 4.2.5(react@18.2.0)
       aws-xray-sdk:
-        specifier: 3.5.0
-        version: 3.5.0
+        specifier: 3.5.1
+        version: 3.5.1
       aws-xray-sdk-core:
         specifier: 3.5.0
         version: 3.5.0
@@ -232,8 +232,8 @@ importers:
         specifier: 7.60.1
         version: 7.60.1
       aws-xray-sdk:
-        specifier: 3.5.0
-        version: 3.5.0
+        specifier: 3.5.1
+        version: 3.5.1
       aws-xray-sdk-express:
         specifier: 3.5.0
         version: 3.5.0(aws-xray-sdk-core@3.5.0)
@@ -2404,6 +2404,18 @@ packages:
       semver: 7.3.8
     dev: false
 
+  /aws-xray-sdk-core@3.5.1:
+    resolution: {integrity: sha512-Q3S+K/UkDw/M9NnRZbyXNXsjB3amsv+6XhPdomtfzAdyNkf6q+GOQVuWpaLGHunBz91VzpGBzP9Qg0/elm6Cwg==}
+    engines: {node: '>= 14.x'}
+    dependencies:
+      '@aws-sdk/service-error-classification': 3.329.0
+      '@aws-sdk/types': 3.329.0
+      '@types/cls-hooked': 4.3.3
+      atomic-batcher: 1.0.2
+      cls-hooked: 4.2.2
+      semver: 7.5.4
+    dev: false
+
   /aws-xray-sdk-express@3.5.0(aws-xray-sdk-core@3.5.0):
     resolution: {integrity: sha512-nbdghqiHPUe7P04guh/fkBmHCsbY5pwQrDFJAqYimNK3EsB+pq2/FW7m9vodPmHSbqeTgwO/oQUiCnEQ9luf5A==}
     engines: {node: '>= 14.x'}
@@ -2414,34 +2426,44 @@ packages:
       aws-xray-sdk-core: 3.5.0
     dev: false
 
-  /aws-xray-sdk-mysql@3.5.0(aws-xray-sdk-core@3.5.0):
-    resolution: {integrity: sha512-vAEfSPMQq48Fg3H45voljAJT8KX79tLEzW1qz6Kb9Gqv11wihu05074L/DArQnvHnG0DaCPttZD7/nOGFc6sYA==}
+  /aws-xray-sdk-express@3.5.1(aws-xray-sdk-core@3.5.1):
+    resolution: {integrity: sha512-Qcu9rYDJttaOVqm+cljq5ZrqEbQicynGcW07ZYbuVeCWXfr41/nk/5ocW0zyOHqofMLafIhHjxMiNAGxnc3uMA==}
     engines: {node: '>= 14.x'}
     peerDependencies:
-      aws-xray-sdk-core: ^3.5.0
+      aws-xray-sdk-core: ^3.5.1
+    dependencies:
+      '@types/express': 4.17.17
+      aws-xray-sdk-core: 3.5.1
+    dev: false
+
+  /aws-xray-sdk-mysql@3.5.1(aws-xray-sdk-core@3.5.1):
+    resolution: {integrity: sha512-TCv9nd4TeiRhD+HwYtbFLqAjAVC3zOdXTRUTC5mrfez/tvt2PGIlSBE3Il0dGdgRPwMciAu1OvDa0aky+0ZzwQ==}
+    engines: {node: '>= 14.x'}
+    peerDependencies:
+      aws-xray-sdk-core: ^3.5.1
     dependencies:
       '@types/mysql': 2.15.21
-      aws-xray-sdk-core: 3.5.0
+      aws-xray-sdk-core: 3.5.1
     dev: false
 
-  /aws-xray-sdk-postgres@3.5.0(aws-xray-sdk-core@3.5.0):
-    resolution: {integrity: sha512-3LadT1yuZYLS9RlqdgDQt5z3vojevrggnuGofT2EqsS5EQBVz7NNLYrJdTJsd4TYVVsToNxDBQI5peb2HC8TRw==}
+  /aws-xray-sdk-postgres@3.5.1(aws-xray-sdk-core@3.5.1):
+    resolution: {integrity: sha512-LABFtHm9Rn+5hteGS8YQdTiDOtBJB85hA/n3qbwuwci6k9IwO9//cbmvb2EBgBp2qheCufkHTbZsUOsuw1DiYg==}
     engines: {node: '>= 14.x'}
     peerDependencies:
-      aws-xray-sdk-core: ^3.5.0
+      aws-xray-sdk-core: ^3.5.1
     dependencies:
       '@types/pg': 8.10.2
-      aws-xray-sdk-core: 3.5.0
+      aws-xray-sdk-core: 3.5.1
     dev: false
 
-  /aws-xray-sdk@3.5.0:
-    resolution: {integrity: sha512-u9iKR9QAafeoCVk4J1PH6/NbNc/dNsF5T9CoNAST7bMLnGwT9YN4l+N9zxLbuspWv8cdBPoz8dDfbyZNDHgYQQ==}
+  /aws-xray-sdk@3.5.1:
+    resolution: {integrity: sha512-hurho7fHWltYNDhSfcUPZ/94txq+9Y/BbEfzXwuD+i+CVuy/eWefT4OyThjVd3Odn7B359QaAKnrS/eijrtrLA==}
     engines: {node: '>= 14.x'}
     dependencies:
-      aws-xray-sdk-core: 3.5.0
-      aws-xray-sdk-express: 3.5.0(aws-xray-sdk-core@3.5.0)
-      aws-xray-sdk-mysql: 3.5.0(aws-xray-sdk-core@3.5.0)
-      aws-xray-sdk-postgres: 3.5.0(aws-xray-sdk-core@3.5.0)
+      aws-xray-sdk-core: 3.5.1
+      aws-xray-sdk-express: 3.5.1(aws-xray-sdk-core@3.5.1)
+      aws-xray-sdk-mysql: 3.5.1(aws-xray-sdk-core@3.5.1)
+      aws-xray-sdk-postgres: 3.5.1(aws-xray-sdk-core@3.5.1)
     dev: false
 
   /babel-plugin-macros@3.1.0:
@@ -5213,6 +5235,14 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+
+  /semver@7.5.4:
+    resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      lru-cache: 6.0.0
+    dev: false
 
   /send@0.18.0:
     resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
