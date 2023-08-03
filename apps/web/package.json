@@ -28,7 +28,7 @@
     "@stripe/stripe-js": "1.54.1",
     "@svg-drawing/react": "4.2.5",
     "aws-xray-sdk": "3.5.1",
-    "aws-xray-sdk-core": "3.5.0",
+    "aws-xray-sdk-core": "3.5.1",
     "csstype": "3.1.2",
     "date-fns": "2.30.0",
     "framer-motion": "10.12.16",
