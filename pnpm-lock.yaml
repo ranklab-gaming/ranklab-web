@@ -117,8 +117,8 @@ importers:
         specifier: 3.0.1
         version: 3.0.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
       openid-client:
-        specifier: 5.4.2
-        version: 5.4.2
+        specifier: 5.4.3
+        version: 5.4.3
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -4447,8 +4447,8 @@ packages:
     resolution: {integrity: sha512-Fvw+Jemq5fjjyWz6CpKx6w9s7xxqo3+JCyM0WXWeCSOboZ8ABkyvP8ID4CZuChA/wxSx+XSJmdOm8rGVyJ1hdQ==}
     dev: false
 
-  /openid-client@5.4.2:
-    resolution: {integrity: sha512-lIhsdPvJ2RneBm3nGBBhQchpe3Uka//xf7WPHTIglery8gnckvW7Bd9IaQzekzXJvWthCMyi/xVEyGW0RFPytw==}
+  /openid-client@5.4.3:
+    resolution: {integrity: sha512-sVQOvjsT/sbSfYsQI/9liWQGVZH/Pp3rrtlGEwgk/bbHfrUDZ24DN57lAagIwFtuEu+FM9Ev7r85s8S/yPjimQ==}
     dependencies:
       jose: 4.14.4
       lru-cache: 6.0.0
