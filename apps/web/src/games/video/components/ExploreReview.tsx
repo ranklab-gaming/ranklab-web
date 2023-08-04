@@ -15,7 +15,8 @@ import Sticky from "react-stickynode"
 import { VideoRecording } from "@/components/VideoRecording"
 import { assertFind, assertProp } from "@/assert"
 import { CommentList } from "@/components/ReviewForm/CommentList"
-import { useState } from "react"
+import { useRef, useState } from "react"
+import { VideoPlayerRef } from "@/components/VideoPlayer"
 
 export interface ExploreReviewProps {
   recording: Recording
@@ -28,6 +29,17 @@ const ExploreReview = ({ recording, games, comments }: ExploreReviewProps) => {
   const user = assertProp(recording, "user")
   const game = assertFind(games, (g) => g.id === recording.gameId)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
+  const videoRef = useRef<VideoPlayerRef>(null)
+
+  const handleCommentSelect = (comment: Comment | null) => {
+    if (comment) {
+      const video = comment.metadata?.video
+      videoRef.current?.seekTo(video.timestamp)
+    }
+
+    videoRef.current?.pause()
+    setSelectedComment(comment)
+  }
 
   const skillLevel = assertFind(
     game.skillLevels,
@@ -76,7 +88,7 @@ const ExploreReview = ({ recording, games, comments }: ExploreReviewProps) => {
               }}
             >
               <Box display="flex" flexDirection="column" height="100%">
-                <VideoRecording recording={recording} />
+                <VideoRecording recording={recording} videoRef={videoRef} />
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -97,7 +109,7 @@ const ExploreReview = ({ recording, games, comments }: ExploreReviewProps) => {
         <Grid item md={4} xs={12} minHeight="70vh">
           <CommentList
             comments={comments}
-            onCommentSelect={setSelectedComment}
+            onCommentSelect={handleCommentSelect}
             selectedComment={selectedComment}
             explore
             games={games}
