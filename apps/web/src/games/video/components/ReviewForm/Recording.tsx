@@ -52,6 +52,7 @@ export const Recording = ({
   const { form, recording, editingText } = reviewForm
   const metadata = form.watch("metadata")
   const { selectedComment, canEdit } = reviewForm
+  const readOnly = selectedComment && !canEdit
 
   useEffect(() => {
     if (boxRef.current === null) return
@@ -120,7 +121,7 @@ export const Recording = ({
         ref={videoRef}
         controls={!editingDrawing}
       >
-        {editingDrawing && !resizing ? (
+        {(editingDrawing || readOnly) && !resizing ? (
           <Drawing
             color={color}
             value={metadata.video.drawing}
