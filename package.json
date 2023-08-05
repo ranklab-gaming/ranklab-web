@@ -12,7 +12,7 @@
     "@aws-sdk/client-dynamodb": "^3.335.0",
     "@types/node": "18.17.3",
     "dotenv": "16.3.1",
-    "prettier": "2.8.8",
+    "prettier": "3.0.1",
     "turbo": "1.10.12"
   }
 }
