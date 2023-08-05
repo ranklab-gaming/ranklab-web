@@ -182,7 +182,7 @@ export function useReviewForm({
   const handleSelectComment = (comment: Comment | null) => {
     const canEdit = Boolean(user && (!comment || comment.userId === user.id))
 
-    if (comment && canEdit) {
+    if (comment) {
       form.setValue("metadata", comment.metadata, {
         shouldDirty: true,
         shouldValidate: true,
@@ -205,8 +205,13 @@ export function useReviewForm({
         }
       )
 
-      setEditingAudio(Boolean(comment.audio))
-      setEditingText(Boolean(comment.body))
+      if (canEdit) {
+        setEditingAudio(Boolean(comment.audio))
+        setEditingText(Boolean(comment.body))
+      } else {
+        setEditingAudio(false)
+        setEditingText(false)
+      }
     } else {
       setEditingText(false)
       setPreviewAudioURL(null)
