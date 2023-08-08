@@ -69,8 +69,8 @@ importers:
         specifier: 7.61.1
         version: 7.61.1(next@13.4.12)(react@18.2.0)
       '@stripe/react-stripe-js':
-        specifier: 2.1.1
-        version: 2.1.1(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: 2.1.2
+        version: 2.1.2(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
         specifier: 1.54.2
         version: 1.54.2
@@ -1846,10 +1846,10 @@ packages:
     dependencies:
       tslib: 2.5.0
 
-  /@stripe/react-stripe-js@2.1.1(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-aHm6cWOqmOyq3eKKlR42hgvrcZhzc9ijL+BeXJ5H3uaWUKKcooSsBys0tiKl0gLxYQHUjUCvrRSX8fYaPBmAKg==}
+  /@stripe/react-stripe-js@2.1.2(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-2JcKRvOdMD698uGrY0cINLHb6XHnY24L+wlWlw2+TbI2aXlQZ9t8Mc+KssFES+EuNgISbrp7fJR3w/13epfiOw==}
     peerDependencies:
-      '@stripe/stripe-js': ^1.44.1
+      '@stripe/stripe-js': ^1.44.1 || ^2.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
