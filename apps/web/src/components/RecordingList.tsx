@@ -99,12 +99,21 @@ export const RecordingList = ({
                           </Typography>
                         </Stack>
                         <Chip
-                          label={pluralize(
-                            "Comment",
-                            recording.commentCount,
-                            true,
-                          )}
-                          color="secondary"
+                          label={
+                            recording.commentCount === 0
+                              ? "Awaiting Feedback"
+                              : pluralize(
+                                  "Comment",
+                                  recording.commentCount,
+                                  true,
+                                )
+                          }
+                          color={
+                            recording.commentCount === 0
+                              ? "primary"
+                              : "secondary"
+                          }
+                          sx={{ fontWeight: "bold" }}
                         />
                       </Stack>
                     </CardContent>
