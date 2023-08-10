@@ -28,7 +28,7 @@ export const CommentListItem = ({
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
   const skillLevel = game.skillLevels.find(
-    (sl) => sl.value === comment.user?.skillLevel
+    (sl) => sl.value === comment.user?.skillLevel,
   )
 
   return (
@@ -39,12 +39,11 @@ export const CommentListItem = ({
           <Chip
             size="small"
             label={comment.user?.name}
-            variant={
-              user && user.id === comment.user?.id ? "filled" : "outlined"
-            }
+            variant="outlined"
+            color={user && user.id === comment.user?.id ? "primary" : "default"}
           />
-          {skillLevel ? (
-            <Chip size="small" label={skillLevel.name} variant="outlined" />
+          {skillLevel && (!user || user.id !== comment.user?.id) ? (
+            <Chip size="small" label={skillLevel.name} />
           ) : null}
         </Stack>
         <AnimatePresence initial={false}>
