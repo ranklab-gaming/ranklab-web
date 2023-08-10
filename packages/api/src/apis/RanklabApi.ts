@@ -131,7 +131,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async audiosCreateRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Audio>> {
     const queryParameters: any = {}
 
@@ -144,7 +144,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -153,7 +153,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async audiosCreate(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Audio> {
     const response = await this.audiosCreateRaw(initOverrides)
     return await response.value()
@@ -163,12 +163,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async audiosDeleteRaw(
     requestParameters: AudiosDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling audiosDelete."
+        "Required parameter requestParameters.id was null or undefined when calling audiosDelete.",
       )
     }
 
@@ -180,13 +180,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/audios/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "DELETE",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -196,11 +196,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async audiosDelete(
     requestParameters: AudiosDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.audiosDeleteRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -209,12 +209,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async audiosGetRaw(
     requestParameters: AudiosGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Audio>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling audiosGet."
+        "Required parameter requestParameters.id was null or undefined when calling audiosGet.",
       )
     }
 
@@ -226,13 +226,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/audios/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "GET",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -242,7 +242,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async audiosGet(
     requestParameters: AudiosGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Audio> {
     const response = await this.audiosGetRaw(requestParameters, initOverrides)
     return await response.value()
@@ -251,7 +251,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async avatarsCreateRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Avatar>> {
     const queryParameters: any = {}
 
@@ -264,7 +264,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -273,7 +273,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async avatarsCreate(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Avatar> {
     const response = await this.avatarsCreateRaw(initOverrides)
     return await response.value()
@@ -283,12 +283,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async avatarsDeleteRaw(
     requestParameters: AvatarsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling avatarsDelete."
+        "Required parameter requestParameters.id was null or undefined when calling avatarsDelete.",
       )
     }
 
@@ -300,13 +300,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/avatars/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "DELETE",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -316,11 +316,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async avatarsDelete(
     requestParameters: AvatarsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.avatarsDeleteRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -329,12 +329,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async avatarsGetRaw(
     requestParameters: AvatarsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Avatar>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling avatarsGet."
+        "Required parameter requestParameters.id was null or undefined when calling avatarsGet.",
       )
     }
 
@@ -346,13 +346,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/avatars/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "GET",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -362,7 +362,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async avatarsGet(
     requestParameters: AvatarsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Avatar> {
     const response = await this.avatarsGetRaw(requestParameters, initOverrides)
     return await response.value()
@@ -372,7 +372,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsCreateRaw(
     requestParameters: CommentsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Comment>> {
     if (
       requestParameters.createCommentRequest === null ||
@@ -380,7 +380,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createCommentRequest",
-        "Required parameter requestParameters.createCommentRequest was null or undefined when calling commentsCreate."
+        "Required parameter requestParameters.createCommentRequest was null or undefined when calling commentsCreate.",
       )
     }
 
@@ -398,7 +398,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createCommentRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -408,11 +408,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsCreate(
     requestParameters: CommentsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Comment> {
     const response = await this.commentsCreateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -421,12 +421,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsDeleteRaw(
     requestParameters: CommentsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling commentsDelete."
+        "Required parameter requestParameters.id was null or undefined when calling commentsDelete.",
       )
     }
 
@@ -438,13 +438,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/comments/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "DELETE",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -454,11 +454,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsDelete(
     requestParameters: CommentsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.commentsDeleteRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -467,7 +467,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsListRaw(
     requestParameters: CommentsListRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Array<Comment>>> {
     if (
       requestParameters.recordingId === null ||
@@ -475,7 +475,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "recordingId",
-        "Required parameter requestParameters.recordingId was null or undefined when calling commentsList."
+        "Required parameter requestParameters.recordingId was null or undefined when calling commentsList.",
       )
     }
 
@@ -494,7 +494,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -504,11 +504,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsList(
     requestParameters: CommentsListRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<Comment>> {
     const response = await this.commentsListRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -517,12 +517,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsUpdateRaw(
     requestParameters: CommentsUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Comment>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling commentsUpdate."
+        "Required parameter requestParameters.id was null or undefined when calling commentsUpdate.",
       )
     }
 
@@ -532,7 +532,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "updateCommentRequest",
-        "Required parameter requestParameters.updateCommentRequest was null or undefined when calling commentsUpdate."
+        "Required parameter requestParameters.updateCommentRequest was null or undefined when calling commentsUpdate.",
       )
     }
 
@@ -546,14 +546,14 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/comments/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "PUT",
         headers: headerParameters,
         query: queryParameters,
         body: requestParameters.updateCommentRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -563,11 +563,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async commentsUpdate(
     requestParameters: CommentsUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Comment> {
     const response = await this.commentsUpdateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -576,12 +576,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreGetRaw(
     requestParameters: ExploreGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Recording>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling exploreGet."
+        "Required parameter requestParameters.id was null or undefined when calling exploreGet.",
       )
     }
 
@@ -593,13 +593,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/explore/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "GET",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -609,7 +609,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreGet(
     requestParameters: ExploreGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Recording> {
     const response = await this.exploreGetRaw(requestParameters, initOverrides)
     return await response.value()
@@ -619,12 +619,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreGetCommentsRaw(
     requestParameters: ExploreGetCommentsRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Array<Comment>>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling exploreGetComments."
+        "Required parameter requestParameters.id was null or undefined when calling exploreGetComments.",
       )
     }
 
@@ -636,13 +636,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/explore/{id}/comments`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "GET",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -652,11 +652,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreGetComments(
     requestParameters: ExploreGetCommentsRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<Comment>> {
     const response = await this.exploreGetCommentsRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -665,7 +665,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreListRaw(
     requestParameters: ExploreListRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<PaginatedResultForRecording>> {
     const queryParameters: any = {}
 
@@ -686,7 +686,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -696,7 +696,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async exploreList(
     requestParameters: ExploreListRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PaginatedResultForRecording> {
     const response = await this.exploreListRaw(requestParameters, initOverrides)
     return await response.value()
@@ -706,7 +706,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async gamesCreateRaw(
     requestParameters: GamesCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (
       requestParameters.createGameRequest === null ||
@@ -714,7 +714,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createGameRequest",
-        "Required parameter requestParameters.createGameRequest was null or undefined when calling gamesCreate."
+        "Required parameter requestParameters.createGameRequest was null or undefined when calling gamesCreate.",
       )
     }
 
@@ -732,7 +732,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createGameRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -742,7 +742,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async gamesCreate(
     requestParameters: GamesCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.gamesCreateRaw(requestParameters, initOverrides)
     return await response.value()
@@ -751,7 +751,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async gamesListRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Array<Game>>> {
     const queryParameters: any = {}
 
@@ -764,7 +764,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -773,7 +773,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async gamesList(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<Game>> {
     const response = await this.gamesListRaw(initOverrides)
     return await response.value()
@@ -782,7 +782,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async indexGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     const queryParameters: any = {}
 
@@ -795,7 +795,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -804,7 +804,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async indexGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.indexGetRaw(initOverrides)
     return await response.value()
@@ -814,7 +814,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async passwordsCreateRaw(
     requestParameters: PasswordsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (
       requestParameters.createPasswordRequest === null ||
@@ -822,7 +822,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createPasswordRequest",
-        "Required parameter requestParameters.createPasswordRequest was null or undefined when calling passwordsCreate."
+        "Required parameter requestParameters.createPasswordRequest was null or undefined when calling passwordsCreate.",
       )
     }
 
@@ -840,7 +840,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createPasswordRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -850,11 +850,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async passwordsCreate(
     requestParameters: PasswordsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.passwordsCreateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -863,7 +863,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async passwordsUpdateRaw(
     requestParameters: PasswordsUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (
       requestParameters.auth === null ||
@@ -871,7 +871,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "auth",
-        "Required parameter requestParameters.auth was null or undefined when calling passwordsUpdate."
+        "Required parameter requestParameters.auth was null or undefined when calling passwordsUpdate.",
       )
     }
 
@@ -881,7 +881,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "updatePasswordRequest",
-        "Required parameter requestParameters.updatePasswordRequest was null or undefined when calling passwordsUpdate."
+        "Required parameter requestParameters.updatePasswordRequest was null or undefined when calling passwordsUpdate.",
       )
     }
 
@@ -903,7 +903,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.updatePasswordRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -913,11 +913,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async passwordsUpdate(
     requestParameters: PasswordsUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.passwordsUpdateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -926,7 +926,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsCreateRaw(
     requestParameters: RecordingsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Recording>> {
     if (
       requestParameters.createRecordingRequest === null ||
@@ -934,7 +934,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createRecordingRequest",
-        "Required parameter requestParameters.createRecordingRequest was null or undefined when calling recordingsCreate."
+        "Required parameter requestParameters.createRecordingRequest was null or undefined when calling recordingsCreate.",
       )
     }
 
@@ -952,7 +952,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createRecordingRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -962,11 +962,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsCreate(
     requestParameters: RecordingsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Recording> {
     const response = await this.recordingsCreateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -975,12 +975,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsDeleteRaw(
     requestParameters: RecordingsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling recordingsDelete."
+        "Required parameter requestParameters.id was null or undefined when calling recordingsDelete.",
       )
     }
 
@@ -992,13 +992,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/recordings/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "DELETE",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1008,11 +1008,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsDelete(
     requestParameters: RecordingsDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
     const response = await this.recordingsDeleteRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -1021,12 +1021,12 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsGetRaw(
     requestParameters: RecordingsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Recording>> {
     if (requestParameters.id === null || requestParameters.id === undefined) {
       throw new runtime.RequiredError(
         "id",
-        "Required parameter requestParameters.id was null or undefined when calling recordingsGet."
+        "Required parameter requestParameters.id was null or undefined when calling recordingsGet.",
       )
     }
 
@@ -1038,13 +1038,13 @@ export class RanklabApi extends runtime.BaseAPI {
       {
         path: `/recordings/{id}`.replace(
           `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id))
+          encodeURIComponent(String(requestParameters.id)),
         ),
         method: "GET",
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1054,11 +1054,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsGet(
     requestParameters: RecordingsGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Recording> {
     const response = await this.recordingsGetRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -1067,7 +1067,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsListRaw(
     requestParameters: RecordingsListRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<PaginatedResultForRecording>> {
     const queryParameters: any = {}
 
@@ -1088,7 +1088,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1098,11 +1098,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async recordingsList(
     requestParameters: RecordingsListRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<PaginatedResultForRecording> {
     const response = await this.recordingsListRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -1111,7 +1111,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async sessionsCreateRaw(
     requestParameters: SessionsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Session>> {
     if (
       requestParameters.createSessionRequest === null ||
@@ -1119,7 +1119,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createSessionRequest",
-        "Required parameter requestParameters.createSessionRequest was null or undefined when calling sessionsCreate."
+        "Required parameter requestParameters.createSessionRequest was null or undefined when calling sessionsCreate.",
       )
     }
 
@@ -1137,7 +1137,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createSessionRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1147,11 +1147,11 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async sessionsCreate(
     requestParameters: SessionsCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Session> {
     const response = await this.sessionsCreateRaw(
       requestParameters,
-      initOverrides
+      initOverrides,
     )
     return await response.value()
   }
@@ -1160,7 +1160,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async usersCreateRaw(
     requestParameters: UsersCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<Session>> {
     if (
       requestParameters.createUserRequest === null ||
@@ -1168,7 +1168,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "createUserRequest",
-        "Required parameter requestParameters.createUserRequest was null or undefined when calling usersCreate."
+        "Required parameter requestParameters.createUserRequest was null or undefined when calling usersCreate.",
       )
     }
 
@@ -1186,7 +1186,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.createUserRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1196,7 +1196,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async usersCreate(
     requestParameters: UsersCreateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Session> {
     const response = await this.usersCreateRaw(requestParameters, initOverrides)
     return await response.value()
@@ -1205,7 +1205,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async usersGetRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<User>> {
     const queryParameters: any = {}
 
@@ -1218,7 +1218,7 @@ export class RanklabApi extends runtime.BaseAPI {
         headers: headerParameters,
         query: queryParameters,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1227,7 +1227,7 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async usersGet(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<User> {
     const response = await this.usersGetRaw(initOverrides)
     return await response.value()
@@ -1237,7 +1237,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async usersUpdateRaw(
     requestParameters: UsersUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<User>> {
     if (
       requestParameters.updateUserRequest === null ||
@@ -1245,7 +1245,7 @@ export class RanklabApi extends runtime.BaseAPI {
     ) {
       throw new runtime.RequiredError(
         "updateUserRequest",
-        "Required parameter requestParameters.updateUserRequest was null or undefined when calling usersUpdate."
+        "Required parameter requestParameters.updateUserRequest was null or undefined when calling usersUpdate.",
       )
     }
 
@@ -1263,7 +1263,7 @@ export class RanklabApi extends runtime.BaseAPI {
         query: queryParameters,
         body: requestParameters.updateUserRequest,
       },
-      initOverrides
+      initOverrides,
     )
 
     return new runtime.JSONApiResponse(response)
@@ -1273,7 +1273,7 @@ export class RanklabApi extends runtime.BaseAPI {
    */
   async usersUpdate(
     requestParameters: UsersUpdateRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<User> {
     const response = await this.usersUpdateRaw(requestParameters, initOverrides)
     return await response.value()

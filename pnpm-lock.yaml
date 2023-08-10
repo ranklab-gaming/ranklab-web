@@ -119,6 +119,9 @@ importers:
       openid-client:
         specifier: 5.4.3
         version: 5.4.3
+      pluralize:
+        specifier: 8.0.0
+        version: 8.0.0
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -171,6 +174,9 @@ importers:
       '@types/pg':
         specifier: 8.10.2
         version: 8.10.2
+      '@types/pluralize':
+        specifier: ^0.0.30
+        version: 0.0.30
       '@types/react':
         specifier: 18.2.20
         version: 18.2.20
@@ -2055,6 +2061,10 @@ packages:
       '@types/node': 18.17.4
       pg-protocol: 1.6.0
       pg-types: 4.0.1
+
+  /@types/pluralize@0.0.30:
+    resolution: {integrity: sha512-kVww6xZrW/db5BR9OqiT71J9huRdQ+z/r+LbDuT7/EK50mCmj5FoaIARnVv0rvjUS/YpDox0cDU9lpQT011VBA==}
+    dev: true
 
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -4708,6 +4718,11 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
     dev: true
+
+  /pluralize@8.0.0:
+    resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
+    engines: {node: '>=4'}
+    dev: false
 
   /postcss@8.4.14:
     resolution: {integrity: sha512-E398TUmfAYFPBSdzgeieK2Y1+1cpdxJx8yXbK/m57nRhKSmk1GB2tO4lbLBtlkfPQTDKfe4Xqv1ASWPpayPEig==}

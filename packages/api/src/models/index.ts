@@ -603,6 +603,12 @@ export interface Recording {
    * @memberof Recording
    */
   notesText: string
+  /**
+   *
+   * @type {number}
+   * @memberof Recording
+   */
+  commentCount: number
 }
 /**
  *

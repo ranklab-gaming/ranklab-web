@@ -16,6 +16,7 @@ import { MouseEvent, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
 import { assertFind, assertProp } from "@/assert"
+import pluralize from "pluralize"
 
 interface Props {
   recordings: PaginatedResultForRecording
@@ -37,7 +38,7 @@ export const RecordingList = ({
 
   const onPageChange = async (
     _event: MouseEvent<HTMLButtonElement> | null,
-    page: number
+    page: number,
   ) => {
     const requestParams = { page: page + 1, ...(queryParams ?? {}) }
 
@@ -58,7 +59,7 @@ export const RecordingList = ({
 
           const skillLevel = assertFind(
             game.skillLevels,
-            (sl) => sl.value === recording.skillLevel
+            (sl) => sl.value === recording.skillLevel,
           )
 
           return (
@@ -97,6 +98,14 @@ export const RecordingList = ({
                             </Typography>
                           </Typography>
                         </Stack>
+                        <Chip
+                          label={pluralize(
+                            "Comment",
+                            recording.commentCount,
+                            true,
+                          )}
+                          color="secondary"
+                        />
                       </Stack>
                     </CardContent>
                   </CardActionArea>
