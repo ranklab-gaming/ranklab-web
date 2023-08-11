@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.4.12",
-    "@playwright/test": "1.36.2",
+    "@playwright/test": "1.37.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/lodash": "4.14.197",
     "@types/mixpanel-browser": "^2.38.1",
