@@ -12,7 +12,7 @@ import { animateFade } from "@/animate/fade"
 import { VideoPlayerRef, VideoPlayer } from "@/components/VideoPlayer"
 import { ReviewForm } from "@/hooks/useReviewForm"
 import { Recording as BaseRecording } from "@/components/ReviewForm/Recording"
-import { Comment } from "@ranklab/api"
+import { useOptionalUser } from "@/hooks/useUser"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -24,7 +24,6 @@ interface Props {
   videoRef: RefObject<VideoPlayerRef>
   editingDrawing: boolean
   onEditingDrawingChange: (editingDrawing: boolean) => void
-  onCommentSelect: (comment: Comment | null, shouldPause: boolean) => void
 }
 
 export const colors = [
@@ -43,16 +42,19 @@ export const Recording = ({
   reviewForm,
   editingDrawing,
   onEditingDrawingChange,
-  onCommentSelect,
 }: Props) => {
   const [color, setColor] = useState<Color>("primary")
   const [resizing, setResizing] = useState(false)
   const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
-  const { form, recording, editingText } = reviewForm
+  const { form, recording, editingText, selectedComment, setSelectedComment } =
+    reviewForm
   const metadata = form.watch("metadata")
-  const { selectedComment, canEdit } = reviewForm
-  const readOnly = selectedComment && !canEdit
+  const user = useOptionalUser()
+
+  const readOnly = Boolean(
+    !user || (selectedComment && selectedComment.userId !== user.id),
+  )
 
   useEffect(() => {
     if (boxRef.current === null) return
@@ -90,10 +92,10 @@ export const Recording = ({
     <BaseRecording
       reviewForm={reviewForm}
       ref={boxRef}
-      toolbarDisabled={Boolean(!canEdit && selectedComment)}
+      toolbarDisabled={readOnly}
       toolbarElement={
         <Toolbar
-          disabled={Boolean(!canEdit && selectedComment)}
+          disabled={readOnly}
           color={color}
           onColorChange={setColor}
           drawingRef={drawingRef}
@@ -107,21 +109,44 @@ export const Recording = ({
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
         onTimeUpdate={setTimestamp}
         onSeeked={(time) => {
-          onCommentSelect(null, true)
+          setSelectedComment(null, true)
           setTimestamp(time)
         }}
         onPause={(time) => {
-          onCommentSelect(null, true)
+          setSelectedComment(null, true)
           setTimestamp(time)
         }}
         onPlay={(time) => {
-          onCommentSelect(null, false)
+          setSelectedComment(null, false)
           setTimestamp(time)
         }}
         ref={videoRef}
-        controls={!editingDrawing}
+        controls={readOnly || !editingDrawing}
       >
-        {(editingDrawing || readOnly) && !resizing ? (
+        {editingDrawing && readOnly && selectedComment ? (
+          <Box
+            component={m.div}
+            variants={animateFade().in}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 10,
+                pointerEvents: "none",
+              }}
+              dangerouslySetInnerHTML={{
+                __html: selectedComment.metadata.video.drawing,
+              }}
+            />
+          </Box>
+        ) : editingDrawing && !resizing ? (
           <Drawing
             color={color}
             value={metadata.video.drawing}
@@ -139,14 +164,14 @@ export const Recording = ({
                   shouldDirty: true,
                   shouldTouch: true,
                   shouldValidate: true,
-                }
+                },
               )
             }}
             ref={drawingRef}
           />
         ) : null}
         <AnimatePresence mode="popLayout">
-          {editingText ? (
+          {editingText && !readOnly ? (
             <Box
               sx={{
                 position: "absolute",
@@ -183,7 +208,7 @@ export const Recording = ({
                       sx={{
                         backgroundColor: alpha(
                           theme.palette.common.black,
-                          0.75
+                          0.75,
                         ),
                         height: 200,
                         borderWidth: 0,

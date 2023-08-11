@@ -1,7 +1,7 @@
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Comment, Game, MediaState, Recording } from "@ranklab/api"
-import { useContext, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import * as yup from "yup"
 import { Audio } from "@ranklab/api"
@@ -9,7 +9,6 @@ import { api } from "@/api"
 import { assertProp } from "@/assert"
 import { useUpload } from "@/hooks/useUpload"
 import { useSnackbar } from "notistack"
-import { UserContext } from "@/contexts/UserContext"
 
 const ReviewFormSchema = yup.object().shape({
   body: yup.string().defined(),
@@ -36,12 +35,10 @@ export interface ReviewForm {
   previewAudioURL: string | null
   recording: Recording
   selectedComment: Comment | null
-  canEdit: boolean
   setEditingAudio: (editingAudio: boolean) => void
   setEditingText: (editingText: boolean) => void
   setRecording: (recording: Recording) => void
-  setSelectedComment: (comment: Comment | null) => void
-  sortedComments: Comment[]
+  setSelectedComment: (comment: Comment | null, ...args: any[]) => void
   submit: () => Promise<void>
   recordingAudio: boolean
   startRecordingAudio: () => Promise<void>
@@ -57,7 +54,7 @@ interface Props {
   recording: Recording
   games: Game[]
   editing?: boolean
-  onCommentSelect: (comment: Comment | null) => void
+  onCommentSelect: (comment: Comment | null, ...args: any[]) => void
   compareComments: (a: Comment, b: Comment) => number
   validate: (values: ReviewFormValues) => boolean
 }
@@ -72,7 +69,6 @@ export function useReviewForm({
   validate,
   editing = false,
 }: Props): ReviewForm {
-  const user = useContext(UserContext)
   const [editingText, setEditingText] = useState(false)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [comments, setComments] = useState(initialComments)
@@ -82,15 +78,14 @@ export function useReviewForm({
   const [recordingAudio, setRecordingAudio] = useState(false)
   const [startedRecordingAudioAt, setStartedRecordingAudioAt] =
     useState<Date | null>(null)
-  const sortedComments = [...comments].sort(compareComments)
+  const sortedComments = useMemo(
+    () => [...comments].sort(compareComments),
+    [comments, compareComments],
+  )
   const [upload] = useUpload()
   const { enqueueSnackbar } = useSnackbar()
   const mediaRecorder = useRef<MediaRecorder | null>(null)
   let audioChunks: Blob[] = []
-
-  const canEdit = Boolean(
-    user && (!selectedComment || selectedComment.userId === user.id)
-  )
 
   const formSchema = ReviewFormSchema.test("is-valid", (rawValues) => {
     const values = rawValues as ReviewFormValues
@@ -98,7 +93,7 @@ export function useReviewForm({
     return Boolean(
       values.audio.value ||
         values.body.length > 0 ||
-        validate(values as ReviewFormValues)
+        validate(values as ReviewFormValues),
     )
   })
 
@@ -132,7 +127,7 @@ export function useReviewForm({
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
-      }
+      },
     )
   }
 
@@ -166,7 +161,7 @@ export function useReviewForm({
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
-        }
+        },
       )
 
       audioChunks = []
@@ -179,9 +174,7 @@ export function useReviewForm({
     mediaRecorder.current?.stop()
   }
 
-  const handleSelectComment = (comment: Comment | null) => {
-    const canEdit = Boolean(user && (!comment || comment.userId === user.id))
-
+  const handleSelectComment = (comment: Comment | null, ...args: any[]) => {
     if (comment) {
       form.setValue("metadata", comment.metadata, {
         shouldDirty: true,
@@ -202,16 +195,11 @@ export function useReviewForm({
           shouldDirty: true,
           shouldValidate: true,
           shouldTouch: true,
-        }
+        },
       )
 
-      if (canEdit) {
-        setEditingAudio(Boolean(comment.audio))
-        setEditingText(Boolean(comment.body))
-      } else {
-        setEditingAudio(false)
-        setEditingText(false)
-      }
+      setEditingAudio(Boolean(comment.audio))
+      setEditingText(Boolean(comment.body))
     } else {
       setEditingText(false)
       setPreviewAudioURL(null)
@@ -220,7 +208,7 @@ export function useReviewForm({
       form.reset()
     }
 
-    onCommentSelect(comment)
+    onCommentSelect(comment, ...args)
     setSelectedComment(comment)
   }
 
@@ -275,7 +263,7 @@ export function useReviewForm({
           "There was an error processing your audio. Please try again.",
           {
             variant: "error",
-          }
+          },
         )
 
         return
@@ -317,7 +305,7 @@ export function useReviewForm({
     setComments(
       selectedComment
         ? comments.map((c) => (c.id === comment.id ? comment : c))
-        : [comment, ...comments]
+        : [comment, ...comments],
     )
 
     handleSelectComment(null)
@@ -339,7 +327,7 @@ export function useReviewForm({
   }
 
   return {
-    comments,
+    comments: sortedComments,
     deleteComment: handleDeleteComment,
     form,
     games,
@@ -350,10 +338,8 @@ export function useReviewForm({
     setSelectedComment: handleSelectComment,
     setEditingAudio,
     setEditingText,
-    sortedComments,
     editingAudio,
     editingText,
-    canEdit,
     submit: form.handleSubmit(handleSubmit),
     startRecordingAudio,
     recordingAudio,

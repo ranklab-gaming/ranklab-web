@@ -1,5 +1,5 @@
-import { PropsWithUser } from "@/auth"
-import { withUserSsr } from "@/auth/page"
+import { PropsWithOptionalUser } from "@/auth"
+import { withOptionalUserSsr } from "@/auth/page"
 import { DashboardPage } from "@/components/DashboardPage"
 import { Game, PaginatedResultForRecording } from "@ranklab/api"
 
@@ -8,7 +8,9 @@ interface Props {
   games: Game[]
 }
 
-export const getServerSideProps = withUserSsr<Props>(async function (ctx) {
+export const getServerSideProps = withOptionalUserSsr<Props>(async function (
+  ctx
+) {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx.req)
 
@@ -25,6 +27,10 @@ export const getServerSideProps = withUserSsr<Props>(async function (ctx) {
   }
 })
 
-export default function ({ recordings, games, user }: PropsWithUser<Props>) {
+export default function ({
+  recordings,
+  games,
+  user,
+}: PropsWithOptionalUser<Props>) {
   return <DashboardPage user={user} recordings={recordings} games={games} />
 }

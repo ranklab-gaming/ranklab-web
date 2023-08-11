@@ -8,12 +8,13 @@ import { finishInteraction } from "@/oidc/interaction"
 import { withSessionApiRoute } from "@/session"
 import { errors, getOidcProvider } from "@ranklab/server/dist/oidc/provider"
 import { ResponseError } from "@ranklab/api"
+import { errors as clientErrors } from "openid-client"
 
 const secret = createSecretKey(Buffer.from(authClientSecret))
 
 export default withSessionApiRoute(async function callback(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const oidcProvider = await getOidcProvider()
   let interaction
@@ -41,16 +42,32 @@ export default withSessionApiRoute(async function callback(
   const codeVerifier = req.session.codeVerifier
 
   const { intent } = JSON.parse(
-    Buffer.from(interaction.params.state as string, "base64").toString("utf8")
+    Buffer.from(interaction.params.state as string, "base64").toString("utf8"),
   )
 
-  const tokenSet = await client.callback(
-    `${host}/api/auth/federated/callback/${provider}`,
-    params,
-    {
-      code_verifier: codeVerifier,
+  let tokenSet
+
+  try {
+    tokenSet = await client.callback(
+      `${host}/api/auth/federated/callback/${provider}`,
+      params,
+      {
+        code_verifier: codeVerifier,
+      },
+    )
+  } catch (e) {
+    if (e instanceof clientErrors.OPError) {
+      const redirectUrl = intent === "login" ? "/login" : "/signup"
+
+      const redirectParams = new URLSearchParams({
+        error: e.error_description ?? "",
+      })
+
+      return res.redirect(`${redirectUrl}?${redirectParams.toString()}`).end()
     }
-  )
+
+    throw e
+  }
 
   if (!tokenSet.access_token) {
     throw new Error("no access token returned from provider")

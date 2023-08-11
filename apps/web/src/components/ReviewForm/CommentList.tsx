@@ -5,12 +5,13 @@ import { useGameDependency } from "@/hooks/useGameDependency"
 import { MessageBox } from "@/components/MessageBox"
 import { Comment, Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"
+import { useOptionalUser } from "@/hooks/useUser"
+import { useRouter } from "next/router"
 
 interface Props {
   comments: Comment[]
   onCommentSelect: (comment: Comment | null) => void
   selectedComment: Comment | null
-  explore?: boolean
   games: Game[]
   recording: Recording
 }
@@ -19,16 +20,24 @@ export const CommentList = ({
   comments,
   onCommentSelect,
   selectedComment,
-  explore = false,
   games,
   recording,
 }: Props) => {
   const CommentListItem = useGameDependency("component:comment-list-item")
   const emptyCommentsText = useGameDependency("text:empty-comments-text")
   const firstCommentText = useGameDependency("text:first-comment-text")
+  const user = useOptionalUser()
+  const router = useRouter()
+
+  const returnUrl = {
+    pathname: "/api/auth/signin",
+    query: {
+      return_url: router.asPath,
+    },
+  }
 
   const addACommentButton = (
-    <NextLink href={`/recordings/${recording.id}`} passHref legacyBehavior>
+    <NextLink href={returnUrl} passHref legacyBehavior>
       <Button
         variant="text"
         sx={{
@@ -52,8 +61,8 @@ export const CommentList = ({
   if (comments.length === 0) {
     return (
       <MessageBox
-        icon={explore ? addACommentButton : "eva:corner-up-left-outline"}
-        text={explore ? firstCommentText : emptyCommentsText}
+        icon={!user ? addACommentButton : "eva:corner-up-left-outline"}
+        text={!user ? firstCommentText : emptyCommentsText}
       />
     )
   }
@@ -62,7 +71,7 @@ export const CommentList = ({
     <Card sx={{ minHeight: "100%" }}>
       <CardContent>
         <Stack spacing={2}>
-          {explore ? addACommentButton : null}
+          {!user ? addACommentButton : null}
           <AnimatePresence>
             {comments.map((comment) => (
               <Card

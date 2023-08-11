@@ -15,10 +15,12 @@ import {
   Typography,
 } from "@mui/material"
 import NextLink from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Controller, FormProvider } from "react-hook-form"
 import * as yup from "yup"
 import { SocialButtons } from "./SocialButtons"
+import { useRouter } from "next/router"
+import { useSnackbar } from "notistack"
 
 const FormSchema = yup.object().shape({
   email: yup
@@ -38,6 +40,7 @@ export const LoginPage = () => {
 
   const [showPassword, setShowPassword] = useState(false)
   const login = useLogin()
+  const { enqueueSnackbar } = useSnackbar()
 
   const form = useForm({
     resolver: yupResolver(FormSchema),
@@ -60,6 +63,17 @@ export const LoginPage = () => {
 
     await login(session.token)
   }
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.query.error) {
+      enqueueSnackbar(
+        `There was an error during login: ${router.query.error}`,
+        { variant: "error" },
+      )
+    }
+  }, [enqueueSnackbar, router.query.error])
 
   return (
     <BasicLayout title="Sign in to Ranklab">

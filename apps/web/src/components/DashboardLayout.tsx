@@ -43,7 +43,7 @@ const MainStyle = styled("main", {
 
 interface Props {
   title: string
-  user: User
+  user: User | null
   showTitle?: boolean
   fullWidth?: boolean
 }
@@ -61,6 +61,8 @@ export const DashboardLayout = ({
   const { update } = useIntercom()
 
   useEffect(() => {
+    if (!user) return
+
     update({
       name: user.name,
       email: user.email,

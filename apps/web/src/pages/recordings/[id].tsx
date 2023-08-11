@@ -1,5 +1,5 @@
-import { PropsWithUser } from "@/auth"
-import { withUserSsr } from "@/auth/page"
+import { PropsWithOptionalUser } from "@/auth"
+import { withOptionalUserSsr } from "@/auth/page"
 import { RecordingShowPage } from "@/components/RecordingShowPage"
 import { Game, Recording, Comment } from "@ranklab/api"
 
@@ -9,7 +9,7 @@ interface Props {
   comments: Comment[]
 }
 
-export const getServerSideProps = withUserSsr<Props>(async (ctx) => {
+export const getServerSideProps = withOptionalUserSsr<Props>(async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const id = ctx.query.id as string
   const api = await createServerApi(ctx.req)
@@ -34,7 +34,7 @@ export default function ({
   user,
   games,
   comments,
-}: PropsWithUser<Props>) {
+}: PropsWithOptionalUser<Props>) {
   return (
     <RecordingShowPage
       recording={recording}

@@ -10,3 +10,7 @@ export function useUser() {
 
   return user
 }
+
+export function useOptionalUser() {
+  return useContext(UserContext) ?? null
+}

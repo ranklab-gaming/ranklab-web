@@ -4,7 +4,7 @@ import { ReviewForm as BaseReviewForm } from "@/components/ReviewForm"
 import { VideoPlayerRef } from "@/components/VideoPlayer"
 import { useReviewForm } from "@/hooks/useReviewForm"
 import { Recording } from "./ReviewForm/Recording"
-import { useUser } from "@/hooks/useUser"
+import { parseISO } from "date-fns"
 
 export interface ReviewFormProps {
   recording: ApiRecording
@@ -19,24 +19,15 @@ const ReviewForm = ({
   children,
 }: PropsWithChildren<ReviewFormProps>) => {
   const videoRef = useRef<VideoPlayerRef>(null)
-  const user = useUser()
   const [editingDrawing, setEditingDrawing] = useState(false)
 
   const handleCommentSelect = (
     comment: Comment | null,
-    shouldPause: boolean
+    shouldPause: boolean = true,
   ) => {
-    const canEdit = Boolean(user && (!comment || comment.userId === user.id))
-
     if (comment) {
       const video = comment.metadata?.video
-
-      if (canEdit) {
-        setEditingDrawing(Boolean(video.drawing))
-      } else {
-        setEditingDrawing(false)
-      }
-
+      setEditingDrawing(Boolean(video.drawing))
       videoRef.current?.seekTo(video.timestamp)
     } else {
       setEditingDrawing(false)
@@ -58,11 +49,15 @@ const ReviewForm = ({
         drawing: "",
       },
     },
-    onCommentSelect(comment) {
-      return handleCommentSelect(comment, true)
-    },
+    onCommentSelect: handleCommentSelect,
     compareComments(a, b) {
-      return a.metadata.video.timestamp - b.metadata.video.timestamp
+      const diff = a.metadata.video.timestamp - b.metadata.video.timestamp
+
+      if (diff === 0) {
+        return parseISO(b.createdAt).getTime() - parseISO(a.createdAt).getTime()
+      }
+
+      return diff
     },
     validate(values) {
       return values.metadata.video.drawing
@@ -77,7 +72,6 @@ const ReviewForm = ({
           videoRef={videoRef}
           reviewForm={reviewForm}
           editingDrawing={editingDrawing}
-          onCommentSelect={handleCommentSelect}
           onEditingDrawingChange={setEditingDrawing}
         />
       }

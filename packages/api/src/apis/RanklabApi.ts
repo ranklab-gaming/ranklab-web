@@ -24,7 +24,6 @@ import type {
   CreateSessionRequest,
   CreateUserRequest,
   Game,
-  GameId,
   OneTimeTokenParams,
   PaginatedResultForRecording,
   Recording,
@@ -67,19 +66,6 @@ export interface CommentsListRequest {
 export interface CommentsUpdateRequest {
   id: string
   updateCommentRequest: UpdateCommentRequest
-}
-
-export interface ExploreGetRequest {
-  id: string
-}
-
-export interface ExploreGetCommentsRequest {
-  id: string
-}
-
-export interface ExploreListRequest {
-  page?: number | null
-  gameId?: GameId
 }
 
 export interface GamesCreateRequest {
@@ -569,136 +555,6 @@ export class RanklabApi extends runtime.BaseAPI {
       requestParameters,
       initOverrides,
     )
-    return await response.value()
-  }
-
-  /**
-   */
-  async exploreGetRaw(
-    requestParameters: ExploreGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Recording>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling exploreGet.",
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/explore/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id)),
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async exploreGet(
-    requestParameters: ExploreGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Recording> {
-    const response = await this.exploreGetRaw(requestParameters, initOverrides)
-    return await response.value()
-  }
-
-  /**
-   */
-  async exploreGetCommentsRaw(
-    requestParameters: ExploreGetCommentsRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Array<Comment>>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling exploreGetComments.",
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/explore/{id}/comments`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id)),
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async exploreGetComments(
-    requestParameters: ExploreGetCommentsRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Array<Comment>> {
-    const response = await this.exploreGetCommentsRaw(
-      requestParameters,
-      initOverrides,
-    )
-    return await response.value()
-  }
-
-  /**
-   */
-  async exploreListRaw(
-    requestParameters: ExploreListRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<PaginatedResultForRecording>> {
-    const queryParameters: any = {}
-
-    if (requestParameters.page !== undefined) {
-      queryParameters["page"] = requestParameters.page
-    }
-
-    if (requestParameters.gameId !== undefined) {
-      queryParameters["game_id"] = requestParameters.gameId
-    }
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/explore`,
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async exploreList(
-    requestParameters: ExploreListRequest = {},
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<PaginatedResultForRecording> {
-    const response = await this.exploreListRaw(requestParameters, initOverrides)
     return await response.value()
   }
 

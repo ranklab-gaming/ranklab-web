@@ -48,7 +48,7 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
 
       svgElement.documentElement.setAttribute(
         "viewBox",
-        `0 0 ${width} ${height}`
+        `0 0 ${width} ${height}`,
       )
 
       return svgElement.documentElement.outerHTML
@@ -117,7 +117,7 @@ export const Drawing = forwardRef<DrawingRef, DrawingProps>(
         />
       </Box>
     )
-  }
+  },
 )
 
 Drawing.displayName = "Drawing"

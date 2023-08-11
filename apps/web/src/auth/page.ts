@@ -4,73 +4,85 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
 } from "next"
-import { PropsWithUser } from "../auth"
+import { PropsWithOptionalUser, PropsWithUser } from "../auth"
 import { withSessionSsr } from "@/session"
+
+type GetServerSidePropsWithOptionalUser<P extends { [key: string]: any }> = (
+  ctx: GetServerSidePropsContext & { user: Promise<User> | null }
+) => Promise<GetServerSidePropsResult<P>>
 
 type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
   ctx: GetServerSidePropsContext & { user: Promise<User> }
 ) => Promise<GetServerSidePropsResult<P>>
 
-export function withUserSsr<P extends { [key: string]: any }>(
-  getServerSideProps: GetServerSidePropsWithUser<P>
-): GetServerSideProps<PropsWithUser<P>> {
-  return withSessionSsr(
-    async (
-      ctx: GetServerSidePropsContext
-    ): Promise<GetServerSidePropsResult<PropsWithUser<P>>> => {
-      const { getServerSession } = await import("./session")
-      const { createServerApi } = await import("@/api/server")
-      const session = await getServerSession(ctx.req)
-      const api = await createServerApi(ctx.req)
-      const returnUrl = encodeURIComponent(ctx.resolvedUrl)
+export function withOptionalUserSsr<P extends { [key: string]: any }>(
+  getServerSideProps: GetServerSidePropsWithOptionalUser<P>
+): GetServerSideProps<PropsWithOptionalUser<P>> {
+  return withSessionSsr(async (ctx) => {
+    const { getServerSession } = await import("./session")
+    const { createServerApi } = await import("@/api/server")
+    const session = await getServerSession(ctx.req)
+    const api = await createServerApi(ctx.req)
+    const fetchUser = session ? api.usersGet() : null
 
-      if (!session) {
+    let res
+
+    try {
+      res = await getServerSideProps({ ...ctx, user: fetchUser })
+    } catch (e: unknown) {
+      if (!(e instanceof ResponseError)) {
+        throw e
+      }
+
+      if (e.response.status === 404) {
+        return {
+          notFound: true,
+        }
+      }
+
+      if (e.response.status >= 500) {
         return {
           redirect: {
-            destination: `/api/auth/signin?return_url=${returnUrl}`,
+            destination: `/500?error=${e.message}`,
             permanent: false,
           },
         }
       }
 
-      const fetchUser = api.usersGet()
+      throw e
+    }
 
-      let res
+    if ("redirect" in res || "notFound" in res) {
+      return res
+    }
 
-      try {
-        res = await getServerSideProps({ ...ctx, user: fetchUser })
-      } catch (e: unknown) {
-        if (!(e instanceof ResponseError)) {
-          throw e
-        }
+    const [user, props] = await Promise.all([fetchUser, res.props])
 
-        if (e.response.status === 404) {
-          return {
-            notFound: true,
-          }
-        }
+    return {
+      props: { ...props, user },
+    }
+  })
+}
 
-        if (e.response.status >= 500) {
-          return {
-            redirect: {
-              destination: `/500?error=${e.message}`,
-              permanent: false,
-            },
-          }
-        }
+export function withUserSsr<P extends { [key: string]: any }>(
+  getServerSideProps: GetServerSidePropsWithUser<P>
+): GetServerSideProps<PropsWithUser<P>> {
+  return withOptionalUserSsr(async (ctx) => {
+    const user = ctx.user
+    const returnUrl = encodeURIComponent(ctx.resolvedUrl)
 
-        throw e
-      }
-
-      if ("redirect" in res || "notFound" in res) {
-        return res
-      }
-
-      const [user, props] = await Promise.all([fetchUser, res.props])
-
+    if (!user) {
       return {
-        props: { ...props, user },
+        redirect: {
+          destination: `/api/auth/signin?return_url=${returnUrl}`,
+          permanent: false,
+        },
       }
     }
-  )
+
+    return await getServerSideProps({
+      ...ctx,
+      user,
+    })
+  }) as GetServerSideProps<PropsWithUser<P>>
 }

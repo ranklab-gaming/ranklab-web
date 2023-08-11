@@ -1,14 +1,15 @@
 import { Avatar } from "@/components/Avatar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { MenuPopover } from "@/components/MenuPopover"
-import { useUser } from "@/hooks/useUser"
+import { useOptionalUser } from "@/hooks/useUser"
 import { Box, Divider, MenuItem, Typography } from "@mui/material"
 import { alpha } from "@mui/material/styles"
 import NextLink from "next/link"
 import { MouseEvent, useState } from "react"
 
 export const AccountPopover = () => {
-  const user = useUser()
+  const user = useOptionalUser()
+
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
@@ -17,6 +18,10 @@ export const AccountPopover = () => {
 
   const handleClose = () => {
     setAnchor(null)
+  }
+
+  if (!user) {
+    return null
   }
 
   return (

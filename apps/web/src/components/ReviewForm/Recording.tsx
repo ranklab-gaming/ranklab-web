@@ -6,6 +6,7 @@ import { Iconify } from "@/components/Iconify"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { ReviewForm } from "@/hooks/useReviewForm"
+import { useOptionalUser } from "@/hooks/useUser"
 
 interface Props {
   reviewForm: ReviewForm
@@ -18,6 +19,11 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
     const { previewAudioURL, selectedComment, form, editingAudio } = reviewForm
     const selectedCommentAudio = selectedComment?.audio
     const audio = form.watch("audio")
+    const user = useOptionalUser()
+
+    const readOnly = Boolean(
+      !user || (selectedComment && selectedComment.userId !== user.id),
+    )
 
     const audioURL =
       previewAudioURL ||
@@ -31,7 +37,7 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           {toolbarElement}
         </Toolbar>
         <AnimatePresence>
-          {editingAudio && audioURL && audio.value !== false ? (
+          {!readOnly && editingAudio && audioURL && audio.value !== false ? (
             <Stack
               component={m.div}
               variants={animateFade().in}
@@ -57,7 +63,7 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
                         shouldValidate: true,
                         shouldDirty: true,
                         shouldTouch: true,
-                      }
+                      },
                     )
                   }}
                 >
@@ -78,7 +84,7 @@ export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
         </Box>
       </>
     )
-  }
+  },
 )
 
 Recording.displayName = "Recording"

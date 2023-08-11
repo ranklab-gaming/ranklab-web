@@ -1,4 +1,4 @@
-import { PropsWithUser } from "@/auth"
+import { PropsWithOptionalUser } from "@/auth"
 import { DashboardLayout } from "./DashboardLayout"
 import { Game, Comment, Recording } from "@ranklab/api"
 import { useGameDependency } from "@/hooks/useGameDependency"
@@ -14,7 +14,7 @@ export const RecordingShowPage = ({
   games,
   comments,
   user,
-}: PropsWithUser<Props>) => {
+}: PropsWithOptionalUser<Props>) => {
   const ReviewForm = useGameDependency("component:review-form")
 
   return (

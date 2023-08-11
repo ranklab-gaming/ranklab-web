@@ -1,4 +1,4 @@
-import { PropsWithUser } from "@/auth"
+import { PropsWithOptionalUser } from "@/auth"
 import { DashboardLayout } from "@/components/DashboardLayout"
 import { RecordingList } from "@/components/RecordingList"
 import { useGameDependency } from "@/hooks/useGameDependency"
@@ -15,7 +15,7 @@ export const DashboardPage = ({
   recordings,
   games,
   user,
-}: PropsWithUser<Props>) => {
+}: PropsWithOptionalUser<Props>) => {
   const createButtonText = useGameDependency("text:create-recording-button")
   const recordingPlural = useGameDependency("text:recording-plural")
   const icon = useGameDependency("component:recording-icon")

@@ -21,7 +21,6 @@ import pluralize from "pluralize"
 interface Props {
   recordings: PaginatedResultForRecording
   games: Game[]
-  explore?: boolean
   queryParams?: {
     onlyOwn: boolean
   }
@@ -30,7 +29,6 @@ interface Props {
 export const RecordingList = ({
   recordings: initialRecordings,
   games,
-  explore = false,
   queryParams,
 }: Props) => {
   const [page, setPage] = useState(initialRecordings.page)
@@ -41,10 +39,7 @@ export const RecordingList = ({
     page: number,
   ) => {
     const requestParams = { page: page + 1, ...(queryParams ?? {}) }
-
-    const result = await (explore
-      ? api.exploreList(requestParams)
-      : api.recordingsList(requestParams))
+    const result = await api.recordingsList(requestParams)
 
     setPage(result.page)
     setRecordings(result)
@@ -66,9 +61,7 @@ export const RecordingList = ({
             <ListItem key={recording.id} sx={{ p: 0, m: 0, mb: 2 }}>
               <Card sx={{ width: "100%" }}>
                 <NextLink
-                  href={`${explore ? "/explore" : ""}/recordings/${
-                    recording.id
-                  }`}
+                  href={`/recordings/${recording.id}`}
                   passHref
                   legacyBehavior
                 >

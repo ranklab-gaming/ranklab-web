@@ -39,7 +39,7 @@ export const ReviewForm = ({
 
   const skillLevel = assertFind(
     game.skillLevels,
-    (sl) => sl.value === recording.skillLevel
+    (sl) => sl.value === recording.skillLevel,
   )
 
   return (
@@ -72,7 +72,7 @@ export const ReviewForm = ({
               variant="outlined"
               onClick={() => {
                 navigator.clipboard.writeText(
-                  `${window.location.origin}/explore/recordings/${recording.id}`
+                  `${window.location.origin}/recordings/${recording.id}`,
                 )
 
                 enqueueSnackbar("Copied share link to clipboard", {

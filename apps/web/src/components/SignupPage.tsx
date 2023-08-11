@@ -1,7 +1,7 @@
 import { BasicLayout } from "@/components/BasicLayout"
 import { LoadingButton } from "@mui/lab"
 import { Box, Link, Stack, Typography } from "@mui/material"
-import { useId } from "react"
+import { useEffect, useId } from "react"
 import { SocialButtons } from "./SocialButtons"
 import { useLogin } from "@/hooks/useLogin"
 import { decode } from "jsonwebtoken"
@@ -17,6 +17,8 @@ import { api } from "@/api"
 import { Game, GameId } from "@ranklab/api"
 import { track } from "@/analytics"
 import NextLink from "next/link"
+import { useRouter } from "next/router"
+import { useSnackbar } from "notistack"
 
 interface SignupPageProps {
   token?: string
@@ -28,6 +30,7 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
   const login = useLogin()
   const jwt = token ? decode(token) : null
   const jwtPayload = typeof jwt === "string" ? null : jwt
+  const { enqueueSnackbar } = useSnackbar()
 
   const defaultValues: AccountFieldsValues = {
     gameId: games[0].id,
@@ -42,10 +45,21 @@ export const SignupPage = ({ token, games }: SignupPageProps) => {
     resolver: yupResolver(
       (jwtPayload
         ? AccountFieldsSchemaWithoutPassword
-        : AccountFieldsSchema) as typeof AccountFieldsSchema
+        : AccountFieldsSchema) as typeof AccountFieldsSchema,
     ),
     defaultValues,
   })
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.query.error) {
+      enqueueSnackbar(
+        `There was an error during signup: ${router.query.error}`,
+        { variant: "error" },
+      )
+    }
+  }, [enqueueSnackbar, router.query.error])
 
   const {
     handleSubmit,

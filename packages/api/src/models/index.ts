@@ -158,6 +158,12 @@ export interface Comment {
    * @memberof Comment
    */
   user?: User | null
+  /**
+   *
+   * @type {string}
+   * @memberof Comment
+   */
+  createdAt: string
 }
 /**
  *

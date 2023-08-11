@@ -2,7 +2,7 @@ import { User } from "@ranklab/api"
 import { createContext, PropsWithChildren } from "react"
 
 interface UserProviderProps extends PropsWithChildren {
-  user: User
+  user: User | null
 }
 
 export const UserContext = createContext<User | null | undefined>(null)
