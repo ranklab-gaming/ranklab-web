@@ -37,7 +37,7 @@ export const VideoPlayer = forwardRef<
       onSeeked,
       style,
     },
-    ref
+    ref,
   ) => {
     const videoRef = useRef<HTMLVideoElement>(null)
     const seeking = useRef(false)
@@ -95,7 +95,7 @@ export const VideoPlayer = forwardRef<
         {children}
       </VideoElement>
     )
-  }
+  },
 )
 
 VideoPlayer.displayName = "VideoPlayer"
