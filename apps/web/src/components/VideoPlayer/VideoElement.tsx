@@ -8,15 +8,64 @@ import React, {
   useImperativeHandle,
   useLayoutEffect,
   useCallback,
+  useContext,
+  useMemo,
+  createContext,
 } from "react"
 
 import dynamic from "next/dynamic"
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false })
+import ReactPlayer from "react-player"
 
-import type { default as ReactPlayerType } from "react-player"
+const ReactPlayerWrapper = dynamic(() => import("./ReactPlayerWrapper"), {
+  ssr: false,
+})
 
 interface Props extends HTMLProps<HTMLVideoElement> {
   src: string
+}
+
+interface PlayerContext {
+  containerRef: React.RefObject<HTMLDivElement>
+  wrapperWidth: number
+  wrapperHeight: number
+}
+
+const PlayerContext = createContext<PlayerContext | undefined>(undefined)
+
+const Wrapper = ({ children }: PropsWithChildren) => {
+  const context = useContext(PlayerContext)
+
+  if (!context) {
+    return null
+  }
+
+  const { wrapperWidth, wrapperHeight, containerRef } = context
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: wrapperWidth,
+          height: wrapperHeight,
+          overflow: "hidden",
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  )
 }
 
 export const VideoElement = forwardRef<
@@ -24,106 +73,86 @@ export const VideoElement = forwardRef<
   PropsWithChildren<Props>
 >(({ children, src }, ref: ForwardedRef<HTMLVideoElement>) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<ReactPlayerType>(null)
   const [wrapperWidth, setWrapperWidth] = useState<number>(0)
   const [wrapperHeight, setWrapperHeight] = useState<number>(0)
+  const playerRef = useRef<ReactPlayer | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
   const setVideoRef = useCallback(
-    (ref: ReactPlayerType) => {
-      videoRef.current = ref
-    },
-    [videoRef],
-  )
+    (video: HTMLVideoElement) => {
+      videoRef.current = video
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  useImperativeHandle(ref, () => {
-    console.log(videoRef.current)
-    return videoRef.current?.getInternalPlayer() as HTMLVideoElement
-  })
-
-  useLayoutEffect(() => {
-    const resizeVideo = () => {
-      if (containerRef.current && videoRef.current) {
-        const containerWidth = containerRef.current.clientWidth
-        const containerHeight = containerRef.current.clientHeight
-        const containerAspectRatio = containerWidth / containerHeight
-        const videoElement = videoRef.current.getInternalPlayer()
-
-        const videoWidth = videoElement.videoWidth
-        const videoHeight = videoElement.videoHeight
-
-        if (videoWidth === 0 || videoHeight === 0) {
-          return
-        }
-
-        const videoAspectRatio = videoWidth / videoHeight
-
-        if (containerAspectRatio > videoAspectRatio) {
-          setWrapperWidth(containerHeight * videoAspectRatio)
-          setWrapperHeight(containerHeight)
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(video)
         } else {
-          setWrapperWidth(containerWidth)
-          setWrapperHeight(containerWidth / videoAspectRatio)
+          ref.current = video
         }
       }
-    }
+    },
+    [ref],
+  )
 
-    if (videoRef.current) {
-      videoRef.current
-        .getInternalPlayer()
-        .addEventListener("loadedmetadata", () => {
-          resizeVideo()
-        })
-    }
+  const context = useMemo<PlayerContext>(
+    () => ({
+      wrapperWidth,
+      wrapperHeight,
+      containerRef,
+    }),
+    [wrapperWidth, wrapperHeight, containerRef],
+  )
 
+  const resizeVideo = useCallback(() => {
+    if (containerRef.current && videoRef.current) {
+      const containerWidth = containerRef.current.clientWidth
+      const containerHeight = containerRef.current.clientHeight
+      const containerAspectRatio = containerWidth / containerHeight
+
+      const videoWidth = videoRef.current.videoWidth
+      const videoHeight = videoRef.current.videoHeight
+
+      if (videoWidth === 0 || videoHeight === 0) {
+        return
+      }
+
+      const videoAspectRatio = videoWidth / videoHeight
+
+      if (containerAspectRatio > videoAspectRatio) {
+        setWrapperWidth(containerHeight * videoAspectRatio)
+        setWrapperHeight(containerHeight)
+      } else {
+        setWrapperWidth(containerWidth)
+        setWrapperHeight(containerWidth / videoAspectRatio)
+      }
+    }
+  }, [setWrapperWidth, setWrapperHeight])
+
+  useLayoutEffect(() => {
     window.addEventListener("resize", resizeVideo)
-    resizeVideo()
 
     return () => {
       window.removeEventListener("resize", resizeVideo)
     }
-  }, [])
-
-  const VideoWrapper = useCallback(
-    ({ children }: PropsWithChildren) => {
-      return (
-        <div
-          ref={containerRef}
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: wrapperWidth,
-              height: wrapperHeight,
-              overflow: "hidden",
-            }}
-          >
-            {children}
-          </div>
-        </div>
-      )
-    },
-    [wrapperHeight, wrapperWidth],
-  )
+  }, [setWrapperWidth, setWrapperHeight])
 
   return (
-    <>
-      {children}
-      <ReactPlayer
+    <PlayerContext.Provider value={context}>
+      <ReactPlayerWrapper
         url={src}
         controls
-        wrapper={VideoWrapper}
-        ref={setVideoRef}
-      />
-    </>
+        playerRef={playerRef}
+        wrapper={Wrapper}
+        onReady={() => {
+          setVideoRef(
+            playerRef.current?.getInternalPlayer() as HTMLVideoElement,
+          )
+
+          resizeVideo()
+        }}
+      >
+        {children}
+      </ReactPlayerWrapper>
+    </PlayerContext.Provider>
   )
 })
 
