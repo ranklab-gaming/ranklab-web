@@ -5,6 +5,7 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
+  useState,
 } from "react"
 
 interface VideoPlayerProps {
@@ -20,6 +21,8 @@ interface VideoPlayerProps {
 export interface VideoPlayerRef {
   seekTo: (seconds: number) => void
   pause: () => void
+  play: () => void
+  isPlaying: boolean
 }
 
 export const VideoPlayer = forwardRef<
@@ -42,8 +45,10 @@ export const VideoPlayer = forwardRef<
     const videoRef = useRef<HTMLVideoElement>(null)
     const seeking = useRef(false)
     const pausing = useRef(false)
+    const [isPlaying, setIsPlaying] = useState(false)
 
     useImperativeHandle(ref, () => ({
+      isPlaying,
       seekTo: (time: number) => {
         if (videoRef.current) {
           seeking.current = true
@@ -51,10 +56,17 @@ export const VideoPlayer = forwardRef<
           videoRef.current.currentTime = time / 1000000
         }
       },
+      play: () => {
+        if (videoRef.current) {
+          videoRef.current.play()
+          setIsPlaying(true)
+        }
+      },
       pause: () => {
         if (videoRef.current) {
           pausing.current = true
           videoRef.current.pause()
+          setIsPlaying(false)
         }
       },
     }))

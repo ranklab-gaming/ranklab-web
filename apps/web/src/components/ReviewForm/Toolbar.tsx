@@ -7,6 +7,7 @@ import {
   Button,
   Tooltip,
   Typography,
+  SxProps,
 } from "@mui/material"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { AnimatePresence, m } from "framer-motion"
@@ -15,19 +16,23 @@ import { LoadingButton } from "@mui/lab"
 import { PropsWithChildren, useEffect, useState } from "react"
 import { ReviewForm } from "@/hooks/useReviewForm"
 import { formatDuration } from "@/helpers/formatDuration"
+import { VideoPlayerRef } from "../VideoPlayer"
 
 export interface ToolbarProps {
   reviewForm: ReviewForm
   disabled?: boolean
+  sx?: SxProps
+  videoRef: React.RefObject<VideoPlayerRef>
 }
 
 export const Toolbar = ({
   reviewForm,
   children,
+  sx,
+  videoRef,
   disabled = false,
 }: PropsWithChildren<ToolbarProps>) => {
   const theme = useTheme()
-  const [now, setNow] = useState<number | null>(null)
 
   const {
     setEditingText,
@@ -50,6 +55,7 @@ export const Toolbar = ({
           animate="animate"
           initial="initial"
           exit="exit"
+          sx={sx}
         />
       ) : (
         <Box
@@ -59,6 +65,7 @@ export const Toolbar = ({
           animate="animate"
           initial="initial"
           exit="exit"
+          sx={sx}
         >
           <Stack
             direction="row"
@@ -72,6 +79,21 @@ export const Toolbar = ({
             initial="initial"
             exit="exit"
           >
+            <Tooltip title="Play/Pause">
+              <IconButton
+                onClick={() => {
+                  videoRef.current?.isPlaying
+                    ? videoRef.current?.pause()
+                    : videoRef.current?.play()
+                }}
+              >
+                <Iconify
+                  icon={videoRef.current?.isPlaying ? "mdi:pause" : "mdi:play"}
+                  width={22}
+                  fontSize={22}
+                />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Comment">
               <IconButton
                 onClick={() => {

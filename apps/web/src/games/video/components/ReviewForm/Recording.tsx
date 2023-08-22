@@ -11,8 +11,8 @@ import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { VideoPlayerRef, VideoPlayer } from "@/components/VideoPlayer"
 import { ReviewForm } from "@/hooks/useReviewForm"
-import { Recording as BaseRecording } from "@/components/ReviewForm/Recording"
 import { useOptionalUser } from "@/hooks/useUser"
+import { Toolbar as BaseToolbar } from "@/components/ReviewForm/Toolbar"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -89,21 +89,13 @@ export const Recording = ({
   }
 
   return (
-    <BaseRecording
-      reviewForm={reviewForm}
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      flexGrow="1"
+      position="relative"
       ref={boxRef}
-      toolbarDisabled={readOnly}
-      toolbarElement={
-        <Toolbar
-          disabled={readOnly}
-          color={color}
-          onColorChange={setColor}
-          drawingRef={drawingRef}
-          editingDrawing={editingDrawing}
-          videoRef={videoRef}
-          onEditingDrawingChange={onEditingDrawingChange}
-        />
-      }
     >
       <VideoPlayer
         src={`${uploadsCdnUrl}/${recording.videoKey}`}
@@ -224,7 +216,30 @@ export const Recording = ({
             </Box>
           ) : null}
         </AnimatePresence>
+        <BaseToolbar
+          disabled={readOnly}
+          reviewForm={reviewForm}
+          sx={{
+            backgroundColor: alpha(theme.palette.common.black, 0.75),
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 999999,
+          }}
+          videoRef={videoRef}
+        >
+          <Toolbar
+            disabled={readOnly}
+            color={color}
+            onColorChange={setColor}
+            drawingRef={drawingRef}
+            editingDrawing={editingDrawing}
+            videoRef={videoRef}
+            onEditingDrawingChange={onEditingDrawingChange}
+          />
+        </BaseToolbar>
       </VideoPlayer>
-    </BaseRecording>
+    </Box>
   )
 }

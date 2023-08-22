@@ -112,13 +112,7 @@ export const ReviewForm = ({
                 ) : (
                   <Recording recording={recording} />
                 )}
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  spacing={2}
-                  p={2}
-                  borderTop={`1px dashed ${theme.palette.grey[900]}`}
-                >
+                <Stack direction="row" alignItems="center" spacing={2} p={2}>
                   <Typography variant="caption" mb={0}>
                     Submitted on {formatDate(recording.createdAt)}
                   </Typography>

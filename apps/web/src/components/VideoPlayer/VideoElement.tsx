@@ -139,7 +139,6 @@ export const VideoElement = forwardRef<
     <PlayerContext.Provider value={context}>
       <ReactPlayerWrapper
         url={src}
-        controls
         playerRef={playerRef}
         wrapper={Wrapper}
         onReady={() => {
