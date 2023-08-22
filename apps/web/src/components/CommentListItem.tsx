@@ -73,25 +73,12 @@ export const CommentListItem = ({
             <Box flexGrow={1} />
           )}
         </AnimatePresence>
-        {comment.audio ? (
-          <Box>
-            <Tooltip title="Audio Clip">
-              <Iconify icon="eva:mic-outline" width={24} height={24} />
-            </Tooltip>
-          </Box>
-        ) : null}
         {children}
       </Stack>
-      {comment.body || comment.audio?.transcript ? (
+      {comment.body ? (
         <AnimatePresence>
           {selected ? (
             <Stack spacing={1}>
-              {comment.audio?.state === MediaState.Processed ? (
-                <audio
-                  controls
-                  src={`${uploadsCdnUrl}/${comment.audio.audioKey}`}
-                />
-              ) : null}
               <Typography
                 variant="body1"
                 key="body"
@@ -116,18 +103,11 @@ export const CommentListItem = ({
                 animate="animate"
                 exit="exit"
               >
-                <Stack spacing={2}>
-                  {comment.audio?.transcript ? (
-                    <Typography variant="caption" fontStyle="italic">
-                      {comment.audio.transcript}
-                    </Typography>
-                  ) : null}
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: comment.body,
-                    }}
-                  />
-                </Stack>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: comment.body,
+                  }}
+                />
               </Typography>
             </Stack>
           ) : null}

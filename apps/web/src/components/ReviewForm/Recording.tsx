@@ -16,63 +16,18 @@ interface Props {
 
 export const Recording = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   ({ reviewForm, children, toolbarElement, toolbarDisabled }, ref) => {
-    const { previewAudioURL, selectedComment, form, editingAudio } = reviewForm
-    const selectedCommentAudio = selectedComment?.audio
-    const audio = form.watch("audio")
+    const { selectedComment, form } = reviewForm
     const user = useOptionalUser()
 
     const readOnly = Boolean(
       !user || (selectedComment && selectedComment.userId !== user.id),
     )
 
-    const audioURL =
-      previewAudioURL ||
-      (selectedCommentAudio && audio.value === true
-        ? `${uploadsCdnUrl}/${selectedCommentAudio.audioKey}`
-        : null)
-
     return (
       <>
         <Toolbar disabled={toolbarDisabled} reviewForm={reviewForm}>
           {toolbarElement}
         </Toolbar>
-        <AnimatePresence>
-          {!readOnly && editingAudio && audioURL && audio.value !== false ? (
-            <Stack
-              component={m.div}
-              variants={animateFade().in}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              position="absolute"
-              top={54}
-              left={0}
-              right={0}
-              zIndex={999}
-              bgcolor="common.black"
-              direction="row"
-            >
-              <audio controls src={audioURL} style={{ width: "100%" }} />
-              <Tooltip title="Remove Audio Clip">
-                <IconButton
-                  onClick={() => {
-                    form.setValue(
-                      "audio",
-                      { value: false },
-                      {
-                        shouldValidate: true,
-                        shouldDirty: true,
-                        shouldTouch: true,
-                      },
-                    )
-                  }}
-                >
-                  <Iconify icon="eva:close-outline" />
-                </IconButton>
-              </Tooltip>
-            </Stack>
-          ) : null}
-        </AnimatePresence>
         <Box
           display="flex"
           alignItems="center"

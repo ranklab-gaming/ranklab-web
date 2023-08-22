@@ -32,34 +32,12 @@ export const Toolbar = ({
   const {
     setEditingText,
     editingText,
-    setEditingAudio,
-    editingAudio,
-    recordingAudio,
-    startRecordingAudio,
-    stopRecordingAudio,
     selectedComment,
     deleteComment,
     editing,
     setSelectedComment,
     form,
-    startedRecordingAudioAt,
   } = reviewForm
-
-  useEffect(() => {
-    if (!recordingAudio) {
-      return
-    }
-
-    const interval = setInterval(() => {
-      setNow(Date.now())
-    }, 1000)
-
-    setNow(Date.now())
-
-    return () => {
-      clearInterval(interval)
-    }
-  }, [recordingAudio])
 
   return (
     <AnimatePresence presenceAffectsLayout mode="popLayout">
@@ -104,65 +82,6 @@ export const Toolbar = ({
                 <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Record Audio Clip">
-              <IconButton
-                onClick={() => {
-                  setEditingAudio(!editingAudio)
-                }}
-                sx={editingAudio ? { color: theme.palette.secondary.main } : {}}
-              >
-                <Iconify icon="eva:mic-outline" width={22} fontSize={22} />
-              </IconButton>
-            </Tooltip>
-            <AnimatePresence>
-              {editingAudio && !disabled ? (
-                <Box
-                  component={m.div}
-                  variants={animateFade().in}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                >
-                  <Tooltip
-                    title={`${recordingAudio ? "Stop" : "Start"} Recording`}
-                  >
-                    <IconButton
-                      onClick={() => {
-                        if (recordingAudio) {
-                          stopRecordingAudio()
-                        } else {
-                          startRecordingAudio()
-                        }
-                      }}
-                      sx={{
-                        color: recordingAudio ? theme.palette.error.main : {},
-                      }}
-                    >
-                      <Iconify
-                        icon="eva:radio-button-on-fill"
-                        width={22}
-                        fontSize={22}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                  <AnimatePresence>
-                    {recordingAudio && startedRecordingAudioAt && now ? (
-                      <Typography
-                        variant="caption"
-                        color="text.secondary"
-                        component={m.div}
-                        sx={{ display: "inline-block" }}
-                        variants={animateFade().in}
-                      >
-                        {formatDuration(
-                          (now - startedRecordingAudioAt.getTime()) / 1000
-                        )}
-                      </Typography>
-                    ) : null}
-                  </AnimatePresence>
-                </Box>
-              ) : null}
-            </AnimatePresence>
             {children}
             {selectedComment && !disabled ? (
               <Tooltip title="Delete">
