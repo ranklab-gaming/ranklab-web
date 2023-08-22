@@ -6,41 +6,47 @@ import {
   Box,
   Button,
   Tooltip,
-  Typography,
   SxProps,
 } from "@mui/material"
 import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { LoadingButton } from "@mui/lab"
-import { PropsWithChildren, useEffect, useState } from "react"
 import { ReviewForm } from "@/hooks/useReviewForm"
-import { formatDuration } from "@/helpers/formatDuration"
 import { VideoPlayerRef } from "../VideoPlayer"
+import { DrawingRef } from "./Drawing"
+import { Color, colors } from "./Recording"
 
 export interface ToolbarProps {
+  color: Color
   reviewForm: ReviewForm
   disabled?: boolean
   sx?: SxProps
   videoRef: React.RefObject<VideoPlayerRef>
+  drawingRef: React.RefObject<DrawingRef>
+  onColorChange: (color: Color) => void
 }
 
 export const Toolbar = ({
   reviewForm,
-  children,
   sx,
+  drawingRef,
   videoRef,
+  color,
+  onColorChange,
   disabled = false,
-}: PropsWithChildren<ToolbarProps>) => {
+}: ToolbarProps) => {
   const theme = useTheme()
 
   const {
     setEditingText,
     editingText,
+    editingDrawing,
     selectedComment,
     deleteComment,
     editing,
     setSelectedComment,
+    setEditingDrawing,
     form,
   } = reviewForm
 
@@ -104,7 +110,62 @@ export const Toolbar = ({
                 <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
               </IconButton>
             </Tooltip>
-            {children}
+            <Tooltip title="Draw">
+              <IconButton
+                disabled={disabled}
+                onClick={() => {
+                  setEditingDrawing(!editingDrawing)
+                  videoRef.current?.pause()
+                }}
+                sx={
+                  editingDrawing ? { color: theme.palette.secondary.main } : {}
+                }
+              >
+                <Iconify icon="mdi:pencil" width={22} fontSize={22} />
+              </IconButton>
+            </Tooltip>
+            <AnimatePresence mode="popLayout">
+              {editingDrawing ? (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  component={m.div}
+                  spacing={1}
+                  variants={animateFade().in}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                >
+                  <Tooltip title="Undo">
+                    <IconButton onClick={() => drawingRef.current?.undo()}>
+                      <Iconify icon="mdi:undo" width={22} fontSize={22} />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Clear">
+                    <IconButton onClick={() => drawingRef.current?.clear()}>
+                      <Iconify icon="mdi:eraser" width={22} fontSize={22} />
+                    </IconButton>
+                  </Tooltip>
+                  {colors.map((c) => (
+                    <IconButton
+                      key={c}
+                      onClick={() => {
+                        onColorChange(c)
+                        drawingRef.current?.changeColor(c)
+                      }}
+                      sx={{
+                        color: theme.palette[c].main,
+                        ...(color === c && {
+                          backgroundColor: theme.palette.background.paper,
+                        }),
+                      }}
+                    >
+                      <Iconify icon="mdi:circle" width={22} fontSize={22} />
+                    </IconButton>
+                  ))}
+                </Stack>
+              ) : null}
+            </AnimatePresence>
             {selectedComment && !disabled ? (
               <Tooltip title="Delete">
                 <ConfirmationButton

@@ -30,7 +30,6 @@ import { useRouter } from "next/router"
 import { useUpload } from "@/hooks/useUpload"
 import { uploadsCdnUrl } from "@/config"
 import { AvatarSelect } from "./AccountPage/AvatarSelect"
-import { useGameDependency } from "@/hooks/useGameDependency"
 
 interface Props {
   games: Game[]
@@ -47,7 +46,9 @@ const FormSchema = yup
             value instanceof File || typeof value === "boolean",
         })
         .test("fileSize", "Image file must be less than 32MiB", (value) =>
-          value instanceof File ? value.size > 0 && value.size < 33554432 : true
+          value instanceof File
+            ? value.size > 0 && value.size < 33554432
+            : true,
         ),
     }),
   })
@@ -64,7 +65,6 @@ export const AccountPage = ({
   const [user, setUser] = useState(initialUser)
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [upload] = useUpload()
-  const recordingPlural = useGameDependency("text:recording-plural")
 
   const defaultValues = {
     gameId: user.gameId,
@@ -135,7 +135,7 @@ export const AccountPage = ({
           "An error occurred while uploading your avatar. Please try again.",
           {
             variant: "error",
-          }
+          },
         )
       }
     } else if (data.avatar.value === false && user.avatarId) {
@@ -148,7 +148,7 @@ export const AccountPage = ({
           shouldValidate: true,
           shouldDirty: true,
           shouldTouch: true,
-        }
+        },
       )
 
       avatarId = null
@@ -163,7 +163,7 @@ export const AccountPage = ({
           avatarId,
           skillLevel: data.skillLevel,
         },
-      })
+      }),
     )
 
     enqueueSnackbar("Account updated successfully", { variant: "success" })
@@ -257,7 +257,7 @@ export const AccountPage = ({
                       </FormGroup>
                       <FormHelperText>
                         When enabled, we will send you emails when there are
-                        events related to your {recordingPlural}.
+                        events related to your VODs.
                       </FormHelperText>
                     </FormControl>
                   )}

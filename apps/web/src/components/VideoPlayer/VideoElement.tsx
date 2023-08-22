@@ -5,7 +5,6 @@ import React, {
   PropsWithChildren,
   HTMLProps,
   forwardRef,
-  useImperativeHandle,
   useLayoutEffect,
   useCallback,
   useContext,
@@ -133,7 +132,7 @@ export const VideoElement = forwardRef<
     return () => {
       window.removeEventListener("resize", resizeVideo)
     }
-  }, [setWrapperWidth, setWrapperHeight])
+  }, [setWrapperWidth, setWrapperHeight, resizeVideo])
 
   return (
     <PlayerContext.Provider value={context}>

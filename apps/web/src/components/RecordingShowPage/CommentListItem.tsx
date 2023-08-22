@@ -1,13 +1,12 @@
 import { assertFind } from "@/assert"
 import { Iconify } from "@/components/Iconify"
-import { uploadsCdnUrl } from "@/config"
 import { UserContext } from "@/contexts/UserContext"
-import { Stack, Typography, Box, Tooltip, Chip } from "@mui/material"
-import { Comment, Game, MediaState, Recording } from "@ranklab/api"
+import { Stack, Typography, Box, Chip, Tooltip } from "@mui/material"
+import { Comment, Game, Recording } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
-import { PropsWithChildren, useContext } from "react"
+import { useContext } from "react"
 
-export interface CommentListItemProps {
+interface ItemProps {
   comment: Comment
   selected: boolean
   title: string
@@ -19,12 +18,10 @@ export const CommentListItem = ({
   comment,
   selected,
   title,
-  children,
   games,
   recording,
-}: PropsWithChildren<CommentListItemProps>) => {
+}: ItemProps) => {
   const user = useContext(UserContext)
-
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
   const skillLevel = game.skillLevels.find(
@@ -73,7 +70,13 @@ export const CommentListItem = ({
             <Box flexGrow={1} />
           )}
         </AnimatePresence>
-        {children}
+        {comment.metadata.video.drawing ? (
+          <Box>
+            <Tooltip title="Drawing">
+              <Iconify icon="mdi:draw" width={24} height={24} />
+            </Tooltip>
+          </Box>
+        ) : null}
       </Stack>
       {comment.body ? (
         <AnimatePresence>

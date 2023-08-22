@@ -1,12 +1,13 @@
 import { theme } from "@/theme/theme"
 import { Card, CardContent, Stack, CardActionArea, Button } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
-import { useGameDependency } from "@/hooks/useGameDependency"
 import { MessageBox } from "@/components/MessageBox"
 import { Comment, Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"
 import { useOptionalUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
+import { formatDuration } from "@/helpers/formatDuration"
+import { CommentListItem } from "./CommentListItem"
 
 interface Props {
   comments: Comment[]
@@ -23,9 +24,6 @@ export const CommentList = ({
   games,
   recording,
 }: Props) => {
-  const CommentListItem = useGameDependency("component:comment-list-item")
-  const emptyCommentsText = useGameDependency("text:empty-comments-text")
-  const firstCommentText = useGameDependency("text:first-comment-text")
   const user = useOptionalUser()
   const router = useRouter()
 
@@ -62,7 +60,11 @@ export const CommentList = ({
     return (
       <MessageBox
         icon={!user ? addACommentButton : "eva:corner-up-left-outline"}
-        text={!user ? firstCommentText : emptyCommentsText}
+        text={
+          !user
+            ? "Be the first to add a comment."
+            : "Use the controls above the video to add comments and drawings."
+        }
       />
     )
   }
@@ -113,6 +115,9 @@ export const CommentList = ({
                   <CardContent>
                     <CommentListItem
                       comment={comment}
+                      title={formatDuration(
+                        comment.metadata.video.timestamp / 1000000,
+                      )}
                       selected={comment === selectedComment}
                       games={games}
                       recording={recording}

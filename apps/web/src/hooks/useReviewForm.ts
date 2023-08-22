@@ -1,12 +1,10 @@
 import { useForm } from "@/hooks/useForm"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Comment, Game, MediaState, Recording } from "@ranklab/api"
-import { useMemo, useRef, useState } from "react"
+import { Comment, Game, Recording } from "@ranklab/api"
+import { useMemo, useState } from "react"
 import { UseFormReturn } from "react-hook-form"
 import * as yup from "yup"
 import { api } from "@/api"
-import { assertProp } from "@/assert"
-import { useUpload } from "@/hooks/useUpload"
 import { useSnackbar } from "notistack"
 
 const ReviewFormSchema = yup.object().shape({
@@ -22,11 +20,13 @@ export interface ReviewForm {
   comments: Comment[]
   deleteComment: () => Promise<void>
   editingText: boolean
+  editingDrawing: boolean
   form: UseFormReturn<ReviewFormValues>
   games: Game[]
   recording: Recording
   selectedComment: Comment | null
   setEditingText: (editingText: boolean) => void
+  setEditingDrawing: (editingDrawing: boolean) => void
   setRecording: (recording: Recording) => void
   setSelectedComment: (comment: Comment | null, ...args: any[]) => void
   submit: () => Promise<void>
@@ -55,6 +55,7 @@ export function useReviewForm({
   editing = false,
 }: Props): ReviewForm {
   const [editingText, setEditingText] = useState(false)
+  const [editingDrawing, setEditingDrawing] = useState(false)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const [comments, setComments] = useState(initialComments)
   const [recording, setRecording] = useState(initialRecording)
@@ -62,9 +63,7 @@ export function useReviewForm({
     () => [...comments].sort(compareComments),
     [comments, compareComments],
   )
-  const [upload] = useUpload()
   const { enqueueSnackbar } = useSnackbar()
-  const mediaRecorder = useRef<MediaRecorder | null>(null)
 
   const formSchema = ReviewFormSchema.test("is-valid", (rawValues) => {
     const values = rawValues as ReviewFormValues
@@ -164,10 +163,12 @@ export function useReviewForm({
     setRecording,
     recording,
     selectedComment,
+    setEditingDrawing,
     setSelectedComment: handleSelectComment,
     setEditingText,
     editingText,
+    editingDrawing,
     submit: form.handleSubmit(handleSubmit),
-    editing: editingText || editing,
+    editing: editingText || editingDrawing || editing,
   }
 }

@@ -1,10 +1,10 @@
 import ReactPlayer, { ReactPlayerProps } from "react-player"
 
-export default function ReactPlayerWrapper({
+const ReactPlayerWrapper = ({
   playerRef,
   children,
   ...props
-}: ReactPlayerProps & { playerRef?: React.ForwardedRef<ReactPlayer> }) {
+}: ReactPlayerProps & { playerRef?: React.ForwardedRef<ReactPlayer> }) => {
   return (
     <>
       {children}
@@ -12,3 +12,7 @@ export default function ReactPlayerWrapper({
     </>
   )
 }
+
+ReactPlayerWrapper.displayName = "ReactPlayerWrapper"
+
+export default ReactPlayerWrapper
