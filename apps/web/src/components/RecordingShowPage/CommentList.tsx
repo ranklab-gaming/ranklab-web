@@ -2,30 +2,21 @@ import { theme } from "@/theme/theme"
 import { Card, CardContent, Stack, CardActionArea, Button } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
 import { MessageBox } from "@/components/MessageBox"
-import { Comment, Game, Recording } from "@ranklab/api"
 import NextLink from "next/link"
 import { useOptionalUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
 import { formatDuration } from "@/helpers/formatDuration"
 import { CommentListItem } from "./CommentListItem"
+import { useMemo } from "react"
+import { useReview } from "@/hooks/useReview"
+import { parseISO } from "date-fns"
 
-interface Props {
-  comments: Comment[]
-  onCommentSelect: (comment: Comment | null) => void
-  selectedComment: Comment | null
-  games: Game[]
-  recording: Recording
-}
-
-export const CommentList = ({
-  comments,
-  onCommentSelect,
-  selectedComment,
-  games,
-  recording,
-}: Props) => {
+export const CommentList = () => {
   const user = useOptionalUser()
   const router = useRouter()
+
+  const { comments, selectedComment, setSelectedComment, games, recording } =
+    useReview()
 
   const returnUrl = {
     pathname: "/api/auth/signin",
@@ -56,6 +47,22 @@ export const CommentList = ({
     </NextLink>
   )
 
+  const sortedComments = useMemo(
+    () =>
+      [...comments].sort((a, b) => {
+        const diff = a.metadata.video.timestamp - b.metadata.video.timestamp
+
+        if (diff === 0) {
+          return (
+            parseISO(b.createdAt).getTime() - parseISO(a.createdAt).getTime()
+          )
+        }
+
+        return diff
+      }),
+    [comments],
+  )
+
   if (comments.length === 0) {
     return (
       <MessageBox
@@ -75,7 +82,7 @@ export const CommentList = ({
         <Stack spacing={2}>
           {!user ? addACommentButton : null}
           <AnimatePresence>
-            {comments.map((comment) => (
+            {sortedComments.map((comment) => (
               <Card
                 key={comment.id}
                 component={m.div}
@@ -106,9 +113,9 @@ export const CommentList = ({
                 <CardActionArea
                   onClick={() => {
                     if (selectedComment === comment) {
-                      onCommentSelect(null)
+                      setSelectedComment(null)
                     } else {
-                      onCommentSelect(comment)
+                      setSelectedComment(comment)
                     }
                   }}
                 >
