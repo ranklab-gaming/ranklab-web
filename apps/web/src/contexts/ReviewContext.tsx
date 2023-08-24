@@ -1,19 +1,7 @@
+import { CommentFormValues } from "@/components/RecordingShowPage"
 import { Game, Recording, Comment } from "@ranklab/api"
 import { PropsWithChildren, createContext } from "react"
 import { UseFormReturn } from "react-hook-form"
-import * as yup from "yup"
-
-export const ReviewFormSchema = yup
-  .object()
-  .shape({
-    body: yup.string().defined(),
-    metadata: yup.mixed().defined(),
-  })
-  .test("is-valid", (values) => {
-    values.body.length > 0 || (values.metadata as any).video.drawing.length > 0
-  })
-
-export type ReviewFormValues = yup.InferType<typeof ReviewFormSchema>
 
 export const colors = [
   "primary",
@@ -33,7 +21,7 @@ interface ReviewContext {
   editing: boolean
   editingDrawing: boolean
   editingText: boolean
-  form: UseFormReturn<ReviewFormValues>
+  form: UseFormReturn<CommentFormValues>
   games: Game[]
   playing: boolean
   readOnly: boolean
@@ -46,8 +34,6 @@ interface ReviewContext {
   setPlaying: (playing: boolean) => void
   setRecording: (recording: Recording) => void
   setSelectedComment: (comment: Comment | null, ...args: any[]) => void
-  setTimestamp: (timestamp: number) => void
-  timestamp: number
 }
 
 export const ReviewContext = createContext<ReviewContext | null>(null)

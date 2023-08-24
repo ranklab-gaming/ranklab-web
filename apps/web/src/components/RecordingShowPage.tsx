@@ -22,14 +22,10 @@ import { Iconify } from "./Iconify"
 import { CommentList } from "./RecordingShowPage/CommentList"
 import { Recording } from "./RecordingShowPage/Recording"
 import { useForm } from "@/hooks/useForm"
-import {
-  Color,
-  ReviewFormValues,
-  ReviewFormSchema,
-  ReviewProvider,
-} from "@/contexts/ReviewContext"
+import { Color, ReviewProvider } from "@/contexts/ReviewContext"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "@/api"
+import * as yup from "yup"
 
 interface Props {
   recording: ApiRecording
@@ -37,15 +33,30 @@ interface Props {
   comments: Comment[]
 }
 
+export const CommentFormSchema = yup
+  .object()
+  .shape({
+    body: yup.string().defined(),
+    metadata: yup.mixed().defined(),
+  })
+  .test("is-valid", (values) => {
+    return (
+      values.body.length > 0 ||
+      (values.metadata as any).video.drawing.length > 0
+    )
+  })
+
+export type CommentFormValues = yup.InferType<typeof CommentFormSchema>
+
 export const RecordingShowPage = ({
   recording: initialRecording,
   games,
   comments: initialComments,
   user,
 }: PropsWithOptionalUser<Props>) => {
-  const form = useForm<ReviewFormValues>({
+  const form = useForm<CommentFormValues>({
     mode: "onChange",
-    resolver: yupResolver(ReviewFormSchema),
+    resolver: yupResolver(CommentFormSchema),
     defaultValues: {
       body: "",
       metadata: {
@@ -70,8 +81,6 @@ export const RecordingShowPage = ({
   const theme = useTheme()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const editing = editingDrawing || editingText
-  const metadata = form.watch("metadata") as any
-  const timestamp = metadata?.video?.timestamp || 0
 
   const skillLevel = assertFind(
     game.skillLevels,
@@ -81,16 +90,6 @@ export const RecordingShowPage = ({
   const readOnly = Boolean(
     !user || (selectedComment && selectedComment.userId !== user.id),
   )
-
-  const setTimestamp = (microseconds: number) => {
-    form.setValue("metadata", {
-      ...metadata,
-      video: {
-        ...metadata.video,
-        timestamp: microseconds,
-      },
-    })
-  }
 
   const selectComment = (comment: Comment | null) => {
     if (comment) {
@@ -110,7 +109,6 @@ export const RecordingShowPage = ({
 
       setEditingText(Boolean(comment.body))
       setEditingDrawing(Boolean(video.drawing))
-      setTimestamp(video.timestamp)
     } else {
       setEditingText(false)
       setEditingDrawing(false)
@@ -121,7 +119,7 @@ export const RecordingShowPage = ({
     setSelectedComment(comment)
   }
 
-  const saveComment = async (values: ReviewFormValues) => {
+  const saveComment = async (values: CommentFormValues) => {
     let comment: Comment
 
     if (!selectedComment) {
@@ -156,7 +154,9 @@ export const RecordingShowPage = ({
   }
 
   const deleteComment = async () => {
-    if (!selectedComment) return
+    if (!selectedComment) {
+      return
+    }
 
     await api.commentsDelete({
       id: selectedComment.id,
@@ -182,6 +182,28 @@ export const RecordingShowPage = ({
 
   const submit = form.handleSubmit(saveComment)
 
+  const review = {
+    color,
+    comments,
+    deleteComment,
+    editingDrawing,
+    editingText,
+    form,
+    games,
+    playing,
+    recording,
+    selectedComment,
+    setColor,
+    setEditingDrawing,
+    setEditingText,
+    setPlaying: handleSetPlaying,
+    setRecording,
+    setSelectedComment: selectComment,
+    saveComment: submit,
+    readOnly,
+    editing,
+  }
+
   return (
     <DashboardLayout
       user={user}
@@ -189,31 +211,7 @@ export const RecordingShowPage = ({
       showTitle={false}
       fullWidth
     >
-      <ReviewProvider
-        value={{
-          color,
-          comments,
-          deleteComment,
-          editingDrawing,
-          editingText,
-          form,
-          games,
-          playing,
-          recording,
-          selectedComment,
-          setColor,
-          setEditingDrawing,
-          setEditingText,
-          setPlaying: handleSetPlaying,
-          setRecording,
-          setSelectedComment: selectComment,
-          setTimestamp,
-          saveComment: submit,
-          timestamp,
-          readOnly,
-          editing,
-        }}
-      >
+      <ReviewProvider value={review}>
         <form onSubmit={submit}>
           <Paper
             sx={{
