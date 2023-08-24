@@ -66,13 +66,21 @@ export const Drawing = forwardRef<DrawingRef>(({}, ref) => {
       const svg = getSvgXml()
 
       if (svg !== null && svg !== value) {
-        // form.setValue("metadata", {
-        //   ...metadata,
-        //   video: {
-        //     ...metadata.video,
-        //     drawing: svg,
-        //   },
-        // })
+        form.setValue(
+          "metadata",
+          {
+            ...metadata,
+            video: {
+              ...metadata.video,
+              drawing: svg,
+            },
+          },
+          {
+            shouldDirty: true,
+            shouldValidate: true,
+            shouldTouch: true,
+          },
+        )
       }
     })
 

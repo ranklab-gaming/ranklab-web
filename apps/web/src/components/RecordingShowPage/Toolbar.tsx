@@ -15,6 +15,7 @@ import { LoadingButton } from "@mui/lab"
 import { DrawingRef } from "./Drawing"
 import { useReview } from "@/hooks/useReview"
 import { colors } from "@/contexts/ReviewContext"
+import { formatDuration } from "@/helpers/formatDuration"
 
 export interface ToolbarProps {
   drawingRef: React.RefObject<DrawingRef>
@@ -39,6 +40,9 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
     setPlaying,
     setSelectedComment,
   } = useReview()
+
+  const metadata = form.watch("metadata") as any
+  const timestamp = metadata.video.timestamp ?? 0
 
   const sx = {
     backgroundColor: alpha(theme.palette.common.black, 0.75),
@@ -87,7 +91,9 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
           </Tooltip>
           {!readOnly ? (
             <>
-              <Tooltip title="Comment">
+              <Tooltip
+                title={`Add Comment at ${formatDuration(timestamp / 1000000)}`}
+              >
                 <IconButton
                   onClick={() => {
                     setEditingText(!editingText)
