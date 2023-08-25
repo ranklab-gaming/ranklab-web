@@ -33,7 +33,7 @@ interface ReviewContext {
   setEditingText: (editingText: boolean) => void
   setPlaying: (playing: boolean) => void
   setRecording: (recording: Recording) => void
-  setSelectedComment: (comment: Comment | null, ...args: any[]) => void
+  setSelectedComment: (comment: Comment | null, shouldPause?: boolean) => void
 }
 
 export const ReviewContext = createContext<ReviewContext | null>(null)

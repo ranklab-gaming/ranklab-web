@@ -29,6 +29,7 @@ export const Recording = ({ videoRef }: Props) => {
     selectedComment,
     setSelectedComment,
     editingDrawing,
+    playing,
     setPlaying,
     readOnly,
   } = useReview()
@@ -157,15 +158,23 @@ export const Recording = ({ videoRef }: Props) => {
           width={wrapperWidth}
           height={wrapperHeight}
           onSeeked={(event) => {
-            setSelectedComment(null, true)
+            setSelectedComment(null)
             setTimestamp(currentTime(event))
           }}
           onPause={(event) => {
-            setSelectedComment(null, true)
+            if (!playing) {
+              return
+            }
+
+            setSelectedComment(null, false)
             setTimestamp(currentTime(event))
             setPlaying(false)
           }}
           onPlay={(event) => {
+            if (playing) {
+              return
+            }
+
             setSelectedComment(null, false)
             setTimestamp(currentTime(event))
             setPlaying(true)

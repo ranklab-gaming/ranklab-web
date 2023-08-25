@@ -91,7 +91,7 @@ export const RecordingShowPage = ({
     !user || (selectedComment && selectedComment.userId !== user.id),
   )
 
-  const selectComment = (comment: Comment | null) => {
+  const selectComment = (comment: Comment | null, shouldPause = true) => {
     if (comment) {
       form.setValue("metadata", comment.metadata, {
         shouldDirty: true,
@@ -115,7 +115,10 @@ export const RecordingShowPage = ({
       form.reset()
     }
 
-    setPlaying(false)
+    if (shouldPause) {
+      handleSetPlaying(false)
+    }
+
     setSelectedComment(comment)
   }
 

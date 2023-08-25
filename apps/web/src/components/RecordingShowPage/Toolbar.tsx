@@ -80,6 +80,7 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
             <IconButton
               onClick={() => {
                 playing ? setPlaying(false) : setPlaying(true)
+                setSelectedComment(null, false)
               }}
             >
               <Iconify
@@ -97,6 +98,7 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
                 <IconButton
                   onClick={() => {
                     setEditingText(!editingText)
+                    setPlaying(false)
                   }}
                   sx={
                     editingText ? { color: theme.palette.secondary.main } : {}
