@@ -280,29 +280,42 @@ export const RecordingShowPage = ({
           <Grid container spacing={1}>
             <Grid item md={8} xs={12} sx={{ transition: "all 0.3s ease" }}>
               <Sticky top={64}>
-                <Paper
-                  elevation={4}
+                <Box
                   sx={{
-                    backgroundColor: theme.palette.common.black,
                     height: "70vh",
                   }}
                 >
                   <Box display="flex" flexDirection="column" height="100%">
-                    <Recording videoRef={videoRef} />
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={2}
-                      p={2}
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        backgroundColor: theme.palette.common.black,
+                      }}
                     >
-                      <Typography variant="caption" mb={0}>
-                        Submitted on {formatDate(recording.createdAt)}
-                      </Typography>
-                      <Chip label={skillLevel.name} size="small" />
-                      <Chip label={game.name} size="small" />
-                    </Stack>
+                      <Recording videoRef={videoRef} />
+                    </Box>
+                    <Paper
+                      elevation={4}
+                      sx={{
+                        mt: 1,
+                        backgroundColor: theme.palette.common.black,
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={2}
+                        p={2}
+                      >
+                        <Typography variant="caption" mb={0}>
+                          Submitted on {formatDate(recording.createdAt)}
+                        </Typography>
+                        <Chip label={skillLevel.name} size="small" />
+                        <Chip label={game.name} size="small" />
+                      </Stack>
+                    </Paper>
                   </Box>
-                </Paper>
+                </Box>
               </Sticky>
             </Grid>
             <Grid item md={4} xs={12} minHeight="70vh">
