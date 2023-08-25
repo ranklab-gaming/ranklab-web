@@ -263,7 +263,7 @@ export const Recording = ({ videoRef }: Props) => {
             </Box>
           ) : null}
         </AnimatePresence>
-        <Toolbar drawingRef={drawingRef} />
+        <Toolbar drawingRef={drawingRef} videoRef={videoRef} />
       </div>
     </div>
   )

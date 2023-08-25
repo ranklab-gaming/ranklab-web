@@ -16,12 +16,14 @@ import { DrawingRef } from "./Drawing"
 import { useReview } from "@/hooks/useReview"
 import { colors } from "@/contexts/ReviewContext"
 import { formatDuration } from "@/helpers/formatDuration"
+import { VideoProgress } from "./VideoProgress"
 
 export interface ToolbarProps {
   drawingRef: React.RefObject<DrawingRef>
+  videoRef: React.RefObject<HTMLVideoElement>
 }
 
-export const Toolbar = ({ drawingRef }: ToolbarProps) => {
+export const Toolbar = ({ drawingRef, videoRef }: ToolbarProps) => {
   const theme = useTheme()
 
   const {
@@ -183,7 +185,7 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
               />
             </Tooltip>
           ) : null}
-          <Box flexGrow={1} />
+          <VideoProgress videoRef={videoRef} />
           <AnimatePresence>
             {editing && !readOnly ? (
               <Box
