@@ -253,8 +253,8 @@ importers:
         specifier: 13.4.12
         version: 13.4.12(react-dom@18.2.0)(react@18.2.0)
       oidc-provider:
-        specifier: 8.2.2
-        version: 8.2.2
+        specifier: 8.3.0
+        version: 8.3.0
       pino-http:
         specifier: 8.4.0
         version: 8.4.0
@@ -3226,8 +3226,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /eta@2.2.0:
-    resolution: {integrity: sha512-UVQ72Rqjy/ZKQalzV5dCCJP80GrmPrMxh6NlNf+erV6ObL0ZFkhCstWRawS85z3smdr3d2wXPsZEY7rDPfGd2g==}
+  /eta@3.1.1:
+    resolution: {integrity: sha512-GVKq8BhYjvGiwKAnvPOnTwAHach3uHglvW0nG9gjEmo8ZIe8HR1aCLdQ97jlxXPcCWhB6E3rDWOk2fahFKG5Cw==}
     engines: {node: '>=6.0.0'}
     dev: false
 
@@ -4540,13 +4540,13 @@ packages:
   /obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
-  /oidc-provider@8.2.2:
-    resolution: {integrity: sha512-zHXW8vzTuB0mJO3F/m+dz62/HII+qqMqgLGCQ5W/9Ojz6Jqe5voqA67ytvvHGkhoqgXCuYigLg9TBvbVnZQhGw==}
+  /oidc-provider@8.3.0:
+    resolution: {integrity: sha512-3eouIuAsS2px0ak0RpliQdFLu11RH4f1AoHZdwi30tocsY10ptNjkS3o2mI1uxDmjvfu3jHdCOfPLIk+G1XZNg==}
     dependencies:
       '@koa/cors': 4.0.0
       '@koa/router': 12.0.0
       debug: 4.3.4
-      eta: 2.2.0
+      eta: 3.1.1
       got: 13.0.0
       jose: 4.14.4
       jsesc: 3.0.2
