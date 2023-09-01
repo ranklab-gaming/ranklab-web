@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { Controller } from "react-hook-form"
 import { debounce } from "lodash"
 import { Drawing, DrawingRef } from "./Drawing"
-import { Toolbar } from "./Toolbar"
 import { Editor } from "@/components/Editor"
 import { theme } from "@/theme/theme"
 import { AnimatePresence, m } from "framer-motion"
@@ -12,8 +11,10 @@ import { animateFade } from "@/animate/fade"
 import { MediaState } from "@ranklab/api"
 import { Iconify } from "../Iconify"
 import { useReview } from "@/hooks/useReview"
+import { Controls } from "./Recording/Controls"
 
 interface Props {
+  drawingRef: React.RefObject<DrawingRef>
   videoRef: React.RefObject<HTMLVideoElement>
 }
 
@@ -21,21 +22,19 @@ const currentTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
   return Math.floor(e.currentTarget.currentTime * 1000000)
 }
 
-export const Recording = ({ videoRef }: Props) => {
+export const Recording = ({ videoRef, drawingRef }: Props) => {
   const {
     form,
     recording,
-    editingText,
     selectedComment,
     setSelectedComment,
-    editingDrawing,
     playing,
     setPlaying,
     readOnly,
+    editing,
   } = useReview()
 
   const [resizing, setResizing] = useState(false)
-  const drawingRef = useRef<DrawingRef>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const metadata = form.watch("metadata")
   const containerRef = useRef<HTMLDivElement>(null)
@@ -183,7 +182,7 @@ export const Recording = ({ videoRef }: Props) => {
             setTimestamp(currentTime(e))
           }}
         />
-        {editingDrawing && readOnly && selectedComment ? (
+        {editing && readOnly && selectedComment ? (
           <Box
             component={m.div}
             variants={animateFade().in}
@@ -206,64 +205,10 @@ export const Recording = ({ videoRef }: Props) => {
               }}
             />
           </Box>
-        ) : editingDrawing && !resizing ? (
+        ) : editing && !readOnly && !resizing ? (
           <Drawing ref={drawingRef} />
         ) : null}
-        <AnimatePresence mode="popLayout">
-          {editingText && !readOnly ? (
-            <Box
-              sx={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                top: 0,
-                zIndex: 999999,
-              }}
-              component={m.div}
-              variants={animateFade().in}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              <Controller
-                name="body"
-                control={form.control}
-                render={({ field, fieldState: { error } }) => (
-                  <Box>
-                    <Editor
-                      value={field.value}
-                      onChange={(value) => {
-                        const element = document.createElement("div")
-                        element.innerHTML = value
-
-                        if (!element.textContent) {
-                          field.onChange("")
-                        } else {
-                          field.onChange(value)
-                        }
-                      }}
-                      onBlur={field.onBlur}
-                      error={Boolean(error)}
-                      sx={{
-                        backgroundColor: alpha(
-                          theme.palette.common.black,
-                          0.75,
-                        ),
-                        height: 200,
-                        borderWidth: 0,
-                        borderRadius: 0,
-                      }}
-                    />
-                    <FormHelperText error={Boolean(error)} sx={{ px: 2 }}>
-                      {error ? error.message : null}
-                    </FormHelperText>
-                  </Box>
-                )}
-              />
-            </Box>
-          ) : null}
-        </AnimatePresence>
-        <Toolbar drawingRef={drawingRef} videoRef={videoRef} />
+        <Controls videoRef={videoRef} />
       </div>
     </div>
   )

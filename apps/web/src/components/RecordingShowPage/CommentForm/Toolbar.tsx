@@ -12,47 +12,30 @@ import { ConfirmationButton } from "@/components/ConfirmationDialog"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { LoadingButton } from "@mui/lab"
-import { DrawingRef } from "./Drawing"
+import { DrawingRef } from "../Drawing"
 import { useReview } from "@/hooks/useReview"
 import { colors } from "@/contexts/ReviewContext"
-import { formatDuration } from "@/helpers/formatDuration"
-import { VideoProgress } from "./VideoProgress"
 
 export interface ToolbarProps {
   drawingRef: React.RefObject<DrawingRef>
-  videoRef: React.RefObject<HTMLVideoElement>
 }
 
-export const Toolbar = ({ drawingRef, videoRef }: ToolbarProps) => {
+export const Toolbar = ({ drawingRef }: ToolbarProps) => {
   const theme = useTheme()
 
   const {
     color,
     deleteComment,
     editing,
-    editingDrawing,
-    editingText,
     form,
-    playing,
     readOnly,
     selectedComment,
     setColor,
-    setEditingDrawing,
-    setEditingText,
-    setPlaying,
     setSelectedComment,
   } = useReview()
 
-  const metadata = form.watch("metadata") as any
-  const timestamp = metadata.video.timestamp ?? 0
-
   const sx = {
     backgroundColor: alpha(theme.palette.common.black, 0.75),
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 999999,
   }
 
   return (
@@ -78,55 +61,10 @@ export const Toolbar = ({ drawingRef, videoRef }: ToolbarProps) => {
           initial="initial"
           exit="exit"
         >
-          <Tooltip title="Play/Pause">
-            <IconButton
-              onClick={() => {
-                playing ? setPlaying(false) : setPlaying(true)
-                setSelectedComment(null, false)
-              }}
-            >
-              <Iconify
-                icon={playing ? "mdi:pause" : "mdi:play"}
-                width={22}
-                fontSize={22}
-              />
-            </IconButton>
-          </Tooltip>
           {!readOnly ? (
             <>
-              <Tooltip
-                title={`Add Comment at ${formatDuration(timestamp / 1000000)}`}
-              >
-                <IconButton
-                  onClick={() => {
-                    setEditingText(!editingText)
-                    setPlaying(false)
-                  }}
-                  sx={
-                    editingText ? { color: theme.palette.secondary.main } : {}
-                  }
-                >
-                  <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Draw">
-                <IconButton
-                  disabled={readOnly}
-                  onClick={() => {
-                    setEditingDrawing(!editingDrawing)
-                    setPlaying(false)
-                  }}
-                  sx={
-                    editingDrawing
-                      ? { color: theme.palette.secondary.main }
-                      : {}
-                  }
-                >
-                  <Iconify icon="mdi:pencil" width={22} fontSize={22} />
-                </IconButton>
-              </Tooltip>
               <AnimatePresence mode="popLayout">
-                {editingDrawing ? (
+                {editing ? (
                   <Stack
                     direction="row"
                     alignItems="center"
@@ -185,7 +123,6 @@ export const Toolbar = ({ drawingRef, videoRef }: ToolbarProps) => {
               />
             </Tooltip>
           ) : null}
-          <VideoProgress videoRef={videoRef} />
           <AnimatePresence>
             {editing && !readOnly ? (
               <Box

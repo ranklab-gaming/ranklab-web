@@ -19,8 +19,6 @@ interface ReviewContext {
   comments: Comment[]
   deleteComment: () => Promise<void>
   editing: boolean
-  editingDrawing: boolean
-  editingText: boolean
   form: UseFormReturn<CommentFormValues>
   games: Game[]
   playing: boolean
@@ -29,8 +27,7 @@ interface ReviewContext {
   saveComment: () => Promise<void>
   selectedComment: Comment | null
   setColor: (color: Color) => void
-  setEditingDrawing: (editingDrawing: boolean) => void
-  setEditingText: (editingText: boolean) => void
+  setEditing: (editing: boolean) => void
   setPlaying: (playing: boolean) => void
   setRecording: (recording: Recording) => void
   setSelectedComment: (comment: Comment | null, shouldPause?: boolean) => void

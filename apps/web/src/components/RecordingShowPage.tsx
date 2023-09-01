@@ -26,6 +26,10 @@ import { Color, ReviewProvider } from "@/contexts/ReviewContext"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { api } from "@/api"
 import * as yup from "yup"
+import { AnimatePresence, m } from "framer-motion"
+import { animateSlide } from "@/animate/slide"
+import { CommentForm } from "./RecordingShowPage/CommentForm"
+import { DrawingRef } from "./RecordingShowPage/Drawing"
 
 interface Props {
   recording: ApiRecording
@@ -69,9 +73,8 @@ export const RecordingShowPage = ({
   })
 
   const [comments, setComments] = useState(initialComments)
-  const [editingDrawing, setEditingDrawing] = useState(false)
+  const [editing, setEditing] = useState(false)
   const [color, setColor] = useState<Color>("primary")
-  const [editingText, setEditingText] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [recording, setRecording] = useState(initialRecording)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
@@ -80,7 +83,7 @@ export const RecordingShowPage = ({
   const recordingUser = assertProp(recording, "user")
   const theme = useTheme()
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const editing = editingDrawing || editingText
+  const drawingRef = useRef<DrawingRef>(null)
 
   const skillLevel = assertFind(
     game.skillLevels,
@@ -105,13 +108,9 @@ export const RecordingShowPage = ({
         shouldTouch: true,
       })
 
-      const video = comment.metadata?.video
-
-      setEditingText(Boolean(comment.body))
-      setEditingDrawing(Boolean(video.drawing))
+      setEditing(true)
     } else {
-      setEditingText(false)
-      setEditingDrawing(false)
+      setEditing(false)
       form.reset()
     }
 
@@ -189,22 +188,19 @@ export const RecordingShowPage = ({
     color,
     comments,
     deleteComment,
-    editingDrawing,
-    editingText,
+    editing,
     form,
     games,
     playing,
     recording,
     selectedComment,
     setColor,
-    setEditingDrawing,
-    setEditingText,
+    setEditing,
     setPlaying: handleSetPlaying,
     setRecording,
     setSelectedComment: selectComment,
     saveComment: submit,
     readOnly,
-    editing,
   }
 
   return (
@@ -292,7 +288,7 @@ export const RecordingShowPage = ({
                         backgroundColor: theme.palette.common.black,
                       }}
                     >
-                      <Recording videoRef={videoRef} />
+                      <Recording videoRef={videoRef} drawingRef={drawingRef} />
                     </Box>
                     <Paper
                       elevation={4}
@@ -318,8 +314,22 @@ export const RecordingShowPage = ({
                 </Box>
               </Sticky>
             </Grid>
-            <Grid item md={4} xs={12} minHeight="70vh">
-              <CommentList />
+            <Grid item md={4} xs={12} minHeight="70vh" position="relative">
+              <Stack direction="column" height="100%">
+                <AnimatePresence presenceAffectsLayout mode="popLayout">
+                  {editing ? (
+                    <m.div
+                      variants={animateSlide().inDown}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                    >
+                      <CommentForm drawingRef={drawingRef} />
+                    </m.div>
+                  ) : null}
+                </AnimatePresence>
+                <CommentList />
+              </Stack>
             </Grid>
           </Grid>
         </form>

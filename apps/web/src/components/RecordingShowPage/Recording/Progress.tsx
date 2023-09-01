@@ -7,7 +7,7 @@ interface Props {
   videoRef: React.RefObject<HTMLVideoElement>
 }
 
-export const VideoProgress = ({ videoRef }: Props) => {
+export const Progress = ({ videoRef }: Props) => {
   const [progress, setProgress] = useState(0)
   const [seekPosition, setSeekPosition] = useState(0)
   const progressBarRef = useRef<HTMLDivElement>(null)
