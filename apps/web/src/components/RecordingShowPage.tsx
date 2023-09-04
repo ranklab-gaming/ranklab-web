@@ -30,6 +30,7 @@ import { AnimatePresence, m } from "framer-motion"
 import { animateSlide } from "@/animate/slide"
 import { CommentForm } from "./RecordingShowPage/CommentForm"
 import { DrawingRef } from "./RecordingShowPage/Drawing"
+import { animateFade } from "@/animate/fade"
 
 interface Props {
   recording: ApiRecording
@@ -316,19 +317,25 @@ export const RecordingShowPage = ({
             </Grid>
             <Grid item md={4} xs={12} minHeight="70vh" position="relative">
               <Stack direction="column" height="100%">
-                <AnimatePresence presenceAffectsLayout mode="popLayout">
-                  {editing ? (
-                    <m.div
-                      variants={animateSlide().inDown}
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                    >
-                      <CommentForm drawingRef={drawingRef} />
-                    </m.div>
-                  ) : null}
-                </AnimatePresence>
-                <CommentList />
+                <Card sx={{ minHeight: "100%" }}>
+                  <CardContent>
+                    <AnimatePresence presenceAffectsLayout mode="popLayout">
+                      <m.div
+                        variants={animateFade().in}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
+                        key={editing ? "editing" : "not-editing"}
+                      >
+                        {editing ? (
+                          <CommentForm drawingRef={drawingRef} />
+                        ) : (
+                          <CommentList />
+                        )}
+                      </m.div>
+                    </AnimatePresence>
+                  </CardContent>
+                </Card>
               </Stack>
             </Grid>
           </Grid>

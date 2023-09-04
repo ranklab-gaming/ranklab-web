@@ -1,20 +1,9 @@
 import { Iconify } from "@/components/Iconify"
-import {
-  Stack,
-  IconButton,
-  useTheme,
-  Box,
-  Button,
-  Tooltip,
-  alpha,
-} from "@mui/material"
-import { ConfirmationButton } from "@/components/ConfirmationDialog"
-import { AnimatePresence, m } from "framer-motion"
-import { animateFade } from "@/animate/fade"
-import { LoadingButton } from "@mui/lab"
+import { Stack, IconButton, useTheme, Tooltip } from "@mui/material"
 import { DrawingRef } from "../Drawing"
 import { useReview } from "@/hooks/useReview"
 import { colors } from "@/contexts/ReviewContext"
+import { ConfirmationButton } from "@/components/ConfirmationDialog"
 
 export interface ToolbarProps {
   drawingRef: React.RefObject<DrawingRef>
@@ -22,148 +11,57 @@ export interface ToolbarProps {
 
 export const Toolbar = ({ drawingRef }: ToolbarProps) => {
   const theme = useTheme()
-
-  const {
-    color,
-    deleteComment,
-    editing,
-    form,
-    readOnly,
-    selectedComment,
-    setColor,
-    setSelectedComment,
-  } = useReview()
-
-  const sx = {
-    backgroundColor: alpha(theme.palette.common.black, 0.75),
-  }
+  const { color, setColor, selectedComment, deleteComment } = useReview()
 
   return (
-    <AnimatePresence presenceAffectsLayout mode="popLayout">
-      <Box
-        key="enabled"
-        component={m.div}
-        variants={animateFade().in}
-        animate="animate"
-        initial="initial"
-        exit="exit"
-        sx={sx}
-      >
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          p={1}
-          component={m.div}
-          variants={animateFade().in}
-          key="toolbar"
-          animate="animate"
-          initial="initial"
-          exit="exit"
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={1}
+      mb={1}
+      bgcolor="grey.900"
+      borderRadius={1}
+      p={1}
+    >
+      {selectedComment ? (
+        <Tooltip title="Delete">
+          <ConfirmationButton
+            action={deleteComment}
+            buttonIcon={
+              <Iconify icon="mdi:trash-can-outline" width={22} fontSize={22} />
+            }
+            dialogContentText="Are you sure you want to delete this comment?"
+            dialogTitle="Delete Comment"
+          />
+        </Tooltip>
+      ) : null}
+      <Tooltip title="Undo">
+        <IconButton onClick={() => drawingRef.current?.undo()}>
+          <Iconify icon="mdi:undo" width={22} fontSize={22} />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Clear">
+        <IconButton onClick={() => drawingRef.current?.clear()}>
+          <Iconify icon="mdi:eraser" width={22} fontSize={22} />
+        </IconButton>
+      </Tooltip>
+      {colors.map((c) => (
+        <IconButton
+          key={c}
+          onClick={() => {
+            setColor(c)
+            drawingRef.current?.changeColor(c)
+          }}
+          sx={{
+            color: theme.palette[c].main,
+            ...(color === c && {
+              backgroundColor: theme.palette.background.paper,
+            }),
+          }}
         >
-          {!readOnly ? (
-            <>
-              <AnimatePresence mode="popLayout">
-                {editing ? (
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    component={m.div}
-                    spacing={1}
-                    variants={animateFade().in}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
-                  >
-                    <Tooltip title="Undo">
-                      <IconButton onClick={() => drawingRef.current?.undo()}>
-                        <Iconify icon="mdi:undo" width={22} fontSize={22} />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Clear">
-                      <IconButton onClick={() => drawingRef.current?.clear()}>
-                        <Iconify icon="mdi:eraser" width={22} fontSize={22} />
-                      </IconButton>
-                    </Tooltip>
-                    {colors.map((c) => (
-                      <IconButton
-                        key={c}
-                        onClick={() => {
-                          setColor(c)
-                          drawingRef.current?.changeColor(c)
-                        }}
-                        sx={{
-                          color: theme.palette[c].main,
-                          ...(color === c && {
-                            backgroundColor: theme.palette.background.paper,
-                          }),
-                        }}
-                      >
-                        <Iconify icon="mdi:circle" width={22} fontSize={22} />
-                      </IconButton>
-                    ))}
-                  </Stack>
-                ) : null}
-              </AnimatePresence>
-            </>
-          ) : null}
-          {selectedComment && !readOnly ? (
-            <Tooltip title="Delete">
-              <ConfirmationButton
-                action={deleteComment}
-                buttonIcon={
-                  <Iconify
-                    icon="mdi:trash-can-outline"
-                    width={22}
-                    fontSize={22}
-                  />
-                }
-                dialogContentText="Are you sure you want to delete this comment?"
-                dialogTitle="Delete Comment"
-              />
-            </Tooltip>
-          ) : null}
-          <AnimatePresence>
-            {editing && !readOnly ? (
-              <Box
-                component={m.div}
-                variants={animateFade().in}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Button
-                    size="small"
-                    sx={{
-                      color: theme.palette.text.secondary,
-                      "&:hover": {
-                        backgroundColor: theme.palette.grey[900],
-                      },
-                    }}
-                    onClick={() => {
-                      setSelectedComment(null)
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <LoadingButton
-                    variant="outlined"
-                    color="primary"
-                    type="submit"
-                    loading={form.formState.isSubmitting}
-                    disabled={
-                      form.formState.isSubmitting || !form.formState.isValid
-                    }
-                  >
-                    Save Comment
-                  </LoadingButton>
-                </Stack>
-              </Box>
-            ) : null}
-          </AnimatePresence>
-        </Stack>
-      </Box>
-    </AnimatePresence>
+          <Iconify icon="mdi:circle" width={22} fontSize={22} />
+        </IconButton>
+      ))}
+    </Stack>
   )
 }

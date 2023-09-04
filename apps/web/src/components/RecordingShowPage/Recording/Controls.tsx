@@ -1,10 +1,19 @@
 import { Iconify } from "@/components/Iconify"
-import { Stack, IconButton, useTheme, Box, Tooltip, alpha } from "@mui/material"
+import {
+  Stack,
+  IconButton,
+  useTheme,
+  Box,
+  Tooltip,
+  alpha,
+  Typography,
+} from "@mui/material"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { useReview } from "@/hooks/useReview"
 import { Progress } from "./Progress"
 import { formatDuration } from "@/helpers/formatDuration"
+import { useEffect, useState } from "react"
 
 export interface ControlsProps {
   videoRef: React.RefObject<HTMLVideoElement>
@@ -16,6 +25,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
     useReview()
   const metadata = form.watch("metadata") as any
   const timestamp = metadata.video.timestamp ?? 0
+  const [duration, setDuration] = useState(0)
 
   const sx = {
     backgroundColor: alpha(theme.palette.common.black, 0.75),
@@ -25,6 +35,25 @@ export const Controls = ({ videoRef }: ControlsProps) => {
     bottom: 0,
     zIndex: 999999,
   }
+
+  useEffect(() => {
+    const video = videoRef.current
+
+    if (!video) {
+      return
+    }
+
+    const updateDuration = () => {
+      setDuration(video.duration * 1000000)
+    }
+
+    video.addEventListener("loadedmetadata", updateDuration)
+    updateDuration()
+
+    return () => {
+      video.removeEventListener("loadedmetadata", updateDuration)
+    }
+  }, [])
 
   return (
     <AnimatePresence presenceAffectsLayout mode="popLayout">
@@ -64,6 +93,10 @@ export const Controls = ({ videoRef }: ControlsProps) => {
             </IconButton>
           </Tooltip>
           <Progress videoRef={videoRef} />
+          <Typography variant="caption" ml={1}>
+            {formatDuration(timestamp / 1000000, false)} /{" "}
+            {formatDuration(duration / 1000000, false)}
+          </Typography>
           <Tooltip
             title={`Add Comment at ${formatDuration(timestamp / 1000000)}`}
           >

@@ -77,65 +77,61 @@ export const CommentList = () => {
   }
 
   return (
-    <Card sx={{ minHeight: "100%" }}>
-      <CardContent>
-        <Stack spacing={2}>
-          {!user ? addACommentButton : null}
-          <AnimatePresence>
-            {sortedComments.map((comment) => (
-              <Card
-                key={comment.id}
-                component={m.div}
-                initial="initial"
-                animate={selectedComment === comment ? "selected" : "animate"}
-                variants={{
-                  initial: {
-                    opacity: 0,
-                    backgroundColor: theme.palette.background.paper,
-                    scaleX: 0,
-                  },
-                  animate: {
-                    opacity: 1,
-                    backgroundColor: theme.palette.background.paper,
-                    scaleX: 1,
-                  },
-                  exit: {
-                    opacity: 0,
-                    scaleX: 0,
-                  },
-                  selected: {
-                    opacity: 1,
-                    scaleX: 1,
-                    backgroundColor: theme.palette.secondary.main,
-                  },
-                }}
-              >
-                <CardActionArea
-                  onClick={() => {
-                    if (selectedComment === comment) {
-                      setSelectedComment(null)
-                    } else {
-                      setSelectedComment(comment)
-                    }
-                  }}
-                >
-                  <CardContent>
-                    <CommentListItem
-                      comment={comment}
-                      title={formatDuration(
-                        comment.metadata.video.timestamp / 1000000,
-                      )}
-                      selected={comment === selectedComment}
-                      games={games}
-                      recording={recording}
-                    />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </AnimatePresence>
-        </Stack>
-      </CardContent>
-    </Card>
+    <Stack spacing={2}>
+      {!user ? addACommentButton : null}
+      <AnimatePresence initial={false}>
+        {sortedComments.map((comment) => (
+          <Card
+            key={comment.id}
+            component={m.div}
+            initial="initial"
+            animate={selectedComment === comment ? "selected" : "animate"}
+            variants={{
+              initial: {
+                opacity: 0,
+                backgroundColor: theme.palette.background.paper,
+                scaleX: 0,
+              },
+              animate: {
+                opacity: 1,
+                backgroundColor: theme.palette.background.paper,
+                scaleX: 1,
+              },
+              exit: {
+                opacity: 0,
+                scaleX: 0,
+              },
+              selected: {
+                opacity: 1,
+                scaleX: 1,
+                backgroundColor: theme.palette.secondary.main,
+              },
+            }}
+          >
+            <CardActionArea
+              onClick={() => {
+                if (selectedComment === comment) {
+                  setSelectedComment(null)
+                } else {
+                  setSelectedComment(comment)
+                }
+              }}
+            >
+              <CardContent>
+                <CommentListItem
+                  comment={comment}
+                  title={formatDuration(
+                    comment.metadata.video.timestamp / 1000000,
+                  )}
+                  selected={comment === selectedComment}
+                  games={games}
+                  recording={recording}
+                />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        ))}
+      </AnimatePresence>
+    </Stack>
   )
 }

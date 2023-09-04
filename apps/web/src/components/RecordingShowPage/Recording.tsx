@@ -181,6 +181,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           onTimeUpdate={(e) => {
             setTimestamp(currentTime(e))
           }}
+          onLoadedMetadata={resizeVideo}
         />
         {editing && readOnly && selectedComment ? (
           <Box
