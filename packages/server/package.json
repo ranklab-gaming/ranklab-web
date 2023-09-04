@@ -24,7 +24,7 @@
     "lodash": "4.17.21",
     "next": "13.4.12",
     "oidc-provider": "8.3.2",
-    "pino-http": "8.4.0",
+    "pino-http": "8.5.0",
     "pino-pretty": "10.2.0"
   }
 }
