@@ -269,8 +269,8 @@ importers:
         specifier: 4.14.197
         version: 4.14.197
       '@types/oidc-provider':
-        specifier: 8.2.0
-        version: 8.2.0
+        specifier: 8.2.1
+        version: 8.2.1
       typescript:
         specifier: 5.2.2
         version: 5.2.2
@@ -2035,8 +2035,8 @@ packages:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
     dev: false
 
-  /@types/oidc-provider@8.2.0:
-    resolution: {integrity: sha512-CIBL87WWVELM53YYdw00rW1IJVPW9LrHiHoAxELCJe2u1R8GD/A4QcyyTtzfr8sIPjD31q5CtZ0kD4vzAUHMgQ==}
+  /@types/oidc-provider@8.2.1:
+    resolution: {integrity: sha512-EpjHAVPmvvkOT+hux4aaV4IwCvJv23nwS02TS4wwFeuaigvhvW39A3rH3XZ4VelxxzPyjy4iV+6oO6r2Rb5rcA==}
     dependencies:
       '@types/koa': 2.13.6
     dev: true
