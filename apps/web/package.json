@@ -33,7 +33,7 @@
     "date-fns": "2.30.0",
     "framer-motion": "10.16.3",
     "iron-session": "6.3.1",
-    "jose": "4.14.5",
+    "jose": "4.14.6",
     "jsonwebtoken": "^9.0.0",
     "lodash": "4.17.21",
     "mixpanel-browser": "^2.47.0",

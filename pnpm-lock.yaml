@@ -96,8 +96,8 @@ importers:
         specifier: 6.3.1
         version: 6.3.1(next@13.4.12)
       jose:
-        specifier: 4.14.5
-        version: 4.14.5
+        specifier: 4.14.6
+        version: 4.14.6
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.0
@@ -4025,8 +4025,8 @@ packages:
       reflect.getprototypeof: 1.0.3
     dev: true
 
-  /jose@4.14.5:
-    resolution: {integrity: sha512-56ns1XlSI8d5V0t7hilPu8dMbE4YIwrTJU6e7bV1Abyu6oel4tSc4YmD742MoWV3U+vn7O0WlKpinzu2DP0HWw==}
+  /jose@4.14.6:
+    resolution: {integrity: sha512-EqJPEUlZD0/CSUMubKtMaYUOtWe91tZXTWMJZoKSbLk+KtdhNdcvppH8lA9XwVu2V4Ailvsj0GBZJ2ZwDjfesQ==}
     dev: false
 
   /joycon@3.1.1:
@@ -4548,7 +4548,7 @@ packages:
       debug: 4.3.4
       eta: 3.1.1
       got: 13.0.0
-      jose: 4.14.5
+      jose: 4.14.6
       jsesc: 3.0.2
       koa: 2.14.2
       nanoid: 4.0.2
@@ -4588,7 +4588,7 @@ packages:
   /openid-client@5.4.3:
     resolution: {integrity: sha512-sVQOvjsT/sbSfYsQI/9liWQGVZH/Pp3rrtlGEwgk/bbHfrUDZ24DN57lAagIwFtuEu+FM9Ev7r85s8S/yPjimQ==}
     dependencies:
-      jose: 4.14.5
+      jose: 4.14.6
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
