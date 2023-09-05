@@ -7,6 +7,7 @@ import {
   Tooltip,
   alpha,
   Typography,
+  Button,
 } from "@mui/material"
 import { AnimatePresence, m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
@@ -14,6 +15,7 @@ import { useReview } from "@/hooks/useReview"
 import { Progress } from "./Progress"
 import { formatDuration } from "@/helpers/formatDuration"
 import { useEffect, useState } from "react"
+import { VolumeControl } from "./VolumeControl"
 
 export interface ControlsProps {
   videoRef: React.RefObject<HTMLVideoElement>
@@ -97,19 +99,20 @@ export const Controls = ({ videoRef }: ControlsProps) => {
             {formatDuration(timestamp / 1000000, false)} /{" "}
             {formatDuration(duration / 1000000, false)}
           </Typography>
-          <Tooltip
-            title={`Add Comment at ${formatDuration(timestamp / 1000000)}`}
+          <VolumeControl videoRef={videoRef} />
+          <Button
+            onClick={() => {
+              setEditing(!editing)
+              setPlaying(false)
+            }}
+            color={editing ? "secondary" : "primary"}
+            variant="contained"
+            sx={{ width: 170 }}
           >
-            <IconButton
-              onClick={() => {
-                setEditing(!editing)
-                setPlaying(false)
-              }}
-              sx={editing ? { color: theme.palette.secondary.main } : {}}
-            >
-              <Iconify icon="mdi:comment-text" width={22} fontSize={22} />
-            </IconButton>
-          </Tooltip>
+            {editing
+              ? "Cancel"
+              : `Comment at ${formatDuration(timestamp / 1000000, false)}`}
+          </Button>
         </Stack>
       </Box>
     </AnimatePresence>
