@@ -253,8 +253,8 @@ importers:
         specifier: 13.4.12
         version: 13.4.12(react-dom@18.2.0)(react@18.2.0)
       oidc-provider:
-        specifier: 8.3.2
-        version: 8.3.2
+        specifier: 8.4.0
+        version: 8.4.0
       pino-http:
         specifier: 8.5.0
         version: 8.5.0
@@ -4540,8 +4540,8 @@ packages:
   /obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
-  /oidc-provider@8.3.2:
-    resolution: {integrity: sha512-q8KbFKcyDkIUpOzT4sh3wMRj2XrqN3uMHU3M6+Kh0dq8aD7jK2zqxDwE3LEVxcLoSBXPe0ObAXKGjdPyl9oNng==}
+  /oidc-provider@8.4.0:
+    resolution: {integrity: sha512-2TmW10fjzkqwDfnVAi+B+CULFjWSaOFR6dSQ8wJ115RXVEfwf8mX5lzULxkgWcK6hLBcQUTSf0KDGnjf/0Q20A==}
     dependencies:
       '@koa/cors': 4.0.0
       '@koa/router': 12.0.0
