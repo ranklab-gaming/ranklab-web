@@ -74,6 +74,6 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "pg": "8.11.3",
     "typescript": "5.2.2",
-    "uuid": "9.0.0"
+    "uuid": "9.0.1"
   }
 }
