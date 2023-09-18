@@ -1,12 +1,9 @@
 import { uploadsCdnUrl } from "@/config"
-import { Box, FormHelperText, Stack, Typography, alpha } from "@mui/material"
+import { Box, Stack, Typography } from "@mui/material"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Controller } from "react-hook-form"
 import { debounce } from "lodash"
 import { Drawing, DrawingRef } from "./Drawing"
-import { Editor } from "@/components/Editor"
-import { theme } from "@/theme/theme"
-import { AnimatePresence, m } from "framer-motion"
+import { m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
 import { MediaState } from "@ranklab/api"
 import { Iconify } from "../Iconify"
@@ -100,7 +97,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
       setWrapperWidth(containerWidth)
       setWrapperHeight(containerWidth / videoAspectRatio)
     }
-  }, [setWrapperWidth, setWrapperHeight])
+  }, [setWrapperWidth, setWrapperHeight, videoRef])
 
   useEffect(() => {
     window.addEventListener("resize", resizeVideo)

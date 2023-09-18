@@ -32,7 +32,7 @@ export const Progress = ({ videoRef }: Props) => {
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate)
     }
-  }, [])
+  }, [videoRef])
 
   const handleSeek = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const video = videoRef.current

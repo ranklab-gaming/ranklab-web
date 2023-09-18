@@ -57,7 +57,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
     return () => {
       video.removeEventListener("loadedmetadata", updateDuration)
     }
-  }, [])
+  }, [videoRef])
 
   return (
     <AnimatePresence presenceAffectsLayout mode="popLayout">

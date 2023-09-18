@@ -18,7 +18,7 @@ export interface DrawingRef {
   undo: () => void
 }
 
-export const Drawing = forwardRef<DrawingRef>(({}, ref) => {
+export const Drawing = forwardRef<DrawingRef>((_props, ref) => {
   const theme = useTheme()
   const { color, form } = useReview()
   const metadata = form.watch("metadata") as any

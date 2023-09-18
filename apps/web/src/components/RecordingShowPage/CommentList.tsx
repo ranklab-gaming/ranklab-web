@@ -9,7 +9,6 @@ import {
   Box,
 } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
-import { MessageBox } from "@/components/MessageBox"
 import NextLink from "next/link"
 import { useOptionalUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
