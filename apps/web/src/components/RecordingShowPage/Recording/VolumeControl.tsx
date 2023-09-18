@@ -10,12 +10,12 @@ const VolumeControl = ({ videoRef }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [volume, setVolume] = useState(0)
 
-  const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null)
+  const togglePopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (anchorEl) {
+      setAnchorEl(null)
+    } else {
+      setAnchorEl(event.currentTarget)
+    }
   }
 
   const handleChange = (_event: Event, value: number | number[]) => {
@@ -45,18 +45,14 @@ const VolumeControl = ({ videoRef }: Props) => {
 
   return (
     <>
-      <IconButton
-        aria-describedby={id}
-        onMouseEnter={handlePopoverOpen}
-        onMouseLeave={handlePopoverClose}
-      >
+      <IconButton aria-describedby={id} onClick={togglePopover}>
         <Iconify icon="mdi:volume-high" width={22} fontSize={22} />
       </IconButton>
       <Popover
         id={id}
         open={open}
         anchorEl={anchorEl}
-        onClose={handlePopoverClose}
+        onClose={togglePopover}
         anchorOrigin={{
           vertical: "top",
           horizontal: "center",
@@ -65,19 +61,20 @@ const VolumeControl = ({ videoRef }: Props) => {
           vertical: "bottom",
           horizontal: "center",
         }}
+        slotProps={{ paper: { sx: { pt: 1 } } }}
       >
         <Slider
           aria-labelledby="continuous-slider"
           value={volume}
           onChange={handleChange}
-          onMouseLeave={handlePopoverClose}
           orientation="vertical"
-          size="medium"
+          size="small"
           sx={{
             height: 100,
             '& input[type="range"]': {
               WebkitAppearance: "slider-vertical",
             },
+            overflow: "hidden",
           }}
           onKeyDown={preventHorizontalKeyboardNavigation}
         />
