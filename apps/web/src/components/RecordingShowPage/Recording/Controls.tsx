@@ -16,6 +16,7 @@ import { Progress } from "./Progress"
 import { formatDuration } from "@/helpers/formatDuration"
 import { useEffect, useState } from "react"
 import { VolumeControl } from "./VolumeControl"
+import { useOptionalUser } from "@/hooks/useUser"
 
 export interface ControlsProps {
   videoRef: React.RefObject<HTMLVideoElement>
@@ -28,6 +29,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
   const metadata = form.watch("metadata") as any
   const timestamp = metadata.video.timestamp ?? 0
   const [duration, setDuration] = useState(0)
+  const user = useOptionalUser()
 
   const sx = {
     backgroundColor: alpha(theme.palette.common.black, 0.75),
@@ -100,19 +102,21 @@ export const Controls = ({ videoRef }: ControlsProps) => {
             {formatDuration(duration / 1000000, false)}
           </Typography>
           <VolumeControl videoRef={videoRef} />
-          <Button
-            onClick={() => {
-              setEditing(!editing)
-              setPlaying(false)
-            }}
-            color={editing ? "secondary" : "primary"}
-            variant="contained"
-            sx={{ width: 170 }}
-          >
-            {editing
-              ? "Cancel"
-              : `Comment at ${formatDuration(timestamp / 1000000, false)}`}
-          </Button>
+          {user ? (
+            <Button
+              onClick={() => {
+                setEditing(!editing)
+                setPlaying(false)
+              }}
+              color={editing ? "secondary" : "primary"}
+              variant="contained"
+              sx={{ width: 170 }}
+            >
+              {editing
+                ? "Cancel"
+                : `Comment at ${formatDuration(timestamp / 1000000, false)}`}
+            </Button>
+          ) : null}
         </Stack>
       </Box>
     </AnimatePresence>

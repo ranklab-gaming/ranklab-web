@@ -1,12 +1,10 @@
-import { Box, Button, FormHelperText, Stack, Tooltip } from "@mui/material"
+import { Box, Button, FormHelperText, Stack } from "@mui/material"
 import { Toolbar } from "./CommentForm/Toolbar"
 import { DrawingRef } from "./Drawing"
 import { useReview } from "@/hooks/useReview"
 import { theme } from "@/theme/theme"
 import { Controller } from "react-hook-form"
 import { Editor } from "../Editor"
-import { ConfirmationButton } from "../ConfirmationDialog"
-import { Iconify } from "../Iconify"
 import { LoadingButton } from "@mui/lab"
 
 interface Props {
@@ -14,11 +12,10 @@ interface Props {
 }
 
 export const CommentForm = ({ drawingRef }: Props) => {
-  const { form, selectedComment, deleteComment, setSelectedComment } =
-    useReview()
+  const { form, setSelectedComment } = useReview()
 
   return (
-    <Box>
+    <Box flex={1}>
       <Toolbar drawingRef={drawingRef} />
       <Controller
         name="body"

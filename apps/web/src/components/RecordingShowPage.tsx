@@ -239,8 +239,11 @@ export const RecordingShowPage = ({
                     variant="body2"
                   >
                     {recordingUser.name}
-                  </Typography>
+                  </Typography>{" "}
+                  on {formatDate(recording.createdAt)}
                 </Typography>
+                <Chip label={skillLevel.name} size="small" />
+                <Chip label={game.name} size="small" />
                 <Button
                   variant="outlined"
                   onClick={() => {
@@ -280,62 +283,43 @@ export const RecordingShowPage = ({
                 <Box
                   sx={{
                     height: "70vh",
+                    flexGrow: 1,
+                    backgroundColor: theme.palette.common.black,
                   }}
+                  display="flex"
+                  flexDirection="column"
                 >
-                  <Box display="flex" flexDirection="column" height="100%">
-                    <Box
-                      sx={{
-                        flexGrow: 1,
-                        backgroundColor: theme.palette.common.black,
-                      }}
-                    >
-                      <Recording videoRef={videoRef} drawingRef={drawingRef} />
-                    </Box>
-                    <Paper
-                      elevation={4}
-                      sx={{
-                        mt: 1,
-                        backgroundColor: theme.palette.common.black,
-                      }}
-                    >
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={2}
-                        p={2}
-                      >
-                        <Typography variant="caption" mb={0}>
-                          Submitted on {formatDate(recording.createdAt)}
-                        </Typography>
-                        <Chip label={skillLevel.name} size="small" />
-                        <Chip label={game.name} size="small" />
-                      </Stack>
-                    </Paper>
-                  </Box>
+                  <Recording videoRef={videoRef} drawingRef={drawingRef} />
                 </Box>
               </Sticky>
             </Grid>
             <Grid item md={4} xs={12} minHeight="70vh" position="relative">
               <Stack direction="column" height="100%">
-                <Card sx={{ minHeight: "100%" }}>
-                  <CardContent>
-                    <AnimatePresence presenceAffectsLayout mode="popLayout">
-                      <m.div
-                        variants={animateFade().in}
-                        initial="initial"
-                        animate="animate"
-                        exit="exit"
-                        key={editing ? "editing" : "not-editing"}
-                      >
-                        {editing ? (
-                          <CommentForm drawingRef={drawingRef} />
-                        ) : (
-                          <CommentList />
-                        )}
-                      </m.div>
-                    </AnimatePresence>
-                  </CardContent>
-                </Card>
+                <AnimatePresence presenceAffectsLayout mode="popLayout">
+                  <m.div
+                    variants={animateFade().in}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    key={editing ? "editing" : "not-editing"}
+                    style={{ minHeight: "100%" }}
+                  >
+                    <Paper
+                      sx={{
+                        p: 4,
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {editing ? (
+                        <CommentForm drawingRef={drawingRef} />
+                      ) : (
+                        <CommentList />
+                      )}
+                    </Paper>
+                  </m.div>
+                </AnimatePresence>
               </Stack>
             </Grid>
           </Grid>

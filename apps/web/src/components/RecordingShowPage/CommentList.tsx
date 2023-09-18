@@ -1,5 +1,13 @@
 import { theme } from "@/theme/theme"
-import { Card, CardContent, Stack, CardActionArea, Button } from "@mui/material"
+import {
+  Card,
+  CardContent,
+  Stack,
+  CardActionArea,
+  Button,
+  Typography,
+  Box,
+} from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
 import { MessageBox } from "@/components/MessageBox"
 import NextLink from "next/link"
@@ -10,6 +18,7 @@ import { CommentListItem } from "./CommentListItem"
 import { useMemo } from "react"
 import { useReview } from "@/hooks/useReview"
 import { parseISO } from "date-fns"
+import { Iconify } from "../Iconify"
 
 export const CommentList = () => {
   const user = useOptionalUser()
@@ -65,20 +74,30 @@ export const CommentList = () => {
 
   if (comments.length === 0) {
     return (
-      <MessageBox
-        icon={!user ? addACommentButton : "eva:corner-up-left-outline"}
-        text={
-          !user
+      <Stack
+        spacing={3}
+        sx={{
+          textAlign: "center",
+          alignSelf: "center",
+          alignItems: "center",
+        }}
+      >
+        {!user ? (
+          addACommentButton
+        ) : (
+          <Iconify icon="mdi:sms" width={64} height={64} />
+        )}
+        <Typography variant="h3">
+          {!user
             ? "Be the first to add a comment."
-            : "Use the controls above the video to add comments and drawings."
-        }
-      />
+            : "There are currently no comments on this VOD."}
+        </Typography>
+      </Stack>
     )
   }
 
   return (
-    <Stack spacing={2}>
-      {!user ? addACommentButton : null}
+    <Box sx={{ flex: 1 }}>
       <AnimatePresence initial={false}>
         {sortedComments.map((comment) => (
           <Card
@@ -132,6 +151,6 @@ export const CommentList = () => {
           </Card>
         ))}
       </AnimatePresence>
-    </Stack>
+    </Box>
   )
 }
