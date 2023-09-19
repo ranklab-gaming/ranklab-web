@@ -1,13 +1,12 @@
 import { assertFind } from "@/assert"
 import { Iconify } from "@/components/Iconify"
-import { uploadsCdnUrl } from "@/config"
 import { UserContext } from "@/contexts/UserContext"
-import { Stack, Typography, Box, Tooltip, Chip } from "@mui/material"
-import { Comment, Game, MediaState, Recording } from "@ranklab/api"
+import { Stack, Typography, Box, Chip, Tooltip } from "@mui/material"
+import { Comment, Game, Recording } from "@ranklab/api"
 import { AnimatePresence, m } from "framer-motion"
-import { PropsWithChildren, useContext } from "react"
+import { useContext } from "react"
 
-export interface CommentListItemProps {
+interface ItemProps {
   comment: Comment
   selected: boolean
   title: string
@@ -19,12 +18,10 @@ export const CommentListItem = ({
   comment,
   selected,
   title,
-  children,
   games,
   recording,
-}: PropsWithChildren<CommentListItemProps>) => {
+}: ItemProps) => {
   const user = useContext(UserContext)
-
   const game = assertFind(games, (g) => g.id === recording.gameId)
 
   const skillLevel = game.skillLevels.find(
@@ -73,25 +70,18 @@ export const CommentListItem = ({
             <Box flexGrow={1} />
           )}
         </AnimatePresence>
-        {comment.audio ? (
+        {comment.metadata.video.drawing ? (
           <Box>
-            <Tooltip title="Audio Clip">
-              <Iconify icon="eva:mic-outline" width={24} height={24} />
+            <Tooltip title="Drawing">
+              <Iconify icon="mdi:draw" width={24} height={24} />
             </Tooltip>
           </Box>
         ) : null}
-        {children}
       </Stack>
-      {comment.body || comment.audio?.transcript ? (
+      {comment.body ? (
         <AnimatePresence>
           {selected ? (
             <Stack spacing={1}>
-              {comment.audio?.state === MediaState.Processed ? (
-                <audio
-                  controls
-                  src={`${uploadsCdnUrl}/${comment.audio.audioKey}`}
-                />
-              ) : null}
               <Typography
                 variant="body1"
                 key="body"
@@ -116,18 +106,11 @@ export const CommentListItem = ({
                 animate="animate"
                 exit="exit"
               >
-                <Stack spacing={2}>
-                  {comment.audio?.transcript ? (
-                    <Typography variant="caption" fontStyle="italic">
-                      {comment.audio.transcript}
-                    </Typography>
-                  ) : null}
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: comment.body,
-                    }}
-                  />
-                </Stack>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: comment.body,
+                  }}
+                />
               </Typography>
             </Stack>
           ) : null}

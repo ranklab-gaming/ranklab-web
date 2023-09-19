@@ -8,7 +8,6 @@ import NextLink from "next/link"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
-import { useGameDependency } from "@/hooks/useGameDependency"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -18,14 +17,6 @@ const RootStyle = styled("div")(({ theme }) => ({
     }),
   },
 }))
-
-const icons = {
-  user: <Iconify icon="eva:person-outline" />,
-  dashboard: <Iconify icon="eva:grid-outline" />,
-  archive: <Iconify icon="eva:archive-outline" />,
-  review: <Iconify icon="eva:plus-square-outline" />,
-  school: <Iconify icon="mdi:school-outline" />,
-}
 
 type Props = {
   sidebarOpen: boolean
@@ -41,35 +32,32 @@ export const Navbar = ({
   onCollapse,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
-  const recordingsTitle = `Your ${useGameDependency("text:recording-plural")}`
-  const recordingsIcon = useGameDependency("component:recording-icon")
-  const recordingPageTitle = useGameDependency("text:create-recording-button")
 
   const navConfig = [
     [
       {
-        title: recordingPageTitle,
+        title: "Submit your VOD",
         path: "/recordings/new",
-        icon: icons.review,
+        icon: <Iconify icon="eva:plus-square-outline" />,
       },
     ],
     [
       {
         title: "Dashboard",
         path: "/dashboard",
-        icon: icons.dashboard,
+        icon: <Iconify icon="eva:grid-outline" />,
       },
       {
-        title: recordingsTitle,
+        title: "VODs",
         path: "/recordings",
-        icon: recordingsIcon,
+        icon: <Iconify icon="eva:video-outline" />,
       },
     ],
     [
       {
         title: "Account",
         path: "/account",
-        icon: icons.user,
+        icon: <Iconify icon="eva:person-outline" />,
       },
     ],
   ]

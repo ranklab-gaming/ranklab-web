@@ -25,8 +25,9 @@ export const NotFoundPage = () => {
               </Typography>
             </m.div>
             <Typography sx={{ color: "text.secondary", my: { xs: 5, sm: 10 } }}>
-              Sorry, we couldn’t find the page you’re looking for. Perhaps
-              you’ve mistyped the URL? Be sure to check your spelling.
+              Sorry, we couldn&apos;t find the page you&apos;re looking for.
+              Perhaps you&apos;ve mistyped the URL? Be sure to check your
+              spelling.
             </Typography>
             <NextLink href="/" passHref legacyBehavior>
               <Button size="large" variant="contained" component="a">

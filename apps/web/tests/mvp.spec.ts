@@ -48,7 +48,7 @@ test("mvp", async ({ page }) => {
     .locator('[name="video"]')
     .setInputFiles("tests/fixtures/exampleVideo.mp4")
   await page.locator(".ql-editor").fill("some notes")
-  await page.getByRole("button", { name: "Submit your VOD" }).click()
+  await page.getByRole("button", { name: "Submit VOD" }).click()
   await expect(page.getByText("VOD submitted successfully")).toBeVisible()
   await page.getByTitle("Account").click()
   await page.getByRole("menuitem", { name: "Logout" }).click()

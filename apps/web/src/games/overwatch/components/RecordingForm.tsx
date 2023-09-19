@@ -1,10 +1,10 @@
 import { useRecordingForm } from "@/hooks/useRecordingForm"
 import * as yup from "yup"
-import { RecordingFormSchema as BaseRecordingFormSchema } from "@/games/video/hooks/useRecordingForm"
+import { RecordingFormSchema as BaseRecordingFormSchema } from "@/hooks/useRecordingForm"
 import {
   RecordingForm as BaseRecordingForm,
   RecordingFormProps as BaseRecordingFormProps,
-} from "@/games/video/components/RecordingForm"
+} from "@/components/RecordingForm"
 import {
   TextField,
   FormControl,
@@ -60,12 +60,13 @@ const RecordingFormSchema = BaseRecordingFormSchema.shape({
           .test(
             "required",
             "Video is required",
-            (value) => value && value instanceof File && value.size > 0
+            (value) => value && value instanceof File && value.size > 0,
           )
           .test(
             "fileSize",
             "Video file must be less than 4GiB",
-            (value) => value && value instanceof File && value.size < 4294967296
+            (value) =>
+              value && value instanceof File && value.size < 4294967296,
           ),
     }),
   metadata: yup
@@ -99,8 +100,7 @@ const RecordingFormSchema = BaseRecordingFormSchema.shape({
 type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
 type RecordingFormSchema = yup.ObjectSchema<RecordingFormValues>
 
-const RecordingForm = ({
-  onSubmit,
+export const RecordingForm = ({
   games,
 }: BaseRecordingFormProps<RecordingFormValues>) => {
   const user = useUser()
@@ -127,7 +127,6 @@ const RecordingForm = ({
 
   return (
     <BaseRecordingForm
-      onSubmit={onSubmit}
       games={games}
       recordingForm={recordingForm}
       showVideoField={!useReplayCode}
@@ -143,19 +142,17 @@ const RecordingForm = ({
 
         return {}
       }}
-      headerElement={
-        <Tabs
-          value={useReplayCode ? 0 : 1}
-          onChange={(_, value) => {
-            recordingForm.setValue("useReplayCode", value === 0)
-            recordingForm.clearErrors()
-          }}
-        >
-          <Tab label="Replay Code" />
-          <Tab label="Video File" />
-        </Tabs>
-      }
     >
+      <Tabs
+        value={useReplayCode ? 0 : 1}
+        onChange={(_, value) => {
+          recordingForm.setValue("useReplayCode", value === 0)
+          recordingForm.clearErrors()
+        }}
+      >
+        <Tab label="Replay Code" />
+        <Tab label="Video File" />
+      </Tabs>
       {useReplayCode ? (
         <>
           <Controller
@@ -226,5 +223,3 @@ const RecordingForm = ({
     </BaseRecordingForm>
   )
 }
-
-export default RecordingForm
