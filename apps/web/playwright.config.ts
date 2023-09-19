@@ -19,8 +19,7 @@ export default defineConfig({
   testDir: "./tests",
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -32,6 +31,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    actionTimeout: 30000,
   },
 
   /* Configure projects for major browsers */
@@ -71,7 +71,6 @@ export default defineConfig({
     // },
   ],
   timeout: 10 * 60 * 1000,
-
   /* Run your local dev server before starting the tests */
   // webServer: {
   //   command: 'npm run start',
