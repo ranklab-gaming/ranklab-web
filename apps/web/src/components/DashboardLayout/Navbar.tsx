@@ -8,6 +8,9 @@ import NextLink from "next/link"
 import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
+import { Game } from "@ranklab/api"
+import { GameIcon } from "../GameIcon"
+import { useRouter } from "next/router"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -23,6 +26,7 @@ type Props = {
   onCloseSidebar: VoidFunction
   collapsed: boolean
   onCollapse: VoidFunction
+  games: Game[]
 }
 
 export const Navbar = ({
@@ -30,8 +34,10 @@ export const Navbar = ({
   onCloseSidebar,
   collapsed,
   onCollapse,
+  games,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
+  const { asPath } = useRouter()
 
   const navConfig = [
     [
@@ -43,17 +49,34 @@ export const Navbar = ({
     ],
     [
       {
-        title: "Dashboard",
-        path: "/dashboard",
+        title: "Directory",
+        path: "/directory",
         icon: <Iconify icon="eva:grid-outline" />,
       },
+      ...games.map((game) => ({
+        title: game.name,
+        path: `/directory/${game.id}`,
+        icon: (
+          <GameIcon
+            game={game}
+            sx={{
+              width: 24,
+              height: 24,
+              filter:
+                `/directory/${game.id}` === asPath
+                  ? null
+                  : "brightness(0) invert(1)",
+            }}
+          />
+        ),
+      })),
+    ],
+    [
       {
-        title: "VODs",
+        title: "Your VODs",
         path: "/recordings",
         icon: <Iconify icon="eva:video-outline" />,
       },
-    ],
-    [
       {
         title: "Account",
         path: "/account",

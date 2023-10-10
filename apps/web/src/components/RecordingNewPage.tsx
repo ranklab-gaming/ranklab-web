@@ -10,7 +10,7 @@ interface Props {
 
 export const RecordingNewPage = ({ user, games }: PropsWithUser<Props>) => {
   return (
-    <DashboardLayout user={user} title="Submit your VOD">
+    <DashboardLayout user={user} title="Submit your VOD" games={games}>
       {user.gameId === "overwatch" ? (
         <OverwatchRecordingForm games={games} />
       ) : (

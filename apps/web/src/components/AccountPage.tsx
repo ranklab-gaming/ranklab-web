@@ -170,7 +170,7 @@ export const AccountPage = ({
   }
 
   return (
-    <DashboardLayout title="Account" user={user}>
+    <DashboardLayout title="Account" user={user} games={games}>
       <TabContext value={tab}>
         <Tabs
           allowScrollButtonsMobile

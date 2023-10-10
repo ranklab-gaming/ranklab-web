@@ -24,6 +24,7 @@ import type {
   CreateSessionRequest,
   CreateUserRequest,
   Game,
+  GameId,
   OneTimeTokenParams,
   PaginatedResultForRecording,
   Recording,
@@ -96,6 +97,7 @@ export interface RecordingsGetRequest {
 export interface RecordingsListRequest {
   page?: number | null
   onlyOwn?: boolean | null
+  gameId?: GameId
 }
 
 export interface SessionsCreateRequest {
@@ -933,6 +935,10 @@ export class RanklabApi extends runtime.BaseAPI {
 
     if (requestParameters.onlyOwn !== undefined) {
       queryParameters["only_own"] = requestParameters.onlyOwn
+    }
+
+    if (requestParameters.gameId !== undefined) {
+      queryParameters["game_id"] = requestParameters.gameId
     }
 
     const headerParameters: runtime.HTTPHeaders = {}
