@@ -11,6 +11,7 @@ import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Game } from "@ranklab/api"
 import { GameIcon } from "../GameIcon"
 import { useRouter } from "next/router"
+import { useTheme } from "@mui/material"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -38,6 +39,7 @@ export const Navbar = ({
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
   const { asPath } = useRouter()
+  const theme = useTheme()
 
   const navConfig = [
     [
@@ -62,10 +64,12 @@ export const Navbar = ({
             sx={{
               width: 24,
               height: 24,
-              filter:
-                `/directory/${game.id}` === asPath
-                  ? null
-                  : "brightness(0) invert(1)",
+              "svg *": {
+                fill:
+                  `/directory/${game.id}` === asPath
+                    ? theme.palette.primary.main
+                    : theme.palette.common.white,
+              },
             }}
           />
         ),
