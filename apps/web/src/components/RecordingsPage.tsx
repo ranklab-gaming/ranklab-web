@@ -16,7 +16,7 @@ export const RecordingsPage = ({
   user,
 }: PropsWithOptionalUser<Props>) => {
   return (
-    <DashboardLayout user={user} title="Your VODs">
+    <DashboardLayout user={user} title="Your VODs" games={games}>
       {recordings.count === 0 ? (
         <MessageBox
           icon={<Iconify icon="eva:video-outline" width={64} height={64} />}

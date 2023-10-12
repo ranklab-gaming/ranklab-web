@@ -13,7 +13,7 @@ import { PropsWithChildren, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { useIntercom } from "react-use-intercom"
-import { User } from "@ranklab/api"
+import { Game, User } from "@ranklab/api"
 
 interface MainStyleProps {
   collapsed: boolean
@@ -46,6 +46,7 @@ interface Props {
   user: User | null
   showTitle?: boolean
   fullWidth?: boolean
+  games: Game[]
 }
 
 export const DashboardLayout = ({
@@ -54,6 +55,7 @@ export const DashboardLayout = ({
   user,
   showTitle = true,
   fullWidth = false,
+  games,
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
@@ -88,6 +90,7 @@ export const DashboardLayout = ({
             onCloseSidebar={() => setSidebarOpen(false)}
             collapsed={collapsed}
             onCollapse={() => setCollapsed(!collapsed)}
+            games={games}
           />
           <MainStyle collapsed={collapsed}>
             <Container maxWidth={fullWidth ? false : "xl"}>

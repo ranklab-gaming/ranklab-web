@@ -1,5 +1,4 @@
 import { api } from "@/api"
-import { GameIcon } from "./GameIcon"
 import { formatDate } from "@/helpers/formatDate"
 import {
   Card,
@@ -68,7 +67,6 @@ export const RecordingList = ({
                   <CardActionArea>
                     <CardContent>
                       <Stack direction="row" spacing={2} alignItems="center">
-                        <GameIcon game={game} />
                         <Stack spacing={2} flexGrow={1}>
                           <Stack
                             spacing={1}

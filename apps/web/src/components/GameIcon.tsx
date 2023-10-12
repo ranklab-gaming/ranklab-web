@@ -1,29 +1,26 @@
-import overwatch from "@/images/games/overwatch.svg"
-import { Avatar, SxProps } from "@mui/material"
+import { OverwatchIcon } from "@/games/overwatch/components/OverwatchIcon"
+import { Box, BoxProps } from "@mui/material"
 import { Game } from "@ranklab/api"
-import { forwardRef } from "react"
+import React from "react"
 
-const logos = {
-  overwatch,
+const icons: Record<string, React.ComponentType> = {
+  overwatch: OverwatchIcon,
 }
 
-interface Props {
+interface Props extends BoxProps {
   game: Game
-  sx?: SxProps
 }
 
-export const GameIcon = forwardRef<HTMLDivElement, Props>(function (
-  { game, ...props }: Props,
-  ref,
-) {
-  return (
-    <Avatar
-      alt={game.name}
-      src={logos[game.id as keyof typeof logos].src}
-      ref={ref}
-      {...props}
-    />
-  )
-})
+export const GameIcon = ({ game, ...props }: Props) => {
+  const Icon = icons[game.id as keyof typeof icons]
 
-GameIcon.displayName = "GameIcon"
+  if (!Icon) {
+    return null
+  }
+
+  return (
+    <Box width={48} height={48} {...props}>
+      <Icon />
+    </Box>
+  )
+}
