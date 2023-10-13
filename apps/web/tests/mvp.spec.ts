@@ -43,6 +43,10 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Password").fill("testuser")
   await page.getByRole("button", { name: "Sign up" }).click()
   await page.getByRole("link", { name: "Submit your VOD" }).first().click()
+  await page.getByLabel("Game", { exact: true }).click()
+  await page.getByRole("option", { name: "Overwatch" }).click()
+  await page.getByLabel("Skill Level").click()
+  await page.getByRole("option", { name: "Platinum" }).click()
 
   await page
     .locator('[name="video"]')

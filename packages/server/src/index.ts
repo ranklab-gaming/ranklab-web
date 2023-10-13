@@ -27,11 +27,7 @@ export default async () => {
         id: req.id,
         method: req.method,
         url: req.url,
-        headers: Object.entries(req.headers).reduce(
-          (acc, [key, value]) =>
-            key === "cookie" ? acc : { ...acc, [key]: value },
-          {}
-        ),
+        headers: req.headers,
       }),
     },
     ...(dev

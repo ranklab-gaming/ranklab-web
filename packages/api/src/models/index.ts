@@ -3,61 +3,6 @@
 /**
  *
  * @export
- * @interface Audio
- */
-export interface Audio {
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  id: string
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  audioKey?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  uploadUrl?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  createdAt: string
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  updatedAt: string
-  /**
-   *
-   * @type {MediaState}
-   * @memberof Audio
-   */
-  state: MediaState
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  instanceId?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof Audio
-   */
-  transcript?: string | null
-}
-/**
- *
- * @export
  * @interface Avatar
  */
 export interface Avatar {
@@ -148,12 +93,6 @@ export interface Comment {
   metadata: any | null
   /**
    *
-   * @type {Audio}
-   * @memberof Comment
-   */
-  audio?: Audio | null
-  /**
-   *
    * @type {User}
    * @memberof Comment
    */
@@ -240,31 +179,6 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   metadata: CommentMetadata
-  /**
-   *
-   * @type {string}
-   * @memberof CreateCommentRequest
-   */
-  audioId?: string | null
-}
-/**
- *
- * @export
- * @interface CreateGameRequest
- */
-export interface CreateGameRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  name: string
 }
 /**
  *
@@ -305,12 +219,6 @@ export interface CreateRecordingRequest {
   gameId: GameId
   /**
    *
-   * @type {RecordingMetadata}
-   * @memberof CreateRecordingRequest
-   */
-  metadata: RecordingMetadata
-  /**
-   *
    * @type {string}
    * @memberof CreateRecordingRequest
    */
@@ -347,18 +255,6 @@ export interface CreateUserRequest {
    * @memberof CreateUserRequest
    */
   credentials: Credentials
-  /**
-   *
-   * @type {GameId}
-   * @memberof CreateUserRequest
-   */
-  gameId: GameId
-  /**
-   *
-   * @type {number}
-   * @memberof CreateUserRequest
-   */
-  skillLevel: number
 }
 /**
  * @type Credentials
@@ -581,12 +477,6 @@ export interface Recording {
   state: MediaState
   /**
    *
-   * @type {any}
-   * @memberof Recording
-   */
-  metadata?: any | null
-  /**
-   *
    * @type {string}
    * @memberof Recording
    */
@@ -615,57 +505,6 @@ export interface Recording {
    * @memberof Recording
    */
   commentCount: number
-}
-/**
- *
- * @export
- * @interface RecordingMetadata
- */
-export interface RecordingMetadata {
-  /**
-   *
-   * @type {RecordingOverwatchMetadata}
-   * @memberof RecordingMetadata
-   */
-  overwatch: RecordingOverwatchMetadata
-}
-/**
- * @type RecordingMetadataValue
- *
- * @export
- */
-export type RecordingMetadataValue = RecordingMetadataValueOneOf
-/**
- *
- * @export
- * @interface RecordingMetadataValueOneOf
- */
-export interface RecordingMetadataValueOneOf {
-  /**
-   *
-   * @type {RecordingOverwatchMetadata}
-   * @memberof RecordingMetadataValueOneOf
-   */
-  overwatch: RecordingOverwatchMetadata
-}
-/**
- *
- * @export
- * @interface RecordingOverwatchMetadata
- */
-export interface RecordingOverwatchMetadata {
-  /**
-   *
-   * @type {string}
-   * @memberof RecordingOverwatchMetadata
-   */
-  replayCode: string
-  /**
-   *
-   * @type {number}
-   * @memberof RecordingOverwatchMetadata
-   */
-  playerPosition: number
 }
 /**
  *
@@ -743,12 +582,6 @@ export interface UpdateCommentRequest {
    * @memberof UpdateCommentRequest
    */
   metadata: CommentMetadata
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateCommentRequest
-   */
-  audioId?: string | null
 }
 /**
  *
@@ -777,12 +610,6 @@ export interface UpdateUserRequest {
   name: string
   /**
    *
-   * @type {GameId}
-   * @memberof UpdateUserRequest
-   */
-  gameId: GameId
-  /**
-   *
    * @type {boolean}
    * @memberof UpdateUserRequest
    */
@@ -793,12 +620,6 @@ export interface UpdateUserRequest {
    * @memberof UpdateUserRequest
    */
   avatarId?: string | null
-  /**
-   *
-   * @type {number}
-   * @memberof UpdateUserRequest
-   */
-  skillLevel: number
 }
 /**
  *
@@ -826,12 +647,6 @@ export interface User {
   email: string
   /**
    *
-   * @type {string}
-   * @memberof User
-   */
-  gameId: string
-  /**
-   *
    * @type {boolean}
    * @memberof User
    */
@@ -854,10 +669,4 @@ export interface User {
    * @memberof User
    */
   avatarImageKey?: string | null
-  /**
-   *
-   * @type {number}
-   * @memberof User
-   */
-  skillLevel: number
 }
