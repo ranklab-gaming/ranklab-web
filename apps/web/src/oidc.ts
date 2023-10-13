@@ -13,6 +13,8 @@ export const withOidcInteraction = <T extends { [key: string]: any } = {}>(
     try {
       await oidcProvider.interactionDetails(ctx.req, ctx.res)
     } catch (e) {
+      console.error(e)
+      
       if (e instanceof errors.SessionNotFound) {
         return {
           redirect: {
