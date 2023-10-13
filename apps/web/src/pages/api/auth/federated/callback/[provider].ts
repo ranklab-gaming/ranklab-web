@@ -22,6 +22,8 @@ export default withSessionApiRoute(async function callback(
   try {
     interaction = await oidcProvider.interactionDetails(req, res)
   } catch (e) {
+    console.error(e)
+    
     if (e instanceof errors.SessionNotFound) {
       return res.redirect("/").end()
     }
