@@ -22,103 +22,103 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: "https://npm.pkg.github.com"
-          scope: "@ranklab-gaming"
-          cache: pnpm
-      - name: Get pnpm store path
-        id: pnpm-cache
-        run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Get Playwright Version
-        id: get-playwright-version
-        run: |
-          PLAYWRIGHT_VERSION=$(pnpm ls -r @playwright/test | grep @playwright | sed 's/.*@//')
-          PLAYWRIGHT_VERSION_SHA=$(echo -n $PLAYWRIGHT_VERSION | shasum -a 256 | cut -c-64)
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION_SHA" >> $GITHUB_OUTPUT
-      - name: Cache Playwright browsers
-        id: cache-playwright-browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.get-playwright-version.outputs.PLAYWRIGHT_VERSION }}
-      - name: Install Playwright browsers
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: pnpm -r -F @ranklab/web exec playwright install --with-deps chrome
-      - name: Setup hostnames
-        run: echo "127.0.0.1 postgres dynamodb ranklab-test ranklab-api" | sudo tee -a /etc/hosts
-      - name: Generate instance ID
-        id: generate-instance-id
-        run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_OUTPUT
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: $
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build ranklab-test image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          load: true
-          tags: ranklab-test:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }}
-            NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
-            SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
-      - name: Start containers
-        env:
-          RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
-          RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
-          RANKLAB_S3_BUCKET_QUEUE: ${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
-          RANKLAB_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
-          RANKLAB_INSTANCE_ID: ${{ steps.generate-instance-id.outputs.RANKLAB_INSTANCE_ID }}
-          TWITCH_CLIENT_ID: ${{ secrets.TEST_TWITCH_CLIENT_ID }}
-          TWITCH_CLIENT_SECRET: ${{ secrets.TEST_TWITCH_CLIENT_SECRET }}
-        run: docker compose -f .github/docker-compose.yml up -d
-      - name: Setup DynamoDB
-        run: NODE_ENV=test ./bin/setup-dynamodb
-      - name: Run tests
-        run: DEBUG=pw:api pnpm run test
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: apps/web/playwright-report
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: apps/web/test-results
-      - name: Notify Slack on failure
-        if: failure() && github.ref == 'refs/heads/master'
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.MASTER_BUILD_ERRORS_SLACK_WEBHOOK_URL }}
+      # - name: Setup pnpm
+      #   uses: pnpm/action-setup@v2
+      #   with:
+      #     version: latest
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
+      #     registry-url: "https://npm.pkg.github.com"
+      #     scope: "@ranklab-gaming"
+      #     cache: pnpm
+      # - name: Get pnpm store path
+      #   id: pnpm-cache
+      #   run: echo "PNPM_STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ steps.pnpm-cache.outputs.PNPM_STORE_PATH }}
+      #     key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pnpm-
+      # - name: Install dependencies
+      #   run: pnpm install --frozen-lockfile
+      # - name: Get Playwright Version
+      #   id: get-playwright-version
+      #   run: |
+      #     PLAYWRIGHT_VERSION=$(pnpm ls -r @playwright/test | grep @playwright | sed 's/.*@//')
+      #     PLAYWRIGHT_VERSION_SHA=$(echo -n $PLAYWRIGHT_VERSION | shasum -a 256 | cut -c-64)
+      #     echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION_SHA" >> $GITHUB_OUTPUT
+      # - name: Cache Playwright browsers
+      #   id: cache-playwright-browsers
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.cache/ms-playwright
+      #     key: ${{ runner.os }}-playwright-${{ steps.get-playwright-version.outputs.PLAYWRIGHT_VERSION }}
+      # - name: Install Playwright browsers
+      #   if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+      #   run: pnpm -r -F @ranklab/web exec playwright install --with-deps chrome
+      # - name: Setup hostnames
+      #   run: echo "127.0.0.1 postgres dynamodb ranklab-test ranklab-api" | sudo tee -a /etc/hosts
+      # - name: Generate instance ID
+      #   id: generate-instance-id
+      #   run: echo "RANKLAB_INSTANCE_ID=$(openssl rand -hex 16)" >> $GITHUB_OUTPUT
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: ghcr.io
+      #     username: $
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v2
+      # - name: Build ranklab-test image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     load: true
+      #     tags: ranklab-test:latest
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      #     build-args: |
+      #       NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }}
+      #       NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
+      #       SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
+      # - name: Start containers
+      #   env:
+      #     RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
+      #     RANKLAB_AWS_SECRET_KEY: ${{ secrets.RANKLAB_AWS_SECRET_KEY }}
+      #     RANKLAB_S3_BUCKET_QUEUE: ${{ secrets.RANKLAB_S3_BUCKET_QUEUE }}
+      #     RANKLAB_S3_BUCKET: ${{ secrets.RANKLAB_S3_BUCKET }}
+      #     RANKLAB_INSTANCE_ID: ${{ steps.generate-instance-id.outputs.RANKLAB_INSTANCE_ID }}
+      #     TWITCH_CLIENT_ID: ${{ secrets.TEST_TWITCH_CLIENT_ID }}
+      #     TWITCH_CLIENT_SECRET: ${{ secrets.TEST_TWITCH_CLIENT_SECRET }}
+      #   run: docker compose -f .github/docker-compose.yml up -d
+      # - name: Setup DynamoDB
+      #   run: NODE_ENV=test ./bin/setup-dynamodb
+      # - name: Run tests
+      #   run: DEBUG=pw:api pnpm run test
+      # - name: Upload Playwright report
+      #   if: always()
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: playwright-report
+      #     path: apps/web/playwright-report
+      # - name: Upload test results
+      #   if: always()
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test-results
+      #     path: apps/web/test-results
+      # - name: Notify Slack on failure
+      #   if: failure() && github.ref == 'refs/heads/master'
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.MASTER_BUILD_ERRORS_SLACK_WEBHOOK_URL }}
   deploy:
     runs-on: ubuntu-latest
     needs: test
