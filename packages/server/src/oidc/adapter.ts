@@ -77,13 +77,20 @@ export class Adapter implements OidcAdapter {
         ProjectionExpression: "payload, expiresAt",
       }
 
+      console.error('params', params)
+
       const result = <
         { payload: AdapterPayload; expiresAt?: number } | undefined
         >(await dynamoClient.get(params)).Item
 
+      console.error('result', result)
+
       if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
+        console.error('returning undefined')
         return undefined
       }
+
+      console.error('returning result.payload')
 
       return result.payload
     })
