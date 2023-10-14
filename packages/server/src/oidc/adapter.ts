@@ -34,6 +34,7 @@ export class Adapter implements OidcAdapter {
   name: string
 
   constructor(name: string) {
+    console.error('Adapter constructor', ...arguments)
     this.name = name
   }
 
@@ -77,6 +78,7 @@ export class Adapter implements OidcAdapter {
         ProjectionExpression: "payload, expiresAt",
       }
 
+      console.error('this', this)
       console.error('params', params)
 
       const result = <
