@@ -94,7 +94,7 @@ export const CommentList = () => {
   }
 
   return (
-    <Box sx={{ flex: 1 }}>
+    <Box sx={{ flex: 1, maxWidth: "100%" }}>
       <AnimatePresence initial={false}>
         {sortedComments.map((comment) => (
           <Card
