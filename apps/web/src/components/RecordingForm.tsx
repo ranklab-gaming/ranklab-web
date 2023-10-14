@@ -33,8 +33,7 @@ import { useUpload } from "@/hooks/useUpload"
 import { VideoFileSelect } from "./VideoFileSelect"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
 import { formatBytes } from "@/helpers/formatBytes"
-import { GameRequestDialog } from "./AccountFields/GameRequestDialog"
-import { GameSelect } from "./AccountFields/GameSelect"
+import { GameSelect } from "./GameSelect"
 
 export interface RecordingFormProps<TValues extends RecordingFormValues> {
   games: Game[]
@@ -71,7 +70,6 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   const title = watch("title" as Path<TValues>) as string
   const video = watch("video" as Path<TValues>) as File | undefined
   const [previewURL, setPreviewURL] = useState<string | undefined>(undefined)
-  const [showGameRequestDialog, setShowGameRequestDialog] = useState(false)
 
   const submit = async function (values: TValues) {
     const request: CreateRecordingRequest = {
@@ -238,31 +236,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
               onChange={field.onChange}
               onBlur={field.onBlur}
               error={Boolean(error)}
-              helperText={
-                error ? (
-                  error.message
-                ) : (
-                  <>
-                    The game you play. Don&apos;t see your game?{" "}
-                    <Link
-                      onClick={() => setShowGameRequestDialog(true)}
-                      color="secondary.main"
-                      fontWeight="bold"
-                      component="button"
-                      sx={{
-                        cursor: "pointer",
-                        verticalAlign: "baseline",
-                      }}
-                    >
-                      Let us know!
-                    </Link>
-                    <GameRequestDialog
-                      open={showGameRequestDialog}
-                      onClose={() => setShowGameRequestDialog(false)}
-                    />
-                  </>
-                )
-              }
+              helperText={error ? error.message : "The game of this VOD"}
             />
           )}
         />

@@ -183,25 +183,6 @@ export interface CreateCommentRequest {
 /**
  *
  * @export
- * @interface CreateGameRequest
- */
-export interface CreateGameRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  name: string
-}
-/**
- *
- * @export
  * @interface CreatePasswordRequest
  */
 export interface CreatePasswordRequest {
