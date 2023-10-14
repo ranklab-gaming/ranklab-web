@@ -100,8 +100,8 @@ importers:
         specifier: 6.3.1
         version: 6.3.1(next@13.5.2)
       jose:
-        specifier: 4.14.6
-        version: 4.14.6
+        specifier: 4.15.3
+        version: 4.15.3
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.0
@@ -4066,8 +4066,8 @@ packages:
       set-function-name: 2.0.1
     dev: true
 
-  /jose@4.14.6:
-    resolution: {integrity: sha512-EqJPEUlZD0/CSUMubKtMaYUOtWe91tZXTWMJZoKSbLk+KtdhNdcvppH8lA9XwVu2V4Ailvsj0GBZJ2ZwDjfesQ==}
+  /jose@4.15.3:
+    resolution: {integrity: sha512-RZJdL9Qjd1sqNdyiVteRGV/bnWtik/+PJh1JP4kT6+x1QQMn+7ryueRys5BEueuayvSVY8CWGCisCDazeRLTuw==}
     dev: false
 
   /joycon@3.1.1:
@@ -4586,7 +4586,7 @@ packages:
       debug: 4.3.4
       eta: 3.1.1
       got: 13.0.0
-      jose: 4.14.6
+      jose: 4.15.3
       jsesc: 3.0.2
       koa: 2.14.2
       nanoid: 4.0.2
@@ -4626,7 +4626,7 @@ packages:
   /openid-client@5.5.0:
     resolution: {integrity: sha512-Y7Xl8BgsrkzWLHkVDYuroM67hi96xITyEDSkmWaGUiNX6CkcXC3XyQGdv5aWZ6dukVKBFVQCADi9gCavOmU14w==}
     dependencies:
-      jose: 4.14.6
+      jose: 4.15.3
       lru-cache: 6.0.0
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
