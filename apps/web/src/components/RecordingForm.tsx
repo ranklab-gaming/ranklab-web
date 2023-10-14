@@ -26,7 +26,6 @@ import {
   LinearProgress,
 } from "@mui/material"
 import { PropsWithChildren, useState } from "react"
-import { useUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
 import { assertFind } from "@/assert"
 import { useSnackbar } from "notistack"
@@ -34,31 +33,20 @@ import { useUpload } from "@/hooks/useUpload"
 import { VideoFileSelect } from "./VideoFileSelect"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
 import { formatBytes } from "@/helpers/formatBytes"
+import { GameRequestDialog } from "./AccountFields/GameRequestDialog"
+import { GameSelect } from "./AccountFields/GameSelect"
 
 export interface RecordingFormProps<TValues extends RecordingFormValues> {
   games: Game[]
   recordingForm?: UseFormReturn<TValues>
   footerElement?: JSX.Element | null
-  requestMetadata?: (values: TValues) => any
-  showVideoField?: boolean
-}
-
-const defaultRequestMetadata = <TValues extends RecordingFormValues>(
-  values: TValues,
-) => {
-  return values.metadata ?? {}
 }
 
 export const RecordingForm = <TValues extends RecordingFormValues>({
   games,
   recordingForm: recordingFormProp,
-  children,
-  requestMetadata = defaultRequestMetadata,
-  showVideoField = true,
 }: PropsWithChildren<RecordingFormProps<TValues>>) => {
-  const user = useUser()
   const router = useRouter()
-  const game = assertFind(games, (g) => g.id === user.gameId)
 
   const defaultRecordingForm = useRecordingForm<TValues>({
     formSchema: RecordingFormSchema,
@@ -75,20 +63,22 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     formState: { isSubmitting },
   } = recordingForm
 
+  const gameId = watch("gameId" as Path<TValues>)
+  const game = gameId ? assertFind(games, (g) => g.id === gameId) : null
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const [upload, { progress: uploadProgress, uploading }] = useUpload()
   const title = watch("title" as Path<TValues>) as string
   const video = watch("video" as Path<TValues>) as File | undefined
   const [previewURL, setPreviewURL] = useState<string | undefined>(undefined)
+  const [showGameRequestDialog, setShowGameRequestDialog] = useState(false)
 
   const submit = async function (values: TValues) {
     const request: CreateRecordingRequest = {
       title: values.title,
       notes: values.notes,
-      gameId: user.gameId as GameId,
+      gameId: values.gameId as GameId,
       skillLevel: values.skillLevel,
-      metadata: requestMetadata(values),
     }
 
     const recording = await api.recordingsCreate({
@@ -152,118 +142,153 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
   return (
     <form onSubmit={handleSubmit(submit)}>
       <Stack spacing={3} mt={4}>
-        {children}
-        {showVideoField ? (
-          <>
-            <Controller
-              name={"video" as Path<TValues>}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <VideoFileSelect
-                  name={field.name}
-                  value={field.value as File | null}
-                  onBlur={field.onBlur}
-                  onChange={(file) => {
-                    if (!title && file) {
-                      setValue(
-                        "title" as Path<TValues>,
-                        file.name.split(".")[0] as PathValue<
-                          TValues,
-                          Path<TValues>
-                        >,
-                        {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                          shouldValidate: true,
-                        },
-                      )
-                    }
-
-                    field.onChange(file)
-
-                    if (previewURL) {
-                      URL.revokeObjectURL(previewURL)
-                    }
-
-                    if (file) {
-                      setPreviewURL(URL.createObjectURL(file))
-                    } else {
-                      setPreviewURL(undefined)
-                    }
-                  }}
-                  error={Boolean(error)}
-                  helperText={
-                    error ? (
-                      error.message
-                    ) : (
-                      <>
-                        <Typography variant="caption" color="textSecondary">
-                          Not sure how to record your gameplay? Check out{" "}
-                          <Link
-                            color="secondary.main"
-                            fontWeight="bold"
-                            component="button"
-                            sx={{
-                              verticalAlign: "baseline",
-                            }}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              setGuideDialogOpen(true)
-                            }}
-                          >
-                            our guide
-                          </Link>
-                          .
-                        </Typography>
-                        <GuideDialog
-                          open={guideDialogOpen}
-                          onClose={() => setGuideDialogOpen(false)}
-                        />
-                      </>
-                    )
-                  }
-                />
-              )}
-            />
-            {previewURL ? (
-              <Paper
-                elevation={4}
-                sx={{
-                  p: 2,
-                  bgcolor: "grey.800",
-                  height: 300,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <video src={previewURL} controls style={{ height: "100%" }} />
-              </Paper>
-            ) : null}
-          </>
-        ) : null}
         <Controller
-          name={"skillLevel" as Path<TValues>}
+          name={"video" as Path<TValues>}
           control={control}
           render={({ field, fieldState: { error } }) => (
-            <TextField
-              select
-              {...field}
-              label="Skill Level"
+            <VideoFileSelect
+              name={field.name}
+              value={field.value as File | null}
+              onBlur={field.onBlur}
+              onChange={(file) => {
+                if (!title && file) {
+                  setValue(
+                    "title" as Path<TValues>,
+                    file.name.split(".")[0] as PathValue<
+                      TValues,
+                      Path<TValues>
+                    >,
+                    {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    },
+                  )
+                }
+
+                field.onChange(file)
+
+                if (previewURL) {
+                  URL.revokeObjectURL(previewURL)
+                }
+
+                if (file) {
+                  setPreviewURL(URL.createObjectURL(file))
+                } else {
+                  setPreviewURL(undefined)
+                }
+              }}
               error={Boolean(error)}
               helperText={
-                error ? error.message : "Your skill level in this VOD"
+                error ? (
+                  error.message
+                ) : (
+                  <>
+                    <Typography variant="caption" color="textSecondary">
+                      Not sure how to record your gameplay? Check out{" "}
+                      <Link
+                        color="secondary.main"
+                        fontWeight="bold"
+                        component="button"
+                        sx={{
+                          verticalAlign: "baseline",
+                        }}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setGuideDialogOpen(true)
+                        }}
+                      >
+                        our guide
+                      </Link>
+                      .
+                    </Typography>
+                    <GuideDialog
+                      open={guideDialogOpen}
+                      onClose={() => setGuideDialogOpen(false)}
+                    />
+                  </>
+                )
               }
-            >
-              {game.skillLevels.map((skillLevel) => (
-                <MenuItem key={skillLevel.value} value={skillLevel.value}>
-                  {skillLevel.name}
-                </MenuItem>
-              ))}
-            </TextField>
+            />
           )}
         />
+        {previewURL ? (
+          <Paper
+            elevation={4}
+            sx={{
+              p: 2,
+              bgcolor: "grey.800",
+              height: 300,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <video src={previewURL} controls style={{ height: "100%" }} />
+          </Paper>
+        ) : null}
+        <Controller
+          name={"gameId" as Path<TValues>}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <GameSelect
+              games={games}
+              value={field.value as string}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              error={Boolean(error)}
+              helperText={
+                error ? (
+                  error.message
+                ) : (
+                  <>
+                    The game you play. Don&apos;t see your game?{" "}
+                    <Link
+                      onClick={() => setShowGameRequestDialog(true)}
+                      color="secondary.main"
+                      fontWeight="bold"
+                      component="button"
+                      sx={{
+                        cursor: "pointer",
+                        verticalAlign: "baseline",
+                      }}
+                    >
+                      Let us know!
+                    </Link>
+                    <GameRequestDialog
+                      open={showGameRequestDialog}
+                      onClose={() => setShowGameRequestDialog(false)}
+                    />
+                  </>
+                )
+              }
+            />
+          )}
+        />
+        {game ? (
+          <Controller
+            name={"skillLevel" as Path<TValues>}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextField
+                select
+                {...field}
+                label="Skill Level"
+                error={Boolean(error)}
+                helperText={
+                  error ? error.message : "Your skill level in this VOD"
+                }
+              >
+                {game.skillLevels.map((skillLevel) => (
+                  <MenuItem key={skillLevel.value} value={skillLevel.value}>
+                    {skillLevel.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
+        ) : null}
         <Controller
           name={"title" as Path<TValues>}
           control={control}

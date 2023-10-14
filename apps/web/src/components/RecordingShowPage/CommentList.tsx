@@ -22,9 +22,7 @@ import { Iconify } from "../Iconify"
 export const CommentList = () => {
   const user = useOptionalUser()
   const router = useRouter()
-
-  const { comments, selectedComment, setSelectedComment, games, recording } =
-    useReview()
+  const { comments, selectedComment, setSelectedComment } = useReview()
 
   const returnUrl = {
     pathname: "/api/auth/signin",
@@ -142,8 +140,6 @@ export const CommentList = () => {
                     comment.metadata.video.timestamp / 1000000,
                   )}
                   selected={comment === selectedComment}
-                  games={games}
-                  recording={recording}
                 />
               </CardContent>
             </CardActionArea>

@@ -14,7 +14,6 @@
 
 import * as runtime from "../runtime"
 import type {
-  Audio,
   Avatar,
   Comment,
   CreateCommentRequest,
@@ -35,14 +34,6 @@ import type {
   UpdateUserRequest,
   User,
 } from "../models"
-
-export interface AudiosDeleteRequest {
-  id: string
-}
-
-export interface AudiosGetRequest {
-  id: string
-}
 
 export interface AvatarsDeleteRequest {
   id: string
@@ -116,126 +107,6 @@ export interface UsersUpdateRequest {
  *
  */
 export class RanklabApi extends runtime.BaseAPI {
-  /**
-   */
-  async audiosCreateRaw(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Audio>> {
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/audios`,
-        method: "POST",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async audiosCreate(
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Audio> {
-    const response = await this.audiosCreateRaw(initOverrides)
-    return await response.value()
-  }
-
-  /**
-   */
-  async audiosDeleteRaw(
-    requestParameters: AudiosDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<StatusResponse>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling audiosDelete.",
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/audios/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id)),
-        ),
-        method: "DELETE",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async audiosDelete(
-    requestParameters: AudiosDeleteRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<StatusResponse> {
-    const response = await this.audiosDeleteRaw(
-      requestParameters,
-      initOverrides,
-    )
-    return await response.value()
-  }
-
-  /**
-   */
-  async audiosGetRaw(
-    requestParameters: AudiosGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<runtime.ApiResponse<Audio>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling audiosGet.",
-      )
-    }
-
-    const queryParameters: any = {}
-
-    const headerParameters: runtime.HTTPHeaders = {}
-
-    const response = await this.request(
-      {
-        path: `/audios/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id)),
-        ),
-        method: "GET",
-        headers: headerParameters,
-        query: queryParameters,
-      },
-      initOverrides,
-    )
-
-    return new runtime.JSONApiResponse(response)
-  }
-
-  /**
-   */
-  async audiosGet(
-    requestParameters: AudiosGetRequest,
-    initOverrides?: RequestInit | runtime.InitOverrideFunction,
-  ): Promise<Audio> {
-    const response = await this.audiosGetRaw(requestParameters, initOverrides)
-    return await response.value()
-  }
-
   /**
    */
   async avatarsCreateRaw(

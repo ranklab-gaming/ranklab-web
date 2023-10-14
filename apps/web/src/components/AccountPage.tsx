@@ -19,7 +19,7 @@ import {
   Tab,
   Tabs,
 } from "@mui/material"
-import { Game, GameId, MediaState } from "@ranklab/api"
+import { Game, MediaState } from "@ranklab/api"
 import { useSnackbar } from "notistack"
 import * as yup from "yup"
 import { useState } from "react"
@@ -67,14 +67,12 @@ export const AccountPage = ({
   const [upload] = useUpload()
 
   const defaultValues = {
-    gameId: user.gameId,
     email: user.email,
     name: user.name,
     emailsEnabled: user.emailsEnabled,
     avatar: {
       value: user.avatarId ? true : undefined,
     },
-    skillLevel: user.skillLevel,
   }
 
   const {
@@ -82,7 +80,6 @@ export const AccountPage = ({
     handleSubmit,
     setValue,
     formState: { isSubmitting },
-    watch,
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(FormSchema),
@@ -158,10 +155,8 @@ export const AccountPage = ({
       await api.usersUpdate({
         updateUserRequest: {
           name: data.name,
-          gameId: data.gameId as GameId,
           emailsEnabled: data.emailsEnabled,
           avatarId,
-          skillLevel: data.skillLevel,
         },
       }),
     )
@@ -195,7 +190,7 @@ export const AccountPage = ({
         <TabPanel value="account">
           <form onSubmit={handleSubmit(updateUser)}>
             <Stack spacing={3} my={4}>
-              <AccountFields control={control} games={games} watch={watch}>
+              <AccountFields control={control}>
                 <Controller
                   name="avatar"
                   control={control}

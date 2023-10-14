@@ -1,4 +1,4 @@
-import { OverwatchIcon } from "@/games/overwatch/components/OverwatchIcon"
+import { OverwatchIcon } from "@/components/OverwatchIcon"
 import { Box, BoxProps } from "@mui/material"
 import { Game } from "@ranklab/api"
 import React from "react"
