@@ -61,12 +61,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Email").fill(reviewerEmail)
   await page.getByLabel("Password").fill("testreviewer")
   await page.getByRole("button", { name: "Sign in" }).click()
-
-  await page
-    .getByRole("listitem")
-    .getByRole("link", { name: "Overwatch" })
-    .click()
-
+  await page.getByRole("link", { name: "Overwatch Overwatch" }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await expect(page.getByText("some notes")).toBeVisible()
   await page.getByRole("button", { name: "Comment" }).click()
@@ -78,12 +73,7 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Email").fill(userEmail)
   await page.getByLabel("Password").fill("testuser")
   await page.getByRole("button", { name: "Sign in" }).click()
-
-  await page
-    .getByRole("listitem")
-    .getByRole("link", { name: "Overwatch" })
-    .click()
-
+  await page.getByRole("link", { name: "Overwatch Overwatch" }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "Wow!" }).click()
 })
