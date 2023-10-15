@@ -7,7 +7,6 @@ import {
   Paper,
   Stack,
   Typography,
-  Button,
   Card,
   CardContent,
   Grid,
@@ -18,7 +17,6 @@ import {
 import { useSnackbar } from "notistack"
 import { useRef, useState } from "react"
 import Sticky from "react-stickynode"
-import { Iconify } from "./Iconify"
 import { CommentList } from "./RecordingShowPage/CommentList"
 import { Recording } from "./RecordingShowPage/Recording"
 import { useForm } from "@/hooks/useForm"
@@ -244,21 +242,6 @@ export const RecordingShowPage = ({
                 </Typography>
                 <Chip label={skillLevel.name} size="small" />
                 <Chip label={game.name} size="small" />
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    navigator.clipboard.writeText(
-                      `${window.location.origin}/recordings/${recording.id}`,
-                    )
-
-                    enqueueSnackbar("Copied share link to clipboard", {
-                      variant: "success",
-                    })
-                  }}
-                >
-                  Share
-                  <Iconify icon="eva:external-link-outline" ml={1} />
-                </Button>
               </Stack>
             </Stack>
             {recording.notesText ? (
@@ -312,7 +295,7 @@ export const RecordingShowPage = ({
                         justifyContent: "center",
                       }}
                     >
-                      {editing ? (
+                      {editing && !readOnly ? (
                         <CommentForm drawingRef={drawingRef} />
                       ) : (
                         <CommentList />

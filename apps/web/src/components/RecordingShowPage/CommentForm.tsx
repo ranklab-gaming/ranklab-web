@@ -15,7 +15,7 @@ export const CommentForm = ({ drawingRef }: Props) => {
   const { form, setSelectedComment } = useReview()
 
   return (
-    <Box flex={1}>
+    <Box flex={1} maxWidth="100%">
       <Toolbar drawingRef={drawingRef} />
       <Controller
         name="body"

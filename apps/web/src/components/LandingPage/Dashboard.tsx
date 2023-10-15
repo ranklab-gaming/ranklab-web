@@ -61,7 +61,7 @@ export const Dashboard = () => {
                   variant="body1"
                 >
                   Easily go back to your past reviews and keep track of all the
-                  ones that are in progress.
+                  ones that are added by other players.
                 </Typography>
               </m.div>
               <m.div variants={animateFade().inUp}>

@@ -22,6 +22,7 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
       bgcolor="grey.900"
       borderRadius={1}
       p={1}
+      sx={{ overflowX: "auto" }}
     >
       {selectedComment ? (
         <Tooltip title="Delete">
