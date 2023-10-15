@@ -42,7 +42,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "7.44.3",
     "react-quill": "2.0.0",
-    "react-social-icons": "^5.15.0",
+    "react-social-icons": "^6.0.0",
     "react-stickynode": "4.1.0",
     "react-use-intercom": "5.1.4",
     "sharp": "0.32.6",
