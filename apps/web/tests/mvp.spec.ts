@@ -43,15 +43,10 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Password").fill("testuser")
   await page.getByRole("button", { name: "Sign up" }).click()
   await page.getByRole("link", { name: "Submit your VOD" }).first().click()
-  await page.getByLabel("Game", { exact: true }).click()
-  await page.getByRole("option", { name: "Overwatch" }).click()
-  await page.getByLabel("Skill Level").click()
-  await page.getByRole("option", { name: "Platinum" }).click()
-
+  await page.getByRole("tab", { name: "Video File" }).click()
   await page
     .locator('[name="video"]')
     .setInputFiles("tests/fixtures/exampleVideo.mp4")
-
   await page.locator(".ql-editor").fill("some notes")
   await page.getByRole("button", { name: "Submit VOD" }).click()
   await expect(page.getByText("VOD submitted successfully")).toBeVisible()
@@ -61,12 +56,6 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Email").fill(reviewerEmail)
   await page.getByLabel("Password").fill("testreviewer")
   await page.getByRole("button", { name: "Sign in" }).click()
-
-  await page
-    .getByRole("listitem")
-    .getByRole("link", { name: "Overwatch" })
-    .click()
-
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await expect(page.getByText("some notes")).toBeVisible()
   await page.getByRole("button", { name: "Comment" }).click()
@@ -78,12 +67,6 @@ test("mvp", async ({ page }) => {
   await page.getByLabel("Email").fill(userEmail)
   await page.getByLabel("Password").fill("testuser")
   await page.getByRole("button", { name: "Sign in" }).click()
-
-  await page
-    .getByRole("listitem")
-    .getByRole("link", { name: "Overwatch" })
-    .click()
-
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "Wow!" }).click()
 })

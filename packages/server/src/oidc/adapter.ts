@@ -1,17 +1,6 @@
 import { Adapter as OidcAdapter, AdapterPayload } from "oidc-provider"
-import {
-  DynamoDBDocument,
-  QueryCommandInput,
-  UpdateCommandInput,
-  GetCommandInput,
-  DeleteCommandInput,
-} from "@aws-sdk/lib-dynamodb"
-import {
-  AttributeValue,
-  BatchWriteItemInput,
-  DynamoDB,
-  WriteRequest,
-} from "@aws-sdk/client-dynamodb"
+import { DynamoDBDocument, QueryCommandInput, UpdateCommandInput, GetCommandInput, DeleteCommandInput } from "@aws-sdk/lib-dynamodb"
+import { AttributeValue, BatchWriteItemInput, DynamoDB, WriteRequest } from "@aws-sdk/client-dynamodb"
 import {
   awsAccessKeyId,
   awsSecretAccessKey,
@@ -29,15 +18,14 @@ const dynamoClient = DynamoDBDocument.from(
       accessKeyId: awsAccessKeyId,
       secretAccessKey: awsSecretAccessKey,
     },
-  }),
-  { marshallOptions: { removeUndefinedValues: true } },
-)
+  })
+  , { marshallOptions: { removeUndefinedValues: true } })
 
 const handleErrors = <T>(fn: () => T) => {
   try {
     return fn()
   } catch (err) {
-    console.error("[dynamodb error]", err)
+    console.error('[dynamodb error]', err)
     throw err
   }
 }
@@ -52,7 +40,7 @@ export class Adapter implements OidcAdapter {
   async upsert(
     id: string,
     payload: AdapterPayload,
-    expiresIn?: number,
+    expiresIn?: number
   ): Promise<void> {
     return handleErrors(async () => {
       const expiresAt = expiresIn
@@ -91,12 +79,9 @@ export class Adapter implements OidcAdapter {
 
       const result = <
         { payload: AdapterPayload; expiresAt?: number } | undefined
-      >(await dynamoClient.get(params)).Item
+        >(await dynamoClient.get(params)).Item
 
-      if (
-        !result ||
-        (result.expiresAt && Date.now() > result.expiresAt * 1000)
-      ) {
+      if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
         return undefined
       }
 
@@ -119,12 +104,9 @@ export class Adapter implements OidcAdapter {
 
       const result = <
         { payload: AdapterPayload; expiresAt?: number } | undefined
-      >(await dynamoClient.query(params)).Items?.[0]
+        >(await dynamoClient.query(params)).Items?.[0]
 
-      if (
-        !result ||
-        (result.expiresAt && Date.now() > result.expiresAt * 1000)
-      ) {
+      if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
         return undefined
       }
 
@@ -147,12 +129,9 @@ export class Adapter implements OidcAdapter {
 
       const result = <
         { payload: AdapterPayload; expiresAt?: number } | undefined
-      >(await dynamoClient.query(params)).Items?.[0]
+        >(await dynamoClient.query(params)).Items?.[0]
 
-      if (
-        !result ||
-        (result.expiresAt && Date.now() > result.expiresAt * 1000)
-      ) {
+      if (!result || (result.expiresAt && Date.now() > result.expiresAt * 1000)) {
         return undefined
       }
 
@@ -218,20 +197,29 @@ export class Adapter implements OidcAdapter {
           return
         }
 
-        const batchWriteParams: BatchWriteItemInput = {
+        const batchWriteParams: BatchWriteItemInput =
+        {
           RequestItems: {
-            oidc: items.reduce<WriteRequest[]>((acc, item) => {
-              const params: DeleteCommandInput = {
-                TableName: TABLE_NAME,
-                Key: { modelId: item.modelId },
-              }
+            oidc:
+              items.reduce<WriteRequest[]>(
+                (acc, item) => {
+                  const params: DeleteCommandInput = {
+                    TableName: TABLE_NAME,
+                    Key: { modelId: item.modelId },
+                  }
 
-              return [...acc, { DeleteRequest: params }]
-            }, []),
+                  return [
+                    ...acc,
+                    { DeleteRequest: params },
+                  ]
+                },
+                []
+              ),
           },
         }
 
         await dynamoClient.batchWrite(batchWriteParams)
+
       } while (ExclusiveStartKey)
     })
   }

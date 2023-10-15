@@ -8,15 +8,11 @@
     "test": "turbo run test",
     "lint": "turbo run lint"
   },
-  "dependencies": {
-    "next": "13.5.4",
-    "@next/env": "13.5.4"
-  },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "3.428.0",
-    "@types/node": "18.18.5",
+    "@aws-sdk/client-dynamodb": "^3.335.0",
+    "@types/node": "18.17.18",
     "dotenv": "16.3.1",
     "prettier": "3.0.3",
-    "turbo": "1.10.15"
+    "turbo": "1.10.13"
   }
 }

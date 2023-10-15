@@ -7,7 +7,7 @@ import { errors } from "openid-client"
 
 const callback = withSessionApiRoute(async function (
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   const client = await getAuthClient()
   const params = client.callbackParams(req)
@@ -49,7 +49,7 @@ const callback = withSessionApiRoute(async function (
   delete req.session.returnUrl
   await req.session.save()
 
-  res.redirect(307, returnUrl ?? "/directory").end()
+  res.redirect(307, returnUrl ?? "/dashboard").end()
 })
 
 export default callback

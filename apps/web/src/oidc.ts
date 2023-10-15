@@ -1,7 +1,7 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next"
 
 export const withOidcInteraction = <T extends { [key: string]: any } = {}>(
-  getServerSideProps?: GetServerSideProps<T>,
+  getServerSideProps?: GetServerSideProps<T>
 ) => {
   return async (ctx: GetServerSidePropsContext) => {
     const { getOidcProvider, errors } = await import(

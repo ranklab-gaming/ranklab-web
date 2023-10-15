@@ -209,7 +209,6 @@ export const RecordingShowPage = ({
       title={recording.title}
       showTitle={false}
       fullWidth
-      games={games}
     >
       <ReviewProvider value={review}>
         <form onSubmit={submit}>

@@ -131,7 +131,7 @@ export const Hero = () => {
               mt={6}
             >
               <Stack spacing={1} textAlign="center">
-                <NextLink href="/directory" passHref legacyBehavior>
+                <NextLink href="/dashboard" passHref legacyBehavior>
                   <Button
                     size="large"
                     variant="text"

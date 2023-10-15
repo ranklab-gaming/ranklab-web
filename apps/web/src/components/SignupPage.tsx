@@ -14,6 +14,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "@/hooks/useForm"
 import { api } from "@/api"
+import { Game, GameId } from "@ranklab/api"
 import { track } from "@/analytics"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
@@ -21,9 +22,10 @@ import { useSnackbar } from "notistack"
 
 interface SignupPageProps {
   token?: string
+  games: Game[]
 }
 
-export const SignupPage = ({ token }: SignupPageProps) => {
+export const SignupPage = ({ token, games }: SignupPageProps) => {
   const id = useId().slice(1, -1)
   const login = useLogin()
   const jwt = token ? decode(token) : null
@@ -31,9 +33,11 @@ export const SignupPage = ({ token }: SignupPageProps) => {
   const { enqueueSnackbar } = useSnackbar()
 
   const defaultValues: AccountFieldsValues = {
+    gameId: games[0].id,
     name: jwtPayload?.name ?? "",
     email: jwtPayload?.sub ?? "",
     password: "",
+    skillLevel: 0,
   }
 
   const form = useForm({
@@ -60,12 +64,15 @@ export const SignupPage = ({ token }: SignupPageProps) => {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = form
 
   const createUser = async (data: AccountFieldsValues) => {
     const session = await api.usersCreate({
       createUserRequest: {
         name: data.name,
+        gameId: data.gameId as GameId,
+        skillLevel: data.skillLevel,
         credentials: token
           ? {
               token: {
@@ -92,7 +99,9 @@ export const SignupPage = ({ token }: SignupPageProps) => {
         <Stack spacing={3}>
           <AccountFields
             control={form.control}
+            games={games}
             showPasswordField={!jwtPayload}
+            watch={watch}
           />
           <LoadingButton
             color="primary"

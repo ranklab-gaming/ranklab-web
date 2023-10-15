@@ -4,7 +4,6 @@ import * as yup from "yup"
 
 export const RecordingFormSchema = yup.object().shape({
   skillLevel: yup.number().required("Skill level is required"),
-  gameId: yup.string().required("Game is required"),
   title: yup.string().required("Title is required"),
   notes: yup.string().defined(),
   video: yup
@@ -23,6 +22,13 @@ export const RecordingFormSchema = yup.object().shape({
       "Video file must be less than 4GiB",
       (value) => value && value instanceof File && value.size < 4294967296,
     ),
+  metadata: yup
+    .mixed({
+      check(value): value is any {
+        return true
+      },
+    })
+    .defined(),
 })
 
 export type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
@@ -46,9 +52,9 @@ export function useRecordingForm<
   const form = useForm<TValues>({
     defaultValues: {
       skillLevel: 0,
-      gameId: "",
       title: "",
       notes: "",
+      metadata: {},
       ...defaultValues,
     },
     resolver: yupResolver<TValues>(
