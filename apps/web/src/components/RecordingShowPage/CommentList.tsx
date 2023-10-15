@@ -33,23 +33,7 @@ export const CommentList = () => {
 
   const addACommentButton = (
     <NextLink href={returnUrl} passHref legacyBehavior>
-      <Button
-        variant="text"
-        sx={{
-          fontSize: 18,
-          color: "common.white",
-          transition: "all 0.25s",
-          backgroundImage: `linear-gradient( 136deg, ${theme.palette.primary.main} 0%, ${theme.palette.error.main} 50%, ${theme.palette.secondary.main} 100%)`,
-          boxShadow: "0 4px 12px 0 rgba(0,0,0,.35)",
-          "&:hover": {
-            filter: "brightness(1.3)",
-          },
-          py: 1,
-          px: 2,
-        }}
-      >
-        Add a comment
-      </Button>
+      <Button variant="outlined">Add a comment</Button>
     </NextLink>
   )
 

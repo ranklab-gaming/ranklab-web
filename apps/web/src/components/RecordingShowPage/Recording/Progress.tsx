@@ -66,6 +66,7 @@ export const Progress = ({ videoRef }: Props) => {
       onClick={handleSeek}
       flexGrow={1}
       position="relative"
+      overflow="hidden"
       py={1}
       ref={progressBarRef}
       sx={{
