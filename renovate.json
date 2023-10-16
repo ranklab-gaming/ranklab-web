@@ -1,6 +1,7 @@
 {
   "extends": ["config:base"],
   "platformAutomerge": true,
+  "detectHostRulesFromEnv": true,
   "packageRules": [
     {
       "matchDepTypes": ["devDependencies"],
