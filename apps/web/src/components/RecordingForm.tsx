@@ -1,16 +1,5 @@
 import { CreateRecordingRequest, Game, GameId, MediaState } from "@ranklab/api"
-import {
-  RecordingFormSchema,
-  RecordingFormValues,
-  useRecordingForm,
-} from "@/hooks/useRecordingForm"
-import {
-  Controller,
-  DeepPartial,
-  Path,
-  PathValue,
-  UseFormReturn,
-} from "react-hook-form"
+import { Controller } from "react-hook-form"
 import { api } from "@/api"
 import { Editor } from "@/components/Editor"
 import { LoadingButton } from "@mui/lab"
@@ -34,25 +23,43 @@ import { VideoFileSelect } from "./VideoFileSelect"
 import { GuideDialog } from "./RecordingForm/GuideDialog"
 import { formatBytes } from "@/helpers/formatBytes"
 import { GameSelect } from "./GameSelect"
+import * as yup from "yup"
+import { useForm } from "@/hooks/useForm"
 
-export interface RecordingFormProps<TValues extends RecordingFormValues> {
+export interface RecordingFormProps {
   games: Game[]
-  recordingForm?: UseFormReturn<TValues>
   footerElement?: JSX.Element | null
 }
 
-export const RecordingForm = <TValues extends RecordingFormValues>({
+const RecordingFormSchema = yup.object().shape({
+  skillLevel: yup.number().required("Skill level is required"),
+  gameId: yup.string().required("Game is required"),
+  title: yup.string().required("Title is required"),
+  notes: yup.string().defined(),
+  video: yup
+    .mixed({
+      check(value): value is File {
+        return value instanceof File
+      },
+    })
+    .test(
+      "required",
+      "Video is required",
+      (value) => value && value instanceof File && value.size > 0,
+    )
+    .test(
+      "fileSize",
+      "Video file must be less than 4GiB",
+      (value) => value && value instanceof File && value.size < 4294967296,
+    ),
+})
+
+type RecordingFormValues = yup.InferType<typeof RecordingFormSchema>
+
+export const RecordingForm = ({
   games,
-  recordingForm: recordingFormProp,
-}: PropsWithChildren<RecordingFormProps<TValues>>) => {
+}: PropsWithChildren<RecordingFormProps>) => {
   const router = useRouter()
-
-  const defaultRecordingForm = useRecordingForm<TValues>({
-    formSchema: RecordingFormSchema,
-    defaultValues: {} as DeepPartial<TValues>,
-  })
-
-  const recordingForm = recordingFormProp ?? defaultRecordingForm
 
   const {
     handleSubmit,
@@ -60,18 +67,25 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     watch,
     setValue,
     formState: { isSubmitting },
-  } = recordingForm
+  } = useForm<RecordingFormValues>({
+    defaultValues: {
+      skillLevel: 0,
+      gameId: "",
+      title: "",
+      notes: "",
+    },
+  })
 
-  const gameId = watch("gameId" as Path<TValues>)
+  const gameId = watch("gameId")
   const game = gameId ? assertFind(games, (g) => g.id === gameId) : null
   const [guideDialogOpen, setGuideDialogOpen] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
   const [upload, { progress: uploadProgress, uploading }] = useUpload()
-  const title = watch("title" as Path<TValues>) as string
-  const video = watch("video" as Path<TValues>) as File | undefined
+  const title = watch("title") as string
+  const video = watch("video") as File | undefined
   const [previewURL, setPreviewURL] = useState<string | undefined>(undefined)
 
-  const submit = async function (values: TValues) {
+  const submit = async function (values: RecordingFormValues) {
     const request: CreateRecordingRequest = {
       title: values.title,
       notes: values.notes,
@@ -141,7 +155,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
     <form onSubmit={handleSubmit(submit)}>
       <Stack spacing={3} mt={4}>
         <Controller
-          name={"video" as Path<TValues>}
+          name="video"
           control={control}
           render={({ field, fieldState: { error } }) => (
             <VideoFileSelect
@@ -150,18 +164,11 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
               onBlur={field.onBlur}
               onChange={(file) => {
                 if (!title && file) {
-                  setValue(
-                    "title" as Path<TValues>,
-                    file.name.split(".")[0] as PathValue<
-                      TValues,
-                      Path<TValues>
-                    >,
-                    {
-                      shouldDirty: true,
-                      shouldTouch: true,
-                      shouldValidate: true,
-                    },
-                  )
+                  setValue("title", file.name.split(".")[0], {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  })
                 }
 
                 field.onChange(file)
@@ -227,13 +234,21 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
           </Paper>
         ) : null}
         <Controller
-          name={"gameId" as Path<TValues>}
+          name="gameId"
           control={control}
           render={({ field, fieldState: { error } }) => (
             <GameSelect
               games={games}
               value={field.value as string}
-              onChange={field.onChange}
+              onChange={(gameId) => {
+                field.onChange(gameId)
+
+                setValue("skillLevel", 0, {
+                  shouldDirty: true,
+                  shouldTouch: true,
+                  shouldValidate: true,
+                })
+              }}
               onBlur={field.onBlur}
               error={Boolean(error)}
               helperText={error ? error.message : "The game of this VOD"}
@@ -242,7 +257,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
         />
         {game ? (
           <Controller
-            name={"skillLevel" as Path<TValues>}
+            name="skillLevel"
             control={control}
             render={({ field, fieldState: { error } }) => (
               <TextField
@@ -264,7 +279,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
           />
         ) : null}
         <Controller
-          name={"title" as Path<TValues>}
+          name="title"
           control={control}
           render={({ field, fieldState: { error } }) => (
             <TextField
@@ -278,7 +293,7 @@ export const RecordingForm = <TValues extends RecordingFormValues>({
           )}
         />
         <Controller
-          name={"notes" as Path<TValues>}
+          name="notes"
           control={control}
           render={({ field, fieldState: { error } }) => {
             return (

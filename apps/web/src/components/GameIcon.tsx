@@ -2,9 +2,11 @@ import { OverwatchIcon } from "@/components/OverwatchIcon"
 import { Box, BoxProps } from "@mui/material"
 import { Game } from "@ranklab/api"
 import React from "react"
+import { ApexIcon } from "./ApexIcon"
 
 const icons: Record<string, React.ComponentType> = {
   overwatch: OverwatchIcon,
+  apex: ApexIcon,
 }
 
 interface Props extends BoxProps {

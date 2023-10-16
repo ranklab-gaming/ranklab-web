@@ -183,6 +183,25 @@ export interface CreateCommentRequest {
 /**
  *
  * @export
+ * @interface CreateGameRequest
+ */
+export interface CreateGameRequest {
+  /**
+   *
+   * @type {string}
+   * @memberof CreateGameRequest
+   */
+  email: string
+  /**
+   *
+   * @type {string}
+   * @memberof CreateGameRequest
+   */
+  name: string
+}
+/**
+ *
+ * @export
  * @interface CreatePasswordRequest
  */
 export interface CreatePasswordRequest {
@@ -320,6 +339,7 @@ export interface Game {
  */
 export const GameId = {
   Overwatch: "overwatch",
+  Apex: "apex",
 } as const
 export type GameId = (typeof GameId)[keyof typeof GameId]
 

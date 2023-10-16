@@ -12,6 +12,7 @@ import {
 import { GameIcon } from "./GameIcon"
 import Link from "next/link"
 import overwatchStock from "@/images/games/overwatch-stock.jpg"
+import apexStock from "@/images/games/apex-stock.png"
 import { StaticImageData } from "next/image"
 import NextImage from "next/image"
 
@@ -21,6 +22,7 @@ interface Props {
 
 const stockImages: Record<string, StaticImageData> = {
   overwatch: overwatchStock,
+  apex: apexStock,
 }
 
 export const DirectoryPage = ({
