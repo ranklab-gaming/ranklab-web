@@ -21,7 +21,7 @@ jobs:
           - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -130,7 +130,7 @@ jobs:
       service-name: ${{ secrets.ECS_SERVICE_NAME }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
