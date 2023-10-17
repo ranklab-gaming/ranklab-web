@@ -81,8 +81,7 @@ export const Flow = () => {
     {
       icon: videoOutline,
       title: "Record",
-      description:
-        "Record your gameplay and upload it to our platform. For Overwatch, you can just paste the replay code.",
+      description: "Record your gameplay and upload it to our platform.",
       color: theme.palette.error.main,
     },
     {
@@ -136,7 +135,7 @@ export const Flow = () => {
                         color: card.color,
                         filter: `drop-shadow(2px 2px 2px ${alpha(
                           card.color,
-                          0.48
+                          0.48,
                         )})`,
                       }}
                     />
