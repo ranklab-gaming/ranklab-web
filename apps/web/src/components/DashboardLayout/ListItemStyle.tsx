@@ -10,7 +10,7 @@ import {
 import { alpha, styled } from "@mui/material/styles"
 import { ReactNode } from "react"
 
-type BaseProps = LinkProps & ListItemButtonProps
+type BaseProps = Omit<LinkProps & ListItemButtonProps, "component">
 
 export interface ListItemStyleProps extends BaseProps {
   component?: ReactNode
@@ -46,7 +46,7 @@ export const ListItemStyle = styled(ListItemButton, {
     color: theme.palette.primary.main,
     backgroundColor: alpha(
       theme.palette.primary.main,
-      theme.palette.action.selectedOpacity
+      theme.palette.action.selectedOpacity,
     ),
   }),
 }))

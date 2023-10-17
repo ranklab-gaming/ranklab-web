@@ -1,15 +1,6 @@
 import { theme } from "@/theme/theme"
-import {
-  Card,
-  CardContent,
-  Stack,
-  CardActionArea,
-  Button,
-  Typography,
-  Box,
-} from "@mui/material"
+import { Card, CardContent, Stack, CardActionArea, Box } from "@mui/material"
 import { m, AnimatePresence } from "framer-motion"
-import NextLink from "next/link"
 import { useOptionalUser } from "@/hooks/useUser"
 import { useRouter } from "next/router"
 import { formatDuration } from "@/helpers/formatDuration"
