@@ -18,6 +18,7 @@ import { useMemo } from "react"
 import { useReview } from "@/hooks/useReview"
 import { parseISO } from "date-fns"
 import { Iconify } from "../Iconify"
+import { MessageBox } from "../MessageBox"
 
 export const CommentList = () => {
   const user = useOptionalUser()
@@ -30,12 +31,6 @@ export const CommentList = () => {
       return_url: router.asPath,
     },
   }
-
-  const addACommentButton = (
-    <NextLink href={returnUrl} passHref legacyBehavior>
-      <Button variant="outlined">Add a comment</Button>
-    </NextLink>
-  )
 
   const sortedComments = useMemo(
     () =>
@@ -63,16 +58,16 @@ export const CommentList = () => {
           alignItems: "center",
         }}
       >
-        {!user ? (
-          addACommentButton
-        ) : (
-          <Iconify icon="mdi:sms" width={64} height={64} />
-        )}
-        <Typography variant="h3">
-          {!user
-            ? "Be the first to add a comment."
-            : "There are currently no comments on this VOD."}
-        </Typography>
+        <MessageBox
+          text={
+            user
+              ? "There are currently no comments on this VOD."
+              : "Be the first to add a comment."
+          }
+          icon={<Iconify icon="mdi:sms" width={64} height={64} />}
+          actionText="Add a comment"
+          href={user ? null : returnUrl}
+        />
       </Stack>
     )
   }

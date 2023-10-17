@@ -3,11 +3,12 @@ import { LoadingButton } from "@mui/lab"
 import { Paper, Stack, Typography, Box, Button } from "@mui/material"
 import { useState } from "react"
 import NextLink from "next/link"
+import { UrlObject } from "url"
 
 interface Props {
   icon?: JSX.Element | string
   text: JSX.Element | string
-  href?: string
+  href?: string | UrlObject | null
   action?: () => Promise<void>
   actionText?: string
 }
