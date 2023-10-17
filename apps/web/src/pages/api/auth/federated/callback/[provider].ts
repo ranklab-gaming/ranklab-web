@@ -1,4 +1,4 @@
-import { authClientSecret, host } from "@/config/server"
+import { apiHost, authClientSecret, host } from "@/config/server"
 import { getClient } from "@/oidc/providers"
 import { NextApiRequest, NextApiResponse } from "next"
 import { createServerApi } from "@/api/server"
@@ -84,6 +84,7 @@ export default withSessionApiRoute(async function callback(
     name: userInfo.preferred_username,
   })
     .setIssuer(host)
+    .setAudience(apiHost)
     .setSubject(email)
     .setExpirationTime("5m")
     .setProtectedHeader({ alg: "HS256" })
