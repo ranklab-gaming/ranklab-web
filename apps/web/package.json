@@ -14,7 +14,7 @@
     "@emotion/react": "11.11.1",
     "@emotion/server": "11.11.0",
     "@emotion/styled": "11.11.0",
-    "@hookform/resolvers": "3.3.0",
+    "@hookform/resolvers": "3.3.2",
     "@iconify/icons-eva": "1.2.6",
     "@iconify/react": "4.1.1",
     "@mui/icons-material": "5.11.16",
