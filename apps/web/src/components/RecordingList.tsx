@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material"
 import { Game, PaginatedResultForRecording } from "@ranklab/api"
-import { MouseEvent, useState } from "react"
+import { MouseEvent, useEffect, useState } from "react"
 import NextLink from "next/link"
 import { Chip } from "@mui/material"
 import { assertFind, assertProp } from "@/assert"
@@ -43,6 +43,10 @@ export const RecordingList = ({
     setPage(result.page)
     setRecordings(result)
   }
+
+  useEffect(() => {
+    setRecordings(initialRecordings)
+  }, [initialRecordings])
 
   return (
     <>
