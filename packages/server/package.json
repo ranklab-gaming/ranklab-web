@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/express": "4.17.20",
     "@types/lodash": "4.14.200",
-    "@types/oidc-provider": "8.4.0",
+    "@types/oidc-provider": "8.4.1",
     "typescript": "5.2.2"
   },
   "dependencies": {
