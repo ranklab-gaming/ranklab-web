@@ -161,8 +161,8 @@ importers:
         specifier: 4.14.200
         version: 4.14.200
       '@types/mixpanel-browser':
-        specifier: 2.47.3
-        version: 2.47.3
+        specifier: 2.47.4
+        version: 2.47.4
       '@types/node':
         specifier: 18.18.5
         version: 18.18.5
@@ -2154,8 +2154,8 @@ packages:
   /@types/mime@3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
 
-  /@types/mixpanel-browser@2.47.3:
-    resolution: {integrity: sha512-lum9ZdfLihJ89XoCrBjB8le/Vg6ohYSR2/3AdfLWGZdhUBEgftncDO9+0uW08FSN6SLqy2s9zCf55YV5sNLNYA==}
+  /@types/mixpanel-browser@2.47.4:
+    resolution: {integrity: sha512-wAwhSaIk//XY+O5Y8vnlb0Dc9Rpt0s+yHRXf1cGIYM4G5efzRjNeqWEqROf4qzP9FUgVE2M0Z8Pg9BV8Dt46yw==}
     dev: true
 
   /@types/mysql@2.15.21:
