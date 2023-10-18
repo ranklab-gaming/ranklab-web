@@ -1,6 +1,6 @@
 import { BasicLayout } from "@/components/BasicLayout"
 import { LoadingButton } from "@mui/lab"
-import { Box, Link, Stack, Typography } from "@mui/material"
+import { Alert, Box, Link, Stack, Typography } from "@mui/material"
 import { useEffect, useId } from "react"
 import { SocialButtons } from "./SocialButtons"
 import { useLogin } from "@/hooks/useLogin"
@@ -90,6 +90,11 @@ export const SignupPage = ({ token }: SignupPageProps) => {
     <BasicLayout title="Sign up to Ranklab">
       <form onSubmit={handleSubmit(createUser)} className={`${id}-form`}>
         <Stack spacing={3}>
+          {jwtPayload ? (
+            <Alert severity="info">
+              To complete your signup, please choose your username.
+            </Alert>
+          ) : null}
           <AccountFields
             control={form.control}
             showPasswordField={!jwtPayload}
@@ -106,7 +111,7 @@ export const SignupPage = ({ token }: SignupPageProps) => {
           >
             Sign up
           </LoadingButton>
-          <SocialButtons />
+          {jwtPayload ? null : <SocialButtons />}
         </Stack>
       </form>
       <Box display="flex" alignItems="center" mt={3}>

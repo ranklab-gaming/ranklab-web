@@ -105,6 +105,10 @@ export const Controls = ({ videoRef }: ControlsProps) => {
           {user ? (
             <Button
               onClick={() => {
+                if (editing) {
+                  setSelectedComment(null, false)
+                }
+
                 setEditing(!editing)
                 setPlaying(false)
               }}

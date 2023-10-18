@@ -31,6 +31,7 @@ interface ReviewContext {
   setPlaying: (playing: boolean) => void
   setRecording: (recording: Recording) => void
   setSelectedComment: (comment: Comment | null, shouldPause?: boolean) => void
+  pauseEventsRef: React.MutableRefObject<boolean>
 }
 
 export const ReviewContext = createContext<ReviewContext | null>(null)

@@ -20,33 +20,13 @@ const currentTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
 }
 
 export const Recording = ({ videoRef, drawingRef }: Props) => {
-  const {
-    form,
-    recording,
-    selectedComment,
-    setSelectedComment,
-    playing,
-    setPlaying,
-    readOnly,
-    editing,
-  } = useReview()
-
+  const { form, recording, selectedComment, readOnly, editing } = useReview()
   const [resizing, setResizing] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const metadata = form.watch("metadata")
   const containerRef = useRef<HTMLDivElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState<number>(0)
   const [wrapperHeight, setWrapperHeight] = useState<number>(0)
-
-  const setTimestamp = (microseconds: number) => {
-    form.setValue("metadata", {
-      ...metadata,
-      video: {
-        ...video,
-        timestamp: microseconds,
-      },
-    })
-  }
 
   useEffect(() => {
     if (boxRef.current === null) {
@@ -153,30 +133,14 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
           width={wrapperWidth}
           height={wrapperHeight}
-          onSeeked={(event) => {
-            setSelectedComment(null)
-            setTimestamp(currentTime(event))
-          }}
-          onPause={(event) => {
-            if (!playing) {
-              return
-            }
-
-            setSelectedComment(null, false)
-            setTimestamp(currentTime(event))
-            setPlaying(false)
-          }}
-          onPlay={(event) => {
-            if (playing) {
-              return
-            }
-
-            setSelectedComment(null, false)
-            setTimestamp(currentTime(event))
-            setPlaying(true)
-          }}
           onTimeUpdate={(e) => {
-            setTimestamp(currentTime(e))
+            form.setValue("metadata", {
+              ...metadata,
+              video: {
+                ...video,
+                timestamp: currentTime(e),
+              },
+            })
           }}
           onLoadedMetadata={resizeVideo}
         />

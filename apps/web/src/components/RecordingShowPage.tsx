@@ -82,6 +82,8 @@ export const RecordingShowPage = ({
   const theme = useTheme()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const drawingRef = useRef<DrawingRef>(null)
+  const pauseEventsRef = useRef(false)
+  const metadata = form.watch("metadata") as any
 
   const skillLevel = assertFind(
     game.skillLevels,
@@ -106,10 +108,24 @@ export const RecordingShowPage = ({
         shouldTouch: true,
       })
 
+      if (videoRef.current) {
+        videoRef.current.currentTime =
+          comment.metadata.video.timestamp / 1000000
+      }
+
       setEditing(true)
     } else {
       setEditing(false)
-      form.reset()
+
+      form.reset({
+        metadata: {
+          video: {
+            timestamp: metadata.video.timestamp ?? 0,
+            drawing: "",
+          },
+        },
+        body: "",
+      })
     }
 
     if (shouldPause) {
@@ -199,6 +215,7 @@ export const RecordingShowPage = ({
     setSelectedComment: selectComment,
     saveComment: submit,
     readOnly,
+    pauseEventsRef,
   }
 
   return (
