@@ -1,6 +1,14 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
-import { Box, Button, Container, Fab, Stack, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Container,
+  Fab,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
 import { PropsWithChildren, useRef } from "react"
@@ -9,6 +17,8 @@ import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
 import { assetsCdnUrl } from "@/config"
 import { Iconify } from "@/components/Iconify"
+import { Game } from "@ranklab/api"
+import { GameIcon } from "../GameIcon"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -58,7 +68,11 @@ const HeroImgStyle = styled(m.div)(({ theme }) => ({
   },
 }))
 
-export const Hero = () => {
+interface Props {
+  games: Game[]
+}
+
+export const Hero = ({ games }: Props) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
   const boxRef = useRef<HTMLDivElement>(null)
@@ -130,7 +144,7 @@ export const Hero = () => {
               justifyContent={!isDesktop ? "center" : "flex-start"}
               mt={6}
             >
-              <Stack spacing={1} textAlign="center">
+              <Stack spacing={3} textAlign="center" direction="row">
                 <NextLink href="/directory" passHref legacyBehavior>
                   <Button
                     size="large"
@@ -150,6 +164,29 @@ export const Hero = () => {
                     Explore
                   </Button>
                 </NextLink>
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  alignItems="center"
+                  justifyContent={!isDesktop ? "center" : "flex-start"}
+                >
+                  {games.slice(0, 6).map((game) => (
+                    <Tooltip title={game.name} key={game.id}>
+                      <Box>
+                        <GameIcon game={game} sx={{ width: 32, height: 32 }} />
+                      </Box>
+                    </Tooltip>
+                  ))}
+                  {games.length > 6 ? (
+                    <Typography
+                      sx={{ color: "common.white" }}
+                      variant="body2"
+                      component="p"
+                    >
+                      and more
+                    </Typography>
+                  ) : null}
+                </Stack>
               </Stack>
             </Box>
           </m.div>
