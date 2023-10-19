@@ -179,8 +179,8 @@ importers:
         specifier: 18.2.14
         version: 18.2.14
       '@types/react-stickynode':
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       '@types/uuid':
         specifier: 9.0.6
         version: 9.0.6
@@ -2218,8 +2218,8 @@ packages:
       '@types/react': 18.2.29
     dev: true
 
-  /@types/react-stickynode@4.0.1:
-    resolution: {integrity: sha512-CPVpvepeiNlYTI9HIt3fVK53hSnv5cAB5rWmGNf0/5s6svmF0FrUmEmnhWoGbAglUWzemEWbgcxzgOGi8H/z4A==}
+  /@types/react-stickynode@4.0.2:
+    resolution: {integrity: sha512-V+JXB7bVeIRKk8lE3UVUwcH2GVa2w7vBXhMXK7UhgcUG9kAJfQOH7EPCPgxTJo25/DP1UpiQO6h2yPlR9xsBzA==}
     dependencies:
       '@types/react': 18.2.29
     dev: true
