@@ -28,7 +28,7 @@ export const AccountPopover = () => {
     <>
       <IconButtonAnimate
         onClick={handleOpen}
-        title="Account"
+        title="Account Popover"
         sx={{
           p: 0,
           ...(anchor && {

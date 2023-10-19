@@ -20,7 +20,6 @@ export const Progress = ({ videoRef }: Props) => {
       return
     }
 
-    // Listen for time updates to adjust progress
     const handleTimeUpdate = () => {
       setProgress((video.currentTime / video.duration) * 100)
     }
@@ -54,7 +53,12 @@ export const Progress = ({ videoRef }: Props) => {
 
     const rect = progressBarRef.current.getBoundingClientRect()
     const offsetX = event.clientX - rect.left
-    const seekPercentage = (offsetX / rect.width) * 100
+
+    const seekPercentage = Math.min(
+      100,
+      Math.max(0, (offsetX / rect.width) * 100),
+    )
+
     setSeekPosition(seekPercentage)
   }
 

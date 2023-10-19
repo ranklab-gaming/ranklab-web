@@ -92,7 +92,7 @@ export const SignupPage = ({ token }: SignupPageProps) => {
         <Stack spacing={3}>
           {jwtPayload ? (
             <Alert severity="info">
-              To complete your signup, please choose your username.
+              To complete your signup, please fill out the details below.
             </Alert>
           ) : null}
           <AccountFields
