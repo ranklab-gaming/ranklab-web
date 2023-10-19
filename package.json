@@ -9,8 +9,8 @@
     "lint": "turbo run lint"
   },
   "dependencies": {
-    "next": "13.4.12",
-    "@next/env": "13.4.12"
+    "next": "13.5.6",
+    "@next/env": "13.5.6"
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "3.430.0",
