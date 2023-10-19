@@ -28,6 +28,7 @@ import { AnimatePresence, m } from "framer-motion"
 import { CommentForm } from "./RecordingShowPage/CommentForm"
 import { DrawingRef } from "./RecordingShowPage/Drawing"
 import { animateFade } from "@/animate/fade"
+import { useController } from "react-hook-form"
 
 interface Props {
   recording: ApiRecording
@@ -35,23 +36,20 @@ interface Props {
   comments: Comment[]
 }
 
-export const CommentFormSchema = yup
-  .object()
-  .shape({
-    body: yup.string().defined(),
-    metadata: yup.mixed().defined(),
-  })
-  .test("is-valid", (values) => {
-    return (
-      values.body.length > 0 ||
-      (values.metadata as any).video.drawing.length > 0
-    )
-  })
+export const CommentFormSchema = yup.object().shape({
+  body: yup.string().required(),
+  metadata: yup.object().shape({
+    video: yup.object().shape({
+      drawing: yup.string().defined(),
+      timestamp: yup.number().defined(),
+    }),
+  }),
+})
 
 export type CommentFormValues = yup.InferType<typeof CommentFormSchema>
 
 export const RecordingShowPage = ({
-  recording: initialRecording,
+  recording,
   games,
   comments: initialComments,
   user,
@@ -70,11 +68,20 @@ export const RecordingShowPage = ({
     },
   })
 
+  const metadataController = useController({
+    name: "metadata",
+    control: form.control,
+  })
+
+  const bodyController = useController({
+    name: "body",
+    control: form.control,
+  })
+
   const [comments, setComments] = useState(initialComments)
   const [editing, setEditing] = useState(false)
   const [color, setColor] = useState<Color>("primary")
   const [playing, setPlaying] = useState(false)
-  const [recording, setRecording] = useState(initialRecording)
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null)
   const { enqueueSnackbar } = useSnackbar()
   const game = assertFind(games, (g) => g.id === recording.gameId)
@@ -82,54 +89,28 @@ export const RecordingShowPage = ({
   const theme = useTheme()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const drawingRef = useRef<DrawingRef>(null)
-  const pauseEventsRef = useRef(false)
-  const metadata = form.watch("metadata") as any
 
   const skillLevel = assertFind(
     game.skillLevels,
     (sl) => sl.value === recording.skillLevel,
   )
 
-  const readOnly = Boolean(
-    !user || (selectedComment && selectedComment.userId !== user.id),
-  )
+  const selectComment = (comment: Comment | null) => {
+    videoRef.current?.pause()
+    setPlaying(false)
 
-  const selectComment = (comment: Comment | null, shouldPause = true) => {
     if (comment) {
-      form.setValue("metadata", comment.metadata, {
-        shouldDirty: true,
-        shouldValidate: true,
-        shouldTouch: true,
-      })
-
-      form.setValue("body", comment.body, {
-        shouldDirty: true,
-        shouldValidate: true,
-        shouldTouch: true,
-      })
+      metadataController.field.onChange(comment.metadata)
+      bodyController.field.onChange(comment.body)
 
       if (videoRef.current) {
         videoRef.current.currentTime =
           comment.metadata.video.timestamp / 1000000
       }
 
-      setEditing(true)
+      setEditing(user?.id === comment.userId)
     } else {
       setEditing(false)
-
-      form.reset({
-        metadata: {
-          video: {
-            timestamp: metadata.video.timestamp ?? 0,
-            drawing: "",
-          },
-        },
-        body: "",
-      })
-    }
-
-    if (shouldPause) {
-      handleSetPlaying(false)
     }
 
     setSelectedComment(comment)
@@ -143,7 +124,7 @@ export const RecordingShowPage = ({
         createCommentRequest: {
           recordingId: recording.id,
           body: values.body,
-          metadata: values.metadata as any,
+          metadata: values.metadata,
         },
       })
     } else {
@@ -151,7 +132,7 @@ export const RecordingShowPage = ({
         id: selectedComment.id,
         updateCommentRequest: {
           body: values.body,
-          metadata: values.metadata as any,
+          metadata: values.metadata,
         },
       })
     }
@@ -188,12 +169,29 @@ export const RecordingShowPage = ({
 
   const handleSetPlaying = (playing: boolean) => {
     setPlaying(playing)
+    selectComment(null)
 
     if (playing) {
       videoRef.current?.play()
     } else {
       videoRef.current?.pause()
     }
+  }
+
+  const handleSetEditing = (editing: boolean) => {
+    if (editing) {
+      form.reset({
+        metadata: {
+          video: {
+            timestamp: Math.floor(videoRef.current?.currentTime ?? 0) * 1000000,
+            drawing: "",
+          },
+        },
+      })
+    }
+
+    setSelectedComment(null)
+    setEditing(editing)
   }
 
   const submit = form.handleSubmit(saveComment)
@@ -209,13 +207,11 @@ export const RecordingShowPage = ({
     recording,
     selectedComment,
     setColor,
-    setEditing,
+    setEditing: handleSetEditing,
     setPlaying: handleSetPlaying,
-    setRecording,
     setSelectedComment: selectComment,
     saveComment: submit,
-    readOnly,
-    pauseEventsRef,
+    metadataController,
   }
 
   return (
@@ -312,7 +308,7 @@ export const RecordingShowPage = ({
                         justifyContent: "center",
                       }}
                     >
-                      {editing && !readOnly ? (
+                      {editing ? (
                         <CommentForm drawingRef={drawingRef} />
                       ) : (
                         <CommentList />

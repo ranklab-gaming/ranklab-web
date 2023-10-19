@@ -15,7 +15,7 @@ export const CommentListItem = ({ comment, selected, title }: ItemProps) => {
   const user = useContext(UserContext)
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} title={selected ? "Selected Comment" : ""}>
       <Stack direction="column" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Typography variant="body2">{title}</Typography>

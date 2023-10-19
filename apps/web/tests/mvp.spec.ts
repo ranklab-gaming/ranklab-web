@@ -1,79 +1,130 @@
 import { test, expect } from "@playwright/test"
-import { Client } from "pg"
-import fs from "fs/promises"
 import { v4 as uuid } from "uuid"
-
-const client = new Client({
-  host: process.env.DB_HOST ?? "postgres",
-  port: 5432,
-  user: "postgres",
-  password: "postgres",
-  database: "app_test",
-})
-
-const executeSqlFile = async (filePath: string) => {
-  const sql = await fs.readFile(filePath, "utf8")
-  await client.query(sql)
-}
+import { db, executeSqlFile } from "./mvp/db"
+import { logout, signin, signup } from "./mvp/auth"
+import {
+  drawLine,
+  seekTo,
+  waitForRecordingToBeProcessed,
+} from "./mvp/recording"
 
 test.beforeEach(async () => {
-  await client.connect()
+  await db.connect()
   await executeSqlFile("tests/fixtures/resetData.sql")
   await executeSqlFile("tests/fixtures/seedData.sql")
 })
 
 test.afterEach(async () => {
-  await client.end()
+  await db.end()
 })
 
 test("mvp", async ({ page }) => {
   const reviewerEmail = `reviewer+${uuid()}@example.com`
   const userEmail = `user+${uuid()}@example.com`
+  const password = "testpassword"
 
-  await page.goto("/api/auth/signin?&intent=signup")
-  await page.getByLabel("Name").fill("Test Reviewer")
-  await page.getByLabel("Email").fill(reviewerEmail)
-  await page.getByLabel("Password").fill("testreviewer")
-  await page.getByRole("button", { name: "Sign up" }).click()
-  await page.getByTitle("Account").click()
-  await page.getByRole("menuitem", { name: "Logout" }).click()
-  await page.getByRole("link", { name: "Get Started" }).first().click()
-  await page.getByLabel("Name").fill("Test User")
-  await page.getByLabel("Email").fill(userEmail)
-  await page.getByLabel("Password").fill("testuser")
-  await page.getByRole("button", { name: "Sign up" }).click()
-  await page.getByRole("link", { name: "Submit your VOD" }).first().click()
-  await page.getByLabel("Game", { exact: true }).click()
+  await page.goto("/")
+
+  await signup({ page, name: "Test User", email: userEmail, password })
+
+  // Create a VOD to review
+  await page.getByTitle("Submit your VOD").click()
+  await page.getByRole("combobox", { name: "Game" }).click()
   await page.getByRole("option", { name: "Overwatch" }).click()
-  await page.getByLabel("Skill Level").click()
+  await page.getByRole("combobox", { name: "Skill Level" }).click()
   await page.getByRole("option", { name: "Platinum" }).click()
-
   await page
     .locator('[name="video"]')
     .setInputFiles("tests/fixtures/exampleVideo.mp4")
-
-  await page.locator(".ql-editor").fill("some notes")
+  await page
+    .getByTitle("Notes")
+    .locator("[contenteditable]")
+    .first()
+    .fill("some notes")
   await page.getByRole("button", { name: "Submit VOD" }).click()
   await expect(page.getByText("VOD submitted successfully")).toBeVisible()
-  await page.getByTitle("Account").click()
-  await page.getByRole("menuitem", { name: "Logout" }).click()
-  await page.getByRole("link", { name: "Sign in" }).click()
-  await page.getByLabel("Email").fill(reviewerEmail)
-  await page.getByLabel("Password").fill("testreviewer")
-  await page.getByRole("button", { name: "Sign in" }).click()
-  await page.getByRole("link", { name: "Overwatch Overwatch" }).click()
+  await waitForRecordingToBeProcessed()
+  await logout(page)
+
+  await signup({ page, name: "Test Reviewer", email: reviewerEmail, password })
+
+  // Go to the review page
+  await page.getByTitle("Overwatch").click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await expect(page.getByText("some notes")).toBeVisible()
-  await page.getByRole("button", { name: "Comment" }).click()
-  await page.locator(".ql-editor").fill("Wow!")
+
+  // Add a comment at around 00:03 by seeking
+  await page.waitForFunction(
+    () => document.querySelector("video")?.readyState === 4,
+  )
+  await seekTo(page, 0.3)
+  await page.getByRole("button", { name: "Comment At" }).click()
+  await page
+    .getByTitle("Comment")
+    .locator("[contenteditable]")
+    .first()
+    .fill("some comment")
+  await drawLine(page, 0.3, 0.3, 0.7, 0.7)
   await page.getByRole("button", { name: "Save Comment" }).click()
-  await page.getByTitle("Account").click()
-  await page.getByRole("menuitem", { name: "Logout" }).click()
-  await page.getByRole("link", { name: "Sign in" }).click()
-  await page.getByLabel("Email").fill(userEmail)
-  await page.getByLabel("Password").fill("testuser")
-  await page.getByRole("button", { name: "Sign in" }).click()
-  await page.getByRole("link", { name: "Overwatch Overwatch" }).click()
+  await expect(page.getByText("Comment saved successfully")).toBeVisible()
+
+  // Comment should be deselected after saving
+  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+
+  // Resume the video and wait 2 seconds
+  await page.getByLabel("Play/Pause").click()
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+
+  // The video should pause when adding a comment
+  await page.getByText("Comment At 00:05").click()
+  await page.waitForFunction(
+    () => document.querySelector("video")?.paused === true,
+  )
+
+  // Add a comment as a user
+  await logout(page)
+  await signin({ page, email: userEmail, password })
+  await page.getByTitle("Overwatch").click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
-  await page.getByRole("button", { name: "Wow!" }).click()
+  await page.getByRole("button", { name: "Comment At 00:00" }).click()
+  await page
+    .getByTitle("Comment")
+    .locator("[contenteditable]")
+    .first()
+    .fill("some user comment")
+  await page.getByRole("button", { name: "Save Comment" }).click()
+  await expect(page.getByText("Comment saved successfully")).toBeVisible()
+
+  // Select a comment made by the reviewer
+  await page.getByRole("button", { name: "some comment" }).click()
+  await page.waitForFunction(() => {
+    const currentTime = document.querySelector("video")?.currentTime ?? 0
+    return currentTime >= 2 && currentTime <= 4
+  })
+  await expect(page.getByTitle("Drawing").locator("path")).toHaveCount(1)
+  await expect(page.getByTitle("Selected Comment")).toContainText(
+    "some comment",
+  )
+
+  // Since the comment is not made by the user, editing mode should be disabled
+  await expect(page.getByRole("button", { name: "Comment At" })).toBeVisible()
+
+  // Playing should deselect the comment
+  await page.getByLabel("Play/Pause").click()
+  await page.waitForFunction(
+    () => document.querySelector("video")?.paused === false,
+  )
+  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+
+  // When selecting a comment made by the user, editing mode should be enabled
+  await page.getByRole("button", { name: "some user comment" }).click()
+  await expect(page.getByTitle("Selected Comment")).toContainText(
+    "some user comment",
+  )
+  await page.getByRole("button", { name: "Cancel" }).first().click()
+
+  // Clicking a comment twice should deselect it
+  await page.getByRole("button", { name: "some comment" }).click()
+  await page.getByRole("button", { name: "some comment" }).click()
+  await expect(page.getByTitle("Selected Comment")).toBeHidden()
 })

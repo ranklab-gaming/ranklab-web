@@ -39,7 +39,7 @@ export const NavItemRoot = ({ item, active, collapsed }: NavItemProps) => {
   ) : (
     <>
       {renderIcon}
-      <ListItemTextStyle disableTypography primary={title} />
+      <ListItemTextStyle disableTypography primary={title} title={title} />
     </>
   )
 

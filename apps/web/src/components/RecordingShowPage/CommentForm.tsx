@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const CommentForm = ({ drawingRef }: Props) => {
-  const { form, setSelectedComment } = useReview()
+  const { form, setEditing } = useReview()
 
   return (
     <Box flex={1} maxWidth="100%">
@@ -21,7 +21,7 @@ export const CommentForm = ({ drawingRef }: Props) => {
         name="body"
         control={form.control}
         render={({ field, fieldState: { error } }) => (
-          <Box bgcolor="grey.900" borderRadius={1}>
+          <Box bgcolor="grey.900" borderRadius={1} title="Comment">
             <Editor
               value={field.value}
               onChange={(value) => {
@@ -62,7 +62,7 @@ export const CommentForm = ({ drawingRef }: Props) => {
             },
           }}
           onClick={() => {
-            setSelectedComment(null)
+            setEditing(false)
           }}
         >
           Cancel

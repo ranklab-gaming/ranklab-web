@@ -87,10 +87,10 @@ export interface Comment {
   preview: string
   /**
    *
-   * @type {any}
+   * @type {CommentMetadata}
    * @memberof Comment
    */
-  metadata: any | null
+  metadata: CommentMetadata
   /**
    *
    * @type {User}
@@ -179,25 +179,6 @@ export interface CreateCommentRequest {
    * @memberof CreateCommentRequest
    */
   metadata: CommentMetadata
-}
-/**
- *
- * @export
- * @interface CreateGameRequest
- */
-export interface CreateGameRequest {
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  email: string
-  /**
-   *
-   * @type {string}
-   * @memberof CreateGameRequest
-   */
-  name: string
 }
 /**
  *

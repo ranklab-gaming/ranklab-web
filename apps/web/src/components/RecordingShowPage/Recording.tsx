@@ -20,7 +20,7 @@ const currentTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
 }
 
 export const Recording = ({ videoRef, drawingRef }: Props) => {
-  const { form, recording, selectedComment, readOnly, editing } = useReview()
+  const { form, recording, selectedComment, editing } = useReview()
   const [resizing, setResizing] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
   const metadata = form.watch("metadata")
@@ -144,7 +144,9 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           }}
           onLoadedMetadata={resizeVideo}
         />
-        {editing && readOnly && selectedComment ? (
+        {editing && !resizing ? (
+          <Drawing ref={drawingRef} />
+        ) : selectedComment ? (
           <Box
             component={m.div}
             variants={animateFade().in}
@@ -153,6 +155,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
             exit="exit"
           >
             <div
+              title="Drawing"
               style={{
                 position: "absolute",
                 top: 0,
@@ -167,8 +170,6 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
               }}
             />
           </Box>
-        ) : editing && !readOnly && !resizing ? (
-          <Drawing ref={drawingRef} />
         ) : null}
         <Controls videoRef={videoRef} />
       </div>

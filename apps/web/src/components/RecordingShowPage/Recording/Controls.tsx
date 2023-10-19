@@ -24,21 +24,11 @@ export interface ControlsProps {
 
 export const Controls = ({ videoRef }: ControlsProps) => {
   const theme = useTheme()
-  const { form, playing, setPlaying, setSelectedComment, setEditing, editing } =
-    useReview()
-  const metadata = form.watch("metadata") as any
+  const { form, playing, setPlaying, setEditing, editing } = useReview()
+  const metadata = form.watch("metadata")
   const timestamp = metadata.video.timestamp ?? 0
   const [duration, setDuration] = useState(0)
   const user = useOptionalUser()
-
-  const sx = {
-    backgroundColor: alpha(theme.palette.common.black, 0.75),
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 999999,
-  }
 
   useEffect(() => {
     const video = videoRef.current
@@ -68,7 +58,14 @@ export const Controls = ({ videoRef }: ControlsProps) => {
         animate="animate"
         initial="initial"
         exit="exit"
-        sx={sx}
+        sx={{
+          backgroundColor: alpha(theme.palette.common.black, 0.75),
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 999999,
+        }}
       >
         <Stack
           direction="row"
@@ -86,7 +83,6 @@ export const Controls = ({ videoRef }: ControlsProps) => {
             <IconButton
               onClick={() => {
                 playing ? setPlaying(false) : setPlaying(true)
-                setSelectedComment(null, false)
               }}
             >
               <Iconify
@@ -105,12 +101,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
           {user ? (
             <Button
               onClick={() => {
-                if (editing) {
-                  setSelectedComment(null, false)
-                }
-
                 setEditing(!editing)
-                setPlaying(false)
               }}
               color={editing ? "secondary" : "primary"}
               variant="contained"

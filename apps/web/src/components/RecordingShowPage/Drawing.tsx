@@ -20,8 +20,8 @@ export interface DrawingRef {
 
 export const Drawing = forwardRef<DrawingRef>((_props, ref) => {
   const theme = useTheme()
-  const { color, form } = useReview()
-  const metadata = form.watch("metadata") as any
+  const { color, form, metadataController } = useReview()
+  const metadata = form.watch("metadata")
   const value = metadata.video.drawing
 
   const [renderRef, draw] = useSvgDrawing({
@@ -66,21 +66,13 @@ export const Drawing = forwardRef<DrawingRef>((_props, ref) => {
       const svg = getSvgXml()
 
       if (svg !== null && svg !== value) {
-        form.setValue(
-          "metadata",
-          {
-            ...metadata,
-            video: {
-              ...metadata.video,
-              drawing: svg,
-            },
+        metadataController.field.onChange({
+          ...metadata,
+          video: {
+            ...metadata.video,
+            drawing: svg,
           },
-          {
-            shouldDirty: true,
-            shouldValidate: true,
-            shouldTouch: true,
-          },
-        )
+        })
       }
     })
 
@@ -117,6 +109,7 @@ export const Drawing = forwardRef<DrawingRef>((_props, ref) => {
       exit="exit"
     >
       <div
+        title="Drawing"
         ref={renderRef}
         style={{
           position: "absolute",
