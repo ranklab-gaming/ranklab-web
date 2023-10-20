@@ -192,6 +192,7 @@ export const RecordingShowPage = ({
     }
 
     setSelectedComment(null)
+    setPlaying(false)
     setEditing(editing)
   }
 

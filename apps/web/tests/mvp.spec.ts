@@ -139,4 +139,11 @@ test("mvp", async ({ page }) => {
     () => document.querySelector("video")?.paused === false,
   )
   await expect(page.getByLabel("Pause")).toBeVisible()
+
+  // Pausing should change the icon to a play button
+  await page.getByLabel("Pause").click()
+  await page.waitForFunction(
+    () => document.querySelector("video")?.paused === true,
+  )
+  await expect(page.getByLabel("Play")).toBeVisible()
 })
