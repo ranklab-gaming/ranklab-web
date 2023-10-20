@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import LinearProgress from "@mui/material/LinearProgress"
 import { Box, Tooltip } from "@mui/material"
 import { formatDuration } from "@/helpers/formatDuration"
+import { useReview } from "@/hooks/useReview"
 
 interface Props {
   videoRef: React.RefObject<HTMLVideoElement>
@@ -12,6 +13,7 @@ export const Progress = ({ videoRef }: Props) => {
   const [seekPosition, setSeekPosition] = useState(0)
   const progressBarRef = useRef<HTMLDivElement>(null)
   const [showSeek, setShowSeek] = useState(false)
+  const { setSelectedComment } = useReview()
 
   useEffect(() => {
     const video = videoRef.current
@@ -44,6 +46,7 @@ export const Progress = ({ videoRef }: Props) => {
     const offsetX = event.clientX - rect.left
     const newTime = (offsetX / rect.width) * video.duration
     video.currentTime = newTime
+    setSelectedComment(null)
   }
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {

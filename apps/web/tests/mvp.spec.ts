@@ -127,4 +127,9 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "some comment" }).click()
   await page.getByRole("button", { name: "some comment" }).click()
   await expect(page.getByTitle("Selected Comment")).toBeHidden()
+
+  // Seeking should deselect the comment
+  await page.getByRole("button", { name: "some comment" }).click()
+  await seekTo(page, 0.5)
+  await expect(page.getByTitle("Selected Comment")).toBeHidden()
 })
