@@ -169,7 +169,8 @@ export const RecordingShowPage = ({
 
   const handleSetPlaying = (playing: boolean) => {
     setPlaying(playing)
-    selectComment(null)
+    setEditing(false)
+    setSelectedComment(null)
 
     if (playing) {
       videoRef.current?.play()

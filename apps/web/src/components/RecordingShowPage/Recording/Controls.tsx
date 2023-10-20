@@ -79,7 +79,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
           initial="initial"
           exit="exit"
         >
-          <Tooltip title="Play/Pause">
+          <Tooltip title={playing ? "Pause" : "Play"}>
             <IconButton
               onClick={() => {
                 playing ? setPlaying(false) : setPlaying(true)

@@ -72,7 +72,7 @@ test("mvp", async ({ page }) => {
   await expect(page.getByTitle("Selected Comment")).toBeHidden()
 
   // Resume the video and wait 2 seconds
-  await page.getByLabel("Play/Pause").click()
+  await page.getByLabel("Play").click()
   await new Promise((resolve) => setTimeout(resolve, 2000))
 
   // The video should pause when adding a comment
@@ -110,7 +110,7 @@ test("mvp", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Comment At" })).toBeVisible()
 
   // Playing should deselect the comment
-  await page.getByLabel("Play/Pause").click()
+  await page.getByLabel("Play").click()
   await page.waitForFunction(
     () => document.querySelector("video")?.paused === false,
   )
@@ -132,4 +132,11 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "some comment" }).click()
   await seekTo(page, 0.5)
   await expect(page.getByTitle("Selected Comment")).toBeHidden()
+
+  // Playing should change the icon to a pause button
+  await page.getByLabel("Play").click()
+  await page.waitForFunction(
+    () => document.querySelector("video")?.paused === false,
+  )
+  await expect(page.getByLabel("Pause")).toBeVisible()
 })
