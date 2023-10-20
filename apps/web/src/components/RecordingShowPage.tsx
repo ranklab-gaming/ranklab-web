@@ -194,6 +194,7 @@ export const RecordingShowPage = ({
     setSelectedComment(null)
     setPlaying(false)
     setEditing(editing)
+    videoRef.current?.pause()
   }
 
   const submit = form.handleSubmit(saveComment)
