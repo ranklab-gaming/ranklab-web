@@ -94,36 +94,51 @@ export default withSessionApiRoute(async function callback(
     token: jwt,
   })
 
-  if (intent === "login") {
-    let session
-
-    try {
-      session = await api.sessionsCreate({
-        createSessionRequest: {
-          credentials: {
-            token: {
-              token: jwt,
-            },
+  const createSession = async () => {
+    return await api.sessionsCreate({
+      createSessionRequest: {
+        credentials: {
+          token: {
+            token: jwt,
           },
         },
-      })
-    } catch (e) {
-      if (e instanceof ResponseError && e.response.status === 404) {
+      },
+    })
+  }
+
+  let session
+
+  try {
+    session = await createSession()
+  } catch (e) {
+    if (e instanceof ResponseError && e.response.status === 404) {
+      if (userInfo.preferred_username) {
+        await api.usersCreate({
+          createUserRequest: {
+            name: userInfo.preferred_username,
+            credentials: {
+              token: {
+                token: jwt,
+              },
+            },
+          },
+        })
+
+        session = await createSession()
+      } else {
         signupParams.set("intent", "signup")
         return res.redirect(`/api/auth/signin?${signupParams.toString()}`)
       }
-
+    } else {
       throw e
     }
-
-    const location = await finishInteraction(session.token, req, res)
-
-    if (typeof location === "string") {
-      return res.redirect(location)
-    }
-
-    return location
   }
 
-  return res.redirect(`/signup?${signupParams.toString()}`).end()
+  const location = await finishInteraction(session.token, req, res)
+
+  if (typeof location === "string") {
+    return res.redirect(location)
+  }
+
+  return location
 })
