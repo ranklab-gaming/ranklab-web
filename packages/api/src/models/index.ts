@@ -312,6 +312,12 @@ export interface Game {
    * @memberof Game
    */
   skillLevels: Array<SkillLevel>
+  /**
+   *
+   * @type {boolean}
+   * @memberof Game
+   */
+  followed: boolean
 }
 
 /**
