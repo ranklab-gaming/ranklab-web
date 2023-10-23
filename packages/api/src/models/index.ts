@@ -593,6 +593,19 @@ export interface UpdateCommentRequest {
 /**
  *
  * @export
+ * @interface UpdateGameRequest
+ */
+export interface UpdateGameRequest {
+  /**
+   *
+   * @type {boolean}
+   * @memberof UpdateGameRequest
+   */
+  followed: boolean
+}
+/**
+ *
+ * @export
  * @interface UpdatePasswordRequest
  */
 export interface UpdatePasswordRequest {

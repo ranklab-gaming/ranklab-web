@@ -29,6 +29,7 @@ import type {
   Session,
   StatusResponse,
   UpdateCommentRequest,
+  UpdateGameRequest,
   UpdatePasswordRequest,
   UpdateUserRequest,
   User,
@@ -57,6 +58,11 @@ export interface CommentsListRequest {
 export interface CommentsUpdateRequest {
   id: string
   updateCommentRequest: UpdateCommentRequest
+}
+
+export interface GamesUpdateRequest {
+  id: string
+  updateGameRequest: UpdateGameRequest
 }
 
 export interface PasswordsCreateRequest {
@@ -454,6 +460,62 @@ export class RanklabApi extends runtime.BaseAPI {
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<Array<Game>> {
     const response = await this.gamesListRaw(initOverrides)
+    return await response.value()
+  }
+
+  /**
+   */
+  async gamesUpdateRaw(
+    requestParameters: GamesUpdateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<runtime.ApiResponse<Game>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling gamesUpdate.",
+      )
+    }
+
+    if (
+      requestParameters.updateGameRequest === null ||
+      requestParameters.updateGameRequest === undefined
+    ) {
+      throw new runtime.RequiredError(
+        "updateGameRequest",
+        "Required parameter requestParameters.updateGameRequest was null or undefined when calling gamesUpdate.",
+      )
+    }
+
+    const queryParameters: any = {}
+
+    const headerParameters: runtime.HTTPHeaders = {}
+
+    headerParameters["Content-Type"] = "application/json"
+
+    const response = await this.request(
+      {
+        path: `/games/{id}`.replace(
+          `{${"id"}}`,
+          encodeURIComponent(String(requestParameters.id)),
+        ),
+        method: "PUT",
+        headers: headerParameters,
+        query: queryParameters,
+        body: requestParameters.updateGameRequest,
+      },
+      initOverrides,
+    )
+
+    return new runtime.JSONApiResponse(response)
+  }
+
+  /**
+   */
+  async gamesUpdate(
+    requestParameters: GamesUpdateRequest,
+    initOverrides?: RequestInit | runtime.InitOverrideFunction,
+  ): Promise<Game> {
+    const response = await this.gamesUpdateRaw(requestParameters, initOverrides)
     return await response.value()
   }
 
