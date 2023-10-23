@@ -125,17 +125,19 @@ export const DirectoryPage = ({
                     </CardContent>
                   </CardActionArea>
                 </Link>
-                <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
-                  <Tooltip title={game.followed ? "Unfollow" : "Follow"}>
-                    <IconButton
-                      color={game.followed ? "primary" : "default"}
-                      onClick={() => toggleFollow(game)}
-                      disabled={!user}
-                    >
-                      <Iconify icon="mdi:bell" />
-                    </IconButton>
-                  </Tooltip>
-                </CardActions>
+                {user ? (
+                  <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
+                    <Tooltip title={game.followed ? "Unfollow" : "Follow"}>
+                      <IconButton
+                        color={game.followed ? "primary" : "default"}
+                        onClick={() => toggleFollow(game)}
+                        disabled={!user}
+                      >
+                        <Iconify icon="mdi:bell" />
+                      </IconButton>
+                    </Tooltip>
+                  </CardActions>
+                ) : null}
               </Card>
             </Grid>
           )
