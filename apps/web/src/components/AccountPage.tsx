@@ -112,7 +112,7 @@ export const AccountPage = ({
 
       avatarId = newAvatar.id
 
-      const poll = async (retries = 10): Promise<boolean> => {
+      const poll = async (retries = 30): Promise<boolean> => {
         const avatar = await api.avatarsGet({ id: newAvatar.id })
 
         if (avatar.state === MediaState.Processed) {

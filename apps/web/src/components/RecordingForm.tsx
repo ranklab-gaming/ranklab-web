@@ -119,7 +119,7 @@ export const RecordingForm = ({
       })
 
       const waitForRecordingUploaded = async (
-        retries = 20,
+        retries = 30,
       ): Promise<boolean> => {
         const updatedRecording = await api.recordingsGet({
           id: recording.id,
