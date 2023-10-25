@@ -25,6 +25,7 @@ import { formatBytes } from "@/helpers/formatBytes"
 import { GameSelect } from "./GameSelect"
 import * as yup from "yup"
 import { useForm } from "@/hooks/useForm"
+import { yupResolver } from "@hookform/resolvers/yup"
 
 export interface RecordingFormProps {
   games: Game[]
@@ -68,6 +69,7 @@ export const RecordingForm = ({
     setValue,
     formState: { isSubmitting },
   } = useForm<RecordingFormValues>({
+    resolver: yupResolver(RecordingFormSchema),
     defaultValues: {
       skillLevel: 0,
       gameId: "",
