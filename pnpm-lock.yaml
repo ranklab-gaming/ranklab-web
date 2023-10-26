@@ -79,8 +79,8 @@ importers:
         specifier: 3.5.2
         version: 3.5.2
       aws-xray-sdk-core:
-        specifier: 3.5.2
-        version: 3.5.2
+        specifier: 3.5.3
+        version: 3.5.3
       csstype:
         specifier: 3.1.2
         version: 3.1.2
@@ -234,7 +234,7 @@ importers:
         version: 3.5.2
       aws-xray-sdk-express:
         specifier: 3.5.2
-        version: 3.5.2(aws-xray-sdk-core@3.5.2)
+        version: 3.5.2(aws-xray-sdk-core@3.5.3)
       express:
         specifier: 4.18.2
         version: 4.18.2
@@ -676,13 +676,6 @@ packages:
       tslib: 2.5.0
     transitivePeerDependencies:
       - aws-crt
-
-  /@aws-sdk/types@3.329.0:
-    resolution: {integrity: sha512-wFBW4yciDfzQBSFmWNaEvHShnSGLMxSu9Lls6EUf6xDMavxSB36bsrVRX6CyAo/W0NeIIyEOW1LclGPgJV1okg==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      tslib: 2.5.0
-    dev: false
 
   /@aws-sdk/types@3.433.0:
     resolution: {integrity: sha512-0jEE2mSrNDd8VGFjTc1otYrwYPIkzZJEIK90ZxisKvQ/EURGBhNzWn7ejWB9XCMFT6XumYLBR0V9qq5UPisWtA==}
@@ -2547,7 +2540,19 @@ packages:
     engines: {node: '>= 14.x'}
     dependencies:
       '@aws-sdk/service-error-classification': 3.329.0
-      '@aws-sdk/types': 3.329.0
+      '@aws-sdk/types': 3.433.0
+      '@types/cls-hooked': 4.3.3
+      atomic-batcher: 1.0.2
+      cls-hooked: 4.2.2
+      semver: 7.5.4
+    dev: false
+
+  /aws-xray-sdk-core@3.5.3:
+    resolution: {integrity: sha512-FxDRVvIHqf3bzj76M+LSyh/1V5cYuhn+YLRS+u6Xs6WindPMDn9j03v2PNskPgvUi7pMqU40aVhQphRX/YWTfQ==}
+    engines: {node: '>= 14.x'}
+    dependencies:
+      '@aws-sdk/types': 3.433.0
+      '@smithy/service-error-classification': 2.0.5
       '@types/cls-hooked': 4.3.3
       atomic-batcher: 1.0.2
       cls-hooked: 4.2.2
@@ -2562,6 +2567,16 @@ packages:
     dependencies:
       '@types/express': 4.17.20
       aws-xray-sdk-core: 3.5.2
+    dev: false
+
+  /aws-xray-sdk-express@3.5.2(aws-xray-sdk-core@3.5.3):
+    resolution: {integrity: sha512-earXjt6wG5b47eEqRSs3/vzpFSsGZIBZ/0SX+Ik2fEULwCZOPnpoiXLVe62A5HBr0j82otrwlvyi8mIWuJkXGw==}
+    engines: {node: '>= 14.x'}
+    peerDependencies:
+      aws-xray-sdk-core: ^3.5.2
+    dependencies:
+      '@types/express': 4.17.20
+      aws-xray-sdk-core: 3.5.3
     dev: false
 
   /aws-xray-sdk-mysql@3.5.2(aws-xray-sdk-core@3.5.2):
