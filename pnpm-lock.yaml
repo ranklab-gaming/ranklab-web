@@ -76,8 +76,8 @@ importers:
         specifier: 4.2.5
         version: 4.2.5(react@18.2.0)
       aws-xray-sdk:
-        specifier: 3.5.2
-        version: 3.5.2
+        specifier: 3.5.3
+        version: 3.5.3
       aws-xray-sdk-core:
         specifier: 3.5.3
         version: 3.5.3
@@ -230,8 +230,8 @@ importers:
         specifier: 7.75.1
         version: 7.75.1
       aws-xray-sdk:
-        specifier: 3.5.2
-        version: 3.5.2
+        specifier: 3.5.3
+        version: 3.5.3
       aws-xray-sdk-express:
         specifier: 3.5.2
         version: 3.5.2(aws-xray-sdk-core@3.5.3)
@@ -628,11 +628,6 @@ packages:
       '@smithy/util-config-provider': 2.0.0
       '@smithy/util-middleware': 2.0.5
       tslib: 2.5.0
-
-  /@aws-sdk/service-error-classification@3.329.0:
-    resolution: {integrity: sha512-TSNr0flOcCLe71aPp7MjblKNGsmxpTU4xR5772MDX9Cz9GUTNZCPFtvrcqd+wzEPP/AC7XwNXe8KjoXooZImUQ==}
-    engines: {node: '>=14.0.0'}
-    dev: false
 
   /@aws-sdk/token-providers@3.435.0:
     resolution: {integrity: sha512-JZKqsuoK321ozp2ufGmjfpbAqtK1tYnLn0PaePWjvDL48B5A5jGNqFyP3/tg7LFP7vTp9O3pJ7ln0QLh8FpsjQ==}
@@ -2535,18 +2530,6 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /aws-xray-sdk-core@3.5.2:
-    resolution: {integrity: sha512-sboSTXIS0tOKYqQ5zrWX6p6k4Mrec84BNeJPHnRakcjzgsU5j8xBB5kim3BVVv+pINGLVpOD568cJzH0GI/HqQ==}
-    engines: {node: '>= 14.x'}
-    dependencies:
-      '@aws-sdk/service-error-classification': 3.329.0
-      '@aws-sdk/types': 3.433.0
-      '@types/cls-hooked': 4.3.3
-      atomic-batcher: 1.0.2
-      cls-hooked: 4.2.2
-      semver: 7.5.4
-    dev: false
-
   /aws-xray-sdk-core@3.5.3:
     resolution: {integrity: sha512-FxDRVvIHqf3bzj76M+LSyh/1V5cYuhn+YLRS+u6Xs6WindPMDn9j03v2PNskPgvUi7pMqU40aVhQphRX/YWTfQ==}
     engines: {node: '>= 14.x'}
@@ -2559,16 +2542,6 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /aws-xray-sdk-express@3.5.2(aws-xray-sdk-core@3.5.2):
-    resolution: {integrity: sha512-earXjt6wG5b47eEqRSs3/vzpFSsGZIBZ/0SX+Ik2fEULwCZOPnpoiXLVe62A5HBr0j82otrwlvyi8mIWuJkXGw==}
-    engines: {node: '>= 14.x'}
-    peerDependencies:
-      aws-xray-sdk-core: ^3.5.2
-    dependencies:
-      '@types/express': 4.17.20
-      aws-xray-sdk-core: 3.5.2
-    dev: false
-
   /aws-xray-sdk-express@3.5.2(aws-xray-sdk-core@3.5.3):
     resolution: {integrity: sha512-earXjt6wG5b47eEqRSs3/vzpFSsGZIBZ/0SX+Ik2fEULwCZOPnpoiXLVe62A5HBr0j82otrwlvyi8mIWuJkXGw==}
     engines: {node: '>= 14.x'}
@@ -2579,34 +2552,44 @@ packages:
       aws-xray-sdk-core: 3.5.3
     dev: false
 
-  /aws-xray-sdk-mysql@3.5.2(aws-xray-sdk-core@3.5.2):
-    resolution: {integrity: sha512-obcBdXt3IVoyj9DDJabgUSHY24aorDisYn4OPr5ZAw4wmCD2NWZQKTzWTB0xcyebz/tQcX6lks/IYRXqtOAlTw==}
+  /aws-xray-sdk-express@3.5.3(aws-xray-sdk-core@3.5.3):
+    resolution: {integrity: sha512-AClkdrViWId284IIMjBRpXRshop8o3dp2I9KffBguMMZbn1fHD0lqRJODgwSMmahrD+6zOHrPi4W9YLRuVeHfA==}
     engines: {node: '>= 14.x'}
     peerDependencies:
-      aws-xray-sdk-core: ^3.5.2
+      aws-xray-sdk-core: ^3.5.3
+    dependencies:
+      '@types/express': 4.17.20
+      aws-xray-sdk-core: 3.5.3
+    dev: false
+
+  /aws-xray-sdk-mysql@3.5.3(aws-xray-sdk-core@3.5.3):
+    resolution: {integrity: sha512-7JIapp7JfGVUPlmvdoYVqBoh1tyTZYgC7bAmoKKw3fiu1tFOWH7oKlLOf6/ufvdyTZ9F3aMKcKrUMY1lczv4xw==}
+    engines: {node: '>= 14.x'}
+    peerDependencies:
+      aws-xray-sdk-core: ^3.5.3
     dependencies:
       '@types/mysql': 2.15.21
-      aws-xray-sdk-core: 3.5.2
+      aws-xray-sdk-core: 3.5.3
     dev: false
 
-  /aws-xray-sdk-postgres@3.5.2(aws-xray-sdk-core@3.5.2):
-    resolution: {integrity: sha512-uM4yKp7cSIBuQJYlTwrqOQNatPMMs8APqqeSKagHl8Eb3aMLoMOZ9Ftv1pVKpczR+p/AzlDeKVGuec7ZFHBgNQ==}
+  /aws-xray-sdk-postgres@3.5.3(aws-xray-sdk-core@3.5.3):
+    resolution: {integrity: sha512-+nvlrBaD6ySanxfHBVOEA9/Z+fetF35mp339sszO7RGPsBp03nlrGDUlm5iC8q7Dp4qgK0ijcI7z5Y+P+NYRcg==}
     engines: {node: '>= 14.x'}
     peerDependencies:
-      aws-xray-sdk-core: ^3.5.2
+      aws-xray-sdk-core: ^3.5.3
     dependencies:
       '@types/pg': 8.10.7
-      aws-xray-sdk-core: 3.5.2
+      aws-xray-sdk-core: 3.5.3
     dev: false
 
-  /aws-xray-sdk@3.5.2:
-    resolution: {integrity: sha512-nDEFFSRoHKXXJmaRERwZ14r0LAv11XpLW1vXD2MuR6FATCpzpRzVTSn1JnG50vcfz3Ew8pPYDUWkiQPeKOtb4g==}
+  /aws-xray-sdk@3.5.3:
+    resolution: {integrity: sha512-iTFZcV7jluP4u5JEpZO/siTAPUl3RDoPyVOXMS0rFuUtzvmb9umOg8fj+78LRw0rM/P3q4DDXKndjiJbG3Hclg==}
     engines: {node: '>= 14.x'}
     dependencies:
-      aws-xray-sdk-core: 3.5.2
-      aws-xray-sdk-express: 3.5.2(aws-xray-sdk-core@3.5.2)
-      aws-xray-sdk-mysql: 3.5.2(aws-xray-sdk-core@3.5.2)
-      aws-xray-sdk-postgres: 3.5.2(aws-xray-sdk-core@3.5.2)
+      aws-xray-sdk-core: 3.5.3
+      aws-xray-sdk-express: 3.5.3(aws-xray-sdk-core@3.5.3)
+      aws-xray-sdk-mysql: 3.5.3(aws-xray-sdk-core@3.5.3)
+      aws-xray-sdk-postgres: 3.5.3(aws-xray-sdk-core@3.5.3)
     dev: false
 
   /b4a@1.6.4:

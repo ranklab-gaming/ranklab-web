@@ -17,7 +17,7 @@
     "@aws-sdk/client-dynamodb": "3.436.0",
     "@aws-sdk/lib-dynamodb": "3.436.0",
     "@sentry/node": "7.75.1",
-    "aws-xray-sdk": "3.5.2",
+    "aws-xray-sdk": "3.5.3",
     "aws-xray-sdk-express": "3.5.2",
     "express": "4.18.2",
     "lodash": "4.17.21",
