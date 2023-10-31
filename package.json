@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "3.438.0",
-    "@types/node": "20.8.9",
+    "@types/node": "20.8.10",
     "dotenv": "16.3.1",
     "prettier": "3.0.3",
     "turbo": "1.10.16"

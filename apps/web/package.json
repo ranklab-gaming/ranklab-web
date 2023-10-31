@@ -55,7 +55,7 @@
     "@types/jsonwebtoken": "9.0.4",
     "@types/lodash": "4.14.200",
     "@types/mixpanel-browser": "2.47.4",
-    "@types/node": "20.8.9",
+    "@types/node": "20.8.10",
     "@types/pg": "8.10.7",
     "@types/pluralize": "0.0.32",
     "@types/react": "18.2.33",
