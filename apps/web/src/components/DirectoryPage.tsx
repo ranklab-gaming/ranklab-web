@@ -9,8 +9,6 @@ import {
   Grid,
   Stack,
   Typography,
-  IconButton,
-  Tooltip,
 } from "@mui/material"
 import { GameIcon } from "./GameIcon"
 import Link from "next/link"
@@ -18,10 +16,8 @@ import overwatchStock from "@/images/games/overwatch-stock.jpg"
 import apexStock from "@/images/games/apex-stock.png"
 import { StaticImageData } from "next/image"
 import NextImage from "next/image"
-import { Iconify } from "./Iconify"
 import { useEffect, useState } from "react"
-import { api } from "@/api"
-import { useSnackbar } from "notistack"
+import { FollowGameButton } from "./FollowGameButton"
 
 interface Props {
   games: Game[]
@@ -37,32 +33,10 @@ export const DirectoryPage = ({
   user,
 }: PropsWithOptionalUser<Props>) => {
   const [games, setGames] = useState(initialGames)
-  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     setGames(initialGames)
   }, [initialGames])
-
-  const toggleFollow = async (game: Game) => {
-    try {
-      const response = await api.gamesUpdate({
-        id: game.id,
-        updateGameRequest: {
-          followed: !game.followed,
-        },
-      })
-
-      setGames((games) => {
-        return games.map((g) => (g.id === game.id ? response : g))
-      })
-    } catch (error) {
-      enqueueSnackbar("An error occurred while following this game.", {
-        variant: "error",
-      })
-
-      throw error
-    }
-  }
 
   return (
     <DashboardLayout user={user} title="Directory" games={games}>
@@ -127,15 +101,14 @@ export const DirectoryPage = ({
                 </Link>
                 {user ? (
                   <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
-                    <Tooltip title={game.followed ? "Unfollow" : "Follow"}>
-                      <IconButton
-                        color={game.followed ? "primary" : "default"}
-                        onClick={() => toggleFollow(game)}
-                        disabled={!user}
-                      >
-                        <Iconify icon="mdi:bell" />
-                      </IconButton>
-                    </Tooltip>
+                    <FollowGameButton
+                      game={game}
+                      onChange={(game) => {
+                        setGames((games) => {
+                          return games.map((g) => (g.id === game.id ? game : g))
+                        })
+                      }}
+                    />
                   </CardActions>
                 ) : null}
               </Card>

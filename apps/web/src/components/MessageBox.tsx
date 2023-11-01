@@ -1,6 +1,6 @@
 import { Iconify } from "@/components/Iconify"
 import { LoadingButton } from "@mui/lab"
-import { Paper, Stack, Typography, Box, Button } from "@mui/material"
+import { Paper, Stack, Typography, Box, Button, SxProps } from "@mui/material"
 import { useState } from "react"
 import NextLink from "next/link"
 import { UrlObject } from "url"
@@ -11,9 +11,17 @@ interface Props {
   href?: string | UrlObject | null
   action?: () => Promise<void>
   actionText?: string
+  sx?: SxProps
 }
 
-export const MessageBox = ({ icon, text, action, actionText, href }: Props) => {
+export const MessageBox = ({
+  icon,
+  text,
+  action,
+  actionText,
+  href,
+  sx,
+}: Props) => {
   const [loading, setLoading] = useState(false)
 
   const handleClick = async () => {
@@ -36,6 +44,7 @@ export const MessageBox = ({ icon, text, action, actionText, href }: Props) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        ...sx,
       }}
     >
       <Stack spacing={3} sx={{ textAlign: "center" }}>

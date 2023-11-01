@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { PropsWithChildren, useEffect, useState } from "react"
+import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { useIntercom } from "react-use-intercom"
@@ -47,6 +47,7 @@ interface Props {
   showTitle?: boolean
   fullWidth?: boolean
   games: Game[]
+  action?: ReactNode
 }
 
 export const DashboardLayout = ({
@@ -56,6 +57,7 @@ export const DashboardLayout = ({
   showTitle = true,
   fullWidth = false,
   games,
+  action,
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
@@ -99,12 +101,22 @@ export const DashboardLayout = ({
                   sx={{
                     mb: 1,
                     backgroundColor: theme.palette.grey[900],
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                   elevation={1}
                 >
-                  <Typography variant="h3" component="h1" paragraph p={2}>
+                  <Typography
+                    variant="h3"
+                    component="h1"
+                    paragraph
+                    p={2}
+                    mb={0}
+                  >
                     {title}
                   </Typography>
+                  <Box>{action}</Box>
                 </Paper>
               ) : undefined}
               {children}
