@@ -100,6 +100,7 @@ export const DashboardLayout = ({
                 <Paper
                   sx={{
                     mb: 1,
+                    p: 2,
                     backgroundColor: theme.palette.grey[900],
                     display: "flex",
                     justifyContent: "space-between",
@@ -107,13 +108,7 @@ export const DashboardLayout = ({
                   }}
                   elevation={1}
                 >
-                  <Typography
-                    variant="h3"
-                    component="h1"
-                    paragraph
-                    p={2}
-                    mb={0}
-                  >
+                  <Typography variant="h3" component="h1" paragraph mb={0}>
                     {title}
                   </Typography>
                   <Box>{action}</Box>
