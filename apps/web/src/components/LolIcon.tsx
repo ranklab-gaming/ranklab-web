@@ -1,5 +1,6 @@
 import * as React from "react"
 import { SVGProps, useId } from "react"
+
 export const LolIcon = (props: SVGProps<SVGSVGElement>) => {
   const id = useId()
 

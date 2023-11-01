@@ -94,7 +94,18 @@ export const DirectoryPage = ({
                         height="100%"
                         justifyContent="center"
                       >
-                        <GameIcon game={game} width={64} height={64} />
+                        <GameIcon
+                          game={game}
+                          width={64}
+                          height={64}
+                          sx={{
+                            svg: {
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "scale-down",
+                            },
+                          }}
+                        />
                         <Typography
                           variant="h2"
                           sx={{

@@ -72,6 +72,11 @@ export const Navbar = ({
               sx={{
                 width: 24,
                 height: 24,
+                svg: {
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "scale-down",
+                },
                 "svg *": {
                   stopColor: colorStyle,
                   fill: colorStyle,
