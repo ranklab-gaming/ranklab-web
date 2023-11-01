@@ -12,9 +12,12 @@ import {
 } from "@mui/material"
 import { GameIcon } from "./GameIcon"
 import Link from "next/link"
-import overwatchStock from "@/images/games/overwatch-stock.jpg"
+import overwatchStock from "@/images/games/overwatch-stock.png"
 import apexStock from "@/images/games/apex-stock.png"
-import cs2Stock from "@/images/games/cs2-stock.jpg"
+import cs2Stock from "@/images/games/cs2-stock.png"
+import dota2Stock from "@/images/games/dota2-stock.png"
+import lolStock from "@/images/games/lol-stock.png"
+import valorantStock from "@/images/games/valorant-stock.png"
 import { StaticImageData } from "next/image"
 import NextImage from "next/image"
 import { useEffect, useState } from "react"
@@ -28,6 +31,9 @@ const stockImages: Record<string, StaticImageData> = {
   overwatch: overwatchStock,
   apex: apexStock,
   cs2: cs2Stock,
+  dota2: dota2Stock,
+  lol: lolStock,
+  valorant: valorantStock,
 }
 
 export const DirectoryPage = ({

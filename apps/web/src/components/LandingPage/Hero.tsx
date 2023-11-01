@@ -144,7 +144,11 @@ export const Hero = ({ games }: Props) => {
               justifyContent={!isDesktop ? "center" : "flex-start"}
               mt={6}
             >
-              <Stack spacing={3} textAlign="center" direction="row">
+              <Stack
+                spacing={3}
+                textAlign="center"
+                direction={!isDesktop ? "column" : "row"}
+              >
                 <NextLink href="/directory" passHref legacyBehavior>
                   <Button
                     size="large"
@@ -173,7 +177,22 @@ export const Hero = ({ games }: Props) => {
                   {games.slice(0, 6).map((game) => (
                     <Tooltip title={game.name} key={game.id}>
                       <Box>
-                        <GameIcon game={game} sx={{ width: 32, height: 32 }} />
+                        <GameIcon
+                          game={game}
+                          sx={{
+                            width: 32,
+                            height: 32,
+                            "svg *": {
+                              stopColor: "#fff !important",
+                              fill: "#fff !important",
+                              transition: "all 0.25s",
+                            },
+                            "&:hover svg *": {
+                              stopColor: `${theme.palette.primary.main} !important`,
+                              fill: `${theme.palette.primary.main} !important`,
+                            },
+                          }}
+                        />
                       </Box>
                     </Tooltip>
                   ))}

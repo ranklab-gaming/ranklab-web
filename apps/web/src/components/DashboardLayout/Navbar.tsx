@@ -55,25 +55,32 @@ export const Navbar = ({
         path: "/directory",
         icon: <Iconify icon="eva:grid-outline" />,
       },
-      ...games.map((game) => ({
-        title: game.name,
-        path: `/directory/${game.id}`,
-        icon: (
-          <GameIcon
-            game={game}
-            sx={{
-              width: 24,
-              height: 24,
-              "svg *": {
-                fill:
-                  `/directory/${game.id}` === asPath
-                    ? theme.palette.primary.main
-                    : theme.palette.common.white,
-              },
-            }}
-          />
-        ),
-      })),
+      ...games.map((game) => {
+        const color =
+          `/directory/${game.id}` === asPath
+            ? theme.palette.primary.main
+            : theme.palette.common.white
+
+        const colorStyle = `${color} !important`
+
+        return {
+          title: game.name,
+          path: `/directory/${game.id}`,
+          icon: (
+            <GameIcon
+              game={game}
+              sx={{
+                width: 24,
+                height: 24,
+                "svg *": {
+                  stopColor: colorStyle,
+                  fill: colorStyle,
+                },
+              }}
+            />
+          ),
+        }
+      }),
     ],
     [
       {
