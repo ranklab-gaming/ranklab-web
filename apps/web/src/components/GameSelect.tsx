@@ -30,7 +30,7 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
     disabled = false,
     ...props
   }: Props,
-  ref
+  ref,
 ) {
   return (
     <Stack spacing={1}>
@@ -50,7 +50,12 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
           <MenuItem key={game.id} value={game.id}>
             <Stack direction="row" alignItems="center">
               <ListItemAvatar>
-                <GameIcon game={game} />
+                <GameIcon
+                  game={game}
+                  width={24}
+                  height={24}
+                  sx={{ svg: { width: "100%", height: "100%" } }}
+                />
               </ListItemAvatar>
               <ListItemText primary={game.name} />
             </Stack>
