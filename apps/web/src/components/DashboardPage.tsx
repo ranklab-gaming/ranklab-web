@@ -32,7 +32,7 @@ export const DashboardPage = ({
       user={user}
       title={game.name}
       games={games}
-      action={<FollowGameButton game={game} onChange={setGame} />}
+      action={user ? <FollowGameButton game={game} onChange={setGame} /> : null}
     >
       {recordings.count === 0 ? (
         <MessageBox
