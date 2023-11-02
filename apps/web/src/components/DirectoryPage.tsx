@@ -76,6 +76,7 @@ export const DirectoryPage = ({
                     height: "100%",
                     objectFit: "cover",
                   }}
+                  priority
                 />
                 <Link href={`/directory/${game.id}`} passHref legacyBehavior>
                   <CardActionArea

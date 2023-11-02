@@ -137,6 +137,7 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                           objectFit: "cover",
                         }}
                         alt={`Windows Step ${index + 1}`}
+                        priority
                       />
                     </Grid>
                     <Grid item xs={4}>
@@ -175,6 +176,7 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                           objectFit: "cover",
                         }}
                         alt={`Reduce Step ${index + 1}`}
+                        priority
                       />
                     </Grid>
                     <Grid item xs={4}>

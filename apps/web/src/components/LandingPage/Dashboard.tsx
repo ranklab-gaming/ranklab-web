@@ -91,6 +91,7 @@ export const Dashboard = () => {
                   height={dashboardScreenshot.height}
                   style={{ objectFit: "cover", width: "100%", height: "100%" }}
                   alt="Dashboard Screenshot"
+                  priority
                 />
               </Paper>
             </m.div>
