@@ -58,7 +58,7 @@ export const DirectoryPage = ({
                   position: "relative",
                   img: {
                     transition: "filter 0.5s",
-                    filter: "brightness(0.5)",
+                    filter: "brightness(0.3)",
                   },
                   "&:hover": {
                     img: {
