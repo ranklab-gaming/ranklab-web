@@ -67,11 +67,15 @@ export const DashboardLayout = ({
   useEffect(() => {
     if (!user) return
 
-    update({
-      name: user.name,
-      email: user.email,
-      userHash: user.intercomHash ?? undefined,
-    })
+    setTimeout(
+      () =>
+        update({
+          name: user.name,
+          email: user.email,
+          userHash: user.intercomHash ?? undefined,
+        }),
+      3000,
+    )
   }, [user, update])
 
   return (

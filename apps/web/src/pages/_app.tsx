@@ -30,7 +30,7 @@ const Content = ({
   const router = useRouter()
 
   const handlePreferenceExpressed = useRef<((preference: any) => void) | null>(
-    null
+    null,
   )
 
   useEffect(() => {
@@ -51,6 +51,14 @@ const Content = ({
       if (!preference.purposes[4]) {
         if (mixpanelProjectToken) {
           mixpanel.disable()
+        }
+      } else {
+        if (mixpanelProjectToken) {
+          mixpanel.init(mixpanelProjectToken, {
+            debug: nodeEnv === "development",
+          })
+
+          track("Page view", { url: router.basePath + router.asPath })
         }
       }
 
