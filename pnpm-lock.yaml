@@ -224,8 +224,8 @@ importers:
         specifier: 3.441.0
         version: 3.441.0
       '@aws-sdk/lib-dynamodb':
-        specifier: 3.441.0
-        version: 3.441.0(@aws-sdk/client-dynamodb@3.441.0)
+        specifier: 3.444.0
+        version: 3.444.0(@aws-sdk/client-dynamodb@3.441.0)
       '@sentry/node':
         specifier: 7.77.0
         version: 7.77.0
@@ -543,8 +543,8 @@ packages:
       mnemonist: 0.38.3
       tslib: 2.5.0
 
-  /@aws-sdk/lib-dynamodb@3.441.0(@aws-sdk/client-dynamodb@3.441.0):
-    resolution: {integrity: sha512-f2LpEtRedqgIYPNq5ZJHnobiE2W9/V17GosYUVgXmu/mFVfimcHDW2BRrN+Lc7OuhQYCFm2j1L717RZ+UzimOQ==}
+  /@aws-sdk/lib-dynamodb@3.444.0(@aws-sdk/client-dynamodb@3.441.0):
+    resolution: {integrity: sha512-m1lASKcRoGIL88tstb8fwUPEJpHm46v0QhCjVp1scjMQgxUt9rOvRzvHMbsvuv3eyJQYzl1pyeCEsPeteM+cng==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.0.0
