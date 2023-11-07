@@ -53,7 +53,7 @@
     "@next/eslint-plugin-next": "13.5.4",
     "@playwright/test": "1.39.0",
     "@types/jsonwebtoken": "9.0.5",
-    "@types/lodash": "4.14.200",
+    "@types/lodash": "4.14.201",
     "@types/mixpanel-browser": "2.47.5",
     "@types/node": "20.8.10",
     "@types/pg": "8.10.8",
