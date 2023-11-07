@@ -252,8 +252,8 @@ importers:
         version: 10.2.3
     devDependencies:
       '@types/express':
-        specifier: 4.17.20
-        version: 4.17.20
+        specifier: 4.17.21
+        version: 4.17.21
       '@types/lodash':
         specifier: 4.14.200
         version: 4.14.200
@@ -2027,7 +2027,7 @@ packages:
     resolution: {integrity: sha512-h7BcvPUogWbKCzBR2lY4oqaZbO3jXZksexYJVFvkrFeLgbZjQkU4x8pRq6eg2MHXQhY0McQdqmmsxRWlVAHooA==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/express': 4.17.20
+      '@types/express': 4.17.21
       '@types/keygrip': 1.0.2
       '@types/node': 20.8.10
 
@@ -2051,8 +2051,8 @@ packages:
       '@types/serve-static': 1.15.1
     dev: false
 
-  /@types/express@4.17.20:
-    resolution: {integrity: sha512-rOaqlkgEvOW495xErXMsmyX3WKBInbhG5eqojXYi3cGUaLoRDlXa5d52fkfWZT963AZ3v2eZ4MbKE6WpDAGVsw==}
+  /@types/express@4.17.21:
+    resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
     dependencies:
       '@types/body-parser': 1.19.2
       '@types/express-serve-static-core': 4.17.33
@@ -2531,7 +2531,7 @@ packages:
     peerDependencies:
       aws-xray-sdk-core: ^3.5.3
     dependencies:
-      '@types/express': 4.17.20
+      '@types/express': 4.17.21
       aws-xray-sdk-core: 3.5.3
     dev: false
 
