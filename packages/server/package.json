@@ -14,8 +14,8 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.445.0",
-    "@aws-sdk/lib-dynamodb": "3.445.0",
+    "@aws-sdk/client-dynamodb": "3.449.0",
+    "@aws-sdk/lib-dynamodb": "3.449.0",
     "@sentry/node": "7.77.0",
     "aws-xray-sdk": "3.5.3",
     "aws-xray-sdk-express": "3.5.3",
