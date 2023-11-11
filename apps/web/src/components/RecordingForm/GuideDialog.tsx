@@ -1,4 +1,5 @@
 import { Iconify } from "@/components/Iconify"
+import { assetsCdnUrl } from "@/config"
 import { theme } from "@/theme/theme"
 import { TabContext, TabPanel } from "@mui/lab"
 import {
@@ -15,17 +16,6 @@ import {
   Button,
 } from "@mui/material"
 import { useState } from "react"
-import NextImage from "next/image"
-import windowsStep1 from "@/images/recording-guide/windows-1.png"
-import windowsStep2 from "@/images/recording-guide/windows-2.png"
-import windowsStep3 from "@/images/recording-guide/windows-3.png"
-import windowsStep4 from "@/images/recording-guide/windows-4.png"
-import reduceStep1 from "@/images/recording-guide/reduce-1.png"
-import reduceStep2 from "@/images/recording-guide/reduce-2.png"
-import reduceStep3 from "@/images/recording-guide/reduce-3.png"
-import reduceStep4 from "@/images/recording-guide/reduce-4.png"
-import reduceStep5 from "@/images/recording-guide/reduce-5.png"
-import reduceStep6 from "@/images/recording-guide/reduce-6.png"
 
 interface Props {
   open: boolean
@@ -33,49 +23,19 @@ interface Props {
 }
 
 const windowsSteps = [
-  {
-    image: windowsStep1,
-    description: `Search "Settings" in the Windows search bar`,
-  },
-  {
-    image: windowsStep2,
-    description: `Choose "Gaming" from the sidebar`,
-  },
-  {
-    image: windowsStep3,
-    description: `Choose "Captures"`,
-  },
-  {
-    image: windowsStep4,
-    description: `Adjust Xbox Game Bar settings`,
-  },
+  `Search "Settings" in the Windows search bar`,
+  `Choose "Gaming" from the sidebar`,
+  `Choose "Captures"`,
+  `Adjust Xbox Game Bar settings`,
 ]
 
 const reduceSteps = [
-  {
-    image: reduceStep1,
-    description: `Search "Clipchamp" in the Windows search bar`,
-  },
-  {
-    image: reduceStep2,
-    description: `Click "Create a new video" in the main window`,
-  },
-  {
-    image: reduceStep3,
-    description: `Click "Import media" in the top left corner`,
-  },
-  {
-    image: reduceStep4,
-    description: `Drag your video from the "Media" tab to the timeline at the bottom`,
-  },
-  {
-    image: reduceStep5,
-    description: `Click "Export" in the top right corner`,
-  },
-  {
-    image: reduceStep6,
-    description: `Optionally, give your video a name and wait for it to export`,
-  },
+  `Search "Clipchamp" in the Windows search bar`,
+  `Click "Create a new video" in the main window`,
+  `Click "Import media" in the top left corner`,
+  `Drag your video from the "Media" tab to the timeline at the bottom`,
+  `Click "Export" in the top right corner`,
+  `Optionally, give your video a name and wait for it to export`,
 ]
 
 export const GuideDialog = ({ open, onClose }: Props) => {
@@ -127,22 +87,21 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                 >
                   <Grid container spacing={2}>
                     <Grid item xs={8}>
-                      <NextImage
-                        src={step.image}
-                        width={step.image.width}
-                        height={step.image.height}
+                      <img
+                        src={`${assetsCdnUrl}/images/recording-guide/windows-${
+                          index + 1
+                        }.webp`}
                         style={{
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }}
                         alt={`Windows Step ${index + 1}`}
-                        priority
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {index + 1}. {step.description}.
+                        {index + 1}. {step}.
                       </Typography>
                     </Grid>
                   </Grid>
@@ -166,22 +125,21 @@ export const GuideDialog = ({ open, onClose }: Props) => {
                 >
                   <Grid container spacing={2}>
                     <Grid item xs={8}>
-                      <NextImage
-                        src={step.image}
-                        width={step.image.width}
-                        height={step.image.height}
+                      <img
+                        src={`${assetsCdnUrl}/images/recording-guide/reduce-${
+                          index + 1
+                        }.webp`}
                         style={{
                           width: "100%",
                           height: "100%",
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }}
                         alt={`Reduce Step ${index + 1}`}
-                        priority
                       />
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {index + 1}. {step.description}.
+                        {index + 1}. {step}.
                       </Typography>
                     </Grid>
                   </Grid>

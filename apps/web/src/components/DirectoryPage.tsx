@@ -11,29 +11,13 @@ import {
   Typography,
 } from "@mui/material"
 import { GameIcon } from "./GameIcon"
-import Link from "next/link"
-import overwatchStock from "@/images/games/overwatch-stock.png"
-import apexStock from "@/images/games/apex-stock.png"
-import cs2Stock from "@/images/games/cs2-stock.png"
-import dota2Stock from "@/images/games/dota2-stock.png"
-import lolStock from "@/images/games/lol-stock.png"
-import valorantStock from "@/images/games/valorant-stock.png"
-import { StaticImageData } from "next/image"
-import NextImage from "next/image"
+import NextLink from "next/link"
 import { useEffect, useState } from "react"
 import { FollowGameButton } from "./FollowGameButton"
+import { assetsCdnUrl } from "@/config"
 
 interface Props {
   games: Game[]
-}
-
-const stockImages: Record<string, StaticImageData> = {
-  overwatch: overwatchStock,
-  apex: apexStock,
-  cs2: cs2Stock,
-  dota2: dota2Stock,
-  lol: lolStock,
-  valorant: valorantStock,
 }
 
 export const DirectoryPage = ({
@@ -67,18 +51,16 @@ export const DirectoryPage = ({
                   },
                 }}
               >
-                <NextImage
-                  src={stockImages[game.id]}
+                <img
+                  src={`${assetsCdnUrl}/images/games/${game.id}-stock.webp`}
                   alt={game.name}
-                  style={{
-                    position: "absolute",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                  priority
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
                 />
-                <Link href={`/directory/${game.id}`} passHref legacyBehavior>
+                <NextLink
+                  href={`/directory/${game.id}`}
+                  passHref
+                  legacyBehavior
+                >
                   <CardActionArea
                     sx={{
                       height: "100%",
@@ -118,7 +100,7 @@ export const DirectoryPage = ({
                       </Stack>
                     </CardContent>
                   </CardActionArea>
-                </Link>
+                </NextLink>
                 {user ? (
                   <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
                     <FollowGameButton

@@ -4,8 +4,7 @@ import { Button, Container, Grid, Paper, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import NextLink from "next/link"
-import NextImage from "next/image"
-import dashboardScreenshot from "@/images/screenshots/dashboard.png"
+import { assetsCdnUrl } from "@/config"
 
 const RootStyle = styled("div")(({ theme }) => ({
   minHeight: "100vh",
@@ -85,13 +84,10 @@ export const Dashboard = () => {
           <Grid item xs={12} md={9} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
-                <NextImage
-                  src={dashboardScreenshot}
-                  width={dashboardScreenshot.width}
-                  height={dashboardScreenshot.height}
-                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                <img
+                  src={`${assetsCdnUrl}/images/screenshots/dashboard.webp`}
+                  style={{ width: "100%", height: "100%" }}
                   alt="Dashboard Screenshot"
-                  priority
                 />
               </Paper>
             </m.div>

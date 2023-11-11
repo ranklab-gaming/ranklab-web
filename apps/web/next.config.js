@@ -19,5 +19,5 @@ const nextConfig = {
 module.exports = withSentryConfig(
   nextConfig,
   { silent: true },
-  { hideSourceMaps: true }
+  { hideSourceMaps: true },
 )

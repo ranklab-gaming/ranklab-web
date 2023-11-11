@@ -1,11 +1,10 @@
 import { animateFade } from "@/animate/fade"
 import { MotionContainer } from "@/components/MotionContainer"
+import { assetsCdnUrl } from "@/config"
 import { Button, Container, Grid, Typography, Paper } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { m } from "framer-motion"
 import NextLink from "next/link"
-import NextImage from "next/image"
-import reviewScreenshot from "@/images/screenshots/review.png"
 
 const RootStyle = styled("div")(({ theme }) => ({
   minHeight: "100vh",
@@ -77,17 +76,10 @@ export const Review = () => {
           <Grid item xs={12} md={9} sx={{ position: "relative" }}>
             <m.div variants={animateFade().inUp}>
               <Paper elevation={6}>
-                <NextImage
-                  src={reviewScreenshot}
-                  width={reviewScreenshot.width}
-                  height={reviewScreenshot.height}
+                <img
+                  src={`${assetsCdnUrl}/images/screenshots/review.webp`}
                   alt="Review Screenshot"
-                  style={{
-                    objectFit: "cover",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  priority
+                  style={{ width: "100%", height: "100%" }}
                 />
               </Paper>
             </m.div>

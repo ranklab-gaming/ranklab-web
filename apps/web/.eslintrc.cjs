@@ -56,5 +56,6 @@ module.exports = {
     "react/self-closing-comp": 2,
     "react/no-unused-prop-types": 2,
     "react/react-in-jsx-scope": 0,
+    "@next/next/no-img-element": 0,
   },
 }

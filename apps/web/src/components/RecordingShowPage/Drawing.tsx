@@ -3,9 +3,9 @@ import { useSvgDrawing } from "@svg-drawing/react"
 import { m } from "framer-motion"
 import { forwardRef, useEffect, useImperativeHandle } from "react"
 import { Box, useTheme } from "@mui/material"
-import drawCursor from "@/images/cursors/draw.png"
 import { Color } from "@/contexts/ReviewContext"
 import { useReview } from "@/hooks/useReview"
+import { assetsCdnUrl } from "@/config"
 
 if (typeof window !== "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -117,7 +117,7 @@ export const Drawing = forwardRef<DrawingRef>((_props, ref) => {
           left: 0,
           width: "100%",
           height: "100%",
-          cursor: `url(${drawCursor.src}) 0 15, auto`,
+          cursor: `url(${assetsCdnUrl}/images/cursors/draw.webp) 0 15, auto`,
           zIndex: 10,
         }}
       />
