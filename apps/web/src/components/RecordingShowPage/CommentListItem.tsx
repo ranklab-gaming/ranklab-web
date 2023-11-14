@@ -29,7 +29,25 @@ export const CommentListItem = ({ comment, selected, title }: ItemProps) => {
             variant="outlined"
             color={user && user.id === commentUser.id ? "primary" : "default"}
           />
-          <Avatar user={commentUser} />
+          <AnimatePresence initial={false}>
+            {selected && (!user || user.id !== commentUser.id) ? (
+              <Box
+                component={m.div}
+                variants={{
+                  initial: {
+                    opacity: 0,
+                  },
+                  animate: {
+                    opacity: 1,
+                  },
+                }}
+                initial="initial"
+                animate="animate"
+              >
+                <Avatar user={commentUser} />
+              </Box>
+            ) : null}
+          </AnimatePresence>
         </Stack>
         <AnimatePresence initial={false}>
           {!selected ? (

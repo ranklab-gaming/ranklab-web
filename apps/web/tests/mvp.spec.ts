@@ -49,7 +49,7 @@ test("mvp", async ({ page }) => {
   await signup({ page, name: "Test Reviewer", email: reviewerEmail, password })
 
   // Go to the review page
-  await page.getByTitle("Overwatch").click()
+  await page.getByLabel("Overwatch", { exact: true }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await expect(page.getByText("some notes")).toBeVisible()
 
@@ -84,7 +84,7 @@ test("mvp", async ({ page }) => {
   // Add a comment as a user
   await logout(page)
   await signin({ page, email: userEmail, password })
-  await page.getByTitle("Overwatch").click()
+  await page.getByLabel("Overwatch", { exact: true }).click()
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "Comment At 00:00" }).click()
   await page

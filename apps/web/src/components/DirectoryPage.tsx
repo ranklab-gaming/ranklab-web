@@ -37,6 +37,7 @@ export const DirectoryPage = ({
           return (
             <Grid item xs={12} sm={6} md={4} key={game.id}>
               <Card
+                aria-label={game.name}
                 sx={{
                   height: 300,
                   position: "relative",
