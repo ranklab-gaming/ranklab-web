@@ -11,7 +11,7 @@ const VolumeControl = ({ videoRef }: Props) => {
   const [volume, setVolume] = useState(0)
   const theme = useTheme()
 
-  const togglePopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const togglePopover = (event: React.MouseEvent<HTMLButtonElement>): void => {
     if (anchorEl) {
       setAnchorEl(null)
     } else {
