@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  IconButton,
-  Slider,
-  Popover,
-  Box,
-  useTheme,
-  Stack,
-} from "@mui/material"
+import { IconButton, Slider, Popover, Box, useTheme } from "@mui/material"
 import { Iconify } from "@/components/Iconify"
 
 interface Props {
@@ -77,54 +70,55 @@ const VolumeControl = ({ videoRef }: Props) => {
           horizontal: "center",
         }}
         slotProps={{
-          paper: { sx: { backgroundColor: "transparent", boxShadow: "none" } },
+          paper: {
+            sx: {
+              backgroundColor: "transparent",
+              boxShadow: "none",
+              borderRadius: 1,
+            },
+          },
         }}
       >
         <Box
           py={2}
-          sx={{ backgroundColor: theme.palette.background.paper }}
-          overflow="visible"
+          height={100}
+          sx={{
+            backgroundColor: theme.palette.background.paper,
+            overflow: "hidden",
+          }}
         >
-          <Stack
-            spacing={2}
-            mb={1}
-            direction="column"
-            sx={{ height: 100 }}
-            alignItems="center"
-          >
-            <Slider
-              aria-labelledby="continuous-slider"
-              value={volume}
-              onChange={handleChange}
-              orientation="vertical"
-              size="small"
-              onKeyDown={preventHorizontalKeyboardNavigation}
-              aria-label="Volume"
-              sx={{
-                color:
-                  theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
-                "& .MuiSlider-track": {
-                  border: "none",
-                  width: 3,
+          <Slider
+            aria-labelledby="continuous-slider"
+            value={volume}
+            onChange={handleChange}
+            orientation="vertical"
+            size="small"
+            onKeyDown={preventHorizontalKeyboardNavigation}
+            aria-label="Volume"
+            sx={{
+              height: "64px",
+              color: "#fff",
+              "& .MuiSlider-track": {
+                border: "none",
+                width: 3,
+              },
+              "& .MuiSlider-rail": {
+                border: "none",
+                width: 3,
+              },
+              "& .MuiSlider-thumb": {
+                width: 12,
+                height: 12,
+                backgroundColor: "#fff",
+                "&:before": {
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
                 },
-                "& .MuiSlider-rail": {
-                  border: "none",
-                  width: 3,
+                "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                  boxShadow: "none",
                 },
-                "& .MuiSlider-thumb": {
-                  width: 12,
-                  height: 12,
-                  backgroundColor: "#fff",
-                  "&:before": {
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
-                  },
-                  "&:hover, &.Mui-focusVisible, &.Mui-active": {
-                    boxShadow: "none",
-                  },
-                },
-              }}
-            />
-          </Stack>
+              },
+            }}
+          />
         </Box>
       </Popover>
     </>
