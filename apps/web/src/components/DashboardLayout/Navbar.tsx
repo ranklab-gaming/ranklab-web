@@ -9,9 +9,7 @@ import { NavSection } from "./NavSection"
 import { Scrollbar } from "@/components/Scrollbar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { Game } from "@ranklab/api"
-import { GameIcon } from "../GameIcon"
 import { useRouter } from "next/router"
-import { useTheme } from "@mui/material"
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
@@ -27,6 +25,7 @@ type Props = {
   onCloseSidebar: VoidFunction
   collapsed: boolean
   onCollapse: VoidFunction
+  // eslint-disable-next-line react/no-unused-prop-types
   games: Game[]
 }
 
@@ -35,11 +34,9 @@ export const Navbar = ({
   onCloseSidebar,
   collapsed,
   onCollapse,
-  games,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
-  const { asPath, query } = useRouter()
-  const theme = useTheme()
+  const { query } = useRouter()
 
   const navConfig = [
     [
@@ -57,39 +54,6 @@ export const Navbar = ({
         path: "/directory",
         icon: <Iconify icon="eva:grid-outline" />,
       },
-      ...games.map((game) => {
-        const color =
-          `/directory/${game.id}` === asPath
-            ? theme.palette.primary.main
-            : theme.palette.common.white
-
-        const colorStyle = `${color} !important`
-
-        return {
-          title: game.name,
-          path: `/directory/${game.id}`,
-          icon: (
-            <GameIcon
-              game={game}
-              sx={{
-                width: 24,
-                height: 24,
-                svg: {
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "scale-down",
-                },
-                "svg *": {
-                  stopColor: colorStyle,
-                  fill: colorStyle,
-                },
-              }}
-            />
-          ),
-        }
-      }),
-    ],
-    [
       {
         title: "Your VODs",
         path: "/recordings",
