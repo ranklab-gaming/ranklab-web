@@ -72,7 +72,7 @@ export const RecordingForm = ({
     resolver: yupResolver(RecordingFormSchema),
     defaultValues: {
       skillLevel: 0,
-      gameId: "",
+      gameId: router.query.game?.toString() ?? "",
       title: "",
       notes: "",
     },

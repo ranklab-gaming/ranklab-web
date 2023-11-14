@@ -9,6 +9,7 @@ import {
   Stack,
   TablePagination,
   Typography,
+  useTheme,
 } from "@mui/material"
 import { Game, PaginatedResultForRecording } from "@ranklab/api"
 import { MouseEvent, useEffect, useState } from "react"
@@ -16,6 +17,8 @@ import NextLink from "next/link"
 import { Chip } from "@mui/material"
 import { assertFind, assertProp } from "@/assert"
 import pluralize from "pluralize"
+import { uploadsCdnUrl } from "@/config"
+import { Iconify } from "./Iconify"
 
 interface Props {
   recordings: PaginatedResultForRecording
@@ -32,6 +35,7 @@ export const RecordingList = ({
 }: Props) => {
   const [page, setPage] = useState(initialRecordings.page)
   const [recordings, setRecordings] = useState(initialRecordings)
+  const theme = useTheme()
 
   const onPageChange = async (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -71,6 +75,24 @@ export const RecordingList = ({
                   <CardActionArea>
                     <CardContent>
                       <Stack direction="row" spacing={2} alignItems="center">
+                        {recording.thumbnailKey ? (
+                          <img
+                            src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
+                            alt="Recording Thumbnail"
+                            style={{
+                              objectFit: "cover",
+                              width: 64,
+                              height: 64,
+                              borderRadius: theme.shape.borderRadius,
+                            }}
+                          />
+                        ) : (
+                          <Iconify
+                            icon="eva:image-outline"
+                            fontSize="64px"
+                            color="grey.600"
+                          />
+                        )}
                         <Stack spacing={2} flexGrow={1}>
                           <Stack
                             spacing={1}

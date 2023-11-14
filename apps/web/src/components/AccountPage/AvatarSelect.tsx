@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  forwardRef,
-  useEffect,
-  useId,
-  useState,
-} from "react"
+import React, { ChangeEvent, forwardRef, useId, useState } from "react"
 import { Box, Button, FormControl, Stack, styled } from "@mui/material"
 import { Iconify } from "@/components/Iconify"
 
@@ -24,7 +18,7 @@ interface AvatarSelectProps {
 
 export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
   function ({ defaultAvatarUrl, onChange, onClear }, ref) {
-    const [previewUrl, setPreviewUrl] = useState(defaultAvatarUrl)
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null)
     const id = useId().slice(1, -1)
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -35,16 +29,14 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
       }
     }
 
-    useEffect(() => {
-      setPreviewUrl(defaultAvatarUrl)
-    }, [defaultAvatarUrl])
+    const previewUrlOrDefault = previewUrl || defaultAvatarUrl
 
     return (
       <Box ref={ref}>
         <Stack alignItems="center">
-          {previewUrl ? (
+          {previewUrlOrDefault ? (
             <Box width={64} height={64}>
-              <StyledImage src={previewUrl} alt="Avatar preview" />
+              <StyledImage src={previewUrlOrDefault} alt="Avatar preview" />
             </Box>
           ) : (
             <Box
@@ -66,11 +58,11 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
               />
             </Box>
           )}
-          {previewUrl ? (
+          {previewUrlOrDefault ? (
             <Button
               variant="text"
               onClick={() => {
-                setPreviewUrl(defaultAvatarUrl)
+                setPreviewUrl(null)
                 onClear()
               }}
               size="small"
@@ -88,7 +80,7 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
               <input
                 id={id}
                 style={{ display: "none" }}
-                accept="image/*"
+                accept="image/jpeg,image/png"
                 type="file"
                 onChange={handleFileChange}
               />
@@ -104,7 +96,7 @@ export const AvatarSelect = forwardRef<HTMLDivElement, AvatarSelectProps>(
         </Stack>
       </Box>
     )
-  }
+  },
 )
 
 AvatarSelect.displayName = "AvatarSelect"

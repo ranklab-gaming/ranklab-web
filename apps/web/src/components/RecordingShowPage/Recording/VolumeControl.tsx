@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { IconButton, Slider, Popover } from "@mui/material"
+import {
+  IconButton,
+  Slider,
+  Popover,
+  Box,
+  useTheme,
+  Stack,
+} from "@mui/material"
 import { Iconify } from "@/components/Iconify"
 
 interface Props {
@@ -9,6 +16,7 @@ interface Props {
 const VolumeControl = ({ videoRef }: Props) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const [volume, setVolume] = useState(0)
+  const theme = useTheme()
 
   const togglePopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (anchorEl) {
@@ -43,10 +51,17 @@ const VolumeControl = ({ videoRef }: Props) => {
     }
   }
 
+  const volumeIcon =
+    volume === 0
+      ? "eva:volume-mute-outline"
+      : volume < 50
+        ? "eva:volume-down-outline"
+        : "eva:volume-up-outline"
+
   return (
     <>
       <IconButton aria-describedby={id} onClick={togglePopover}>
-        <Iconify icon="mdi:volume-high" width={22} fontSize={22} />
+        <Iconify icon={volumeIcon} width={22} fontSize={22} />
       </IconButton>
       <Popover
         id={id}
@@ -61,23 +76,56 @@ const VolumeControl = ({ videoRef }: Props) => {
           vertical: "bottom",
           horizontal: "center",
         }}
-        slotProps={{ paper: { sx: { pt: 1 } } }}
+        slotProps={{
+          paper: { sx: { backgroundColor: "transparent", boxShadow: "none" } },
+        }}
       >
-        <Slider
-          aria-labelledby="continuous-slider"
-          value={volume}
-          onChange={handleChange}
-          orientation="vertical"
-          size="small"
-          sx={{
-            height: 100,
-            '& input[type="range"]': {
-              WebkitAppearance: "slider-vertical",
-            },
-            overflow: "hidden",
-          }}
-          onKeyDown={preventHorizontalKeyboardNavigation}
-        />
+        <Box
+          py={2}
+          sx={{ backgroundColor: theme.palette.background.paper }}
+          overflow="visible"
+        >
+          <Stack
+            spacing={2}
+            mb={1}
+            direction="column"
+            sx={{ height: 100 }}
+            alignItems="center"
+          >
+            <Slider
+              aria-labelledby="continuous-slider"
+              value={volume}
+              onChange={handleChange}
+              orientation="vertical"
+              size="small"
+              onKeyDown={preventHorizontalKeyboardNavigation}
+              aria-label="Volume"
+              sx={{
+                color:
+                  theme.palette.mode === "dark" ? "#fff" : "rgba(0,0,0,0.87)",
+                "& .MuiSlider-track": {
+                  border: "none",
+                  width: 3,
+                },
+                "& .MuiSlider-rail": {
+                  border: "none",
+                  width: 3,
+                },
+                "& .MuiSlider-thumb": {
+                  width: 12,
+                  height: 12,
+                  backgroundColor: "#fff",
+                  "&:before": {
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.4)",
+                  },
+                  "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                    boxShadow: "none",
+                  },
+                },
+              }}
+            />
+          </Stack>
+        </Box>
       </Popover>
     </>
   )

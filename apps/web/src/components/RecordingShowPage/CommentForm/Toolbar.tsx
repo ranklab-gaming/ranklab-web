@@ -3,7 +3,7 @@ import { Stack, IconButton, useTheme, Tooltip } from "@mui/material"
 import { DrawingRef } from "../Drawing"
 import { useReview } from "@/hooks/useReview"
 import { colors } from "@/contexts/ReviewContext"
-import { ConfirmationButton } from "@/components/ConfirmationDialog"
+import { ConfirmationButton } from "@/components/ConfirmationButton"
 
 export interface ToolbarProps {
   drawingRef: React.RefObject<DrawingRef>

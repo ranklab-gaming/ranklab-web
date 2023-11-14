@@ -38,14 +38,16 @@ export const Navbar = ({
   games,
 }: Props) => {
   const isDesktop = useResponsive("up", "lg")
-  const { asPath } = useRouter()
+  const { asPath, query } = useRouter()
   const theme = useTheme()
 
   const navConfig = [
     [
       {
         title: "Submit your VOD",
-        path: "/recordings/new",
+        path: query.gameId
+          ? `/recordings/new?game=${query.gameId}`
+          : "/recordings/new",
         icon: <Iconify icon="eva:plus-square-outline" />,
       },
     ],

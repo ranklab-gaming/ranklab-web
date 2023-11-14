@@ -104,7 +104,7 @@ export const Controls = ({ videoRef }: ControlsProps) => {
                 setEditing(!editing)
               }}
               color={editing ? "secondary" : "primary"}
-              variant="contained"
+              variant="outlined"
               sx={{ width: 170 }}
             >
               {editing

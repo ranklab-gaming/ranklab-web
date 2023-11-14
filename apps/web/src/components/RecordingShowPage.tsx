@@ -29,6 +29,9 @@ import { CommentForm } from "./RecordingShowPage/CommentForm"
 import { DrawingRef } from "./RecordingShowPage/Drawing"
 import { animateFade } from "@/animate/fade"
 import { useController } from "react-hook-form"
+import { useRouter } from "next/router"
+import { Iconify } from "./Iconify"
+import { ConfirmationButton } from "./ConfirmationButton"
 
 interface Props {
   recording: ApiRecording
@@ -89,6 +92,7 @@ export const RecordingShowPage = ({
   const theme = useTheme()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const drawingRef = useRef<DrawingRef>(null)
+  const router = useRouter()
 
   const skillLevel = assertFind(
     game.skillLevels,
@@ -217,6 +221,18 @@ export const RecordingShowPage = ({
     metadataController,
   }
 
+  const deleteRecording = async () => {
+    await api.recordingsDelete({
+      id: recording.id,
+    })
+
+    enqueueSnackbar("Recording deleted successfully.", {
+      variant: "success",
+    })
+
+    router.push("/directory/[gameId]", `/directory/${game.id}`)
+  }
+
   return (
     <DashboardLayout
       user={user}
@@ -258,6 +274,20 @@ export const RecordingShowPage = ({
                 </Typography>
                 <Chip label={skillLevel.name} size="small" />
                 <Chip label={game.name} size="small" />
+                {user?.id === recording.userId ? (
+                  <ConfirmationButton
+                    action={deleteRecording}
+                    buttonIcon={
+                      <Iconify
+                        icon="mdi:trash-can-outline"
+                        width={22}
+                        fontSize={22}
+                      />
+                    }
+                    dialogContentText="Are you sure you want to delete this recording?"
+                    dialogTitle="Delete Recording"
+                  />
+                ) : null}
               </Stack>
             </Stack>
             {recording.notesText ? (

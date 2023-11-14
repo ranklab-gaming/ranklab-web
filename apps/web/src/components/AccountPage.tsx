@@ -197,9 +197,7 @@ export const AccountPage = ({
                   render={({ field }) => (
                     <AvatarSelect
                       defaultAvatarUrl={
-                        user.avatarImageKey &&
-                        field.value.value !== false &&
-                        field.value.value !== undefined
+                        user.avatarImageKey && field.value.value !== false
                           ? `${uploadsCdnUrl}/${user.avatarImageKey}`
                           : undefined
                       }

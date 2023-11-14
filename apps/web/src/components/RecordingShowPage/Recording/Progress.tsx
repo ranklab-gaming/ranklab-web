@@ -13,7 +13,7 @@ export const Progress = ({ videoRef }: Props) => {
   const [seekPosition, setSeekPosition] = useState(0)
   const progressBarRef = useRef<HTMLDivElement>(null)
   const [showSeek, setShowSeek] = useState(false)
-  const { setSelectedComment } = useReview()
+  const { setSelectedComment, selectedComment } = useReview()
 
   useEffect(() => {
     const video = videoRef.current
@@ -46,7 +46,10 @@ export const Progress = ({ videoRef }: Props) => {
     const offsetX = event.clientX - rect.left
     const newTime = (offsetX / rect.width) * video.duration
     video.currentTime = newTime
-    setSelectedComment(null)
+
+    if (selectedComment) {
+      setSelectedComment(null)
+    }
   }
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {

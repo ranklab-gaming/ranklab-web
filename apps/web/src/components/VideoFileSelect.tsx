@@ -21,7 +21,7 @@ interface Props {
 
 export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
   { error, helperText, onChange, value, ...props },
-  ref
+  ref,
 ) {
   const id = useId().slice(1, -1)
 
@@ -36,7 +36,7 @@ export const VideoFileSelect = forwardRef<HTMLDivElement, Props>(function (
         <input
           id={id}
           style={{ display: "none" }}
-          accept="video/*"
+          accept="video/mp4,video/avi,video/mov"
           type="file"
           onChange={(e) => onChange(e.target.files?.[0])}
         />

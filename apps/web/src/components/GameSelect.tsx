@@ -1,11 +1,4 @@
-import { GameIcon } from "@/components/GameIcon"
-import {
-  ListItemAvatar,
-  ListItemText,
-  MenuItem,
-  Stack,
-  TextField,
-} from "@mui/material"
+import { ListItemText, MenuItem, Stack, TextField } from "@mui/material"
 import { Game } from "@ranklab/api"
 import { ChangeEventHandler, forwardRef } from "react"
 
@@ -33,36 +26,26 @@ export const GameSelect = forwardRef<HTMLDivElement, Props>(function (
   ref,
 ) {
   return (
-    <Stack spacing={1}>
-      <TextField
-        select
-        label="Game"
-        onChange={onChange}
-        value={value}
-        onBlur={onBlur}
-        error={error}
-        helperText={helperText}
-        ref={ref}
-        disabled={disabled}
-        {...props}
-      >
-        {games.map((game) => (
-          <MenuItem key={game.id} value={game.id}>
-            <Stack direction="row" alignItems="center">
-              <ListItemAvatar>
-                <GameIcon
-                  game={game}
-                  width={24}
-                  height={24}
-                  sx={{ svg: { width: "100%", height: "100%" } }}
-                />
-              </ListItemAvatar>
-              <ListItemText primary={game.name} />
-            </Stack>
-          </MenuItem>
-        ))}
-      </TextField>
-    </Stack>
+    <TextField
+      select
+      label="Game"
+      onChange={onChange}
+      value={value}
+      onBlur={onBlur}
+      error={error}
+      helperText={helperText}
+      ref={ref}
+      disabled={disabled}
+      {...props}
+    >
+      {games.map((game) => (
+        <MenuItem key={game.id} value={game.id}>
+          <Stack direction="row" alignItems="center">
+            <ListItemText primary={game.name} />
+          </Stack>
+        </MenuItem>
+      ))}
+    </TextField>
   )
 })
 
