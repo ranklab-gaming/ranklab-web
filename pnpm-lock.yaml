@@ -109,8 +109,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       mixpanel-browser:
-        specifier: 2.47.0
-        version: 2.47.0
+        specifier: 2.48.1
+        version: 2.48.1
       nextjs-progressbar:
         specifier: 0.0.16
         version: 0.0.16(next@13.4.12)(react@18.2.0)
@@ -4560,8 +4560,8 @@ packages:
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
 
-  /mixpanel-browser@2.47.0:
-    resolution: {integrity: sha512-Ldrva0fRBEIFWmEibBQO1PulfpJVF3pf28Guk09lDirDaSQqqU/xs9zQLwN2rL5VwVtsP1aD3JaCgaa98EjojQ==}
+  /mixpanel-browser@2.48.1:
+    resolution: {integrity: sha512-vXTuUzZMg+ht7sRqyjtc3dUDy/81Z/H6FLFgFkUZJqKFaAqcx1JSXmOdY/2kmsxCkUdy5JN5zW9m9TMCk+rxGQ==}
     dev: false
 
   /mkdirp-classic@0.5.3:
