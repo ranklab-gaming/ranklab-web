@@ -2,7 +2,7 @@ import { Avatar } from "@/components/Avatar"
 import { IconButtonAnimate } from "@/components/IconButtonAnimate"
 import { MenuPopover } from "@/components/MenuPopover"
 import { useOptionalUser } from "@/hooks/useUser"
-import { Box, Divider, MenuItem, Typography } from "@mui/material"
+import { Box, Divider, MenuItem, Tooltip, Typography } from "@mui/material"
 import { alpha } from "@mui/material/styles"
 import NextLink from "next/link"
 import { MouseEvent, useState } from "react"
@@ -64,9 +64,11 @@ export const AccountPopover = () => {
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             Logged in as
           </Typography>
-          <Typography variant="subtitle2" noWrap>
-            {user.email}
-          </Typography>
+          <Tooltip title={user.email}>
+            <Typography variant="subtitle2" noWrap>
+              {user.email}
+            </Typography>
+          </Tooltip>
         </Box>
         <Divider sx={{ borderStyle: "dashed" }} />
         <NextLink href="/api/auth/logout" passHref legacyBehavior>

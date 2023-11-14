@@ -2,7 +2,7 @@ import { Iconify } from "@/components/Iconify"
 import { Logo } from "@/components/Logo"
 import { useResponsive } from "@/hooks/useResponsive"
 import { navbarStyles } from "@/styles"
-import { Box, Drawer, Stack } from "@mui/material"
+import { Drawer, Stack } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import NextLink from "next/link"
 import { NavSection } from "./NavSection"
@@ -59,6 +59,8 @@ export const Navbar = ({
         path: "/recordings",
         icon: <Iconify icon="eva:video-outline" />,
       },
+    ],
+    [
       {
         title: "Account",
         path: "/account",
@@ -114,7 +116,6 @@ export const Navbar = ({
         </Stack>
       </Stack>
       <NavSection navConfig={navConfig} collapsed={collapsed} />
-      <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   )
 
