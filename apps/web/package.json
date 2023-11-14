@@ -22,7 +22,7 @@
     "@mui/material": "5.14.17",
     "@ranklab/api": "workspace:*",
     "@ranklab/server": "workspace:*",
-    "@sentry/nextjs": "7.80.0",
+    "@sentry/nextjs": "7.80.1",
     "@svg-drawing/react": "4.2.5",
     "aws-xray-sdk": "3.5.3",
     "aws-xray-sdk-core": "3.5.3",
