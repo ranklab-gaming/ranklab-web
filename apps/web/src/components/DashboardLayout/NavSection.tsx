@@ -15,16 +15,18 @@ export const NavSection = ({
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} {...other}>
       {navConfig.map((group, groupIndex) => (
-        <React.Fragment key={groupIndex}>
-          {groupIndex === navConfig.length - 1 ? (
-            <Box sx={{ flexGrow: 1 }} />
-          ) : null}
-          <List disablePadding sx={{ p: 2 }}>
-            {group.map((list, index) => (
-              <NavListRoot key={index} list={list} collapsed={collapsed} />
-            ))}
-          </List>
-        </React.Fragment>
+        <List
+          disablePadding
+          key={groupIndex}
+          sx={{
+            p: 2,
+            ...(groupIndex === navConfig.length - 1 ? { mt: "auto" } : {}),
+          }}
+        >
+          {group.map((list, index) => (
+            <NavListRoot key={index} list={list} collapsed={collapsed} />
+          ))}
+        </List>
       ))}
     </Box>
   )
