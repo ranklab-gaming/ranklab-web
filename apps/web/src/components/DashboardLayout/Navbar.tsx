@@ -2,7 +2,7 @@ import { Iconify } from "@/components/Iconify"
 import { Logo } from "@/components/Logo"
 import { useResponsive } from "@/hooks/useResponsive"
 import { navbarStyles } from "@/styles"
-import { Drawer, Stack } from "@mui/material"
+import { Box, Drawer, Stack } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import NextLink from "next/link"
 import { NavSection } from "./NavSection"
@@ -80,42 +80,44 @@ export const Navbar = ({
         },
       }}
     >
-      <Stack
-        spacing={3}
-        sx={{
-          pt: 3,
-          pb: 2,
-          px: 2.5,
-          flexShrink: 0,
-        }}
-      >
+      <Box display="flex" flexDirection="column" height="100%">
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          spacing={3}
+          sx={{
+            pt: 3,
+            pb: 2,
+            px: 2.5,
+            flexShrink: 0,
+          }}
         >
-          {!collapsed ? (
-            <NextLink href="/">
-              <Logo />
-            </NextLink>
-          ) : null}
-          {isDesktop ? (
-            <IconButtonAnimate
-              onClick={onCollapse}
-              sx={{ mr: 1, color: "text.primary" }}
-            >
-              <Iconify
-                icon={
-                  collapsed
-                    ? "eva:chevron-right-outline"
-                    : "eva:chevron-left-outline"
-                }
-              />
-            </IconButtonAnimate>
-          ) : null}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {!collapsed ? (
+              <NextLink href="/">
+                <Logo />
+              </NextLink>
+            ) : null}
+            {isDesktop ? (
+              <IconButtonAnimate
+                onClick={onCollapse}
+                sx={{ mr: 1, color: "text.primary" }}
+              >
+                <Iconify
+                  icon={
+                    collapsed
+                      ? "eva:chevron-right-outline"
+                      : "eva:chevron-left-outline"
+                  }
+                />
+              </IconButtonAnimate>
+            ) : null}
+          </Stack>
         </Stack>
-      </Stack>
-      <NavSection navConfig={navConfig} collapsed={collapsed} />
+        <NavSection navConfig={navConfig} collapsed={collapsed} />
+      </Box>
     </Scrollbar>
   )
 
