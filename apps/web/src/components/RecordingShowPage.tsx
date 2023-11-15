@@ -1,6 +1,11 @@
 import { PropsWithOptionalUser } from "@/auth"
 import { DashboardLayout } from "./DashboardLayout"
-import { Game, Comment, Recording as ApiRecording } from "@ranklab/api"
+import {
+  Game,
+  Comment,
+  Recording as ApiRecording,
+  MediaState,
+} from "@ranklab/api"
 import { assertFind, assertProp } from "@/assert"
 import { formatDate } from "@/helpers/formatDate"
 import {
@@ -274,7 +279,8 @@ export const RecordingShowPage = ({
                 </Typography>
                 <Chip label={skillLevel.name} size="small" />
                 <Chip label={game.name} size="small" />
-                {user?.id === recording.userId ? (
+                {user?.id === recording.userId &&
+                recording.state === MediaState.Processed ? (
                   <ConfirmationButton
                     action={deleteRecording}
                     buttonIcon={
