@@ -14,6 +14,7 @@ import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { useIntercom } from "react-use-intercom"
 import { Game, User } from "@ranklab/api"
+import { useLayout } from "@/hooks/useLayout"
 
 interface MainStyleProps {
   collapsed: boolean
@@ -61,8 +62,8 @@ export const DashboardLayout = ({
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
-  const [collapsed, setCollapsed] = useState(false)
   const { update } = useIntercom()
+  const { collapsed, setCollapsed } = useLayout()
 
   useEffect(() => {
     if (!user) return

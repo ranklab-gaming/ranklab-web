@@ -7,12 +7,13 @@ import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import mixpanel from "mixpanel-browser"
 import { mixpanelProjectToken, nodeEnv, intercomAppId } from "@/config"
 import { useRouter } from "next/router"
 import { track } from "@/analytics"
 import { IntercomProvider, useIntercom } from "react-use-intercom"
+import { LayoutProvider } from "@/contexts/LayoutContext"
 
 const clientSideEmotionCache = createEmotionCache()
 let iubendaLoaded = false
@@ -22,12 +23,18 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
+export interface LayoutProps {
+  collapsed: boolean
+  setCollapsed: (collapsed: boolean) => void
+}
+
 const Content = ({
   Component,
   pageProps,
 }: Pick<AppProps, "Component" | "pageProps">) => {
   const { boot: bootIntercom, hardShutdown: shutdownIntercom } = useIntercom()
   const router = useRouter()
+  const [collapsed, setCollapsed] = useState(false)
 
   const handlePreferenceExpressed = useRef<((preference: any) => void) | null>(
     null,
@@ -149,7 +156,9 @@ const Content = ({
     <>
       <CssBaseline />
       <NextNProgress color={theme.palette.secondary.main} />
-      <Component {...pageProps} />
+      <LayoutProvider value={{ collapsed, setCollapsed }}>
+        <Component {...pageProps} />
+      </LayoutProvider>
     </>
   )
 }
