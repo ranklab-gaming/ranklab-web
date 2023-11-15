@@ -96,7 +96,7 @@ const VolumeControl = ({ videoRef }: Props) => {
             onKeyDown={preventHorizontalKeyboardNavigation}
             aria-label="Volume"
             sx={{
-              height: "64px",
+              height: "68px",
               color: "#fff",
               "& .MuiSlider-track": {
                 border: "none",
