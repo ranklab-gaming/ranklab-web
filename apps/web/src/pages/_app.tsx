@@ -23,11 +23,6 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
-export interface LayoutProps {
-  collapsed: boolean
-  setCollapsed: (collapsed: boolean) => void
-}
-
 const Content = ({
   Component,
   pageProps,
