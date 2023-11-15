@@ -19,7 +19,6 @@ import { assetsCdnUrl } from "@/config"
 import { Iconify } from "@/components/Iconify"
 import { Game } from "@ranklab/api"
 import { GameIcon } from "../GameIcon"
-import { chunk } from "lodash"
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   position: "relative",
@@ -148,6 +147,7 @@ export const Hero = ({ games }: Props) => {
               <Stack
                 spacing={3}
                 textAlign="center"
+                alignItems="center"
                 direction={!isDesktop ? "column" : "row"}
               >
                 <NextLink href="/directory" passHref legacyBehavior>
@@ -169,46 +169,44 @@ export const Hero = ({ games }: Props) => {
                     Explore
                   </Button>
                 </NextLink>
-                <Stack direction="column" spacing={1} justifyContent="center">
-                  {chunk(games, 6).map((group, index) => (
-                    <Stack
-                      spacing={2}
-                      direction="row"
-                      alignItems="flex-end"
-                      justifyContent={!isDesktop ? "center" : "flex-start"}
-                      key={index}
-                    >
-                      {group.map((game) => (
-                        <Tooltip title={game.name} key={game.id}>
-                          <Box>
-                            <GameIcon
-                              game={game}
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                width: 32,
-                                height: 32,
-                                svg: {
-                                  objectFit: "scale-down",
-                                  width: "100%",
-                                  height: "100%",
-                                },
-                                "svg *": {
-                                  stopColor: "#fff !important",
-                                  fill: "#fff !important",
-                                  transition: "all 0.25s",
-                                },
-                                "&:hover svg *": {
-                                  stopColor: `${theme.palette.primary.main} !important`,
-                                  fill: `${theme.palette.primary.main} !important`,
-                                },
-                              }}
-                            />
-                          </Box>
-                        </Tooltip>
-                      ))}
-                    </Stack>
+                <Stack
+                  spacing={2}
+                  direction="row"
+                  alignItems="flex-end"
+                  justifyContent={!isDesktop ? "center" : "flex-start"}
+                  sx={{
+                    maskImage: "linear-gradient(to left, transparent, black)",
+                  }}
+                >
+                  {games.slice(0, 6).map((game) => (
+                    <Tooltip title={game.name} key={game.id}>
+                      <Box>
+                        <GameIcon
+                          game={game}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: 32,
+                            height: 32,
+                            svg: {
+                              objectFit: "scale-down",
+                              width: "100%",
+                              height: "100%",
+                            },
+                            "svg *": {
+                              stopColor: "#fff !important",
+                              fill: "#fff !important",
+                              transition: "all 0.25s",
+                            },
+                            "&:hover svg *": {
+                              stopColor: `${theme.palette.primary.main} !important`,
+                              fill: `${theme.palette.primary.main} !important`,
+                            },
+                          }}
+                        />
+                      </Box>
+                    </Tooltip>
                   ))}
                 </Stack>
               </Stack>
