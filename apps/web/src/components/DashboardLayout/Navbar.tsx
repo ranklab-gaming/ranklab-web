@@ -97,7 +97,7 @@ export const Navbar = ({
           >
             {!collapsed ? (
               <NextLink href="/">
-                <Logo />
+                <Logo ml={2} mt={1} />
               </NextLink>
             ) : null}
             {isDesktop ? (
