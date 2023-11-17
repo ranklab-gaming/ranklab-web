@@ -115,12 +115,13 @@ export const MenuPopover = ({
     <Popover
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
-      PaperProps={{
-        sx: {
-          p: 1,
-          width: 200,
-          overflow: "inherit",
-          ...sx,
+      slotProps={{
+        paper: {
+          sx: {
+            p: 1,
+            overflow: "inherit",
+            ...sx,
+          },
         },
       }}
       {...other}
