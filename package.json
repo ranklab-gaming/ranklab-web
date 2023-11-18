@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@aws-sdk/client-dynamodb": "3.454.0",
-    "@types/node": "20.9.1",
+    "@types/node": "20.9.2",
     "chalk": "5.3.0",
     "dotenv": "16.3.1",
     "prettier": "3.1.0",
