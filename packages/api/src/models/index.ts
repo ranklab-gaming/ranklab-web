@@ -327,6 +327,10 @@ export interface Game {
 export const GameId = {
   Overwatch: "overwatch",
   Apex: "apex",
+  Cs2: "cs2",
+  Dota2: "dota2",
+  Lol: "lol",
+  Valorant: "valorant",
 } as const
 export type GameId = (typeof GameId)[keyof typeof GameId]
 
@@ -634,12 +638,6 @@ export interface UpdateUserRequest {
    * @memberof UpdateUserRequest
    */
   emailsEnabled: boolean
-  /**
-   *
-   * @type {string}
-   * @memberof UpdateUserRequest
-   */
-  avatarId?: string | null
 }
 /**
  *
@@ -677,12 +675,6 @@ export interface User {
    * @memberof User
    */
   intercomHash?: string | null
-  /**
-   *
-   * @type {string}
-   * @memberof User
-   */
-  avatarId?: string | null
   /**
    *
    * @type {string}

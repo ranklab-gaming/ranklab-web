@@ -35,10 +35,6 @@ import type {
   User,
 } from "../models"
 
-export interface AvatarsDeleteRequest {
-  id: string
-}
-
 export interface AvatarsGetRequest {
   id: string
 }
@@ -142,26 +138,15 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async avatarsDeleteRaw(
-    requestParameters: AvatarsDeleteRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<runtime.ApiResponse<StatusResponse>> {
-    if (requestParameters.id === null || requestParameters.id === undefined) {
-      throw new runtime.RequiredError(
-        "id",
-        "Required parameter requestParameters.id was null or undefined when calling avatarsDelete.",
-      )
-    }
-
     const queryParameters: any = {}
 
     const headerParameters: runtime.HTTPHeaders = {}
 
     const response = await this.request(
       {
-        path: `/avatars/{id}`.replace(
-          `{${"id"}}`,
-          encodeURIComponent(String(requestParameters.id)),
-        ),
+        path: `/avatars`,
         method: "DELETE",
         headers: headerParameters,
         query: queryParameters,
@@ -175,13 +160,9 @@ export class RanklabApi extends runtime.BaseAPI {
   /**
    */
   async avatarsDelete(
-    requestParameters: AvatarsDeleteRequest,
     initOverrides?: RequestInit | runtime.InitOverrideFunction,
   ): Promise<StatusResponse> {
-    const response = await this.avatarsDeleteRaw(
-      requestParameters,
-      initOverrides,
-    )
+    const response = await this.avatarsDeleteRaw(initOverrides)
     return await response.value()
   }
 

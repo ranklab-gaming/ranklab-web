@@ -30,6 +30,7 @@ import { useRouter } from "next/router"
 import { useUpload } from "@/hooks/useUpload"
 import { uploadsCdnUrl } from "@/config"
 import { AvatarSelect } from "./AccountPage/AvatarSelect"
+import { assertProp } from "@/assert"
 
 interface Props {
   games: Game[]
@@ -39,18 +40,22 @@ const FormSchema = yup
   .object()
   .shape({
     emailsEnabled: yup.boolean().defined(),
-    avatar: yup.object().shape({
-      value: yup
-        .mixed({
-          check: (value: any): value is File | boolean =>
-            value instanceof File || typeof value === "boolean",
-        })
-        .test("fileSize", "Image file must be less than 32MiB", (value) =>
-          value instanceof File
-            ? value.size > 0 && value.size < 33554432
-            : true,
-        ),
-    }),
+    avatar: yup
+      .object()
+      .shape({
+        file: yup
+          .mixed({
+            check: (value: any): value is File => value instanceof File,
+          })
+          .defined()
+          .test(
+            "fileSize",
+            "Image file must be less than 32MiB",
+            (value) => value.size > 0 && value.size < 33554432,
+          ),
+      })
+      .optional()
+      .nullable(),
   })
   .concat(AccountFieldsSchemaWithoutPassword)
 
@@ -66,13 +71,10 @@ export const AccountPage = ({
   const [tab, setTab] = useState(router.query.tab?.toString() ?? "account")
   const [upload] = useUpload()
 
-  const defaultValues = {
+  const defaultValues: FormValues = {
     email: user.email,
     name: user.name,
     emailsEnabled: user.emailsEnabled,
-    avatar: {
-      value: user.avatarId ? true : undefined,
-    },
   }
 
   const {
@@ -87,30 +89,20 @@ export const AccountPage = ({
   })
 
   const updateUser = async (data: FormValues) => {
-    let avatarId = user.avatarId
-
-    if (data.avatar.value instanceof File) {
+    if (data.avatar) {
       const newAvatar = await api.avatarsCreate()
-
-      if (!newAvatar.uploadUrl) {
-        throw new Error("uploadUrl is missing")
-      }
-
-      const headers: Record<string, string> = {
-        "x-amz-acl": "public-read",
-      }
+      const url = assertProp(newAvatar, "uploadUrl")
+      const headers: Record<string, string> = { "x-amz-acl": "public-read" }
 
       if (newAvatar.instanceId) {
         headers["x-amz-meta-instance-id"] = newAvatar.instanceId
       }
 
       await upload({
-        file: data.avatar.value,
-        url: newAvatar.uploadUrl,
+        file: data.avatar.file,
+        url,
         headers,
       })
-
-      avatarId = newAvatar.id
 
       const poll = async (retries = 30): Promise<boolean> => {
         const avatar = await api.avatarsGet({ id: newAvatar.id })
@@ -134,21 +126,11 @@ export const AccountPage = ({
             variant: "error",
           },
         )
+
+        return
       }
-    } else if (data.avatar.value === false && user.avatarId) {
-      await api.avatarsDelete({ id: user.avatarId })
-
-      setValue(
-        "avatar",
-        { value: undefined },
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-          shouldTouch: true,
-        },
-      )
-
-      avatarId = null
+    } else if (data.avatar === null) {
+      await api.avatarsDelete()
     }
 
     setUser(
@@ -156,10 +138,15 @@ export const AccountPage = ({
         updateUserRequest: {
           name: data.name,
           emailsEnabled: data.emailsEnabled,
-          avatarId,
         },
       }),
     )
+
+    setValue("avatar", undefined, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
 
     enqueueSnackbar("Account updated successfully", { variant: "success" })
   }
@@ -197,15 +184,19 @@ export const AccountPage = ({
                   render={({ field }) => (
                     <AvatarSelect
                       defaultAvatarUrl={
-                        user.avatarImageKey && field.value.value !== false
+                        user.avatarImageKey && field.value !== null
                           ? `${uploadsCdnUrl}/${user.avatarImageKey}`
                           : undefined
                       }
                       onChange={(file) => {
-                        field.onChange({ value: file })
+                        field.onChange({ file })
                       }}
                       onClear={() => {
-                        field.onChange({ value: false })
+                        setValue("avatar", null, {
+                          shouldValidate: true,
+                          shouldDirty: true,
+                          shouldTouch: true,
+                        })
                       }}
                     />
                   )}
