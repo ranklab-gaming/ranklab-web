@@ -1,23 +1,37 @@
 import { ResponseError, User } from "@ranklab/api"
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-} from "next"
+import { GetServerSideProps, GetServerSidePropsResult } from "next"
 import { PropsWithOptionalUser, PropsWithUser } from "../auth"
-import { withSessionSsr } from "@/session"
+import { GetServerSidePropsContextWithSession, withSessionSsr } from "@/session"
+import { ParsedUrlQuery } from "querystring"
 
-type GetServerSidePropsWithOptionalUser<P extends { [key: string]: any }> = (
-  ctx: GetServerSidePropsContext & { user: Promise<User> | null }
-) => Promise<GetServerSidePropsResult<P>>
+type GetServerSidePropsContextWithOptionalUser<
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+> = GetServerSidePropsContextWithSession<P> & { user: Promise<User> | null }
 
-type GetServerSidePropsWithUser<P extends { [key: string]: any }> = (
-  ctx: GetServerSidePropsContext & { user: Promise<User> }
-) => Promise<GetServerSidePropsResult<P>>
+type GetServerSidePropsContextWithUser<
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+> = GetServerSidePropsContextWithSession<P> & { user: Promise<User> | null }
 
-export function withOptionalUserSsr<P extends { [key: string]: any }>(
-  getServerSideProps: GetServerSidePropsWithOptionalUser<P>
-): GetServerSideProps<PropsWithOptionalUser<P>> {
+type GetServerSidePropsWithOptionalUser<
+  T extends { [key: string]: any },
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+> = (
+  ctx: GetServerSidePropsContextWithOptionalUser<P>,
+) => Promise<GetServerSidePropsResult<T>>
+
+type GetServerSidePropsWithUser<
+  T extends { [key: string]: any },
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+> = (
+  ctx: GetServerSidePropsContextWithUser<P>,
+) => Promise<GetServerSidePropsResult<T>>
+
+export function withOptionalUserSsr<
+  T extends { [key: string]: any },
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+>(
+  getServerSideProps: GetServerSidePropsWithOptionalUser<T, P>,
+): GetServerSideProps<PropsWithOptionalUser<T>> {
   return withSessionSsr(async (ctx) => {
     const { getServerSession } = await import("./session")
     const { createServerApi } = await import("@/api/server")
@@ -28,7 +42,10 @@ export function withOptionalUserSsr<P extends { [key: string]: any }>(
     let res
 
     try {
-      res = await getServerSideProps({ ...ctx, user: fetchUser })
+      res = await getServerSideProps({
+        ...ctx,
+        user: fetchUser,
+      } as GetServerSidePropsContextWithOptionalUser<P>)
     } catch (e: unknown) {
       if (!(e instanceof ResponseError)) {
         throw e
@@ -64,9 +81,12 @@ export function withOptionalUserSsr<P extends { [key: string]: any }>(
   })
 }
 
-export function withUserSsr<P extends { [key: string]: any }>(
-  getServerSideProps: GetServerSidePropsWithUser<P>
-): GetServerSideProps<PropsWithUser<P>> {
+export function withUserSsr<
+  T extends { [key: string]: any },
+  P extends ParsedUrlQuery = ParsedUrlQuery,
+>(
+  getServerSideProps: GetServerSidePropsWithUser<T, P>,
+): GetServerSideProps<PropsWithUser<T>> {
   return withOptionalUserSsr(async (ctx) => {
     const user = ctx.user
     const returnUrl = encodeURIComponent(ctx.resolvedUrl)
@@ -80,9 +100,9 @@ export function withUserSsr<P extends { [key: string]: any }>(
       }
     }
 
-    return await getServerSideProps({
+    return getServerSideProps({
       ...ctx,
       user,
-    })
-  }) as GetServerSideProps<PropsWithUser<P>>
+    } as GetServerSidePropsContextWithUser<P>)
+  }) as GetServerSideProps<PropsWithUser<T>>
 }

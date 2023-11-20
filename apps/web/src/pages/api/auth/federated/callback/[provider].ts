@@ -1,6 +1,5 @@
 import { apiHost, authClientSecret, host } from "@/config/server"
 import { getClient } from "@/oidc/providers"
-import { NextApiRequest, NextApiResponse } from "next"
 import { createServerApi } from "@/api/server"
 import { createSecretKey } from "crypto"
 import { SignJWT } from "jose"
@@ -12,10 +11,7 @@ import { errors as clientErrors } from "openid-client"
 
 const secret = createSecretKey(Buffer.from(authClientSecret))
 
-export default withSessionApiRoute(async function callback(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default withSessionApiRoute(async function callback(req, res) {
   const oidcProvider = await getOidcProvider()
   let interaction
 

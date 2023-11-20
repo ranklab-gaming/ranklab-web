@@ -1,12 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next"
 import { getClient, getConfig } from "@/oidc/providers"
 import { generators } from "openid-client"
 import { withSessionApiRoute } from "@/session"
 
-export default withSessionApiRoute(async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default withSessionApiRoute(async function handler(req, res) {
   const provider = req.query.provider as string
   const client = await getClient(provider)
 

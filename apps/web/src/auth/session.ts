@@ -1,6 +1,6 @@
 import { assertProp } from "@/assert"
 import { authClientSecret, host } from "@/config/server"
-import { IncomingMessage } from "http"
+import { RequestWithSession } from "@/session"
 import { decodeJwt } from "jose"
 import { Client, Issuer, errors } from "openid-client"
 
@@ -46,15 +46,15 @@ export function sessionFromToken(token?: string) {
   }
 }
 
-export async function destroyServerSession(req: IncomingMessage) {
+export async function destroyServerSession(req: RequestWithSession) {
   delete req.session.accessToken
   delete req.session.refreshToken
   delete req.session.codeVerifier
   await req.session.save()
 }
 
-export async function getServerSession(req: IncomingMessage) {
-  const accessToken = req.session?.accessToken
+export async function getServerSession(req: RequestWithSession) {
+  const accessToken = req.session.accessToken
   const session = sessionFromToken(accessToken)
 
   if (!session) {
