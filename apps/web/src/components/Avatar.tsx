@@ -1,9 +1,11 @@
+import { uploadsCdnUrl } from "@/config"
 import { UserContext } from "@/contexts/UserContext"
 import {
   Avatar as MuiAvatar,
   AvatarProps as MuiAvatarProps,
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
+import { User } from "@ranklab/api"
 import { forwardRef, useContext } from "react"
 
 type AvatarColor =
@@ -36,14 +38,12 @@ function getAvatarColor(name: string) {
 
 interface AvatarProps extends MuiAvatarProps {
   color?: AvatarColor
-  user?: {
-    name: string
-  }
+  user?: User
 }
 
 export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
   { user: initialUser, sx, ...other }: AvatarProps,
-  ref
+  ref,
 ) {
   const theme = useTheme()
   const contextUser = useContext(UserContext)
@@ -53,32 +53,28 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
     throw new Error("user is missing")
   }
 
-  const { name } = user
+  const { name, avatarImageKey } = user
   const initial = getInitial(name)
   const color = getAvatarColor(name)
-
-  if (color === "default") {
-    return (
-      <MuiAvatar sx={sx} {...other} ref={ref}>
-        {initial}
-      </MuiAvatar>
-    )
-  }
 
   return (
     <MuiAvatar
       sx={{
-        fontWeight: theme.typography.fontWeightMedium,
-        color: theme.palette[color].contrastText,
-        backgroundColor: theme.palette[color].main,
+        ...(color !== "default"
+          ? {
+              fontWeight: theme.typography.fontWeightMedium,
+              color: theme.palette[color].contrastText,
+              backgroundColor: theme.palette[color].main,
+            }
+          : null),
         ...sx,
       }}
       alt={name}
-      color={getAvatarColor(name)}
       ref={ref}
+      {...(avatarImageKey
+        ? { src: `${uploadsCdnUrl}/${avatarImageKey}` }
+        : { color: getAvatarColor(name), children: initial })}
       {...other}
-    >
-      {initial}
-    </MuiAvatar>
+    />
   )
 })
