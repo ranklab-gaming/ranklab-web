@@ -161,8 +161,8 @@ importers:
         specifier: 9.0.5
         version: 9.0.5
       '@types/lodash':
-        specifier: 4.14.201
-        version: 4.14.201
+        specifier: 4.14.202
+        version: 4.14.202
       '@types/mixpanel-browser':
         specifier: 2.47.5
         version: 2.47.5
@@ -258,8 +258,8 @@ importers:
         specifier: 4.17.21
         version: 4.17.21
       '@types/lodash':
-        specifier: 4.14.201
-        version: 4.14.201
+        specifier: 4.14.202
+        version: 4.14.202
       '@types/oidc-provider':
         specifier: 8.4.2
         version: 8.4.2
@@ -2128,11 +2128,11 @@ packages:
   /@types/lodash-es@4.17.7:
     resolution: {integrity: sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==}
     dependencies:
-      '@types/lodash': 4.14.201
+      '@types/lodash': 4.14.202
     dev: false
 
-  /@types/lodash@4.14.201:
-    resolution: {integrity: sha512-y9euML0cim1JrykNxADLfaG0FgD1g/yTHwUs/Jg9ZIU7WKj2/4IW9Lbb1WZbvck78W/lfGXFfe+u2EGfIJXdLQ==}
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
 
   /@types/mime@3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
