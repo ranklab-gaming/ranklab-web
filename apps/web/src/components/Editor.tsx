@@ -60,6 +60,9 @@ const RootStyle = styled(Box)(({ theme }) => ({
   minHeight: 250,
   borderRadius: theme.shape.borderRadius,
   border: `solid 1px ${theme.palette.grey[500_32]}`,
+  "& .quill": {
+    height: "100%"
+  },
   "& .ql-container.ql-snow": {
     borderColor: "transparent",
     ...theme.typography.body1,
@@ -96,7 +99,7 @@ export const Editor = ({
   onChange,
   placeholder,
   helperText,
-  vertical = false,
+  vertical = true,
   sx,
   ...other
 }: Props) => {
