@@ -151,7 +151,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     mousePositionRef.current = point
     pathRef.current = path
     pointRef.current = point
-    timeoutRef.current = setInterval(drawPoint, 100)
+    timeoutRef.current = setInterval(drawPoint, 50)
   }
 
   const handleMouseUp = () => {
