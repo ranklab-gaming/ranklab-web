@@ -22,6 +22,9 @@ export default async () => {
 
   const pinoOptions: PinoOptions = {
     level: logLevel,
+    autoLogging: {
+      ignore: (req) => Boolean(req.url?.startsWith("/_next") || req.url?.startsWith("/__next") || req.url?.startsWith("/favicon")),
+    },
     serializers: {
       req: (req) => ({
         id: req.id,
