@@ -1,7 +1,6 @@
 import { uploadsCdnUrl } from "@/config"
 import { Box, Stack, Typography } from "@mui/material"
 import { useCallback, useEffect, useRef, useState } from "react"
-import { debounce } from "lodash"
 import { Drawing, DrawingRef } from "./Drawing"
 import { m } from "framer-motion"
 import { animateFade } from "@/animate/fade"
@@ -21,36 +20,10 @@ const currentTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
 
 export const Recording = ({ videoRef, drawingRef }: Props) => {
   const { form, recording, selectedComment, editing } = useReview()
-  const [resizing, setResizing] = useState(false)
-  const boxRef = useRef<HTMLDivElement>(null)
   const metadata = form.watch("metadata")
   const containerRef = useRef<HTMLDivElement>(null)
   const [wrapperWidth, setWrapperWidth] = useState<number>(0)
   const [wrapperHeight, setWrapperHeight] = useState<number>(0)
-
-  useEffect(() => {
-    if (boxRef.current === null) {
-      return
-    }
-
-    const handleResize = debounce(() => {
-      setResizing(false)
-    }, 100)
-
-    const resizeObserver = new ResizeObserver(() => {
-      setResizing(true)
-      handleResize()
-    })
-
-    window.addEventListener("resize", handleResize)
-    resizeObserver.observe(boxRef.current)
-    handleResize()
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-      resizeObserver.disconnect()
-    }
-  }, [])
 
   const resizeVideo = useCallback(() => {
     if (!containerRef.current || !videoRef.current) {
@@ -144,7 +117,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           }}
           onLoadedMetadata={resizeVideo}
         />
-        {editing && !resizing ? (
+        {editing ? (
           <Drawing ref={drawingRef} />
         ) : selectedComment ? (
           <Box

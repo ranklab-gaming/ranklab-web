@@ -198,6 +198,8 @@ export const RecordingShowPage = ({
           },
         },
       })
+
+      setColor("primary")
     }
 
     setSelectedComment(null)

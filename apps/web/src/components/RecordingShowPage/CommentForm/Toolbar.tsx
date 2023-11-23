@@ -51,7 +51,6 @@ export const Toolbar = ({ drawingRef }: ToolbarProps) => {
           key={c}
           onClick={() => {
             setColor(c)
-            drawingRef.current?.changeColor(c)
           }}
           sx={{
             color: theme.palette[c].main,
