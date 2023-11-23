@@ -98,17 +98,24 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     const mousePosition = mousePositionRef.current
     const point = pointRef.current
 
-    if (!path || !mousePosition) {
+    if (!path || !mousePosition || !point) {
       return
     }
 
     const { x, y } = mousePosition
 
-    if (point && point.x === x && point.y === y) {
+    if (point.x === x && point.y === y) {
       return
     }
 
-    path.setAttribute("d", `${path.getAttribute("d")} L ${x} ${y}`)
+    const controlX = (point.x + x) / 2
+    const controlY = (point.y + y) / 2
+
+    path.setAttribute(
+      "d",
+      `${path.getAttribute("d")} Q ${controlX} ${controlY} ${x} ${y}`,
+    )
+
     pointRef.current = { x, y }
   }
 
@@ -130,7 +137,8 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     }
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path")
-    const { x, y } = getPointFromEvent(e)
+    const point = getPointFromEvent(e)
+    const { x, y } = point
 
     path.setAttribute("stroke", theme.palette[color].main)
     path.setAttribute("fill", "none")
@@ -140,7 +148,9 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     path.setAttribute("d", `M ${x} ${y}`)
     svg.appendChild(path)
 
+    mousePositionRef.current = point
     pathRef.current = path
+    pointRef.current = point
     timeoutRef.current = setInterval(drawPoint, 100)
   }
 
@@ -148,7 +158,9 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     const timeout = timeoutRef.current
     const container = containerRef.current
 
+    mousePositionRef.current = null
     pathRef.current = null
+    pointRef.current = null
 
     if (timeout) {
       clearTimeout(timeout)

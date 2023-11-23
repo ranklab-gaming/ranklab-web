@@ -27,14 +27,16 @@ export const drawLine = async (
   endXPercent: number,
   endYPercent: number,
 ) => {
+  const svgLocator = page.getByTitle("Drawing").locator("svg")
+
   const { x: startX, y: startY } = await getPercentCoords(
-    page.getByTitle("Drawing"),
+    svgLocator,
     startXPercent,
     startYPercent,
   )
 
   const { x: endX, y: endY } = await getPercentCoords(
-    page.getByTitle("Drawing"),
+    svgLocator,
     endXPercent,
     endYPercent,
   )
@@ -42,6 +44,7 @@ export const drawLine = async (
   await page.mouse.move(startX, startY)
   await page.mouse.down()
   await page.mouse.move(endX, endY)
+  await new Promise((resolve) => setTimeout(resolve, 100))
   await page.mouse.up()
 }
 
@@ -55,7 +58,9 @@ export const seekTo = async (page: Page, percent: number) => {
   await page.mouse.click(x, y)
 }
 
-export const waitForRecordingToBeProcessed = async (attempts = 10) => {
+export const waitForRecordingToBeProcessed = async (
+  attempts = 30,
+): Promise<void> => {
   const result = await db.query(
     "SELECT state FROM recordings WHERE state = 'processed'",
   )
@@ -69,4 +74,6 @@ export const waitForRecordingToBeProcessed = async (attempts = 10) => {
   }
 
   await new Promise((resolve) => setTimeout(resolve, 1000))
+
+  return waitForRecordingToBeProcessed(attempts - 1)
 }
