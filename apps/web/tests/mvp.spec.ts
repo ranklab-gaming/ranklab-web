@@ -101,8 +101,8 @@ test("mvp", async ({ page }) => {
     const currentTime = document.querySelector("video")?.currentTime ?? 0
     return currentTime >= 2 && currentTime <= 4
   })
-  await expect(page.getByTitle("Drawing").locator("path")).toHaveCount(1)
-  await expect(page.getByTitle("Selected Comment")).toContainText(
+  await expect(page.getByLabel("Drawing").locator("path")).toHaveCount(1)
+  await expect(page.getByLabel("Selected Comment")).toContainText(
     "some comment",
   )
 

@@ -18,7 +18,7 @@ export const CommentListItem = ({ comment, selected, title }: ItemProps) => {
   const commentUser = assertProp(comment, "user")
 
   return (
-    <Stack spacing={2} title={selected ? "Selected Comment" : ""}>
+    <Stack spacing={2} aria-label={selected ? "Selected Comment" : ""}>
       <Stack direction="column" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={2}>
           <Typography variant="body2">{title}</Typography>

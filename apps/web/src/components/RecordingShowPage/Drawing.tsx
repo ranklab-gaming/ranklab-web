@@ -36,9 +36,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
   const theme = useTheme()
   const pathRef = useRef<SVGPathElement | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const pointRef = useRef<Point | null>(null)
-  const mousePositionRef = useRef<Point | null>(null)
   const { color, form } = useReview()
   const drawing = form.watch("metadata.video.drawing")
 
@@ -93,10 +91,10 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     },
   }))
 
-  const drawPoint = () => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const path = pathRef.current
-    const mousePosition = mousePositionRef.current
     const point = pointRef.current
+    const mousePosition = getPointFromEvent(e)
 
     if (!path || !mousePosition || !point) {
       return
@@ -117,10 +115,6 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     )
 
     pointRef.current = { x, y }
-  }
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    mousePositionRef.current = getPointFromEvent(e)
   }
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -148,24 +142,15 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     path.setAttribute("d", `M ${x} ${y}`)
     svg.appendChild(path)
 
-    mousePositionRef.current = point
     pathRef.current = path
     pointRef.current = point
-    timeoutRef.current = setInterval(drawPoint, 50)
   }
 
   const handleMouseUp = () => {
-    const timeout = timeoutRef.current
     const container = containerRef.current
 
-    mousePositionRef.current = null
     pathRef.current = null
     pointRef.current = null
-
-    if (timeout) {
-      clearTimeout(timeout)
-      timeoutRef.current = null
-    }
 
     if (!container) {
       return
@@ -176,7 +161,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
 
   return (
     <Box
-      title="Drawing"
+      aria-label="Drawing"
       sx={{
         "& svg": {
           position: "absolute",
