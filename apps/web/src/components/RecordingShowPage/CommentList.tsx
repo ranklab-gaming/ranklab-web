@@ -66,55 +66,57 @@ export const CommentList = () => {
   return (
     <Box sx={{ flex: 1, maxWidth: "100%" }}>
       <AnimatePresence initial={false}>
-        {sortedComments.map((comment) => (
-          <Card
-            key={comment.id}
-            component={m.div}
-            initial="initial"
-            animate={selectedComment === comment ? "selected" : "animate"}
-            variants={{
-              initial: {
-                opacity: 0,
-                backgroundColor: theme.palette.background.paper,
-                scaleX: 0,
-              },
-              animate: {
-                opacity: 1,
-                backgroundColor: theme.palette.background.paper,
-                scaleX: 1,
-              },
-              exit: {
-                opacity: 0,
-                scaleX: 0,
-              },
-              selected: {
-                opacity: 1,
-                scaleX: 1,
-                backgroundColor: theme.palette.secondary.main,
-              },
-            }}
-          >
-            <CardActionArea
-              onClick={() => {
-                if (selectedComment === comment) {
-                  setSelectedComment(null)
-                } else {
-                  setSelectedComment(comment)
-                }
+        <Stack spacing={1}>
+          {sortedComments.map((comment) => (
+            <Card
+              key={comment.id}
+              component={m.div}
+              initial="initial"
+              animate={selectedComment === comment ? "selected" : "animate"}
+              variants={{
+                initial: {
+                  opacity: 0,
+                  backgroundColor: theme.palette.background.paper,
+                  scaleX: 0,
+                },
+                animate: {
+                  opacity: 1,
+                  backgroundColor: theme.palette.background.paper,
+                  scaleX: 1,
+                },
+                exit: {
+                  opacity: 0,
+                  scaleX: 0,
+                },
+                selected: {
+                  opacity: 1,
+                  scaleX: 1,
+                  backgroundColor: theme.palette.secondary.main,
+                },
               }}
             >
-              <CardContent>
-                <CommentListItem
-                  comment={comment}
-                  title={formatDuration(
-                    comment.metadata.video.timestamp / 1000000,
-                  )}
-                  selected={comment === selectedComment}
-                />
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        ))}
+              <CardActionArea
+                onClick={() => {
+                  if (selectedComment === comment) {
+                    setSelectedComment(null)
+                  } else {
+                    setSelectedComment(comment)
+                  }
+                }}
+              >
+                <CardContent>
+                  <CommentListItem
+                    comment={comment}
+                    title={formatDuration(
+                      comment.metadata.video.timestamp / 1000000,
+                    )}
+                    selected={comment === selectedComment}
+                  />
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
+        </Stack>
       </AnimatePresence>
     </Box>
   )

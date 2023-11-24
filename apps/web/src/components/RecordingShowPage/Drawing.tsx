@@ -5,6 +5,7 @@ import React, {
   useRef,
   useImperativeHandle,
   forwardRef,
+  useCallback,
   useEffect,
 } from "react"
 
@@ -19,15 +20,9 @@ interface Point {
 }
 
 const getPointFromEvent = (e: React.MouseEvent<HTMLDivElement>) => {
-  const svg = e.currentTarget.querySelector("svg")
-
-  if (!svg) {
-    return { x: 0, y: 0 }
-  }
-
-  const rect = svg.getBoundingClientRect()
-  const x = (e.clientX - rect.left) / rect.width
-  const y = (e.clientY - rect.top) / rect.height
+  const rect = e.currentTarget.getBoundingClientRect()
+  const x = ((e.clientX - rect.left) / rect.width) * 1280
+  const y = ((e.clientY - rect.top) / rect.height) * 720
 
   return { x, y }
 }
@@ -40,6 +35,34 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
   const { color, form } = useReview()
   const drawing = form.watch("metadata.video.drawing")
 
+  const handleChange = useCallback(() => {
+    const container = containerRef.current
+
+    if (!container) {
+      return
+    }
+
+    const svg = container.querySelector("svg")
+
+    if (!svg) {
+      return
+    }
+
+    let value
+
+    if (svg.querySelectorAll("path").length === 0) {
+      value = ""
+    } else {
+      value = container.innerHTML
+    }
+
+    form.setValue("metadata.video.drawing", value, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    })
+  }, [form])
+
   useEffect(() => {
     const container = containerRef.current
 
@@ -51,11 +74,10 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
 
     if (!svg) {
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-      svg.setAttribute("viewBox", "0 0 1 1")
+      svg.setAttribute("viewBox", "0 0 1280 720")
       container.appendChild(svg)
-      form.setValue("metadata.video.drawing", container.innerHTML)
     }
-  }, [form])
+  }, [])
 
   useImperativeHandle(ref, () => ({
     clear: () => {
@@ -72,7 +94,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
       }
 
       svg.querySelectorAll("path").forEach((path) => path.remove())
-      form.setValue("metadata.video.drawing", container.innerHTML)
+      handleChange()
     },
     undo: () => {
       const container = containerRef.current
@@ -88,27 +110,24 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
       }
 
       svg.querySelector("path:last-child")?.remove()
-      form.setValue("metadata.video.drawing", container.innerHTML)
+      handleChange()
     },
   }))
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const path = pathRef.current
     const point = pointRef.current
-    const mousePosition = getPointFromEvent(e)
+    const { x, y } = getPointFromEvent(e)
 
-    if (!path || !mousePosition || !point) {
+    if (!path || !point) {
       return
     }
-
-    const { x, y } = mousePosition
 
     if (point.x === x && point.y === y) {
       return
     }
 
     path.setAttribute("d", `${path.getAttribute("d")} L ${x} ${y}`)
-
     pointRef.current = { x, y }
   }
 
@@ -133,7 +152,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     path.setAttribute("fill", "none")
     path.setAttribute("stroke-linecap", "round")
     path.setAttribute("stroke-linejoin", "round")
-    path.setAttribute("stroke-width", "0.003")
+    path.setAttribute("stroke-width", "3")
     path.setAttribute("d", `M ${x} ${y}`)
     svg.appendChild(path)
 
@@ -151,11 +170,17 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
       return
     }
 
-    form.setValue("metadata.video.drawing", container.innerHTML)
+    handleChange()
   }
 
   return (
     <Box
+      aria-label="Drawing"
+      width="100%"
+      height="100%"
+      position="absolute"
+      left="0"
+      top="0"
       sx={{
         "& svg": {
           position: "absolute",
@@ -164,7 +189,6 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
           bottom: 0,
           right: 0,
           cursor: `url(${assetsCdnUrl}/images/cursors/draw.webp) 0 15, auto`,
-          zIndex: 10,
         },
       }}
     >
@@ -173,6 +197,10 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         ref={containerRef}
+        style={{
+          position: "relative",
+          height: "100%",
+        }}
         dangerouslySetInnerHTML={{ __html: drawing }}
       />
     </Box>

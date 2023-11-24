@@ -101,7 +101,12 @@ test("mvp", async ({ page }) => {
     const currentTime = document.querySelector("video")?.currentTime ?? 0
     return currentTime >= 2 && currentTime <= 4
   })
-  await expect(page.getByLabel("VOD").locator("svg path")).toHaveCount(1)
+  await expect(
+    page
+      .getByLabel("VOD", { exact: true })
+      .getByLabel("Drawing")
+      .locator("path"),
+  ).toHaveCount(1)
   await expect(page.getByLabel("Selected Comment")).toContainText(
     "some comment",
   )
@@ -124,12 +129,13 @@ test("mvp", async ({ page }) => {
   await page.getByRole("button", { name: "Cancel" }).first().click()
 
   // Clicking a comment twice should deselect it
-  await page.getByRole("button", { name: "some comment" }).click()
-  await page.getByRole("button", { name: "some comment" }).click()
+  await page.getByRole("button").filter({ hasText: "some comment" }).click()
+  await new Promise((resolve) => setTimeout(resolve, 100))
+  await page.getByRole("button").filter({ hasText: "some comment" }).click()
   await expect(page.getByLabel("Selected Comment")).toBeHidden()
 
   // Seeking should deselect the comment
-  await page.getByRole("button", { name: "some comment" }).click()
+  await page.getByRole("button").filter({ hasText: "some comment" }).click()
   await seekTo(page, 0.5)
   await expect(page.getByLabel("Selected Comment")).toBeHidden()
 

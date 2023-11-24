@@ -27,7 +27,9 @@ export const drawLine = async (
   endXPercent: number,
   endYPercent: number,
 ) => {
-  const svgLocator = page.getByLabel("VOD").locator("svg")
+  const svgLocator = page
+    .getByLabel("VOD", { exact: true })
+    .getByLabel("Drawing")
 
   const { x: startX, y: startY } = await getPercentCoords(
     svgLocator,
@@ -43,7 +45,7 @@ export const drawLine = async (
 
   await page.mouse.move(startX, startY)
   await page.mouse.down()
-  await page.mouse.move(endX, endY)
+  await page.mouse.move(endX, endY, { steps: 3 })
   await page.mouse.up()
 }
 

@@ -347,7 +347,7 @@ export const RecordingShowPage = ({
                   >
                     <Paper
                       sx={{
-                        p: 4,
+                        p: 1,
                         height: "100%",
                         display: "flex",
                         justifyContent: "center",
