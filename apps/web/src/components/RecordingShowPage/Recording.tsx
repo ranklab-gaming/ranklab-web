@@ -100,6 +100,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           height: wrapperHeight,
           overflow: "hidden",
         }}
+        aria-label="VOD"
       >
         <video
           ref={videoRef}

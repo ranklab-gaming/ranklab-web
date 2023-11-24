@@ -156,7 +156,6 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
 
   return (
     <Box
-      aria-label="Drawing"
       sx={{
         "& svg": {
           position: "absolute",
