@@ -305,8 +305,12 @@ export const RecordingShowPage = ({
                 elevation={0}
               >
                 <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    <span
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    component="div"
+                  >
+                    <div
                       dangerouslySetInnerHTML={{ __html: recording.notes }}
                     />
                   </Typography>
