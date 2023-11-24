@@ -21,7 +21,7 @@ export const CommentForm = ({ drawingRef }: Props) => {
         name="body"
         control={form.control}
         render={({ field, fieldState: { error } }) => (
-          <Box bgcolor="grey.900" borderRadius={1} title="Comment">
+          <Box bgcolor="grey.900" borderRadius={1} aria-label="Comment">
             <Editor
               value={field.value}
               onChange={(value) => {

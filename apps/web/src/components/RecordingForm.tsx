@@ -299,7 +299,7 @@ export const RecordingForm = ({
           control={control}
           render={({ field, fieldState: { error } }) => {
             return (
-              <Box mt={2} title="Notes">
+              <Box mt={2} aria-label="Notes">
                 <Editor
                   value={field.value as string}
                   onChange={field.onChange}

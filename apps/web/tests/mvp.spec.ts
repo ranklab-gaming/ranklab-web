@@ -37,7 +37,7 @@ test("mvp", async ({ page }) => {
     .locator('[name="video"]')
     .setInputFiles("tests/fixtures/exampleVideo.mp4")
   await page
-    .getByTitle("Notes")
+    .getByLabel("Notes")
     .locator("[contenteditable]")
     .first()
     .fill("some notes")
@@ -60,7 +60,7 @@ test("mvp", async ({ page }) => {
   await seekTo(page, 0.3)
   await page.getByRole("button", { name: "Comment At" }).click()
   await page
-    .getByTitle("Comment")
+    .getByLabel("Comment")
     .locator("[contenteditable]")
     .first()
     .fill("some comment")
@@ -69,7 +69,7 @@ test("mvp", async ({ page }) => {
   await expect(page.getByText("Comment saved successfully")).toBeVisible()
 
   // Comment should be deselected after saving
-  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+  await expect(page.getByLabel("Selected Comment")).toBeHidden()
 
   // Resume the video and wait 2 seconds
   await page.getByLabel("Play").click()
@@ -88,7 +88,7 @@ test("mvp", async ({ page }) => {
   await page.getByRole("link", { name: "exampleVideo" }).click()
   await page.getByRole("button", { name: "Comment At 00:00" }).click()
   await page
-    .getByTitle("Comment")
+    .getByLabel("Comment")
     .locator("[contenteditable]")
     .first()
     .fill("some user comment")
@@ -114,11 +114,11 @@ test("mvp", async ({ page }) => {
   await page.waitForFunction(
     () => document.querySelector("video")?.paused === false,
   )
-  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+  await expect(page.getByLabel("Selected Comment")).toBeHidden()
 
   // When selecting a comment made by the user, editing mode should be enabled
   await page.getByRole("button", { name: "some user comment" }).click()
-  await expect(page.getByTitle("Selected Comment")).toContainText(
+  await expect(page.getByLabel("Selected Comment")).toContainText(
     "some user comment",
   )
   await page.getByRole("button", { name: "Cancel" }).first().click()
@@ -126,12 +126,12 @@ test("mvp", async ({ page }) => {
   // Clicking a comment twice should deselect it
   await page.getByRole("button", { name: "some comment" }).click()
   await page.getByRole("button", { name: "some comment" }).click()
-  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+  await expect(page.getByLabel("Selected Comment")).toBeHidden()
 
   // Seeking should deselect the comment
   await page.getByRole("button", { name: "some comment" }).click()
   await seekTo(page, 0.5)
-  await expect(page.getByTitle("Selected Comment")).toBeHidden()
+  await expect(page.getByLabel("Selected Comment")).toBeHidden()
 
   // Playing should change the icon to a pause button
   await page.getByLabel("Play").click()
