@@ -26,8 +26,8 @@ const getPointFromEvent = (e: React.MouseEvent<HTMLDivElement>) => {
   }
 
   const rect = svg.getBoundingClientRect()
-  const x = e.clientX - rect.left
-  const y = e.clientY - rect.top
+  const x = (e.clientX - rect.left) / rect.width
+  const y = (e.clientY - rect.top) / rect.height
 
   return { x, y }
 }
@@ -51,6 +51,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
 
     if (!svg) {
       svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+      svg.setAttribute("viewBox", "0 0 1 1")
       container.appendChild(svg)
       form.setValue("metadata.video.drawing", container.innerHTML)
     }
@@ -106,13 +107,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
       return
     }
 
-    const controlX = (point.x + x) / 2
-    const controlY = (point.y + y) / 2
-
-    path.setAttribute(
-      "d",
-      `${path.getAttribute("d")} Q ${controlX} ${controlY} ${x} ${y}`,
-    )
+    path.setAttribute("d", `${path.getAttribute("d")} L ${x} ${y}`)
 
     pointRef.current = { x, y }
   }
@@ -138,7 +133,7 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
     path.setAttribute("fill", "none")
     path.setAttribute("stroke-linecap", "round")
     path.setAttribute("stroke-linejoin", "round")
-    path.setAttribute("stroke-width", "3")
+    path.setAttribute("stroke-width", "0.003")
     path.setAttribute("d", `M ${x} ${y}`)
     svg.appendChild(path)
 
@@ -167,8 +162,8 @@ export const Drawing = forwardRef<DrawingRef>((_, ref) => {
           position: "absolute",
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
+          bottom: 0,
+          right: 0,
           cursor: `url(${assetsCdnUrl}/images/cursors/draw.webp) 0 15, auto`,
           zIndex: 10,
         },

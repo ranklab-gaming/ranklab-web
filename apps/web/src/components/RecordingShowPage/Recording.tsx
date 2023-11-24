@@ -128,13 +128,13 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
             exit="exit"
           >
             <div
-              title="Drawing"
+              aria-label="Drawing"
               style={{
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "100%",
-                height: "100%",
+                bottom: 0,
+                right: 0,
                 zIndex: 10,
                 pointerEvents: "none",
               }}
