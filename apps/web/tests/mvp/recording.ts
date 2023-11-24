@@ -27,7 +27,7 @@ export const drawLine = async (
   endXPercent: number,
   endYPercent: number,
 ) => {
-  const svgLocator = page.getByTitle("Drawing").locator("svg")
+  const svgLocator = page.getByLabel("Drawing").locator("svg")
 
   const { x: startX, y: startY } = await getPercentCoords(
     svgLocator,
