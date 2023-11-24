@@ -44,7 +44,6 @@ export const drawLine = async (
   await page.mouse.move(startX, startY)
   await page.mouse.down()
   await page.mouse.move(endX, endY)
-  await new Promise((resolve) => setTimeout(resolve, 100))
   await page.mouse.up()
 }
 
