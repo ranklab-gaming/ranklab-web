@@ -60,7 +60,7 @@ export const seekTo = async (page: Page, percent: number) => {
 }
 
 export const waitForRecordingToBeProcessed = async (
-  attempts = 30,
+  attempts = 60,
 ): Promise<void> => {
   const result = await db.query(
     "SELECT state FROM recordings WHERE state = 'processed'",
