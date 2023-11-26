@@ -1,13 +1,9 @@
 import { ServerApi } from "@/api/server"
 import { HTTPMethod, JSONApiResponse, ResponseError } from "@ranklab/api"
-import { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "@/auth/session"
 import { withSessionApiRoute } from "@/session"
 
-const api = withSessionApiRoute(async function (
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const api = withSessionApiRoute(async function (req, res) {
   const { query, method, headers, body } = req
   const path = Array.isArray(query.path) ? query.path.join("/") : query.path
   const session = path === "sessions" ? null : await getServerSession(req)

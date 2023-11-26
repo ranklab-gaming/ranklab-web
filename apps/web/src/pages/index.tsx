@@ -1,12 +1,12 @@
 import { LandingPage } from "@/components/LandingPage"
+import { withSessionSsr } from "@/session"
 import { Game } from "@ranklab/api"
-import { GetServerSidePropsContext } from "next"
 
 interface Props {
   games: Game[]
 }
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+export const getServerSideProps = withSessionSsr(async (ctx) => {
   const { createServerApi } = await import("@/api/server")
   const api = await createServerApi(ctx.req)
 
@@ -15,7 +15,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       games: await api.gamesList(),
     },
   }
-}
+})
 
 export default function ({ games }: Props) {
   return <LandingPage games={games} />

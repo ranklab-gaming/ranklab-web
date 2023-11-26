@@ -6,9 +6,9 @@ import {
   RequestOpts,
 } from "@ranklab/api"
 import { camelCase, isArray, isObject, snakeCase, transform } from "lodash"
-import { GetServerSidePropsContext } from "next"
 import { getServerSession } from "@/auth/session"
 import AWSXRay from "aws-xray-sdk"
+import { RequestWithSession } from "@/session"
 
 AWSXRay.setContextMissingStrategy("IGNORE_ERROR")
 
@@ -18,7 +18,7 @@ function camelize(json: Record<string, any>) {
     (acc, value, key, target) => {
       const newKey = isArray(target) ? key : camelCase(key)
       acc[newKey] = isObject(value) ? camelize(value) : value
-    }
+    },
   )
 }
 
@@ -28,7 +28,7 @@ function decamelize(json: Record<string, any>) {
     (acc, value, key, target) => {
       const newKey = isArray(target) ? key : snakeCase(key)
       acc[newKey] = isObject(value) ? decamelize(value) : value
-    }
+    },
   )
 }
 
@@ -132,13 +132,13 @@ export class ServerApi extends RanklabApi {
 
   async request(
     context: RequestOpts,
-    initOverrides?: RequestInit | InitOverrideFunction
+    initOverrides?: RequestInit | InitOverrideFunction,
   ): Promise<Response> {
     return super.request(context, initOverrides)
   }
 }
 
-export async function createServerApi(req: GetServerSidePropsContext["req"]) {
+export async function createServerApi(req: RequestWithSession) {
   const session = await getServerSession(req)
   return new ServerApi(session?.accessToken)
 }

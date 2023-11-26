@@ -1,13 +1,9 @@
 import { getAuthClient } from "@/auth/session"
 import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
-import { NextApiRequest, NextApiResponse } from "next"
 import { generators } from "openid-client"
 
-const signin = withSessionApiRoute(async function (
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+const signin = withSessionApiRoute(async function (req, res) {
   const intent = (req.query.intent as string) || "login"
 
   if (intent !== "login" && intent !== "signup") {
@@ -21,7 +17,7 @@ const signin = withSessionApiRoute(async function (
   const codeChallenge = generators.codeChallenge(codeVerifier)
 
   const state = Buffer.from(JSON.stringify({ intent, token })).toString(
-    "base64"
+    "base64",
   )
 
   req.session.codeVerifier = codeVerifier

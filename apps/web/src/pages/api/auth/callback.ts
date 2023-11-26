@@ -2,13 +2,9 @@ import { assertProp } from "@/assert"
 import { getAuthClient, sessionFromToken } from "@/auth/session"
 import { host } from "@/config/server"
 import { withSessionApiRoute } from "@/session"
-import { NextApiRequest, NextApiResponse } from "next"
 import { errors } from "openid-client"
 
-const callback = withSessionApiRoute(async function (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+const callback = withSessionApiRoute(async function (req, res) {
   const client = await getAuthClient()
   const params = client.callbackParams(req)
   const codeVerifier = req.session.codeVerifier
