@@ -12,7 +12,12 @@
     },
     {
       "matchPackagePatterns": ["next"],
-      "automerge": false
+      "allowedVersions": "13.4.12"
+    },
+    {
+      "matchPackageNames": ["node"],
+      "matchManagers": ["dockerfile"],
+      "allowedVersions": "^20"
     }
   ],
   "hostRules": [
