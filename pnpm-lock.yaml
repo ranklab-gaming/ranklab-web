@@ -97,8 +97,8 @@ importers:
         specifier: 10.16.5
         version: 10.16.5(react-dom@18.2.0)(react@18.2.0)
       iron-session:
-        specifier: 8.0.0
-        version: 8.0.0
+        specifier: 8.0.1
+        version: 8.0.1
       jose:
         specifier: 5.1.1
         version: 5.1.1
@@ -3956,8 +3956,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
-  /iron-session@8.0.0:
-    resolution: {integrity: sha512-LmPRDtnjcYxv4AbkHEN8gx11u9Xd8IhXsgiLhaV21cPQvKj/StTNwaaOyS6yMAdOKOv+LgUF7Y1eYWlF7z3r8Q==}
+  /iron-session@8.0.1:
+    resolution: {integrity: sha512-ZQKazQRn/J5YaXY+CQ69V9lx9boh4swl+BgnNC1knxyZgBjhiXuGpY60URRntMPib9QdrsN9qAOTqdMFMbGYXg==}
     dependencies:
       cookie: 0.6.0
       iron-webcrypto: 1.0.0
