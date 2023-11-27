@@ -57,7 +57,7 @@
     "@types/node": "20.10.0",
     "@types/pg": "8.10.9",
     "@types/pluralize": "0.0.33",
-    "@types/react": "18.2.38",
+    "@types/react": "18.2.39",
     "@types/react-dom": "18.2.17",
     "@types/react-stickynode": "4.0.3",
     "@types/uuid": "9.0.7",
