@@ -16,8 +16,8 @@ importers:
         version: 13.4.12(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@aws-sdk/client-dynamodb':
-        specifier: 3.460.0
-        version: 3.460.0
+        specifier: 3.461.0
+        version: 3.461.0
       '@types/node':
         specifier: 20.10.0
         version: 20.10.0
@@ -224,11 +224,11 @@ importers:
   packages/server:
     dependencies:
       '@aws-sdk/client-dynamodb':
-        specifier: 3.460.0
-        version: 3.460.0
+        specifier: 3.461.0
+        version: 3.461.0
       '@aws-sdk/lib-dynamodb':
-        specifier: 3.460.0
-        version: 3.460.0(@aws-sdk/client-dynamodb@3.460.0)
+        specifier: 3.461.0
+        version: 3.461.0(@aws-sdk/client-dynamodb@3.461.0)
       '@sentry/node':
         specifier: 7.83.0
         version: 7.83.0
@@ -317,20 +317,20 @@ packages:
       '@aws-sdk/util-utf8-browser': 3.259.0
       tslib: 1.14.1
 
-  /@aws-sdk/client-dynamodb@3.460.0:
-    resolution: {integrity: sha512-vJzXVW9S2blpt0oBI2KPHMhKnO7Q+jR2u3xPk5BFyCjPj+uPzF69dkPWOo8k3qEokGtvrhTEDblAv/OqYq4zww==}
+  /@aws-sdk/client-dynamodb@3.461.0:
+    resolution: {integrity: sha512-TiticmxDYxlS76HXNDOO9XgTTZZcpLg79EuBZGXBEGlFT5ZHwsrvsvkbGHDm6uYsvndme4W04CsxvxWHG4Jm4w==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 3.0.0
       '@aws-crypto/sha256-js': 3.0.0
-      '@aws-sdk/client-sts': 3.460.0
+      '@aws-sdk/client-sts': 3.461.0
       '@aws-sdk/core': 3.451.0
       '@aws-sdk/credential-provider-node': 3.460.0
       '@aws-sdk/middleware-endpoint-discovery': 3.460.0
       '@aws-sdk/middleware-host-header': 3.460.0
       '@aws-sdk/middleware-logger': 3.460.0
       '@aws-sdk/middleware-recursion-detection': 3.460.0
-      '@aws-sdk/middleware-signing': 3.460.0
+      '@aws-sdk/middleware-signing': 3.461.0
       '@aws-sdk/middleware-user-agent': 3.460.0
       '@aws-sdk/region-config-resolver': 3.451.0
       '@aws-sdk/types': 3.460.0
@@ -409,8 +409,8 @@ packages:
     transitivePeerDependencies:
       - aws-crt
 
-  /@aws-sdk/client-sts@3.460.0:
-    resolution: {integrity: sha512-Z4h9hZJG5RB9iwhyXlkcnJqCP25+rgIrT8UDryItJfWyK+Pberk1Zft7XwEiyDGXoc48BJvtf7SbOwx3cutgFw==}
+  /@aws-sdk/client-sts@3.461.0:
+    resolution: {integrity: sha512-1u+t31m23vuc9zkiUk51L4QbwuRQEuBeMArHK/thmq4V+A0VmjoAr/x2D0eQ0deOuBqG5YC62oaqUfIhj03SIw==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 3.0.0
@@ -420,8 +420,8 @@ packages:
       '@aws-sdk/middleware-host-header': 3.460.0
       '@aws-sdk/middleware-logger': 3.460.0
       '@aws-sdk/middleware-recursion-detection': 3.460.0
-      '@aws-sdk/middleware-sdk-sts': 3.460.0
-      '@aws-sdk/middleware-signing': 3.460.0
+      '@aws-sdk/middleware-sdk-sts': 3.461.0
+      '@aws-sdk/middleware-signing': 3.461.0
       '@aws-sdk/middleware-user-agent': 3.460.0
       '@aws-sdk/region-config-resolver': 3.451.0
       '@aws-sdk/types': 3.460.0
@@ -547,14 +547,14 @@ packages:
       mnemonist: 0.38.3
       tslib: 2.5.0
 
-  /@aws-sdk/lib-dynamodb@3.460.0(@aws-sdk/client-dynamodb@3.460.0):
-    resolution: {integrity: sha512-SjLs595KciGOtQsuQYp34/cWtr0ac50sd/u8V80hUrBm+Bhv8s2i+KpinAVzy65s2oPmJl90Fpu/5zEVx5mulg==}
+  /@aws-sdk/lib-dynamodb@3.461.0(@aws-sdk/client-dynamodb@3.461.0):
+    resolution: {integrity: sha512-WXB0r1DsDk7di+kmAhKSX0GJcPYeV7KkPn4bTeDiLFBxucXVSeQk+spVdVIOsgREFRZnDOi0a3+UOTydykx+6w==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.0.0
     dependencies:
-      '@aws-sdk/client-dynamodb': 3.460.0
-      '@aws-sdk/util-dynamodb': 3.460.0(@aws-sdk/client-dynamodb@3.460.0)
+      '@aws-sdk/client-dynamodb': 3.461.0
+      '@aws-sdk/util-dynamodb': 3.461.0(@aws-sdk/client-dynamodb@3.461.0)
       tslib: 2.5.0
     dev: false
 
@@ -595,17 +595,17 @@ packages:
       '@smithy/types': 2.5.0
       tslib: 2.5.0
 
-  /@aws-sdk/middleware-sdk-sts@3.460.0:
-    resolution: {integrity: sha512-eAaKBULwvIEToKweJtZ+gLrDPVwdi/XYjiJMJFBVDFk1n6kfHeS6BlNVrw713YrThpPiWfKNz8U3TvWtvD2Wpg==}
+  /@aws-sdk/middleware-sdk-sts@3.461.0:
+    resolution: {integrity: sha512-sgNxkwKdJ/NZm7SJZBnbYPkbspmzn3lDyRSJH7PTCvyzDBzY2PB6yS/dfnGkitR+PYwromuOYMha37W4su2SOw==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@aws-sdk/middleware-signing': 3.460.0
+      '@aws-sdk/middleware-signing': 3.461.0
       '@aws-sdk/types': 3.460.0
       '@smithy/types': 2.5.0
       tslib: 2.5.0
 
-  /@aws-sdk/middleware-signing@3.460.0:
-    resolution: {integrity: sha512-f7dPf0TdyGMMlMoaGLV85nCfcGZOMIaNm+nR0x21H4SJyn1vCNSLMD6Nksav26hAdI3zreBtI2enudj8YYl2XA==}
+  /@aws-sdk/middleware-signing@3.461.0:
+    resolution: {integrity: sha512-aM/7VupHlsgeRG1UZSAQMWJX+2Jam4GG8ZGVAbLfBr9yh9cBwnUUndpUpYI9rU7atA8n+vISr162EbR7WTiFhQ==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@aws-sdk/types': 3.460.0
@@ -695,13 +695,13 @@ packages:
       '@smithy/types': 2.5.0
       tslib: 2.5.0
 
-  /@aws-sdk/util-dynamodb@3.460.0(@aws-sdk/client-dynamodb@3.460.0):
-    resolution: {integrity: sha512-nbXOdPJbOiy4Rgf+NCc/68XikH1qMKyBpj5vvXESyIK9tJCw2RD/OI/dPX6iRuCWW8YW50ERJZOa/Fd54rdErA==}
+  /@aws-sdk/util-dynamodb@3.461.0(@aws-sdk/client-dynamodb@3.461.0):
+    resolution: {integrity: sha512-Wz31PByNtPQuqa9gpiViagO/dvP7jNhnULwSDtwMygWk1simJErs/4cozNJpaoitWndg6aJeqI486jnaBy42aA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.0.0
     dependencies:
-      '@aws-sdk/client-dynamodb': 3.460.0
+      '@aws-sdk/client-dynamodb': 3.461.0
       tslib: 2.5.0
     dev: false
 
