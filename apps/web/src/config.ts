@@ -21,6 +21,9 @@ const uploadsCdnUrl = requireEnv(
 
 const intercomAppId = process.env.NEXT_PUBLIC_INTERCOM_APP_ID
 const mixpanelProjectToken = process.env.NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN
+const iubendaSiteId = process.env.NEXT_PUBLIC_IUBENDA_SITE_ID
+const iubendaCookiePolicyId = process.env.NEXT_PUBLIC_IUBENDA_COOKIE_POLICY_ID
+const googleAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID
 
 export {
   assetsCdnUrl,
@@ -29,4 +32,7 @@ export {
   intercomAppId,
   mixpanelProjectToken,
   host,
+  iubendaSiteId,
+  iubendaCookiePolicyId,
+  googleAdsId,
 }

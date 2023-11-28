@@ -162,7 +162,6 @@ jobs:
         with:
           context: .
           build-args: |
-            NODE_ENV=production
             HOST=${{ secrets.HOST }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
@@ -170,6 +169,9 @@ jobs:
             NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
             NEXT_PUBLIC_INTERCOM_APP_ID=${{ secrets.NEXT_PUBLIC_INTERCOM_APP_ID }}
             NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN=${{ secrets.NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN }}
+            NEXT_PUBLIC_IUBENDA_SITE_ID=${{ secrets.NEXT_PUBLIC_IUBENDA_SITE_ID }}
+            NEXT_PUBLIC_IUBENDA_COOKIE_POLICY_ID=${{ secrets.NEXT_PUBLIC_IUBENDA_COOKIE_POLICY_ID }}
+            NEXT_PUBLIC_GOOGLE_ADS_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_ADS_ID }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max

@@ -1,10 +1,12 @@
-import { mixpanelProjectToken } from '@/config';
-import mixpanel from 'mixpanel-browser';
+import mixpanel from "mixpanel-browser"
+import { mixpanelProjectToken } from "./config"
 
-type Mixpanel = typeof mixpanel;
+type Mixpanel = typeof mixpanel
 
-export function track(...args: Parameters<Mixpanel['track']>): ReturnType<Mixpanel['track']> {
+export function track(
+  ...args: Parameters<Mixpanel["track"]>
+): ReturnType<Mixpanel["track"]> {
   if (mixpanelProjectToken) {
-    mixpanel.track(...args);
+    mixpanel.track(...args)
   }
 }
