@@ -1,4 +1,5 @@
-import { host, twitchClientId, twitchClientSecret } from "@/config/server"
+import { host } from "@/config"
+import { twitchClientId, twitchClientSecret } from "@/config/server"
 import { Client, Issuer } from "openid-client"
 
 interface Config {

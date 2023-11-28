@@ -85,6 +85,8 @@ jobs:
             NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_ASSETS_CDN_URL }}
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.TEST_NEXT_PUBLIC_UPLOADS_CDN_URL }}
             SENTRY_AUTH_TOKEN=${{ secrets.TEST_SENTRY_AUTH_TOKEN }}
+            HOST=https://ranklab-test:3000
+            NODE_ENV=test
       - name: Start containers
         env:
           RANKLAB_AWS_ACCESS_KEY_ID: ${{ secrets.RANKLAB_AWS_ACCESS_KEY_ID }}
@@ -161,6 +163,7 @@ jobs:
           context: .
           build-args: |
             NODE_ENV=production
+            HOST=${{ secrets.HOST }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             NEXT_PUBLIC_ASSETS_CDN_URL=${{ secrets.NEXT_PUBLIC_ASSETS_CDN_URL }}
             NEXT_PUBLIC_UPLOADS_CDN_URL=${{ secrets.NEXT_PUBLIC_UPLOADS_CDN_URL }}

@@ -9,6 +9,7 @@ import {
   NextApiResponse,
 } from "next"
 import { ParsedUrlQuery } from "querystring"
+import { nodeEnv } from "./config"
 
 export type Session = IronSession<{
   accessToken?: string
@@ -34,7 +35,7 @@ export type GetServerSidePropsWithSession<T extends ParsedUrlQuery> = (
 ) => Promise<GetServerSidePropsResult<T>>
 
 async function getSessionOptions(): Promise<SessionOptions> {
-  const { cookieSecret, nodeEnv } = await import("@/config/server")
+  const { cookieSecret } = await import("@/config/server")
 
   return {
     password: cookieSecret,

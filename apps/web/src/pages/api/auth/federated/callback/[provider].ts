@@ -1,4 +1,4 @@
-import { apiHost, authClientSecret, host } from "@/config/server"
+import { apiHost, authClientSecret } from "@/config/server"
 import { getClient } from "@/oidc/providers"
 import { createServerApi } from "@/api/server"
 import { createSecretKey } from "crypto"
@@ -8,6 +8,7 @@ import { withSessionApiRoute } from "@/session"
 import { errors, getOidcProvider } from "@ranklab/server/dist/oidc/provider"
 import { ResponseError } from "@ranklab/api"
 import { errors as clientErrors } from "openid-client"
+import { host } from "@/config"
 
 const secret = createSecretKey(Buffer.from(authClientSecret))
 

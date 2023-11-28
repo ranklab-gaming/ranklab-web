@@ -1,5 +1,6 @@
 import { assertProp } from "@/assert"
-import { authClientSecret, apiHost, host } from "@/config/server"
+import { host } from "@/config"
+import { authClientSecret, apiHost } from "@/config/server"
 import { errors, getOidcProvider } from "@ranklab/server/dist/oidc/provider"
 import { jwtVerify } from "jose"
 import { NextApiRequest, NextApiResponse } from "next"
@@ -7,14 +8,14 @@ import { NextApiRequest, NextApiResponse } from "next"
 export async function finishInteraction(
   token: string,
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const { payload } = await jwtVerify(
     token,
     new TextEncoder().encode(authClientSecret),
     {
       issuer: apiHost,
-    }
+    },
   )
 
   const accountId = assertProp(payload, "sub")
@@ -37,7 +38,7 @@ export async function finishInteraction(
           grantId,
         },
       },
-      { mergeWithLastSubmission: false }
+      { mergeWithLastSubmission: false },
     )
 
     return location

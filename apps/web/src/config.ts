@@ -1,12 +1,13 @@
 export function requireEnv(name: string, value: string | undefined): string {
   if (!value) {
-    throw new Error(`environment variable ${name} is required`)
+    throw new Error(`Environment variable ${name} is required`)
   }
 
   return value
 }
 
 const nodeEnv = requireEnv("NODE_ENV", process.env.NODE_ENV)
+const host = requireEnv("HOST", process.env.HOST)
 
 const assetsCdnUrl = requireEnv(
   "NEXT_PUBLIC_ASSETS_CDN_URL",
@@ -27,4 +28,5 @@ export {
   nodeEnv,
   intercomAppId,
   mixpanelProjectToken,
+  host,
 }

@@ -1,4 +1,4 @@
-import { host } from "@/config/server"
+import { host } from "@/config"
 import { withSessionApiRoute } from "@/session"
 
 export default withSessionApiRoute(async function (req, res) {

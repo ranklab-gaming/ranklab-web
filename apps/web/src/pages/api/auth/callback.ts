@@ -1,6 +1,6 @@
 import { assertProp } from "@/assert"
 import { getAuthClient, sessionFromToken } from "@/auth/session"
-import { host } from "@/config/server"
+import { host } from "@/config"
 import { withSessionApiRoute } from "@/session"
 import { errors } from "openid-client"
 

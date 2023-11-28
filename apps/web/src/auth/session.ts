@@ -1,5 +1,6 @@
 import { assertProp } from "@/assert"
-import { authClientSecret, host } from "@/config/server"
+import { host } from "@/config"
+import { authClientSecret } from "@/config/server"
 import { RequestWithSession } from "@/session"
 import { decodeJwt } from "jose"
 import { Client, Issuer, errors } from "openid-client"

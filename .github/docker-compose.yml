@@ -12,7 +12,6 @@ services:
     image: ranklab-test:latest
     network_mode: host
     environment:
-      - NODE_ENV=test
       - TWITCH_CLIENT_ID
       - TWITCH_CLIENT_SECRET
     healthcheck:
