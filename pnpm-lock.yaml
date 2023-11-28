@@ -230,8 +230,8 @@ importers:
         specifier: 3.458.0
         version: 3.458.0(@aws-sdk/client-dynamodb@3.458.0)
       '@sentry/node':
-        specifier: 7.81.1
-        version: 7.81.1
+        specifier: 7.82.0
+        version: 7.82.0
       aws-xray-sdk:
         specifier: 3.5.3
         version: 3.5.3
@@ -1459,6 +1459,15 @@ packages:
       '@sentry/utils': 7.81.1
     dev: false
 
+  /@sentry-internal/tracing@7.82.0:
+    resolution: {integrity: sha512-kgZVHYbZCeOb5apTDZJG9bioaKNPImmHTggZSWMmZj1Q037ft4481EleIVtKWOUvJzmEndEmD91mglkXBGPQwA==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/core': 7.82.0
+      '@sentry/types': 7.82.0
+      '@sentry/utils': 7.82.0
+    dev: false
+
   /@sentry/browser@7.81.1:
     resolution: {integrity: sha512-DNtS7bZEnFPKVoGazKs5wHoWC0FwsOFOOMNeDvEfouUqKKbjO7+RDHbr7H6Bo83zX4qmZWRBf8V+3n3YPIiJFw==}
     engines: {node: '>=8'}
@@ -1493,6 +1502,14 @@ packages:
     dependencies:
       '@sentry/types': 7.81.1
       '@sentry/utils': 7.81.1
+    dev: false
+
+  /@sentry/core@7.82.0:
+    resolution: {integrity: sha512-Wc+AYPzDIgFbuKkyYd/8tFm4E8CQboDkxefsz26N66CU1Ueqlk0RA8nVbzhbklhO/SuPJeR+fVOOx1spXYoybg==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.82.0
+      '@sentry/utils': 7.82.0
     dev: false
 
   /@sentry/integrations@7.81.1:
@@ -1549,6 +1566,19 @@ packages:
       - supports-color
     dev: false
 
+  /@sentry/node@7.82.0:
+    resolution: {integrity: sha512-/Eg8FxXaXbthoU6NaAilWMzQQuyG48oeeZKMKqFEKnul334GX+vNEOp8Xlnd72FMiACMKjFJqgb+amBVh5jOxw==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry-internal/tracing': 7.82.0
+      '@sentry/core': 7.82.0
+      '@sentry/types': 7.82.0
+      '@sentry/utils': 7.82.0
+      https-proxy-agent: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@sentry/react@7.81.1(react@18.2.0):
     resolution: {integrity: sha512-kk0plP/mf8KgVLOiImIpp1liYysmh3Un8uXcVAToomSuHZPGanelFAdP0XhY+0HlWU9KIfxTjhMte1iSwQ8pYw==}
     engines: {node: '>=8'}
@@ -1577,11 +1607,23 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /@sentry/types@7.82.0:
+    resolution: {integrity: sha512-mWiSaWXas2zAyO7Kt5Eb9/W2vEiDiTw56NGRjKWsZnmKyl9bK3Mnxuk0TR7M6F+q8OoAFZPK1rECnyGIcb0fqQ==}
+    engines: {node: '>=8'}
+    dev: false
+
   /@sentry/utils@7.81.1:
     resolution: {integrity: sha512-gq+MDXIirHKxNZ+c9/lVvCXd6y2zaZANujwlFggRH2u9SRiPaIXVilLpvMm4uJqmqBMEcY81ArujExtHvkbCqg==}
     engines: {node: '>=8'}
     dependencies:
       '@sentry/types': 7.81.1
+    dev: false
+
+  /@sentry/utils@7.82.0:
+    resolution: {integrity: sha512-Tba4yemyePW+bwKO/UR5/hlY3CBuBWc/PiKMLLfE6VNhFgZN/Ei9T/Wfp2ld/ANhfC0imqSd2iCv2rUuDPNRpQ==}
+    engines: {node: '>=8'}
+    dependencies:
+      '@sentry/types': 7.82.0
     dev: false
 
   /@sentry/vercel-edge@7.81.1:
