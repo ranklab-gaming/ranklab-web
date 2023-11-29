@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider, useTheme } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import mixpanel from "mixpanel-browser"
 import {
   mixpanelProjectToken,
@@ -19,10 +19,10 @@ import {
   googleAdsId,
 } from "@/config"
 import { useRouter } from "next/router"
-import { track } from "@/analytics"
 import { IntercomProvider, useIntercom } from "react-use-intercom"
 import { LayoutProvider } from "@/contexts/LayoutContext"
 import { IubendaConsentPurpose } from "@/iubenda"
+import { AnalyticsProvider } from "@/contexts/AnalyticsContext"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -38,16 +38,27 @@ const Content = ({
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const theme = useTheme()
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false)
 
-  const updateScripts = useCallback(
-    ({ purposes }: IubendaCsPreferences) => {
+  useEffect(() => {
+    const stubScript = document.createElement("script")
+    const csScript = document.createElement("script")
+    const gtagScript = document.createElement("script")
+
+    const handleRouteChange = (url: string) => {
+      mixpanel.track("Page view", { url })
+    }
+
+    const updateScripts = ({ purposes }: IubendaCsPreferences) => {
       if (purposes[IubendaConsentPurpose.Measurement]) {
         if (mixpanelProjectToken) {
           mixpanel.init(mixpanelProjectToken, {
             debug: nodeEnv !== "production",
           })
 
-          track("Page view", { url: router.basePath + router.asPath })
+          setAnalyticsEnabled(true)
+          handleRouteChange(router.basePath + router.asPath)
+          router.events.on("routeChangeComplete", handleRouteChange)
         }
       }
 
@@ -56,14 +67,7 @@ const Content = ({
           bootIntercom()
         }
       }
-    },
-    [bootIntercom, router],
-  )
-
-  useEffect(() => {
-    const stubScript = document.createElement("script")
-    const csScript = document.createElement("script")
-    const gtagScript = document.createElement("script")
+    }
 
     if (iubendaSiteId) {
       window._iub = [] as Iubenda
@@ -118,26 +122,22 @@ const Content = ({
       window.dataLayer.push(["config", "AW-11426277402"])
     }
 
-    const handleRouteChange = (url: string) => {
-      track("Page view", { url })
-    }
-
-    router.events.on("routeChangeComplete", handleRouteChange)
-
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange)
       stubScript.remove()
       csScript.remove()
       gtagScript.remove()
+      router.events.off("routeChangeComplete", handleRouteChange)
     }
-  }, [router, theme, updateScripts])
+  }, [bootIntercom, router, theme])
 
   return (
     <>
       <CssBaseline />
       <NextNProgress color={theme.palette.secondary.main} />
       <LayoutProvider value={{ collapsed, setCollapsed }}>
-        <Component {...pageProps} />
+        <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
+          <Component {...pageProps} />
+        </AnalyticsProvider>
       </LayoutProvider>
     </>
   )

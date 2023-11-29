@@ -14,10 +14,10 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "@/hooks/useForm"
 import { api } from "@/api"
-import { track } from "@/analytics"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import { useSnackbar } from "notistack"
+import { useAnalytics } from "@/hooks/useAnalytics"
 
 interface SignupPageProps {
   token?: string
@@ -29,6 +29,7 @@ export const SignupPage = ({ token }: SignupPageProps) => {
   const jwt = token ? decode(token) : null
   const jwtPayload = typeof jwt === "string" ? null : jwt
   const { enqueueSnackbar } = useSnackbar()
+  const { track } = useAnalytics()
 
   const defaultValues: AccountFieldsValues = {
     name: jwtPayload?.name ?? "",
