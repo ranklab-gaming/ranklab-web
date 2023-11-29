@@ -90,14 +90,14 @@ export const RecordingList = ({
                                 borderRadius: 0.5,
                               },
                               position: "relative",
-                              width: 96,
-                              height: 96,
+                              width: 76,
+                              height: 76,
                             }}
                           />
                         ) : (
                           <Iconify
                             icon="eva:image-outline"
-                            fontSize="96px"
+                            fontSize="76px"
                             color="grey.600"
                           />
                         )}
