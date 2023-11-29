@@ -41,22 +41,25 @@ export const DirectoryPage = ({
                 sx={{
                   height: 300,
                   position: "relative",
-                  img: {
+                  "&:hover::before": {
+                    filter: "brightness(1)",
+                  },
+                  "&::before": {
+                    content: '""',
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 0,
+                    zIndex: -1,
+                    backgroundImage: `url('${assetsCdnUrl}/images/games/${game.id}-stock.webp')`,
+                    backgroundSize: "cover",
                     transition: "filter 0.5s",
                     filter: "brightness(0.3)",
-                  },
-                  "&:hover": {
-                    img: {
-                      filter: "brightness(1)",
-                    },
+                    "&:hover": {},
                   },
                 }}
               >
-                <img
-                  src={`${assetsCdnUrl}/images/games/${game.id}-stock.webp`}
-                  alt={game.name}
-                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
-                />
                 <NextLink
                   href={`/directory/${game.id}`}
                   passHref

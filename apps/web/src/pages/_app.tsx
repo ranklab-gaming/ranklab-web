@@ -56,66 +56,67 @@ const Content = ({
           bootIntercom()
         }
       }
-
-      if (purposes[IubendaConsentPurpose.Necessary]) {
-        if (googleAdsId) {
-          const gtagScript = document.createElement("script")
-          gtagScript.type = "text/javascript"
-          gtagScript.src = `//www.googletagmanager.com/gtag/js?id=${googleAdsId}`
-          document.body.appendChild(gtagScript)
-
-          window.dataLayer = window.dataLayer || []
-          window.dataLayer.push(["js", new Date()])
-          window.dataLayer.push(["config", "AW-11426277402"])
-        }
-      }
     },
     [bootIntercom, router],
   )
 
   useEffect(() => {
-    window._iub = [] as Iubenda
+    const stubScript = document.createElement("script")
+    const csScript = document.createElement("script")
+    const gtagScript = document.createElement("script")
 
-    window._iub.csConfiguration = {
-      askConsentAtCookiePolicyUpdate: true,
-      cookiePolicyId: iubendaCookiePolicyId,
-      countryDetection: true,
-      enableLgpd: true,
-      enableUspr: true,
-      lang: "en",
-      localConsentDomainExact: host,
-      perPurposeConsent: true,
-      siteId: iubendaSiteId,
-      reloadOnConsent: true,
-      banner: {
-        acceptButtonColor: theme.palette.secondary.main,
-        acceptButtonDisplay: true,
-        backgroundColor: theme.palette.background.paper,
-        closeButtonDisplay: false,
-        customizeButtonDisplay: true,
-        explicitWithdrawal: true,
-        listPurposes: true,
-        position: "float-bottom-center",
-        rejectButtonColor: theme.palette.grey[900],
-        rejectButtonDisplay: true,
-        showPurposesToggles: true,
-      },
-      callback: {
-        onPreferenceExpressed: updateScripts,
-      },
+    if (iubendaSiteId) {
+      window._iub = [] as Iubenda
+
+      window._iub.csConfiguration = {
+        askConsentAtCookiePolicyUpdate: true,
+        cookiePolicyId: iubendaCookiePolicyId,
+        countryDetection: true,
+        enableLgpd: true,
+        enableUspr: true,
+        lang: "en",
+        localConsentDomainExact: host,
+        perPurposeConsent: true,
+        siteId: iubendaSiteId,
+        reloadOnConsent: true,
+        banner: {
+          acceptButtonColor: theme.palette.secondary.main,
+          acceptButtonDisplay: true,
+          backgroundColor: theme.palette.background.paper,
+          closeButtonDisplay: false,
+          customizeButtonDisplay: true,
+          explicitWithdrawal: true,
+          listPurposes: true,
+          position: "float-bottom-center",
+          rejectButtonColor: theme.palette.grey[900],
+          rejectButtonDisplay: true,
+          showPurposesToggles: true,
+        },
+        callback: {
+          onPreferenceExpressed: updateScripts,
+        },
+      }
+
+      stubScript.type = "text/javascript"
+      stubScript.src = "//cdn.iubenda.com/cs/gpp/stub.js"
+      document.body.appendChild(stubScript)
+
+      csScript.type = "text/javascript"
+      csScript.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
+      csScript.setAttribute("charset", "UTF-8")
+      csScript.async = true
+      document.body.appendChild(csScript)
     }
 
-    const stubScript = document.createElement("script")
-    stubScript.type = "text/javascript"
-    stubScript.src = "//cdn.iubenda.com/cs/gpp/stub.js"
-    document.body.appendChild(stubScript)
+    if (googleAdsId) {
+      gtagScript.type = "text/javascript"
+      gtagScript.src = `//www.googletagmanager.com/gtag/js?id=${googleAdsId}`
+      document.body.appendChild(gtagScript)
 
-    const csScript = document.createElement("script")
-    csScript.type = "text/javascript"
-    csScript.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
-    csScript.setAttribute("charset", "UTF-8")
-    csScript.async = true
-    document.body.appendChild(csScript)
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push(["js", new Date()])
+      window.dataLayer.push(["config", "AW-11426277402"])
+    }
 
     const handleRouteChange = (url: string) => {
       track("Page view", { url })
@@ -127,6 +128,7 @@ const Content = ({
       router.events.off("routeChangeComplete", handleRouteChange)
       stubScript.remove()
       csScript.remove()
+      gtagScript.remove()
     }
   }, [router, theme, updateScripts])
 
