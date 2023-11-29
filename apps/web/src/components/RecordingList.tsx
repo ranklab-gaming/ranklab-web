@@ -1,6 +1,7 @@
 import { api } from "@/api"
 import { formatDate } from "@/helpers/formatDate"
 import {
+  Box,
   Card,
   CardActionArea,
   CardContent,
@@ -9,7 +10,6 @@ import {
   Stack,
   TablePagination,
   Typography,
-  useTheme,
 } from "@mui/material"
 import { Game, PaginatedResultForRecording } from "@ranklab/api"
 import { MouseEvent, useEffect, useState } from "react"
@@ -35,7 +35,6 @@ export const RecordingList = ({
 }: Props) => {
   const [page, setPage] = useState(initialRecordings.page)
   const [recordings, setRecordings] = useState(initialRecordings)
-  const theme = useTheme()
 
   const onPageChange = async (
     _event: MouseEvent<HTMLButtonElement> | null,
@@ -76,20 +75,29 @@ export const RecordingList = ({
                     <CardContent>
                       <Stack direction="row" spacing={2} alignItems="center">
                         {recording.thumbnailKey ? (
-                          <img
-                            src={`${uploadsCdnUrl}/${recording.thumbnailKey}`}
-                            alt="Recording Thumbnail"
-                            style={{
-                              objectFit: "cover",
-                              width: 64,
-                              height: 64,
-                              borderRadius: theme.shape.borderRadius,
+                          <Box
+                            sx={{
+                              "&::before": {
+                                position: "absolute",
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                top: 0,
+                                zIndex: -1,
+                                content: '""',
+                                backgroundSize: "cover",
+                                backgroundImage: `url(${uploadsCdnUrl}/${recording.thumbnailKey})`,
+                                borderRadius: 0.5,
+                              },
+                              position: "relative",
+                              width: 96,
+                              height: 96,
                             }}
                           />
                         ) : (
                           <Iconify
                             icon="eva:image-outline"
-                            fontSize="64px"
+                            fontSize="96px"
                             color="grey.600"
                           />
                         )}
