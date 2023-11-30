@@ -50,6 +50,28 @@ const Content = ({
     }
 
     const updateScripts = ({ purposes }: IubendaCsPreferences) => {
+      if (purposes[IubendaConsentPurpose.Necessary]) {
+        if (googleAdsId) {
+          window.dataLayer = window.dataLayer || []
+
+          const gtag = (...args: any[]) => window.dataLayer.push(args)
+
+          gtag("consent", "default", {
+            ad_storage: "granted",
+            ad_user_data: "granted",
+            ad_personalization: "granted",
+            analytics_storage: "granted",
+          })
+
+          gtag("js", new Date())
+          gtag("config", "AW-11426277402")
+
+          gtagScript.type = "text/javascript"
+          gtagScript.src = `//www.googletagmanager.com/gtag/js?id=${googleAdsId}`
+          document.body.appendChild(gtagScript)
+        }
+      }
+
       if (purposes[IubendaConsentPurpose.Measurement]) {
         if (mixpanelProjectToken) {
           mixpanel.init(mixpanelProjectToken, {
@@ -110,16 +132,6 @@ const Content = ({
       csScript.setAttribute("charset", "UTF-8")
       csScript.async = true
       document.body.appendChild(csScript)
-    }
-
-    if (googleAdsId) {
-      gtagScript.type = "text/javascript"
-      gtagScript.src = `//www.googletagmanager.com/gtag/js?id=${googleAdsId}`
-      document.body.appendChild(gtagScript)
-
-      window.dataLayer = window.dataLayer || []
-      window.dataLayer.push(["js", new Date()])
-      window.dataLayer.push(["config", "AW-11426277402"])
     }
 
     return () => {
