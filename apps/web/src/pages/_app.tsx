@@ -31,10 +31,6 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
-function gtag(...args: any[]) {
-  window.dataLayer.push(args)
-}
-
 const Content = ({
   Component,
   pageProps,
@@ -55,9 +51,11 @@ const Content = ({
     }
 
     const updateScripts = ({ purposes }: IubendaCsPreferences) => {
-      if (purposes[IubendaConsentPurpose.Necessary]) {
-        gtag("consent", "update", {
-          ad_storage: "granted",
+      if (googleAdsId) {
+        window.gtag("consent", "update", {
+          ad_storage: purposes[IubendaConsentPurpose.Necessary]
+            ? "granted"
+            : "denied",
         })
       }
 
@@ -137,28 +135,32 @@ const Content = ({
       <NextNProgress color={theme.palette.secondary.main} />
       <LayoutProvider value={{ collapsed, setCollapsed }}>
         <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
-          <Script id="gtag-pre">
-            {`
-              gtag("consent", "default", {
-                ad_storage: "denied",
-                ad_user_data: "denied",
-                ad_personalization: "denied",
-                analytics_storage: "denied",
-              })
-            `}
-          </Script>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
-            id="gtag"
-          />
-          <Script id="gtag-post">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${googleAdsId}');
-            `}
-          </Script>
+          {googleAdsId ? (
+            <>
+              <Script id="gtag-pre">
+                {`
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag("consent", "default", {
+                    ad_storage: "denied",
+                    ad_user_data: "denied",
+                    ad_personalization: "denied",
+                    analytics_storage: "denied",
+                  })
+                `}
+              </Script>
+              <Script
+                src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+                id="gtag"
+              />
+              <Script id="gtag-post">
+                {`
+                  gtag('js', new Date());
+                  gtag('config', '${googleAdsId}');
+                `}
+              </Script>
+            </>
+          ) : null}
           <Component {...pageProps} />
         </AnalyticsProvider>
       </LayoutProvider>

@@ -23,4 +23,5 @@ interface Gtag {
 interface Window {
   _iub: Iubenda
   dataLayer: Gtag
+  gtag(...args: any[]): void
 }
