@@ -221,8 +221,8 @@ importers:
         specifier: 3.462.0
         version: 3.462.0
       '@aws-sdk/lib-dynamodb':
-        specifier: 3.462.0
-        version: 3.462.0(@aws-sdk/client-dynamodb@3.462.0)
+        specifier: 3.464.0
+        version: 3.464.0(@aws-sdk/client-dynamodb@3.462.0)
       '@sentry/node':
         specifier: 7.84.0
         version: 7.84.0
@@ -541,14 +541,16 @@ packages:
       mnemonist: 0.38.3
       tslib: 2.5.0
 
-  /@aws-sdk/lib-dynamodb@3.462.0(@aws-sdk/client-dynamodb@3.462.0):
-    resolution: {integrity: sha512-74WOZNv+LjoVIrkKcSgr7bQv1tNheKpUJ86iIGpYG0tIYzd9pIB1THyc/divLk8fRlayuGkT96c2bBO7xqGwKg==}
+  /@aws-sdk/lib-dynamodb@3.464.0(@aws-sdk/client-dynamodb@3.462.0):
+    resolution: {integrity: sha512-3MvGDlL3/nPKa0VimXKOX8zmXK2XCq9oBXq0sMG2RW3OcS6a9edWC46Rp8KkDURkYnQvSojDT97msPbVnoGG6g==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       '@aws-sdk/client-dynamodb': ^3.0.0
     dependencies:
       '@aws-sdk/client-dynamodb': 3.462.0
       '@aws-sdk/util-dynamodb': 3.462.0(@aws-sdk/client-dynamodb@3.462.0)
+      '@smithy/smithy-client': 2.1.15
+      '@smithy/types': 2.5.0
       tslib: 2.5.0
     dev: false
 
@@ -678,7 +680,7 @@ packages:
     resolution: {integrity: sha512-0jEE2mSrNDd8VGFjTc1otYrwYPIkzZJEIK90ZxisKvQ/EURGBhNzWn7ejWB9XCMFT6XumYLBR0V9qq5UPisWtA==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@smithy/types': 2.4.0
+      '@smithy/types': 2.5.0
       tslib: 2.5.0
     dev: false
 
@@ -1817,7 +1819,7 @@ packages:
     resolution: {integrity: sha512-M0SeJnEgD2ywJyV99Fb1yKFzmxDe9JfpJiYTVSRMyRLc467BPU0qsuuDPzMCdB1mU8M8u1rVOdkqdoyFN8UFTw==}
     engines: {node: '>=14.0.0'}
     dependencies:
-      '@smithy/types': 2.4.0
+      '@smithy/types': 2.5.0
     dev: false
 
   /@smithy/service-error-classification@2.0.6:
@@ -1854,13 +1856,6 @@ packages:
       '@smithy/types': 2.5.0
       '@smithy/util-stream': 2.0.20
       tslib: 2.5.0
-
-  /@smithy/types@2.4.0:
-    resolution: {integrity: sha512-iH1Xz68FWlmBJ9vvYeHifVMWJf82ONx+OybPW8ZGf5wnEv2S0UXcU4zwlwJkRXuLKpcSLHrraHbn2ucdVXLb4g==}
-    engines: {node: '>=14.0.0'}
-    dependencies:
-      tslib: 2.5.0
-    dev: false
 
   /@smithy/types@2.5.0:
     resolution: {integrity: sha512-/a31lYofrMBkJb3BuPlYJTMKDj0hUmKUP6JFZQu6YVuQVoAjubiY0A52U9S0Uysd33n/djexCUSNJ+G9bf3/aA==}

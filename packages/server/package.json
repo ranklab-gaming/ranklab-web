@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.462.0",
-    "@aws-sdk/lib-dynamodb": "3.462.0",
+    "@aws-sdk/lib-dynamodb": "3.464.0",
     "@sentry/node": "7.84.0",
     "aws-xray-sdk": "3.5.3",
     "aws-xray-sdk-express": "3.5.3",
