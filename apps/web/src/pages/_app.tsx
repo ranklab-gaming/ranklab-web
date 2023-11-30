@@ -23,6 +23,7 @@ import { IntercomProvider, useIntercom } from "react-use-intercom"
 import { LayoutProvider } from "@/contexts/LayoutContext"
 import { IubendaConsentPurpose } from "@/iubenda"
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext"
+import Script from "next/script"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -50,28 +51,6 @@ const Content = ({
     }
 
     const updateScripts = ({ purposes }: IubendaCsPreferences) => {
-      if (purposes[IubendaConsentPurpose.Necessary]) {
-        if (googleAdsId) {
-          window.dataLayer = window.dataLayer || []
-
-          const gtag = (...args: any[]) => window.dataLayer.push(args)
-
-          gtag("consent", "default", {
-            ad_storage: "granted",
-            ad_user_data: "granted",
-            ad_personalization: "granted",
-            analytics_storage: "granted",
-          })
-
-          gtag("js", new Date())
-          gtag("config", "AW-11426277402")
-
-          gtagScript.type = "text/javascript"
-          gtagScript.src = `//www.googletagmanager.com/gtag/js?id=${googleAdsId}`
-          document.body.appendChild(gtagScript)
-        }
-      }
-
       if (purposes[IubendaConsentPurpose.Measurement]) {
         if (mixpanelProjectToken) {
           mixpanel.init(mixpanelProjectToken, {
@@ -148,6 +127,15 @@ const Content = ({
       <NextNProgress color={theme.palette.secondary.main} />
       <LayoutProvider value={{ collapsed, setCollapsed }}>
         <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+          />
+          <Script id="gtag">
+            {`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${googleAdsId}');`}
+          </Script>
           <Component {...pageProps} />
         </AnalyticsProvider>
       </LayoutProvider>
