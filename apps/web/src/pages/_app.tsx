@@ -31,6 +31,10 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
+function gtag(...args: any[]) {
+  window.dataLayer.push(args)
+}
+
 const Content = ({
   Component,
   pageProps,
@@ -51,6 +55,12 @@ const Content = ({
     }
 
     const updateScripts = ({ purposes }: IubendaCsPreferences) => {
+      if (purposes[IubendaConsentPurpose.Necessary]) {
+        gtag("consent", "update", {
+          ad_storage: "granted",
+        })
+      }
+
       if (purposes[IubendaConsentPurpose.Measurement]) {
         if (mixpanelProjectToken) {
           mixpanel.init(mixpanelProjectToken, {
@@ -127,14 +137,27 @@ const Content = ({
       <NextNProgress color={theme.palette.secondary.main} />
       <LayoutProvider value={{ collapsed, setCollapsed }}>
         <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
+          <Script id="gtag-pre">
+            {`
+              gtag("consent", "default", {
+                ad_storage: "denied",
+                ad_user_data: "denied",
+                ad_personalization: "denied",
+                analytics_storage: "denied",
+              })
+            `}
+          </Script>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+            id="gtag"
           />
-          <Script id="gtag">
-            {`window.dataLayer = window.dataLayer || [];
+          <Script id="gtag-post">
+            {`
+              window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${googleAdsId}');`}
+              gtag('config', '${googleAdsId}');
+            `}
           </Script>
           <Component {...pageProps} />
         </AnalyticsProvider>
