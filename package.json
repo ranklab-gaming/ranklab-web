@@ -14,7 +14,7 @@
     "next": "13.4.12"
   },
   "devDependencies": {
-    "@aws-sdk/client-dynamodb": "3.465.0",
+    "@aws-sdk/client-dynamodb": "3.468.0",
     "dotenv": "16.3.1",
     "prettier": "3.1.0",
     "sharp-cli": "4.2.0",
