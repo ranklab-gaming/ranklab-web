@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
+import { PropsWithChildren, ReactNode, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
 import { Game, User } from "@ranklab/api"
@@ -62,18 +62,6 @@ export const DashboardLayout = ({
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
   const { collapsed, setCollapsed } = useLayout()
-
-  useEffect(() => {
-    if (!user || !window.Intercom) {
-      return
-    }
-
-    window.Intercom("update", {
-      name: user.name,
-      email: user.email,
-      userHash: user.intercomHash ?? undefined,
-    })
-  }, [user])
 
   return (
     <UserProvider user={user}>

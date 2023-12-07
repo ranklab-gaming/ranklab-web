@@ -1,9 +1,8 @@
 import { MotionLazyContainer } from "@/components/MotionLazyContainer"
 import { NotistackProvider } from "@/components/NotistackProvider"
 import { createEmotionCache } from "@/styles"
-import { theme } from "@/theme/theme"
 import { CacheProvider, EmotionCache } from "@emotion/react"
-import { CssBaseline, ThemeProvider, useTheme } from "@mui/material"
+import { CssBaseline, ThemeProvider } from "@mui/material"
 import { AppProps as NextAppProps } from "next/app"
 import Head from "next/head"
 import NextNProgress from "nextjs-progressbar"
@@ -24,6 +23,7 @@ import { IubendaConsentPurpose } from "@/iubenda"
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext"
 import Script from "next/script"
 import { LiveChatLoaderProvider, Intercom } from "react-live-chat-loader"
+import { theme } from "@/theme/theme"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -31,20 +31,18 @@ export interface AppProps extends NextAppProps {
   emotionCache?: EmotionCache
 }
 
-const Content = ({
+export default function App({
   Component,
+  emotionCache = clientSideEmotionCache,
   pageProps,
-}: Pick<AppProps, "Component" | "pageProps">) => {
+}: AppProps) {
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
-  const theme = useTheme()
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false)
+  const [intercomEnabled, setIntercomEnabled] = useState(false)
+  const [iubendaEnabled, setIubendaEnabled] = useState(false)
 
   useEffect(() => {
-    const stubScript = document.createElement("script")
-    const csScript = document.createElement("script")
-    const gtagScript = document.createElement("script")
-
     const handleRouteChange = (url: string) => {
       mixpanel.track("Page view", { url })
     }
@@ -72,7 +70,15 @@ const Content = ({
 
       if (purposes[IubendaConsentPurpose.Marketing]) {
         if (intercomAppId) {
-          window.Intercom("boot", { app_id: intercomAppId })
+          window.intercomSettings = pageProps.user
+            ? {
+                name: pageProps.user.name,
+                email: pageProps.user.email,
+                user_hash: pageProps.user.intercomHash ?? undefined,
+              }
+            : {}
+
+          setIntercomEnabled(true)
         }
       }
     }
@@ -109,70 +115,10 @@ const Content = ({
         },
       }
 
-      stubScript.type = "text/javascript"
-      stubScript.src = "//cdn.iubenda.com/cs/gpp/stub.js"
-      document.body.appendChild(stubScript)
-
-      csScript.type = "text/javascript"
-      csScript.src = "//cdn.iubenda.com/cs/iubenda_cs.js"
-      csScript.setAttribute("charset", "UTF-8")
-      csScript.async = true
-      document.body.appendChild(csScript)
+      setIubendaEnabled(true)
     }
-
-    return () => {
-      stubScript.remove()
-      csScript.remove()
-      gtagScript.remove()
-      router.events.off("routeChangeComplete", handleRouteChange)
-    }
-  }, [router, theme])
-
-  return (
-    <>
-      <CssBaseline />
-      <NextNProgress color={theme.palette.secondary.main} />
-      <LayoutProvider value={{ collapsed, setCollapsed }}>
-        <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
-          {googleAdsId ? (
-            <>
-              <Script id="gtag-pre">
-                {`
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag("consent", "default", {
-                    ad_storage: "denied",
-                    ad_user_data: "denied",
-                    ad_personalization: "denied",
-                    analytics_storage: "denied",
-                  })
-                `}
-              </Script>
-              <Script
-                src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
-                id="gtag"
-              />
-              <Script id="gtag-post">
-                {`
-                  gtag('js', new Date());
-                  gtag('config', '${googleAdsId}');
-                `}
-              </Script>
-            </>
-          ) : null}
-          <Component {...pageProps} />
-        </AnalyticsProvider>
-      </LayoutProvider>
-    </>
-  )
-}
-
-export default function App({
-  Component,
-  emotionCache = clientSideEmotionCache,
-  pageProps,
-}: AppProps) {
-  const content = <Content Component={Component} pageProps={pageProps} />
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -207,17 +153,65 @@ export default function App({
         <ThemeProvider theme={theme}>
           <MotionLazyContainer>
             <NotistackProvider>
-              {intercomAppId ? (
-                <LiveChatLoaderProvider
-                  providerKey={intercomAppId}
-                  provider="intercom"
-                >
-                  <Intercom color={theme.palette.secondary.main} />
-                  {content}
-                </LiveChatLoaderProvider>
-              ) : (
-                content
-              )}
+              <CssBaseline />
+              <NextNProgress color={theme.palette.secondary.main} />
+              <LayoutProvider value={{ collapsed, setCollapsed }}>
+                <AnalyticsProvider value={{ enabled: analyticsEnabled }}>
+                  {iubendaSiteId && iubendaEnabled ? (
+                    <>
+                      <Script
+                        type="text/javascript"
+                        src={`//cs.iubenda.com/sync/${iubendaSiteId}.js`}
+                      />
+                      <Script
+                        type="text/javascript"
+                        src="//cdn.iubenda.com/cs/gpp/beta/stub.js"
+                      />
+                      <Script
+                        type="text/javascript"
+                        src="//cdn.iubenda.com/cs/beta/iubenda_cs.js"
+                        async
+                      />
+                    </>
+                  ) : null}
+                  {googleAdsId ? (
+                    <>
+                      <Script id="gtag-pre">
+                        {`
+                          window.dataLayer = window.dataLayer || [];
+                          function gtag(){dataLayer.push(arguments);}
+                          gtag("consent", "default", {
+                            ad_storage: "denied",
+                            ad_user_data: "denied",
+                            ad_personalization: "denied",
+                            analytics_storage: "denied",
+                          })
+                        `}
+                      </Script>
+                      <Script
+                        src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
+                        async
+                        id="gtag"
+                      />
+                      <Script id="gtag-post">
+                        {`
+                          gtag('js', new Date());
+                          gtag('config', '${googleAdsId}');
+                        `}
+                      </Script>
+                    </>
+                  ) : null}
+                  {intercomAppId && intercomEnabled ? (
+                    <LiveChatLoaderProvider
+                      providerKey={intercomAppId}
+                      provider="intercom"
+                    >
+                      <Intercom color={theme.palette.secondary.main} />
+                    </LiveChatLoaderProvider>
+                  ) : null}
+                  <Component {...pageProps} />
+                </AnalyticsProvider>
+              </LayoutProvider>
             </NotistackProvider>
           </MotionLazyContainer>
         </ThemeProvider>
