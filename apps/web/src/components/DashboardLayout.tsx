@@ -12,7 +12,6 @@ import {
 import { PropsWithChildren, ReactNode, useEffect, useState } from "react"
 import { Header } from "./DashboardLayout/Header"
 import { Navbar } from "./DashboardLayout/Navbar"
-import { useIntercom } from "react-use-intercom"
 import { Game, User } from "@ranklab/api"
 import { useLayout } from "@/hooks/useLayout"
 
@@ -62,22 +61,17 @@ export const DashboardLayout = ({
 }: PropsWithChildren<Props>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const theme = useTheme()
-  const { update } = useIntercom()
   const { collapsed, setCollapsed } = useLayout()
 
   useEffect(() => {
     if (!user) return
 
-    setTimeout(
-      () =>
-        update({
-          name: user.name,
-          email: user.email,
-          userHash: user.intercomHash ?? undefined,
-        }),
-      3000,
-    )
-  }, [user, update])
+    Intercom("update", {
+      name: user.name,
+      email: user.email,
+      userHash: user.intercomHash ?? undefined,
+    })
+  }, [user])
 
   return (
     <UserProvider user={user}>

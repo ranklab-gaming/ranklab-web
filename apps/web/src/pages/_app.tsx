@@ -19,11 +19,11 @@ import {
   googleAdsId,
 } from "@/config"
 import { useRouter } from "next/router"
-import { IntercomProvider, useIntercom } from "react-use-intercom"
 import { LayoutProvider } from "@/contexts/LayoutContext"
 import { IubendaConsentPurpose } from "@/iubenda"
 import { AnalyticsProvider } from "@/contexts/AnalyticsContext"
 import Script from "next/script"
+import { LiveChatLoaderProvider, Intercom } from "react-live-chat-loader"
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -35,7 +35,6 @@ const Content = ({
   Component,
   pageProps,
 }: Pick<AppProps, "Component" | "pageProps">) => {
-  const { boot: bootIntercom } = useIntercom()
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
   const theme = useTheme()
@@ -73,7 +72,7 @@ const Content = ({
 
       if (purposes[IubendaConsentPurpose.Marketing]) {
         if (intercomAppId) {
-          bootIntercom()
+          window.Intercom("boot", { app_id: intercomAppId })
         }
       }
     }
@@ -127,7 +126,7 @@ const Content = ({
       gtagScript.remove()
       router.events.off("routeChangeComplete", handleRouteChange)
     }
-  }, [bootIntercom, router, theme])
+  }, [router, theme])
 
   return (
     <>
@@ -173,6 +172,8 @@ export default function App({
   emotionCache = clientSideEmotionCache,
   pageProps,
 }: AppProps) {
+  const content = <Content Component={Component} pageProps={pageProps} />
+
   return (
     <>
       <Head>
@@ -206,12 +207,17 @@ export default function App({
         <ThemeProvider theme={theme}>
           <MotionLazyContainer>
             <NotistackProvider>
-              <IntercomProvider
-                appId={intercomAppId ?? ""}
-                shouldInitialize={Boolean(intercomAppId)}
-              >
-                <Content Component={Component} pageProps={pageProps} />
-              </IntercomProvider>
+              {intercomAppId ? (
+                <LiveChatLoaderProvider
+                  providerKey={intercomAppId}
+                  provider="intercom"
+                >
+                  <Intercom color={theme.palette.secondary.main} />
+                  {content}
+                </LiveChatLoaderProvider>
+              ) : (
+                content
+              )}
             </NotistackProvider>
           </MotionLazyContainer>
         </ThemeProvider>

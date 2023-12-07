@@ -126,6 +126,9 @@ importers:
       react-hook-form:
         specifier: 7.48.2
         version: 7.48.2(react@18.2.0)
+      react-live-chat-loader:
+        specifier: ^2.8.2
+        version: 2.8.2(react@18.2.0)
       react-quill:
         specifier: 2.0.0
         version: 2.0.0(react-dom@18.2.0)(react@18.2.0)
@@ -135,9 +138,6 @@ importers:
       react-stickynode:
         specifier: 4.1.1
         version: 4.1.1(react-dom@18.2.0)(react@18.2.0)
-      react-use-intercom:
-        specifier: 5.1.4
-        version: 5.1.4(react-dom@18.2.0)(react@18.2.0)
       simplebar-react:
         specifier: 3.2.4
         version: 3.2.4(react@18.2.0)
@@ -151,6 +151,9 @@ importers:
       '@playwright/test':
         specifier: 1.40.1
         version: 1.40.1
+      '@types/intercom-web':
+        specifier: ^2.8.24
+        version: 2.8.24
       '@types/jsonwebtoken':
         specifier: 9.0.5
         version: 9.0.5
@@ -2130,6 +2133,10 @@ packages:
 
   /@types/http-errors@2.0.1:
     resolution: {integrity: sha512-/K3ds8TRAfBvi5vfjuz8y6+GiAYBZ0x4tXv1Av6CWBWn0IlADc+ZX9pMq7oU0fNQPnBwIZl3rmeLp6SBApbxSQ==}
+    dev: true
+
+  /@types/intercom-web@2.8.24:
+    resolution: {integrity: sha512-MGhZqr/xaEnc5JmAlbhXhrjazUh3z0kybYQRNS2DD4dBevD6feIsw2UCaP+KeBx8n8rtHsc4kg/hfVT5+6dXRg==}
     dev: true
 
   /@types/json-schema@7.0.12:
@@ -5365,6 +5372,14 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
+  /react-live-chat-loader@2.8.2(react@18.2.0):
+    resolution: {integrity: sha512-rGT9BY6s/S9Xb4y+KWXEdnEgVP+PQHELibIlhOuwYyv7M7zb4SwtrVKJeNwbAyHIL1GXjOO//x245OXFZFwEWA==}
+    peerDependencies:
+      react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-quill@2.0.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-4qQtv1FtCfLgoD3PXAur5RyxuUbPXQGOHgTlFie3jtxp43mXDtzCKaOgQ3mLyZfi1PUlyjycfivKelFhy13QUg==}
     peerDependencies:
@@ -5415,16 +5430,6 @@ packages:
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /react-use-intercom@5.1.4(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-37dMuCg3H5KgMqpUMiZiu7Ni1LcRAkO8T7F1Zg4Xc+hL89j8OYFHzWWBy29EFgRsTdvCEJ2X8J5wAXerU9uuqw==}
-    peerDependencies:
-      react: '>=16.8.0'
-      react-dom: '>=16.8.0'
-    dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
