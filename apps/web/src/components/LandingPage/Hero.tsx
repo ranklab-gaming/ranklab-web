@@ -180,7 +180,7 @@ export const Hero = ({ games }: Props) => {
                 >
                   {games.slice(0, 6).map((game) => (
                     <Tooltip title={game.name} key={game.id}>
-                      <Box>
+                      <Box role="img">
                         <GameIcon
                           game={game}
                           sx={{

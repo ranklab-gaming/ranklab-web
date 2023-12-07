@@ -7,7 +7,7 @@
     "start": "turbo run start",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "sharp": "rm -rf out && mkdir out && sharp -i 'images/**/*.png' -o out -q 80 -f webp resize"
+    "sharp": "rm -rf out && mkdir out && sharp -i 'images/**/*' -o out -q 80 -f webp resize"
   },
   "dependencies": {
     "@next/env": "13.4.12",
