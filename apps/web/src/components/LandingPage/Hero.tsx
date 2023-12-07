@@ -238,7 +238,7 @@ export const Hero = ({ games }: Props) => {
                 }}
               >
                 <source
-                  src={`${assetsCdnUrl}/hero-background-video.mp4`}
+                  src={`${assetsCdnUrl}/hero-background-video.webm`}
                   type="video/mp4"
                 />
               </video>
