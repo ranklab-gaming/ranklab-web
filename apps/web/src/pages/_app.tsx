@@ -96,7 +96,6 @@ export default function App({
         localConsentDomainExact: host,
         perPurposeConsent: true,
         siteId: iubendaSiteId,
-        reloadOnConsent: true,
         banner: {
           acceptButtonColor: theme.palette.secondary.main,
           acceptButtonDisplay: true,
