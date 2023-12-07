@@ -64,9 +64,11 @@ export const DashboardLayout = ({
   const { collapsed, setCollapsed } = useLayout()
 
   useEffect(() => {
-    if (!user) return
+    if (!user || !window.Intercom) {
+      return
+    }
 
-    Intercom("update", {
+    window.Intercom("update", {
       name: user.name,
       email: user.email,
       userHash: user.intercomHash ?? undefined,
