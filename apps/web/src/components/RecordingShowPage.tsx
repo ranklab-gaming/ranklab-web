@@ -18,6 +18,7 @@ import {
   Box,
   Chip,
   useTheme,
+  Button,
 } from "@mui/material"
 import { useSnackbar } from "notistack"
 import { useRef, useState } from "react"
@@ -296,6 +297,21 @@ export const RecordingShowPage = ({
                     dialogTitle="Delete Recording"
                   />
                 ) : null}
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `${window.location.origin}/recordings/${recording.id}`,
+                    )
+
+                    enqueueSnackbar("Copied share link to clipboard", {
+                      variant: "success",
+                    })
+                  }}
+                >
+                  Share
+                  <Iconify icon="eva:external-link-outline" ml={1} />
+                </Button>
               </Stack>
             </Stack>
             {recording.notesText ? (
