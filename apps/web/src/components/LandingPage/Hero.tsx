@@ -11,7 +11,7 @@ import {
 } from "@mui/material"
 import { styled, useTheme } from "@mui/material/styles"
 import { m } from "framer-motion"
-import { PropsWithChildren, useRef } from "react"
+import { PropsWithChildren, useEffect, useRef } from "react"
 import { Overlay } from "./Overlay"
 import NextLink from "next/link"
 import { useResponsive } from "@/hooks/useResponsive"
@@ -76,6 +76,7 @@ export const Hero = ({ games }: Props) => {
   const theme = useTheme()
   const isDesktop = useResponsive("up", "md")
   const boxRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -83,6 +84,12 @@ export const Hero = ({ games }: Props) => {
       behavior: "smooth",
     })
   }
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play()
+    }
+  }, [])
 
   return (
     <RootStyle initial="initial" animate="animate" sx={{ overflow: "hidden" }}>
@@ -226,10 +233,11 @@ export const Hero = ({ games }: Props) => {
           >
             <HeroImgStyle>
               <video
-                autoPlay
+                ref={videoRef}
                 loop
                 muted
                 playsInline
+                preload="none"
                 style={{
                   width: "100%",
                   height: "100%",
@@ -238,8 +246,8 @@ export const Hero = ({ games }: Props) => {
                 }}
               >
                 <source
-                  src={`${assetsCdnUrl}/hero-background-video.webm`}
-                  type="video/webm"
+                  src={`${assetsCdnUrl}/hero-background-video.mp4`}
+                  type="video/mp4"
                 />
               </video>
             </HeroImgStyle>
