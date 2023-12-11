@@ -131,9 +131,9 @@ export const Hero = ({ games }: Props) => {
                 variant="h4"
                 component="h2"
               >
-                Get your gameplay analyzed by experienced players
+                Upload your VOD, share it on Reddit or Discord
                 <br />
-                and help others get better.
+                and get feedback.
               </Typography>
             </Stack>
           </m.div>
