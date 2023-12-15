@@ -107,6 +107,7 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
           src={`${uploadsCdnUrl}/${recording.videoKey}`}
           width={wrapperWidth}
           height={wrapperHeight}
+          playsInline
           onTimeUpdate={(e) => {
             form.setValue("metadata", {
               ...metadata,
