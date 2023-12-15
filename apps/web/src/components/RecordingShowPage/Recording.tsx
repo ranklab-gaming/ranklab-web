@@ -22,8 +22,8 @@ export const Recording = ({ videoRef, drawingRef }: Props) => {
   const { form, recording, selectedComment, editing } = useReview()
   const metadata = form.watch("metadata")
   const containerRef = useRef<HTMLDivElement>(null)
-  const [wrapperWidth, setWrapperWidth] = useState<number>(1280)
-  const [wrapperHeight, setWrapperHeight] = useState<number>(720)
+  const [wrapperWidth, setWrapperWidth] = useState(0)
+  const [wrapperHeight, setWrapperHeight] = useState(0)
 
   const resizeVideo = useCallback(() => {
     if (!containerRef.current || !videoRef.current) {
